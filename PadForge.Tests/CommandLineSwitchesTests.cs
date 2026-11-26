@@ -335,5 +335,29 @@ namespace PadForge.Tests
             Assert.All(help.Split(new[] { "\r\n" }, StringSplitOptions.None), line => Assert.True(line.Length <= 80, line));
             Assert.DoesNotContain(";", help, StringComparison.Ordinal);
         }
+
+        /// <summary><c>--install=what</c> is <c>--install what</c>, as every
+        /// switch takes <c>--name=value</c>, and the words after it are read
+        /// the same way. <c>--install=skill</c> with no program stays a
+        /// mistake, as <c>--install skill</c> is.</summary>
+        [Theory]
+        [InlineData("--install=autohotkey", "--install autohotkey")]
+        [InlineData("/install=python --check", "--install python --check")]
+        [InlineData("--install=skill claude-code --remove", "--install skill claude-code --remove")]
+        [InlineData("--install=assistant codex --json", "--install assistant codex --json")]
+        public void InstallWithItsWordAfterAnEqualsSign_IsTheSameInstall(string inline, string spaced)
+        {
+            var a = Parse(inline.Split(' '));
+            var b = Parse(spaced.Split(' '));
+            Assert.Null(b.Error);
+            Assert.Null(a.Error);
+            Assert.Equal(b.Install, a.Install);
+            Assert.Equal(b.Json, a.Json);
+            // Every word was read, the inline one as one word.
+            Assert.Equal(b.Parts.Count, a.Parts.Count);
+            Assert.Equal(inline.Split(' ').Length, a.Parts.Sum(p => p.Count));
+            Assert.NotNull(Parse("--install=skill").Error);
+            Assert.NotNull(Parse("--install=").Error);
+        }
     }
 }

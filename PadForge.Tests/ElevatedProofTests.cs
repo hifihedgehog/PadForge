@@ -110,26 +110,7 @@ namespace PadForge.Tests
             Directory.CreateDirectory(dir);
             string ready = Path.Combine(dir, "ready"), release = Path.Combine(dir, "release");
             Assert.False(InstanceLock.IsHeld(ns, "Lock"));
-            var psi = new ProcessStartInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet", "dotnet.exe"))
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-            };
-            psi.ArgumentList.Add("test");
-            psi.ArgumentList.Add(Path.Combine(AppContext.BaseDirectory, "PadForge.Tests.dll"));
-            psi.ArgumentList.Add("--filter");
-            psi.ArgumentList.Add("FullyQualifiedName~ElevatedProofTests.HoldsTheLockForAnotherProcess");
-            // A plain environment: the variables this test run's own runner
-            // set would make the inner run wait on the outer one.
-            var plain = new System.Collections.Generic.Dictionary<string, string>(psi.Environment, StringComparer.OrdinalIgnoreCase);
-            psi.Environment.Clear();
-            foreach (string keep in new[] { "SystemRoot", "windir", "ComSpec", "PATH", "PATHEXT", "TEMP", "TMP", "USERPROFILE", "USERNAME",
-                         "USERDOMAIN", "APPDATA", "LOCALAPPDATA", "ProgramData", "ProgramFiles", "ProgramFiles(x86)", "ProgramW6432",
-                         "CommonProgramFiles", "CommonProgramFiles(x86)", "SystemDrive", "HOMEDRIVE", "HOMEPATH", "NUMBER_OF_PROCESSORS",
-                         "PROCESSOR_ARCHITECTURE", "OS", "COMPUTERNAME" })
-                if (plain.TryGetValue(keep, out string value)) psi.Environment[keep] = value;
+            var psi = InnerTestRun("FullyQualifiedName~ElevatedProofTests.HoldsTheLockForAnotherProcess");
             psi.Environment[LockNamespaceVariable] = ns;
             psi.Environment[LockReadyVariable] = ready;
             psi.Environment[LockReleaseVariable] = release;
@@ -167,6 +148,34 @@ namespace PadForge.Tests
             Assert.Contains(lines, l => l.Contains("Passed!", StringComparison.Ordinal));
             Assert.False(InstanceLock.IsHeld(ns, "Lock"));
             try { Directory.Delete(dir, true); } catch (IOException) { }
+        }
+
+        /// <summary>A run of this assembly's tests that <paramref name="filter"/>
+        /// names, in a test host of its own, which inherits this one's rights.
+        /// Its environment is plain: the variables this test run's own runner
+        /// set would make the inner run wait on the outer one. Its output and
+        /// errors are redirected.</summary>
+        internal static ProcessStartInfo InnerTestRun(string filter)
+        {
+            var psi = new ProcessStartInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet", "dotnet.exe"))
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+            };
+            psi.ArgumentList.Add("test");
+            psi.ArgumentList.Add(Path.Combine(AppContext.BaseDirectory, "PadForge.Tests.dll"));
+            psi.ArgumentList.Add("--filter");
+            psi.ArgumentList.Add(filter);
+            var plain = new System.Collections.Generic.Dictionary<string, string>(psi.Environment, StringComparer.OrdinalIgnoreCase);
+            psi.Environment.Clear();
+            foreach (string keep in new[] { "SystemRoot", "windir", "ComSpec", "PATH", "PATHEXT", "TEMP", "TMP", "USERPROFILE", "USERNAME",
+                         "USERDOMAIN", "APPDATA", "LOCALAPPDATA", "ProgramData", "ProgramFiles", "ProgramFiles(x86)", "ProgramW6432",
+                         "CommonProgramFiles", "CommonProgramFiles(x86)", "SystemDrive", "HOMEDRIVE", "HOMEPATH", "NUMBER_OF_PROCESSORS",
+                         "PROCESSOR_ARCHITECTURE", "OS", "COMPUTERNAME" })
+                if (plain.TryGetValue(keep, out string value)) psi.Environment[keep] = value;
+            return psi;
         }
 
         /// <summary>The other process of the test above: takes the lock,

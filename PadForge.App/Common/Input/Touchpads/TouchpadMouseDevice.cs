@@ -94,6 +94,9 @@ namespace PadForge.Common.Input.Touchpads
         public Guid InstanceGuid { get; }
         public Guid ProductGuid { get; }
         public string DevicePath { get; }
+
+        /// <summary>The touchpad's capture hands one wheel only.</summary>
+        public bool ReadsSidewaysWheel => false;
         public string SerialNumber => string.Empty;
         public string SdlGuid => string.Empty;
 

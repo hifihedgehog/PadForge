@@ -59,8 +59,16 @@ namespace PadForge.Services.Automation
             // The sessions first: the store's change redraws the row, which
             // reads whether a session's own ask now holds it.
             _sessions?.SetReach(key, reach);
+            BetweenTheSessionsAndTheStore?.Invoke();
             _store.SetReach(key, reach);
+            // And once more after the store: a program that connected in
+            // between read the old reach from the store.
+            _sessions?.SetReach(key, reach);
         }
+
+        /// <summary>Test seam: runs between the open sessions' new reach and
+        /// the store's. Null in the app.</summary>
+        internal Action BetweenTheSessionsAndTheStore;
 
         public void AllowAssistant(string hostKey, string hostName, string program)
         {

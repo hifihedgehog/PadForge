@@ -190,6 +190,9 @@ namespace PadForge.Tests
             Host = TestConsent.AllowAll(new AutomationHost(Target, Ui, "PadForge.Tests.Control." + Guid.NewGuid().ToString("N"),
                 automationPipeName: PipeName));
             Host.Sessions.Devices.OfflineAfterMs = 300;
+            // Each start of the engine is a run of its own, as the poll
+            // thread's generation is.
+            Host.EngineChanged += on => { if (on) Run++; };
             if (engine)
             {
                 Engine = new AutomationTestEngine(new InputManager());
@@ -207,13 +210,29 @@ namespace PadForge.Tests
         }
 
         /// <summary>From here every connection stands for a process of its
-        /// own, with this test's image: a test has one process, and the
-        /// sessions count by process.</summary>
+        /// own, a program of one path: a test has one process, and the
+        /// sessions count by process. The path is not this test's own image,
+        /// which consent reads as a copy of PadForge.exe named by the program
+        /// that started it (AutomationConsent.Identify), and a made-up process
+        /// has none to name.</summary>
         public void EachConnectionItsOwnProcess()
         {
-            string path = Environment.ProcessPath;
+            string path = @"C:\Tools\Test Program.exe";
             int next = 100000;
             Host.AutomationPipe.ProcessOf = _ => AutomationClientProcess.ForTest(Interlocked.Increment(ref next), path);
+        }
+
+        /// <summary>From here every connection stands for a program of its
+        /// own, each its own process and file: a program's devices go by
+        /// its consent key, never by the name its hello claims.</summary>
+        public void EachConnectionItsOwnProgram()
+        {
+            int next = 100000;
+            Host.AutomationPipe.ProcessOf = _ =>
+            {
+                int id = Interlocked.Increment(ref next);
+                return AutomationClientProcess.ForTest(id, @"C:\Tests\Program" + id + ".exe");
+            };
         }
 
         /// <summary>A connected client whose hello was answered.</summary>
@@ -238,7 +257,11 @@ namespace PadForge.Tests
 
         public static string IdOf(UserDevice ud) => AutomationDevices.IdOf(ud.InstanceGuid);
 
-        public void Pass(params UserDevice[] devices) => Host.Sessions.Watch.OnPass(devices, devices.Length);
+        /// <summary>The run the passes belong to, a new one at each start
+        /// of the engine.</summary>
+        public int Run = 1;
+
+        public void Pass(params UserDevice[] devices) => Host.Sessions.Watch.OnPass(devices, devices.Length, new InputManager.AutomationPassRun(Host, Run));
 
         public static async Task Until(Func<bool> condition, int ms = 5000)
         {
@@ -273,6 +296,129 @@ namespace PadForge.Tests
     [Collection("SettingsManagerStatics")]
     public class AutomationPipeTests
     {
+        // ── The pipe's instances ──
+
+        private static NamedPipeClientStream RawClient(string name)
+        {
+            var client = new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous);
+            client.Connect(5000);
+            return client;
+        }
+
+        private static void WaitFor(Func<bool> condition)
+        {
+            var clock = Stopwatch.StartNew();
+            while (!condition())
+            {
+                Assert.True(clock.ElapsedMilliseconds < 5000, "the wait ran out");
+                Thread.Sleep(10);
+            }
+        }
+
+        /// <summary>A program that connects and closes at once, while
+        /// another program's session holds its connection open, leaves the
+        /// pipe serving: the instance made in its place is a further one,
+        /// since Windows refuses a first instance of a name PadForge's own
+        /// session still holds (#600).</summary>
+        [Fact]
+        public void AConnectAndClose_WhileASessionIsOpen_LeavesThePipeServing()
+        {
+            string name = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            var held = new TaskCompletionSource();
+            int served = 0, looked = 0;
+            using var second = new ManualResetEventSlim(false);
+            var pipe = new AutomationPipe((stream, process, token) => { Interlocked.Increment(ref served); return held.Task; }, name);
+            pipe.ProcessOf = _ =>
+            {
+                // The second connection's look waits while a third program
+                // connects to the instance that stands and closes.
+                if (Interlocked.Increment(ref looked) == 2) second.Wait(5000);
+                return AutomationClientProcess.None;
+            };
+            try
+            {
+                Assert.Equal(ExternalControlService.PipeState.Serving, pipe.Start());
+                using var first = RawClient(name);
+                WaitFor(() => Volatile.Read(ref served) == 1);
+                using var two = RawClient(name);
+                WaitFor(() => Volatile.Read(ref looked) == 2);
+                using (RawClient(name)) { }
+                second.Set();
+                WaitFor(() => Volatile.Read(ref served) == 2);
+                Thread.Sleep(200);
+                using var fourth = RawClient(name);
+                WaitFor(() => Volatile.Read(ref served) == 3);
+                Assert.Equal(ExternalControlService.PipeState.Serving, pipe.State);
+            }
+            finally
+            {
+                second.Set();
+                held.TrySetResult();
+                pipe.Dispose();
+            }
+        }
+
+        /// <summary>Automation off and on again while a session's
+        /// connection is still open serves again at once: PadForge's own
+        /// open connection is no other program's name.</summary>
+        [Fact]
+        public void AStopAndStart_WhileASessionIsOpen_ServesAgain()
+        {
+            string name = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            var held = new TaskCompletionSource();
+            int served = 0;
+            var pipe = new AutomationPipe((stream, process, token) => { Interlocked.Increment(ref served); return held.Task; }, name);
+            try
+            {
+                Assert.Equal(ExternalControlService.PipeState.Serving, pipe.Start());
+                using var first = RawClient(name);
+                WaitFor(() => Volatile.Read(ref served) == 1);
+                pipe.Stop();
+                Assert.Equal(ExternalControlService.PipeState.Serving, pipe.Start());
+                using var next = RawClient(name);
+                WaitFor(() => Volatile.Read(ref served) == 2);
+            }
+            finally
+            {
+                held.TrySetResult();
+                pipe.Dispose();
+            }
+        }
+
+        /// <summary>A session that closed its connection, as Close disposes
+        /// the stream before the session's end runs, holds no instance of the
+        /// name: a start then asks for the first of its name again, and a
+        /// program that made the name in that gap is found out.</summary>
+        [Fact]
+        public void AStart_AfterASessionClosedItsConnection_FindsOutAProgramThatTookTheName()
+        {
+            string name = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            var held = new TaskCompletionSource();
+            int served = 0;
+            var pipe = new AutomationPipe((stream, process, token) =>
+            {
+                stream.Dispose();
+                Interlocked.Increment(ref served);
+                return held.Task;
+            }, name);
+            NamedPipeServerStream squatter = null;
+            try
+            {
+                Assert.Equal(ExternalControlService.PipeState.Serving, pipe.Start());
+                using (RawClient(name)) WaitFor(() => Volatile.Read(ref served) == 1);
+                pipe.Stop();
+                squatter = new NamedPipeServerStream(name, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
+                    PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+                Assert.Equal(ExternalControlService.PipeState.NameTaken, pipe.Start());
+            }
+            finally
+            {
+                held.TrySetResult();
+                pipe.Dispose();
+                squatter?.Dispose();
+            }
+        }
+
         // ── The line ──
 
         [Theory]
@@ -502,11 +648,11 @@ namespace PadForge.Tests
         // ── Limits ──
 
         [Fact]
-        public void TwelveScriptSessions_AreTaken_AndTheThirteenthIsRefused_ForFourAreKeptForPlugins()
+        public void TwelveScriptSessions_AreTaken_AndTheThirteenthIsRefused()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.Read);
             rig.EachConnectionItsOwnProcess();
-            for (int i = 0; i < AutomationSessions.MostSessions - AutomationSessions.KeptForPlugins; i++) rig.Open("Script " + i);
+            for (int i = 0; i < AutomationSessions.MostProgramSessions; i++) rig.Open("Script " + i);
             using var extra = rig.Connect();
             Assert.StartsWith("err too-many ", extra.Final("hello name=extra"));
             Assert.True(extra.ClosedWithin(3000));
@@ -523,9 +669,9 @@ namespace PadForge.Tests
 
             var names = Enumerable.Range(0, 256).Select(i => "\"Button number " + i + " with a long name for its index\"");
             string declare = "declare key=wide name=\"Wide\" {\"buttons\":[" + string.Join(",", names) + "]}";
-            Assert.InRange(Encoding.UTF8.GetByteCount(declare), AutomationLine.LongestLine + 1, AutomationLine.LongestDeclare);
+            Assert.InRange(Encoding.UTF8.GetByteCount(declare), AutomationLine.LongestLine + 1, AutomationLine.LongestJsonLine);
             Assert.StartsWith("ok id=", client.Final(declare));
-            string tooBig = "declare key=big name=\"Big\" {\"buttons\":[\"" + new string('x', AutomationLine.LongestDeclare) + "\"]}";
+            string tooBig = "declare key=big name=\"Big\" {\"buttons\":[\"" + new string('x', AutomationLine.LongestJsonLine) + "\"]}";
             Assert.StartsWith("err too-long ", client.Final(tooBig));
             Assert.StartsWith("ok ", client.Final("version"));
         }
@@ -534,7 +680,7 @@ namespace PadForge.Tests
         public void EightDevicesASession_And32InAll()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
-            rig.EachConnectionItsOwnProcess();
+            rig.EachConnectionItsOwnProgram();
             var clients = Enumerable.Range(0, 5).Select(i => rig.Open("Maker " + i)).ToList();
             for (int i = 0; i < ProgramDevices.MostPerSession; i++)
                 Assert.StartsWith("ok id=", clients[0].Final("declare key=d" + i + " name=\"D\" {}"));
@@ -785,6 +931,70 @@ namespace PadForge.Tests
             Assert.Empty(client.Drain());
         }
 
+        /// <summary>A device that drops lets go of what a raw subscription
+        /// last told: a button down is told up, a hat off center centered,
+        /// an axis off its rest at rest and a line past it back. When the
+        /// device returns, what is down then is told from rest.</summary>
+        [Fact]
+        public void ADeviceThatDrops_ReleasesWhatARawSubscriptionHeld_AndItsReturnIsToldFromRest()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Read);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            string id = AutomationPipeRig.IdOf(pad);
+            using var client = rig.Open();
+            Assert.Equal("ok", client.Final("sub " + id + " buttons"));
+            Assert.Equal("ok", client.Final("sub " + id + " hats"));
+            Assert.Equal("ok", client.Final("sub " + id + " axis=5 above=40000 hyst=2000"));
+            var s = pad.ReadInputState;
+            rig.Pass(pad);
+            s.Buttons[3] = true;
+            s.Povs[0] = 9000;
+            s.Axis[5] = 50000;
+            rig.Pass(pad);
+            Assert.Equal(new[] { "e b " + id + " 3 1", "e h " + id + " 0 9000", "e x " + id + " 5 1" }.OrderBy(e => e),
+                client.Drain(300).OrderBy(e => e));
+
+            // The device drops with all three still held.
+            rig.Pass();
+            Assert.Equal(new[] { "e b " + id + " 3 0", "e h " + id + " 0 -1", "e x " + id + " 5 0" }.OrderBy(e => e),
+                client.Drain(300).OrderBy(e => e));
+
+            // It comes back with the button down and the rest at rest.
+            s.Povs[0] = -1;
+            s.Axis[5] = 0;
+            rig.Pass(pad);
+            Assert.Equal(new[] { "e b " + id + " 3 1" }, client.Drain(300));
+            rig.Pass(pad);
+            Assert.Empty(client.Drain());
+        }
+
+        /// <summary>A raw axes subscription hears an axis off its rest put
+        /// back at rest when the device drops, at once whatever the rate, and
+        /// the axis held off rest when the device returns.</summary>
+        [Fact]
+        public void ADeviceThatDrops_TellsARawAxesSubscriptionItsAxesAtRest()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Read);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            string id = AutomationPipeRig.IdOf(pad);
+            var rests = AutomationSessions.RestsOf(pad, null);
+            var s = pad.ReadInputState;
+            for (int i = 0; i < CustomInputState.MaxAxis; i++) s.Axis[i] = rests[i];
+            for (int i = 0; i < CustomInputState.MaxSliders; i++) s.Sliders[i] = rests[ProgramAxis.FirstSlider + i];
+            using var client = rig.Open();
+            Assert.Equal("ok", client.Final("sub " + id + " axes"));
+            rig.Pass(pad);
+            s.Axis[0] = 1000;
+            rig.Pass(pad);
+            Assert.Equal(new[] { "e a " + id + " 0 1000" }, client.Drain(300));
+
+            rig.Pass();
+            Assert.Equal(new[] { "e a " + id + " 0 " + rests[0] }, client.Drain(300));
+
+            rig.Pass(pad);
+            Assert.Equal(new[] { "e a " + id + " 0 1000" }, client.Drain(300));
+        }
+
         [Fact]
         public void AnAxisCrossing_IsWorkedOutWithHysteresis()
         {
@@ -905,9 +1115,9 @@ namespace PadForge.Tests
             client.Final("sub " + id + " axis=2 above=30000");
             client.Final("sub devices");
             var devices = new[] { pad, keys };
-            for (int i = 0; i < 50; i++) rig.Host.Sessions.Watch.OnPass(devices, 2);
+            for (int i = 0; i < 50; i++) rig.Host.Sessions.Watch.OnPass(devices, 2, new InputManager.AutomationPassRun(rig.Host, rig.Run));
             long before = GC.GetAllocatedBytesForCurrentThread();
-            for (int i = 0; i < 1000; i++) rig.Host.Sessions.Watch.OnPass(devices, 2);
+            for (int i = 0; i < 1000; i++) rig.Host.Sessions.Watch.OnPass(devices, 2, new InputManager.AutomationPassRun(rig.Host, rig.Run));
             Assert.Equal(0, GC.GetAllocatedBytesForCurrentThread() - before);
         }
 
@@ -968,6 +1178,35 @@ namespace PadForge.Tests
             rig.Pass(pad, mouse, keys);
             Assert.Empty(first.Drain());
             Assert.Empty(second.Drain());
+        }
+
+        /// <summary>A pass of a run the stop retired, one that was still in
+        /// Step 2 when the stop gave up its wait for the poll thread, changes
+        /// nothing the followers were told: the first pass of the next run
+        /// still tells each device online come back.</summary>
+        [Fact]
+        public void APassOfARetiredRun_AfterTheStop_LeavesTheNextRunsComeBack()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Read);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            string padId = AutomationPipeRig.IdOf(pad);
+            using var client = rig.Open();
+            Assert.Equal("ok", client.Final("sub devices"));
+            int retired = rig.Run;
+            rig.Pass(pad);
+            Assert.Empty(client.Drain());
+
+            rig.Host.DetachEngine();
+            Assert.Equal(new[] { "e dev " + padId + " offline" }, client.Drain(300));
+            // The retired run's late pass.
+            rig.Host.Sessions.Watch.OnPass(new[] { pad }, 1, new InputManager.AutomationPassRun(rig.Host, retired));
+            Assert.Empty(client.Drain());
+
+            using var manager = new InputManager();
+            rig.Host.AttachEngine(new AutomationTestEngine(manager));
+            Assert.True(rig.Run > retired);
+            rig.Pass(pad);
+            Assert.Equal(new[] { "e dev " + padId + " online" }, client.Drain(300));
         }
 
         [Fact]

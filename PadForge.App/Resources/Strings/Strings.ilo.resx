@@ -155,8 +155,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ti programa ket agus-usar iti bersion a saan nga ammo ti PadForge</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Saan nga inted ti PadForge dayta a plugin key</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Saan nga inawat ti PadForge ti koneksion daytoy a programa</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Awan ti device nga inaramid ti PadForge, gapu ta saan nga innaganan ti Windows ti file ti programa</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Nagdawat manen a nasapa unay</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Awanen ti kastoy agingga nga agrugi manen ti PadForge</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Adu unay kadagitoy ti impaur-uray dagiti programa para iti panangrepasom iti Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Awan ti kasta a tool ti PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Nabasa ti programa ti daan a kasasaad</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Awan ti addaan iti dayta nga ID</value></data>
@@ -164,6 +165,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Saanmo nga impalubos</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Awan ti simmungbat iti umno a tiempo</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Agur-uray iti sungbatmo</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Saanka pay a simmungbat</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Awan ti kasta a kiddaw</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Awan ti maisubli</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Sika laeng ti makabaliw iti daytoy</value></data>
@@ -286,7 +288,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Iyakar ti maysa a profile</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>I-import ti profile file manipud iti sabali a programa, sa kitaen no ania ti naiyakar.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} a daras</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ti maudi iti {1} a kasta</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Ilaksid</value></data>
 
   <!-- ═══ Settings ═══ -->
@@ -320,6 +321,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Setting ti serbisio</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Addang ti panangikkat</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Serbisio</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>File</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Upper filter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registry value</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardware ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Naiskediul a task</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Entry iti Installed apps</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP a device</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Pagbalinenna a makakonekta babaen ti Bluetooth dagiti controller ti PlayStation 3, ti PlayStation Move ken ti Navigation controller. Adda iti uneg ti PadForge ken maikabil inton umuna a ma-pair ti maysa kadakuada.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Mangisilpo kadagiti controller ti PlayStation 3 babaen ti Bluetooth.</value></data>
@@ -1244,6 +1253,8 @@
   <data name="KeyboardScreens_Status_Direct_Format" xml:space="preserve"><value>direkta iti {0}</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>ti screen ti G19 ket adda iti driver ti sabali a programa ({0}), a saan a sagiden ti PadForge</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>kasapulan ti Logitech Gaming Software 8.52 wenno nabarbaro</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nasarakan ti libraryna ngem saan nga inkarga, ta saan a napasingkedan ti PadForge a dagiti administrator laeng ti makabaliw iti dayta ken ti Logitech ti nangpirma iti dayta</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nasarakan ti libraryna ngem saan a nausar, ket ibaga ti diagnostics log no apay</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>lukatam ti Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>agur-uray iti telepono nga addaan Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>iti telepono</value></data>
@@ -1451,6 +1462,7 @@
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>baterya {0}, agkarkarga</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Tunggal axis, button ken sensor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Dagiti kontrolna babaen kadagiti nagan nga us-usaren dagiti script</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Naipindut: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopiaen dagiti detalye</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Dagiti kabaelan</value></data>
@@ -1630,20 +1642,21 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ken {0} pay</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} iti {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>No awan ti sungbat iti uneg ti {0}, maibilang a saan.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ti Update Now ket mangi-download iti database ti controller ti komunidad (SDL_GameControllerDB) manipud iti GitHub, wenno manipud iti address a naikeddeng iti baba ti Ad-adu pay, ken idulinna, iti settings file, dagiti mapping nga awan iti daytoy a bersion ti PadForge. Mausarda a dagus. Manipud iti sabali nga address, baro laeng a mapping ti idulinna. Ti baro a mapping ket mausar laeng para iti controller nga awan ti sabali a mangbasa a kas gamepad, saan a naitudingan ken saan nga adda iti Force Raw Joystick Mode. Ikkaten ti reset amin a na-download a mapping ken agi-download manen manipud iti GitHub. Agtalinaed dagiti bukodmo a linia, iti baba ti Ad-adu pay.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ti Update Now ket mangi-download iti database ti controller ti komunidad (SDL_GameControllerDB) manipud iti GitHub, wenno manipud iti address a naikeddeng iti baba ti Ad-adu pay, ken idulinna, iti settings file, dagiti mapping nga awan iti daytoy a bersion ti PadForge. Mausarda a dagus. Manipud iti sabali nga address, baro laeng a mapping ti idulinna. Ti baro a mapping ket umuna a mausar laeng para iti controller nga ipadamag ti SDL a kas gamepad wenno awan ti espesipiko a tipona, nga awan ti sabali a mangbasa a kas gamepad, saan a naitudingan ken saan nga adda iti Force Raw Joystick Mode. No mausaren, agtalinaed a mausar uray kalpasan a maitudingan ti controller. Ikkaten ti reset dagiti na-download a mapping ken isublina ti Pagi-downloadan iti file ti komunidad, nga i-download ti sumaruno nga Update Now. Agtalinaed dagiti bukodmo a linia, iti baba ti Ad-adu pay.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Naikabil: {0} a mapping, kopia ti komunidad iti {1}. Na-download iti {2}: {3} baro a linia, {4} nabaliwan.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Naikabil: {1} a mapping, kopia ti komunidad iti {2}. Na-download iti {3} manipud iti {4}: {0} baro a linia.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Naikabil: {1} a mapping, kopia ti komunidad iti {2}. Na-download iti {3} manipud iti {4}: {0} baro a linia.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Saan a nagbaliw ti database ti komunidad manipud iti maudi a panag-update.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Saan a nagbaliw ti file iti {0} manipud iti maudi a panag-update.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Manipud iti telemetry</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kanayon</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ti button a mangipalubos iti mouse nga agmaneho, iti isu met laeng a device a kas ti source. No awan ti napili, kanayon nga agmaneho ti mouse.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ti button a mangipalubos iti mouse nga agmaneho, iti aniaman a device daytoy a slot. No awan ti napili, kanayon nga agmaneho ti mouse.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>No nakasindi ti Telemetry ti game, kasano kaadu ti lock a mabati iti 200 km/h. Iti 100%, adda ti intero a lock iti tunggal kapardas.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ti Model Context Protocol a server ken client iti likud ti koneksion ti assistant ken ti PadForge.exe --mcp, babaen ti Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ti Model Context Protocol a server ken client iti likud ti koneksion ti assistant ken ti PadForge.exe --mcp, babaen ti Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ken DependencyInjection.Abstractions, a nangibangonan ti MCP C# SDK, babaen ti Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
@@ -1697,8 +1710,13 @@
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Maikkat…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ma-update…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Saan a nalpas: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Agtalinaed ti entry ken skill ti PadForge, ta basaen ti {0} ti isu met laeng a settings file ken folder ti skill.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Agtalinaed ti entry ti PadForge, ta basaen ti {0} ti isu met laeng a settings file.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>Naikkat ti PadForge iti daytoy a programa. Agtalinaed ti skill-na, ta basaen ti {0} dagiti skill manipud iti isu met laeng a folder.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>Saan a mabasa ti PadForge dagiti setting iti {0}, isu a saanna nga ammo no nainayon ti PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Nainayon. Saan a nabasa ti PadForge ti folder ti skill-na.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Nakopia.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Saan a nakopia: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Saan a nakopia. Saan nga impalubos ti Windows nga usaren ti PadForge ti clipboard.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Dagiti naipalubos a programa</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ti programa a mangkayat iti Read wenno ad-adu pay ket agdamag maminsan, iti umuna a panagkonektana, ken maalana ti level a dawatenna, agingga iti level iti ngato. Ti assistant nga inayonmo iti ngato ket naipalubosen babaen ti dayta.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -1710,6 +1728,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. Basaen ti PadForge daytoy a raw, isu a saan a mausar ti mapping ti SDL.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, naiyurnos a kas gamepad babaen ti liniam.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>Basaen ti SDL dagiti device bayat nga agtartaray ti engine.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Saan a nakakonekta ti device. Basaen ti SDL daytoy no nakakonektan.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Awan ti inted ti SDL iti PadForge a pannakabasa daytoy a device.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ti naikabil a kopia ti komunidad, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
@@ -1747,6 +1767,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle ken dadduma pay nga aksion</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ken {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Awan ti makopia: awan ti mapping ti SDL para iti daytoy a device, ken awan daytoy iti aniaman a controller.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Awan ti makopia: saan a mabasa ti PadForge ti mapping ti SDL para iti daytoy a device, ken awan ti linia dagiti controller-na a mangted iti binding nga alaen ti porma ti SDL.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Awan ti makopia: awan ti mapping ti SDL para iti daytoy a device, ken awan ti linia ti {0} a mangbasa iti maysa kadagiti button, axis wenno hat-na iti wagas nga alaen ti porma ti SDL.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Awan ti makopia: awan ti mapping ti SDL para iti daytoy a device, ket basaen laeng dagiti linia ti {0} daytoy para iti {1}, a saan a maiggem ti porma ti SDL.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Awan ti makopia: saan a mabasa ti PadForge ita ti mapping ti SDL para iti daytoy a device, ken awan daytoy iti aniaman a controller.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Awan ti makopia: saan a mabasa ti PadForge ita ti mapping ti SDL para iti daytoy a device, ken awan ti linia ti {0} a mangted iti binding nga alaen ti porma ti SDL.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Usaren ti sabali a programa ti clipboard. Awan ti nakopia.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Naikkaten ti liniam. Mabasa ti device a kas idi sakbay daytoy.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Na-map manen manipud iti layout ti SDL: {0}.</value></data>
@@ -1767,6 +1792,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Dagiti linia nga awitan ti PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Awan ti linia a maitutop.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Iyaplikar ti napili a linia iti {0} iti baba ti bukodna nga ID, babaen ti isu met laeng a panangsukimat ken pili a kas iti I-paste.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Nagsardeng ti engine, isu a saan nga iraman ti listaan dagiti linia nga iggem ti SDL, ti bukodna ken ti naikabil a kopia ti komunidad. Mailista dagitoy no agandar daytoy.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>Saan a simmungbat ti SDL iti husto a tiempo, isu a saan nga iraman ti listaan dagiti linia nga iggemna, ti bukodna ken ti naikabil a kopia ti komunidad.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Linia ti SDL mapping</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Linia para iti daytoy a device.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Napugto a layout.</value></data>
@@ -1779,14 +1806,14 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} a field, manipud iti isu met laeng a vendor ken produkto iti sabali a bus wenno bersion. Maidulin daytoy iti baba ti bukod nga ID daytoy a device.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} a field, linia ti sabali a device. Maidulin daytoy iti baba ti bukod nga ID daytoy a device.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} a field. Saan a basaen ti SDL daytoy a device, isu nga iyurnos ti PadForge dagiti input-na babaen ti linia.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>Awan ti simple a button wenno axis ti PadForge para kadagitoy a field ket saanna nga iraman dagitoy: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} a field, manipud kadagiti axis, button ken hat ti device. Sukimaten daytoy iti Test Inputs, sa idulin wenno baliwan ditoy.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Baliwan daytoy ti panangbasa iti {0}. Dagiti liniana iti {1} ket ma-map manen manipud iti baro a layout.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Baliwan daytoy ti panangbasa iti {0}. Awan daytoy iti aniaman a controller, isu nga awan ti linia a mabaliwan.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Dagiti shortcut ti profile a mangbasa iti {0} ket agtalinaed kadagiti input a naikeddeng kadakuada.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Maidulin ti linia a kas kukuam iti PadForge.xml ken maipangpangruna ngem iti amin a sabali a source para iti daytoy a device. Isubli ti Ikkaten ti kukuak ti daan a linia ken dagiti daan a linia.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Maidulin dagiti linia a kas kukuam iti PadForge.xml ken maipangpangruna para kadagiti device-da ngem iti amin a sabali a source. Ikkaten ida ti Dalusan, iti baba ti Ad-adu pay ti linia ti Controller Database.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} a linia para iti Windows. Malabsan ti {1} para kadagiti sabali a sistema.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} a linia para iti Windows. Malabsan ti {1} para kadagiti sabali a sistema.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} a linia para iti Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Mainayon amin a {0:N0}. Agidulin ti PadForge iti agingga iti {1:N0} a liniam.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Mainayon daytoy. Agidulin ti PadForge iti agingga iti {1:N0} a liniam.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} a liniam ti nakaidulin ita, isu a {1:N0} kadagitoy ti mainayon ken {2:N0} ti saan.</value></data>
@@ -1796,7 +1823,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Saan a linia ti database ti controller ti SDL ti teksto: ID a 32 a hex digit, nagan, sa dagiti field a kas iti a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Para kadagiti sabali a sistema dagiti linia. Basaen ti PadForge dagiti linia para iti Windows, wenno para iti awan ti espesipiko a sistema.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Saan nga ID ti device ti ID ti linia. Masapul ti 32 a hex digit.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Awan linaon ti nagan ti linia, nasurok a 128 a karakter, wenno adda karakter a basaen ti SDL a kas field.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Ti nagan ti linia ket awan linaonna, nasurok a 128 a karakter, adda field marker a basaen ti SDL, kas iti “type:”, wenno adda karakter malaksid kadagiti letra, digit, puntuasion, simbolo ken ti gagangay a space.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Adda hint wenno Android a field iti linia, a saan nga awaten ti PadForge.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Adda field iti linia a saan nga ammo ti SDL.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Saan nga adda iti porma ti SDL ti maysa a binding, a kas iti b3, a2, +a2, a2~ wenno h0.4.</value></data>
@@ -1822,7 +1849,7 @@
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Nagsardeng. Maudi a sasaona: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Saan a mairugi.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Awanen daytoy iti daytoy a PC.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Awan ti tunnel a programa a nasarakan iti daytoy a PC. Agtrabaho ti PadForge iti cloudflared, devtunnel, ngrok ken Tailscale Funnel, wenno iti address ti bukodmo a tunnel.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>Awan ti nasarakan ti PadForge kadagiti cloudflared, devtunnel, ngrok wenno Tailscale Funnel iti daytoy a PC. Pilien ti ChatGPT Secure MCP Tunnel, nga i-download ti PadForge, wenno itedmo ti address ti bukodmo a tunnel.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Pumili iti tunnel tapno maaddaan ti PadForge iti publiko nga address.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Adda met iti daytoy a PC: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, a saan nga agbaliw ti address-na</value></data>
@@ -1830,7 +1857,7 @@
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Patarayen ti bukodmo a tunnel nga agturong iti http://127.0.0.1:{0} ken i-paste ti https address-na. Agtalinaed ti address ti nanaganan a Cloudflare tunnel, persistent a dev tunnel, Tailscale Funnel ken ti bukod a domain ti ngrok.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>I-paste ti https address nga awan ti path malaksid iti /mcp, kas ited ti tunnel-mo.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Mangrugrugi ti web helper ti PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Nagsardeng ti web helper ti PadForge ({0}). Iddepen ken isindi manen ti Reach PadForge From the Web tapno mairugi manen.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Nagsardeng ti web helper ti PadForge ({0}). Padpadasen latta ti PadForge a rugian daytoy.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Address</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Awan pay ti publiko nga address.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Inayon iti Claude</value></data>
@@ -1868,9 +1895,6 @@
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>nalpas iti code {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Naiddep ti Automation, isu nga awan ti web assistant a makadanon iti PadForge. Mangrugi ti web helper no nakasindi ti Automation.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Mangsuksukimat…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Saan a naikabil.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Naikabil. Adda nabarbaro a kopia daytoy a PadForge.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Naikabil para iti {0}. Adda nabarbaro a kopia daytoy a PadForge.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Mangik-ikabil…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>Saan a nasukimat ti PadForge daytoy: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Ti Ikabil ket ikabilna ti library ti PadForge iti lugar a pakasarakan dayta a lengguahe. Ti script a mangikarga iti daytoy ket mangbasa kadagiti device ken mangiturong kadagiti mapping iti level iti ngato.</value></data>
@@ -1878,22 +1902,24 @@
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Dagiti naikabil a kopia</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Ikkaten amin</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Naikkaten.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Naikabil ti library ti PadForge para iti {0} ken isu ti kabaruan. Agrugi ti script iti {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Ti library ti PadForge para iti {0} ket naiduma iti kopia daytoy a PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Saan a naikabil ti library ti PadForge para iti {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID ti script</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID ti script-na</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Panaganan dagiti script dagiti kontrolna: {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Panaganan dagiti script dagiti keyna iti KeyA, KeySpace, KeyLeftShift ken dadduma pay, ken tunggal key babaen ti code-na, Vk0 agingga iti Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} iti daytoy a network manipud iti {1}</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Ipakita iti folder</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Nangrugi ti {0} ngem saan a pulos a nakakonekta iti PadForge.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Address</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>Awaten ti PadForge ti address a mangrugi iti https:// ken mangnagan iti host, iti default a port, nga awan ti user name wenno password.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>Alaen ti PadForge ti address nga agingga iti 2,048 a karakter nga agrugi iti https:// ken mangnagan iti host, iti default a port, nga awan ti user name, password wenno paset kalpasan ti #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Baliwan…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Bumallasiw dagiti awag ken ti keyda iti daytoy a network a saan a naka-encrypt. Ipalubos ida ti Windows iti pribado a network laeng.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Dagiti call ken ti key-da ket lumasat iti daytoy a network a saan a naencrypt. Ti rule ti Windows Firewall nga aramiden ti PadForge para iti daytoy a port ket para laeng kadagiti pribado a network.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Us-usaren ti sabali a programa ti port {0}. Baliwam tapno makadanon iti PadForge manipud iti daytoy a network.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Saan nga impalubos ti Windows nga agdengngeg ti helper ti PadForge iti port {0}. Ipalubos daytoy ti PadForge no addaan iti karbengan ti administrator, isu nga irugim ti PadForge babaen dagitoy ken iddepem ken isindim manen daytoy.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Awan ti reserbasion nga iggem ti Windows para iti helper ti PadForge iti port {0}. Iddepem ken isindim manen daytoy, ket aramiden manen ti PadForge dayta.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Saan a nakadengngeg ti helper ti PadForge iti port {0}. Baliwam ti port, wenno iddepem ken isindim manen daytoy.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Nagsardeng ti helper ti PadForge ({0}). Iddepen ken isindi manen ti Reach PadForge From This Network tapno mairugi manen.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Nagsardeng ti helper ti PadForge ({0}). Padpadasen latta ti PadForge a rugian daytoy.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Naiddep ti Automation, isu nga awan ti assistant iti daytoy a network a makadanon iti PadForge. Mangrugi ti helper no nakasindi ti Automation.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Awan ita ti address daytoy a PC iti pribado a network.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Dagiti assistant iti daytoy a network</value></data>
@@ -1908,7 +1934,26 @@
   <data name="Reach_Line_Format" xml:space="preserve"><value>Iturongna dagiti bukodna a device ken ti {0}. Basaenna latta amin a device.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Dagiti laeng bukodna a device ti iturongna. Basaenna latta amin a device.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Makadanon latta iti PadForge dagiti bilin manipud iti command line, kas iti tunggal programa.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Agtartaray, babaen dagiti karbengam, ken nakasagana. Dumanon ti ChatGPT iti PadForge babaen daytoy a tunnel nga awan ti bukodna a sign-in, ken manipud laeng iti organisasion ti OpenAI-mo. Mangrugi manen daytoy a kadua ti PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Agtartaray, babaen dagiti karbengam. Urayenna nga ibaga ti OpenAI a nakasagana ti tunnel.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Idulin ti PadForge ti key a naka-encrypt para kenka laeng. Malipatan daytoy no awan ti nakasurat iti kahon. Agtrabaho ti ChatGPT iti level iti ngato.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>Saan a naidulin ti PadForge ti plugin kit.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Aktibidad {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>Linaksid ti PadForge ti sungbat ti GitHub. Awan ti nagbaliw.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>Linaksid ti PadForge ti sungbat manipud iti {0}. Awan ti nagbaliw.</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Saan a nalukatan ti panid ti download ti Falcon SDK: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Saan pay a nalukatan ti panid ti download ti Falcon SDK: {0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Nalabsan ti {0:N0} a linia para kadagiti sabali a sistema.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Saan a rinugian ti Windows daytoy babaen kadagiti bukodmo a karbengan.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Saan a nalpas iti {0} a segundo.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Nalpas iti code {0} ket awan ti inted a rason.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>Saan a mabasa ti PadForge dagiti setting iti {0}, isu nga imbatina ti file a kas iti kasasaadna.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>Saan nga insurat ti PadForge ti {0}, isu nga imbatina daytoy a kas iti kasasaadna.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Awan ti Documents a folder nga inted ti Windows para kenka.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>Awan ti nasarakan ti PadForge a folder-mo para iti {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Nalpas ti bukod a command ti {0} iti code {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Awan iti daytoy a PC ti command ti {0}.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Saan nga impalubos ti Windows a basaen wenno suraten ti PadForge ti file a kasapulanna.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>Awan ti Python a nasarakan ti PadForge: awan ti nairehistro, naikabil manipud iti Microsoft Store, nailista ti py launcher wenno adda iti PATH-mo.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Awan ti Python a nasarakan ti PadForge a simmungbat iti uneg ti {0} a segundo.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Awan ti inted ti panagandar a rason nga ammo ti PadForge.</value></data>
 </root>

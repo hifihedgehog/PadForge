@@ -390,5 +390,34 @@ namespace PadForge.Tests
         [Fact]
         public void ANodeWithoutPadForgesInterface_IsNotBound()
             => Assert.False(VendorUsbDriverInstaller.HasActiveInterface(@"USB\VID_0000&PID_0000\0&0&0"));
+
+        /// <summary>A settle makes the connection notes believe no device
+        /// for seconds (OwnDrops.Settle, DeviceNoteDirector.Mark), so it is
+        /// stamped only once a driver or the radio is about to change: below
+        /// every refusal of the bind, the take-back and the two radio
+        /// restarts, and above the first call that changes something. The
+        /// test host changes no driver, so the order is read from the
+        /// source.</summary>
+        [Fact]
+        public void ASettle_IsStampedOnlyOnceADriverOrTheRadioChanges()
+        {
+            string vendor = AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "VendorUsbDriverInstaller.cs");
+            string ds3 = AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "Ds3DriverInstaller.cs");
+            foreach (var (source, signature, refusal, change) in new[]
+                     {
+                         (vendor, "internal static bool Bind(BindPlan plan, string instanceId, IReadOnlyList<UsbNode> nodes,", "log(why);", "string dir = StagingDirectory("),
+                         (vendor, "internal static bool Restore(string instanceId, Action<string> log, CancellationToken ct)", "not PadForge's, so it stays.", "RemovePackage(inf, path);"),
+                         (ds3, "public static void CycleBluetoothRadio(Action<string> log)", "log(\"No USB Bluetooth radio to cycle.\");", "radio.ToUsbPnPDevice().CyclePort();"),
+                         (ds3, "internal static void RestartOffRadio(Action<string> log)", "log(\"No Bluetooth radio to restart.\");", "radio.ToUsbPnPDevice().CyclePort();"),
+                     })
+            {
+                string body = FenceSource.Body(source, signature);
+                int settle = body.IndexOf("PadForge.Engine.OwnDrops.Settle();", StringComparison.Ordinal);
+                Assert.Single(System.Text.RegularExpressions.Regex.Matches(body, @"OwnDrops\.Settle\(\);"));
+                Assert.True(settle > body.IndexOf(refusal, StringComparison.Ordinal), signature + " settles before it refuses");
+                Assert.True(settle < body.IndexOf(change, StringComparison.Ordinal), signature + " changes a driver before it settles");
+            }
+
+        }
     }
 }

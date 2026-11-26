@@ -138,7 +138,7 @@ Replay plays a [problem recording](problem-recorder.md) back as the devices that
 **Save the Plugin Kit…** under More, or `PadForge.exe --plugin-kit <folder>`, writes a folder with:
 
 - `README.md`, a guide to every verb, event, declaration and kind of setting,
-- the same sample plugin in C# (`PadForgePlugin.cs`, with `PadForgePlugin.csproj` and `build.ps1`), Python (`plugin.py`), PowerShell (`plugin.ps1`) and AutoHotkey v2 (`plugin.ahk`),
+- the same sample plugin in C# (`PadForgePlugin.cs` and `PipeOwner.cs`, with `PadForgePlugin.csproj` and `build.ps1`), Python (`plugin.py`), PowerShell (`plugin.ps1`) and AutoHotkey v2 (`plugin.ahk`),
 - PadForge's script libraries.
 
 Each sample declares a device and four settings: a number, a switch, a button and a status.

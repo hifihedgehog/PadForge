@@ -6,7 +6,7 @@ using System.Security.Principal;
 namespace PadForge.Services
 {
     /// <summary>
-    /// The single-instance lock (#597): a mutex in a private namespace whose
+    /// The single-instance lock (#600): a mutex in a private namespace whose
     /// boundary is the Administrators group, so only a token with
     /// administrator rights can create the namespace or open it, and no
     /// program without rights can take the lock before PadForge does. The

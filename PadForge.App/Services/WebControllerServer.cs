@@ -1325,6 +1325,9 @@ namespace PadForge.Services
                 // which is the source of issue: switching layouts in the
                 // browser silently overwrote the previous layout's row in
                 // the Devices list.
+                // The names the user typed are a problem recording's to
+                // replace before any line names this device.
+                ProblemRecorder.Instance.KnowTypedNames(name);
                 var device = new WebControllerDevice(compositeKey, name, isTouchpadClient, typeKey);
                 if (hasTouchpad && !isTouchpadClient)
                     device.HasTouchpad = true; // gamepad layout with a touchpad zone
@@ -2740,7 +2743,12 @@ namespace PadForge.Services
                 netsh($"advfirewall firewall add rule name=\"{ruleName}\" dir=in action=allow protocol={protocol} localport={port}"
                     + (profile == null ? string.Empty : " profile=" + profile));
             }
-            catch { /* best effort, the app may not be elevated */ }
+            // Nothing is read back. netsh's own failures, a rule it refused
+            // and a netsh killed at RunNetsh's five-second wait throw nothing,
+            // and what each left (the old rule, the new one or none) is not
+            // read. What lands here is a netsh that could not be started, and
+            // the test host's fence, which RunNetsh throws.
+            catch { }
         }
 
         internal static string RunNetsh(string arguments)

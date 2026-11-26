@@ -6,7 +6,7 @@ using System.Text;
 namespace PadForge.Engine.Recording
 {
     /// <summary>
-    /// The words of a problem recording (#597): how a change becomes a token
+    /// The words of a problem recording (#600): how a change becomes a token
     /// of a line, how a token becomes the change again, and how a change is
     /// applied to a state. The writer and the reader both go through here, so
     /// what one writes the other reads back to the last bit.
@@ -24,7 +24,6 @@ namespace PadForge.Engine.Recording
         /// <summary>Format 2 (#600) names controls (D1 A=1, D1 LeftX=32768)
         /// where format 1 wrote index tokens (a0=, b3+). A reader takes
         /// both.</summary>
-        public const int FormatVersion = 2;
         public const string FirstLine = "PadForge problem recording, format 2";
 
         /// <summary>What the first line of every format starts with.</summary>
@@ -51,7 +50,7 @@ namespace PadForge.Engine.Recording
 
         /// <summary>Layers of format 2 (#600): what PadForge's readers say of
         /// a device (how it is held, a failed read, a reader that lost it,
-        /// two readers that disagree), what a game reads back through XInput,
+        /// two readers that disagree), what PadForge's own XInput library reads,
         /// a program's calls on Activity, and a setting changed while
         /// recording.</summary>
         public const char LayerReader = 'R', LayerReadBack = 'X', LayerActivity = 'A', LayerSettingChange = 'C';
@@ -1217,17 +1216,19 @@ namespace PadForge.Engine.Recording
                 case RecordingField.MidiOutNote:
                     if ((uint)index < RecordedOutputState.MidiCount) s.MidiNotes[index] = a != 0;
                     break;
+                // Hand 0 is the left and 1 the right, touch 0 the first and 1
+                // the second. Any other index has no place in the frame.
                 case RecordingField.VrHand:
                     if (index == 0) { s.Left.Buttons = (byte)a; s.Left.Trigger = (short)b; s.Left.Grip = (short)c; }
-                    else { s.Right.Buttons = (byte)a; s.Right.Trigger = (short)b; s.Right.Grip = (short)c; }
+                    else if (index == 1) { s.Right.Buttons = (byte)a; s.Right.Trigger = (short)b; s.Right.Grip = (short)c; }
                     break;
                 case RecordingField.VrStick:
                     if (index == 0) { s.Left.StickX = (short)a; s.Left.StickY = (short)b; }
-                    else { s.Right.StickX = (short)a; s.Right.StickY = (short)b; }
+                    else if (index == 1) { s.Right.StickX = (short)a; s.Right.StickY = (short)b; }
                     break;
                 case RecordingField.OutTouch:
                     if (index == 0) { s.TouchDown0 = a != 0; s.TouchX0 = F(b); s.TouchY0 = F(c); }
-                    else { s.TouchDown1 = a != 0; s.TouchX1 = F(b); s.TouchY1 = F(c); }
+                    else if (index == 1) { s.TouchDown1 = a != 0; s.TouchX1 = F(b); s.TouchY1 = F(c); }
                     break;
                 case RecordingField.OutTouchClick: s.TouchClick = a != 0; break;
                 case RecordingField.OutGyro: Set3(s.Gyro, a, b, c); break;

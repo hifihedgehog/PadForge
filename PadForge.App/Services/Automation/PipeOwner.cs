@@ -1,4 +1,4 @@
-// Who serves a PadForge pipe (#597), from the PadForge Plugin Kit. PadForge
+// Who serves a PadForge pipe (#600), from the PadForge Plugin Kit. PadForge
 // builds this file, and the kit carries the same file for its C# plugin, so
 // the kit's plugin, the client run, the copy an assistant starts and the
 // script libraries keep one rule.
@@ -17,7 +17,7 @@ using Microsoft.Win32.SafeHandles;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// Whether the server at the other end of a pipe is PadForge (#597).
+    /// Whether the server at the other end of a pipe is PadForge (#600).
     /// PadForge serves its pipes with administrator rights, and Windows makes
     /// the Administrators group the owner of a pipe such a process creates
     /// (PadForge's server also names that owner itself,
@@ -49,9 +49,10 @@ namespace PadForge.Services.Automation
         /// system.</summary>
         internal const string Administrators = "S-1-5-32-544", LocalSystem = "S-1-5-18";
 
-        /// <summary>The names of the pipes PadForge serves: the control pipe
-        /// and the Automation pipe.</summary>
-        internal static readonly string[] OwnNames = { "PadForge.Control", "PadForge.Automation" };
+        /// <summary>The names of the pipes PadForge serves: the control pipe,
+        /// the Automation pipe and the signal pipe a second start asks the
+        /// running copy over.</summary>
+        internal static readonly string[] OwnNames = { "PadForge.Control", "PadForge.Automation", "PadForge.Instance" };
 
         /// <summary>Whether <paramref name="pipeName"/> is one of PadForge's
         /// own, without regard to case.</summary>

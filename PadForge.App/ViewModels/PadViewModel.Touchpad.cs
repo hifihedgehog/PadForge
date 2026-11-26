@@ -1306,14 +1306,12 @@ namespace PadForge.ViewModels
             var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
             if (sets == null) return;
 
-            // ANY pad, not the selector's. Touchpad settings are per DEVICE
-            // (the push forces TouchpadIndex 0 and drops duplicates, and the
-            // pad combo drives only the recorder and preview, per the card's
-            // own contract in PadPage.xaml). Keying the search on the
-            // selector looked for "Touchpad 0 Pointer" while an imported
-            // Steam Deck config puts its region on the right pad, "Touchpad
-            // 1 Pointer", so nothing matched and the card sat at the
-            // full-screen default with the imported values invisible.
+            // The pad the Touchpad selector picks, in every slot's set.
+            // Settings are per (device, pad), so the region shown is the
+            // picked pad's own: an imported Steam Deck config puts its region
+            // on the right pad, "Touchpad 1 Pointer", which the card shows
+            // when the right pad is picked, and the left pad it leaves
+            // unmapped sits at the full-screen default.
             int pad = _selectedTouchpadIndex;
             bool gotX = FindPointerRegionAxis(sets, pad, wantX: true, out double sx, out double cx);
             bool gotY = FindPointerRegionAxis(sets, pad, wantX: false, out double sy, out double cy);
@@ -1357,17 +1355,7 @@ namespace PadForge.ViewModels
             // rectangle. RCT3 Weno V0.1 maps only the right pad, so the left
             // pad's card should sit at 1.00 / 0.50 and the right pad's should
             // read 1.20 / 0.70.
-            return ScanForRegion(sets, pad, wantX, ref size, ref center);
-        }
-
-        /// <summary>One pass of the region search. <paramref name="pad"/> of
-        /// -1 matches any pad index.</summary>
-        private static bool ScanForRegion(Engine.Data.MappingSet[] sets, int pad,
-            bool wantX, ref double size, ref double center)
-        {
-            string prefix = pad < 0
-                ? "Touchpad "
-                : "Touchpad " + pad.ToString(System.Globalization.CultureInfo.InvariantCulture) + " ";
+            string prefix = "Touchpad " + pad.ToString(System.Globalization.CultureInfo.InvariantCulture) + " ";
             string axis = wantX ? "Pointer X" : "Pointer Y";
             string target = wantX ? "KbmMouseX" : "KbmMouseY";
 
@@ -1623,11 +1611,6 @@ namespace PadForge.ViewModels
             if (chosen != null) deviceGuid = chosen.InstanceGuid;
             return chosen;
         }
-
-        // Per-device resolution keyed by the active device guid (the prior
-        // TouchpadIndex-only match never checked DeviceGuid, a latent
-        // two-device-one-slot bug). Funnels through the same shared resolver
-        // as every runtime read seam.
     }
 
     /// <summary>Payload carried by

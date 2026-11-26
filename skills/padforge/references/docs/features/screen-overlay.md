@@ -1,7 +1,7 @@
 <!-- https://padforge.org/docs/features/screen-overlay/ as PadForge's skill carries it, from padforge.org's wiki/features/screen-overlay.md. -->
 # Screen Overlay
 
-*A window above your game that shows a picture, a timer, the time or a lightbar's color, with no keyboard screen needed.*
+*A window above your game that shows a picture, a timer, the time, a lightbar's color or the devices that are not connected, with no keyboard screen needed.*
 
 A Screen Overlay shows anything a [keyboard screen](https://padforge.org/docs/features/keyboard-screens/) can show, in a borderless window on the PC's own display. It needs no keyboard screen, opens no device and runs with **Drive Keyboard Screens** off. Up to eight overlays run at once, each with its own window and its own choice of what to show.
 
@@ -23,7 +23,7 @@ Each overlay has a card. Its head names it, **Overlay 1**, **Overlay 2** and so 
 | **Enable Screen Overlay** | Shows the overlay's window. Off by default. |
 | **Shows** | What the overlay shows now, and **Choose What It Shows…**, which opens the overlay's dialog, below. |
 | **Opacity** | How opaque the overlay's content is, 0 to 100%, 80% by default. The outline and grip that show while you arrange it keep theirs. |
-| **Place on Screen** | **Reset Position** centers the overlay on the monitor it was last on. |
+| **Place on Screen** | **Reset Position** centers an overlay that is up on its monitor. An overlay that is off opens centered on the monitor of the window in front the next time it shows. |
 | **Remove** | In the card's head. Removes this overlay. Shown only while the page holds more than one. |
 | **Add Overlay** | At the top of the page. Adds an overlay, up to eight. |
 
@@ -46,6 +46,7 @@ A new overlay takes the lowest free number, and an overlay keeps its number when
 | **Chosen Picture** | A picture you choose with **Choose Picture…**, such as a PNG, JPEG, BMP or GIF. |
 | **Stopwatch** | The stopwatch the Stopwatch macro starts, pauses and resets, the same one every keyboard screen shows. |
 | **Lightbar Color** | The color of the lightbar on the DualShock 4 or DualSense in the slot chosen in the **Slot** box, or with **Lowest Slot with a Color**, the lowest slot that has one. This is the default. |
+| **Offline Devices** | The mapped devices that are not connected, by the names the Devices page shows, or **All connected** when none is missing. See [Connection Notes](connection-notes.md#offline-devices-on-a-screen). |
 
 Text is white on a black field, as large as the window holds, on as many lines as the words need. A picture scales up or down until it touches the window's edges, with its proportions and its transparency kept, so the parts of a PNG with no color show what is underneath. A lightbar color fills the window. Until a color has reached a lightbar, a **Lightbar Color** overlay shows nothing.
 
@@ -65,7 +66,7 @@ While PadForge is the window in front, every overlay that is up shows an outline
 
 While any other program is in front, the outline and grip go away and clicks pass through the overlay to the program beneath it. The overlay never takes the focus from a game and has no taskbar button. Once a second it goes back above a game that made its own window topmost after the overlay came up. PadForge's own radial menu and flyouts stay above it.
 
-The overlay remembers the monitor you leave it on, and a new overlay opens centered on its monitor, each number a little further down and across than the one before. An overlay whose saved place no monitor shows, such as one on a display that was unplugged, comes back centered on its monitor. The window keeps its left-to-right layout in every language, so the grip stays in the bottom-right corner.
+The overlay remembers the monitor you leave it on. A new overlay opens centered on the monitor of the window in front, each number a little further down and across than the one before. An overlay whose saved place no monitor shows, such as one on a display that was unplugged, comes back centered on its monitor. The window keeps its left-to-right layout in every language, so the grip stays in the bottom-right corner.
 
 ---
 

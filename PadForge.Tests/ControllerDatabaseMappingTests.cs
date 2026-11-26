@@ -165,7 +165,8 @@ namespace PadForge.Tests
                 null, out _, out var rows);
             Assert.True(add.Ok);
             Assert.Equal(2, rows.Count);
-            Assert.Equal(string.Format(Strings.Instance.SdlMappingDialog_AddFound_Format, 2, 1), add.Lead);
+            Assert.Equal(string.Format(Strings.Instance.SdlMappingDialog_AddWindows_Format, 2) + " "
+                + string.Format(Strings.Instance.SdlMappingDialog_AddOther_One_Format, 1), add.Lead);
             Assert.NotNull(add.Detail);
 
             var none = SdlMappingDialog.Verdict(SdlMappingDialog.Mode.Paste, "03000000aa0b00001100000000000000,Mac,a:b0,platform:Mac OS X,",
@@ -320,6 +321,91 @@ namespace PadForge.Tests
             Assert.Equal(SdlMappingSource.Downloaded, ControllerDatabaseSource.Of(Id(0x1000, 0x0001), changed, null, section, null, baseline));
             Assert.Equal(SdlMappingSource.Downloaded, ControllerDatabaseSource.OfRow(Id(0x1000, 0x0001), null, section, null, baseline));
             Assert.Equal(SdlMappingSource.Community, ControllerDatabaseSource.OfRow(Id(0x1000, 0x0001), null, null, null, baseline));
+        }
+
+        /// <summary>Add Rows of Windows rows only says nothing of other
+        /// systems, and one other row is counted in its one form.</summary>
+        [Fact]
+        public void AddRows_NamesOtherSystems_OnlyWhenThereAreSome()
+        {
+            var one = SdlMappingDialog.Verdict(SdlMappingDialog.Mode.AddRows, Row(0x1000, 0x0001), null, out _, out _);
+            Assert.True(one.Ok);
+            Assert.Equal(string.Format(Strings.Instance.SdlMappingDialog_AddWindows_One_Format, 1), one.Lead);
+
+            var other = SdlMappingDialog.Verdict(SdlMappingDialog.Mode.AddRows,
+                Row(0x1000, 0x0001) + "\n" + Row(0x1000, 0x0002) + "\n03000000aa0b00001100000000000000,Mac,a:b0,platform:Mac OS X,",
+                null, out _, out _);
+            Assert.Equal(string.Format(Strings.Instance.SdlMappingDialog_AddWindows_Format, 2) + " "
+                + string.Format(Strings.Instance.SdlMappingDialog_AddOther_One_Format, 1), other.Lead);
+        }
+
+        /// <summary>A second label hint is one field given twice, not a hint
+        /// PadForge does not take.</summary>
+        [Fact]
+        public void TwoLabelHints_AreOneFieldTwice()
+        {
+            Assert.False(SdlMappingRow.TryParse("03000000aa0b00001100000000000000,Pad,a:b0,hint:SDL_GAMECONTROLLER_USE_BUTTON_LABELS:=1,"
+                + "hint:!SDL_GAMECONTROLLER_USE_GAMECUBE_LABELS:=1,platform:Windows,", out _, out var why));
+            Assert.Equal(SdlRowRefusal.RepeatedField, why);
+            Assert.False(SdlMappingRow.TryParse("03000000aa0b00001100000000000000,Pad,a:b0,hint:SDL_OTHER:=1,platform:Windows,", out _, out why));
+            Assert.Equal(SdlRowRefusal.Hint, why);
+        }
+
+        /// <summary>A crc field of a row under its own ID goes into the ID's
+        /// checksum, as SDL reads it (SDL_PrivateAddMappingForGUID), so two
+        /// of SDL's rows that share an ID and differ by crc stay two rows,
+        /// and the crc row reaches only a device of that name checksum.</summary>
+        [Fact]
+        public void ACrcField_IsTheIdsChecksum()
+        {
+            const string gameSir = "03000000491900000204000000000000,GameSir T4 Pro,crc:1aa4,a:b0,b:b1,platform:Windows,";
+            const string ipega = "03000000491900000204000000000000,Ipega PG-9023,a:b1,b:b0,platform:Windows,";
+            var rows = SdlMappingRow.ReadAll(gameSir + "\n" + ipega, out _, out _, out _);
+            Assert.Equal(2, rows.Count);
+            Assert.Equal("0300a41a491900000204000000000000", rows[0].Guid);
+            Assert.Equal("03000000491900000204000000000000", rows[1].Guid);
+            Assert.Equal(0, SdlMappingRow.Reach(rows[0].Guid, "0300bbbb491900000204000000000000"));
+            Assert.True(SdlMappingRow.Reach(rows[0].Guid, "0300a41a491900000204000000000000") > 0);
+            // An ID with a checksum keeps its own: SDL writes the ID's over the field.
+            Assert.True(SdlMappingRow.TryParse("0300bbbb491900000204000000000000,Pad,crc:1aa4,a:b0,platform:Windows,", out var own, out _));
+            Assert.Equal("0300bbbb491900000204000000000000", own.Guid);
+
+            // SDL reads the value with strtol in base 16 and keeps 16 bits: a
+            // value with no digit sets no checksum, and the first field counts.
+            Assert.Equal((ushort)0x1aa4, SdlMappingRow.CrcOf("0x1aa4"));
+            Assert.Equal((ushort)0x1aa4, SdlMappingRow.CrcOf("1aa4z"));
+            Assert.Equal((ushort)0x2345, SdlMappingRow.CrcOf("12345"));
+            Assert.Equal((ushort)0xFFFF, SdlMappingRow.CrcOf("-1"));
+            Assert.Equal((ushort)0xFFFF, SdlMappingRow.CrcOf("123456789"));
+            Assert.Equal((ushort)0, SdlMappingRow.CrcOf("zz"));
+            Assert.True(SdlMappingRow.TryParse("03000000491900000204000000000000,Pad,crc:zz,a:b0,platform:Windows,", out var none, out _));
+            Assert.Equal("03000000491900000204000000000000", none.Guid);
+            Assert.True(SdlMappingRow.TryParse("03000000491900000204000000000000,Pad,crc:1aa4,crc:bbbb,a:b0,platform:Windows,", out var first, out _));
+            Assert.Equal("0300a41a491900000204000000000000", first.Guid);
+        }
+
+        /// <summary>The fork appends, to the text it hands back for an XInput
+        /// controller with paddles, a field for each paddle the row neither
+        /// names nor covers by its raw button (SDL_XInputPaddleMappingMask,
+        /// SDL_gamepad.c): those fields are set aside when SDL's text is held
+        /// against a row of the user's.</summary>
+        [Fact]
+        public void TheForksAppendedPaddles_AreNoOtherMapping()
+        {
+            const string id = "030000005e040000e002000000007801";
+            var mine = new ControllerDatabaseMineRow(id, SdlMappingRow.ReadAll(id + ",Elite,a:b0,b:b1,x:b2,y:b3,platform:Windows,", out _, out _, out _)[0],
+                DateTime.UnixEpoch, null, Guid.Empty, Array.Empty<ControllerDatabaseBefore>());
+            string sdl = id + ",Elite,a:b0,b:b1,x:b2,y:b3,paddle1:b12,paddle2:b14,paddle3:b13,paddle4:b15,";
+            Assert.True(ControllerDatabaseSource.ReadsThrough(sdl, mine));
+            Assert.True(ControllerDatabaseSource.ReadsThrough(id + ",Elite,a:b0,b:b1,x:b2,y:b3,", mine));
+            // A row that binds raw 12 itself gets no paddle1 from the fork.
+            var covers = mine with { Row = SdlMappingRow.ReadAll(id + ",Elite,a:b0,b:b1,x:b2,y:b3,misc1:b12,platform:Windows,", out _, out _, out _)[0] };
+            Assert.False(ControllerDatabaseSource.ReadsThrough(id + ",Elite,a:b0,b:b1,x:b2,y:b3,misc1:b12,paddle1:b12,", covers));
+            Assert.True(ControllerDatabaseSource.ReadsThrough(id + ",Elite,a:b0,b:b1,x:b2,y:b3,misc1:b12,paddle2:b14,", covers));
+            // Other bindings are another mapping.
+            Assert.False(ControllerDatabaseSource.ReadsThrough(id + ",Elite,a:b1,b:b0,x:b2,y:b3,paddle1:b12,", mine));
+            Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of(id, sdl, ControllerDatabaseMine.Empty.With(mine), null, null, null));
+            Assert.Null(ControllerDatabaseUse.CopyFor(id, ControllerDatabaseMine.Empty.With(mine), sdl));
         }
     }
 }

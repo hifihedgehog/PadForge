@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using PadForge.Common;
 using PadForge.Services;
 using PadForge.ViewModels;
 using PadForge.Views;
@@ -34,7 +36,7 @@ namespace PadForge.Tests
             state.Start(Exe);
             Assert.True(state.IsShared);
             Assert.True(state.CanMove);
-            Assert.Equal(string.Format(PadForge.Resources.Strings.Strings.Instance.Home_SharedFolder_Format, @"C:\Users\sonic\Downloads"), state.HomeCardText);
+            Assert.Equal(string.Format(PadForge.Resources.Strings.Strings.Instance.Home_SharedFolderOthers_Format, @"C:\Users\sonic\Downloads"), state.HomeCardText);
             Assert.Contains(@"C:\Users\sonic\Downloads", state.HomeCardText, StringComparison.Ordinal);
             // A judgment that still finds other files keeps the card.
             state.Recheck();
@@ -44,6 +46,77 @@ namespace PadForge.Tests
             state.Recheck();
             Assert.False(state.IsShared);
             Assert.False(state.CanMove);
+        }
+
+        /// <summary>The folder lines and the move's error are formatted in
+        /// code, so they follow a language change only when the state raises
+        /// them again. The line for the logon task's removal follows too.</summary>
+        [Fact]
+        public void TheFolderLines_FollowALanguageChange()
+        {
+            ExeFolderState.CheckSeam = _ => ExeFolder.Standing.Shared;
+            var state = ExeFolderState.Instance;
+            state.Start(Exe);
+            state.MoveFailed(new ExeFolder.MoveResult(null, "Access is denied."));
+            var raised = new System.Collections.Generic.List<string>();
+            void Note(object sender, System.ComponentModel.PropertyChangedEventArgs e) => raised.Add(e.PropertyName);
+            state.PropertyChanged += Note;
+            try
+            {
+                PadForge.Resources.Strings.Strings.ChangeCulture(System.Globalization.CultureInfo.CurrentUICulture);
+            }
+            finally
+            {
+                state.PropertyChanged -= Note;
+            }
+            Assert.Contains(nameof(ExeFolderState.RunsFromText), raised);
+            Assert.Contains(nameof(ExeFolderState.HomeCardText), raised);
+            Assert.Contains(nameof(ExeFolderState.MoveError), raised);
+            Assert.Contains(nameof(ExeFolderState.StartAtLoginTurnedOffText), raised);
+        }
+
+        /// <summary>A start removes the logon task for more than one cause,
+        /// and the line under Start at Login says the one it read: a task it
+        /// could not read, an exe that is gone, an own folder it could not
+        /// protect, or a folder that holds other files.</summary>
+        [Fact]
+        public void ARemovedLogonTask_IsSaidWithTheCauseTheStartRead()
+        {
+            string dir = Path.Combine(UpdateService.TestScratchRoot, "logon-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                string here = Path.Combine(dir, "PadForge.exe");
+                File.WriteAllText(here, "x");
+                static string Definition(string exe)
+                    => "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Task xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">"
+                       + "<Principals><Principal><UserId>S-1-5-21-1-2-3-1001</UserId></Principal></Principals>"
+                       + "<Actions><Exec><Command>\"" + exe + "\"</Command></Exec></Actions></Task>";
+                Assert.Equal(StartupHelper.TaskRemoval.Unreadable, StartupHelper.WhyRemove(null, _ => ExeFolder.Standing.Own));
+                Assert.Equal(StartupHelper.TaskRemoval.ExeGone,
+                    StartupHelper.WhyRemove(Definition(Path.Combine(dir, "moved", "PadForge.exe")), _ => ExeFolder.Standing.Shared));
+                Assert.Equal(StartupHelper.TaskRemoval.Shared, StartupHelper.WhyRemove(Definition(here), _ => ExeFolder.Standing.Shared));
+                Assert.Equal(StartupHelper.TaskRemoval.Unprotected, StartupHelper.WhyRemove(Definition(here), _ => ExeFolder.Standing.Unprotected));
+                // A folder that could not be listed is no folder that holds
+                // other files: nothing in it was read.
+                Assert.Equal(StartupHelper.TaskRemoval.FolderUnread, StartupHelper.WhyRemove(Definition(here), _ => ExeFolder.Standing.Unread));
+                Assert.Equal(StartupHelper.TaskRemoval.None, StartupHelper.WhyRemove(Definition(here), _ => ExeFolder.Standing.Own));
+
+                var lines = new[]
+                {
+                    StartupHelper.TaskRemoval.Shared, StartupHelper.TaskRemoval.ExeGone,
+                    StartupHelper.TaskRemoval.Unprotected, StartupHelper.TaskRemoval.Unreadable,
+                    StartupHelper.TaskRemoval.FolderUnread,
+                }.Select(ExeFolderState.LineFor).ToArray();
+                Assert.Equal(lines.Length, lines.Distinct().Count());
+                Assert.Equal(PadForge.Resources.Strings.Strings.Instance.ExeFolder_StartAtLoginTurnedOff, lines[0]);
+                Assert.Equal(PadForge.Resources.Strings.Strings.Instance.ExeFolder_StartAtLoginTurnedOff_FolderUnread, lines[4]);
+                Assert.All(lines, line => Assert.False(string.IsNullOrWhiteSpace(line)));
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
         }
 
         /// <summary>A folder that holds other files is watched, and judged

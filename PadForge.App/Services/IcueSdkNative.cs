@@ -191,7 +191,7 @@ namespace PadForge.Services
                 // iCUE's own copy loads into PadForge only when only
                 // administrators could have put it in place and Corsair
                 // signed it, held open from the check through the load
-                // (#597, TrustedLibrary).
+                // (#600, TrustedLibrary).
                 int error = 0;
                 module = PadForge.Engine.Common.TrustedLibrary.Load(path, PadForge.Engine.Common.TrustedLibrary.Corsair, p =>
                 {

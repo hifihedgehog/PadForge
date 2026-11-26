@@ -86,6 +86,7 @@ namespace PadForge.Tests
             {
                 AssistantInstallSeam = installs.Run,
                 AssistantIconSeam = _ => null,
+                AssistantFindSeam = key => installs.Checks.FirstOrDefault(c => c.Key == key)?.Program,
             };
             if (host != null) vm.AttachAutomation(host, Dispatcher.CurrentDispatcher);
             return (vm, installs);
@@ -152,6 +153,59 @@ namespace PadForge.Tests
             Assert.True(vm.ShowsNoAssistants);
         }
 
+        /// <summary>A program whose settings file the check could not read
+        /// says so, never "Not added."</summary>
+        [Fact]
+        public async Task ASettingsFileTheCheckCouldNotRead_SaysSo_AndNotNotAdded()
+        {
+            var (vm, installs) = Page();
+            vm.EnableAutomation = true;
+            const string file = @"C:\Users\u\.gemini\settings.json";
+            installs.Set("gemini-cli", "unreadable", "current", file);
+            await vm.RefreshAssistantRowsAsync();
+            var row = vm.AssistantRows.Single(r => r.Key == "gemini-cli");
+            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_State_SettingsUnreadable_Format, file), row.Line);
+            Assert.NotEqual(Strings.Instance.Extras_Automation_State_NotAdded, row.Line);
+
+            // A skill folder the check could not read is no missing skill.
+            installs.Set("codex", "current", "unreadable");
+            await vm.RefreshAssistantRowsAsync();
+            var codex = vm.AssistantRows.Single(r => r.Key == "codex");
+            Assert.Equal(Strings.Instance.Extras_Automation_State_SkillUnreadable, codex.Line);
+            Assert.Equal(AssistantRowButton.Update, codex.Button);
+        }
+
+        /// <summary>An Add that fails on a settings file PadForge cannot read
+        /// says why in the user's language, never in the run's English.
+        /// The culture is this test's thread's own, which
+        /// flows through the awaits.</summary>
+        [Fact]
+        public async Task AFailedAdd_SaysItsReasonInTheUsersLanguage()
+        {
+            var before = System.Globalization.CultureInfo.CurrentUICulture;
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("de");
+            try
+            {
+                var (vm, installs) = Page();
+                installs.Set("codex", "missing", "missing");
+                await vm.RefreshAssistantRowsAsync();
+                const string file = @"C:\Users\u\.codex\config.json";
+                const string english = file + " is not JSON PadForge can read, so PadForge leaves it as it is: '{' is invalid.";
+                installs.Answer = r => r.Check ? null : new InstallRun(UserInstall.Failed, english, english) { Reason = InstallReason.SettingsUnreadable, Detail = file };
+                var codex = vm.AssistantRows.Single(r => r.Key == "codex");
+                await vm.PressAssistantAsync(codex, AssistantRowButton.Add);
+                var s = Strings.Instance;
+                Assert.Equal(string.Format(s.Extras_Automation_State_Failed_Format, string.Format(s.Extras_Automation_Reason_SettingsUnreadable_Format, file)),
+                    codex.Line);
+                Assert.DoesNotContain("is not JSON", codex.Line);
+                Assert.StartsWith("Es wurde nicht", codex.Line);
+            }
+            finally
+            {
+                System.Globalization.CultureInfo.CurrentUICulture = before;
+            }
+        }
+
         /// <summary>A check that fails says why, and keeps the rows it had.</summary>
         [Fact]
         public async Task ACheckThatFails_SaysWhy()
@@ -159,10 +213,11 @@ namespace PadForge.Tests
             var (vm, installs) = Page();
             installs.Set("codex", "current", "current");
             await vm.RefreshAssistantRowsAsync();
-            installs.Answer = _ => new InstallRun(UserInstall.Failed, "Windows did not start the install with the user's rights (NoShell).", null);
+            installs.Answer = _ => new InstallRun(UserInstall.Failed, "Windows did not start the install with the user's rights (NoShell).", null)
+                { Reason = InstallReason.NotStarted };
             await vm.RefreshAssistantRowsAsync();
             Assert.True(vm.HasAssistantsCheckFailed);
-            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_CheckFailed_Format, "Windows did not start the install with the user's rights (NoShell)."),
+            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_CheckFailed_Format, Strings.Instance.Extras_Automation_Reason_NotStarted),
                 vm.AssistantsCheckFailed);
             Assert.Single(vm.AssistantRows);
             Assert.False(vm.ShowsNoAssistants);
@@ -252,12 +307,14 @@ namespace PadForge.Tests
                 vm.AssistantRows.Single(r => r.Key == "claude-desktop").Line);
 
             installs.Runs.Clear();
-            installs.Answer = r => r.Check ? null : new InstallRun(UserInstall.Failed, "Codex's own command did not add PadForge (exit code 2): bad", null);
+            installs.Answer = r => r.Check ? null : new InstallRun(UserInstall.Failed, "Codex's own command did not add PadForge (exit code 2): bad", null)
+                { Reason = InstallReason.HostCommandFailed, Number = 2, Detail = "codex" };
             var codex = vm.AssistantRows.Single(r => r.Key == "codex");
             await vm.PressAssistantAsync(codex, AssistantRowButton.Add);
             Assert.Equal(new[] { new InstallRequest(InstallWhat.Assistant, "codex"), new InstallRequest(InstallWhat.Assistant, null, Check: true) },
                 installs.Runs);
-            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_State_Failed_Format, "Codex's own command did not add PadForge (exit code 2): bad"),
+            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_State_Failed_Format,
+                    string.Format(Strings.Instance.Extras_Automation_Reason_HostCommandFailed_Format, AssistantHosts.Find("codex").Name, 2)),
                 codex.Line);
             Assert.DoesNotContain(consent.Said, s => s.Contains("codex"));
             Assert.True(codex.IsIdle);
@@ -275,7 +332,11 @@ namespace PadForge.Tests
             string file = Path.Combine(_root, "padforge-skill.zip");
             vm.AssistantZipDialogSeam = _ => file;
             var row = vm.AssistantRows.Single();
-            row.SaveZipCommand.Execute(null);
+            // As a copy without rights the shell lacks writes it, whatever
+            // rights the test host has.
+            PadForge.Services.UserSave.HasRightsSeam = () => false;
+            try { await vm.SaveAssistantZipAsync(row); }
+            finally { PadForge.Services.UserSave.HasRightsSeam = null; }
             using (var zip = ZipFile.OpenRead(file))
             {
                 Assert.All(zip.Entries, e => Assert.StartsWith(AssistantSkill.Name + "/", e.FullName));

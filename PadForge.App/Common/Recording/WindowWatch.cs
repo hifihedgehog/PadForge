@@ -190,10 +190,6 @@ namespace PadForge.Common.Recording
             return kernel + user;
         }
 
-        /// <summary>A thread of this process, opened to read its processor
-        /// time, for a test.</summary>
-        internal static IntPtr OpenForTimes(int threadId) => OpenThread(ThreadQueryLimitedInformation, false, threadId);
-
         /// <summary>The calling thread's native ID.</summary>
         internal static int CurrentThreadId() => GetCurrentThreadId();
 
@@ -205,7 +201,7 @@ namespace PadForge.Common.Recording
         /// and status, then a union whose thread member starts with the
         /// process and thread IDs.</summary>
         [StructLayout(LayoutKind.Explicit, Size = 280)]
-        private struct WaitNode
+        internal struct WaitNode
         {
             [FieldOffset(0)] public int ObjectType;
             [FieldOffset(4)] public int ObjectStatus;
@@ -224,7 +220,7 @@ namespace PadForge.Common.Recording
             ref int nodeCount, [Out] WaitNode[] nodes, out bool isCycle);
 
         private const int ThreadNode = 8;
-        private const int StatusBlocked = 3;
+        private const int StatusRunning = 2, StatusBlocked = 3;
 
         /// <summary>
         /// What Windows sees a thread of this process wait on, in order, or
@@ -245,24 +241,38 @@ namespace PadForge.Common.Recording
                 var nodes = new WaitNode[16];
                 int count = nodes.Length;
                 if (!GetThreadWaitChain(session, IntPtr.Zero, 0, threadId, ref count, nodes, out bool cycle) || count < 1) return null;
-                int self = Environment.ProcessId;
-                var parts = new List<string>();
-                for (int i = 1; i < count && i < nodes.Length; i++)
-                {
-                    var node = nodes[i];
-                    parts.Add(node.ObjectType == ThreadNode
-                        ? (node.ProcessId == self ? "a PadForge thread" : "a thread of another program")
-                        : WaitName(node.ObjectType));
-                }
-                string text = parts.Count == 0
-                    ? (nodes[0].ObjectStatus == StatusBlocked ? "Windows sees it blocked on nothing it can name (a .NET lock or event)" : "Windows sees it running")
-                    : "Windows sees it wait on " + string.Join(", held by ", parts);
-                return cycle ? text + ", in a circle: a deadlock" : text;
+                return ChainText(nodes, Math.Min(count, nodes.Length), cycle, Environment.ProcessId);
             }
             finally
             {
                 CloseThreadWaitChainSession(session);
             }
+        }
+
+        /// <summary>The words for a wait chain Windows gave: node 0 is the
+        /// thread asked, each node after it what the one before waits on.
+        /// <paramref name="self"/> is this process's ID.</summary>
+        internal static string ChainText(WaitNode[] nodes, int count, bool cycle, int self)
+        {
+            var parts = new List<string>();
+            for (int i = 1; i < count; i++)
+            {
+                var node = nodes[i];
+                parts.Add(node.ObjectType == ThreadNode
+                    ? (node.ProcessId == self ? "a PadForge thread" : "a thread of another program")
+                    : WaitName(node.ObjectType));
+            }
+            // A thread node's own status (wct.h WCT_OBJECT_STATUS): Running
+            // and Blocked are the two that say whether it runs or waits.
+            // NoAccess, PidOnly, Unknown and Error say neither.
+            string text = parts.Count > 0 ? "Windows sees it wait on " + string.Join(", held by ", parts)
+                : nodes[0].ObjectStatus switch
+                {
+                    StatusRunning => "Windows sees it running",
+                    StatusBlocked => "Windows sees it blocked on nothing it can name (a .NET lock or event)",
+                    _ => "Windows does not say whether it runs or waits",
+                };
+            return cycle ? text + ", in a circle: a deadlock" : text;
         }
 
         private static string WaitName(int type) => type switch

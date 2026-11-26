@@ -5,13 +5,13 @@ using PadForge.Common;
 namespace PadForge.Services
 {
     /// <summary>
-    /// Folders under the protected folder's Work folder (#597) for what
+    /// Folders under the protected folder's Work folder (#600) for what
     /// PadForge with rights writes and then starts, installs, loads or hands
     /// to a tool: an installer and what it unpacks, a driver package before it
     /// is signed and stocked, the DSX stand-in, a task's definition before
     /// schtasks reads it, a vendor library PadForge downloads.
     ///
-    /// <para>Before #597 these went to the user's temp folder, which every
+    /// <para>Before #600 these went to the user's temp folder, which every
     /// program of the user can write, so a program without rights could swap
     /// a file between PadForge's check and its use, or put a library beside
     /// an installer, which Windows loads from the installer's own folder

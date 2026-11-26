@@ -1,18 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.IO.Pipes;
-using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Win32.SafeHandles;
 
 namespace PadForge.Services
 {
     /// <summary>
-    /// The control pipe (#366, #597): a launcher, a script or PadForge.exe
+    /// The control pipe (#366, #600): a launcher, a script or PadForge.exe
     /// started again with switches sends one command line and reads one
     /// answer, without PadForge's window or the focus.
     ///
@@ -39,9 +37,10 @@ namespace PadForge.Services
     ///
     /// <para>Protocol: plain UTF-8, one command line in, one response line
     /// out, one command per connection. Tokens are fixed ASCII, never
-    /// localized, because this is a machine interface. A request is read up
-    /// to 1,024 bytes. An answer can be longer. The executor is injected so
-    /// tests drive the protocol without an engine.</para>
+    /// localized, because this is a machine interface. A request is taken up
+    /// to 1,024 bytes, and a longer one runs nothing and is answered
+    /// <c>error too-long</c>. An answer can be longer. The executor is
+    /// injected so tests drive the protocol without an engine.</para>
     /// </summary>
     public sealed class ExternalControlService : IDisposable
     {
@@ -61,9 +60,11 @@ namespace PadForge.Services
         /// compares pipe names without regard to case.</summary>
         private bool ServesTheAppsOwnPipe => string.Equals(_pipeName, PipeName, StringComparison.OrdinalIgnoreCase);
 
-        /// <summary>The longest request line kept, in bytes. What a client
-        /// sends past it is read and dropped, so a client that wrote a longer
-        /// line is not left waiting in its write.</summary>
+        /// <summary>The longest request line taken, in bytes. A longer line
+        /// is read on past it and dropped, so the client that wrote it is not
+        /// left waiting in its write, and it is answered too long: its first
+        /// bytes are no line the client sent, and a profile's name cut there
+        /// names no profile.</summary>
         internal const int LongestRequest = 1024;
 
         /// <summary>How much of a line that runs past the cap is read before
@@ -85,13 +86,20 @@ namespace PadForge.Services
         /// <summary>One line a program sent.</summary>
         public readonly struct Request
         {
-            public Request(string line, int clientProcessId, CancellationToken stopping, string refusal = null)
+            public Request(string line, int clientProcessId, CancellationToken stopping, string refusal = null, bool tooLong = false)
             {
                 Line = line;
                 ClientProcessId = clientProcessId;
                 Stopping = stopping;
                 Refusal = refusal;
+                TooLong = tooLong;
             }
+
+            /// <summary>Whether the line ran past
+            /// <see cref="LongestRequest"/>. Such a line runs nothing and is
+            /// answered <c>error too-long</c>, and <see cref="Line"/> holds
+            /// only its first bytes.</summary>
+            public bool TooLong { get; }
 
             /// <summary>Why the client is not taken, in a word, or null when
             /// it is: the token checks the Automation pipe makes
@@ -182,7 +190,9 @@ namespace PadForge.Services
         private static Func<Request, Answer> Wrap(Func<string, string> executor)
         {
             if (executor == null) throw new ArgumentNullException(nameof(executor));
-            return request => new Answer(request.Refusal != null ? Refused : executor(request.Line));
+            return request => new Answer(request.Refusal != null ? Refused
+                : request.TooLong ? Automation.AutomationCommands.TooLong
+                : executor(request.Line));
         }
 
         /// <summary>The answer to a client the token checks refused.</summary>
@@ -358,10 +368,11 @@ namespace PadForge.Services
         private async Task ServeAsync(NamedPipeServerStream server, CancellationToken token)
         {
             string line;
+            bool tooLong;
             using (var reading = CancellationTokenSource.CreateLinkedTokenSource(token))
             {
                 reading.CancelAfter(ClientTimeout);
-                line = await ReadLineAsync(server, reading.Token).ConfigureAwait(false);
+                (line, tooLong) = await ReadLineAsync(server, reading.Token).ConfigureAwait(false);
             }
 
             // ALWAYS answer, including on an empty line. A client that
@@ -372,7 +383,7 @@ namespace PadForge.Services
             // Who the client is, from its token, now that a read is done.
             string refusal = Judge(server);
             Answer answer;
-            try { answer = _executor(new Request(line, Automation.AutomationClientProcess.IdOf(server), token, refusal)); }
+            try { answer = _executor(new Request(line, Automation.AutomationClientProcess.IdOf(server), token, refusal, tooLong)); }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { throw; }
             catch { answer = new Answer("error internal"); }
             using (var writing = CancellationTokenSource.CreateLinkedTokenSource(token))
@@ -484,7 +495,9 @@ namespace PadForge.Services
                 pipeSecurity: BuildSecurity());
         }
 
-        private static async Task<string> ReadLineAsync(Stream s, CancellationToken token)
+        /// <summary>One UTF-8 line and whether it ran past
+        /// <see cref="LongestRequest"/>.</summary>
+        private static async Task<(string Line, bool TooLong)> ReadLineAsync(Stream s, CancellationToken token)
         {
             // One UTF-8 line, capped at 1024 bytes so a malformed client cannot
             // grow the buffer without bound. Commands are short (a verb plus a
@@ -493,7 +506,7 @@ namespace PadForge.Services
             var chunk = new byte[LongestRequest];
             var line = new byte[LongestRequest];
             int kept = 0, read = 0;
-            bool ended = false;
+            bool ended = false, over = false;
             while (!ended && read < LongestRequest + LongestDrained)
             {
                 int n = await s.ReadAsync(chunk.AsMemory(0, chunk.Length), token).ConfigureAwait(false);
@@ -505,9 +518,10 @@ namespace PadForge.Services
                     if (chunk[i] == (byte)'\r') continue;
                     // Past the cap the line is read on and not kept.
                     if (kept < LongestRequest) line[kept++] = chunk[i];
+                    else over = true;
                 }
             }
-            return Encoding.UTF8.GetString(line, 0, kept).Trim();
+            return (Encoding.UTF8.GetString(line, 0, kept).Trim(), over);
         }
 
         private static async Task WriteLineAsync(Stream s, string line, CancellationToken token)

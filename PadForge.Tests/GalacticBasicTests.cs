@@ -217,8 +217,9 @@ namespace PadForge.Tests
 
         /// <summary>Windows draws its message box in its own font, never the
         /// interface's, so every question and notice a page or dialog shows is
-        /// PadForge's own ConfirmDialog. Three message boxes stay in App.xaml.cs:
-        /// the update helper's report opens before PadForge reads its saved
+        /// PadForge's own ConfirmDialog. Four message boxes stay in App.xaml.cs:
+        /// the update helper's report and the notice that the single-instance
+        /// lock could not be made both open before PadForge reads its saved
         /// language, and the two crash dialogs must open from any thread while
         /// PadForge fails. A second start shows the running window and has no
         /// notice of its own (#597).</summary>
@@ -236,9 +237,17 @@ namespace PadForge.Tests
                     if (line.Contains("MessageBox.Show(", StringComparison.Ordinal) && !line.TrimStart().StartsWith("//", StringComparison.Ordinal))
                         calls.Add(rel);
             }
-            Assert.Equal(new[] { "App.xaml.cs", "App.xaml.cs", "App.xaml.cs" }, calls);
+            Assert.Equal(new[] { "App.xaml.cs", "App.xaml.cs", "App.xaml.cs", "App.xaml.cs" }, calls);
 
             string text = File.ReadAllText(Repo("PadForge.App", "App.xaml.cs"));
+            // The lock's notice is the one in StopForNoLock, which OnStartup
+            // calls before the saved language is applied.
+            int noLock = text.IndexOf("MessageBox.Show(Strings.Instance.Start_NoLock", StringComparison.Ordinal);
+            int stop = text.IndexOf("private void StopForNoLock()", StringComparison.Ordinal);
+            int call = text.IndexOf("StopForNoLock();", StringComparison.Ordinal);
+            int saved = text.IndexOf("PadForge.Common.UiLanguage.Apply();", StringComparison.Ordinal);
+            Assert.True(stop >= 0 && noLock > stop && call > noLock && saved > call,
+                "the lock's message box is not StopForNoLock's, or it opens after the saved language");
             Assert.DoesNotContain("App_AlreadyRunning", text, StringComparison.Ordinal);
 
             foreach (string dialog in new[] { "DreamcastScreenDialog.xaml.cs", "FlydigiScreenDialog.xaml.cs", "KeyboardScreenDialog.xaml.cs" })

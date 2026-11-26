@@ -308,7 +308,8 @@ namespace PadForge.Common.Input
         public TouchpadState[] CombinedTouchpadStates { get; } = new TouchpadState[MaxPads];
 
         /// <summary>Per-slot raw physical touchpad-click flag (any assigned device's
-        /// SDL_GAMEPAD_BUTTON_TOUCHPAD = InputState.Buttons[16]), OR'd across devices each
+        /// first pad click, CustomInputState.FirstPadClicked: SDL_GAMEPAD_BUTTON_TOUCHPAD =
+        /// InputState.Buttons[16] but on a program's device whose button 16 is its own), OR'd across devices each
         /// frame in Step 3 regardless of virtual-controller type or click mapping. The
         /// InputReactive lightbar reads this so a touchpad press flashes even on a
         /// non-PlayStation virtual (where TouchpadOutputState is never computed).</summary>
@@ -890,7 +891,7 @@ namespace PadForge.Common.Input
         /// <see cref="DevicesEnumerated"/> is false. A reader that knows a
         /// moment before which the rows were old (an engine start, a wake
         /// from sleep) learns from it that the rows were read after that
-        /// moment. The device notes wait on it (#597).
+        /// moment. The device notes wait on it (#600).
         /// </summary>
         public long DevicesEnumeratedSince
             => DevicesEnumerated ? System.Threading.Volatile.Read(ref _enumerationBegan) : -1;
@@ -964,6 +965,25 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
         //  SDL Initialization
         // ─────────────────────────────────────────────
+
+        /// <summary>Deletes the diag.log pre-v4 builds left in
+        /// <paramref name="folder"/>, unless it is the file
+        /// <paramref name="benchMirror"/> (PADFORGE_DIAG) names: the trace
+        /// tools arm diag.log beside the exe, the one file a copy with rights
+        /// mirrors to (SdlDiagLog.MirrorPathWithRights), and read it while it
+        /// grows across engine starts.</summary>
+        internal static void DeleteStaleDiagLog(string folder, string benchMirror)
+        {
+            try
+            {
+                string stale = System.IO.Path.GetFullPath(System.IO.Path.Combine(folder, "diag.log"));
+                if (!string.IsNullOrWhiteSpace(benchMirror)
+                    && string.Equals(System.IO.Path.GetFullPath(benchMirror), stale, StringComparison.OrdinalIgnoreCase))
+                    return;
+                System.IO.File.Delete(stale);
+            }
+            catch { }
+        }
 
         /// <summary>
         /// Initializes the SDL3 library for joystick and gamepad support.
@@ -1190,13 +1210,9 @@ namespace PadForge.Common.Input
                 // crash.log). No file is written in normal operation.
                 // Installed before SDL_Init so init-time messages land
                 // too. Pre-v4 builds wrote these lines to diag.log beside
-                // the exe; remove the stale file those builds left behind.
-                try
-                {
-                    System.IO.File.Delete(System.IO.Path.Combine(
-                        AppDomain.CurrentDomain.BaseDirectory, "diag.log"));
-                }
-                catch { }
+                // the exe, and the stale file those builds left is removed.
+                DeleteStaleDiagLog(AppDomain.CurrentDomain.BaseDirectory,
+                    Environment.GetEnvironmentVariable("PADFORGE_DIAG"));
                 Engine.SdlDiagLog.Install();
 
                 // SDL starts with only the rows PadForge gives it this start,
@@ -1216,7 +1232,7 @@ namespace PadForge.Common.Input
 
                 // The mappings PadForge adds to SDL's built-in ones, one
                 // SDL_AddGamepadMapping call per row: the changed rows of the
-                // controller database section (#597), then PadForge's own
+                // controller database section (#600), then PadForge's own
                 // embedded rows, which stand wherever the two meet.
                 LoadEmbeddedGamepadMappings();
 
@@ -1436,18 +1452,9 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Number of gamepad mappings successfully applied from the embedded
-        /// gamecontrollerdb_padforge.txt. Zero means either the resource is
-        /// missing (build misconfiguration) or every line was blank/comment.
-        /// Exposed as a diagnostic so Settings / About can surface whether
-        /// the embed is reaching SDL at runtime.
-        /// </summary>
-        public static int EmbeddedMappingsLoaded { get; private set; }
-
-        /// <summary>
         /// Gives SDL the mappings PadForge adds to its built-in ones, right
         /// after SDL starts: the changed rows of the controller database
-        /// section (#597), then the rows of the embedded
+        /// section (#600), then the rows of the embedded
         /// gamecontrollerdb_padforge.txt, in that order
         /// (<see cref="ControllerDatabaseUse.StartupRows"/>). Each goes
         /// through SDL_AddGamepadMapping, one call per row. The rows ship
@@ -1474,6 +1481,12 @@ namespace PadForge.Common.Input
                 catch (Exception ex) { Engine.SdlDiagLog.WriteLine("MAPPINGS database baseline unreadable: " + ex.Message); }
                 var rows = ControllerDatabaseUse.StartupRows(SettingsManager.ControllerDatabase, baseline, own);
                 int fromDatabase = rows.Count - own.Count;
+                // What SDL holds under each changed row's ID, its own or the
+                // community copy's, goes back with the row's reset (#600). A
+                // changed row PadForge's own rows map is left out: PadForge's
+                // row stands there.
+                ControllerDatabaseEngine.NoteDownloaded(ControllerDatabaseUse.StartupNoted(rows.GetRange(0, fromDatabase), OwnMappingIds.Value),
+                    ControllerDatabaseEngine.MappingForGuid);
                 for (int i = 0; i < rows.Count; i++)
                 {
                     if (SDL_AddGamepadMapping(rows[i]) < 0) continue;
@@ -1496,14 +1509,11 @@ namespace PadForge.Common.Input
                 // only what PadForge adds on top.
                 System.Diagnostics.Debug.WriteLine($"[InputManager] Embedded mappings load failed: {ex.Message}");
             }
-            EmbeddedMappingsLoaded = applied;
             System.Diagnostics.Debug.WriteLine($"[InputManager] Applied {applied} embedded PadForge gamepad mapping(s).");
             // Also to the real diagnostics channel. The Debug.WriteLine above
-            // is compiled out of Release, so in the shipping build this count
-            // reached nothing: not a log, and not a reader, while the property's
-            // own doc offers it as the way to tell whether the embed is
-            // reaching SDL at runtime. A zero here means the resource is
-            // missing or every line was blank, which is a build
+            // is compiled out of Release, so in the shipping build this line
+            // is the only place the count reaches. A zero here means the
+            // resource is missing or every line was blank, which is a build
             // misconfiguration worth seeing in a user's log rather than only
             // under a debugger.
             Engine.SdlDiagLog.WriteLine($"MAPPINGS embedded applied={applied} database changed applied={changed} yours applied={mine}");
@@ -1962,7 +1972,9 @@ namespace PadForge.Common.Input
             // PTP reader always runs so Devices page can preview touchpad input.
             // Note: on shared hardware (laptop trackpads), the digitizer registration
             // stops Windows from synthesizing mouse reports for the same device.
-            _ptpReader = new PrecisionTouchpadReader();
+            // It leaves HIDMaestro's own touchpads out, as the listener
+            // above and the tablet reader do.
+            _ptpReader = new PrecisionTouchpadReader(RawInputListener.IsOwnVirtualDevicePath);
             AttachTouchpadCaptures(_ptpReader);
             _ptpReader.Start();
             StartTabletReader();
@@ -2056,6 +2068,15 @@ namespace PadForge.Common.Input
             FlushPendingInput(); // everything queued before the stop
         }
 
+        /// <summary>The bounded waits Stop makes besides the lifecycle wait
+        /// (<see cref="LifecycleWaitBound"/>): the poll thread's join, the mouse
+        /// injector's and the pending input's flush. A close waits for them
+        /// all (RunningCopy.CloseWaitMs).</summary>
+        internal const int PollJoinMs = 3_000, InjectorJoinMs = 1_000, FlushWaitMs = 1_000;
+
+        /// <summary>Their sum.</summary>
+        internal const int StopJoinsMs = PollJoinMs + InjectorJoinMs + FlushWaitMs;
+
         /// <summary>
         /// Stops the background polling thread and waits for it to exit.
         /// </summary>
@@ -2107,7 +2128,7 @@ namespace PadForge.Common.Input
 
             if (_pollingThread != null && _pollingThread.IsAlive)
             {
-                if (!_pollingThread.Join(timeout: TimeSpan.FromSeconds(3)))
+                if (!_pollingThread.Join(timeout: TimeSpan.FromMilliseconds(PollJoinMs)))
                     Engine.SdlDiagLog.WriteLine(
                         "STOP poll thread still running after a 3 s join; teardown continues, the loop is retired by generation");
                 _pollingThread = null;
@@ -2116,7 +2137,7 @@ namespace PadForge.Common.Input
             if (_mouseInjectorThread != null && _mouseInjectorThread.IsAlive)
             {
                 MouseWorkSignal.Set(); // unpark an idle injector for the join
-                if (!_mouseInjectorThread.Join(timeout: TimeSpan.FromSeconds(1)))
+                if (!_mouseInjectorThread.Join(timeout: TimeSpan.FromMilliseconds(InjectorJoinMs)))
                     Engine.SdlDiagLog.WriteLine(
                         "STOP mouse injector still running after a 1 s join; teardown continues, the loop is retired by generation");
                 _mouseInjectorThread = null;
@@ -2140,14 +2161,15 @@ namespace PadForge.Common.Input
 
             // Wait for any in-flight HM lifecycle tasks (Pass 2 connects
             // and Pass 1 async-dispose teardowns) to complete before we
-            // tear everything down.  Without this wait, a connect task
-            // that's currently inside HMContext.CreateController would
-            // run to completion AFTER Stop returns, set
-            // _virtualControllers[i] to the just-built VC, and the new
-            // VC would never be disposed — an orphaned controller in
-            // the kernel device tree.  AwaitPendingLifecycleTasks is
-            // bounded so a hung HM call can't deadlock shutdown.
-            AwaitPendingLifecycleTasks();
+            // tear everything down, so DestroyAllVirtualControllers sees
+            // and tears down a controller a connect is still building.
+            // The wait is bounded so a hung HM call can't deadlock
+            // shutdown, past the longest wait a create makes inside
+            // HIDMaestro (LifecycleWaitBound). A connect still running
+            // after it finds the engine closed and disposes what it
+            // built, and the HIDMaestro context's dispose waits for the
+            // tasks still running (DisposeHMaestroContextOnShutdown).
+            var unfinished = AwaitPendingLifecycleTasks(LifecycleWaitBound);
 
             DestroyAllVirtualControllers();
 
@@ -2156,7 +2178,7 @@ namespace PadForge.Common.Input
             // here, or the keys stay down in Windows until the next start.
             // An injector that outlived its join still holds the drain and
             // sends them itself, so the wait is bounded.
-            FlushPendingInput(lockWaitMs: 1000);
+            FlushPendingInput(lockWaitMs: FlushWaitMs);
 
             // Every Sony pad PadForge left off its headset gets the headset
             // back (#546), with no dispatcher left to write after it and
@@ -2169,7 +2191,7 @@ namespace PadForge.Common.Input
             // flags on the slot ViewModels for immediate visual update.
             for (int i = 0; i < MaxPads; i++)
                 _slotInitializing[i] = false;
-            DisposeHMaestroContextOnShutdown();
+            DisposeHMaestroContextOnShutdown(unfinished);
             CloseAllDevices();
 
             _enumerationTimer.Stop();
@@ -2217,6 +2239,8 @@ namespace PadForge.Common.Input
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveOptimization)]
         private void PollingLoop(int generation, int pollRun)
         {
+            // This thread steps the slots' runtimes (TravelPosition).
+            MarkPollThread();
             // A one millisecond clock for the loop's life: the timers of SDL,
             // HIDMaestro and the interface's dispatcher ride it too.
             timeBeginPeriod(1);
@@ -2509,7 +2533,7 @@ namespace PadForge.Common.Input
                             Engine.SdlDiagLog.WriteLine(
                                 $"STALL poll sdl={sdlMs}ms enum={enumMs}ms cycle={cycleMs}ms");
 
-                        // A problem recording's share of the pass (#597).
+                        // A problem recording's share of the pass (#600).
                         var recording = Recording.RecordingCapture.Active;
                         if (recording != null) RecordPass(recording, passGap, rateHz, sdlMs, enumMs, cycleMs);
 
@@ -4606,6 +4630,9 @@ namespace PadForge.Common.Input
                 return;
 
             Stop();
+            // The devices programs added outlive this manager (#600): the
+            // next start's takes them, and this one's handler leaves them.
+            ReleaseProgramDevices();
             // Tear down NFC here, after Stop() has halted the poll loop (so the
             // suppression latch + a stopped sweep prevent a re-Start) but BEFORE
             // ShutdownSdl() tears down the device list that ShutdownNfcReaders'

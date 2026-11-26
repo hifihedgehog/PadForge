@@ -3214,7 +3214,7 @@ namespace PadForge.Common.Input
                     }
                     // Web controller lightbar: a phone drawing a DualShock 4
                     // or a DualSense renders the same bar the hardware has, and
-                    // a program's device that takes a light (#597) shows it, so
+                    // a program's device that takes a light (#600) shows it, so
                     // it gets the same lighting engine rather than a still
                     // color. Same shape as the Move lane below it, and for
                     // the same reason: a device whose bar is not written with

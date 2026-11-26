@@ -299,6 +299,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge दाखवा किंवा लपवा</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलर चालू किंवा बंद करा</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>कोणतेही जोडलेले डिव्हाइस</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (जोडलेले नाही)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>डिव्हाइस पानावर नसलेले डिव्हाइस</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>रेकॉर्ड करत आहे…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} सेकंद)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>जेव्हा</value></data>
@@ -565,7 +567,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>वाचा</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>इनपुट पाठवा</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>सेटिंग्ज बदला</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>प्रोग्राम प्रोफाइल बदलू आणि सोडू शकतात, इंजिन सुरू आणि बंद करू शकतात, व्हर्च्युअल कंट्रोलर चालू आणि बंद करू शकतात, विंडो दाखवू आणि लपवू शकतात, PadForge बंद करू शकतात, निदान स्नॅपशॉट जतन करू शकतात आणि काय सुरू आहे ते विचारू शकतात.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>प्रोग्राम प्रोफाइल बदलू आणि सोडू शकतात, इंजिन सुरू आणि बंद करू शकतात, व्हर्च्युअल कंट्रोलर चालू आणि बंद करू शकतात, विंडो दाखवू आणि लपवू शकतात, PadForge बंद करू शकतात, काय सुरू आहे ते विचारू शकतात, निदान स्नॅपशॉट जतन करू शकतात आणि समस्या रेकॉर्डिंग सुरू, बंद आणि चिन्हांकित करू शकतात.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>कमांड्स स्तरावरील सर्व काही, आणि प्रोग्राम डिव्हाइस, व्हर्च्युअल कंट्रोलर, मॅपिंग, प्रोफाइल आणि सेटिंग्ज पाहू शकतात, प्रत्येक डिव्हाइसचे इनपुट घडत असताना फॉलो करू शकतात आणि PadForge मधील एखादी जागा तुम्हाला दाखवू शकतात. वाचा स्तरावरील प्रोग्राम प्रत्येक डिव्हाइसवर दाबलेली प्रत्येक की पाहतो, प्रशासक म्हणून चालणाऱ्या विंडोमध्ये टाइप केलेल्या कीसुद्धा.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>वाचा स्तरावरील सर्व काही, आणि प्रोग्राम स्वतःची डिव्हाइसेस जोडून ती चालवू शकतात, कोणत्याही डिव्हाइसचा एखादा कंट्रोल धरून ठेवू शकतात आणि मॅक्रो ट्रिगरना नावे दिलेली मूल्ये देऊ शकतात.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>इनपुट पाठवा स्तरावरील सर्व काही, आणि तुम्ही पृष्ठांवर जे बदलू शकता ते प्रोग्रामही बदलू शकतात. काही बदल PadForge च्या प्रश्न कार्डवर नेहमी आधी तुम्हाला विचारतात.</value></data>
@@ -578,7 +580,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>तुमच्या उत्तराची प्रतीक्षा</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>हालचाल</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>पूर्ववत करा</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ते जतन करू शकले नाही: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>वाचा किंवा त्यावरील स्तरावरील प्रोग्राम जोडलेला असताना, तो कीबोर्डसह प्रत्येक डिव्हाइसवर काय दाबले जाते ते पाहतो.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>प्लगइन</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>प्लगइन चालवा</value></data>
@@ -598,7 +599,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{1} पैकी {0}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (रिप्ले)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>समस्या रेकॉर्डिंग|*.zip;*.log|सर्व फाइल|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} वाजवू शकत नाही. ते समस्या रेकॉर्डिंग नाही, किंवा त्यात कोणत्याही डिव्हाइसचे इनपुट नाही.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge {0} प्ले करू शकत नाही. ती PadForge ला वाचता येणारी समस्या रेकॉर्डिंग नाही.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge {0} प्ले करू शकत नाही. त्यात {1} पेक्षा जास्त डिव्हाइस आहेत आणि रिप्ले जास्तीत जास्त {1} प्ले करते.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge {0} प्ले करू शकत नाही. त्यात कोणत्याही डिव्हाइसचा इनपुट नाही.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge ला {0} वाचता आली नाही.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>तुमचे प्लगइन</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>प्लगइन जोडा…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>प्रोग्राम आणि स्क्रिप्ट|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|सर्व फाइल|*.*</value></data>
@@ -612,8 +616,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>सलग पाच अपयशांनंतर थांबला</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>सुरू झाला नाही: फाइल नाही</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>सुरू झाला नाही: Windows कडे या प्रकारच्या फाइलसाठी प्रोग्राम नाही</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>सुरू झाला नाही: Python फाइल तुमच्यासाठी उघडणारा कोणताही प्रोग्राम नाही आणि PadForge ला py लाँचर सापडत नाही</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>सुरू झाला नाही: या प्रकारची फाइल तुमच्यासाठी कोणता प्रोग्राम उघडतो ते PadForge ला वाचता येत नाही</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>सुरू झाला नाही: या प्रकारची फाइल तुमच्यासाठी उघडणारा प्रोग्राम या PC वर नाही</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>सुरू झाला नाही: त्याला सुरू करण्यासाठी डेस्कटॉप शेल चालत नाही</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>सुरू झाला नाही: डेस्कटॉप शेलकडे प्रशासक अधिकार आहेत, म्हणून प्लगइनलाही ते मिळतील</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>सुरू झाला नाही: PadForge ला प्रशासक अधिकार मिळतील का ते वाचता येत नाही</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>सुरू झाला नाही: Windows ने त्याला प्रशासक अधिकार दिले, म्हणून PadForge ने तो चालण्यापूर्वी संपवला</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>सुरू झाला नाही: तो प्रशासक अधिकार मागतो</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>सुरू झाला नाही: Windows ने त्रुटी {0} सह नाकारले</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>सुरू झाला नाही</value></data>
@@ -641,6 +650,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>जोडले: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>स्वाक्षरी करणारा: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>स्वाक्षरी नाही.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>तो चालू असताना त्याची सेटिंग्ज येथे दिसतात.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>तो कोणतीही सेटिंग्ज जाहीर करत नाही.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>तो PadForge शी कनेक्ट झाला की त्याची सेटिंग्ज येथे दिसतात.</value></data>
@@ -743,8 +753,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>प्रोग्राम PadForge ला माहीत नसलेली आवृत्ती वापरतो</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ने ती प्लगइन की दिली नाही</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ने या प्रोग्रामचे कनेक्शन घेतले नाही</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge ने डिव्हाइस तयार केले नाही, कारण Windows ने प्रोग्रामच्या फाइलचे नाव दिले नाही</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>खूप लवकर पुन्हा विचारले</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge पुन्हा सुरू होईपर्यंत यापुढे हे नाही</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>प्रोग्रामनी तयार केलेल्या यापैकी खूप जास्त गोष्टी मुख्यपृष्ठावर तुमच्या तपासणीची वाट पाहत आहेत</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge कडे असे टूल नाही</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>प्रोग्रामने जुनी स्थिती वाचली</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>त्या ID चे काहीही नाही</value></data>
@@ -752,6 +763,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>तुम्ही परवानगी दिली नाही</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>वेळेत कोणीही उत्तर दिले नाही</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>तुमच्या उत्तराची प्रतीक्षा</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>तुम्ही अजून उत्तर दिले नव्हते</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>अशी विनंती नाही</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>पूर्ववत करण्यासारखे काही नाही</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>हे फक्त तुम्ही बदलू शकता</value></data>
@@ -867,6 +879,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>स्वाक्षरी नाही.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>वाचा आणि त्यावरील स्तरावर ते प्रत्येक डिव्हाइसवर दाबली गेलेली प्रत्येक की पाहते, कीबोर्डसह.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>ते एकदाच विचारते. तुम्ही ते ऑटोमेशन पानावर काढू शकता.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>PadForge ला ओळखता न आलेल्या प्रोग्रामने सुरू केले.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge ला हा प्रोग्राम दुसऱ्यापासून वेगळा ओळखता येत नाही, म्हणून तो पुढच्या कनेक्शनवर पुन्हा विचारते.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge कमांड लाइन</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} हे {1} वर सेट करतो</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>नेटवर्कवर ऐकतो, त्यामुळे इतर डिव्हाइसेस या PC पर्यंत पोहोचू शकतात.</value></data>
@@ -882,7 +896,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>प्रोफाइल आणा</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>दुसऱ्या प्रोग्राममधील प्रोफाइल फाइल आयात करा, मग काय आले ते पहा.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} वेळा</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, अशा {1} पैकी शेवटचे</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 स्क्रिप्ट (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -912,6 +925,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>या मशीनवर Logitech G-key SDK नाही. ते Logitech Gaming Software 8.55 किंवा नंतरच्यासोबत इन्स्टॉल होते.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK नोंदणीकृत आहे पण त्याची फाइल गायब आहे. Logitech Gaming Software पुन्हा इन्स्टॉल करा.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK सापडला पण लोड करता आला नाही.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK सापडला पण लोड केला नाही, कारण फक्त प्रशासकच तो बदलू शकतात आणि Logitech ने त्यावर स्वाक्षरी केली आहे हे PadForge ला खात्रीने कळले नाही.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>ती लायब्ररी अपेक्षित G-key SDK नाही.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ने सुरू होण्यास नकार दिला. बहुधा Logitech Gaming Software चालू नाही.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>जोडले, अजून कोणतीही की दिसली नाही. Logitech Gaming Software मध्ये, PadForge प्रोफाइलमधील प्रत्येक कीवर G-key कमांड ड्रॅग करा आणि ते प्रोफाइल कायमस्वरूपी करा. G600 किंवा G300 माउस ऑन-बोर्ड मेमरी मोडमधून बाहेरही असावा लागतो.</value></data>
@@ -1016,14 +1030,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>तुम्ही Windows मध्ये साइन इन करता तेव्हा PadForge आपोआप सुरू करा. हे चालू असताना PadForge शॉर्टकट, स्क्रिप्ट किंवा दुसऱ्या प्रोग्रामकडून Windows च्या प्रॉम्प्टशिवायही सुरू होते.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} मधून चालते.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>यासाठी PadForge स्वतःच्या फोल्डरमध्ये हवे. त्याच्या फोल्डरमध्ये इतर फाइल आहेत, म्हणून PadForge इतर प्रोग्रामना ते बदलण्यापासून रोखू शकत नाही.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>यासाठी PadForge इतर प्रोग्राम बदलू शकत नाहीत अशा फोल्डरमध्ये हवे. PadForge इतर प्रोग्रामना त्याचे फोल्डर बदलण्यापासून रोखू शकले नाही.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge स्वतःच्या फोल्डरमध्ये हलवा</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge आणि त्याची सेटिंग्ज Program Files मध्ये कॉपी करते, त्याची कामे तिथे वळवते आणि तिथून सुरू करते. येथील प्रत तशीच राहते.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge हलले नाही: {0} मध्ये PadForge च्या नसलेल्या फाइल आहेत.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge हलले नाही: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>लॉगिनवर सुरू करा बंद केले, कारण ते PadForge इतर फाइल असलेल्या फोल्डरमधून चालवत होते.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge हलले नाही: Windows कडे Program Files फोल्डरचे नाव नाही.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge हलले नाही: चालू असलेले PadForge त्याला वाचता आले नाही.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge हलले नाही: ते {0} तयार करू शकले नाही.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge हलले नाही: {0} मध्ये काय आहे ते त्याला वाचता आले नाही.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge हलले नाही: ते इतर प्रोग्रामना {0} बदलण्यापासून रोखू शकले नाही.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge हलले नाही: {0} मधील त्याची प्रत चालू असलेल्या PadForge शी जुळली नाही.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge हलले नाही: प्रत केल्यानंतर {0} मध्ये PadForge च्या नसलेल्या फाइल होत्या किंवा इतर प्रोग्राम ते बदलू शकत होते.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>लॉगिनवर सुरू करा बंद केले, कारण ते जे PadForge चालवत होते ते आता तिथे नाही.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>लॉगिनवर सुरू करा बंद केले, कारण PadForge ज्या फोल्डरमधून चालवले गेले ते फोल्डर PadForge इतर प्रोग्रामना बदलण्यापासून रोखू शकले नाही.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>लॉगिनवर सुरू करा बंद केले, कारण कोणते PadForge चालवले गेले ते PadForge ला वाचता आले नाही.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>लॉगिनवर सुरू करा बंद केले, कारण PadForge ने चालवलेल्या PadForge चा फोल्डर PadForge ला वाचता आला नाही.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge त्याचे संरक्षित फोल्डर {0} बनवू शकले नाही. PadForge प्रशासक अधिकारांसह चालणारी लायब्ररी तिथे ठेवते, आणि त्याशिवाय ते सुरक्षितपणे सुरू होऊ शकत नाही.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge स्वतःला त्याच्या संरक्षित फोल्डरमधून, {0}, पुन्हा सुरू करू शकले नाही. PadForge प्रशासक अधिकारांसह फक्त तिथूनच चालते, म्हणून ते सुरू झाले नाही.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge एकावेळी एकच प्रत चालू ठेवणारे लॉक तयार करू शकले नाही, म्हणून ते सुरू झाले नाही.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge प्रशासक अधिकारांसह {0} मधून चालते, जे इतर प्रोग्राम बदलू शकतात असे फोल्डर आहे. ते तिथे PadForge ची सेटिंग्ज बदलू शकतात, आणि PadForge त्यांवर स्वतःच्या अधिकारांसह कृती करते.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge प्रशासक अधिकारांसह {0} मधून चालते, ज्या फोल्डरमध्ये इतर फाइल आहेत. तिथे PadForge ची सेटिंग्ज बदलण्यापासून PadForge इतर प्रोग्रामना रोखू शकत नाही, आणि ते त्यांवर स्वतःच्या अधिकारांसह कृती करते.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge प्रशासक अधिकारांसह {0} मधून चालते, जे फोल्डर त्याला वाचता आले नाही. तिथे PadForge ची सेटिंग्ज बदलण्यापासून PadForge इतर प्रोग्रामना रोखू शकत नाही, आणि ते त्यांवर स्वतःच्या अधिकारांसह कृती करते.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>नेहमी सिस्टम ट्रेमध्ये दाखवा</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>विंडो उघडी असताना ट्रे आयकॉन दिसत ठेवा, म्हणजे त्याच्या मेनूमधील बाहेर पडा नेहमी एका क्लिकवर असेल.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>अद्यतने</value></data>
@@ -1038,7 +1067,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>इन्स्टॉल करा आणि रीस्टार्ट करा</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>रिलीज नोट्स</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>कंट्रोलर डेटाबेस</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>आता अपडेट करा समुदायाचा कंट्रोलर डेटाबेस (SDL_GameControllerDB) GitHub वरून किंवा अधिक अंतर्गत सेट केलेल्या पत्त्यावरून डाउनलोड करते आणि PadForge च्या या आवृत्तीत नसलेले मॅपिंग सेटिंग्ज फाइलमध्ये ठेवते. ते लगेच वापरात येतात. दुसऱ्या पत्त्यावरून ते फक्त नवीन मॅपिंग ठेवते. नवीन मॅपिंग फक्त अशा कंट्रोलरसाठी वापरले जाते जो इतर कशानेही गेमपॅड म्हणून वाचला जात नाही, जो नियुक्त केलेला नाही आणि जो रॉ जॉयस्टिक मोड सक्तीने वापरा मध्ये नाही. रीसेट डाउनलोड केलेले प्रत्येक मॅपिंग काढून टाकते आणि पुन्हा GitHub वरून डाउनलोड करते. अधिक अंतर्गत तुमच्या स्वतःच्या ओळी राहतात.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>आता अपडेट करा समुदायाचा कंट्रोलर डेटाबेस (SDL_GameControllerDB) GitHub वरून किंवा अधिक अंतर्गत सेट केलेल्या पत्त्यावरून डाउनलोड करते आणि PadForge च्या या आवृत्तीत नसलेले मॅपिंग सेटिंग्ज फाइलमध्ये ठेवते. ते लगेच वापरात येतात. दुसऱ्या पत्त्यावरून ते फक्त नवीन मॅपिंग ठेवते. नवीन मॅपिंग आधी फक्त अशा कंट्रोलरसाठी वापरले जाते जो SDL ला गेमपॅड म्हणून किंवा कोणत्याही विशिष्ट प्रकाराचा नाही म्हणून कळतो, जो इतर कशानेही गेमपॅड म्हणून वाचला जात नाही, जो नियुक्त केलेला नाही आणि जो रॉ जॉयस्टिक मोड सक्तीने वापरा मध्ये नाही. एकदा वापरात आल्यावर, कंट्रोलर नियुक्त केल्यानंतरही ते वापरात राहते. रीसेट डाउनलोड केलेले मॅपिंग काढून टाकते आणि येथून डाउनलोड करा समुदायाच्या फाइलवर परत सेट करते, जी पुढची आता अपडेट करा डाउनलोड करते. अधिक अंतर्गत तुमच्या स्वतःच्या ओळी राहतात.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>आता अपडेट करा</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>अपडेट होत आहे…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>अद्यतने तपासत आहे…</value></data>
@@ -1071,9 +1100,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>अंगभूत: {1} मॅपिंग, {2} ची समुदाय प्रत. {4} वरून {3} डाउनलोड केले: नवीन ओळी {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>अंगभूत: {1} मॅपिंग, {2} ची समुदाय प्रत. {4} वरून {3} डाउनलोड केले: नवीन ओळ {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>मागील अपडेटनंतर समुदाय डेटाबेस बदललेला नाही.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>{0} वरील फाइल मागील अपडेटनंतर बदललेली नाही.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub पर्यंत पोहोचता आले नाही: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} पर्यंत पोहोचता आले नाही: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ने डाउनलोड नाकारले कारण ती अपेक्षित कंट्रोलर डेटाबेस फाइल नाही. काहीही बदलले नाही.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge ने GitHub चे उत्तर नाकारले. काहीही बदलले नाही.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge ने {0} कडून आलेले उत्तर नाकारले. काहीही बदलले नाही.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>मिनिमाइझ करून सुरू करा</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>लॉगिनवर सुरू करा</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1116,6 +1148,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>फोल्डर</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>सेवा सेटिंग</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>काढण्याची पायरी</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>सेवा</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>फाइल</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>अपर फिल्टर</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>रजिस्ट्री मूल्य</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>हार्डवेअर ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>शेड्यूल केलेले कार्य</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>इंस्टॉल केलेल्या अॅप्सची नोंद</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP डिव्हाइस</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 ब्लूटूथ</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 कंट्रोलर, PlayStation Move आणि Navigation कंट्रोलर ब्लूटूथवरून कनेक्ट करू देते. PadForge मध्ये एम्बेड केलेले आणि त्यातील एखादा पहिल्यांदा पेअर करताना इन्स्टॉल होते.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>ब्लूटूथवरून PlayStation 3 कंट्रोलर जोडते.</value></data>
@@ -1184,6 +1224,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} जतन केले</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>रेकॉर्डिंग सुरू झाले नाही. तपासणीत या PC चे एक खाजगी मूल्य फाइलच्या बाहेर राहणार नाही असे आढळले.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>रेकॉर्डिंग सुरू झाले नाही. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge ला रेकॉर्डिंग लिहिण्यासाठी साइन इन केलेल्या वापरकर्त्याच्या प्रोफाइलमध्ये, कोणत्याही लिंकशिवाय पोहोचणारे, वापरकर्त्याचे temp फोल्डर सापडले नाही.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>रेकॉर्डिंग फोल्डर दुसऱ्या ठिकाणाची लिंक आहे, जिचा PadForge पाठपुरावा करत नाही.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>मागील रेकॉर्डिंग अजून पूर्ण होत आहे.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>शेवटचे 60 सेकंद ठेवा बंद आहे, म्हणून जतन करण्यासारखे काही नाही.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ने न थांबवलेले रेकॉर्डिंग मुख्यपृष्ठ वर तुम्ही वाचण्याची वाट पाहत आहे: {0}</value></data>
@@ -1197,7 +1239,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, तुमची डिव्हाइसेस आणि सेटिंग्ज आत्ता आहेत तशी, त्याच तपासणीतून.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log PadForge.exe च्या शेजारी असते, ती तुम्ही तिथे वाचू शकता.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>काय रेकॉर्ड करायचे</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>सर्व चालू. बंद केलेला भाग पुढील रेकॉर्डिंगमधून वगळला जातो आणि फाइल त्यात कोणते भाग आहेत ते सांगते.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>प्रत्येक भाग डीफॉल्टनुसार चालू असतो. बंद केलेला भाग पुढील रेकॉर्डिंगमधून वगळला जातो आणि फाइल त्यात कोणते भाग आहेत ते सांगते.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>संध्याकाळी एकदाच येणाऱ्या समस्येसाठी.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>रेकॉर्डिंग तुम्ही मुख्यपृष्ठ वर वाचण्याची वाट पाहत आहे.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>सारांश</value></data>
@@ -1248,6 +1290,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>रेकॉर्डिंग जतन करा</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip फाइल्स</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>जतन केले नाही. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>स्क्रब तपासणी: तुम्ही ठेवलेले भाग तपासत आहे…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>स्क्रब तपासणी: तुम्ही ठेवलेले भाग PadForge ला वाचता आले नाहीत, म्हणून जतन करा बंद राहते.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>तुमच्या अधिकारांसह जतन सुरू झाले नाही.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>तुमच्या अधिकारांसह जतन सुरू झाले नाही: ते सुरू करण्यासाठी कोणताही डेस्कटॉप शेल चालू नाही.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>तुमच्या अधिकारांसह जतन सुरू झाले नाही: Windows ने त्रुटी {0} सह नकार दिला.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>जतन {0} मध्ये संपले नाही.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ने फाइल तिथे लिहू दिली नाही.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ने ही फाइल स्वतःचे रेकॉर्डिंग म्हणून घेतली नाही.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>जतन कोड {0} सह संपले.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>तुम्ही म्हणून जतन होते, पहिल्यांदा तुमच्या Downloads फोल्डरमध्ये, मग तुम्ही शेवटी जिथे जतन केले तिथे, आणि Explorer मध्ये दाखवले जाते. कोणी पानावर नसताना थांबणारे रेकॉर्डिंग (त्याची मर्यादा, मॅक्रो, प्रोग्राम, असिस्टंट टूल किंवा --record stop) या वाचनासाठी मुख्यपृष्ठ वर थांबून राहते आणि जतन न केल्यास 7 दिवसांनी हटवले जाते. प्रोग्रामला ते थांबले आहे असे सांगितले जाते, कुठे आहे ते कधीही नाही.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} पासूनचे समस्या रेकॉर्डिंग तुम्ही वाचण्याची वाट पाहत आहे.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>तपासा</value></data>
@@ -1918,9 +1971,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>वाचन अयशस्वी: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ने हे प्रीसेट {1} येथे नाकारले: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>या प्रीसेटमध्ये HID डिस्क्रिप्टर नाही, म्हणून यातून कंट्रोलर तयार करता येत नाही.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge हे प्रीसेट तपासू शकले नाही: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>प्रीसेट तपासत आहे…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>काहीही आयात केले नाही. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>आयात करा</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(अनामित HID डिव्हाइस)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>माउस</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>जॉयस्टिक</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>गेमपॅड</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>कीबोर्ड</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>बहु अक्ष कंट्रोलर</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID इंटरफेस सापडले.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID इंटरफेस सापडला.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>एन्युमरेट अयशस्वी: {0}</value></data>
@@ -3051,7 +3113,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>दाबून धरलेले असताना आणि मध्यावर</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>टॉगल</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>स्टीअर इनपुट</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>माउसला स्टीअर करू देणारे बटण, स्रोताच्याच डिव्हाइसवरील. काहीही निवडले नसल्यास माउस नेहमी स्टीअर करतो.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>माउसला स्टीअर करू देणारे बटण, या स्लॉटच्या कोणत्याही डिव्हाइसवरील. काहीही निवडले नसल्यास माउस नेहमी स्टीअर करतो.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>स्मूदिंग</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>असमान कळवणारा माउस समान करते. स्टिक हाताच्या मागे साधारण इतका वेळ राहते. 0 म्हणजे बंद.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>वेगावर लॉक</value></data>
@@ -3072,7 +3134,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>स्टीअरिंग जिथे सुरू झाले तिथून सुरू करा</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>स्टीअर इनपुट सोबत, फोनच्या स्क्रीनवरील स्टिक बोट जिथे ठेवले तिथून सुरू होते तशी, स्टिक पॉइंटर स्टीअरिंग सुरू झाले तेव्हा जिथे होता तिथून मोजते. बंद असल्यास ती पॉइंटरच्या मॉनिटरच्या मध्यापासून मोजते.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>हा अक्ष सापेक्ष हलतो</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ट्रॅकबॉल किंवा स्पिनरसाठी, जो किती फिरला ते कळवतो. चालू असल्यास अक्ष Mouse Travel प्रमाणे स्थान धरतो आणि प्रवास सेटिंग्ज घेतो. कोणते अक्ष असे हलतात ते Windows सांगत नाही.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ट्रॅकबॉल किंवा स्पिनरसाठी, जो किती फिरला ते कळवतो. चालू असल्यास अक्ष माउस प्रवास प्रमाणे स्थान धरतो आणि प्रवास सेटिंग्ज घेतो. SDL जेनेरिक कंट्रोलर DirectInput द्वारे वाचतो, जो प्रत्येक अक्ष स्थान म्हणून वाचतो, म्हणून कोणते अक्ष असे हलतात ते हा स्विच सांगतो.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} सेमी</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>पूर्वावलोकन</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>हा गट तुमच्या स्वतःच्या माउसचे कसे अनुसरण करतो ते दाखवते. तुम्ही निवडेपर्यंत काहीही मॅप होत नाही.</value></data>
@@ -3264,6 +3326,13 @@
 {0}
 
 PadForge ने तपशील PadForge.exe च्या शेजारील crash.log मध्ये लिहिले. याची तक्रार करण्यासाठी {2} येथे चर्चा सुरू करा आणि त्यावर crash.log टाका.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>एक अनपेक्षित त्रुटी आली:
+
+{0}
+
+PadForge ला तपशील PadForge.exe च्या शेजारील crash.log मध्ये लिहिता आले नाहीत. याची तक्रार करण्यासाठी {2} येथे चर्चा सुरू करा, हा संदेश कॉपी करण्यासाठी येथे Ctrl+C दाबा आणि तिथे पेस्ट करा.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} अतिरिक्त त्रुटी दडपल्या)</value></data>
@@ -4179,7 +4248,7 @@ PadForge ने तपशील PadForge.exe च्या शेजारील 
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Steam डेपो चंक्ससाठी SteamKit2 वापरत असलेले Zstandard डीकंप्रेशन, Oleg Stepanischev यांनी बनवलेले zstd लायब्ररीचे C# पोर्ट.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>असिस्टंट कनेक्शन आणि PadForge.exe --mcp मागील Model Context Protocol सर्व्हर आणि क्लायंट, Model Context Protocol a Series of LF Projects कडून.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>असिस्टंट कनेक्शन आणि PadForge.exe --mcp मागील Model Context Protocol सर्व्हर आणि क्लायंट, Model Context Protocol a Series of LF Projects, LLC कडून.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions आणि DependencyInjection.Abstractions, ज्यावर MCP C# SDK बनलेले आहे, Microsoft कडून.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5482,7 +5551,18 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>G19 च्या स्क्रीनला WinUSB बांधत आहे</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19 ची स्क्रीन दुसऱ्या ड्रायव्हरवर ({0}) आहे, म्हणून Logitech Gaming Software सुरू करा</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19 ची स्क्रीन दुसऱ्या प्रोग्रामच्या ड्रायव्हरवर ({0}) आहे, ज्याला PadForge स्पर्श करत नाही</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>PadForge चे PlayStation ब्लूटूथ ड्रायव्हर तपासत आहे…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>या PC चा ब्लूटूथ रेडिओ वाचत आहे…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>कंट्रोलर त्याच्या USB केबलवर उघडत आहे…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>या PC चा ब्लूटूथ पत्ता कंट्रोलरमध्ये लिहित आहे…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Windows ब्लूटूथमध्ये कंट्रोलर नोंदवत आहे…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>ब्लूटूथ रीस्टार्ट करत आहे…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>पेअरिंग थांबले: Windows ने PadForge ला कंट्रोलर किंवा ब्लूटूथ सेटिंग्जचा अॅक्सेस नाकारला. तपशील डायग्नोस्टिक्स लॉगमध्ये आहेत.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>पेअरिंग थांबले: कंट्रोलर किंवा ब्लूटूथ रेडिओ वाचणे किंवा लिहिणे अयशस्वी झाले. तपशील डायग्नोस्टिक्स लॉगमध्ये आहेत.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>PadForge ला अपेक्षित नसलेल्या त्रुटीवर पेअरिंग थांबले. तपशील डायग्नोस्टिक्स लॉगमध्ये आहेत.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 किंवा नंतरची आवृत्ती आवश्यक</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>त्याची लायब्ररी सापडली पण लोड केली नाही, कारण फक्त प्रशासकच ती बदलू शकतात आणि Logitech ने तिच्यावर स्वाक्षरी केली आहे हे PadForge ला खात्रीने कळले नाही</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>त्याची लायब्ररी सापडली पण वापरता आली नाही, आणि कारण डायग्नोस्टिक्स लॉगमध्ये आहे</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software सुरू करा</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control असलेल्या फोनची वाट पाहत आहे</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>फोनवर</value></data>
@@ -5578,6 +5658,8 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>dhd64.dll निवडा…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension च्या लायब्ररीची ही प्रत इतर कोणत्याही प्रतीऐवजी लोड करते. दुसऱ्या प्रतीवर उघडा असलेला Falcon बंद होऊन या प्रतीवर पुन्हा उघडतो. SDK इन्स्टॉल करत असलेल्या प्रती याशिवायही सापडतात.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|लायब्ररी (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK डाउनलोड पेज उघडले नाही: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK डाउनलोड पेज अजून उघडले नाही: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon ड्रायव्हर इन्स्टॉल करा</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>SDK फोल्डरमधील Force Dimension चा ड्रायव्हर, ड्रायव्हर नसलेल्या Falcon वर इन्स्टॉल करते. Force Dimension वर विश्वास ठेवायचा का, असे Windows आधी विचारू शकते.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension चा SDK मिळवा</value></data>
@@ -5779,6 +5861,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>नवीन कंट्रोलर</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>सेटिंग्ज</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>प्रत्येक अक्ष, बटण आणि सेन्सर</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>स्क्रिप्ट वापरत असलेल्या नावांनुसार त्याचे नियंत्रण</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>दाबलेली: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>आयडी, पाथ, क्षमता, रॉ जॉयस्टिक मोड सक्तीने वापरा</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>आयडी, पाथ, क्षमता</value></data>
@@ -5908,8 +5991,13 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>काढत आहे…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>अपडेट करत आहे…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>ते पूर्ण झाले नाही: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge ची नोंद आणि स्किल राहतात, कारण {0} त्याच सेटिंग्ज फाइल आणि स्किल फोल्डरमधून वाचते.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge ची नोंद राहते, कारण {0} त्याच सेटिंग्ज फाइलमधून वाचते.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge या प्रोग्राममधून काढले आहे. त्याचे स्किल राहते, कारण {0} त्याच फोल्डरमधून स्किल वाचते.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ला {0} मधील सेटिंग्ज वाचता येत नाहीत, म्हणून PadForge जोडले आहे की नाही ते त्याला माहीत नाही.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>जोडले. PadForge ला त्याचे स्किल फोल्डर वाचता आले नाही.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>कॉपी केले.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>कॉपी केले नाही: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>कॉपी केले नाही. Windows ने PadForge ला क्लिपबोर्ड वापरू दिला नाही.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>परवानगी दिलेले प्रोग्राम</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>वाचा किंवा त्याहून जास्त हवे असलेला प्रोग्राम पहिल्यांदा कनेक्ट होताना एकदा विचारतो आणि त्याने मागितलेला स्तर मिळवतो, वरील स्तरापर्यंत. तुम्ही वर जोडलेल्या असिस्टंटला त्याद्वारे परवानगी मिळते.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -5925,6 +6013,8 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>जॉयस्टिक. PadForge ते रॉ वाचते, म्हणून SDL चे मॅपिंग वापरले जात नाही.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>तुमच्या ओळीने गेमपॅडसारखी मांडलेली जॉयस्टिक.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>इंजिन चालू असताना SDL डिव्हाइसेस वाचते.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>डिव्हाइस जोडलेले नाही. ते जोडले की SDL ते वाचते.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ने PadForge ला या डिव्हाइसचे वाचन दिले नाही.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>अंगभूत समुदाय प्रत, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>डाउनलोड केले {0}</value></data>
@@ -5962,6 +6052,11 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>टर्बो, टॉगल आणि इतर क्रिया</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} आणि {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>कॉपी करायला काही नाही: SDL कडे या डिव्हाइसचे मॅपिंग नाही आणि ते कोणत्याही कंट्रोलरवर नाही.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>कॉपी करायला काही नाही: PadForge ला या डिव्हाइससाठी SDL चे मॅपिंग वाचता येत नाही आणि त्याच्या कंट्रोलरच्या एकाही ओळीतून SDL च्या रूपाला चालणारे बाइंडिंग मिळत नाही.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>कॉपी करायला काही नाही: SDL कडे या डिव्हाइसचे मॅपिंग नाही आणि {0} ची एकही ओळ त्याची बटणे, अक्ष किंवा हॅट SDL च्या रूपाला चालेल अशा प्रकारे वाचत नाही.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>कॉपी करायला काही नाही: SDL कडे या डिव्हाइसचे मॅपिंग नाही आणि {0} च्या ओळी ते फक्त {1} साठी वाचतात, जे SDL च्या रूपात बसत नाही.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>कॉपी करायला काही नाही: PadForge ला या डिव्हाइससाठी SDL चे मॅपिंग आता वाचता येत नाही आणि ते कोणत्याही कंट्रोलरवर नाही.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>कॉपी करायला काही नाही: PadForge ला या डिव्हाइससाठी SDL चे मॅपिंग आता वाचता येत नाही आणि {0} च्या एकाही ओळीतून SDL च्या रूपाला चालणारे बाइंडिंग मिळत नाही.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>दुसरा प्रोग्राम क्लिपबोर्ड वापरत आहे. काहीही कॉपी झाले नाही.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>तुमची ओळ काढली. डिव्हाइस आधी जसे वाचले जायचे तसेच वाचले जाते.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL च्या लेआउटवरून पुन्हा मॅप केले: {0}.</value></data>
@@ -5982,6 +6077,8 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge जवळील ओळी</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>एकही ओळ जुळत नाही.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>निवडलेली ओळ {0} ला त्याच्या स्वतःच्या ID खाली लागू केली जाते, पेस्ट करा प्रमाणेच तपासणी आणि निवडीतून.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>इंजिन थांबलेले आहे, म्हणून यादीत SDL कडे असलेल्या ओळी नाहीत, म्हणजे त्याच्या स्वतःच्या आणि आत बसवलेली समुदाय प्रत. इंजिन चालू झाल्यावर त्या यादीत येतात.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL ने वेळेत उत्तर दिले नाही, म्हणून यादीत त्याच्याकडे असलेल्या ओळी नाहीत, म्हणजे त्याच्या स्वतःच्या आणि आत बसवलेली समुदाय प्रत.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL मॅपिंग ओळ</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>या डिव्हाइससाठी ओळ.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>अंदाजे लेआउट.</value></data>
@@ -5994,14 +6091,14 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} फील्ड, दुसऱ्या बस किंवा आवृत्तीवरील त्याच विक्रेत्याच्या आणि उत्पादनाच्या. ती या डिव्हाइसच्या स्वतःच्या ID खाली ठेवली जाते.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} फील्ड, दुसऱ्या डिव्हाइसची ओळ. ती या डिव्हाइसच्या स्वतःच्या ID खाली ठेवली जाते.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} फील्ड. SDL हे डिव्हाइस वाचत नाही, म्हणून PadForge त्याचे इनपुट ओळीनुसार मांडते.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge कडे या फील्डसाठी साधे बटण किंवा अक्ष नाही आणि ते वगळले जातात: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} फील्ड, डिव्हाइसच्या अक्ष, बटणे आणि हॅट्सवरून. इनपुट चाचणी मध्ये तपासा, मग ते ठेवा किंवा येथे बदला.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>यामुळे {0} कसे वाचले जाते ते बदलते. {1} मधील त्याच्या ओळी नवीन लेआउटवरून पुन्हा मॅप केल्या जातात.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>यामुळे {0} कसे वाचले जाते ते बदलते. ते कोणत्याही कंट्रोलरवर नाही, म्हणून कोणत्याही ओळी बदलत नाहीत.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} वाचणारे प्रोफाइल शॉर्टकट ते ज्या इनपुटवर सेट होते ते ठेवतात.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>ही ओळ PadForge.xml मध्ये तुमची म्हणून ठेवली जाते आणि या डिव्हाइससाठी इतर प्रत्येक स्रोतावर वरचढ ठरते. माझे काढा जुनी ओळ आणि जुन्या ओळी परत ठेवते.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>या ओळी PadForge.xml मध्ये तुमच्या म्हणून ठेवल्या जातात आणि त्यांच्या डिव्हाइससाठी इतर प्रत्येक स्रोतावर वरचढ ठरतात. कंट्रोलर डेटाबेस ओळीच्या अधिक मधील साफ करा त्या काढते.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows साठी {0} ओळी. इतर सिस्टिमसाठी {1} वगळल्या आहेत.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows साठी {0} ओळ. इतर सिस्टिमसाठी {1} वगळल्या आहेत.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Windows साठी {0:N0} ओळी.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>सर्व {0:N0} जोडल्या जातील. PadForge तुमच्या {1:N0} ओळींपर्यंत ठेवते.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>ती जोडली जाईल. PadForge तुमच्या {1:N0} ओळींपर्यंत ठेवते.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>तुमच्या {0:N0} आता ठेवलेल्या आहेत, म्हणून यातील {1:N0} जोडल्या जातील आणि {2:N0} जोडल्या जाणार नाहीत.</value></data>
@@ -6011,7 +6108,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>हा मजकूर SDL च्या कंट्रोलर डेटाबेसची ओळ नाही: 32 हेक्स अंकांचा ID, एक नाव, मग a:b0 सारखी फील्ड.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>या ओळी इतर सिस्टिमसाठी आहेत. PadForge Windows साठीच्या किंवा कोणत्याही विशिष्ट सिस्टिमसाठी नसलेल्या ओळी वाचते.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ओळीचा ID डिव्हाइसचा नाही. त्याला 32 हेक्स अंक हवेत.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>ओळीचे नाव रिकामे आहे, 128 अक्षरांपेक्षा मोठे आहे किंवा SDL फील्ड म्हणून वाचतो असे अक्षर त्यात आहे.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>ओळीचे नाव रिकामे आहे, 128 अक्षरांपेक्षा मोठे आहे, SDL वाचत असलेला फील्ड मार्कर, जसे “type:”, त्यात आहे, किंवा अक्षरे, अंक, विरामचिन्हे, चिन्हे आणि साध्या स्पेसशिवाय दुसरे अक्षर त्यात आहे.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>ओळीत हिंट किंवा Android फील्ड आहे, जे PadForge घेत नाही.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>ओळीत SDL ला माहीत नसलेले फील्ड आहे.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>बाइंडिंग SDL च्या स्वरूपात नाही, जसे b3, a2, +a2, a2~ किंवा h0.4.</value></data>
@@ -6022,8 +6119,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>तुमच्या ओळी</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>तुम्ही येथे जोडलेल्या किंवा डिव्हाइसच्या SDL मॅपिंग कार्डवर पेस्ट केलेल्या ओळी त्यांच्या डिव्हाइससाठी इतर प्रत्येक स्रोतावर वरचढ ठरतात आणि रीसेटनंतरही राहतात.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>फाइल किंवा क्लिपबोर्डवरून ओळी जोडा…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} ओळी, प्रत्येक एका डिव्हाइससाठी, इतर प्रत्येक स्रोतावर तुमच्या.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ओळ, एका डिव्हाइससाठी, इतर प्रत्येक स्रोतावर तुमची.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} ओळी, तुमच्या ओळी इतर प्रत्येक स्रोताच्या वर.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>अजून नाही.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>तुमच्या SDL_GAMECONTROLLERCONFIG व्हेरिएबलमध्ये PadForge न ठेवणाऱ्या {0} ओळी आहेत. फाइल किंवा क्लिपबोर्डवरून ओळी जोडा त्यांच्यासह उघडते.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>तुमच्या SDL_GAMECONTROLLERCONFIG व्हेरिएबलमध्ये PadForge न ठेवणारी {0} ओळ आहे. फाइल किंवा क्लिपबोर्डवरून ओळी जोडा तिच्यासह उघडते.</value></data>
@@ -6042,7 +6138,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>थांबवले. त्याचे शेवटचे शब्द: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>ते सुरू होऊ शकले नाही.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>ते आता या PC वर नाही.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>या PC वर कोणताही टनेल प्रोग्राम सापडला नाही. PadForge cloudflared, devtunnel, ngrok आणि Tailscale Funnel सोबत किंवा तुमच्या स्वतःच्या टनेलच्या पत्त्यासोबत चालते.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge ला या PC वर cloudflared, devtunnel, ngrok किंवा Tailscale Funnel यापैकी काहीही सापडले नाही. PadForge डाउनलोड करते तो ChatGPT Secure MCP Tunnel निवडा किंवा तुमच्या स्वतःच्या टनेलचा पत्ता द्या.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge ला सार्वजनिक पत्ता देण्यासाठी टनेल निवडा.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>या PC वर आणखी: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ज्याचा पत्ता तोच राहतो</value></data>
@@ -6050,7 +6146,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>तुमचा स्वतःचा टनेल http://127.0.0.1:{0} वर चालवा आणि त्याचा https पत्ता पेस्ट करा. नामित Cloudflare टनेल, कायम dev टनेल, Tailscale Funnel आणि ngrok चे स्वतःचे डोमेन त्यांचा पत्ता तसाच ठेवतात.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>तुमचा टनेल देतो तसा, /mcp खेरीज कोणताही पाथ नसलेला https पत्ता पेस्ट करा.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge चा वेब हेल्पर सुरू होत आहे.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge चा वेब हेल्पर थांबला ({0}). तो पुन्हा सुरू करण्यासाठी Reach PadForge From the Web बंद करून पुन्हा चालू करा.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge चा वेब हेल्पर थांबला ({0}). PadForge तो सुरू करण्याचा प्रयत्न करत राहते.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>पत्ता</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>अजून सार्वजनिक पत्ता नाही.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude मध्ये जोडा</value></data>
@@ -6089,11 +6185,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ते कोड {0} सह संपले</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>ऑटोमेशन बंद आहे, म्हणून कोणताही वेब असिस्टंट PadForge पर्यंत पोहोचत नाही. ऑटोमेशन चालू झाल्यावर वेब हेल्पर सुरू होतो.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>तपासत आहे…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>इन्स्टॉल केलेले नाही.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>इन्स्टॉल केले आणि अद्ययावत. स्क्रिप्ट {0} ने सुरू होते.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} साठी इन्स्टॉल केले आणि अद्ययावत. स्क्रिप्ट {1} ने सुरू होते.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>इन्स्टॉल केले. या PadForge कडे नवीन प्रत आहे.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} साठी इन्स्टॉल केले. या PadForge कडे नवीन प्रत आहे.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>इन्स्टॉल करत आहे…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ते तपासू शकले नाही: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>इन्स्टॉल करा PadForge ची लायब्ररी त्या भाषेला सापडेल तिथे ठेवते. ती लोड करणारी स्क्रिप्ट वरील स्तरावर डिव्हाइसेस वाचते आणि मॅपिंग चालवते.</value></data>
@@ -6101,22 +6192,24 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>इन्स्टॉल केलेल्या प्रती</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>सर्व काढा</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>काढले.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge ची लायब्ररी {0} साठी इंस्टॉल केलेली आणि अद्ययावत आहे. स्क्रिप्ट {1} ने सुरू होते.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>{0} साठीची PadForge ची लायब्ररी या PadForge च्या प्रतीपेक्षा वेगळी आहे.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge ची लायब्ररी {0} साठी इंस्टॉल केलेली नाही.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>स्क्रिप्ट ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>त्याचा स्क्रिप्ट ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>स्क्रिप्ट त्याच्या कंट्रोलना {0} नावाने ओळखतात.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>स्क्रिप्ट त्याच्या कीजना KeyA, KeySpace, KeyLeftShift अशा नावांनी आणि प्रत्येक कीला तिच्या कोडने ओळखतात, Vk0 ते Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>या नेटवर्कवर {1} वरून {0}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0} च्या त्याच प्रमाणपत्र कीने सही केलेली नवीन आवृत्ती मंजूर करा आणि रीस्टार्ट करा शिवाय रीस्टार्ट होते. इतर कोणत्याही बदलासाठी आधी तुम्हाला विचारले जाते.</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>त्याच प्रमाणपत्र कीने सही केलेली नवीन आवृत्ती घेतली</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>पत्ता</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge असा पत्ता घेते जो https:// ने सुरू होतो आणि होस्टचे नाव देतो, डीफॉल्ट पोर्टवर, वापरकर्तानाव किंवा पासवर्डशिवाय.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge https:// ने सुरू होणारा आणि होस्ट नाव असलेला, डिफॉल्ट पोर्टवरील, वापरकर्ता नाव, पासवर्ड किंवा # नंतरचा भाग नसलेला, 2,048 अक्षरांपर्यंतचा पत्ता घेते.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>पोर्ट</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>बदला…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>कॉल आणि त्यांची की या नेटवर्कवरून एन्क्रिप्ट न करता जातात. Windows त्यांना फक्त खासगी नेटवर्कवर येऊ देते.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>कॉल आणि त्यांची की या नेटवर्कवरून एनक्रिप्ट न करता जातात. या पोर्टसाठी PadForge जो Windows फायरवॉल नियम बनवते तो फक्त खाजगी नेटवर्कचे नाव घेतो.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>पोर्ट {0} दुसऱ्या प्रोग्रामकडून वापरात आहे. या नेटवर्कवरून PadForge पर्यंत पोहोचण्यासाठी तो बदला.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ने PadForge च्या हेल्परला पोर्ट {0} वर ऐकू दिले नाही. PadForge प्रशासक अधिकारांसह ते परवानगी देते, म्हणून PadForge त्यांच्यासह सुरू करा आणि हे बंद करून पुन्हा चालू करा.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows कडे पोर्ट {0} वर PadForge च्या हेल्परसाठी कोणतेही आरक्षण नाही. हे बंद करून पुन्हा चालू करा, म्हणजे PadForge ते पुन्हा तयार करते.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge चा हेल्पर पोर्ट {0} वर ऐकू शकला नाही. पोर्ट बदला किंवा हे बंद करून पुन्हा चालू करा.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge चा हेल्पर थांबला ({0}). तो पुन्हा सुरू करण्यासाठी Reach PadForge From This Network बंद करून पुन्हा चालू करा.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge चा हेल्पर थांबला ({0}). PadForge तो सुरू करण्याचा प्रयत्न करत राहते.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>ऑटोमेशन बंद आहे, म्हणून या नेटवर्कवरील कोणताही असिस्टंट PadForge पर्यंत पोहोचत नाही. ऑटोमेशन चालू झाल्यावर हेल्पर सुरू होतो.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>या PC ला आता खासगी नेटवर्कवर पत्ता नाही.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>या नेटवर्कवरील असिस्टंट</value></data>
@@ -6133,7 +6226,23 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Reach_LocalCommands" xml:space="preserve"><value>कमांड लाइनवरील कमांड्स अजूनही PadForge पर्यंत पोहोचतात, जशा प्रत्येक प्रोग्रामसाठी पोहोचतात.</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>तो फक्त स्वतःची डिव्हाइसेस चालवण्यास सांगतो.</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>ते एकदाच विचारते. तुम्ही ते काढू शकता किंवा त्याची पोहोच ऑटोमेशन पानावर बदलू शकता.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>चालू आहे, तुमच्या अधिकारांसह, आणि तयार आहे. ChatGPT या टनेलमधून PadForge पर्यंत स्वतःच्या साइन इनशिवाय पोहोचते, आणि फक्त तुमच्या OpenAI संस्थेतूनच. ते PadForge सोबत पुन्हा सुरू होते.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>चालू आहे, तुमच्या अधिकारांसह. ते OpenAI ने टनेल तयार असल्याचे सांगण्याची वाट पाहते.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge की फक्त तुमच्यासाठी एन्क्रिप्ट करून ठेवते. रिकामा बॉक्स ती विसरतो. ChatGPT वरील स्तरावर काम करते.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge प्लगइन किट जतन करू शकले नाही.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge हालचाल {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>ध्वनी{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>आयकॉन{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>इतर सिस्टीमच्या {0:N0} ओळी वगळल्या आहेत.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ने ते तुमच्या स्वतःच्या अधिकारांसह सुरू केले नाही.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>ते {0} सेकंदांत संपले नाही.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>ते कोड {0} सह संपले आणि कारण दिले नाही.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ला {0} मधील सेटिंग्ज वाचता येत नाहीत, म्हणून त्याने फाइल जशी आहे तशी ठेवली.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge ने {0} लिहिली नाही, म्हणून त्याने ती जशी आहे तशी ठेवली.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows कडे तुमच्यासाठी दस्तऐवज फोल्डरचे नाव नाही.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ला {0} साठी तुमचे कोणतेही फोल्डर सापडत नाही.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0} ची स्वतःची कमांड कोड {1} सह संपली.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0} ची कमांड या PC वर नाही.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows ने PadForge ला आवश्यक फाइल वाचू किंवा लिहू दिली नाही.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ला Python सापडत नाही: कोणतेही नोंदवलेले नाही, Microsoft Store मधून इंस्टॉल केलेले नाही, py लाँचरने सूचीबद्ध केलेले नाही आणि तुमच्या PATH वर नाही.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge ला सापडलेल्या कोणत्याही Python ने {0} सेकंदांत उत्तर दिले नाही.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>या चालवण्याने PadForge ला माहीत असलेले कोणतेही कारण दिले नाही.</value></data>
 </root>

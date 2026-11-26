@@ -37,7 +37,7 @@ namespace PadForge.Tests
         private readonly bool[] _created = (bool[])SettingsManager.SlotCreated.Clone();
         private readonly bool[] _enabled = (bool[])SettingsManager.SlotEnabled.Clone();
         private readonly MappingSet _set = new();
-        private readonly Func<string, BlissBoxGamepadMap> _placementProvider = SourceCoercion.GamepadPlacementProvider;
+        private readonly Func<string, PadForge.Engine.Common.GamepadPlacement> _placementProvider = SourceCoercion.GamepadPlacementProvider;
         private readonly Dictionary<string, BlissBoxGamepadMap> _placements = new(StringComparer.OrdinalIgnoreCase);
 
         public AnyDeviceMissingAxisTests()
@@ -1552,6 +1552,45 @@ namespace PadForge.Tests
             Array.Fill(port.InputState.Povs, -1);
             if (placement != null) _placements[port.InstanceGuidString] = placement;
             return port;
+        }
+
+        /// <summary>A device SDL does not read, a plugin's, laid out as a
+        /// gamepad by the user's row: the Gamepad names read it through the
+        /// row's places, as its own default rows do.</summary>
+        [Fact]
+        public void APluginsDeviceLaidOutByTheUsersRow_AnswersTheGamepadNamesThroughIt()
+        {
+            var savedMine = ControllerDatabaseMine.Current;
+            try
+            {
+                var pad = Row(new ShapedDevice { NumAxes = 6, DeviceType = InputDeviceType.Gamepad, Objects = Enumerable.Range(0, 10).Select(ButtonObject).ToArray() });
+                pad.CapType = InputDeviceType.Gamepad;
+                Assert.True(string.IsNullOrEmpty(pad.SdlGuid));
+                string id = pad.InstanceGuid.ToString("N");
+                Assert.True(SdlMappingRow.TryParse(id + ",Pedal Box,a:b2,b:b0,dpup:b8,dpdown:b9,platform:Windows,", out var row, out _));
+                ControllerDatabaseMine.Current = ControllerDatabaseMine.Empty.With(new ControllerDatabaseMineRow(id, row, DateTime.UnixEpoch, null,
+                    pad.InstanceGuid, Array.Empty<ControllerDatabaseBefore>()));
+                SourceCoercion.GamepadPlacementProvider = InputManager.GamepadPlacementFor;
+                AddRow("ButtonA", Any("Gamepad ButtonA"));
+
+                pad.InputState.Buttons[0] = true;
+                Assert.False(Pass(pad).IsButtonPressed(Gamepad.A));
+                pad.InputState.Buttons[2] = true;
+                Assert.True(Pass(pad).IsButtonPressed(Gamepad.A));
+
+                // The row's D-pad on buttons 8 and 9 answers the D-pad names.
+                AddRow("DPadUp", Any("Gamepad DPadUp"));
+                AddRow("DPadDown", Any("Gamepad DPadDown"));
+                Assert.False(Pass(pad).IsButtonPressed(Gamepad.DPAD_UP));
+                pad.InputState.Buttons[8] = true;
+                var gp = Pass(pad);
+                Assert.True(gp.IsButtonPressed(Gamepad.DPAD_UP));
+                Assert.False(gp.IsButtonPressed(Gamepad.DPAD_DOWN));
+            }
+            finally
+            {
+                ControllerDatabaseMine.Current = savedMine;
+            }
         }
 
         [Fact]

@@ -74,6 +74,25 @@ namespace PadForge.Tests
 
         private static string Declare(PluginSettingSet set, string line) => PluginLines.Answer(set, AutomationLine.Parse(line));
 
+        /// <summary>A screen reader reads a pad's position as its value and
+        /// hears it change as the arrow keys move it.</summary>
+        [Fact]
+        public void APadsPosition_IsItsScreenReaderValue()
+        {
+            WithAppResources(dispatcher =>
+            {
+                var pad = new PluginPad();
+                var peer = System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(pad);
+                var value = peer.GetPattern(System.Windows.Automation.Peers.PatternInterface.Value) as System.Windows.Automation.Provider.IValueProvider;
+                Assert.NotNull(value);
+                Assert.True(value.IsReadOnly);
+                Assert.Equal(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0}, {1:0}", 0, 0), value.Value);
+                pad.Position = new Point(10, -5);
+                Assert.Equal(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0}, {1:0}", 10, -5), value.Value);
+                Assert.ThrowsAny<InvalidOperationException>(() => value.SetValue("1, 1"));
+            });
+        }
+
         [Fact]
         public void EveryValueRow_ShowsItsReset_AtItsDefaultAndChanged_AndAStatusOrAButtonHasNone()
         {

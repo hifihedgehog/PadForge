@@ -9,7 +9,7 @@ using PadForge.Engine.Common;
 namespace PadForge.Services.NativeHost
 {
     /// <summary>The Strike 7 applet library's calls over the host's channel
-    /// (#597).</summary>
+    /// (#600).</summary>
     internal static class Strike7Ops
     {
         internal const int Load = 1, Open = 2, Close = 3, Draw = 4, TakeEvents = 5;
@@ -42,6 +42,27 @@ namespace PadForge.Services.NativeHost
         public void Serve(HostConnection channel)
         {
             IStrike7Library library = null;
+            var opened = new List<(IStrike7Library Library, ushort Applet)>();
+            try
+            {
+                Answer(channel, ref library, opened);
+            }
+            finally
+            {
+                // The library stays loaded while the host runs, so an applet
+                // of a channel that ended would stay open on the keyboard and
+                // feed events nothing takes. PadForge opens its own again in
+                // the next channel.
+                foreach (var (owner, applet) in opened)
+                {
+                    try { owner.Close(applet); }
+                    catch (Exception) { }
+                }
+            }
+        }
+
+        private void Answer(HostConnection channel, ref IStrike7Library library, List<(IStrike7Library Library, ushort Applet)> opened)
+        {
             while (channel.Receive(out var r))
             {
                 int op = r.Int();
@@ -78,6 +99,7 @@ namespace PadForge.Services.NativeHost
                         byte[] icon = r.Bytes(Strike7Ops.MaxIcon);
                         r.End();
                         ushort applet = library?.Open(name, width, height, icon, e => _events.Enqueue(e)) ?? 0;
+                        if (applet != 0) opened.Add((library, applet));
                         sent = channel.Send(w => w.Int(applet));
                         break;
                     }
@@ -86,6 +108,8 @@ namespace PadForge.Services.NativeHost
                         ushort applet = (ushort)r.Int(0, ushort.MaxValue);
                         r.End();
                         library?.Close(applet);
+                        var closed = (library, applet);
+                        opened.RemoveAll(o => o.Library == closed.library && o.Applet == closed.applet);
                         sent = channel.Send(w => { });
                         break;
                     }
@@ -107,8 +131,12 @@ namespace PadForge.Services.NativeHost
                         sent = channel.Send(w =>
                         {
                             w.Int(taken.Count);
+                            // The library gives a touch's place as it read
+                            // it, and PadForge reads it within the screen.
                             foreach (var e in taken)
-                                w.Int((int)e.Kind).Int(e.AppletId).Int(e.EndpointId).Int(e.X).Int(e.Y).Bool(e.Pressed);
+                                w.Int((int)e.Kind).Int(e.AppletId).Int(e.EndpointId)
+                                 .Int(Math.Clamp(e.X, 0, Strike7Library.ScreenWidth - 1))
+                                 .Int(Math.Clamp(e.Y, 0, Strike7Library.ScreenHeight - 1)).Bool(e.Pressed);
                         });
                         break;
                     }
@@ -125,8 +153,10 @@ namespace PadForge.Services.NativeHost
     /// the host. While an applet is open its events are taken every
     /// <see cref="EventPollMs"/>, the screen loop's own pace, and handed to
     /// the subscriber, each field held to the screen's bounds. A host that
-    /// ended is started again at the next poll, the library loaded there
-    /// and the applet opened again under the ID the screen already holds,
+    /// ended is started again at the next poll, or, when it cannot be
+    /// reached then, at a poll every <see cref="RetryMs"/> after, the library
+    /// loaded there and the applet opened again under the ID the screen
+    /// already holds,
     /// and the screen hears the keyboard's reset, after which the user picks
     /// the applet again as after an unplug.
     /// </summary>
@@ -134,7 +164,13 @@ namespace PadForge.Services.NativeHost
     {
         internal const int EventPollMs = 20;
 
+        /// <summary>How often a host that could not be reached is tried
+        /// again: the first step of the host's own restart pause
+        /// (NativeHost.Failed).</summary>
+        internal const int RetryMs = 1000;
+
         private readonly NativeHost _host;
+        private long _nextTry;
         private readonly object _gate = new();
         private HostConnection _channel;
         private Timer _poll;
@@ -240,7 +276,7 @@ namespace PadForge.Services.NativeHost
             if (appletId == 0 || bgra == null || bgra.Length != Strike7Ops.ScreenBytes) return;
             lock (_gate)
             {
-                if (_channel == null || _channel.Broken || appletId != _screenApplet) return;
+                if (_channel == null || _channel.Broken || appletId != _screenApplet || _hostApplet == 0) return;
                 ushort hostApplet = _hostApplet;
                 _channel.Call(w => w.Int(Strike7Ops.Draw).Int(hostApplet).Int(endpointId).Bytes(bgra), null);
             }
@@ -254,7 +290,11 @@ namespace PadForge.Services.NativeHost
             var events = new List<Strike7Event>();
             lock (_gate)
             {
-                if (_subscriber == null || _channel == null) return;
+                if (_subscriber == null) return;
+                // A host that could not be reached at the break, as one in
+                // its restart's pause, or that opened no applet, is tried
+                // again, once every RetryMs.
+                if ((_channel == null || _hostApplet == 0) && !Reopen()) return;
                 if (!_channel.Call(w => w.Int(Strike7Ops.TakeEvents), r =>
                     {
                         int count = r.Int(0, Strike7Ops.MaxEvents);
@@ -272,7 +312,9 @@ namespace PadForge.Services.NativeHost
                     // one, and the screen hears a reset.
                     events.Clear();
                     events.Add(new Strike7Event(Strike7EventKind.Reset, _screenApplet, 0, 0, 0, false));
-                    _hostApplet = Live() ? OpenInHost(_name, _iconWidth, _iconHeight, _icon) : (ushort)0;
+                    _hostApplet = 0;
+                    _nextTry = 0;
+                    Reopen();
                 }
                 // The screen knows its applet by the ID it was first given.
                 for (int i = 0; i < events.Count; i++)
@@ -284,6 +326,18 @@ namespace PadForge.Services.NativeHost
                 try { subscriber?.Invoke(e); }
                 catch (Exception) { }
             }
+        }
+
+        /// <summary>Opens the applet again in the host, starting or loading
+        /// it there as needed, at most once every <see cref="RetryMs"/>.
+        /// Whether the applet is open there. Caller holds the gate.</summary>
+        private bool Reopen()
+        {
+            long now = Environment.TickCount64;
+            if (now < _nextTry) return false;
+            _nextTry = now + RetryMs;
+            _hostApplet = Live() ? OpenInHost(_name, _iconWidth, _iconHeight, _icon) : (ushort)0;
+            return _hostApplet != 0;
         }
     }
 }

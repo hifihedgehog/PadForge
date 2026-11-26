@@ -102,9 +102,11 @@ namespace PadForge.Engine.Common.Mapping
         // Signed winding accumulator per row (deg, NOT clamped. Overshoot is intentional).
         private Dictionary<(int slot, string target, int srcIdx), WindingState> _windingState = new();
         // At-lock edge tracking per row, drives the haptic feedback layer.
-        private Dictionary<(int slot, string target, int srcIdx), LockState> _lockState = new();
+        // Keyed by the row's layer as a travel source's wheel is. The
+        // steering kinds keep no layer and read as Base.
+        private Dictionary<(int slot, string target, string layer, int srcIdx), LockState> _lockState = new();
 
-        // ── Mouse Travel (#597) ──
+        // ── Mouse Travel (#600) ──
         /// <summary>One "Mouse Travel" source: where its wheel stands, and
         /// what the frame in hand has read so far. The wheel is kept in
         /// counts, so a mouse's whole counts add up with nothing lost, and
@@ -134,6 +136,13 @@ namespace PadForge.Engine.Common.Mapping
             // A relative axis's last reading on each device, and the frame
             // it was read in (#600). Made on the first relative read only.
             public Dictionary<string, (long reading, bool hid, long seq)> Last;
+            // The sign from the wheel to the axis the row writes, which From
+            // the Game's Force works in: the lane that writes the axis gives
+            // it, and a lane that does not keeps the one last given. Folds:
+            // the axis reads how far the wheel is from center either way, so
+            // the sign turns over with the wheel's side.
+            public double ForceSign = 1.0;
+            public bool ForceFolds;
         }
 
         /// <summary>One Mouse Speed or Mouse Position source that steers by
@@ -160,9 +169,16 @@ namespace PadForge.Engine.Common.Mapping
             public long Clock;
             public long WindowSeq = -1;
             public double CountsX, CountsY;  // the window's speed after this frame's counts
+            // The devices whose counts this frame's window holds, so each
+            // adds its counts once, as a travel source's do.
+            public int ReadCount;
+            public readonly CustomInputState[] Read = new CustomInputState[MaxTravelReads];
         }
 
-        private Dictionary<(int slot, string target, int srcIdx), MouseSteerState> _mouseSteerState = new();
+        // Keyed by the row's layer as the Toggle latch is: a Base row and a
+        // shift layer's row on the same target keep their own wheel, so a
+        // row whose layer closes is not read, and comes back at center.
+        private Dictionary<(int slot, string target, string layer, int srcIdx), MouseSteerState> _mouseSteerState = new();
 
         /// <summary>The devices one frame folds into a "Mouse Travel"
         /// source. A pinned source reads one. An any-device source reads
@@ -184,7 +200,7 @@ namespace PadForge.Engine.Common.Mapping
         /// the lock, in m/s: 200 km/h.</summary>
         internal const double TravelLockSpeed = 200.0 / 3.6;
 
-        private Dictionary<(int slot, string target, int srcIdx), MouseTravelState> _mouseTravelState = new();
+        private Dictionary<(int slot, string target, string layer, int srcIdx), MouseTravelState> _mouseTravelState = new();
 
         // The road and the tire model for the frame in hand: every "Mouse
         // Travel" source of the slot reads one car, so the provider is
@@ -409,7 +425,7 @@ namespace PadForge.Engine.Common.Mapping
         public void ResetMotionNeutral() => _motionNeutral.Clear();
 
         /// <summary>Puts every "Mouse Travel" wheel of the slot straight
-        /// (the Center Mouse Steering macro action, #597): the position and
+        /// (the Center Mouse Steering macro action, #600): the position and
         /// its smoothed output go to center, the counts the frame in hand
         /// has read are spent, so a later read in the same frame answers
         /// center too, and a Toggle keeps the state its input last set.
@@ -886,7 +902,7 @@ namespace PadForge.Engine.Common.Mapping
             return output;
         }
 
-        // ── Mouse Travel tick (#597) ──
+        // ── Mouse Travel tick (#600) ──
         // The models are the ones mouse steering tools and driving games
         // use: counts added up and held (Euro Truck Simulator 2, Assetto
         // Corsa), the same with a return while nothing steers (Elite's
@@ -932,12 +948,24 @@ namespace PadForge.Engine.Common.Mapping
         /// axis marked as moving relatively, whose counts are the change in
         /// its reading since that device's last pass. Null reads it under
         /// one key.</param>
+        /// <param name="forceSign">The sign from the wheel's travel to the
+        /// value of the axis the row writes, for From the Game's Force, whose
+        /// force pushes that axis toward lower values: 1 where the axis moves
+        /// with the wheel, -1 where it moves against it, 0 where the wheel
+        /// does not move it. The lane that writes the axis gives it. Null
+        /// keeps the sign the source was last given, 1 at first.</param>
+        /// <param name="forceFolds">With <paramref name="forceSign"/>: the axis
+        /// reads how far the wheel is from center either way (Half with
+        /// Either), so the sign is the one given on the positive side and the
+        /// other on the negative side.</param>
+        /// <param name="layer">The row's shift layer. A Base row and a layer's
+        /// row on the same target keep their own wheel.</param>
         public double TickMouseTravel(int slotIndex, string target, int sourceIndex,
             MappingSource src, CustomInputState state, double deltaSeconds, bool steerHeld,
-            string deviceKey = null)
+            string deviceKey = null, double? forceSign = null, bool forceFolds = false, string layer = null)
         {
             if (src == null || state == null) return 0;
-            var key = (slotIndex, target ?? "", sourceIndex);
+            var key = (slotIndex, target ?? "", LayerKey(layer), sourceIndex);
             var states = _mouseTravelState;
             if (!states.TryGetValue(key, out var st))
                 states[key] = st = new MouseTravelState();
@@ -977,6 +1005,11 @@ namespace PadForge.Engine.Common.Mapping
                     : SourceCoercion.MouseTravelCounts(state, src.Descriptor);
                 st.Held |= steerHeld;
             }
+            if (forceSign is double sign && double.IsFinite(sign))
+            {
+                st.ForceSign = Math.Clamp(sign, -1.0, 1.0);
+                st.ForceFolds = forceFolds;
+            }
 
             double countsToLock = MappingSource.EffectiveTravelCounts(src.ParamTravelCounts);
             // The mouse waits on its Steer input wherever the source holds
@@ -1011,7 +1044,11 @@ namespace PadForge.Engine.Common.Mapping
             {
                 double force = SourceCoercion.MouseTravelForceProvider?.Invoke(slotIndex) ?? 0;
                 if (!double.IsFinite(force)) force = 0;
-                travel += moved - Math.Clamp(force, -1.0, 1.0) * TravelForceRate * dt * countsToLock;
+                // A positive force pushes the axis the row writes toward
+                // lower values, so it turns the wheel the way that lowers
+                // the axis: against the travel where the axis moves with it.
+                double toAxis = st.ForceFolds ? st.ForceSign * Math.Sign(travel) : st.ForceSign;
+                travel += moved - toAxis * Math.Clamp(force, -1.0, 1.0) * TravelForceRate * dt * countsToLock;
             }
             else
             {
@@ -1145,31 +1182,48 @@ namespace PadForge.Engine.Common.Mapping
         /// (the reference's Speed style, MouseStick.cs Value()). The Steer
         /// input gates it as on a travel source: let go under While Held and
         /// Stay the stick stays where it was, and otherwise it is at center
-        /// at once.
+        /// at once. Each device read in a frame adds its counts to the
+        /// frame's once, as on a travel source, so an any-device source
+        /// reads every mouse on its slot.
         /// </summary>
         public double TickMouseSpeed(int slotIndex, string target, int sourceIndex,
-            MappingSource src, CustomInputState state, double deltaSeconds, bool steerHeld, bool y)
+            MappingSource src, CustomInputState state, double deltaSeconds, bool steerHeld, bool y,
+            string layer = null)
         {
             if (src == null || state == null) return 0;
-            var st = SteerStateFor(slotIndex, target, sourceIndex, steerHeld, out bool replay);
+            var st = SteerStateFor(slotIndex, target, sourceIndex, steerHeld, layer, out bool replay);
+            double dt = deltaSeconds > 0 ? deltaSeconds : 0;
+            bool fresh = st.ReadCount < MaxTravelReads;
+            for (int i = 0; fresh && i < st.ReadCount; i++)
+                if (ReferenceEquals(st.Read[i], state)) fresh = false;
+            if (fresh)
+            {
+                st.Read[st.ReadCount++] = state;
+                st.Window ??= new PadForge.Engine.Common.RelativeVelocityWindow();
+                if (st.WindowSeq != FrameSeq)
+                {
+                    // Once a frame, on its first read, steering or not, so
+                    // the window's clock keeps time.
+                    st.WindowSeq = FrameSeq;
+                    st.Clock += Math.Max(1L, (long)Math.Round(dt * System.Diagnostics.Stopwatch.Frequency));
+                    st.Window.Add(st.Clock, state.MouseRawDX, state.MouseRawDY, 0);
+                }
+                else if (state.MouseRawDX != 0 || state.MouseRawDY != 0)
+                {
+                    // Another device's counts in the same frame join the
+                    // frame's, and the frame is worked again with them.
+                    st.Window.AddToPass(state.MouseRawDX, state.MouseRawDY, 0);
+                    replay = false;
+                }
+                st.Window.CountsPerSecond(out float cx, out float cy, out _);
+                st.CountsX = cx;
+                st.CountsY = cy;
+            }
             if (replay) return st.Value;
 
             bool waits = !string.IsNullOrEmpty(src.GateDescriptor) || !string.IsNullOrEmpty(src.Gate2Descriptor);
             string steer = MappingSource.EffectiveMouseSteer(src.ParamTravelSteer, null, waits, holdsPosition: false);
             st.Steering = SteerOn(steer, st.Held, st.PrevHeld, st.SteeringStart, out _);
-            double dt = deltaSeconds > 0 ? deltaSeconds : 0;
-            if (st.WindowSeq != FrameSeq)
-            {
-                // Once a frame, on its first read, steering or not, so the
-                // window's clock keeps time.
-                st.WindowSeq = FrameSeq;
-                st.Window ??= new PadForge.Engine.Common.RelativeVelocityWindow();
-                st.Clock += Math.Max(1L, (long)Math.Round(dt * System.Diagnostics.Stopwatch.Frequency));
-                st.Window.Add(st.Clock, state.MouseRawDX, state.MouseRawDY, 0);
-                st.Window.CountsPerSecond(out float cx, out float cy, out _);
-                st.CountsX = cx;
-                st.CountsY = cy;
-            }
             if (!st.Steering)
             {
                 st.Speed = 0;
@@ -1202,10 +1256,11 @@ namespace PadForge.Engine.Common.Mapping
         /// <see cref="SourceCoercion.MouseCursorPointProvider"/>.</param>
         public double TickMousePosition(int slotIndex, string target, int sourceIndex,
             MappingSource src, double deltaSeconds, bool steerHeld, bool y,
-            (double x, double y, double centerX, double centerY, double unit)? pointer = null)
+            (double x, double y, double centerX, double centerY, double unit)? pointer = null,
+            string layer = null)
         {
             if (src == null) return 0;
-            var st = SteerStateFor(slotIndex, target, sourceIndex, steerHeld, out bool replay);
+            var st = SteerStateFor(slotIndex, target, sourceIndex, steerHeld, layer, out bool replay);
             if (replay) return st.Value;
 
             bool waits = !string.IsNullOrEmpty(src.GateDescriptor) || !string.IsNullOrEmpty(src.Gate2Descriptor);
@@ -1253,10 +1308,12 @@ namespace PadForge.Engine.Common.Mapping
         /// frame after a gap starts at center with steering off, and a
         /// second read in the same frame folds in its steer input and is
         /// answered with the frame's value (<paramref name="replay"/>)
-        /// unless the input it adds turns steering on or off.</summary>
-        private MouseSteerState SteerStateFor(int slotIndex, string target, int sourceIndex, bool steerHeld, out bool replay)
+        /// unless the input it adds turns steering on or off. Kept by the
+        /// row's layer.</summary>
+        private MouseSteerState SteerStateFor(int slotIndex, string target, int sourceIndex, bool steerHeld,
+            string layer, out bool replay)
         {
-            var key = (slotIndex, target ?? "", sourceIndex);
+            var key = (slotIndex, target ?? "", LayerKey(layer), sourceIndex);
             var states = _mouseSteerState;
             if (!states.TryGetValue(key, out var st))
                 states[key] = st = new MouseSteerState();
@@ -1279,6 +1336,8 @@ namespace PadForge.Engine.Common.Mapping
                 st.SpeedStart = st.Speed;
                 st.SteeringStart = st.Steering;
                 st.Held = steerHeld;
+                for (int i = 0; i < st.ReadCount; i++) st.Read[i] = null;
+                st.ReadCount = 0;
                 st.Seq = FrameSeq;
                 return st;
             }
@@ -1711,11 +1770,14 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         /// <summary>Returns and clears any pending at-lock edge for this row, for the
-        /// lock-feedback layer. <paramref name="isLeft"/> is set on an Enter edge.</summary>
-        public LockEdge TryGetLockEdgeTransition(int slotIndex, string target, int sourceIndex, out bool isLeft)
+        /// lock-feedback layer. <paramref name="isLeft"/> is set on an Enter edge.
+        /// <paramref name="layer"/> is the row's layer for a travel source, whose
+        /// wheel is kept by layer, and null for a steering kind.</summary>
+        public LockEdge TryGetLockEdgeTransition(int slotIndex, string target, int sourceIndex, out bool isLeft,
+            string layer = null)
         {
             isLeft = false;
-            var key = (slotIndex, target ?? "", sourceIndex);
+            var key = (slotIndex, target ?? "", LayerKey(layer), sourceIndex);
             if (_lockState.TryGetValue(key, out var ls) && ls.PendingEdge != LockEdge.None)
             {
                 LockEdge edge = ls.PendingEdge;
@@ -1730,7 +1792,10 @@ namespace PadForge.Engine.Common.Mapping
         // Saturation → lock state machine. Fires Enter on leaving neutral, Exit on
         // returning to it. A direct side-flip (left lock straight to right lock in one
         // frame) records no edge, matching the JSM-derived recipe's machine.
-        private void UpdateLock((int slot, string target, int srcIdx) key, double output)
+        private void UpdateLock((int slot, string target, int srcIdx) key, double output, string layer = null)
+            => UpdateLock((key.slot, key.target, LayerKey(layer), key.srcIdx), output);
+
+        private void UpdateLock((int slot, string target, string layer, int srcIdx) key, double output)
         {
             LockSide cur = output >= 1.0 - LockEpsilon ? LockSide.Right
                          : output <= -1.0 + LockEpsilon ? LockSide.Left
@@ -1748,9 +1813,9 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>The current saturation magnitude (0..1) of this row's steering
         /// output — how close to lock — for the continuous AT-resistance ramp.</summary>
-        public double GetLockApproach(int slotIndex, string target, int sourceIndex)
+        public double GetLockApproach(int slotIndex, string target, int sourceIndex, string layer = null)
         {
-            var key = (slotIndex, target ?? "", sourceIndex);
+            var key = (slotIndex, target ?? "", LayerKey(layer), sourceIndex);
             return _lockState.TryGetValue(key, out var ls) ? ls.LastAbs : 0;
         }
 

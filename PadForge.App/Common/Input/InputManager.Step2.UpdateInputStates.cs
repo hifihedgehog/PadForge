@@ -26,6 +26,9 @@ namespace PadForge.Common.Input
         /// </summary>
         private void UpdateInputStates()
         {
+            // One frame for the travel inputs every reader without a wheel
+            // of its own reads in this pass (TravelPosition).
+            BeginTravelReadPass();
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
@@ -167,7 +170,7 @@ namespace PadForge.Common.Input
                     if (_oskMasks.Count > 0)
                         newState = OnScreenKeyboardFilter(ud, newState);
 
-                    // A program's holds (#597) go over what mappings read, at
+                    // A program's holds (#600) go over what mappings read, at
                     // the same point, and the device's own state stays for
                     // whoever follows it.
                     newState = ControlHolds.Apply(ud.InstanceGuid, newState);
@@ -180,7 +183,7 @@ namespace PadForge.Common.Input
                     ud.InputState = newState;
                     ud.InputStateSeq++;
                     // A problem recording takes the state as the device
-                    // reported it (#597), before the On-Screen Keyboard
+                    // reported it (#600), before the On-Screen Keyboard
                     // rests what it drives.
                     RecordInput(ud, rawState);
                     // A Flydigi Apex pad (#586): its session is kept here, and
@@ -237,13 +240,13 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // The programs that follow devices (#597) hear what changed on
+            // The programs that follow devices (#600) hear what changed on
             // this pass. The watcher only queues: it never waits on a
             // program, and it is null while no program follows anything.
             var watcher = AutomationPass;
             if (watcher != null)
             {
-                try { watcher(_deviceSnapshotBuffer, snapshotCount); }
+                try { watcher(_deviceSnapshotBuffer, snapshotCount, new AutomationPassRun(_automationRunToken, t_runStamp)); }
                 catch (Exception ex) { RaiseEngineError("Automation events", ex); }
             }
 
@@ -777,6 +780,31 @@ namespace PadForge.Common.Input
             => ud != null && ud.ForceFeedbackState == null && ud.Device != null
                && (ud.Device.HasRumble || ud.Device.HasHaptic);
 
+        /// <summary>A program's device that takes trigger effects (#600 item
+        /// 18) hears the ones the game, a game mod or a macro sent the
+        /// DualSense of the first of its slots (<paramref name="slots"/>, the
+        /// first <paramref name="count"/>) that holds any, as directional
+        /// force feedback takes the first slot that has it. Once no slot holds
+        /// any, it hears the off pair, so the program stops playing the last
+        /// effect. Called once per pass, so an unchanged pair costs a compare
+        /// (ProgramDevice.SetTriggerEffects).</summary>
+        internal static void PassTriggerEffects(ProgramDevice device, UserSetting[] slots, int count, Span<byte> left, Span<byte> right)
+        {
+            bool found = false;
+            for (int i = 0; i < count && i < slots.Length && !found; i++)
+            {
+                int padIndex = slots[i]?.MapTo ?? -1;
+                if (padIndex < 0 || padIndex >= MaxPads) continue;
+                found = UserEffectsDispatcher.TryGetInboundTriggerEffects(padIndex, left, right);
+            }
+            if (!found)
+            {
+                left.Slice(0, 11).Clear();
+                right.Slice(0, 11).Clear();
+            }
+            device.SetTriggerEffects(left, right);
+        }
+
         /// <summary>
         /// Applies force feedback (rumble) to a device based on the vibration
         /// state received from games through the virtual controller. The v2 bus
@@ -1084,12 +1112,6 @@ namespace PadForge.Common.Input
                     if (centeringPadSetting == null) centeringPadSetting = us.GetPadSetting();
                 }
 
-                // A program's device that takes trigger effects (#600 item 18)
-                // hears the ones the game sent the slot's DualSense.
-                if (ud.Device is ProgramDevice programFx && programFx.Shape.TriggerEffects
-                    && UserEffectsDispatcher.TryGetInboundTriggerEffects(padIndex, atLeftBlock, atRightBlock))
-                    programFx.SetTriggerEffects(atLeftBlock, atRightBlock);
-
                 // If a test rumble targets a specific device in this slot, skip others.
                 Guid targetGuid = TestRumbleTargetGuid[padIndex];
                 if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)
@@ -1249,6 +1271,9 @@ namespace PadForge.Common.Input
                 if (firstPadSetting == null)
                     firstPadSetting = devicePs;
             }
+
+            if (ud.Device is ProgramDevice programFx && programFx.Shape.TriggerEffects)
+                PassTriggerEffects(programFx, _instanceGuidBuffer, slotCount, atLeftBlock, atRightBlock);
 
             if (firstPadSetting == null)
             {

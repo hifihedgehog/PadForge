@@ -19,10 +19,13 @@ namespace PadForge.Common.Input
         /// <summary>An ID that is not 32 hex digits, or the XInput and
         /// default IDs, which name no device.</summary>
         BadId,
-        /// <summary>No name, a name over 128 characters, or one with a
-        /// control character or a field marker of SDL's in it.</summary>
+        /// <summary>No name, a name over 128 characters, or one with a field
+        /// marker of SDL's or a character other than letters, marks, digits,
+        /// punctuation, symbols and the plain space in it
+        /// (ControllerDatabaseRow.IsPlainName).</summary>
         BadName,
-        /// <summary>A hint field other than the two label hints.</summary>
+        /// <summary>A hint field other than the two label hints, or an SDK
+        /// bound.</summary>
         Hint,
         /// <summary>A field SDL does not know.</summary>
         UnknownField,
@@ -52,8 +55,10 @@ namespace PadForge.Common.Input
     /// file. Its grammar is wider than <see cref="ControllerDatabaseRow"/>'s,
     /// which holds rows from the network: any bus (a Bluetooth pad keeps its
     /// own), and SDL's type and face fields and its two label hints, which
-    /// SDL's own rows carry. A checksum field is dropped, since a row kept
-    /// for a device carries the device's own checksum in its ID.
+    /// SDL's own rows carry. A checksum field is read into the row's ID, as
+    /// SDL reads it, so a row of SDL's for one name of a model stays that
+    /// name's. Paste, Find and Guess keep a row under the device's own ID,
+    /// with the device's own checksum.
     ///
     /// <para>The fields are SDL's (map_StringForGamepadButton and
     /// map_StringForGamepadAxis in SDL_gamepad.c), and a binding is held to
@@ -196,7 +201,8 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Reads one row. A row may carry the Windows platform field or none,
-        /// and a checksum field, which is dropped. False, with the reason, for
+        /// and a checksum field, which goes into an ID that carries no
+        /// checksum (<see cref="WithCrc"/>). False, with the reason, for
         /// anything else.
         /// </summary>
         public static bool TryParse(string line, out SdlMappingRow row, out SdlRowRefusal why)
@@ -220,7 +226,7 @@ namespace PadForge.Common.Input
 
             var bindings = new List<SdlBinding>();
             var seen = new HashSet<string>(StringComparer.Ordinal);
-            string type = null, face = null, hint = null;
+            string type = null, face = null, hint = null, crc = null;
             for (int i = 2; i < parts.Length; i++)
             {
                 string field = parts[i].Trim();
@@ -235,6 +241,9 @@ namespace PadForge.Common.Input
                         if (!string.Equals(value, "Windows", StringComparison.Ordinal)) { why = SdlRowRefusal.OtherPlatform; return false; }
                         continue;
                     case "crc":
+                        // SDL finds the first crc field (strstr), and reads
+                        // any value (CrcOf).
+                        crc ??= value;
                         continue;
                     case "type":
                         if (!Types.Contains(value)) { why = SdlRowRefusal.UnknownField; return false; }
@@ -247,7 +256,8 @@ namespace PadForge.Common.Input
                         face = value;
                         continue;
                     case "hint":
-                        if (!LabelHint.IsMatch(value) || hint != null) { why = SdlRowRefusal.Hint; return false; }
+                        if (!LabelHint.IsMatch(value)) { why = SdlRowRefusal.Hint; return false; }
+                        if (hint != null) { why = SdlRowRefusal.RepeatedField; return false; }
                         hint = value;
                         continue;
                 }
@@ -263,9 +273,51 @@ namespace PadForge.Common.Input
                 bindings.Add(new SdlBinding(key, value));
             }
             if (bindings.Count == 0) { why = SdlRowRefusal.NoBindings; return false; }
-            row = new SdlMappingRow(guid, name, bindings, type, face, hint);
+            row = new SdlMappingRow(WithCrc(guid, crc), name, bindings, type, face, hint);
             why = SdlRowRefusal.None;
             return true;
+        }
+
+        /// <summary>
+        /// A crc field's value as SDL reads it: SDL_strtol in base 16, which is
+        /// the C library's strtol on Windows (HAVE_STRTOL), cast to 16 bits
+        /// (SDL_PrivateAddMappingForGUID). Leading white space, a sign and a
+        /// 0x go first, the hex digits are read up to the first other
+        /// character, a value past a 32-bit long is the long's limit, and text
+        /// with no digit reads 0, which sets no checksum.
+        /// </summary>
+        internal static ushort CrcOf(string value)
+        {
+            int i = 0;
+            while (i < value.Length && value[i] is ' ' or '\t' or '\n' or '\v' or '\f' or '\r') i++;
+            bool negative = false;
+            if (i < value.Length && value[i] is '+' or '-') negative = value[i++] == '-';
+            if (i + 2 < value.Length && value[i] == '0' && value[i + 1] is 'x' or 'X' && Uri.IsHexDigit(value[i + 2])) i += 2;
+            long n = 0;
+            bool over = false;
+            for (; i < value.Length && Uri.IsHexDigit(value[i]); i++)
+            {
+                if (over) continue;
+                n = n * 16 + Convert.ToInt32(value[i].ToString(), 16);
+                if (n > (negative ? -(long)int.MinValue : int.MaxValue)) over = true;
+            }
+            long read = over ? (negative ? int.MinValue : int.MaxValue) : negative ? -n : n;
+            return (ushort)(read & 0xFFFF);
+        }
+
+        /// <summary>An ID with a crc field's value written into its checksum,
+        /// as SDL does for an ID that carries none: an ID that carries one
+        /// keeps it, and SDL writes it over the field
+        /// (SDL_PrivateAddMappingForGUID). The checksum is the ID's third and
+        /// fourth bytes (hex digits 4 to 7), little-endian
+        /// (SDL_SetJoystickGUIDCRC).</summary>
+        private static string WithCrc(string guid, string crc)
+        {
+            if (crc == null || ChecksumOf(guid) != 0) return guid;
+            ushort value = CrcOf(crc);
+            if (value == 0) return guid;
+            return guid.Substring(0, 4) + (value & 0xFF).ToString("x2", CultureInfo.InvariantCulture)
+                + (value >> 8).ToString("x2", CultureInfo.InvariantCulture) + guid.Substring(8);
         }
 
         private static bool HasMarker(string name)
@@ -365,7 +417,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The name checksum an ID of 32 hex digits carries: its
-        /// second and third bytes, little-endian, as SDL_GetJoystickGUIDInfo
+        /// third and fourth bytes (hex digits 4 to 7), little-endian, as SDL_GetJoystickGUIDInfo
         /// reads them. Zero for any other text.</summary>
         internal static ushort ChecksumOf(string id)
         {

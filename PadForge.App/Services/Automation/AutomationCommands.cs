@@ -11,7 +11,7 @@ using PadForge.Engine;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// The command set (#597): one executor for a line, whoever sends it. The
+    /// The command set (#600): one executor for a line, whoever sends it. The
     /// control pipe hands it the lines of outside programs, and a copy of
     /// PadForge that starts with switches hands it its own.
     ///
@@ -23,13 +23,13 @@ namespace PadForge.Services.Automation
     /// <item><term><c>activate &lt;name or id&gt;</c></term><description><c>ok &lt;name&gt;</c>, <c>error unknown-profile</c></description></item>
     /// <item><term><c>deactivate</c></term><description><c>ok default</c></description></item>
     /// <item><term><c>query</c></term><description><c>ok &lt;name or default&gt; pinned</c> or <c>unpinned</c></description></item>
-    /// <item><term><c>show</c>, <c>minimize</c>, <c>exit</c></term><description><c>ok</c></description></item>
+    /// <item><term><c>show</c>, <c>minimize</c>, <c>maximize</c>, <c>exit</c></term><description><c>ok</c></description></item>
     /// <item><term><c>hide</c></term><description><c>ok</c>, or <c>error not-available</c> with no tray icon to come back through</description></item>
     /// <item><term><c>engine on</c>, <c>engine off</c></term><description><c>ok on</c>, <c>ok off</c>, <c>error busy</c> while a stop is under way, <c>error internal</c> when the engine did not come up</description></item>
     /// <item><term><c>controllers on</c>, <c>controllers off</c></term><description><c>ok on</c>, <c>ok off</c></description></item>
     /// <item><term><c>slot &lt;1-16&gt; on</c>, <c>off</c></term><description><c>ok &lt;n&gt; on</c>, <c>error unknown-slot</c></description></item>
-    /// <item><term><c>snapshot</c></term><description><c>ok &lt;file name&gt;</c></description></item>
-    /// <item><term><c>record start</c>, <c>stop</c>, <c>mark [text]</c></term><description><c>ok &lt;file name&gt;</c>, <c>ok</c> for a marker only Keep the Last 60 Seconds holds, <c>error not-available</c>, <c>error busy</c></description></item>
+    /// <item><term><c>snapshot</c></term><description><c>ok waiting-for-review</c>, and for a program past its limits <c>error too-soon</c> or <c>error limit-reached</c></description></item>
+    /// <item><term><c>record start</c>, <c>stop</c>, <c>mark [text]</c></term><description><c>ok recording</c> for a start and for a mark while a recording runs, <c>ok waiting-for-review</c> for a stop, <c>ok</c> for a marker only Keep the Last 60 Seconds holds, <c>error not-available</c>, <c>error busy</c>, and for a program's start past its limits <c>error too-soon</c> or <c>error limit-reached</c></description></item>
     /// <item><term><c>version</c></term><description><c>ok &lt;version&gt; r&lt;build&gt; &lt;commit&gt;</c></description></item>
     /// <item><term><c>state</c></term><description><c>ok</c> and one line of JSON</description></item>
     /// </list>
@@ -38,13 +38,16 @@ namespace PadForge.Services.Automation
     /// refused with <c>error not-allowed</c> while Automation is off. A line
     /// PadForge cannot read is answered before that question is asked:
     /// <c>error empty</c>, <c>error unknown-command</c>,
-    /// <c>error bad-argument</c>.</para>
+    /// <c>error bad-argument</c>, and on the control pipe
+    /// <c>error too-long</c> for a line past 1,024 bytes
+    /// (ExternalControlService.LongestRequest), which runs nothing.</para>
     ///
     /// <para>A program's <c>activate</c> or <c>deactivate</c> that would turn
     /// on an extra that listens on the network, off now, asks the user on
     /// the question card first (#600) and is answered at once
     /// <c>error waiting</c>: the switch is made when the user allows it, and
-    /// the profile stays as it was when they do not. <c>error
+    /// the profile stays as it was when they do not, or when Automation goes
+    /// off first, which takes the question back. <c>error
     /// too-many-questions</c> says the card holds too many questions to put
     /// this one. A switch that starts nothing new, and a starting copy's
     /// own, run at once.</para>
@@ -68,17 +71,40 @@ namespace PadForge.Services.Automation
         internal const string LimitReached = "error limit-reached";
         internal const string Waiting = "error waiting";
         internal const string TooManyQuestions = "error too-many-questions";
+        internal const string TooLong = "error too-long";
 
-        /// <summary>How often a program may have a snapshot written, and a
-        /// recording started, and how many of each one run of PadForge
-        /// takes from programs. Each writes a file beside the exe, which a
-        /// loop would otherwise fill the disk with. The Settings buttons and
-        /// a starting copy's own switches are not counted.</summary>
-        internal const int SnapshotEveryMs = 60000, RecordStartEveryMs = 10000, MostFromProgramsPerRun = 20;
+        /// <summary>How often a program may have a snapshot taken, and a
+        /// recording started, and how many of each that programs' lines made
+        /// may wait for the user's review at once (#600). Each is a recording
+        /// in the user's recordings folder, which a loop would otherwise fill
+        /// the disk with. One the user saved or deleted from Home waits no
+        /// more, and the next is taken in the same run. The Settings buttons
+        /// and a starting copy's own switches are not counted.</summary>
+        internal const int SnapshotEveryMs = 60000, RecordStartEveryMs = 10000, MostWaitingFromPrograms = 20;
 
         private readonly object _limits = new object();
         private long _lastSnapshotMs = long.MinValue / 2, _lastRecordStartMs = long.MinValue / 2;
-        private int _snapshots, _recordStarts;
+
+        // The files of the snapshots and recordings programs' lines made,
+        // kept while they wait for the user's review.
+        private readonly System.Collections.Generic.List<string> _snapshotsMade = new(), _recordingsMade = new();
+
+        /// <summary>Whether a recording's file still waits for the user's
+        /// review. A test sets its own.</summary>
+        internal Func<string, bool> StillWaits { get; set; } = RecordingWaits;
+
+        /// <summary>A recording waits while its zip, or the text it is
+        /// written as until its zip is made, is in the recordings folder: the
+        /// review's Save moves it out, and Delete removes it.</summary>
+        internal static bool RecordingWaits(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return false;
+            string zip = ProblemRecorder.ZipPathOf(path);
+            string partial = zip.EndsWith(ProblemRecorder.ZipSuffix, StringComparison.OrdinalIgnoreCase)
+                ? zip.Substring(0, zip.Length - ProblemRecorder.ZipSuffix.Length) + ProblemRecorder.PartialSuffix
+                : path;
+            return System.IO.File.Exists(zip) || System.IO.File.Exists(partial);
+        }
 
         /// <summary>The clock the limits run on. A test sets its
         /// own.</summary>
@@ -304,12 +330,23 @@ namespace PadForge.Services.Automation
 
                 case AutomationAskKind.Snapshot:
                 {
-                    // A program can read the file beside the exe, so what is
-                    // written for it is scrubbed, as everything it reads is.
-                    if (!fromProgram) return OnUi(() => Ok + " " + _target.SaveSnapshot(scrubbed: false), stopping);
-                    string refused = Take(ref _lastSnapshotMs, ref _snapshots, SnapshotEveryMs);
-                    if (refused != null) return new ExternalControlService.Answer(refused);
-                    return OnUi(() => Ok + " " + _target.SaveSnapshot(scrubbed: true), stopping);
+                    // The snapshot is a problem recording, scrubbed as every
+                    // recording is, that waits for the user's review.
+                    // A program is told it waits, never where.
+                    if (!fromProgram) return OnUi(() => { _target.SaveSnapshot(); return Ok + " " + ProblemRecorder.WaitsWord; }, stopping);
+                    return OnUi(() =>
+                    {
+                        // Only a snapshot the recorder took starts the clock
+                        // and is counted, as for a record start: one it
+                        // refused, while it finishes a file, made nothing.
+                        string refused = Limit(_lastSnapshotMs, _snapshotsMade, SnapshotEveryMs);
+                        if (refused != null) return refused;
+                        string file;
+                        try { file = _target.SaveSnapshot(); }
+                        catch (System.IO.IOException) { return Internal; }
+                        Made(ref _lastSnapshotMs, _snapshotsMade, file);
+                        return Ok + " " + ProblemRecorder.WaitsWord;
+                    }, stopping);
                 }
 
                 case AutomationAskKind.RecordStart:
@@ -323,19 +360,14 @@ namespace PadForge.Services.Automation
                         // the clock and is counted.
                         if (_host.Recording?.Invoke() != true)
                         {
-                            string refused = Limit(_lastRecordStartMs, _recordStarts, RecordStartEveryMs);
+                            string refused = Limit(_lastRecordStartMs, _recordingsMade, RecordStartEveryMs);
                             if (refused != null) return refused;
                         }
-                        string line = Recorder(_host.RecordStart);
-                        if (line.StartsWith(Ok, StringComparison.Ordinal))
-                        {
-                            lock (_limits)
-                            {
-                                _lastRecordStartMs = NowMs();
-                                _recordStarts++;
-                            }
-                        }
-                        return line;
+                        var start = _host.RecordStart;
+                        if (start == null) return NotAvailable;
+                        var answer = start();
+                        if (answer.Outcome == AutomationRecordOutcome.Done) Made(ref _lastRecordStartMs, _recordingsMade, answer.Path);
+                        return Line(answer);
                     }, stopping);
                 }
                 case AutomationAskKind.RecordStop:
@@ -391,13 +423,20 @@ namespace PadForge.Services.Automation
             string title = AssistantToolWords.AskSwitchProfile(target == null ? null : starts.Name ?? target);
             var detail = starts.Extras.Select(AssistantToolWords.TurnsOn).Append(AssistantToolWords.ListensOnNetwork()).ToList();
             var program = who ?? AutomationProgram.Unknown;
-            var asked = _host.Approvals.AskAsync(new ApprovalRequest(program, title, detail), CancellationToken.None);
+            // Automation's off takes the question back: no program may
+            // switch a profile once it is off.
+            var asked = _host.Approvals.AskAsync(new ApprovalRequest(program, title, detail), _host.OnLifetime);
             if (asked.IsCompletedSuccessfully && asked.Result == ApprovalAnswer.TooMany)
                 return new ExternalControlService.Answer(TooManyQuestions);
 
             var named = starts.Extras.ToList();
             _ = asked.ContinueWith(done =>
             {
+                if (done.IsCanceled)
+                {
+                    Note(program, command, NotAllowed);
+                    return;
+                }
                 var answer = done.Status == TaskStatus.RanToCompletion ? done.Result : ApprovalAnswer.TimedOut;
                 if (answer != ApprovalAnswer.Allowed)
                 {
@@ -406,6 +445,13 @@ namespace PadForge.Services.Automation
                 }
                 _ui.Post(() =>
                 {
+                    // An Allow that met Automation's off on its way here
+                    // switches nothing.
+                    if (!_host.Allows(Needs))
+                    {
+                        Note(program, command, NotAllowed);
+                        return;
+                    }
                     // What the user allowed, and nothing more: a switch that
                     // would now start what the card did not name waits for
                     // a card of its own.
@@ -439,31 +485,28 @@ namespace PadForge.Services.Automation
             }
         }
 
-        /// <summary>A program's snapshot against its limits: null when it
-        /// may go ahead, which starts its clock and counts it, or the
-        /// refusal.</summary>
-        private string Take(ref long last, ref int taken, int everyMs)
+        /// <summary>The limits' answer for one kind: null, or the refusal.
+        /// What a program made that waits no more leaves
+        /// <paramref name="made"/> first.</summary>
+        private string Limit(long last, System.Collections.Generic.List<string> made, int everyMs)
         {
             long now = NowMs();
             lock (_limits)
             {
-                if (taken >= MostFromProgramsPerRun) return LimitReached;
-                if (now - last < everyMs) return TooSoon;
-                last = now;
-                taken++;
-                return null;
+                made.RemoveAll(file => !StillWaits(file));
+                if (made.Count >= MostWaitingFromPrograms) return LimitReached;
+                return now - last < everyMs ? TooSoon : null;
             }
         }
 
-        /// <summary>The limits' answer alone, taking nothing: null, or the
-        /// refusal.</summary>
-        private string Limit(long last, int taken, int everyMs)
+        /// <summary>A program's line made <paramref name="file"/>: its kind's
+        /// clock starts, and the file counts while it waits.</summary>
+        private void Made(ref long last, System.Collections.Generic.List<string> made, string file)
         {
-            long now = NowMs();
             lock (_limits)
             {
-                if (taken >= MostFromProgramsPerRun) return LimitReached;
-                return now - last < everyMs ? TooSoon : null;
+                last = NowMs();
+                made.Add(file ?? string.Empty);
             }
         }
 
@@ -489,16 +532,19 @@ namespace PadForge.Services.Automation
         /// <summary>The problem recorder, which the host is handed when the
         /// build has one. With none the answer is
         /// <c>error not-available</c>. Otherwise the recorder's own answer:
-        /// <c>ok</c> with the file's name when it names one, or the error
-        /// word for why it could not.</summary>
+        /// <c>ok</c> with its word (<c>recording</c>,
+        /// <c>waiting-for-review</c>) when it gives one, or the error word
+        /// for why it could not.</summary>
         private static string Recorder(Func<AutomationRecordAnswer> call)
+            => call == null ? NotAvailable : Line(call());
+
+        /// <summary>The recorder's answer as the line a program reads.</summary>
+        private static string Line(AutomationRecordAnswer answer)
         {
-            if (call == null) return NotAvailable;
-            var answer = call();
             switch (answer.Outcome)
             {
                 case AutomationRecordOutcome.Done:
-                    return string.IsNullOrEmpty(answer.File) ? Ok : Ok + " " + answer.File;
+                    return string.IsNullOrEmpty(answer.Word) ? Ok : Ok + " " + answer.Word;
                 case AutomationRecordOutcome.Busy:
                     return Busy;
                 default:

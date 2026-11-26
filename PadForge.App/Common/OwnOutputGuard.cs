@@ -5,7 +5,7 @@ using PadForge.Common.Input;
 namespace PadForge.Common
 {
     /// <summary>
-    /// The second wall behind ProgramInputGate (#597): a button that answers
+    /// The second wall behind ProgramInputGate (#600): a button that answers
     /// a program's question ignores a click or a key that PadForge itself
     /// sent while a program drives PadForge. PadForge stamps its own output
     /// (InputHookManager.OutputTag), and Windows hands a message's stamp to

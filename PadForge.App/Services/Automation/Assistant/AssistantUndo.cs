@@ -5,7 +5,7 @@ using System.Linq;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// A program's changes, undone as one step (#597). Before a program's
+    /// A program's changes, undone as one step (#600). Before a program's
     /// first change after a quiet spell of <see cref="QuietSpell"/>, the
     /// state is taken: the active profile's controllers, assignments,
     /// mappings and macros (InputService.SnapshotCurrentProfile), the list of
@@ -14,7 +14,10 @@ namespace PadForge.Services.Automation
     /// same run, and Activity marks each one's entry with the run. Undo, from
     /// the program's own tool or from the Activity card, puts the state back
     /// (InputService.ApplyProfile and the app settings copy) and says what
-    /// came back.
+    /// came back. What only the user changes is never put back
+    /// (AssistantUndoStore.Restore), and the program's own undo is refused
+    /// while it would turn on something that listens on the network and is
+    /// off now.
     ///
     /// <para>Only the newest run can be undone: putting an older one back
     /// would also take away what came after it. Called on the interface's
@@ -48,13 +51,19 @@ namespace PadForge.Services.Automation
         private int _lastId;
 
         public AssistantUndo(Func<AssistantUndoState> take, Func<AssistantUndoState, string> restore,
-            Func<DateTimeOffset> now = null, TimeSpan? quiet = null)
+            Func<DateTimeOffset> now = null, TimeSpan? quiet = null, Func<AssistantUndoState, IReadOnlyList<string>> networkStarts = null)
         {
             _take = take ?? throw new ArgumentNullException(nameof(take));
             _restore = restore ?? throw new ArgumentNullException(nameof(restore));
             _now = now ?? (() => DateTimeOffset.Now);
             _quiet = quiet ?? QuietSpell;
+            _networkStarts = networkStarts;
         }
+
+        /// <summary>What putting a state back would turn on that listens on
+        /// the network and is off now (AssistantUndoStore.NetworkStarts), or
+        /// null for none to ask.</summary>
+        private readonly Func<AssistantUndoState, IReadOnlyList<string>> _networkStarts;
 
         /// <summary>Raised after a run starts or is undone, so the Activity
         /// card asks again which entries offer Undo.</summary>
@@ -113,6 +122,16 @@ namespace PadForge.Services.Automation
                     ? "Another program changed PadForge after this connection did, so undoing this connection's changes would take that away too. Nothing was undone."
                     : "This connection has changed nothing that can be undone.");
             }
+            // A program's undo turns on nothing that listens on the network
+            // and is off now (#600): setting one on asks the user first, so
+            // undoing does not turn one on unasked. The Activity card's Undo
+            // is the user's own press and puts everything back. A set first
+            // would not mend it: past the quiet spell the set starts a run of
+            // its own, the newest, and this one could no longer be undone.
+            var starts = _networkStarts?.Invoke(newest.State);
+            if (starts is { Count: > 0 })
+                throw new AssistantRefusal("not-available", "Undoing would turn on what listens on the network and is off now: "
+                    + string.Join(", ", starts) + ". Turning one on asks the user first. The user can undo this run from Activity on PadForge's Automation page. Nothing was undone.");
             return UndoRun(newest);
         }
 

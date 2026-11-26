@@ -7,7 +7,10 @@ namespace PadForge.Services.Automation
     /// <summary>What the problem recorder did with a <c>record</c> line.</summary>
     internal enum AutomationRecordOutcome
     {
-        /// <summary>Done. The answer is <c>ok</c> and the file's name.</summary>
+        /// <summary>Done. The answer is <c>ok</c> and the recorder's word:
+        /// <c>recording</c> while a recording runs, <c>waiting-for-review</c>
+        /// for one that stopped, or none for a marker only Keep the Last 60
+        /// Seconds holds.</summary>
         Done,
         /// <summary>The recorder is taken up: a recording runs already, or
         /// the last file is still being finished.</summary>
@@ -19,12 +22,16 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>The problem recorder's answer to a <c>record</c> line, and
-    /// the file it concerns: a name with no folder, or empty.</summary>
-    internal readonly record struct AutomationRecordAnswer(AutomationRecordOutcome Outcome, string File)
+    /// the word a program is told of it, or empty. A program is never told
+    /// where a recording's file is (#600): <see cref="Path"/> is the
+    /// recording a start made, which the command set counts while it waits
+    /// for the user's review, and null for the other answers.</summary>
+    internal readonly record struct AutomationRecordAnswer(AutomationRecordOutcome Outcome, string Word, string Path = null)
     {
-        /// <summary>Done, for the file named, or for none when
-        /// <paramref name="file"/> is empty.</summary>
-        internal static AutomationRecordAnswer Done(string file) => new(AutomationRecordOutcome.Done, file ?? string.Empty);
+        /// <summary>Done, with the word given, or with none when
+        /// <paramref name="word"/> is empty, and the recording made, if
+        /// any.</summary>
+        internal static AutomationRecordAnswer Done(string word, string path = null) => new(AutomationRecordOutcome.Done, word ?? string.Empty, path);
 
         /// <summary>Not done: the recorder is taken up.</summary>
         internal static AutomationRecordAnswer Busy => new(AutomationRecordOutcome.Busy, string.Empty);
@@ -34,7 +41,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// Automation's host (#597): the one object that stands between outside
+    /// Automation's host (#600): the one object that stands between outside
     /// programs and PadForge. It lives as long as the app, is made once the
     /// settings are loaded, and is started and stopped by the Automation
     /// switch. It does not depend on the engine: a line that starts the
@@ -93,6 +100,7 @@ namespace PadForge.Services.Automation
         private volatile bool _pluginsOn;
         private volatile int _level;
         private int _disposed;
+        private CancellationTokenSource _onLifetime = new CancellationTokenSource();
 
         /// <param name="target">What the command set acts on.</param>
         /// <param name="ui">The interface's thread.</param>
@@ -151,6 +159,11 @@ namespace PadForge.Services.Automation
         /// itself. A listener that draws goes to its own thread.</summary>
         public event EventHandler Changed;
 
+        /// <summary>Canceled when Automation goes from on to off, and when
+        /// the host goes: a question a program's line put to the user is
+        /// taken back then, since no program may act any more.</summary>
+        internal CancellationToken OnLifetime => Volatile.Read(ref _onLifetime).Token;
+
         /// <summary>Raised on the interface's thread when Automation goes
         /// from on to off, after the pipe has stopped. No program can release
         /// a profile it held any more, so the app releases it.</summary>
@@ -177,10 +190,6 @@ namespace PadForge.Services.Automation
         /// <summary>The programs on the Automation pipe and what they
         /// own.</summary>
         internal AutomationSessions Sessions { get; }
-
-        /// <summary>Whether Plugins is on, which serves the Automation pipe
-        /// to plugins while Automation is off.</summary>
-        public bool PluginsOn => _pluginsOn;
 
         /// <summary>The assistant's connection: a session whose hello says
         /// <c>kind=mcp</c> is answered and then handed, stream and all, to
@@ -260,33 +269,39 @@ namespace PadForge.Services.Automation
         /// its own lines through <see cref="AutomationCommands.RunOwn"/>.</summary>
         public AutomationCommands Commands { get; }
 
-        /// <summary>What programs asked and what came of it, the last 500
-        /// calls. Every line on the control pipe is in it.</summary>
+        /// <summary>What programs asked and what came of it, the last
+        /// 100,000 calls (<see cref="AutomationActivity.Capacity"/>). Every
+        /// line on the control pipe is in it.</summary>
         public AutomationActivity Activity { get; } = new AutomationActivity();
 
-        /// <summary>The questions a program's call put to the user. Nothing
-        /// in the command set asks one.</summary>
+        /// <summary>The questions a program's call put to the user. The
+        /// command set asks one for a program's profile switch that would
+        /// turn on an extra that listens on the network, and the assistants'
+        /// tools ask the rest.</summary>
         public AutomationApprovals Approvals { get; }
 
         /// <summary>The programs connected over the long-lived pipe.</summary>
         public AutomationClients Clients { get; } = new AutomationClients();
 
-        /// <summary>Starts a problem recording and gives the name of the file
-        /// it becomes, or why it cannot start now. Null in a build with no
-        /// recorder, where <c>record start</c> answers
+        /// <summary>Starts a problem recording and gives the word
+        /// <c>recording</c> and the recording's file, or why it cannot start
+        /// now. Null in a build with
+        /// no recorder, where <c>record start</c> answers
         /// <c>error not-available</c>. Called on the interface's thread, as
         /// the other three are.</summary>
         public Func<AutomationRecordAnswer> RecordStart { get; set; }
 
-        /// <summary>Stops the recording and gives its file's name, or why it
-        /// cannot. Null as <see cref="RecordStart"/> is.</summary>
+        /// <summary>Stops the recording, which then waits for the user's
+        /// review in the user's recordings folder, and gives the word
+        /// <c>waiting-for-review</c>, or why it cannot. Null as
+        /// <see cref="RecordStart"/> is.</summary>
         public Func<AutomationRecordAnswer> RecordStop { get; set; }
 
         /// <summary>Puts a marker with the text given, which can be empty,
-        /// into what the recorder captures, and gives the recording's file
-        /// name, an empty name for a marker held by Keep the Last 60 Seconds
-        /// alone, or why it cannot. Null as <see cref="RecordStart"/>
-        /// is.</summary>
+        /// into what the recorder captures, and gives the word
+        /// <c>recording</c> while a recording runs, no word for a marker held
+        /// by Keep the Last 60 Seconds alone, or why it cannot. Null as
+        /// <see cref="RecordStart"/> is.</summary>
         public Func<string, AutomationRecordAnswer> RecordMark { get; set; }
 
         /// <summary>Whether a recording runs now, for the state line. Null
@@ -344,7 +359,11 @@ namespace PadForge.Services.Automation
             // longer serves once that is written.
             if (changed) Sessions.OnLevel(on, level, _pluginsOn);
             if (changed || before != _control.State || beforeLong != _pipe.State) Changed?.Invoke(this, EventArgs.Empty);
-            if (wasOn && !on) TurnedOff?.Invoke(this, EventArgs.Empty);
+            if (wasOn && !on)
+            {
+                Interlocked.Exchange(ref _onLifetime, new CancellationTokenSource()).Cancel();
+                TurnedOff?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>Under the gate. Takes the pipe's name when it is not
@@ -418,9 +437,10 @@ namespace PadForge.Services.Automation
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>A close asked over the signal window (#600 item 44),
-        /// written into Activity as the pipe's exit is. A posted message
-        /// names no sender, so its program is unknown.</summary>
+        /// <summary>A close a second copy asked over the signal pipe or, with
+        /// rights, the signal window (#600 item 44), written into Activity as
+        /// the control pipe's exit is. The ask reaches the window's copy with
+        /// no program named, so its program is unknown.</summary>
         internal void NoteExitBySignal()
         {
             try
@@ -442,9 +462,13 @@ namespace PadForge.Services.Automation
             try
             {
                 // A client the token checks refused runs nothing, and the
-                // line is written into Activity as refused.
+                // line is written into Activity as refused. A line past the
+                // cap runs nothing either: what was kept of it is no line the
+                // program sent.
                 answer = request.Refusal != null
                     ? new ExternalControlService.Answer(ExternalControlService.Refused)
+                    : request.TooLong
+                    ? new ExternalControlService.Answer(AutomationCommands.TooLong)
                     : Commands.Answer(request.Line, request.Stopping, _programOf(request.ClientProcessId));
             }
             catch (OperationCanceledException) when (request.Stopping.IsCancellationRequested)
@@ -458,7 +482,9 @@ namespace PadForge.Services.Automation
 
             string result = answer.Line ?? AutomationCommands.Internal;
             bool succeeded = result.StartsWith(AutomationCommands.Ok, StringComparison.Ordinal);
-            var asked = AutomationCommands.Describe(request.Line);
+            var asked = request.TooLong
+                ? new AutomationAsk(AutomationAskKind.Unknown, request.Line)
+                : AutomationCommands.Describe(request.Line);
             // The state line is long and says nothing here that ok does not.
             if (succeeded && asked.Kind == AutomationAskKind.State) result = AutomationCommands.Ok;
             try
@@ -484,6 +510,7 @@ namespace PadForge.Services.Automation
                 _pipe.Dispose();
             }
             PadForge.Common.Input.ProgramInputGate.FirstHeld -= OnFirstHeld;
+            try { Volatile.Read(ref _onLifetime).Cancel(); } catch (AggregateException) { }
             Sessions.Dispose();
         }
 

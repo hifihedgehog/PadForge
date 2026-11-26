@@ -7,7 +7,7 @@ namespace PadForge.Services
 {
     /// <summary>
     /// Starts PadForge as the app, with the administrator rights it needs for
-    /// HIDMaestro's driver and device nodes and for HidHide (#597).
+    /// HIDMaestro's driver and device nodes and for HidHide (#600).
     ///
     /// <para>PadForge.exe carries no demand for those rights in its manifest.
     /// A copy that hands switches to the running PadForge, or serves an
@@ -29,8 +29,12 @@ namespace PadForge.Services
         /// never by the app: no copy of the exe is started.</summary>
         internal static bool OffLimitsForTest;
 
-        /// <summary>How long a <c>--wait</c> start gives the app to show its
-        /// signal window once the copy with rights handed over to it.</summary>
+        /// <summary>How long a start that ran the logon task waits for the
+        /// copy it started to show its signal window (StartByTask, through
+        /// RunningCopy.WaitForStartedCopy). A <c>--wait</c> start here runs
+        /// without rights and so cannot see the lock: its watch finds the
+        /// window standing at the handover, which App.OnStartup opens before
+        /// it hands over, and waits for nothing (RunningCopy.WaitForSignalWindow).</summary>
         internal const int AppWindowWaitMs = 30000;
 
         /// <summary>
@@ -71,8 +75,8 @@ namespace PadForge.Services
                 if (!wait) return 0;
                 app.WaitForExit();
                 if (app.ExitCode != ProtectedStart.HandedOver) return app.ExitCode;
-                var watch = RunningCopy.Watch(AppWindowWaitMs);
-                int? code = watch?.Invoke();
+                using var watch = RunningCopy.Watch(AppWindowWaitMs);
+                int? code = watch?.Wait();
                 return code ?? NotStarted;
             }
             catch

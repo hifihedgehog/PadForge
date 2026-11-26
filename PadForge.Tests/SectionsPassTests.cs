@@ -355,9 +355,11 @@ namespace PadForge.Tests
                 Assert.False(new TouchSurface().Tapered);
             });
 
+            // The lane hands the live view the outline of the device picked
+            // under Driven by, and none when no device is picked.
             string service = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
-            Assert.Contains("padVm.DeviceTouchTapered = ud != null && GameModEffects.IsSonyPad(ud.VendorId, ud.ProdId);", service);
-            Assert.Contains("padVm.DeviceTouchTapered = false;", service);
+            Assert.Contains("ud != null && GameModEffects.IsSonyPad(ud.VendorId, ud.ProdId));", service);
+            Assert.Contains("padVm.ShowDeviceTouchpad(Guid.Empty, null, false);", service);
             Assert.True(GameModEffects.IsSonyPad(0x054C, 0x0CE6));
             Assert.True(GameModEffects.IsSonyPad(0x054C, 0x09CC));
             Assert.False(GameModEffects.IsSonyPad(0x045E, 0x0B13));
@@ -502,17 +504,14 @@ namespace PadForge.Tests
                 Assert.Equal(typeof(bool), PathType(Path((string)surface.Attribute(finger))));
 
             // The surface reads the touchpad of the device picked under
-            // Driven by, its first pad's first two fingers, which the 30 Hz
-            // lane writes, a position before its finger's contact. With no
-            // device picked no finger is down.
+            // Driven by, which the 30 Hz lane hands the view model for the
+            // device picked and for none. Which pad it draws and what a
+            // switch clears are tested on the view model
+            // (TouchpadPerDeviceSyncTests.TheCardsLiveView_*). A stop of the
+            // engine lifts the fingers (ClearLiveReadings).
             string service = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
-            Assert.Contains("if (down0) { padVm.DeviceTouchX0 = pad.FingerX[0]; padVm.DeviceTouchY0 = pad.FingerY[0]; }", service);
-            Assert.Contains("if (down1) { padVm.DeviceTouchX1 = pad.FingerX[1]; padVm.DeviceTouchY1 = pad.FingerY[1]; }", service);
-            Assert.True(service.IndexOf("padVm.DeviceTouchY0 = pad.FingerY[0]; }", StringComparison.Ordinal)
-                < service.IndexOf("padVm.DeviceTouchDown0 = down0;", StringComparison.Ordinal));
-            // The lane writes it, a pick of no device clears it, and so does
-            // a stop of the engine (ClearLiveReadings).
-            Assert.Equal(3, Regex.Matches(service, @"padVm\.DeviceTouchDown0 = (down0|false);").Count);
+            Assert.Equal(2, Regex.Matches(service, @"padVm\.ShowDeviceTouchpad\(").Count);
+            Assert.Single(Regex.Matches(service, @"padVm\.DeviceTouchDown0 = false;"));
         }
 
         /// <summary>The Lock Feedback line lights while any of its cues is

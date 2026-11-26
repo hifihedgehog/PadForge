@@ -279,7 +279,7 @@
                 </DrawingGroup>
             </DrawingImage.Drawing>
         </DrawingImage>
-        <!-- The two device notes (#597), in the profile flyout's own pill,
+        <!-- The two device notes (#600), in the profile flyout's own pill,
              since they show in its window: the offline line's triangle in
              its amber for a device that disconnects, and the check in the
              flyout's green for one that connects. Both colors are the
@@ -1742,10 +1742,10 @@
             </StackPanel>
 
             <!-- ═══ Overlays (menu #9 B-17, shift layer, profile switch,
-                 device notes #597) ═══
+                 device notes #600) ═══
                  E700 is Segoe MDL2 GlobalNavButton, the canonical menu glyph. The
-                 three overlays and the two device notes have a switch each
-                 and no single one, so the page's switch is on while any of
+                 three overlays, the two device notes and the controllers on
+                 or off note have a switch each and no single one, so the page's switch is on while any of
                  them is (DashboardViewModel.OverlaysAnyEnabled). Each row
                  shows a drawing of what it turns on, its name and what it
                  shows. -->
@@ -2656,7 +2656,7 @@
             </StackPanel>
 
 
-            <!-- ═══ Automation (#597, #600) ═══
+            <!-- ═══ Automation (#600) ═══
                  The one switch for every outside program: launchers, scripts
                  and assistants. E9F5 is Segoe MDL2 Processing, two gears that
                  turn each other, work one program hands another. Its glyph
@@ -2762,10 +2762,10 @@
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
                                             <Button Style="{StaticResource ExtraButton}" Command="{Binding DenyCommand}" common:OwnOutputGuard.Refuses="True"
                                                     AutomationProperties.AutomationId="{Binding DenyId}"
-                                                    Content="{Binding Automation_Request_Deny, Source={x:Static strings:Strings.Instance}}"/>
+                                                    Content="{Binding DenyWords}"/>
                                             <Button Style="{StaticResource ExtraButton}" Command="{Binding AllowCommand}" Margin="10,0,0,0" common:OwnOutputGuard.Refuses="True"
                                                     AutomationProperties.AutomationId="{Binding AllowId}"
-                                                    Content="{Binding Automation_Request_Allow, Source={x:Static strings:Strings.Instance}}"/>
+                                                    Content="{Binding AllowWords}"/>
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
@@ -2910,7 +2910,7 @@
                                     <DataTemplate>
                                         <!-- A hairline over every row, as on the Assistants
                                              card. -->
-                                        <Border BorderBrush="{StaticResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                                        <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
                                             <Grid Margin="0,10,0,10" MinHeight="44">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -2988,7 +2988,7 @@
                                                  its own devices and the ones Pick Devices… names.
                                                  The user's alone, as the page is. -->
                                             <controls:SettingRow Grid.Column="1" VerticalAlignment="Center">
-                                                <ComboBox Width="280" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
+                                                <ComboBox MinWidth="280" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
                                                           AutomationProperties.AutomationId="{Binding ReachId}"
                                                           AutomationProperties.Name="{Binding Reach_Label, Source={x:Static strings:Strings.Instance}}"
                                                           AutomationProperties.HelpText="{Binding Name}"/>
@@ -3120,7 +3120,7 @@
                 <TextBlock Text="{Binding Extras_Automation_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
             </StackPanel>
 
-            <!-- ═══ Plugins (#597, #600 items 17 to 20) ═══
+            <!-- ═══ Plugins (#600 items 17 to 20) ═══
                  Programs that add devices. ECF0 is Segoe MDL2's plug, a
                  device a program plugs in. The head with the switch, the
                  status card, then the built-in plugins and the user's, each
@@ -3277,10 +3277,17 @@
                             </controls:FoldCard.HeaderAction>
                             <StackPanel>
                                 <views:PluginSettingsView DataContext="{Binding TestControllerSettings}"/>
-                                <Button Style="{StaticResource ExtraButton}" HorizontalAlignment="Right" Margin="0,10,0,0"
-                                        Command="{Binding TestControllerSettings.ResetAllCommand}"
-                                        AutomationProperties.AutomationId="Plugins_TestController_ResetAll"
-                                        Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:Button Style="{StaticResource ResetAllButton}" HorizontalAlignment="Right" Margin="0,10,0,0"
+                                           Command="{Binding TestControllerSettings.ResetAllCommand}"
+                                           AutomationProperties.AutomationId="Plugins_TestController_ResetAll"
+                                           Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}">
+                                    <ui:Button.ToolTip>
+                                        <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                            <Binding Path="Plugins_TestController" Source="{x:Static strings:Strings.Instance}"/>
+                                            <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                        </MultiBinding>
+                                    </ui:Button.ToolTip>
+                                </ui:Button>
                             </StackPanel>
                         </controls:FoldCard>
                     </controls:FoldList>
@@ -3376,7 +3383,7 @@
                                                         Visibility="{Binding ShowApprove, Converter={StaticResource BoolToVisibilityConverter}}"
                                                         Content="{Binding Plugins_Approve, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Style="{StaticResource ExtraButton}" Command="{Binding RemoveCommand}"
-                                                        AutomationProperties.AutomationId="{Binding RemoveId}"
+                                                        AutomationProperties.AutomationId="{Binding RemoveHeaderId}"
                                                         Visibility="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=controls:FoldCard}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                                         Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
                                                 <!-- The switch stands last, so it keeps one place
@@ -3414,10 +3421,17 @@
                                                 <Button Style="{StaticResource ExtraButton}" Command="{Binding RemoveCommand}" common:Reach.Class="UsersOwn"
                                                         AutomationProperties.AutomationId="{Binding RemoveId}"
                                                         Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
-                                                <Button Style="{StaticResource ExtraButton}" Command="{Binding Settings.ResetAllCommand}" Margin="10,0,0,0"
-                                                        AutomationProperties.AutomationId="{Binding ResetAllId}"
-                                                        Visibility="{Binding Settings.HasRows, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                        Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ui:Button Style="{StaticResource ResetAllButton}" Command="{Binding Settings.ResetAllCommand}" Margin="10,0,0,0"
+                                                           AutomationProperties.AutomationId="{Binding ResetAllId}"
+                                                           Visibility="{Binding Settings.HasRows, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                           Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}">
+                                                    <ui:Button.ToolTip>
+                                                        <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                            <Binding Path="Name"/>
+                                                            <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                        </MultiBinding>
+                                                    </ui:Button.ToolTip>
+                                                </ui:Button>
                                             </StackPanel>
                                         </StackPanel>
                                     </controls:FoldCard>

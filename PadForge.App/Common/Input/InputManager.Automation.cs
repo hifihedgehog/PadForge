@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Linq;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 
@@ -12,17 +11,29 @@ namespace PadForge.Common.Input
     public partial class InputManager
     {
         // ─────────────────────────────────────────────
-        //  Automation (#597): devices programs add, and the pass hook
+        //  Automation (#600): devices programs add, and the pass hook
         // ─────────────────────────────────────────────
 
         /// <summary>
         /// Called on the poll thread at the end of Step 2 on every pass, the
-        /// idle ones included, with the devices read on it and their count.
-        /// Automation's watcher queues events from it and returns: it never
-        /// waits on a program. Null while no program follows anything, so a
-        /// pass with no follower pays one read of this field.
+        /// idle ones included, with the devices read on it, their count and
+        /// the run the pass belongs to. Automation's watcher queues events
+        /// from it and returns: it never waits on a program. Null while no
+        /// program follows anything, so a pass with no follower pays one read
+        /// of this field.
         /// </summary>
-        internal static volatile Action<UserDevice[], int> AutomationPass;
+        internal static volatile Action<UserDevice[], int, AutomationPassRun> AutomationPass;
+
+        /// <summary>The run a pass belongs to: a token of the engine, never
+        /// the engine itself, so a retired run the watcher keeps holds none
+        /// of it, and the poll loop's stamp. Stop gives up its wait for the
+        /// poll thread after 3 s, so a pass of a retired run can still reach
+        /// the watcher after the stop, and the watcher tells it apart by
+        /// this.</summary>
+        internal readonly record struct AutomationPassRun(object Engine, int Generation);
+
+        /// <summary>This engine's token in <see cref="AutomationPassRun"/>.</summary>
+        private readonly object _automationRunToken = new object();
 
         /// <summary>
         /// Registers a device a program added, by push from the program's
@@ -35,6 +46,17 @@ namespace PadForge.Common.Input
         public void RegisterProgramDevice(ProgramDevice device)
         {
             if (device == null) return;
+            lock (_programDevices)
+            {
+                // A manager that stopped takes no device: the next start's
+                // manager registers it.
+                if (_programDevicesReleased) return;
+                _programDevices.Add(device);
+                // Under the set's lock, so a release that runs meanwhile
+                // takes this handler off too.
+                device.CapabilitiesChanged -= OnProgramDeviceCapabilitiesChanged;
+                device.CapabilitiesChanged += OnProgramDeviceCapabilitiesChanged;
+            }
 
             UserDevice ud = FindOrCreateUserDevice(device.InstanceGuid, device.ProductGuid);
             lock (SettingsManager.UserDevices.SyncRoot)
@@ -43,10 +65,28 @@ namespace PadForge.Common.Input
                 ud.IsOnline = true;
             }
 
-            device.CapabilitiesChanged -= OnProgramDeviceCapabilitiesChanged;
-            device.CapabilitiesChanged += OnProgramDeviceCapabilitiesChanged;
-
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        // The program devices this manager took, so the manager takes its
+        // handler off each when it goes (ReleaseProgramDevices). The device
+        // outlives the manager: the registry hands it to the next start's.
+        private readonly HashSet<ProgramDevice> _programDevices = new();
+        private bool _programDevicesReleased;
+
+        /// <summary>Takes this manager's handler off every program device it
+        /// registered, at its Dispose, so a device the next start's manager
+        /// takes raises no stopped manager's handler, which would root that
+        /// manager and walk the device list once more at each reshape or
+        /// rename.</summary>
+        internal void ReleaseProgramDevices()
+        {
+            lock (_programDevices)
+            {
+                _programDevicesReleased = true;
+                foreach (var device in _programDevices) device.CapabilitiesChanged -= OnProgramDeviceCapabilitiesChanged;
+                _programDevices.Clear();
+            }
         }
 
         /// <summary>Loads a program device's row, which keeps the device's
@@ -65,7 +105,11 @@ namespace PadForge.Common.Input
         public void UnregisterProgramDevice(ProgramDevice device)
         {
             if (device == null) return;
-            device.CapabilitiesChanged -= OnProgramDeviceCapabilitiesChanged;
+            lock (_programDevices)
+            {
+                _programDevices.Remove(device);
+                device.CapabilitiesChanged -= OnProgramDeviceCapabilitiesChanged;
+            }
             UnregisterExternalDevice(device.InstanceGuid);
         }
 
@@ -93,7 +137,7 @@ namespace PadForge.Common.Input
     }
 
     /// <summary>
-    /// The values programs hold controls of devices at (#597), and the
+    /// The values programs hold controls of devices at (#600), and the
     /// controls their hotkeys take from games (#600 item 23), as the poll
     /// thread reads them. A program's <c>own</c> line puts a value over a
     /// button, an axis, a slider, a hat or one direction of a hat of any
@@ -116,8 +160,10 @@ namespace PadForge.Common.Input
     /// when it is sent or, timed, at the sessions' clock
     /// (<see cref="LandDue"/>).</para>
     ///
-    /// <para>The table mappings read is rebuilt only when a step lands, and
-    /// is read on each device with one read and no lock.</para>
+    /// <para>The table mappings read is rebuilt only when a step lands, into
+    /// the tables it kept from the last rebuild when the held and claimed
+    /// controls stay the same, and is read on each device with one read and
+    /// no lock.</para>
     /// </summary>
     internal static class ControlHolds
     {
@@ -206,8 +252,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The holds and claims on one device, for one table.
-        /// Written once before it is published, apart from its pool and the
-        /// set holds' marks, which only the poll thread touches.</summary>
+        /// Its controls are written once before it is published. A rebuild
+        /// may put a new hold in a control's slot (<see cref="TakeIfSame"/>),
+        /// and its pool and the set holds' marks are the poll
+        /// thread's.</summary>
         internal sealed class DeviceHolds
         {
             /// <summary>A table of plain holds, as a test or a recording's
@@ -285,6 +333,119 @@ namespace PadForge.Common.Input
             public readonly Line[] Lines = Array.Empty<Line>();
 
             private PooledInputStatePair _pool;
+
+            /// <summary>
+            /// Under the pass lock, at a rebuild: takes the holds of
+            /// <paramref name="parts"/> in place of this table's own when
+            /// they hold and claim the same controls of the same owner, and
+            /// answers whether it did. Each hold goes into the slot of its
+            /// own control, the index there unchanged, so a pass reading the
+            /// table meanwhile reads the old hold or the new one, and
+            /// <see cref="Controls"/>, which the output causes keep from one
+            /// pass to the next, stays as it was. A control that two owners
+            /// hold or claim at once is never matched: the table is made
+            /// again.
+            /// </summary>
+            internal bool TakeIfSame(Parts parts)
+            {
+                if (parts.Owner != Owner) return false;
+                if (Repeats(parts.Buttons) || Repeats(parts.Axes) || Repeats(parts.Hats) || Repeats(parts.HeldDirections)) return false;
+                for (int i = 0; i < parts.Claimed.Count; i++)
+                    for (int j = i + 1; j < parts.Claimed.Count; j++)
+                        if (parts.Claimed[i] == parts.Claimed[j]) return false;
+                if (!SameIndexes(Buttons, parts.Buttons) || !SameIndexes(Axes, parts.Axes) || !SameIndexes(Hats, parts.Hats)) return false;
+                if (ClaimedButtons.Length != parts.Claimed.Count) return false;
+                foreach (int index in parts.Claimed)
+                    if (Array.IndexOf(ClaimedButtons, index) < 0) return false;
+                if (ClaimedDirections.Length != parts.Directions.Count) return false;
+                foreach (var (hat, directions) in parts.Directions)
+                    if (!Claims(hat, directions)) return false;
+                if (Lines.Length != parts.Lines.Count) return false;
+                for (int i = 0; i < Lines.Length; i++)
+                    if (Lines[i].Axis != parts.Lines[i].Axis) return false;
+                int held = 0;
+                foreach (var (_, holds) in Directions) held += holds.Length;
+                if (held != parts.HeldDirections.Count) return false;
+                foreach (var (index, _) in parts.HeldDirections)
+                    if (!FindDirection(index, out _, out _)) return false;
+
+                Take(Buttons, parts.Buttons);
+                Take(Axes, parts.Axes);
+                Take(Hats, parts.Hats);
+                for (int i = 0; i < Lines.Length; i++)
+                    if (!ReferenceEquals(Lines[i], parts.Lines[i])) Lines[i] = parts.Lines[i];
+                foreach (var (index, hold) in parts.HeldDirections)
+                {
+                    FindDirection(index, out int at, out int slot);
+                    var holds = Directions[at].Holds;
+                    if (!ReferenceEquals(holds[slot].Hold, hold)) holds[slot] = (holds[slot].Direction, hold);
+                }
+                return true;
+            }
+
+            private static bool Repeats(List<(int Index, Hold Hold)> list)
+            {
+                for (int i = 0; i < list.Count; i++)
+                    for (int j = i + 1; j < list.Count; j++)
+                        if (list[i].Index == list[j].Index) return true;
+                return false;
+            }
+
+            private static int Find((int Index, Hold Hold)[] mine, int index)
+            {
+                for (int i = 0; i < mine.Length; i++)
+                    if (mine[i].Index == index) return i;
+                return -1;
+            }
+
+            /// <summary>The same controls both ways, each held once.</summary>
+            private static bool SameIndexes((int Index, Hold Hold)[] mine, List<(int, Hold)> parts)
+            {
+                if (mine.Length != parts.Count) return false;
+                foreach (var (index, _) in parts)
+                    if (Find(mine, index) < 0) return false;
+                foreach (var (index, _) in mine)
+                {
+                    bool found = false;
+                    foreach (var (other, _) in parts)
+                        if (other == index) { found = true; break; }
+                    if (!found) return false;
+                }
+                return true;
+            }
+
+            private static void Take((int Index, Hold Hold)[] mine, List<(int, Hold)> parts)
+            {
+                foreach (var (index, hold) in parts)
+                {
+                    int at = Find(mine, index);
+                    if (!ReferenceEquals(mine[at].Hold, hold)) mine[at] = (index, hold);
+                }
+            }
+
+            private bool Claims(int hat, HatDirections directions)
+            {
+                foreach (var (h, d) in ClaimedDirections)
+                    if (h == hat && d == directions) return true;
+                return false;
+            }
+
+            /// <summary>Where a held direction's key (hat * 4 + direction)
+            /// sits in <see cref="Directions"/>.</summary>
+            private bool FindDirection(int index, out int at, out int slot)
+            {
+                int hat = index / 4;
+                var direction = (HatDirections)(1 << (index % 4));
+                for (at = 0; at < Directions.Length; at++)
+                {
+                    if (Directions[at].Hat != hat) continue;
+                    var holds = Directions[at].Holds;
+                    for (slot = 0; slot < holds.Length; slot++)
+                        if (holds[slot].Direction == direction) return true;
+                }
+                at = slot = -1;
+                return false;
+            }
 
             private static int AxisOf(CustomInputState s, int index)
                 => index < CustomInputState.MaxAxis ? s.Axis[index] : s.Sliders[index - CustomInputState.MaxAxis];
@@ -573,6 +734,9 @@ namespace PadForge.Common.Input
                 _waiting.Clear();
                 Volatile.Write(ref _waitingCount, 0);
                 _owners.Clear();
+                _parts.Clear();
+                _lastHolds.Clear();
+                Array.Clear(_lastTables);
                 Volatile.Write(ref _leased, Array.Empty<Leased>());
                 _dirty = false;
                 _seen.Clear();
@@ -627,7 +791,13 @@ namespace PadForge.Common.Input
         /// control, and a lease that ran out since the last pass lets go of
         /// its holds and claims (#600 item 24), on the clock that times the
         /// pass. Costs a read when nothing waits and a read for each lease,
-        /// and makes nothing.</summary>
+        /// and makes nothing. A step that lands makes nothing either while
+        /// each device's held and claimed controls are a set one of its last
+        /// <see cref="KeptSets"/> tables holds: a held value that changes, a
+        /// hold let go and taken again, a button tapped beside a held stick.
+        /// Those tables and the tables of devices are kept, the new holds in
+        /// place (<see cref="Rebuild"/>). A set that is not among them makes
+        /// a new table, which takes the oldest one's place.</summary>
         internal static void BeginPass()
         {
             long now = Now();
@@ -649,8 +819,13 @@ namespace PadForge.Common.Input
                 if (step.Drop)
                 {
                     int owner = step.Owner;
-                    _waiting.RemoveAll(s => s.Owner == owner);
-                    if (_owners.Remove(owner)) _dirty = true;
+                    for (int w = _waiting.Count - 1; w >= 0; w--)
+                        if (_waiting[w].Owner == owner) _waiting.RemoveAt(w);
+                    if (_owners.Remove(owner, out var gone))
+                    {
+                        Spare(gone);
+                        _dirty = true;
+                    }
                     continue;
                 }
                 _waiting.Add(step);
@@ -675,10 +850,14 @@ namespace PadForge.Common.Input
                         continue;
                     }
                     if (!_owners.TryGetValue(step.Owner, out var held))
-                        _owners[step.Owner] = held = new Dictionary<(Guid, char, int), object>();
+                        _owners[step.Owner] = held = _spareHeld.Count > 0 ? _spareHeld.Pop() : new Dictionary<(Guid, char, int), object>();
                     if (step.Value == null) held.Remove(key);
                     else held[key] = step.Value;
-                    if (held.Count == 0) _owners.Remove(step.Owner);
+                    if (held.Count == 0)
+                    {
+                        _owners.Remove(step.Owner);
+                        Spare(held);
+                    }
                     _changed.Add(key);
                     _dirty = true;
                 }
@@ -700,18 +879,100 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        // Kept from one rebuild to the next, under the pass lock (#600): each
+        // device's parts, its last tables with each table's own buffers, the
+        // last tables of devices, and the owners' emptied lists. A step that
+        // changes a held value, or a device's controls that come back to a
+        // set among its last ones, then make nothing on the pass that lands
+        // them.
+        private static readonly Dictionary<Guid, Parts> _parts = new();
+        private static readonly Dictionary<Guid, KeptHolds> _lastHolds = new();
+        private static readonly Dictionary<Guid, DeviceHolds>[] _lastTables = new Dictionary<Guid, DeviceHolds>[KeptSets];
+        private static int _nextTable;
+        private static readonly Stack<Dictionary<(Guid, char, int), object>> _spareHeld = new();
+
+        /// <summary>How many devices the kept parts and tables cover before
+        /// they are let go and made again.</summary>
+        private const int MostKept = 64;
+
+        /// <summary>How many sets of controls a device's kept tables cover,
+        /// and how many tables of devices are kept: a program that moves a
+        /// device among up to this many sets, a held stick with a button
+        /// tapped beside it among them, makes nothing once each set was
+        /// seen.</summary>
+        internal const int KeptSets = 4;
+
+        /// <summary>A device's last tables, the next new one taking the
+        /// oldest one's place.</summary>
+        private sealed class KeptHolds
+        {
+            public readonly DeviceHolds[] Holds = new DeviceHolds[KeptSets];
+            public int Next;
+        }
+
+        /// <summary>Under the lock: the device's kept table that takes these
+        /// parts, or one made anew and kept in place of the oldest.</summary>
+        private static DeviceHolds HoldsFor(Guid device, Parts parts)
+        {
+            if (!_lastHolds.TryGetValue(device, out var kept)) _lastHolds[device] = kept = new KeptHolds();
+            foreach (var holds in kept.Holds)
+                if (holds != null && holds.TakeIfSame(parts)) return holds;
+            var made = Build(parts);
+            kept.Holds[kept.Next] = made;
+            kept.Next = (kept.Next + 1) % KeptSets;
+            return made;
+        }
+
+        /// <summary>Under the lock: a kept table of devices that holds just
+        /// the tables this rebuild gave, or null.</summary>
+        private static Dictionary<Guid, DeviceHolds> KeptTable(int used)
+        {
+            foreach (var table in _lastTables)
+            {
+                if (table == null || table.Count != used) continue;
+                bool same = true;
+                foreach (var (device, parts) in _parts)
+                {
+                    if (!parts.Used) continue;
+                    if (!table.TryGetValue(device, out var was) || !ReferenceEquals(was, parts.Built))
+                    {
+                        same = false;
+                        break;
+                    }
+                }
+                if (same) return table;
+            }
+            return null;
+        }
+
+        private static void Spare(Dictionary<(Guid, char, int), object> held)
+        {
+            held.Clear();
+            if (_spareHeld.Count < 16) _spareHeld.Push(held);
+        }
+
         /// <summary>Under the lock: the table mappings read, from what every
-        /// owner holds and claims, but an owner whose lease lapsed.</summary>
+        /// owner holds and claims, but an owner whose lease lapsed. A device
+        /// whose held and claimed controls are the ones one of its last
+        /// <see cref="KeptSets"/> tables has keeps that table with the new
+        /// holds in place (<see cref="DeviceHolds.TakeIfSame"/>), and a kept
+        /// table of devices that holds those same tables is published again,
+        /// so neither is made again.</summary>
         private static void Rebuild()
         {
             _dirty = false;
-            var byDevice = new Dictionary<Guid, Parts>();
+            foreach (var kept in _parts.Values) kept.Clear();
             foreach (var (owner, held) in _owners)
             {
                 if (LeftOut(owner)) continue;
                 foreach (var ((device, kind, index), value) in held)
                 {
-                    if (!byDevice.TryGetValue(device, out var parts)) byDevice[device] = parts = new Parts { Owner = owner };
+                    if (!_parts.TryGetValue(device, out var parts)) _parts[device] = parts = new Parts();
+                    if (!parts.Used)
+                    {
+                        parts.Used = true;
+                        parts.Owner = owner;
+                    }
                     switch (kind)
                     {
                         case HoldButton: parts.Buttons.Add((index, (Hold)value)); break;
@@ -730,16 +991,47 @@ namespace PadForge.Common.Input
                     }
                 }
             }
-            var table = new Dictionary<Guid, DeviceHolds>();
-            foreach (var (device, parts) in byDevice)
+            int used = 0;
+            foreach (var (device, parts) in _parts)
             {
-                var directions = new List<(int, HatDirections)>();
-                foreach (var (hat, d) in parts.Directions) directions.Add((hat, d));
-                table[device] = new DeviceHolds(parts.Buttons.ToArray(), parts.Axes.ToArray(), parts.Hats.ToArray(),
-                    HeldByHat(parts.HeldDirections), parts.Claimed.ToArray(), directions.ToArray(), parts.Lines.ToArray())
-                { Owner = parts.Owner };
+                if (!parts.Used) continue;
+                used++;
+                parts.Built = HoldsFor(device, parts);
             }
-            Volatile.Write(ref _current, table.Count == 0 ? null : table);
+            Dictionary<Guid, DeviceHolds> table = null;
+            if (used > 0)
+            {
+                table = KeptTable(used);
+                if (table == null)
+                {
+                    table = new Dictionary<Guid, DeviceHolds>(used);
+                    foreach (var (device, parts) in _parts)
+                        if (parts.Used) table[device] = parts.Built;
+                    _lastTables[_nextTable] = table;
+                    _nextTable = (_nextTable + 1) % KeptSets;
+                }
+            }
+            Volatile.Write(ref _current, table);
+            if (_parts.Count > MostKept)
+            {
+                // Many devices came and went: the kept parts and tables go,
+                // and the next rebuild makes what it needs.
+                _parts.Clear();
+                _lastHolds.Clear();
+                Array.Clear(_lastTables);
+            }
+        }
+
+        /// <summary>A device's table made anew, for a set of controls its
+        /// last table does not hold.</summary>
+        private static DeviceHolds Build(Parts parts)
+        {
+            var directions = new (int, HatDirections)[parts.Directions.Count];
+            int at = 0;
+            foreach (var (hat, d) in parts.Directions) directions[at++] = (hat, d);
+            return new DeviceHolds(parts.Buttons.ToArray(), parts.Axes.ToArray(), parts.Hats.ToArray(),
+                HeldByHat(parts.HeldDirections), parts.Claimed.ToArray(), directions, parts.Lines.ToArray())
+            { Owner = parts.Owner };
         }
 
         /// <summary>Held directions, by key, as the table keeps them: each
@@ -758,13 +1050,36 @@ namespace PadForge.Common.Input
             return hats.ToArray();
         }
 
-        private sealed class Parts
+        /// <summary>A device's holds and claims gathered at a rebuild, kept
+        /// for the next one.</summary>
+        internal sealed class Parts
         {
             public readonly List<(int, Hold)> Buttons = new(), Axes = new(), Hats = new(), HeldDirections = new();
             public readonly List<int> Claimed = new();
             public readonly Dictionary<int, HatDirections> Directions = new();
             public readonly List<Line> Lines = new();
             public int Owner;
+
+            /// <summary>Something of the device is held or claimed on this
+            /// rebuild.</summary>
+            public bool Used;
+
+            /// <summary>The device's table this rebuild gave.</summary>
+            public DeviceHolds Built;
+
+            public void Clear()
+            {
+                Buttons.Clear();
+                Axes.Clear();
+                Hats.Clear();
+                HeldDirections.Clear();
+                Claimed.Clear();
+                Directions.Clear();
+                Lines.Clear();
+                Owner = 0;
+                Used = false;
+                Built = null;
+            }
         }
 
         /// <summary>Step 2, for every device read: the state mappings read.

@@ -10,7 +10,7 @@ Generated from the tools PadForge serves. Each level allows what the ones above 
 | `switch_profile` | Switch Profile | `profile` |
 | `set_engine` | Start or Stop the Engine | `on*` |
 | `set_controllers_power` | Turn Virtual Controllers On or Off | `on*`, `controller` |
-| `record_problem` | Record a Problem | `seconds`, `note` |
+| `record_problem` | Record a Problem. A recording needs Read. With seconds 0 it saves a snapshot at Commands. | `seconds`, `note` |
 
 ## Read
 

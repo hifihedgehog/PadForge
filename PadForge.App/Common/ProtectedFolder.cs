@@ -5,7 +5,7 @@ namespace PadForge.Common
 {
     /// <summary>
     /// The folders only Administrators and SYSTEM can change, where PadForge
-    /// with rights keeps what it unpacks, stages or starts (#597): its native
+    /// with rights keeps what it unpacks, stages or starts (#600): its native
     /// libraries, a downloaded update, the DSX stand-in, a driver package
     /// before it is installed, a task's definition before schtasks reads it.
     ///

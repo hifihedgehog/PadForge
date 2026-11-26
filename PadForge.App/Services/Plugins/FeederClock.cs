@@ -6,7 +6,7 @@ using System.Threading;
 namespace PadForge.Services.Plugins
 {
     /// <summary>
-    /// The clock a built-in plugin's thread waits on (#597): a
+    /// The clock a built-in plugin's thread waits on (#600): a
     /// high-resolution waitable timer, as the poll loop sleeps on
     /// (InputManager.SleepOnTimer), so Replay's frames leave within a
     /// millisecond or two of their time instead of the 15.6 ms the default

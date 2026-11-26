@@ -148,25 +148,21 @@ namespace PadForge.Tests
         public void BalanceRead_PassesEvaluatedGuidToProviders()
         {
             var oldCal = SourceCoercion.BalanceCalibrationProvider;
-            var oldTare = SourceCoercion.BalanceTareKgProvider;
             try
             {
-                string calGuid = null, tareGuid = null;
+                string calGuid = null;
                 SourceCoercion.BalanceCalibrationProvider = g => { calGuid = g; return null; };
-                SourceCoercion.BalanceTareKgProvider = g => { tareGuid = g; return 0f; };
 
                 var state = CenteredState();
-                state.Axis[0] = 40000; // some load so the read runs to the tare
+                state.Axis[0] = 40000; // some load so the read runs to the calibration
                 var src = new MappingSource { Descriptor = "Balance Total Weight", DeviceGuid = "" };
                 SourceCoercion.EvaluateForTriggerTarget(state, src, 0, evaluatedDeviceGuid: "device-guid");
 
                 Assert.Equal("device-guid", calGuid);
-                Assert.Equal("device-guid", tareGuid);
             }
             finally
             {
                 SourceCoercion.BalanceCalibrationProvider = oldCal;
-                SourceCoercion.BalanceTareKgProvider = oldTare;
             }
         }
     }

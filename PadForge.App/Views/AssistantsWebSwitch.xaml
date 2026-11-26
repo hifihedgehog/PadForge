@@ -62,7 +62,7 @@
                  its own Copy. -->
             <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
                 <StackPanel Margin="0,10,0,4">
-                    <Grid MinHeight="44" Visibility="{Binding HasNetworkAddress, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                    <Grid MinHeight="44" Visibility="{Binding ShowsNoAddress, Converter={StaticResource BoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="{StaticResource NetLabelColumn}"/>
                             <ColumnDefinition Width="*"/>
@@ -150,7 +150,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                         <!-- Its reach (#600 DESIGN-2 N3), the user's alone. -->
-                                        <ComboBox Width="260" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
+                                        <ComboBox MinWidth="280" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
                                                   AutomationProperties.AutomationId="{Binding ReachId}"
                                                   AutomationProperties.Name="{Binding Reach_Label, Source={x:Static strings:Strings.Instance}}"
                                                   AutomationProperties.HelpText="{Binding Name}"/>

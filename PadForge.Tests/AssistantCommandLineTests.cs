@@ -142,6 +142,11 @@ namespace PadForge.Tests
             Assert.Contains("  find (words, kind, most)", text);
             Assert.Contains("  read (id*)", text);
             Assert.Contains(AssistantCommandLine.BatchNote, text);
+            // A tool whose call can need more than its level says so.
+            var record = AssistantTools.All.First(t => t.Name == "record_problem");
+            Assert.Equal("A recording needs Read. With seconds 0 it saves a snapshot at Commands.", AssistantCommandLine.LevelNote(record));
+            Assert.Null(AssistantCommandLine.LevelNote(AssistantTools.All.First(t => t.Name == "status")));
+            Assert.Contains("      Record a Problem. " + AssistantCommandLine.LevelNote(record) + "\r\n", text);
 
             var json = new Run { Answer = run.Answer };
             Assert.Equal((true, 0), json.Go("--tools", "--json"));

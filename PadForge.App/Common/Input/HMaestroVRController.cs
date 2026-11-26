@@ -87,8 +87,11 @@ namespace PadForge.Common.Input
         /// <summary>True when SteamVR itself is present. Without SteamVR the
         /// driver has no host to register with, so slot creation refuses
         /// early with a clear message instead of a silent dead pipe.
-        /// Cached briefly: the probe walks Steam's library metadata on disk,
-        /// and the 5 s driver-status timer and every type bar ask again.</summary>
+        /// The probe is HIDMaestro's FindSteamVR. It reads HIDMaestro's
+        /// SteamVR hint, Steam's Uninstall entry for SteamVR and Steam's
+        /// install path, and checks those folders and C:\SteamVR for
+        /// vrpathreg.exe. The answer is cached briefly, since the 5 s
+        /// driver-status timer and every type bar ask again.</summary>
         public static bool IsAvailable()
         {
             long now = Environment.TickCount64;

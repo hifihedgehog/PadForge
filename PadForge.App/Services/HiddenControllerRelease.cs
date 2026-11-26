@@ -195,7 +195,7 @@ namespace PadForge.Services
         /// <summary>When PadForge last cycled a USB port, on the tick clock
         /// (<see cref="Now"/>), or -1 when it never has. The controller on
         /// that port drops and comes back by PadForge's own hand, and the
-        /// device notes say nothing of it (#597).</summary>
+        /// device notes say nothing of it (#600).</summary>
         internal long LastCycleAt => System.Threading.Volatile.Read(ref _lastCycleAt);
 
         /// <summary>Queues the release of the ids a hide just added and

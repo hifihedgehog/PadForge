@@ -90,7 +90,7 @@ namespace PadForge.Engine.Recording
     }
 
     /// <summary>
-    /// Reads a problem recording (#597) back: its parts, its devices and
+    /// Reads a problem recording (#600) back: its parts, its devices and
     /// virtual controllers, and its events one line at a time, with each
     /// device's state and each controller's frame kept exact to the integer
     /// as the lines go by. It needs no running engine and no window, so a
@@ -106,10 +106,25 @@ namespace PadForge.Engine.Recording
     /// </summary>
     public sealed class RecordingReader : IDisposable
     {
+        /// <summary>The most devices a reader keeps. The devices part names
+        /// every device of PadForge's list, which has no limit of its own,
+        /// and the events name at most the 256 the recorder tracks
+        /// (RecordingCapture.MaxDevices). A line of a device past this is
+        /// unreadable, so a file from anyone cannot make a reader hold a
+        /// device for every line.</summary>
+        public const int MostDevices = 1024;
+
+        /// <summary>The virtual controllers a file names: C1 to C16, one for
+        /// each slot (InputManager.MaxPads). A line of any other is
+        /// unreadable.</summary>
+        public const int MostControllers = 16;
+
         private readonly TextReader _reader;
         private readonly IncrementalHash _hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         private readonly List<RecordedDevice> _devices = new();
         private readonly List<RecordedController> _controllers = new();
+        private readonly Dictionary<int, RecordedDevice> _deviceOf = new();
+        private readonly Dictionary<int, RecordedController> _controllerOf = new();
         private string _line;
         private int _payloadStart;
         private bool _inEvents;
@@ -120,7 +135,6 @@ namespace PadForge.Engine.Recording
         public string FirstLine { get; private set; } = string.Empty;
         public string StatusLine { get; private set; } = string.Empty;
         public bool IsRecording => StatusLine.StartsWith(RecordingCodec.StatusRecording, StringComparison.Ordinal);
-        public bool IsFinished => StatusLine.StartsWith(RecordingCodec.StatusFinishedStart, StringComparison.Ordinal);
         public bool IsRecordingFile => FirstLine.StartsWith("PadForge problem recording", StringComparison.Ordinal);
 
         /// <summary>The parts the file says it holds. A format 1 file, which
@@ -133,9 +147,6 @@ namespace PadForge.Engine.Recording
         public IReadOnlyList<string> Settings => _settings;
         public IReadOnlyList<RecordedDevice> Devices => _devices;
         public IReadOnlyList<RecordedController> Controllers => _controllers;
-
-        /// <summary>True when the file has an events part.</summary>
-        public bool HasEvents => _inEvents;
 
         // The event the reader is on.
         public long Microseconds { get; private set; }
@@ -287,7 +298,8 @@ namespace PadForge.Engine.Recording
             int space = line.IndexOf(' ');
             int number = RecordingCodec.SubjectNumber(space < 0 ? line : line.AsSpan(0, space), 'D');
             if (number <= 0) return;
-            DeviceByNumber(number, make: true).Facts = RecordingCodec.ParseFacts(space < 0 ? default : line.AsSpan(space + 1));
+            var device = DeviceByNumber(number, make: true);
+            if (device != null) device.Facts = RecordingCodec.ParseFacts(space < 0 ? default : line.AsSpan(space + 1));
         }
 
         private void ReadControllerLine(string line)
@@ -295,30 +307,37 @@ namespace PadForge.Engine.Recording
             int space = line.IndexOf(' ');
             int number = RecordingCodec.SubjectNumber(space < 0 ? line : line.AsSpan(0, space), 'C');
             if (number <= 0) return;
-            ControllerByNumber(number, make: true).Facts = RecordingCodec.ParseFacts(space < 0 ? default : line.AsSpan(space + 1));
+            var controller = ControllerByNumber(number, make: true);
+            if (controller != null) controller.Facts = RecordingCodec.ParseFacts(space < 0 ? default : line.AsSpan(space + 1));
         }
 
         /// <summary>The device a number names, or null. D1 is 1.</summary>
         public RecordedDevice DeviceByNumber(int number) => DeviceByNumber(number, make: false);
 
+        /// <summary>The device a number names, made when it is new, or null
+        /// past <see cref="MostDevices"/>.</summary>
         private RecordedDevice DeviceByNumber(int number, bool make)
         {
-            foreach (var d in _devices) if (d.Number == number) return d;
-            if (!make) return null;
+            if (_deviceOf.TryGetValue(number, out var known)) return known;
+            if (!make || _devices.Count >= MostDevices) return null;
             var made = new RecordedDevice { Number = number };
             _devices.Add(made);
+            _deviceOf.Add(number, made);
             return made;
         }
 
         /// <summary>The virtual controller a number names, or null. C1 is 1.</summary>
         public RecordedController ControllerByNumber(int number) => ControllerByNumber(number, make: false);
 
+        /// <summary>The controller a number names, made when it is new, or
+        /// null past <see cref="MostControllers"/>.</summary>
         private RecordedController ControllerByNumber(int number, bool make)
         {
-            foreach (var c in _controllers) if (c.Number == number) return c;
-            if (!make) return null;
+            if (_controllerOf.TryGetValue(number, out var known)) return known;
+            if (!make || number > MostControllers) return null;
             var made = new RecordedController { Number = number };
             _controllers.Add(made);
+            _controllerOf.Add(number, made);
             return made;
         }
 
@@ -355,22 +374,28 @@ namespace PadForge.Engine.Recording
                     UnreadableLines++;
                     continue;
                 }
+                // A device or controller past the ones a reader keeps makes
+                // the line unreadable.
+                int deviceNumber = RecordingCodec.SubjectNumber(subject, 'D');
+                int controllerNumber = RecordingCodec.SubjectNumber(subject, 'C');
+                var device = deviceNumber > 0 ? DeviceByNumber(deviceNumber, make: true) : null;
+                var controller = controllerNumber > 0 ? ControllerByNumber(controllerNumber, make: true) : null;
+                if ((deviceNumber > 0 && device == null) || (controllerNumber > 0 && controller == null))
+                {
+                    UnreadableLines++;
+                    continue;
+                }
                 _line = line;
                 _payloadStart = payload.IsEmpty ? line.Length : line.Length - payload.Length;
                 Microseconds = micros;
                 Layer = layer;
                 Subject = subject.ToString();
-                Device = null;
-                Controller = null;
+                Device = device;
+                Controller = controller;
                 IsFullFrame = false;
                 HasPerPassCounts = false;
                 UnknownTokens = 0;
                 EventLines++;
-
-                int deviceNumber = RecordingCodec.SubjectNumber(subject, 'D');
-                int controllerNumber = RecordingCodec.SubjectNumber(subject, 'C');
-                if (deviceNumber > 0) Device = DeviceByNumber(deviceNumber, make: true);
-                if (controllerNumber > 0) Controller = ControllerByNumber(controllerNumber, make: true);
 
                 if (layer == RecordingCodec.LayerInput && Device != null) ApplyInput(payload);
                 else if (layer == RecordingCodec.LayerOutput && Controller != null) ApplyOutput(payload);

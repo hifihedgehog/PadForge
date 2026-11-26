@@ -210,12 +210,18 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Reads an axis value on the Automation pipe: raw (a whole number 0
-        /// to 65535) or plain (a number and a percent sign). Null when it
-        /// reads, else the reason in words.
+        /// to 65535), plain (a number and a percent sign), or <c>rest</c>,
+        /// which is <paramref name="rest"/> itself. Null when it reads, else
+        /// the reason in words.
         /// </summary>
         public static string ReadAxis(string text, int rest, out int raw)
         {
             raw = 0;
+            if (text != null && string.Equals(text.Trim(), "rest", StringComparison.OrdinalIgnoreCase))
+            {
+                raw = rest;
+                return null;
+            }
             if (TryParsePercent(text, out double plain))
             {
                 if (!AxisAccepts(plain, rest))
@@ -224,7 +230,7 @@ namespace PadForge.Engine
                 return null;
             }
             if (!int.TryParse(text, NumberStyles.AllowLeadingSign, Invariant, out raw) || raw < 0 || raw > RawMax)
-                return "an axis is 0 to 65535, or a percent such as 50%";
+                return "an axis is 0 to 65535, a percent such as 50%, or rest";
             return null;
         }
 

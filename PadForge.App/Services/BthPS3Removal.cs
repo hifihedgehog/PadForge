@@ -177,6 +177,12 @@ namespace PadForge.Services
         /// is refused and the report says what stayed.</summary>
         internal static Report Run(Action stopEngine)
         {
+            try { return RunNow(stopEngine); }
+            finally { Ds3DriverInstaller.ForgetBthPs3Packages(); }
+        }
+
+        private static Report RunNow(Action stopEngine)
+        {
             stopEngine?.Invoke();
             var machine = Read();
             var plan = Plan(machine);

@@ -1104,7 +1104,7 @@ namespace PadForge.Tests
                 settings.SetControllerDatabaseStatus(() =>
                     "Built in: 1,250 mappings, community copy of 2026-09-24. Downloaded 2026-11-25 from mirror.example.net: 64 new rows.");
                 settings.SetControllerDatabaseResult(() => PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_InUseAtOnce);
-                settings.SetControllerDatabaseMine(() => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_Mine_Format, 3),
+                settings.SetControllerDatabaseMine(() => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_Rows_Format, 3),
                     () => System.Threading.Tasks.Task.CompletedTask, _ => System.Threading.Tasks.Task.FromResult(0));
                 settings.SetControllerDatabaseProfileRows(
                     () => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_ProfileRows_Format, 2), () => null);
@@ -1516,8 +1516,8 @@ namespace PadForge.Tests
                 vm.HasRawData = true;
                 vm.HasGyroData = vm.HasAccelData = vm.HasTouchpadData = false;
             });
-            // A keyboard's More: its script ID and its keys by the names
-            // scripts use (#600 item 26).
+            // A keyboard's More: its keys by the names scripts use (#600
+            // item 26). Its script ID stands in Details.
             ShotOpen("devices-1280-keyboard-more.png", 1700, "TestMore");
             PadForge.Common.Input.SettingsManager.UserDevices = keptDevices;
             // A joystick and a wheel, which draw their own kind in place of
@@ -1595,7 +1595,7 @@ namespace PadForge.Tests
             var gamepadFacts = new PadForge.Services.SdlCardFacts(PadForge.Services.SdlReading.Gamepad, "DualSense Wireless Controller",
                 "050057564c050000e60c000000006800", PadForge.Common.Input.SdlMappingSource.Sdl, null, held,
                 held.With(guid: "050000004c050000e60c000000006800").Text, null,
-                new[] { ("Xbox #1", (IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)lines) }, new[] { "misc1", "touchpad" }, "Xbox #1");
+                new[] { ("Xbox #1", (IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)lines) }, new[] { "misc1", "touchpad" });
             Shot("devices-1280-sdl-gamepad.png", PageWidth, 1700, () =>
             {
                 PickDualSense();
@@ -1613,13 +1613,13 @@ namespace PadForge.Tests
                 Pick(vm.Devices.Single(d => d.DeviceName == "T.16000M"));
                 card.Show(new PadForge.Services.SdlCardFacts(PadForge.Services.SdlReading.Gamepad, "T.16000M Gamepad", "03001a2b4f04000002b4000000000000",
                     PadForge.Common.Input.SdlMappingSource.Yours, "November 24, 2026", yours, yours.Text, mineRow,
-                    Array.Empty<(string, IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)>(), Array.Empty<string>(), "Xbox #1"), xboxOne);
+                    Array.Empty<(string, IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)>(), Array.Empty<string>()), xboxOne);
             });
             Shot("devices-1280-sdl-joystick.png", PageWidth, 1500, () =>
             {
                 card.Show(new PadForge.Services.SdlCardFacts(PadForge.Services.SdlReading.Joystick, null, "03001a2b4f04000002b4000000000000",
                     PadForge.Common.Input.SdlMappingSource.None, null, null, null, null,
-                    Array.Empty<(string, IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)>(), Array.Empty<string>(), null),
+                    Array.Empty<(string, IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)>(), Array.Empty<string>()),
                     Array.Empty<SdlControllerChoice>());
             });
             card.Show(PadForge.Services.SdlCardFacts.Nothing, Array.Empty<SdlControllerChoice>());

@@ -30,6 +30,10 @@ namespace PadForge.Services.Automation
         /// which the question card and Activity show.</summary>
         internal const string ProgramName = "PadForge's command line";
 
+        /// <summary>The hello of a --call, at the level its tool needs.</summary>
+        internal static string HelloLine(AutomationLevel level)
+            => "hello name=" + AutomationLine.Quote(ProgramName) + " kind=script level=" + AutomationLevels.Word(level) + " protocol=" + AutomationLine.Protocol;
+
         /// <summary>How long a call waits for PadForge's answer: a question
         /// card waits two minutes, and a call that asks waits on it.</summary>
         internal const int CallAnswerMs = 4 * 60 * 1000;
@@ -192,7 +196,9 @@ namespace PadForge.Services.Automation
                     var args = AssistantJson.ArgumentNames(tool.Arguments);
                     text.Append("  ").Append(tool.Name);
                     if (args.Count > 0) text.Append(" (").Append(string.Join(", ", args)).Append(')');
-                    text.Append("\r\n      ").Append(tool.Title).Append("\r\n");
+                    text.Append("\r\n      ").Append(tool.Title);
+                    if (LevelNote(tool) is { } note) text.Append(". ").Append(note);
+                    text.Append("\r\n");
                 }
             }
             text.Append("\r\nAn argument with * is needed. Call a tool with --call <tool> and a JSON object of its arguments,\r\n")
@@ -219,6 +225,13 @@ namespace PadForge.Services.Automation
             }
             return tool.Level;
         }
+
+        /// <summary>What a tool's call needs past its tool's level, as
+        /// <see cref="LevelFor"/> asks it, for the lists of tools: null for
+        /// a tool whose every call needs its level.</summary>
+        internal static string LevelNote(AssistantToolDefinition tool)
+            => LevelFor(tool, new JsonObject()) == tool.Level ? null
+                : "A recording needs " + LevelName(LevelFor(tool, new JsonObject())) + ". With seconds 0 it saves a snapshot at " + LevelName(tool.Level) + ".";
 
         private static int Call(string name, string arguments, bool json, ClientRun.Seams seams)
         {
@@ -272,7 +285,7 @@ namespace PadForge.Services.Automation
             using (client)
             {
                 var level = LevelFor(tool, args);
-                string hello = client.Ask("hello name=" + AutomationLine.Quote(ProgramName) + " kind=script level=" + AutomationLevels.Word(level), 10000);
+                string hello = client.Ask(HelloLine(level), 10000);
                 if (hello == null)
                 {
                     seams.SayError(ClientRun.NoAnswerText);
@@ -369,13 +382,14 @@ namespace PadForge.Services.Automation
 
         /// <summary>Sends a line and gives the first answer that starts with
         /// <paramref name="tag"/> (any for none), passing over events, or
-        /// null when none comes in time.</summary>
+        /// null when none comes in time or the pipe broke, as when PadForge
+        /// closed it.</summary>
         internal string Ask(string line, int ms, string tag = null)
         {
-            Send(line);
             using var timeout = new CancellationTokenSource(ms);
             try
             {
+                Send(line);
                 while (true)
                 {
                     string answer = _reader.ReadLineAsync(timeout.Token).AsTask().GetAwaiter().GetResult();

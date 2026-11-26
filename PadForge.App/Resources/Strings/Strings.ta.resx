@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge-ஐக் காட்டு அல்லது மறை</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகளை ஆன் அல்லது ஆஃப் செய்</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>இணைக்கப்பட்ட எந்தச் சாதனமும்</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (இணைக்கப்படவில்லை)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>சாதனங்கள் பக்கத்தில் இல்லாத ஒரு சாதனம்</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>பதிவுசெய்கிறது…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} வி)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>எப்போது</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>படித்தல்</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>உள்ளீடுகளை அனுப்புதல்</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>அமைப்புகளை மாற்றுதல்</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>நிரல்கள் சுயவிவரங்களை மாற்றவும் விடுவிக்கவும், இன்ஜினைத் தொடங்கவும் நிறுத்தவும், மெய்நிகர் கட்டுப்படுத்திகளை இயக்கவும் அணைக்கவும், சாளரத்தைக் காட்டவும் மறைக்கவும், PadForge-ஐ மூடவும், பிழையறிதல் ஸ்னாப்ஷாட்டைச் சேமிக்கவும், என்ன இயங்குகிறது என்று கேட்கவும் முடியும்.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>நிரல்கள் சுயவிவரங்களை மாற்றவும் விடுவிக்கவும், இன்ஜினைத் தொடங்கவும் நிறுத்தவும், மெய்நிகர் கட்டுப்படுத்திகளை இயக்கவும் அணைக்கவும், சாளரத்தைக் காட்டவும் மறைக்கவும், PadForge-ஐ மூடவும், என்ன இயங்குகிறது என்று கேட்கவும், பிழையறிதல் ஸ்னாப்ஷாட்டைச் சேமிக்கவும், சிக்கல் பதிவைத் தொடங்கவும் நிறுத்தவும் குறிக்கவும் முடியும்.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>கட்டளைகள் நிலையில் உள்ள அனைத்தும், மேலும் நிரல்கள் சாதனங்கள், மெய்நிகர் கட்டுப்படுத்திகள், மேப்பிங்குகள், சுயவிவரங்கள், அமைப்புகளைப் பார்க்கவும், ஒவ்வொரு சாதனத்தின் உள்ளீடுகளையும் நடக்கும்போதே பின்தொடரவும், PadForge-இல் ஓர் இடத்தை உங்களுக்குக் காட்டவும் முடியும். படித்தல் நிலையில் உள்ள நிரல், நிர்வாகியாக இயங்கும் சாளரங்களில் தட்டச்சு செய்த விசைகள் உட்பட, ஒவ்வொரு சாதனத்திலும் அழுத்தப்படும் ஒவ்வொரு விசையையும் பார்க்கும்.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>படித்தல் நிலையில் உள்ள அனைத்தும், மேலும் நிரல்கள் தங்களுக்கே உரிய சாதனங்களைச் சேர்த்து இயக்கவும், எந்தச் சாதனத்தின் கட்டுப்பாட்டையும் பிடித்து வைக்கவும், மேக்ரோ தூண்டிகளுக்குப் பெயரிட்ட மதிப்புகளை வழங்கவும் முடியும்.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>உள்ளீடுகளை அனுப்புதல் நிலையில் உள்ள அனைத்தும், மேலும் பக்கங்களில் நீங்கள் மாற்றக்கூடியவற்றை நிரல்களும் மாற்ற முடியும். சில மாற்றங்கள் எப்போதும் PadForge-இன் கேள்வி அட்டையில் முதலில் உங்களிடம் கேட்கும்.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>உங்கள் பதிலுக்காகக் காத்திருக்கிறது</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>செயல்பாடு</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>செயல்தவிர்</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-ஆல் அதைச் சேமிக்க முடியவில்லை: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge-ஆல் கோப்பைச் சேமிக்க முடியவில்லை.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge-ஆல் செருகுநிரல் கருவித்தொகுப்பைச் சேமிக்க முடியவில்லை.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge செயல்பாடு {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>ஒலிகள்{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>ஐகான்கள்{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>படித்தல் நிலையில் அல்லது அதற்கு மேல் உள்ள நிரல் இணைந்திருக்கும்போது, விசைப்பலகைகள் உட்பட ஒவ்வொரு சாதனத்திலும் அழுத்துவதை அது பார்க்கும்.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>செருகுநிரல்கள்</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>செருகுநிரல்களை இயக்கு</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{1}-இல் {0}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (மறுஇயக்கம்)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>சிக்கல் பதிவுகள்|*.zip;*.log|அனைத்துக் கோப்புகள்|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பை இயக்க முடியவில்லை. அது சிக்கல் பதிவு அல்ல, அல்லது அதில் எந்தச் சாதனத்தின் உள்ளீடும் இல்லை.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பை இயக்க முடியாது. இது PadForge படிக்கக்கூடிய சிக்கல் பதிவு அல்ல.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பை இயக்க முடியாது. இதில் {1} சாதனங்களுக்கு மேல் உள்ளன, மறுஇயக்கம் அதிகபட்சம் {1} சாதனங்களை மட்டுமே இயக்கும்.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பை இயக்க முடியாது. இதில் எந்தச் சாதனத்தின் உள்ளீடும் இல்லை.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பைப் படிக்க முடியவில்லை.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>உங்கள் செருகுநிரல்கள்</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>செருகுநிரலைச் சேர்…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>நிரல்களும் ஸ்கிரிப்ட்களும்|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|அனைத்துக் கோப்புகள்|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>தொடர்ச்சியாக ஐந்து தோல்விகளுக்குப் பிறகு நிறுத்தப்பட்டது</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>தொடங்கவில்லை: கோப்பு இல்லை</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>தொடங்கவில்லை: இந்த வகைக் கோப்புக்கு Windows-இல் நிரல் இல்லை</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>தொடங்கவில்லை: Python கோப்புகளை உங்களுக்காகத் திறக்கும் நிரல் எதுவும் இல்லை, PadForge-ஆல் py துவக்கியையும் காண முடியவில்லை</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>தொடங்கவில்லை: இந்த வகைக் கோப்பை உங்களுக்காகத் திறக்கும் நிரல் எது என்பதை PadForge-ஆல் படிக்க முடியவில்லை</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>தொடங்கவில்லை: இந்த வகைக் கோப்பை உங்களுக்காகத் திறக்கும் நிரல் இந்தக் கணினியில் இல்லை</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>தொடங்கவில்லை: அதைத் தொடங்க டெஸ்க்டாப் ஷெல் இயங்கவில்லை</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>தொடங்கவில்லை: டெஸ்க்டாப் ஷெல்லுக்கு நிர்வாகி உரிமைகள் உள்ளன, எனவே செருகுநிரலுக்கும் அவை இருக்கும்</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>தொடங்கவில்லை: PadForge-க்கு நிர்வாகி உரிமைகள் இருக்குமா என்பதை அதனால் படிக்க முடியவில்லை</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>தொடங்கவில்லை: Windows அதற்கு நிர்வாகி உரிமைகளை வழங்கியது, எனவே அது இயங்கும் முன் PadForge அதை முடித்தது</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>தொடங்கவில்லை: அது நிர்வாகி உரிமைகளைக் கேட்கிறது</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>தொடங்கவில்லை: Windows பிழை {0} உடன் மறுத்தது</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>தொடங்கவில்லை</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>சேர்த்தவை: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>கையொப்பமிட்டவர்: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>கையொப்பமிடப்படவில்லை.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>இது இயங்கும்போது இதன் அமைப்புகள் இங்கே தெரியும்.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>இது எந்த அமைப்பையும் அறிவிக்கவில்லை.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>இது PadForge-உடன் இணைந்ததும் இதன் அமைப்புகள் இங்கே தெரியும்.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>நிரல் PadForge-க்குத் தெரியாத பதிப்பில் பேசுகிறது</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge அந்தச் செருகுநிரல் விசையைத் தரவில்லை</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge இந்த நிரலின் இணைப்பை ஏற்கவில்லை</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Windows நிரலின் கோப்பின் பெயரைத் தராததால் PadForge சாதனம் எதையும் உருவாக்கவில்லை</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>மிக விரைவில் மீண்டும் கேட்கப்பட்டது</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge மீண்டும் தொடங்கும் வரை இவை இனி இல்லை</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>நிரல்கள் உருவாக்கிய இவற்றில் மிக அதிகமானவை முகப்பு பக்கத்தில் உங்கள் மதிப்பாய்வுக்குக் காத்திருக்கின்றன</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-இல் அப்படி ஒரு கருவி இல்லை</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>நிரல் பழைய நிலையைப் படித்தது</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>அந்த ID எதற்கும் இல்லை</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>நீங்கள் அனுமதிக்கவில்லை</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>நேரத்துக்குள் யாரும் பதிலளிக்கவில்லை</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>உங்கள் பதிலுக்காகக் காத்திருக்கிறது</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>நீங்கள் இன்னும் பதிலளிக்கவில்லை</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>அப்படி ஒரு கோரிக்கை இல்லை</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>செயல்தவிர்க்க எதுவும் இல்லை</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>இதை நீங்கள் மட்டுமே மாற்ற முடியும்</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>கையொப்பமிடப்படவில்லை.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>படித்தல் நிலையிலும் அதற்கு மேலும், ஒவ்வொரு சாதனத்திலும் அழுத்தும் ஒவ்வொரு விசையையும் அது பார்க்கும், விசைப்பலகைகள் உட்பட.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>இது ஒருமுறை மட்டுமே கேட்கும். தானியக்கம் பக்கத்தில் இதை நீக்கலாம்.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>PadForge-ஆல் அடையாளம் காண முடியாத ஒரு நிரல் தொடங்கியது.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge-ஆல் இந்த நிரலை மற்றொன்றிலிருந்து பிரித்தறிய முடியாது, எனவே அடுத்த இணைப்பில் மீண்டும் கேட்கும்.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-இன் கட்டளை வரி</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ஐ {1} ஆக அமைக்கும்</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>நெட்வொர்க்கில் கேட்கும், எனவே பிற சாதனங்கள் இந்த PC-ஐ அடைய முடியும்.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>ஒரு சுயவிவரத்தைக் கொண்டுவா</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>வேறொரு நிரலின் சுயவிவரக் கோப்பை இறக்குமதி செய், பிறகு என்ன வந்தது என்று பார்.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} முறை</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, இது போன்ற {1} இல் கடைசி</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 ஸ்கிரிப்ட்கள் (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>இந்தக் கணினியில் Logitech G-key SDK இல்லை. இது Logitech Gaming Software 8.55 அல்லது அதற்குப் பிந்தைய பதிப்புடன் நிறுவப்படும்.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK பதிவுசெய்யப்பட்டுள்ளது, ஆனால் அதன் கோப்பு இல்லை. Logitech Gaming Software-ஐ மீண்டும் நிறுவவும்.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK கண்டறியப்பட்டது, ஆனால் அதை ஏற்ற முடியவில்லை.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK கண்டறியப்பட்டது, ஆனால் அதை நிர்வாகிகள் மட்டுமே மாற்ற முடியும் என்பதையும் Logitech அதில் கையொப்பமிட்டது என்பதையும் PadForge-ஆல் உறுதிசெய்ய முடியாததால் அதை ஏற்றவில்லை.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>அந்த நூலகம், இது எதிர்பார்க்கும் G-key SDK அல்ல.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK தொடங்க மறுத்துவிட்டது. பொதுவாக Logitech Gaming Software இயங்காததே இதற்குக் காரணம்.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>இணைக்கப்பட்டது, இதுவரை எந்த விசையும் காணப்படவில்லை. Logitech Gaming Software-இல், PadForge சுயவிவரத்தில் உள்ள ஒவ்வொரு விசையின் மீதும் G-key கட்டளையை இழுத்து விடவும், அந்தச் சுயவிவரத்தை நிலையானதாக (Persistent) அமைக்கவும். G600 அல்லது G300 சுட்டியாக இருந்தால், அது ஆன்-போர்டு நினைவகப் பயன்முறையிலிருந்தும் வெளியே இருக்க வேண்டும்.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>நீங்கள் Windows-இல் உள்நுழையும்போது PadForge-ஐத் தானாகத் தொடங்கும். இது இயக்கத்தில் இருக்கும்போது, ஒரு குறுக்குவழி, ஸ்கிரிப்ட் அல்லது வேறொரு நிரலிலிருந்தும் Windows-இன் கேள்வி இல்லாமல் PadForge தொடங்கும்.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} இலிருந்து இயங்குகிறது.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>இதற்கு PadForge தனக்கென ஒரு கோப்புறையில் இருக்க வேண்டும். அதன் கோப்புறையில் பிற கோப்புகள் உள்ளன, எனவே பிற நிரல்கள் அதை மாற்றாமல் PadForge-ஆல் தடுக்க முடியாது.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>இதற்கு பிற நிரல்கள் மாற்ற முடியாத கோப்புறையில் PadForge இருக்க வேண்டும். PadForge-ஆல் அதன் கோப்புறையை அவை மாற்றாமல் தடுக்க முடியவில்லை.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ஐ அதன் சொந்தக் கோப்புறைக்கு நகர்த்து</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge-ஐயும் அதன் அமைப்புகளையும் Program Files-க்கு நகலெடுத்து, அதன் பணிகளை அங்கே சுட்டி, அங்கிருந்து தொடங்கும். இங்குள்ள நகல் அப்படியே இருக்கும்.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge நகரவில்லை: {0}-இல் PadForge-உடையவை அல்லாத கோப்புகள் உள்ளன.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge நகரவில்லை: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>PadForge-ஐப் பிற கோப்புகள் உள்ள கோப்புறையிலிருந்து இயக்கியதால் உள்நுழையும்போது தொடங்கு அணைக்கப்பட்டது.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge நகரவில்லை: Windows எந்த Program Files கோப்புறையையும் குறிப்பிடவில்லை.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge நகரவில்லை: இயங்கிக்கொண்டிருக்கும் PadForge-ஐ அதனால் படிக்க முடியவில்லை.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge நகரவில்லை: அதனால் {0} ஐ உருவாக்க முடியவில்லை.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge நகரவில்லை: {0} இல் என்ன உள்ளது என்பதை அதனால் படிக்க முடியவில்லை.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge நகரவில்லை: பிற நிரல்கள் {0} ஐ மாற்றாமல் அதனால் தடுக்க முடியவில்லை.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge நகரவில்லை: {0} இல் உள்ள அதன் நகல், இயங்கிக்கொண்டிருக்கும் PadForge-உடன் பொருந்தவில்லை.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge நகரவில்லை: நகலெடுத்த பிறகு, {0} இல் PadForge-உடையவை அல்லாத கோப்புகள் இருந்தன, அல்லது பிற நிரல்கள் அதை மாற்ற முடிந்தது.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>இயங்கிய PadForge இப்போது அங்கு இல்லாததால் உள்நுழையும்போது தொடங்கு அணைக்கப்பட்டது.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>PadForge-ஐ இயக்கிய கோப்புறையை பிற நிரல்கள் மாற்றாமல் PadForge-ஆல் தடுக்க முடியாததால் உள்நுழையும்போது தொடங்கு அணைக்கப்பட்டது.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>எந்த PadForge இயங்கியது என்பதை PadForge-ஆல் படிக்க முடியாததால் உள்நுழையும்போது தொடங்கு அணைக்கப்பட்டது.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>PadForge-ஐ இயக்கிய கோப்புறையை PadForge-ஆல் படிக்க முடியாததால் உள்நுழையும்போது தொடங்கு அணைக்கப்பட்டது.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge தனது பாதுகாக்கப்பட்ட கோப்புறையான {0}-ஐ உருவாக்க முடியவில்லை. நிர்வாகி உரிமைகளுடன் இயக்கும் நூலகங்களை PadForge அங்கே வைக்கிறது, அது இல்லாமல் பாதுகாப்பாகத் தொடங்க முடியாது.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge தனது பாதுகாக்கப்பட்ட கோப்புறையான {0}-இலிருந்து தன்னை மீண்டும் தொடங்க முடியவில்லை. PadForge நிர்வாகி உரிமைகளுடன் அங்கிருந்து மட்டுமே இயங்கும், எனவே தொடங்கவில்லை.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge-ஆல் ஒரு நேரத்தில் ஒரு நகலை மட்டும் இயங்க வைக்கும் பூட்டை உருவாக்க முடியவில்லை, எனவே அது தொடங்கவில்லை.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge நிர்வாகி உரிமைகளுடன் {0} இலிருந்து இயங்குகிறது, இது பிற நிரல்கள் மாற்றக்கூடிய கோப்புறை. அவை அங்குள்ள PadForge-இன் அமைப்புகளை மாற்றலாம், PadForge தன் உரிமைகளுடன் அவற்றின்படி செயல்படும்.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge நிர்வாகி உரிமைகளுடன் {0} இலிருந்து இயங்குகிறது, இது பிற கோப்புகள் உள்ள கோப்புறை. அங்குள்ள PadForge-இன் அமைப்புகளை பிற நிரல்கள் மாற்றாமல் PadForge-ஆல் தடுக்க முடியாது, அது தன் உரிமைகளுடன் அவற்றின்படி செயல்படும்.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge நிர்வாகி உரிமைகளுடன் {0} இலிருந்து இயங்குகிறது, இந்தக் கோப்புறையை அதனால் படிக்க முடியவில்லை. அங்குள்ள PadForge-இன் அமைப்புகளை பிற நிரல்கள் மாற்றாமல் PadForge-ஆல் தடுக்க முடியாது, அது தன் உரிமைகளுடன் அவற்றின்படி செயல்படும்.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>சிஸ்டம் டிரேயில் எப்போதும் காட்டு</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>சாளரம் திறந்திருக்கும்போதும் டிரே ஐகானைக் காட்டும், எனவே அதன் மெனுவில் உள்ள வெளியேறு எப்போதும் ஒரே கிளிக்கில் கிடைக்கும்.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>புதுப்பிப்புகள்</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>நிறுவி மறுதொடக்கம் செய்</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>வெளியீட்டுக் குறிப்புகள்</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>கட்டுப்படுத்தி தரவுத்தளம்</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>இப்போது புதுப்பி சமூகக் கட்டுப்படுத்தி தரவுத்தளத்தை (SDL_GameControllerDB) GitHub-இலிருந்து, அல்லது மேலும் என்பதன் கீழ் அமைத்த முகவரியிலிருந்து பதிவிறக்கி, PadForge-இன் இந்தப் பதிப்பில் இல்லாத மேப்பிங்குகளை அமைப்புகள் கோப்பில் வைத்திருக்கும். அவை உடனே பயன்பாட்டுக்கு வரும். வேறு முகவரியிலிருந்து புதிய மேப்பிங்குகளை மட்டுமே வைத்திருக்கும். புதிய மேப்பிங், வேறு எதுவும் கேம்பேடாகப் படிக்காத, ஒதுக்கப்படாத, மூல ஜாய்ஸ்டிக் பயன்முறையைக் கட்டாயமாக்கு (கேம்பேட் மறுமேப்பிங்கைத் தவிர்) என்பதில் இல்லாத கட்டுப்படுத்திக்கு மட்டுமே பயன்படுத்தப்படும். மீட்டமைப்பு பதிவிறக்கிய ஒவ்வொரு மேப்பிங்கையும் நீக்கி, GitHub-இலிருந்து மீண்டும் பதிவிறக்கும். மேலும் என்பதன் கீழுள்ள உங்கள் சொந்த வரிசைகள் இருக்கும்.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>இப்போது புதுப்பி சமூகக் கட்டுப்படுத்தி தரவுத்தளத்தை (SDL_GameControllerDB) GitHub-இலிருந்து, அல்லது மேலும் என்பதன் கீழ் அமைத்த முகவரியிலிருந்து பதிவிறக்கி, PadForge-இன் இந்தப் பதிப்பில் இல்லாத மேப்பிங்குகளை அமைப்புகள் கோப்பில் வைத்திருக்கும். அவை உடனே பயன்பாட்டுக்கு வரும். வேறு முகவரியிலிருந்து புதிய மேப்பிங்குகளை மட்டுமே வைத்திருக்கும். புதிய மேப்பிங் முதலில், SDL கேம்பேடாக அல்லது குறிப்பிட்ட வகை எதுவுமில்லை என்று தெரிவிக்கும், வேறு எதுவும் கேம்பேடாகப் படிக்காத, ஒதுக்கப்படாத, மூல ஜாய்ஸ்டிக் பயன்முறையைக் கட்டாயமாக்கு (கேம்பேட் மறுமேப்பிங்கைத் தவிர்) என்பதில் இல்லாத கட்டுப்படுத்திக்கு மட்டுமே பயன்படுத்தப்படும். பயன்பாட்டுக்கு வந்த பிறகு, கட்டுப்படுத்தி ஒதுக்கப்பட்டாலும் அது பயன்பாட்டிலேயே இருக்கும். மீட்டமைப்பு பதிவிறக்கிய மேப்பிங்குகளை நீக்கி, பதிவிறக்கும் இடம் என்பதை சமூகத்தின் கோப்புக்கு மீண்டும் அமைக்கும், அடுத்த இப்போது புதுப்பி அதைப் பதிவிறக்கும். மேலும் என்பதன் கீழுள்ள உங்கள் சொந்த வரிசைகள் இருக்கும்.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>இப்போது புதுப்பி</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>புதுப்பிக்கிறது…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>புதுப்பிப்புகளைச் சரிபார்க்கிறது…</value></data>
@@ -1126,9 +1160,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>உள்ளமைந்தவை: {1} மேப்பிங்குகள், {2} தேதியின் சமூக நகல். பதிவிறக்கியது {3}, மூலம் {4}: புதிய வரிசைகள் {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>உள்ளமைந்தவை: {1} மேப்பிங்குகள், {2} தேதியின் சமூக நகல். பதிவிறக்கியது {3}, மூலம் {4}: புதிய வரிசை {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>கடைசிப் புதுப்பிப்புக்குப் பிறகு சமூகத் தரவுத்தளம் மாறவில்லை.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>{0} இல் உள்ள கோப்பு கடைசிப் புதுப்பிப்புக்குப் பிறகு மாறவில்லை.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-ஐ அடைய முடியவில்லை: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} ஐ அடைய முடியவில்லை: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>பதிவிறக்கம் PadForge எதிர்பார்க்கும் கட்டுப்படுத்தி தரவுத்தளம் அல்ல என்பதால் PadForge அதை மறுத்தது. எதுவும் மாறவில்லை.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>GitHub-இன் பதிலை PadForge ஏற்கவில்லை. எதுவும் மாறவில்லை.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>{0} இலிருந்து வந்த பதிலை PadForge ஏற்கவில்லை. எதுவும் மாறவில்லை.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>சிறிதாக்கப்பட்ட நிலையில் தொடங்கு</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>உள்நுழையும்போது தொடங்கு</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>கோப்புறை</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>சேவை அமைப்பு</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>நீக்கும் படி</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>சேவை</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>கோப்பு</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>மேல் வடிகட்டி</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>ரெஜிஸ்ட்ரி மதிப்பு</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>வன்பொருள் ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>திட்டமிடப்பட்ட பணி</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>நிறுவப்பட்ட பயன்பாடுகள் பதிவு</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP சாதனம்</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 கட்டுப்படுத்திகள், PlayStation Move மற்றும் Navigation கட்டுப்படுத்தி ஆகியவை Bluetooth வழியாக இணைய அனுமதிக்கிறது. PadForge-இல் உட்பொதிக்கப்பட்டுள்ளது. அவற்றில் ஒன்றை முதன்முறை இணைசேர்க்கும்போது நிறுவப்படும்.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 கட்டுப்படுத்திகளை Bluetooth வழியாக இணைக்கிறது.</value></data>
@@ -1239,6 +1284,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>சேமிக்கப்பட்டது: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>பதிவு தொடங்கவில்லை. இந்த PC-யின் ஒரு தனிப்பட்ட மதிப்பு கோப்பிலிருந்து விலக்கப்படாது என்பதைச் சோதனை கண்டறிந்தது.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>பதிவு தொடங்கவில்லை. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>பதிவை எழுத, உள்நுழைந்த பயனரின் சுயவிவரத்துக்குள் எந்த இணைப்பும் வழியாக அடையாமல் இருக்கும் அவரது தற்காலிகக் கோப்புறையை PadForge-ஆல் காண முடியவில்லை.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>பதிவுகள் கோப்புறை வேறொரு இடத்துக்கான இணைப்பு, அதை PadForge பின்தொடராது.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>கடைசிப் பதிவு இன்னும் முடிக்கப்படுகிறது.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>கடைசி 60 வினாடிகளை வைத்திரு அணைந்துள்ளது, எனவே சேமிக்க எதுவும் இல்லை.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge நிறுத்தாத ஒரு பதிவு, முகப்பில் நீங்கள் படிப்பதற்காகக் காத்திருக்கிறது: {0}</value></data>
@@ -1252,7 +1299,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, உங்கள் சாதனங்கள், அமைப்புகள் இப்போது உள்ளபடி, அதே மதிப்பாய்வு வழியாக.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe அருகில் உள்ள diagnostics.log, அங்கே நீங்கள் அதைப் படிக்கலாம்.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>எதைப் பதிவுசெய்வது</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>அனைத்தும் இயக்கத்தில். அணைக்கப்பட்ட பகுதி அடுத்த பதிவில் சேராது, எந்தப் பகுதிகள் உள்ளன என்பதை கோப்பு சொல்லும்.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>ஒவ்வொரு பகுதியும் இயல்பாக இயக்கத்தில் உள்ளது. அணைக்கப்பட்ட பகுதி அடுத்த பதிவில் சேராது, எந்தப் பகுதிகள் உள்ளன என்பதை கோப்பு சொல்லும்.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>ஓர் இரவில் ஒருமுறை வரும் சிக்கலுக்காக.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>பதிவை முகப்பில் படிக்க அது உங்களுக்காகக் காத்திருக்கிறது.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>சுருக்கம்</value></data>
@@ -1303,6 +1350,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>பதிவைச் சேமி</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip கோப்புகள்</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>சேமிக்கப்படவில்லை. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>சுத்திகரிப்புச் சோதனை: நீங்கள் வைத்திருக்கும் பகுதிகளைச் சரிபார்க்கிறது…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>சுத்திகரிப்புச் சோதனை: நீங்கள் வைத்திருக்கும் பகுதிகளை PadForge-ஆல் படிக்க முடியவில்லை, அதனால் சேமிப்பு முடக்கத்தில் இருக்கும்.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>உங்கள் உரிமைகளுடன் சேமிப்பு தொடங்கவில்லை.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>உங்கள் உரிமைகளுடன் சேமிப்பு தொடங்கவில்லை: அதைத் தொடங்க டெஸ்க்டாப் ஷெல் எதுவும் இயங்கவில்லை.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>உங்கள் உரிமைகளுடன் சேமிப்பு தொடங்கவில்லை: Windows பிழை {0} உடன் மறுத்தது.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>{0} ஆகியும் சேமிப்பு முடியவில்லை.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>அங்கே கோப்பை எழுத Windows அனுமதிக்கவில்லை.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>இந்தக் கோப்பை PadForge தனது சொந்தப் பதிவாக ஏற்கவில்லை.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>சேமிப்பு குறியீடு {0} உடன் முடிந்தது.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>நீங்களாகச் சேமிக்கப்படும், முதல் முறை உங்கள் பதிவிறக்கங்கள் கோப்புறையில், பிறகு நீங்கள் கடைசியாகச் சேமித்த இடத்தில், கோப்பு எக்ஸ்ப்ளோரரில் காட்டப்படும். பக்கத்தில் யாரும் இல்லாதபோது நிற்கும் பதிவு (அதன் வரம்பு, ஒரு மேக்ரோ, ஒரு நிரல், உதவியாளர் கருவி அல்லது --record stop) இந்த மதிப்பாய்வுக்காக முகப்பில் காத்திருக்கும், சேமிக்காவிட்டால் 7 நாட்களுக்குப் பிறகு நீக்கப்படும். அது காத்திருக்கிறது என்று நிரலுக்குச் சொல்லப்படும், எங்கே என்று ஒருபோதும் சொல்லப்படாது.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} மணிக்கான ஒரு சிக்கல் பதிவு நீங்கள் படிப்பதற்காகக் காத்திருக்கிறது.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>மதிப்பாய்வு</value></data>
@@ -1653,6 +1711,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>புதிய கட்டுப்படுத்தி</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>அமைப்புகள்</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>ஒவ்வொரு அச்சு, பொத்தான், சென்சார்</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>ஸ்கிரிப்ட்கள் பயன்படுத்தும் பெயர்களில் அதன் கட்டுப்பாடுகள்</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>அழுத்தப்பட்டவை: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>IDகள், பாதை, திறன்கள், Raw ஜாய்ஸ்டிக் பயன்முறையை கட்டாயப்படுத்து</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>IDகள், பாதை, திறன்கள்</value></data>
@@ -2154,9 +2213,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>படித்தல் தோல்வியடைந்தது: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro இந்த முன்னமைவை {1} இடத்தில் மறுத்தது: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>இந்த முன்னமைவில் HID விவரிப்பி இல்லை, எனவே இதிலிருந்து கட்டுப்படுத்தியை உருவாக்க முடியாது.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge-ஆல் இந்த முன்னமைவைச் சரிபார்க்க முடியவில்லை: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>முன்னமைவைச் சரிபார்க்கிறது…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>எதுவும் இறக்குமதி செய்யப்படவில்லை. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>இறக்குமதி செய்</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(பெயரிடப்படாத HID சாதனம்)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>சுட்டி</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>ஜாய்ஸ்டிக்</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>கேம்பேட்</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>விசைப்பலகை</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>பல அச்சுக் கட்டுப்படுத்தி</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID இடைமுகங்கள் கண்டறியப்பட்டன.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID இடைமுகம் கண்டறியப்பட்டது.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>பட்டியலிடல் தோல்வியடைந்தது: {0}</value></data>
@@ -3288,7 +3356,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>பிடித்திருக்கும்போது, மையத்துக்கு</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>நிலைமாற்று</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>திருப்ப உள்ளீடு</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>சுட்டியைத் திருப்ப விடும் பொத்தான், மூலம் உள்ள அதே சாதனத்தில். எதுவும் தேர்ந்தெடுக்காவிட்டால் சுட்டி எப்போதும் திருப்பும்.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>சுட்டியைத் திருப்ப விடும் பொத்தான், இந்த ஸ்லாட்டின் எந்தச் சாதனத்திலும் இருக்கலாம். எதுவும் தேர்ந்தெடுக்காவிட்டால் சுட்டி எப்போதும் திருப்பும்.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>மென்மையாக்கம்</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>சீரற்றுத் தெரிவிக்கும் சுட்டியைச் சமப்படுத்தும். ஸ்டிக் கையைவிட இவ்வளவு நேரம் பின்தங்கும். 0 என்றால் ஆஃப்.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>வேகத்தில் லாக்</value></data>
@@ -3309,7 +3377,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>திருப்புதல் தொடங்கிய இடத்திலிருந்து தொடங்கு</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>திருப்ப உள்ளீடு இருந்தால், தொலைபேசித் திரையில் ஸ்டிக் விரல் படும் இடத்தில் தொடங்குவது போல, திருப்புதல் தொடங்கியபோது சுட்டிக்குறி இருந்த இடத்திலிருந்து ஸ்டிக் அளவிடும். ஆஃப் எனில், சுட்டிக்குறியின் திரையின் மையத்திலிருந்து அளவிடும்.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>இந்த அச்சு சார்பு முறையில் நகர்கிறது</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>எவ்வளவு திரும்பியது என்று தெரிவிக்கும் டிராக்பால் அல்லது ஸ்பின்னருக்கு. ஆன் எனில், அச்சு சுட்டிப் பயணம் போல ஒரு நிலையைப் பிடித்து வைக்கும், பயண அமைப்புகளையும் எடுத்துக்கொள்ளும். எந்த அச்சுகள் இப்படி நகர்கின்றன என்று Windows சொல்வதில்லை.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>எவ்வளவு திரும்பியது என்று தெரிவிக்கும் டிராக்பால் அல்லது ஸ்பின்னருக்கு. ஆன் எனில், அச்சு சுட்டிப் பயணம் போல ஒரு நிலையைப் பிடித்து வைக்கும், பயண அமைப்புகளையும் எடுத்துக்கொள்ளும். SDL பொதுவான கட்டுப்படுத்தியை DirectInput வழியாகப் படிக்கிறது, அது ஒவ்வொரு அச்சையும் ஒரு நிலையாகப் படிக்கும், எனவே எந்த அச்சுகள் இப்படி நகர்கின்றன என்பதை இந்த சுவிட்ச் சொல்கிறது.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} செ.மீ</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>முன்னோட்டம்</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>இந்த வகை உங்கள் சுட்டியை எப்படிப் பின்தொடர்கிறது என்பதைக் காட்டும். நீங்கள் தேர்ந்தெடுக்கும் வரை எதுவும் மேப் செய்யப்படாது.</value></data>
@@ -3502,6 +3570,13 @@
 {0}
 
 PadForge விவரங்களை PadForge.exe அருகில் உள்ள crash.log இல் எழுதியது. இதைப் புகாரளிக்க {2} இல் ஒரு விவாதத்தைத் தொடங்கி crash.log ஐ அதன்மேல் இழுத்துவிடுங்கள்.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>எதிர்பாராத பிழை ஏற்பட்டது:
+
+{0}
+
+PadForge-ஆல் PadForge.exe அருகில் உள்ள crash.log இல் விவரங்களை எழுத முடியவில்லை. இதைப் புகாரளிக்க {2} இல் ஒரு விவாதத்தைத் தொடங்கி, இங்கே Ctrl+C அழுத்தி இந்தச் செய்தியை நகலெடுத்து, அங்கே ஒட்டுங்கள்.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(மேலும் {0} பிழைகள் மறைக்கப்பட்டன)</value></data>
@@ -4430,7 +4505,7 @@ PadForge விவரங்களை PadForge.exe அருகில் உள�
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Steam டிப்போ துண்டுகளுக்கு SteamKit2 பயன்படுத்தும் Zstandard சுருக்கநீக்கம், Oleg Stepanischev உருவாக்கிய zstd நூலகத்தின் C# போர்ட்.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>உதவியாளர் இணைப்புக்கும் PadForge.exe --mcp க்கும் பின்னால் உள்ள Model Context Protocol சேவையகமும் கிளையண்டும், Model Context Protocol a Series of LF Projects வழங்கியது.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>உதவியாளர் இணைப்புக்கும் PadForge.exe --mcp க்கும் பின்னால் உள்ள Model Context Protocol சேவையகமும் கிளையண்டும், Model Context Protocol a Series of LF Projects, LLC வழங்கியது.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK கட்டமைக்கப்பட்டுள்ள Microsoft.Extensions.AI.Abstractions, Logging.Abstractions மற்றும் DependencyInjection.Abstractions, Microsoft வழங்கியது.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>G19-இன் திரையுடன் WinUSB-ஐ இணைக்கிறது</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19-இன் திரை வேறொரு இயக்கியில் உள்ளது ({0}), எனவே Logitech Gaming Software-ஐத் தொடங்கவும்</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19-இன் திரை வேறொரு நிரலின் இயக்கியில் ({0}) உள்ளது, அதை PadForge தொடாமல் விடுகிறது</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>PadForge-இன் PlayStation புளூடூத் இயக்கிகளைச் சரிபார்க்கிறது…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>இந்தக் கணினியின் புளூடூத் ரேடியோவைப் படிக்கிறது…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>கட்டுப்படுத்தியை அதன் USB கேபிளில் திறக்கிறது…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>இந்தக் கணினியின் புளூடூத் முகவரியைக் கட்டுப்படுத்தியில் எழுதுகிறது…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>கட்டுப்படுத்தியை Windows புளூடூத்தில் பதிவுசெய்கிறது…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>புளூடூத்தை மறுதொடங்குகிறது…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>இணைசேர்ப்பு நின்றது: கட்டுப்படுத்தி அல்லது புளூடூத் அமைப்புகளுக்கு PadForge-க்கு Windows அணுகலை மறுத்தது. விவரங்கள் கண்டறிதல் பதிவில் உள்ளன.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>இணைசேர்ப்பு நின்றது: கட்டுப்படுத்தி அல்லது புளூடூத் ரேடியோவைப் படிப்பதோ எழுதுவதோ தோல்வியடைந்தது. விவரங்கள் கண்டறிதல் பதிவில் உள்ளன.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>PadForge எதிர்பார்க்காத ஒரு பிழையில் இணைசேர்ப்பு நின்றது. விவரங்கள் கண்டறிதல் பதிவில் உள்ளன.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 அல்லது புதியது தேவை</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>அதன் நூலகம் கண்டறியப்பட்டது, ஆனால் அதை நிர்வாகிகள் மட்டுமே மாற்ற முடியும் என்பதையும் Logitech அதில் கையொப்பமிட்டது என்பதையும் PadForge-ஆல் உறுதிசெய்ய முடியாததால் அதை ஏற்றவில்லை</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>அதன் நூலகம் கண்டறியப்பட்டது, ஆனால் அதைப் பயன்படுத்த முடியவில்லை, காரணத்தை கண்டறிதல் பதிவு சொல்கிறது</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software-ஐத் தொடங்கவும்</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control உள்ள தொலைபேசிக்காகக் காத்திருக்கிறது</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>தொலைபேசியில்</value></data>
@@ -5938,6 +6024,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>dhd64.dll-ஐத் தேர்ந்தெடு…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension நூலகத்தின் இந்த நகலை மற்றவற்றுக்குப் பதிலாக ஏற்றுகிறது. வேறொரு நகலில் திறந்துள்ள Falcon மூடப்பட்டு, இந்த நகலில் மீண்டும் திறக்கும். SDK நிறுவும் நகல்கள் இது இல்லாமலே கண்டறியப்படும்.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|நூலகங்கள் (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK பதிவிறக்கப் பக்கம் திறக்கவில்லை: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK பதிவிறக்கப் பக்கம் இன்னும் திறக்கவில்லை: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon இயக்கியை நிறுவு</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>இயக்கி இல்லாத Falcon-இல், SDK கோப்புறையிலிருந்து Force Dimension-இன் இயக்கியை நிறுவுகிறது. Force Dimension-ஐ நம்புவதா என்று Windows முதலில் கேட்கலாம்.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension SDK-ஐப் பெறு</value></data>
@@ -6604,12 +6692,17 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>அகற்றுகிறது…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>புதுப்பிக்கிறது…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>இது முடியவில்லை: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>{0} அதே அமைப்புகள் கோப்பையும் திறன் கோப்புறையையும் படிப்பதால், PadForge-இன் பதிவும் திறனும் அப்படியே இருக்கும்.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>{0} அதே அமைப்புகள் கோப்பைப் படிப்பதால், PadForge-இன் பதிவு அப்படியே இருக்கும்.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>இந்த நிரலிலிருந்து PadForge நீக்கப்பட்டது. {0} அதே கோப்புறையிலிருந்து திறன்களைப் படிப்பதால், அதன் திறன் அப்படியே இருக்கும்.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge-ஆல் {0} இல் உள்ள அமைப்புகளைப் படிக்க முடியவில்லை, எனவே PadForge சேர்க்கப்பட்டுள்ளதா என்பது அதற்குத் தெரியாது.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>சேர்க்கப்பட்டது. PadForge-ஆல் அதன் திறன் கோப்புறையைப் படிக்க முடியவில்லை.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>பிற உதவியாளர்கள்</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>மேலே பட்டியலிடப்படாத உதவியாளருக்கு: அமைப்புகளை நகலெடு அதன் MCP அமைப்புகளுக்கான உள்ளீட்டைத் தரும், ஒரு செய்தியை நகலெடு எந்த அரட்டைக்கும் எப்படி இணைப்பது, முதலில் என்ன கேட்பது என்று சொல்லும் ஒரு சிறு உரையைத் தரும்.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>அமைப்புகளை நகலெடு</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>ஒரு செய்தியை நகலெடு</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>நகலெடுக்கப்பட்டது.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>நகலெடுக்கப்படவில்லை: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>நகலெடுக்கப்படவில்லை. கிளிப்போர்டைப் பயன்படுத்த PadForge-க்கு Windows அனுமதிக்கவில்லை.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>என் PC-யில் உள்ள கட்டுப்படுத்தி மேப்பரான PadForge உடன் இணை. இது stdio வழியாக இயங்கும் உள்ளூர் MCP சேவையகம்: கட்டளை {0}, வாதம் --mcp. JSON அமைப்புகளாக: {1} இணைந்ததும் முதலில் அதன் status கருவியை அழை, பிறகு நான் எதை அமைக்க விரும்புகிறேன் என்று கேள், எடுத்துக்காட்டாக: “என் கட்டுப்படுத்தியின் டிரிகர்களை எங்கே மேப் செய்வது என்று காட்டு.”</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge-இன் தானியக்கம் இப்போது ஆஃப்: முதலில் PadForge-இல் கூடுதல், தானியக்கம் என்பதன் கீழ் அதை ஆன் செய்யவும்.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>அனுமதிக்கப்பட்ட நிரல்கள்</value></data>
@@ -6630,6 +6723,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ஒரு ஜாய்ஸ்டிக். PadForge அதை மூலமாகப் படிக்கிறது, எனவே SDL-இன் மேப்பிங் பயன்படுத்தப்படாது.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>உங்கள் வரிசையால் கேம்பேடாக அமைக்கப்பட்ட ஒரு ஜாய்ஸ்டிக்.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>இன்ஜின் இயங்கும்போது SDL சாதனங்களைப் படிக்கும்.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>சாதனம் இணைக்கப்படவில்லை. இணைக்கப்பட்டதும் SDL அதைப் படிக்கும்.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>இந்தச் சாதனத்தின் எந்த அளவீட்டையும் SDL PadForge-க்கு வழங்கவில்லை.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>உள்ளமைந்த சமூக நகல், {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} அன்று பதிவிறக்கப்பட்டது</value></data>
@@ -6667,6 +6762,11 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>டர்போ, நிலைமாற்றிகள் மற்றும் பிற செயல்கள்</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} மற்றும் {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>நகலெடுக்க எதுவும் இல்லை: இந்தச் சாதனத்துக்கு SDL மேப்பிங் இல்லை, இது எந்தக் கட்டுப்படுத்தியிலும் இல்லை.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>நகலெடுக்க எதுவும் இல்லை: இந்தச் சாதனத்துக்கான SDL-இன் மேப்பிங்கை PadForge-ஆல் படிக்க முடியவில்லை, அதன் கட்டுப்படுத்திகளின் எந்த வரிசையும் SDL-இன் வடிவம் ஏற்கும் பிணைப்பைத் தரவில்லை.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>நகலெடுக்க எதுவும் இல்லை: இந்தச் சாதனத்துக்கு SDL மேப்பிங் இல்லை, {0} இன் எந்த வரிசையும் அதன் பொத்தான்கள், அச்சுகள் அல்லது ஹாட்களில் ஒன்றை SDL-இன் வடிவம் ஏற்கும் முறையில் படிக்கவில்லை.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>நகலெடுக்க எதுவும் இல்லை: இந்தச் சாதனத்துக்கு SDL மேப்பிங் இல்லை, {0} இன் வரிசைகள் அதை {1} க்காக மட்டுமே படிக்கின்றன, அதை SDL-இன் வடிவத்தில் வைக்க முடியாது.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>நகலெடுக்க எதுவும் இல்லை: இந்தச் சாதனத்துக்கான SDL-இன் மேப்பிங்கை PadForge-ஆல் இப்போது படிக்க முடியவில்லை, இது எந்தக் கட்டுப்படுத்தியிலும் இல்லை.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>நகலெடுக்க எதுவும் இல்லை: இந்தச் சாதனத்துக்கான SDL-இன் மேப்பிங்கை PadForge-ஆல் இப்போது படிக்க முடியவில்லை, {0} இன் எந்த வரிசையும் SDL-இன் வடிவம் ஏற்கும் பிணைப்பைத் தரவில்லை.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>கிளிப்போர்டை வேறொரு நிரல் பயன்படுத்துகிறது. எதுவும் நகலெடுக்கப்படவில்லை.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>உங்கள் வரிசை நீக்கப்பட்டது. சாதனம் அதற்கு முன் இருந்தபடி படிக்கப்படும்.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-இன் அமைப்பிலிருந்து மீண்டும் மேப் செய்யப்பட்டது: {0}.</value></data>
@@ -6687,6 +6787,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge கொண்டுள்ள வரிசைகள்</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>எந்த வரிசையும் பொருந்தவில்லை.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>தேர்ந்தெடுத்த வரிசை, ஒட்டு என்பதில் உள்ள அதே சரிபார்ப்பு, அதே தேர்வுடன், {0} க்கு அதன் சொந்த ID-யின் கீழ் பயன்படுத்தப்படும்.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>இன்ஜின் நிறுத்தப்பட்டுள்ளது, எனவே SDL வைத்திருக்கும் வரிசைகளான அதன் சொந்தமும் உள்ளமைந்த சமூக நகலும் பட்டியலில் இல்லை. இன்ஜின் இயங்கியதும் அவை பட்டியலிடப்படும்.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL உரிய நேரத்தில் பதிலளிக்கவில்லை, எனவே அது வைத்திருக்கும் வரிசைகளான அதன் சொந்தமும் உள்ளமைந்த சமூக நகலும் பட்டியலில் இல்லை.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL மேப்பிங் வரிசை</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>இந்தச் சாதனத்துக்கான ஒரு வரிசை.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>ஊகித்த அமைப்பு.</value></data>
@@ -6699,14 +6801,17 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} புலம், வேறொரு பஸ் அல்லது பதிப்பில் உள்ள அதே தயாரிப்பாளர் மற்றும் பொருளிலிருந்து. இது இந்தச் சாதனத்தின் சொந்த ID-யின் கீழ் வைக்கப்படும்.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} புலம், வேறொரு சாதனத்தின் வரிசை. இது இந்தச் சாதனத்தின் சொந்த ID-யின் கீழ் வைக்கப்படும்.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} புலம். SDL இந்தச் சாதனத்தைப் படிப்பதில்லை, எனவே PadForge அதன் உள்ளீடுகளை வரிசைப்படி அமைக்கிறது.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>இந்தப் புலங்களுக்கு PadForge-இல் எளிய பொத்தானோ அச்சோ இல்லை, எனவே அவற்றை விட்டுவிடுகிறது: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} புலம், சாதனத்தின் அச்சுகள், பொத்தான்கள், ஹேட்களிலிருந்து. உள்ளீடுகளைச் சோதி என்பதில் சரிபார்த்து, இங்கே வைத்துக்கொள்ளவும் அல்லது மாற்றவும்.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>இது {0} எப்படிப் படிக்கப்படுகிறது என்பதை மாற்றும். {1} இல் உள்ள அதன் வரிசைகள் புதிய அமைப்பிலிருந்து மீண்டும் மேப் செய்யப்படும்.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>இது {0} எப்படிப் படிக்கப்படுகிறது என்பதை மாற்றும். இது எந்தக் கட்டுப்படுத்தியிலும் இல்லை, எனவே எந்த வரிசையும் மாறாது.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} ஐப் படிக்கும் சுயவிவர ஷார்ட்கட்கள் தாங்கள் அமைக்கப்பட்ட உள்ளீடுகளையே வைத்திருக்கும்.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>வரிசை PadForge.xml இல் உங்களுடையதாக வைக்கப்படும், இந்தச் சாதனத்துக்கு மற்ற எல்லா மூலங்களையும்விட அதுவே முன்னுரிமை பெறும். என்னுடையதை அகற்று பழைய வரிசையையும் பழைய வரிசைகளையும் திரும்பக் கொண்டுவரும்.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>வரிசைகள் PadForge.xml இல் உங்களுடையதாக வைக்கப்படும், அவற்றின் சாதனங்களுக்கு மற்ற எல்லா மூலங்களையும்விட அவையே முன்னுரிமை பெறும். கட்டுப்படுத்தி தரவுத்தளம் வரிசையின் மேலும் என்பதன் கீழுள்ள அழி அவற்றை நீக்கும்.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows க்கான {0} வரிசைகள். பிற அமைப்புகளுக்கான {1} தவிர்க்கப்படுகின்றன.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows க்கான {0} வரிசை. பிற அமைப்புகளுக்கான {1} தவிர்க்கப்படுகின்றன.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Windows-க்கான வரிசைகள்: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>Windows-க்கான வரிசை: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>பிற அமைப்புகளுக்கான வரிசைகள் தவிர்க்கப்பட்டன: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>மற்றொரு அமைப்புக்கான வரிசை தவிர்க்கப்பட்டது: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>எல்லா {0:N0} வரிசைகளும் சேர்க்கப்படும். உங்களுடைய {1:N0} வரிசைகள் வரை PadForge வைத்திருக்கும்.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>அது சேர்க்கப்படும். உங்களுடைய {1:N0} வரிசைகள் வரை PadForge வைத்திருக்கும்.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>உங்களுடைய {0:N0} வரிசைகள் இப்போது வைக்கப்பட்டுள்ளன, எனவே இவற்றில் {1:N0} சேர்க்கப்படும், {2:N0} சேர்க்கப்படாது.</value></data>
@@ -6716,7 +6821,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>இந்த உரை SDL-இன் கட்டுப்படுத்தித் தரவுத்தளத்தின் வரிசை அல்ல: 32 ஹெக்ஸ் இலக்கங்கள் கொண்ட ID, ஒரு பெயர், பிறகு a:b0 போன்ற புலங்கள் இருக்க வேண்டும்.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>வரிசைகள் பிற அமைப்புகளுக்கானவை. PadForge Windows க்கான அல்லது குறிப்பிட்ட அமைப்பு இல்லாத வரிசைகளைப் படிக்கும்.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>வரிசையின் ID ஒரு சாதனத்துடையது அல்ல. அதற்கு 32 ஹெக்ஸ் இலக்கங்கள் தேவை.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>வரிசையின் பெயர் காலியாக உள்ளது, 128 எழுத்துகளுக்கு மேல் உள்ளது, அல்லது SDL புலமாகப் படிக்கும் ஓர் எழுத்தைக் கொண்டுள்ளது.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>வரிசையின் பெயர் காலியாக உள்ளது, 128 எழுத்துகளுக்கு மேல் உள்ளது, “type:” போன்ற SDL படிக்கும் புலக் குறியைக் கொண்டுள்ளது, அல்லது எழுத்துகள், இலக்கங்கள், நிறுத்தற்குறிகள், குறியீடுகள், சாதாரண இடைவெளி ஆகியவை அல்லாத எழுத்தைக் கொண்டுள்ளது.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>வரிசையில் PadForge ஏற்காத ஒரு குறிப்புப் புலம் அல்லது Android புலம் உள்ளது.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>வரிசையில் SDL அறியாத ஒரு புலம் உள்ளது.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>ஒரு பிணைப்பு SDL-இன் வடிவில் இல்லை, எடுத்துக்காட்டாக b3, a2, +a2, a2~ அல்லது h0.4.</value></data>
@@ -6727,8 +6832,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>உங்கள் வரிசைகள்</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>நீங்கள் இங்கே சேர்க்கும் அல்லது சாதனத்தின் SDL மேப்பிங் அட்டையில் ஒட்டும் வரிசைகள், அவற்றின் சாதனங்களுக்கு மற்ற எல்லா மூலங்களையும்விட முன்னுரிமை பெறும், மீட்டமைப்புக்குப் பிறகும் இருக்கும்.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ஒரு கோப்பிலிருந்து அல்லது கிளிப்போர்டிலிருந்து வரிசைகளைச் சேர்…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} சாதனங்களுக்கான {0} வரிசைகள், மற்ற எல்லா மூலங்களையும்விட உங்களுடையவை.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} சாதனத்துக்கான {0} வரிசை, மற்ற எல்லா மூலங்களையும்விட உங்களுடையது.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>வரிசைகள்: {0:N0}, மற்ற எல்லா மூலங்களையும்விட உங்களுடையவை முன்னுரிமை பெறும்.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>வரிசை: {0:N0}, மற்ற எல்லா மூலங்களையும்விட உங்களுடையது முன்னுரிமை பெறும்.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>இன்னும் இல்லை.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>உங்கள் SDL_GAMECONTROLLERCONFIG மாறியில் PadForge வைத்திராத {0} வரிசைகள் உள்ளன. ஒரு கோப்பிலிருந்து அல்லது கிளிப்போர்டிலிருந்து வரிசைகளைச் சேர் என்பது அவற்றுடன் திறக்கும்.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>உங்கள் SDL_GAMECONTROLLERCONFIG மாறியில் PadForge வைத்திராத {0} வரிசை உள்ளது. ஒரு கோப்பிலிருந்து அல்லது கிளிப்போர்டிலிருந்து வரிசைகளைச் சேர் என்பது அதனுடன் திறக்கும்.</value></data>
@@ -6738,7 +6843,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>மாற்று…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>சமூகத்தின் கோப்பைப் பயன்படுத்து</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>முகவரி</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>https:// என்று தொடங்கி, ஹோஸ்ட்டின் பெயருடன், இயல்புநிலை போர்ட்டில், பயனர் பெயர் அல்லது கடவுச்சொல் இல்லாத முகவரியை PadForge ஏற்கும்.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>https:// இல் தொடங்கி ஒரு ஹோஸ்டைக் குறிக்கும், 2,048 எழுத்துகளுக்கு மிகாத முகவரியை PadForge ஏற்கும். இயல்புநிலை போர்ட்டில் இருக்க வேண்டும், பயனர் பெயர், கடவுச்சொல், # க்குப் பிந்தைய பகுதி இருக்கக்கூடாது.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>PadForge-ஐ இணையத்திலிருந்து அடை</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>ஒரு வலைத்தளத்தில் இயங்கும் உதவியாளர், இந்த PC-யில் உள்ள ஒரு சுரங்க நிரல் வழியாக PadForge-ஐ அடைகிறது. இதை இயக்கும் முன் உங்களிடம் கேட்கும்.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>PadForge-ஐ இணையத்திலிருந்து அடையவா?</value></data>
@@ -6755,7 +6860,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>நிறுத்தப்பட்டது. அதன் கடைசி வார்த்தைகள்: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>அதைத் தொடங்க முடியவில்லை.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>அது இனி இந்த PC-யில் இல்லை.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>இந்த PC-யில் எந்தச் சுரங்க நிரலும் கிடைக்கவில்லை. PadForge cloudflared, devtunnel, ngrok, Tailscale Funnel ஆகியவற்றுடன் அல்லது உங்கள் சொந்தச் சுரங்கத்தின் முகவரியுடன் செயல்படும்.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>இந்தக் கணினியில் cloudflared, devtunnel, ngrok, Tailscale Funnel எதையும் PadForge காணவில்லை. PadForge பதிவிறக்கும் ChatGPT Secure MCP Tunnel ஐத் தேர்ந்தெடுக்கவும், அல்லது உங்கள் சொந்த சுரங்கத்தின் முகவரியைத் தாருங்கள்.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge-க்கு ஒரு பொது முகவரி தர ஒரு சுரங்கத்தைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>இந்த PC-யில் மேலும்: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, அதன் முகவரி மாறாது</value></data>
@@ -6763,7 +6868,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>உங்கள் சொந்தச் சுரங்கத்தை http://127.0.0.1:{0} க்கு இயக்கி, அதன் https முகவரியை ஒட்டவும். பெயரிடப்பட்ட Cloudflare சுரங்கம், நிலையான dev tunnel, Tailscale Funnel, ngrok-இன் சொந்த டொமைன் ஆகியவை தங்கள் முகவரியை மாறாமல் வைத்திருக்கும்.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>உங்கள் சுரங்கம் தருவது போல, /mcp தவிர வேறு பாதை இல்லாத https முகவரியை ஒட்டவும்.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-இன் இணைய உதவி நிரலைத் தொடங்குகிறது.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-இன் இணைய உதவி நிரல் நின்றது ({0}). அதை மீண்டும் தொடங்க PadForge-ஐ இணையத்திலிருந்து அடை என்பதை அணைத்து மீண்டும் இயக்கவும்.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge-இன் இணைய உதவி நிரல் நின்றது ({0}). அதைத் தொடங்க PadForge தொடர்ந்து முயல்கிறது.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>முகவரி</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>இன்னும் பொது முகவரி இல்லை.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude-இல் சேர்</value></data>
@@ -6802,11 +6907,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>அது குறியீடு {0} உடன் முடிந்தது</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>தானியக்கம் ஆஃப் ஆக உள்ளது, எனவே எந்த இணைய உதவியாளரும் PadForge-ஐ அடைய முடியாது. தானியக்கம் இயக்கப்பட்டதும் இணைய உதவி நிரல் தொடங்கும்.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>சரிபார்க்கிறது…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>நிறுவப்படவில்லை.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>நிறுவப்பட்டது, புதியது. ஒரு ஸ்கிரிப்ட் {0} உடன் தொடங்கும்.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} க்காக நிறுவப்பட்டது, புதியது. ஒரு ஸ்கிரிப்ட் {1} உடன் தொடங்கும்.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>நிறுவப்பட்டது. இந்த PadForge-இல் புதிய நகல் உள்ளது.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} க்காக நிறுவப்பட்டது. இந்த PadForge-இல் புதிய நகல் உள்ளது.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>நிறுவுகிறது…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge-ஆல் அதைச் சரிபார்க்க முடியவில்லை: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>நிறுவு PadForge-இன் நூலகத்தை அந்த மொழி காணும் இடத்தில் வைக்கும். அதை ஏற்றும் ஸ்கிரிப்ட் மேலே உள்ள நிலையில் சாதனங்களைப் படித்து மேப்பிங்குகளை இயக்கும்.</value></data>
@@ -6814,8 +6914,27 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>நிறுவிய நகல்கள்</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>அனைத்தையும் அகற்று</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>அகற்றப்பட்டது.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge-இன் நூலகம் {0} க்கு நிறுவப்பட்டு புதியதாக உள்ளது. ஸ்கிரிப்ட் {1} உடன் தொடங்கும்.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>{0} க்கான PadForge-இன் நூலகம் இந்த PadForge-இன் நகலிலிருந்து வேறுபடுகிறது.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge-இன் நூலகம் {0} க்கு நிறுவப்படவில்லை.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>PadForge-இன் நூலகம் {0} க்குப் புதியதாக உள்ளது. {1} க்கான நகல் இந்த PadForge-இன் நகலிலிருந்து வேறுபடுகிறது.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>PadForge-இன் நூலகம் {0} க்குப் புதியதாக உள்ளது, {1} க்கு நிறுவப்படவில்லை.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>{0} க்கான PadForge-இன் நூலகம் இந்த PadForge-இன் நகலிலிருந்து வேறுபடுகிறது, {1} க்கு அது நிறுவப்படவில்லை.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>PadForge-இன் நூலகம் {0} க்குப் புதியதாக உள்ளது. {1} க்கான நகல் இந்த PadForge-இன் நகலிலிருந்து வேறுபடுகிறது, {2} க்கு அது நிறுவப்படவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>உங்கள் சொந்த உரிமைகளுடன் Windows அதைத் தொடங்கவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>இது {0} வினாடிகளில் முடியவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>இது குறியீடு {0} உடன் முடிந்தது, எந்தக் காரணத்தையும் தரவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge-ஆல் {0} இல் உள்ள அமைப்புகளைப் படிக்க முடியவில்லை, எனவே கோப்பை அப்படியே விட்டது.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>{0} ஐ PadForge எழுதவில்லை, எனவே அதை அப்படியே விட்டது.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>உங்களுக்கான ஆவணங்கள் கோப்புறையை Windows குறிப்பிடவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>{0} க்கான உங்கள் கோப்புறையை PadForge-ஆல் காண முடியவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0}-இன் சொந்தக் கட்டளை குறியீடு {1} உடன் முடிந்தது.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0}-இன் கட்டளை இந்தக் கணினியில் இல்லை.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>தேவையான கோப்பைப் படிக்கவோ எழுதவோ PadForge-ஐ Windows அனுமதிக்கவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge-ஆல் Python ஐக் காண முடியவில்லை: எதுவும் பதிவுசெய்யப்படவில்லை, Microsoft Store இலிருந்து நிறுவப்படவில்லை, py துவக்கி பட்டியலிடவில்லை, உங்கள் PATH இலும் இல்லை.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge கண்ட எந்த Python உம் {0} வினாடிகளுக்குள் பதிலளிக்கவில்லை.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>PadForge அறிந்த எந்தக் காரணத்தையும் இந்த இயக்கம் தரவில்லை.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ஸ்கிரிப்ட் ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>அதன் ஸ்கிரிப்ட் ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>ஸ்கிரிப்ட்கள் அதன் கட்டுப்பாடுகளுக்குப் பெயரிடுவது {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>ஸ்கிரிப்ட்கள் அதன் விசைகளை KeyA, KeySpace, KeyLeftShift என்பவை போலவும், ஒவ்வொரு விசையையும் அதன் குறியீட்டால் Vk0 முதல் Vk255 வரையிலும் பெயரிடும்.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>இந்த நெட்வொர்க்கில் {1} இலிருந்து {0}</value></data>
@@ -6827,11 +6946,11 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>நிர்வாகி உரிமைகள் இல்லாமல் இயங்கும் PadForge-இன் உதவி நிரல் இந்த PC-யின் நெட்வொர்க் முகவரிகளில் கேட்கும், PadForge அதன் போர்ட்டைத் தனியார் நெட்வொர்க்குகளில் மட்டுமே அனுமதிக்கும். வேறொரு PC-யில் உள்ள உதவியாளர் நீங்கள் இங்கே உருவாக்கும் விசையுடன் மட்டுமே உள்ளே வர முடியும். அழைப்புகளும் அவற்றின் விசையும் குறியாக்கம் இல்லாமல் நெட்வொர்க்கைக் கடக்கும்.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>போர்ட்</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>மாற்று…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>அழைப்புகளும் அவற்றின் விசையும் இந்த நெட்வொர்க்கை குறியாக்கம் இல்லாமல் கடக்கும். Windows அவற்றைத் தனியார் நெட்வொர்க்குகளில் மட்டுமே உள்ளே விடும்.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>அழைப்புகளும் அவற்றின் விசையும் இந்த நெட்வொர்க்கில் குறியாக்கம் இல்லாமல் செல்கின்றன. இந்தப் போர்ட்டுக்காக PadForge உருவாக்கும் Windows ஃபயர்வால் விதி தனியார் நெட்வொர்க்குகளை மட்டுமே குறிக்கிறது.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>போர்ட் {0} ஐ வேறொரு நிரல் பயன்படுத்துகிறது. இந்த நெட்வொர்க்கிலிருந்து PadForge-ஐ அடைய அதை மாற்றுங்கள்.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>போர்ட் {0} இல் கேட்க PadForge-இன் உதவி நிரலை Windows அனுமதிக்கவில்லை. நிர்வாகி உரிமைகளுடன் PadForge அதை அனுமதிக்கும், எனவே அவற்றுடன் PadForge-ஐத் தொடங்கி இதை அணைத்து மீண்டும் இயக்குங்கள்.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>போர்ட் {0} இல் PadForge-இன் உதவி நிரலுக்கு Windows எந்த ஒதுக்கீட்டையும் வைத்திருக்கவில்லை. இதை அணைத்து மீண்டும் இயக்குங்கள், PadForge அதை மீண்டும் உருவாக்கும்.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>போர்ட் {0} இல் PadForge-இன் உதவி நிரலால் கேட்க முடியவில்லை. போர்ட்டை மாற்றுங்கள், அல்லது இதை அணைத்து மீண்டும் இயக்குங்கள்.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-இன் உதவி நிரல் நின்றது ({0}). அதை மீண்டும் தொடங்க PadForge-ஐ இந்த நெட்வொர்க்கிலிருந்து அடை என்பதை அணைத்து மீண்டும் இயக்குங்கள்.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge-இன் உதவி நிரல் நின்றது ({0}). அதைத் தொடங்க PadForge தொடர்ந்து முயல்கிறது.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>தானியக்கம் ஆஃப் ஆக உள்ளது, எனவே இந்த நெட்வொர்க்கில் உள்ள எந்த உதவியாளரும் PadForge-ஐ அடைய முடியாது. தானியக்கம் இயக்கப்பட்டதும் உதவி நிரல் தொடங்கும்.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>இந்த PC-க்கு இப்போது தனியார் நெட்வொர்க்கில் முகவரி இல்லை.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>இந்த நெட்வொர்க்கில் உள்ள உதவியாளர்கள்</value></data>
@@ -6875,11 +6994,12 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Reach_Pick_Title" xml:space="preserve"><value>சாதனங்களைத் தேர்ந்தெடு</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} தன் சொந்தச் சாதனங்களையும் நீங்கள் குறியிடுபவற்றையும் இயக்கலாம். இது இன்னும் ஒவ்வொரு சாதனத்தையும் படிக்கும்.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>சாதனங்கள் பக்கத்தில் சாதனங்கள் எதுவும் இல்லை.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>இயங்குகிறது, உங்கள் உரிமைகளுடன், தயாராக உள்ளது. ChatGPT தனக்கென உள்நுழைவு இல்லாமல் இந்தச் சுரங்கம் வழியாக PadForge-ஐ அடைகிறது, அதுவும் உங்கள் OpenAI நிறுவனத்திலிருந்து மட்டுமே. PadForge-உடன் இது மீண்டும் தொடங்கும்.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>இயங்குகிறது, உங்கள் உரிமைகளுடன். சுரங்கம் தயார் என்று OpenAI சொல்லும் வரை காத்திருக்கிறது.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>உங்கள் உரிமைகளுடன் இயங்குகிறது, tunnel-client தான் தயார் என்று தெரிவிக்கிறது. PadForge-உடன் மீண்டும் தொடங்கும்.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>உங்கள் உரிமைகளுடன் இயங்குகிறது. tunnel-client தான் இப்போது தயார் என்று தெரிவிக்கவில்லை.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>OpenAI-இன் tunnel-client ஐப் பதிவிறக்கி, அதன் வெளியீட்டின் SHA-256 கூடுதல்களுடன் சரிபார்க்கிறது.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client ஐப் பதிவிறக்க முடியவில்லை: {0}. மீண்டும் முயல சுரங்கத்தை மீண்டும் தேர்ந்தெடுங்கள்.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>கீழே ஒரு இயக்கநேர விசையையும் ஒரு சுரங்க ID ஐயும் ஒட்டுங்கள், சுரங்கம் தொடங்கும்.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>OpenAI-இன் tunnel-client இந்தக் கணினியில் இன்னும் இல்லை. அதைப் பதிவிறக்க சுரங்கத்தை மீண்டும் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>இயக்கநேர விசை</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>கட்டுப்படுத்தப்பட்டது, Tunnels Read and Use அனுமதிகளுடன்.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>ஒன்றை உருவாக்கு</value></data>
@@ -6888,6 +7008,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>ChatGPT ஐத் திற</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge விசையை உங்களுக்கு மட்டுமே குறியாக்கி வைத்திருக்கும். காலிப் பெட்டி அதை மறக்கச்செய்யும். ChatGPT மேலே உள்ள நிலையில் செயல்படும்.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>விசை வைக்கப்படவில்லை: PadForge-இன் இணைய உதவி நிரல் இயங்கவில்லை, அதனால் மட்டுமே உங்களுக்காக விசையைக் குறியாக்க முடியும்.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>விசை வைக்கப்படவில்லை: விசையைக் குறியாக்கும் முன்பே PadForge-இன் இணைய உதவி நிரல் முடிந்துவிட்டது. மீண்டும் ஒட்டுங்கள்.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>விசை வைக்கப்படவில்லை: Windows-ஆல் உங்களுக்காக அதைக் குறியாக்க முடியவில்லை. மீண்டும் ஒட்டுங்கள்.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>வேறொரு சாதனத்திலிருந்து பதிலளி</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>இந்த PC-யை விட்டுத் தொலைவில் இருக்கும்போது, PadForge-இன் கேள்விகளுக்கு தொலைபேசியிலிருந்து அல்லது வேறொரு PC-யிலிருந்து பதிலளியுங்கள்.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>இந்த நெட்வொர்க்கில் மட்டுமே, இணையக் கட்டுப்படுத்தியின் முகவரி வழியாகச் செயல்படும்.</value></data>
@@ -6905,9 +7027,10 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>குறியீடு ஒருமுறை மட்டுமே செயல்படும், {0} வரை. ஐந்து தவறான முயற்சிகள் அதை மூடும், QR குறியீடு தொடர்ந்து செயல்படும்.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>இணையக் கட்டுப்படுத்தியின் முகவரியைத் தொடங்குகிறது…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>பக்கத்தைத் திறக்க முடியவில்லை: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>இந்தக் கணினிக்குத் தனியார் நெட்வொர்க்கில் முகவரி இல்லை.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>இந்தச் சாளரத்தைத் திரைப்பதிவிலிருந்து மறைக்க Windows அனுமதிக்கவில்லை, எனவே இது குறியீட்டைக் காட்டாது.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>ஐந்து தவறான முயற்சிகளுக்குப் பிறகு உள்ளிடும் குறியீடு மூடப்பட்டது. QR குறியீடு {0} வரை தொடர்ந்து செயல்படும்.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>குறியீட்டின் நேரம் முடிந்தது. சாதனத்தை இணை… புதியதை உருவாக்கும்.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>குறியீட்டின் நேரம் முடிந்தது. சாதனத்தை இணை புதியதை உருவாக்கும்.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge அதிகபட்சம் {0} நெட்வொர்க் விசையை வைத்திருக்கும். முதலில் அதைத் திரும்பப்பெறு.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். நிறச் சுழற்சி அல்லது ஒலியைப் பின்தொடரும் நிறங்கள் போன்ற மாறும் நிறங்கள் அதைச் சென்றடையாது. மாறாத நிறம் சென்றடையும்.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>

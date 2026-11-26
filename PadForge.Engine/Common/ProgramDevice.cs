@@ -19,7 +19,7 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// What a program's device has (#597): named buttons, axes, sliders and
+    /// What a program's device has (#600): named buttons, axes, sliders and
     /// hats, sensors, touchpads, a battery, and the feedback it takes. Up to
     /// what <see cref="CustomInputState"/> holds. Made once per declaration
     /// and never changed after it is handed to a device.
@@ -75,7 +75,7 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// Several controls of a program's device set as one change (#597), the
+    /// Several controls of a program's device set as one change (#600), the
     /// way the Automation pipe's <c>s</c> line names them. Applied in one
     /// swap, so a stick's two axes never land on different passes. Values
     /// are already in <see cref="CustomInputState"/>'s ranges.
@@ -110,7 +110,7 @@ namespace PadForge.Engine
     }
 
     /// <summary>
-    /// A device a program adds over the Automation pipe (#597): a script, an
+    /// A device a program adds over the Automation pipe (#600): a script, an
     /// assistant or a plugin, and later the built-in Test Controller and
     /// Replay. Its shape is what the program declared, with the names it
     /// gave, and its state is what the program last set.
@@ -248,8 +248,18 @@ namespace PadForge.Engine
             }
             s.BatteryPercent = shape.Battery ? battery : -1;
             s.BatteryCharging = shape.Battery && charging;
+            s.OwnButtonSixteen = OwnsButtonSixteen(shape);
             return s;
         }
+
+        /// <summary>Whether the shape declares button 16 beside a touchpad
+        /// (#600): button 16 is then the program's own, and the first pad's
+        /// click is that pad's Clicked alone
+        /// (<see cref="CustomInputState.OwnButtonSixteen"/>). A shape with no
+        /// button 16 has its first pad's click on button 16, where every
+        /// other touchpad device carries it.</summary>
+        public static bool OwnsButtonSixteen(ProgramDeviceShape shape)
+            => shape.TouchpadFingers.Count > 0 && HasButton(shape, 16);
 
         // ── One change per control per read (#600 item 22) ──
 
@@ -524,8 +534,9 @@ namespace PadForge.Engine
                 if (s.Touchpads == null || padIndex < 0 || padIndex >= s.Touchpads.Length) continue;
                 s.Touchpads[padIndex].Clicked = clicked;
                 // The first pad's click rides button 16 as well, where
-                // every other touchpad device carries it.
-                if (padIndex == 0) s.Buttons[16] = clicked;
+                // every other touchpad device carries it, unless the
+                // program declared button 16 as a button of its own.
+                if (padIndex == 0 && !s.OwnButtonSixteen) s.Buttons[16] = clicked;
             }
             if (shape.Battery)
             {
@@ -567,18 +578,66 @@ namespace PadForge.Engine
 
         /// <summary>
         /// Takes a whole state as the device's next one, as Replay feeds a
-        /// recorded frame. The state is copied, so the caller may change its
-        /// own afterward. Called from the feeder's thread.
+        /// recorded frame from a file anyone may have written. Every value
+        /// lands inside the range a program's change keeps it in
+        /// (<see cref="Land"/>), and every part the frame carries stays, a
+        /// mouse's deltas, MIDI and analog keys included. The state is
+        /// copied, so the caller may change its own afterward. Called from
+        /// the feeder's thread.
         /// </summary>
         public void Publish(CustomInputState state)
         {
             if (state == null) return;
-            var s = state.Clone();
+            var s = Within(state);
+            // Where its first pad's click is read follows the device's own
+            // shape, as Replay declared it from the recording.
+            s.OwnButtonSixteen = OwnsButtonSixteen(Shape);
             lock (_stateLock)
             {
                 DropWaitingLocked();
                 Volatile.Write(ref _state, s);
             }
+        }
+
+        /// <summary>A copy of a whole state with each value in the range
+        /// <see cref="Land"/> keeps a change's in: axes and sliders 0 to
+        /// 65535, a hat centered or 0 to 35999, the motion sensors and the
+        /// other sensors' numbers finite, fingers 0 to 1, the battery unknown
+        /// or 0 to 100. An analog key's depth is kept 0 to 1 where it is set
+        /// (AnalogKeyInputState.Set), and a MIDI byte holds no more.</summary>
+        private static CustomInputState Within(CustomInputState from)
+        {
+            var s = from.Clone();
+            for (int i = 0; i < s.Axis.Length; i++) s.Axis[i] = Math.Clamp(s.Axis[i], 0, 65535);
+            for (int i = 0; i < s.Sliders.Length; i++) s.Sliders[i] = Math.Clamp(s.Sliders[i], 0, 65535);
+            for (int i = 0; i < s.Povs.Length; i++)
+                if (s.Povs[i] < 0 || s.Povs[i] >= 36000) s.Povs[i] = -1;
+            for (int i = 0; i < 3; i++)
+            {
+                s.Gyro[i] = Finite(s.Gyro[i]);
+                s.Accel[i] = Finite(s.Accel[i]);
+                s.GyroAux[i] = Finite(s.GyroAux[i]);
+                s.AccelAux[i] = Finite(s.AccelAux[i]);
+            }
+            if (s.Touchpads != null)
+                foreach (var pad in s.Touchpads)
+                {
+                    if (pad == null) continue;
+                    for (int f = 0; f < pad.MaxFingers; f++)
+                    {
+                        pad.FingerX[f] = Math.Clamp(Finite(pad.FingerX[f]), 0f, 1f);
+                        pad.FingerY[f] = Math.Clamp(Finite(pad.FingerY[f]), 0f, 1f);
+                        pad.FingerPressure[f] = Math.Clamp(Finite(pad.FingerPressure[f]), 0f, 1f);
+                    }
+                }
+            s.Ir.X = Finite(s.Ir.X);
+            s.Ir.Y = Finite(s.Ir.Y);
+            s.JoyConIrIntensity = Finite(s.JoyConIrIntensity);
+            s.RingConStrain = Finite(s.RingConStrain);
+            s.JoyCon2MouseDX = Finite(s.JoyCon2MouseDX);
+            s.JoyCon2MouseDY = Finite(s.JoyCon2MouseDY);
+            s.BatteryPercent = s.BatteryPercent < 0 ? -1 : Math.Clamp(s.BatteryPercent, 0, 100);
+            return s;
         }
 
         private static float Finite(float value) => float.IsFinite(value) ? value : 0f;
@@ -731,6 +790,9 @@ namespace PadForge.Engine
             }
             var dst = _pool.Next();
             src.CopyInto(dst);
+            // A state the Live function works out carries the shape's word
+            // too.
+            if (live != null) dst.OwnButtonSixteen = OwnsButtonSixteen(Shape);
             return dst;
         }
 
@@ -740,9 +802,16 @@ namespace PadForge.Engine
         /// the device is registered.</summary>
         public Func<CustomInputState> Live { get; set; }
 
-        /// <summary>The state as published now, for a reader off the poll
-        /// thread that only reads it.</summary>
-        public CustomInputState PeekState() => Volatile.Read(ref _state);
+        /// <summary>The state worked out at the time of a read off the poll
+        /// thread, in a state of its own: the Test Controller's motion, the
+        /// same as <see cref="Live"/> gives the poll thread. Null reads the
+        /// state last published. Set with <see cref="Live"/>.</summary>
+        public Func<CustomInputState> LivePeek { get; set; }
+
+        /// <summary>The state now, for a reader off the poll thread that
+        /// only reads it: <see cref="LivePeek"/>'s, or the state as
+        /// published.</summary>
+        public CustomInputState PeekState() => LivePeek?.Invoke() ?? Volatile.Read(ref _state);
 
         /// <summary>Each declared control under the name the program gave:
         /// the axes, then the sliders, the buttons and the hats.</summary>
@@ -810,10 +879,12 @@ namespace PadForge.Engine
         /// <summary>The trigger motors, left and right.</summary>
         public event Action<ushort, ushort> TriggerRumbleRequested;
 
-        /// <summary>The light's color.</summary>
+        /// <summary>The light's color, and off (0, 0, 0) once no virtual
+        /// controller holds a device that was lit.</summary>
         public event Action<byte, byte, byte> LedChanged;
 
-        /// <summary>The player number, from 1.</summary>
+        /// <summary>The player number, from 1, and 0 once no virtual
+        /// controller holds the device.</summary>
         public event Action<int> PlayerChanged;
 
         public bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue)
@@ -845,12 +916,15 @@ namespace PadForge.Engine
 
         /// <summary>Takes the slot's trigger effects and passes on a change.
         /// Called on the poll thread each pass, so an unchanged pair costs a
-        /// compare and nothing more.</summary>
+        /// compare and nothing more. A device that has heard none plays none,
+        /// so the off pair is no change to it.</summary>
         public bool SetTriggerEffects(ReadOnlySpan<byte> left, ReadOnlySpan<byte> right)
         {
             if (!Shape.TriggerEffects || left.Length < 11 || right.Length < 11) return false;
             var last = Volatile.Read(ref _triggerEffects);
-            if (last != null && left.Slice(0, 11).SequenceEqual(last.AsSpan(0, 11)) && right.Slice(0, 11).SequenceEqual(last.AsSpan(11, 11)))
+            if (last == null
+                ? left.Slice(0, 11).IndexOfAnyExcept((byte)0) < 0 && right.Slice(0, 11).IndexOfAnyExcept((byte)0) < 0
+                : left.Slice(0, 11).SequenceEqual(last.AsSpan(0, 11)) && right.Slice(0, 11).SequenceEqual(last.AsSpan(11, 11)))
                 return true;
             var both = new byte[22];
             left.Slice(0, 11).CopyTo(both);
@@ -881,9 +955,17 @@ namespace PadForge.Engine
             if (Interlocked.Exchange(ref _led, packed) != packed) LedChanged?.Invoke(r, g, b);
         }
 
+        /// <summary>The player number from 1, or 0 or below once no virtual
+        /// controller holds the device, which passes on 0 once to a device
+        /// that showed a number and nothing to one that never did.</summary>
         public void SetPlayerNumber(int number)
         {
-            if (!Shape.Player || number <= 0) return;
+            if (!Shape.Player) return;
+            if (number <= 0)
+            {
+                if (Volatile.Read(ref _player) > 0 && Interlocked.Exchange(ref _player, 0) > 0) PlayerChanged?.Invoke(0);
+                return;
+            }
             if (Interlocked.Exchange(ref _player, number) != number) PlayerChanged?.Invoke(number);
         }
 

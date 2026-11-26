@@ -299,6 +299,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge አሳይ ወይም ደብቅ</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎችን አብራ ወይም አጥፋ</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ማንኛውም የተገናኘ መሣሪያ</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (አልተገናኘም)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>በ«መሣሪያዎች» ገጽ ላይ የሌለ መሣሪያ</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>በመቅረጽ ላይ…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>መቼ</value></data>
@@ -565,7 +567,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>ማንበብ</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ግብዓቶችን መላክ</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>ቅንብሮችን መቀየር</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ፕሮግራሞች መገለጫዎችን መቀየር እና መልቀቅ፣ ሞተሩን ማስጀመር እና ማቆም፣ ምናባዊ መቆጣጠሪያዎችን ማብራት እና ማጥፋት፣ መስኮቱን ማሳየት እና መደበቅ፣ PadForge መዝጋት፣ የምርመራ ቅጽበታዊ ቅጂ ማስቀመጥ እና ምን እየሄደ እንደሆነ መጠየቅ ይችላሉ።</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ፕሮግራሞች መገለጫዎችን መቀየር እና መልቀቅ፣ ሞተሩን ማስጀመር እና ማቆም፣ ምናባዊ መቆጣጠሪያዎችን ማብራት እና ማጥፋት፣ መስኮቱን ማሳየት እና መደበቅ፣ PadForge መዝጋት፣ ምን እየሄደ እንደሆነ መጠየቅ፣ የምርመራ ቅጽበታዊ ቅጂ ማስቀመጥ፣ እና የችግር ቀረጻ ማስጀመር፣ ማቆም እና ምልክት ማድረግ ይችላሉ።</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>በ«ትዕዛዞች» ያለው ሁሉ፣ እና ፕሮግራሞች መሣሪያዎችን፣ ምናባዊ መቆጣጠሪያዎችን፣ ማዛመጃዎችን፣ መገለጫዎችን እና ቅንብሮችን ማየት፣ የእያንዳንዱን መሣሪያ ግብዓቶች በተከሰቱበት ቅጽበት መከታተል እና በPadForge ውስጥ አንድ ቦታ ሊያሳዩዎት ይችላሉ። በ«ማንበብ» ደረጃ ያለ ፕሮግራም በእያንዳንዱ መሣሪያ ላይ የተጫነውን እያንዳንዱን ቁልፍ ያያል፣ እንደ አስተዳዳሪ በሚሄዱ መስኮቶች ውስጥ የተተየቡ ቁልፎችንም ጨምሮ።</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>በ«ማንበብ» ያለው ሁሉ፣ እና ፕሮግራሞች የራሳቸውን መሣሪያዎች ማከል እና መቆጣጠር፣ የማንኛውንም መሣሪያ መቆጣጠሪያ ክፍል መያዝ እና የተሰየሙ እሴቶችን ለማክሮ ቀስቅሴዎች ማስተላለፍ ይችላሉ።</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>በ«ግብዓቶችን መላክ» ያለው ሁሉ፣ እና ፕሮግራሞች እርስዎ በገጾቹ ላይ መቀየር የሚችሉትን መቀየር ይችላሉ። አንዳንድ ለውጦች ሁልጊዜ በመጀመሪያ በPadForge የጥያቄ ካርድ ላይ እርስዎን ይጠይቃሉ።</value></data>
@@ -578,7 +580,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>እርስዎን በመጠበቅ ላይ</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>እንቅስቃሴ</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>ቀልብስ</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ሊያስቀምጠው አልቻለም፦ {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>በ«ማንበብ» ወይም ከዚያ በላይ ያለ ፕሮግራም ተገናኝቶ ሳለ በእያንዳንዱ መሣሪያ ላይ የሚጫነውን ያያል፣ የቁልፍ ሰሌዳዎችንም ጨምሮ።</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>ተሰኪዎች</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ተሰኪዎችን አሂድ</value></data>
@@ -598,7 +599,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ከ{1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (መልሶ ማጫወት)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>የችግር ቀረጻዎች|*.zip;*.log|ሁሉም ፋይሎች|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} ማጫወት አይችልም። የችግር ቀረጻ አይደለም፣ ወይም የማንኛውንም መሣሪያ ግብዓት አልያዘም።</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge {0} የተባለውን ፋይል ማጫወት አይችልም። PadForge ሊያነበው የሚችል የችግር ቀረጻ አይደለም።</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge {0} የተባለውን ፋይል ማጫወት አይችልም። ከ{1} በላይ መሣሪያዎችን ይዟል፣ «መልሶ ማጫወት» ደግሞ ቢበዛ {1} ያጫውታል።</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge {0} የተባለውን ፋይል ማጫወት አይችልም። የምንም መሣሪያ ግብዓት አልያዘም።</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge {0} የተባለውን ፋይል ማንበብ አልቻለም።</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>የእርስዎ ተሰኪዎች</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>ተሰኪ አክል…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>ፕሮግራሞች እና ስክሪፕቶች|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ሁሉም ፋይሎች|*.*</value></data>
@@ -612,8 +616,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>በተከታታይ ከአምስት ውድቀቶች በኋላ ቆሟል</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>አልጀመረም፦ ፋይሉ የለም</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>አልጀመረም፦ Windows ለዚህ ዓይነት ፋይል ፕሮግራም የለውም</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>አልጀመረም፦ Python ፋይሎችን የሚከፍትልዎ ፕሮግራም የለም፣ PadForge ደግሞ py ማስጀመሪያ አላገኘም</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>አልጀመረም፦ PadForge ይህን ዓይነት ፋይል የሚከፍትልዎ የትኛው ፕሮግራም እንደሆነ ማንበብ አይችልም</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>አልጀመረም፦ ይህን ዓይነት ፋይል የሚከፍትልዎ ፕሮግራም በዚህ ኮምፒውተር ላይ የለም</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>አልጀመረም፦ ከሥሩ የሚጀምርበት የዴስክቶፕ ሼል እየሄደ አይደለም</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>አልጀመረም፦ የዴስክቶፕ ሼሉ የአስተዳዳሪ መብቶች ስላሉት ተሰኪውም ይኖሩታል</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>አልጀመረም፦ PadForge ተሰኪው የአስተዳዳሪ መብቶች ይኖሩት እንደሆነ ማንበብ አይችልም</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>አልጀመረም፦ Windows የአስተዳዳሪ መብቶችን ሰጥቶታል፣ ስለዚህ PadForge ከመሄዱ በፊት አቋረጠው</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>አልጀመረም፦ የአስተዳዳሪ መብቶችን ይጠይቃል</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>አልጀመረም፦ Windows በስህተት {0} አልፈቀደም</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>አልጀመረም</value></data>
@@ -641,6 +650,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ያከላቸው፦ {0}።</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>የፈረመው፦ {0}።</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ያልተፈረመ።</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}።</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>ቅንብሮቹ እየሄደ ሳለ እዚህ ይታያሉ።</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>ምንም ቅንብር አላሳወቀም።</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>ቅንብሮቹ ከPadForge ጋር ሲገናኝ እዚህ ይታያሉ።</value></data>
@@ -743,8 +753,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ፕሮግራሙ PadForge የማያውቀውን ስሪት ይጠቀማል</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ያንን የተሰኪ ቁልፍ አልሰጠም</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge የዚህን ፕሮግራም ግንኙነት አልተቀበለም</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Windows የፕሮግራሙን ፋይል ስም ስላልሰጠ PadForge ምንም መሣሪያ አልሠራም</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>በጣም ቶሎ እንደገና ተጠይቋል</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge እንደገና እስኪጀምር ድረስ ከእነዚህ ተጨማሪ የለም</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>ፕሮግራሞች በ«መነሻ» ላይ እንዲገመግሟቸው ያስጠበቋቸው የዚህ ዓይነት ጥያቄዎች በጣም ብዙ ናቸው</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge እንደዚህ ያለ መገልገያ የለውም</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>ፕሮግራሙ የቆየ ሁኔታ አንብቧል</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ያንን መለያ የያዘ ምንም ነገር የለም</value></data>
@@ -752,6 +763,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>አልፈቀዱትም</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>ማንም በጊዜው አልመለሰም</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>መልስዎን በመጠበቅ ላይ</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>እስካሁን አልመለሱም ነበር</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>እንደዚህ ያለ ጥያቄ የለም</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>የሚቀለበስ ነገር የለም</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ይህንን መቀየር የሚችሉት እርስዎ ብቻ ነዎት</value></data>
@@ -867,6 +879,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>ያልተፈረመ።</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>በ«ማንበብ» ደረጃ እና ከዚያ በላይ፣ የቁልፍ ሰሌዳዎችን ጨምሮ በእያንዳንዱ መሣሪያ ላይ የሚጫነውን እያንዳንዱን ቁልፍ ያያል።</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>አንድ ጊዜ ብቻ ይጠይቃል። በ«አውቶሜሽን» ገጽ ላይ ሊያስወግዱት ይችላሉ።</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>PadForge ሊለየው ባልቻለ ፕሮግራም የተጀመረ።</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge ይህን ፕሮግራም ከሌላ መለየት ስለማይችል በሚቀጥለው ግንኙነቱ እንደገና ይጠይቃል።</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>የPadForge ትእዛዝ መስመር</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ወደ {1} ያዘጋጃል</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>በአውታረ መረቡ ላይ ያዳምጣል፣ ስለዚህ ሌሎች መሣሪያዎች ይህንን ፒሲ ማግኘት ይችላሉ።</value></data>
@@ -882,7 +896,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>መገለጫ አምጣ</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>ከሌላ ፕሮግራም የመገለጫ ፋይል አስመጣ፣ ከዚያ ምን እንደመጣ ተመልከት።</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}፣ {1} ጊዜ</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}፣ ከ{1} ተመሳሳዮች የመጨረሻው</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>የAutoHotkey v2 ስክሪፕቶች (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -912,6 +925,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>በዚህ ኮምፒውተር ላይ Logitech G-key SDK የለም። ከLogitech Gaming Software 8.55 ወይም ከዚያ በኋላ ካለው ጋር አብሮ ይጫናል።</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK ተመዝግቧል ነገር ግን ፋይሉ የለም። Logitech Gaming Softwareን እንደገና ይጫኑ።</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK ተገኝቷል ነገር ግን ሊጫን አልቻለም።</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK ተገኝቷል ነገር ግን አልተጫነም፣ ምክንያቱም PadForge አስተዳዳሪዎች ብቻ ሊቀይሩት እንደሚችሉ እና Logitech እንደፈረመው ማረጋገጥ አልቻለም።</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>ያ ቤተ-መጽሐፍት ይህ የሚጠብቀው G-key SDK አይደለም።</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ለመጀመር እምቢ አለ። ብዙውን ጊዜ Logitech Gaming Software እየሄደ አይደለም።</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>ተገናኝቷል፣ እስካሁን ምንም ቁልፍ አልታየም። በLogitech Gaming Software ውስጥ የG-key ትዕዛዙን በPadForge መገለጫ ውስጥ ባለው በእያንዳንዱ ቁልፍ ላይ ይጎትቱ፣ እና ያንን መገለጫ ቋሚ ያድርጉት። G600 ወይም G300 መዳፊት ደግሞ ከውስጠ-መሣሪያ ማህደረ ትውስታ ሁነታ መውጣት አለበት።</value></data>
@@ -1015,14 +1029,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ወደ Windows ሲገቡ PadForge በራስ-ሰር ይጀምራል። ይህ በርቶ ሳለ PadForge ከአቋራጭ፣ ከስክሪፕት ወይም ከሌላ ፕሮግራም ሲጀመርም ያለ Windows ጥያቄ ይጀምራል።</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge የሚሄደው ከ{0} ነው።</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ይህ PadForge በራሱ አቃፊ ውስጥ እንዲሆን ይፈልጋል። አቃፊው ሌሎች ፋይሎችን ስለያዘ PadForge ሌሎች ፕሮግራሞች እንዳይቀይሩት መከላከል አይችልም።</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>ይህ PadForge ሌሎች ፕሮግራሞች ሊቀይሩት በማይችሉት አቃፊ ውስጥ እንዲሆን ይፈልጋል። PadForge ሌሎች ፕሮግራሞች አቃፊውን እንዳይቀይሩ መከላከል አልቻለም።</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ወደ ራሱ አቃፊ አዛውር</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge እና ቅንብሮቹን ወደ Program Files ይቀዳል፣ ተግባሮቹን ወደዚያ ይጠቁማል እና ከዚያ ያስጀምረዋል። እዚህ ያለው ቅጂ እንዳለ ይቆያል።</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0} የPadForge ያልሆኑ ፋይሎችን ይዟል።</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ሌሎች ፋይሎችን ከያዘ አቃፊ ያስጀምር ነበር።</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge አልተዛወረም፦ Windows ምንም የProgram Files አቃፊ አላሳወቀም።</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge አልተዛወረም፦ እየሄደ ያለውን PadForge ማንበብ አልቻለም።</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ አቃፊውን {0} መፍጠር አልቻለም።</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0} ምን እንደያዘ ማንበብ አልቻለም።</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ ሌሎች ፕሮግራሞች {0} እንዳይቀይሩ መከላከል አልቻለም።</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ በ{0} ውስጥ ያለው ቅጂው እየሄደ ካለው PadForge ጋር አልተዛመደም።</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ ከቅጂው በኋላ {0} የPadForge ያልሆኑ ፋይሎችን ይዞ ነበር፣ ወይም ሌሎች ፕሮግራሞች ሊቀይሩት ይችሉ ነበር።</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም ያስጀምረው የነበረው PadForge ከአሁን በኋላ እዚያ የለም።</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ሌሎች ፕሮግራሞች PadForge ይጀመርበት የነበረውን አቃፊ እንዳይቀይሩ መከላከል አልቻለም።</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge የትኛውን PadForge ያስጀምር እንደነበረ ማንበብ አልቻለም።</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ያስጀምረው የነበረውን PadForge አቃፊ ማንበብ አልቻለም።</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge የተጠበቀ አቃፊውን {0} መፍጠር አልቻለም። PadForge በአስተዳዳሪ መብቶች የሚያሄዳቸውን ቤተ መጻሕፍት እዚያ ያስቀምጣል፣ ያለ እሱም በደህንነት መጀመር አይችልም።</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ከተጠበቀ አቃፊው {0} ራሱን እንደገና ማስጀመር አልቻለም። PadForge በአስተዳዳሪ መብቶች የሚሄደው ከዚያ ብቻ ስለሆነ አልጀመረም።</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge አንድ ቅጂ ብቻ እንዲሄድ የሚያደርገውን መቆለፊያ መፍጠር ስላልቻለ አልጀመረም።</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge በአስተዳዳሪ መብቶች ሌሎች ፕሮግራሞች ሊቀይሩት ከሚችሉት አቃፊ {0} ይሄዳል። እዚያ የPadForge ቅንብሮችን ሊቀይሩ ይችላሉ፣ PadForge ደግሞ በመብቶቹ በእነሱ ላይ ይሠራል።</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge በአስተዳዳሪ መብቶች ሌሎች ፋይሎችን ከያዘው አቃፊ {0} ይሄዳል። PadForge ሌሎች ፕሮግራሞች እዚያ ያሉትን ቅንብሮቹን እንዳይቀይሩ መከላከል አይችልም፣ በመብቶቹም በእነሱ ላይ ይሠራል።</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge በአስተዳዳሪ መብቶች ሊያነበው ካልቻለው አቃፊ {0} ይሄዳል። PadForge ሌሎች ፕሮግራሞች እዚያ ያሉትን ቅንብሮቹን እንዳይቀይሩ መከላከል አይችልም፣ በመብቶቹም በእነሱ ላይ ይሠራል።</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ሁልጊዜ በስርዓት መሣቢያ ውስጥ አሳይ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>መስኮቱ ክፍት ሆኖ ሳለ የመሣቢያው አዶ እንዲታይ ያደርጋል፣ ስለዚህ በምናሌው ውስጥ ያለው «ውጣ» ሁልጊዜ አንድ ጠቅታ ብቻ ይርቃል።</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ዝማኔዎች</value></data>
@@ -1037,7 +1066,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ጫን እና እንደገና አስጀምር</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>የልቀት ማስታወሻዎች</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>የመቆጣጠሪያ ውሂብ ጎታ</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«አሁን አዘምን» የማኅበረሰቡን የመቆጣጠሪያ ውሂብ ጎታ (SDL_GameControllerDB) ከGitHub፣ ወይም በ«ተጨማሪ» ስር ከተዘጋጀው አድራሻ ያወርዳል፣ እና ይህ የPadForge ስሪት የሌሉትን ማዛመጃዎች በቅንብሮች ፋይሉ ውስጥ ያስቀምጣል። ወዲያውኑ ጥቅም ላይ ይውላሉ። ከሌላ አድራሻ አዲስ ማዛመጃዎችን ብቻ ያስቀምጣል። አዲስ ማዛመጃ ጥቅም ላይ የሚውለው ሌላ ምንም ነገር እንደ ጌምፓድ ለማያነበው፣ ላልተመደበ እና «ጥሬ የጆይስቲክ ሁነታን አስገድድ» ላልበራለት መቆጣጠሪያ ብቻ ነው። ዳግም ማስጀመሪያው የወረዱትን ማዛመጃዎች በሙሉ ያስወግዳል እና እንደገና ከGitHub ያወርዳል። በ«ተጨማሪ» ስር ያሉት የራስዎ ረድፎች ይቆያሉ።</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«አሁን አዘምን» የማኅበረሰቡን የመቆጣጠሪያ ውሂብ ጎታ (SDL_GameControllerDB) ከGitHub፣ ወይም በ«ተጨማሪ» ስር ከተዘጋጀው አድራሻ ያወርዳል፣ እና ይህ የPadForge ስሪት የሌሉትን ማዛመጃዎች በቅንብሮች ፋይሉ ውስጥ ያስቀምጣል። ወዲያውኑ ጥቅም ላይ ይውላሉ። ከሌላ አድራሻ አዲስ ማዛመጃዎችን ብቻ ያስቀምጣል። አዲስ ማዛመጃ መጀመሪያ ጥቅም ላይ የሚውለው SDL እንደ ጌምፓድ ወይም የተለየ ዓይነት እንደሌለው ለሚዘግበው፣ ሌላ ምንም ነገር እንደ ጌምፓድ ለማያነበው፣ ላልተመደበ እና «ጥሬ የጆይስቲክ ሁነታን አስገድድ» ላልበራለት መቆጣጠሪያ ብቻ ነው። አንዴ ጥቅም ላይ ከዋለ መቆጣጠሪያው ከተመደበ በኋላም ጥቅም ላይ መዋሉን ይቀጥላል። ዳግም ማስጀመሪያው የወረዱትን ማዛመጃዎች ያስወግዳል እና «የማውረጃ ምንጭ»ን ወደ ማኅበረሰቡ ፋይል ይመልሳል፣ ይህንንም የሚቀጥለው «አሁን አዘምን» ያወርደዋል። በ«ተጨማሪ» ስር ያሉት የራስዎ ረድፎች ይቆያሉ።</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>አሁን አዘምን</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>በማዘመን ላይ…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>ዝማኔዎችን በመፈተሽ ላይ…</value></data>
@@ -1070,9 +1099,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>አብሮ የተሰራ፦ {1} ማዛመጃዎች፣ የ{2} የማኅበረሰብ ቅጂ። {3} ከ{4} ወርዷል፦ {0} አዲስ ረድፎች።</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>አብሮ የተሰራ፦ {1} ማዛመጃዎች፣ የ{2} የማኅበረሰብ ቅጂ። {3} ከ{4} ወርዷል፦ {0} አዲስ ረድፍ።</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>የማኅበረሰቡ ውሂብ ጎታ ካለፈው ዝማኔ ወዲህ አልተቀየረም።</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>በ{0} ያለው ፋይል ካለፈው ዝማኔ ወዲህ አልተቀየረም።</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub ማግኘት አልተቻለም፦ {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} ማግኘት አልተቻለም፦ {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge የሚጠብቀው የመቆጣጠሪያ ውሂብ ጎታ ስላልሆነ ውርዱን አልተቀበለም። ምንም አልተቀየረም።</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge የGitHub ምላሽን አልተቀበለም። ምንም ነገር አልተቀየረም።</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge ከ{0} የመጣውን ምላሽ አልተቀበለም። ምንም ነገር አልተቀየረም።</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ተሳንሶ ጀምር</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ሲገቡ ጀምር</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1115,6 +1147,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>አቃፊ</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>የአገልግሎት ቅንብር</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>የማስወገድ ደረጃ</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>አገልግሎት</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>ፋይል</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>የላይኛው ማጣሪያ</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>የመዝገብ እሴት</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>የሃርድዌር መታወቂያ</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>የታቀደ ተግባር</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>የተጫኑ መተግበሪያዎች ግቤት</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP መሣሪያ</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>የPlayStation 3 መቆጣጠሪያዎች፣ PlayStation Move እና የNavigation መቆጣጠሪያ በBluetooth እንዲገናኙ ያስችላል። በPadForge ውስጥ የተካተተ ሲሆን ከእነሱ አንዱ መጀመሪያ ሲጣመር ይጫናል።</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 መቆጣጠሪያዎችን በBluetooth ያገናኛል።</value></data>
@@ -1183,6 +1223,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} ተቀምጧል</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>መቅዳት አልጀመረም። አንድ ፍተሻ ከፋይሉ ውጭ ሊደረግ የማይችል የዚህን PC የግል እሴት አግኝቷል።</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>መቅዳት አልጀመረም። {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge ቀረጻውን የሚጽፍበት፣ በገባው ተጠቃሚ መገለጫ ውስጥ ያለ እና በምንም አገናኝ የማይደረስ ጊዜያዊ አቃፊ አላገኘም።</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>የቀረጻዎቹ አቃፊ ወደ ሌላ ቦታ የሚያመለክት አገናኝ ነው፣ PadForge ደግሞ አይከተለውም።</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>የመጨረሻው ቀረጻ አሁንም እየተጠናቀቀ ነው።</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«የመጨረሻዎቹን 60 ሰከንዶች አቆይ» ጠፍቷል፣ ስለዚህ የሚቀመጥ ነገር የለም።</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ያላቆመው ቀረጻ በ«መነሻ» ገጽ ላይ እንዲያነቡት እየጠበቀዎት ነው፦ {0}</value></data>
@@ -1196,7 +1238,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge፣ Windows፣ መሣሪያዎችዎ እና ቅንብሮችዎ አሁን ባሉበት ሁኔታ፣ በተመሳሳዩ ግምገማ በኩል።</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>ከPadForge.exe አጠገብ ያለ diagnostics.log፣ እዚያው ሊያነቡት ይችላሉ።</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>ምን እንደሚቀዳ</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>ሁሉም በርተዋል። የጠፋ ክፍል ከሚቀጥለው ቀረጻ ውጭ ይቀራል፣ ፋይሉም የትኞቹን ክፍሎች እንደያዘ ይገልጻል።</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>እያንዳንዱ ክፍል በነባሪ በርቷል። የጠፋ ክፍል ከሚቀጥለው ቀረጻ ውጭ ይቀራል፣ ፋይሉም የትኞቹን ክፍሎች እንደያዘ ይገልጻል።</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>በምሽት አንድ ጊዜ ለሚመጣ ችግር።</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>ቀረጻው በ«መነሻ» ገጽ ላይ እንዲያነቡት እየጠበቀዎት ነው።</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>ማጠቃለያ</value></data>
@@ -1247,6 +1289,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>ቀረጻውን አስቀምጥ</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ፋይሎች</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>አልተቀመጠም። {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>የማጽዳት ፍተሻ፦ የሚያስቀምጧቸውን ክፍሎች በመፈተሽ ላይ…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>የማጽዳት ፍተሻ፦ PadForge የሚያስቀምጧቸውን ክፍሎች ማንበብ አልቻለም፣ ስለዚህ «አስቀምጥ» እንደጠፋ ይቆያል።</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>በእርስዎ መብቶች የሚደረገው ማስቀመጥ አልጀመረም።</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>በእርስዎ መብቶች የሚደረገው ማስቀመጥ አልጀመረም፦ ሊያስጀምረው የሚችል የዴስክቶፕ ሼል እየሄደ አይደለም።</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>በእርስዎ መብቶች የሚደረገው ማስቀመጥ አልጀመረም፦ Windows በስህተት {0} እምቢ አለ።</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>ማስቀመጡ በ{0} ውስጥ አላበቃም።</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ፋይሉ እዚያ እንዲጻፍ አልፈቀደም።</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ይህን ፋይል የራሱ ቀረጻ አድርጎ አልተቀበለውም።</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>ማስቀመጡ በኮድ {0} አብቅቷል።</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>በእርስዎ መለያ ይቀመጣል፣ የመጀመሪያው ጊዜ ወደ Downloads አቃፊዎ፣ ከዚያ ለመጨረሻ ጊዜ ወዳስቀመጡበት ቦታ፣ እና በExplorer ውስጥ ይታያል። ማንም በገጹ ላይ በሌለበት ጊዜ የሚቆም ቀረጻ (በገደቡ፣ በማክሮ፣ በፕሮግራም፣ በረዳቱ መሣሪያ ወይም በ--record stop) ይህንን ግምገማ በ«መነሻ» ገጽ ላይ ይጠብቃል፣ ካልተቀመጠም ከ7 ቀናት በኋላ ይሰረዛል። ፕሮግራም ቀረጻው እየጠበቀ መሆኑ ይነገረዋል፣ የት እንዳለ ግን በጭራሽ አይነገረውም።</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>የ{0} የችግር ቀረጻ እንዲያነቡት እየጠበቀዎት ነው።</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>ገምግም</value></data>
@@ -1920,9 +1973,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>ማንበብ አልተሳካም: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ይህን ቅድመ-ቅንብር በ{1} ላይ አልተቀበለውም፦ {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ይህ ቅድመ-ቅንብር HID ገላጭ የለውም፣ ስለዚህ ከእሱ ምንም መቆጣጠሪያ ሊሠራ አይችልም።</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge ይህን ቅድመ-ቅንብር መፈተሽ አልቻለም፦ {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>ቅድመ-ቅንብሩን በመፈተሽ ላይ…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ምንም አልገባም። {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>አስገባ</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ስም የሌለው HID መሣሪያ)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}፣ {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}፣ {1}፣ {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>መዳፊት</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>ጆይስቲክ</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>ጌምፓድ</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>የቁልፍ ሰሌዳ</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>ባለብዙ ዘንግ መቆጣጠሪያ</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID በይነገጾች ተገኝተዋል።</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID በይነገጽ ተገኝቷል።</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>መዘርዘር አልተሳካም: {0}</value></data>
@@ -3053,7 +3115,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ተይዞ ሳለ እና ወደ መሃል</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ቀያይር</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>የመሪ ግብዓት</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>መዳፊቱ እንዲመራ የሚያስችለው አዝራር፣ ከምንጩ ጋር በተመሳሳዩ መሣሪያ ላይ። ምንም ካልተመረጠ መዳፊቱ ሁልጊዜ ይመራል።</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>መዳፊቱ እንዲመራ የሚያስችለው አዝራር፣ በዚህ ማስገቢያ በማንኛውም መሣሪያ ላይ። ምንም ካልተመረጠ መዳፊቱ ሁልጊዜ ይመራል።</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ማለስለሻ</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ያልተስተካከለ ሪፖርት የሚያደርግ መዳፊትን ያስተካክላል። ስቲኩ እጁን በዚህ ያህል ጊዜ ገደማ ዘግይቶ ይከተላል። 0 ጠፍቷል ማለት ነው።</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>በፍጥነት ላይ ያለ መቆለፊያ</value></data>
@@ -3074,7 +3136,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>መምራት ከጀመረበት ቦታ ጀምር</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>«የመሪ ግብዓት» ሲኖር፣ ስቲኩ የሚለካው መምራት ሲጀመር ጠቋሚው ከነበረበት ቦታ ነው፣ በስልክ ማያ ገጽ ላይ ያለ ስቲክ ጣቱ ካረፈበት ቦታ እንደሚጀምር። ሲጠፋ ከጠቋሚው ማሳያ መሃል ይለካል።</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>ይህ ዘንግ አንጻራዊ በሆነ መንገድ ይንቀሳቀሳል</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ምን ያህል እንደዞረ ለሚዘግብ ትራክቦል ወይም ስፒነር። ሲበራ ዘንጉ እንደ «የመዳፊት ጉዞ» ቦታ ይይዛል፣ የጉዞ ቅንብሮችንም ይወስዳል። Windows የትኞቹ ዘንጎች በዚህ መንገድ እንደሚንቀሳቀሱ አይገልጽም።</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ምን ያህል እንደዞረ ለሚዘግብ ትራክቦል ወይም ስፒነር። ሲበራ ዘንጉ እንደ «የመዳፊት ጉዞ» ቦታ ይይዛል፣ የጉዞ ቅንብሮችንም ይወስዳል። SDL አጠቃላይ መቆጣጠሪያን በDirectInput በኩል ያነባል፣ DirectInput ደግሞ እያንዳንዱን ዘንግ እንደ ቦታ ያነባል፣ ስለዚህ ይህ ማብሪያ የትኞቹ ዘንጎች በዚህ መንገድ እንደሚንቀሳቀሱ ይገልጻል።</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}፣ {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>ቅድመ እይታ</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>ይህ ቤተሰብ የራስዎን መዳፊት እንዴት እንደሚከተል ያሳያል። እስኪመርጡት ድረስ ምንም አይዛመድም።</value></data>
@@ -3260,6 +3322,13 @@
 {0}
 
 PadForge ዝርዝሮቹን ከPadForge.exe አጠገብ ወዳለው crash.log ጽፏል። ይህንን ሪፖርት ለማድረግ በ{2} ውይይት ይጀምሩ እና crash.log ፋይሉን በላዩ ላይ ይጣሉት።
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>ያልተጠበቀ ስህተት ተከስቷል:
+
+{0}
+
+PadForge ዝርዝሮቹን ከPadForge.exe አጠገብ ወዳለው crash.log መጻፍ አልቻለም። ይህንን ሪፖርት ለማድረግ በ{2} ውይይት ይጀምሩ፣ ይህንን መልእክት ለመቅዳት እዚህ Ctrl+C ይጫኑ፣ እና እዚያ ይለጥፉት።
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} ተጨማሪ ስህተቶች አልታዩም)</value></data>
@@ -4153,7 +4222,7 @@ PadForge ዝርዝሮቹን ከPadForge.exe አጠገብ ወዳለው crash.log 
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 ለSteam depot ቁርጥራጮች የሚጠቀመው የZstandard መፍቻ፣ በOleg Stepanischev የተሠራ የzstd ቤተ-መጽሐፍት የC# ስሪት።</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>ከረዳቱ ግንኙነት እና ከPadForge.exe --mcp በስተጀርባ ያለው የModel Context Protocol አገልጋይ እና ደንበኛ፣ በModel Context Protocol a Series of LF Projects የተሰራ።</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>ከረዳቱ ግንኙነት እና ከPadForge.exe --mcp በስተጀርባ ያለው የModel Context Protocol አገልጋይ እና ደንበኛ፣ በModel Context Protocol a Series of LF Projects, LLC የተሰራ።</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK የተገነባባቸው Microsoft.Extensions.AI.Abstractions፣ Logging.Abstractions እና DependencyInjection.Abstractions፣ በMicrosoft የተሰሩ።</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5477,7 +5546,18 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>WinUSBን ከG19 ማያ ገጽ ጋር በማገናኘት ላይ</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>የG19 ማያ ገጽ በሌላ አሽከርካሪ ({0}) ላይ ነው፣ ስለዚህ Logitech Gaming Software አስጀምር</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>የG19 ማያ ገጽ በሌላ ፕሮግራም አሽከርካሪ ({0}) ላይ ነው፣ PadForge ያንን አሽከርካሪ አይነካውም</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>የPadForge PlayStation Bluetooth ሾፌሮችን በመፈተሽ ላይ…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>የዚህን ኮምፒውተር Bluetooth ሬዲዮ በማንበብ ላይ…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>መቆጣጠሪያውን በUSB ገመዱ በመክፈት ላይ…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>የዚህን ኮምፒውተር Bluetooth አድራሻ ወደ መቆጣጠሪያው በመጻፍ ላይ…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>መቆጣጠሪያውን በWindows Bluetooth በማስመዝገብ ላይ…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Bluetooth እንደገና በማስጀመር ላይ…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>ማጣመሩ ቆሟል፦ Windows PadForge መቆጣጠሪያውን ወይም የBluetooth ቅንብሮችን እንዲደርስ አልፈቀደም። የምርመራ ምዝግብ ማስታወሻው ዝርዝሮቹን ይዟል።</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>ማጣመሩ ቆሟል፦ መቆጣጠሪያውን ወይም የBluetooth ሬዲዮውን ማንበብ ወይም መጻፍ አልተሳካም። የምርመራ ምዝግብ ማስታወሻው ዝርዝሮቹን ይዟል።</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>ማጣመሩ PadForge ባልጠበቀው ስህተት ቆሟል። የምርመራ ምዝግብ ማስታወሻው ዝርዝሮቹን ይዟል።</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 ወይም ከዚያ በኋላ ያለው ያስፈልጋል</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ቤተ መጻሕፍቱን አግኝቷል ነገር ግን አልጫነውም፣ ምክንያቱም PadForge አስተዳዳሪዎች ብቻ ሊቀይሩት እንደሚችሉ እና Logitech እንደፈረመው ማረጋገጥ አልቻለም</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ቤተ መጻሕፍቱን አግኝቷል ነገር ግን ሊጠቀምበት አልቻለም፣ ምክንያቱንም የምርመራ ምዝግብ ማስታወሻው ይገልጻል</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software አስጀምር</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control ያለው ስልክ በመጠበቅ ላይ</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>በስልክ ላይ</value></data>
@@ -5573,6 +5653,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>dhd64.dll ምረጥ…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>ይህንን የForce Dimension ቤተ-መጻሕፍት ቅጂ በሌሎች ሁሉ ምትክ ይጭናል። በሌላ ቅጂ ላይ ክፍት የሆነ Falcon ይዘጋና በዚህኛው ላይ እንደገና ይከፈታል። SDK የሚጭናቸው ቅጂዎች ያለዚህ ይገኛሉ።</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|ቤተ-መጻሕፍት (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>የFalcon SDK ማውረጃ ገጽ አልተከፈተም፦ {0}።</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>የFalcon SDK ማውረጃ ገጽ እስካሁን አልተከፈተም፦ {0}።</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>የFalcon አሽከርካሪ ጫን</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>አሽከርካሪ በሌለው Falcon ላይ የForce Dimension አሽከርካሪን ከSDK አቃፊ ይጭናል። Windows መጀመሪያ Force Dimensionን ማመን እንዳለበት ሊጠይቅ ይችላል።</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>የForce Dimension SDK አግኝ</value></data>
@@ -5773,6 +5855,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>አዲስ መቆጣጠሪያ</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>ቅንብሮች</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>እያንዳንዱ ዘንግ፣ አዝራር እና ዳሳሽ</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>ግብዓቶቹ ስክሪፕቶች በሚጠቀሙባቸው ስሞች</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>የተጫኑ: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>መለያዎች፣ ዱካ፣ ችሎታዎች፣ ጥሬ የጆይስቲክ ሁነታን አስገድድ</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>መለያዎች፣ ዱካ፣ ችሎታዎች</value></data>
@@ -5898,8 +5981,13 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>በማስወገድ ላይ…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>በማዘመን ላይ…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>አልተጠናቀቀም፦ {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>{0} ተመሳሳዩን የቅንብሮች ፋይል እና የክህሎት አቃፊ ስለሚያነብ የPadForge ግቤት እና ክህሎት ይቆያሉ።</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>{0} ተመሳሳዩን የቅንብሮች ፋይል ስለሚያነብ የPadForge ግቤት ይቆያል።</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge ከዚህ ፕሮግራም ተወግዷል። {0} ክህሎቶችን ከተመሳሳዩ አቃፊ ስለሚያነብ ክህሎቱ ይቆያል።</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge በ{0} ውስጥ ያሉትን ቅንብሮች ማንበብ አይችልም፣ ስለዚህ PadForge መታከሉን አያውቅም።</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>ታክሏል። PadForge የክህሎት አቃፊውን ማንበብ አልቻለም።</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>ተቀድቷል።</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>አልተቀዳም፦ {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>አልተቀዳም። Windows PadForge ቅንጥብ ሰሌዳውን እንዲጠቀም አልፈቀደም።</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>የተፈቀዱ ፕሮግራሞች</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>«ማንበብ» ወይም ከዚያ በላይ የሚፈልግ ፕሮግራም ለመጀመሪያ ጊዜ ሲገናኝ አንድ ጊዜ ይጠይቃል፣ የጠየቀውንም ደረጃ እስከ ላይኛው ደረጃ ድረስ ያገኛል። ከላይ የሚያክሉት ረዳት በዚያ ይፈቀዳል።</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}። {1}። {2}</value></data>
@@ -5915,6 +6003,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ጆይስቲክ። PadForge በጥሬው ያነበዋል፣ ስለዚህ የSDL ማዛመጃ ጥቅም ላይ አይውልም።</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>ጆይስቲክ፣ በእርስዎ ረድፍ እንደ ጌምፓድ የተደረደረ።</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL መሣሪያዎችን የሚያነበው ሞተሩ በሚሄድበት ጊዜ ነው።</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>መሣሪያው አልተገናኘም። ሲገናኝ SDL ያነበዋል።</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ለPadForge የዚህን መሣሪያ ምንም ንባብ አልሰጠም።</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>አብሮ የተሰራው የማኅበረሰብ ቅጂ፣ {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>የወረደ፦ {0}</value></data>
@@ -5952,6 +6042,11 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>ቱርቦ፣ መቀያየሪያዎች እና ሌሎች እርምጃዎች</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} እና {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>የሚቀዳ ነገር የለም፦ SDL ለዚህ መሣሪያ ማዛመጃ የለውም፣ መሣሪያውም በምንም መቆጣጠሪያ ላይ የለም።</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>የሚቀዳ ነገር የለም፦ PadForge የSDL የዚህን መሣሪያ ማዛመጃ ማንበብ አይችልም፣ ከመቆጣጠሪያዎቹ ረድፎች ውስጥም አንዱም የSDL ቅርጽ የሚቀበለውን ትስስር አይሰጥም።</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>የሚቀዳ ነገር የለም፦ SDL ለዚህ መሣሪያ ማዛመጃ የለውም፣ ከ{0} ረድፎች ውስጥም አንዱም ከአዝራሮቹ፣ ከዘንጎቹ ወይም ከሃቶቹ አንዱን የSDL ቅርጽ በሚቀበለው መንገድ አያነብም።</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>የሚቀዳ ነገር የለም፦ SDL ለዚህ መሣሪያ ማዛመጃ የለውም፣ የ{0} ረድፎችም መሣሪያውን የሚያነቡት ለ{1} ብቻ ነው፣ ይህንንም የSDL ቅርጽ ሊይዘው አይችልም።</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>የሚቀዳ ነገር የለም፦ PadForge አሁን የSDL የዚህን መሣሪያ ማዛመጃ ማንበብ አይችልም፣ መሣሪያውም በምንም መቆጣጠሪያ ላይ የለም።</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>የሚቀዳ ነገር የለም፦ PadForge አሁን የSDL የዚህን መሣሪያ ማዛመጃ ማንበብ አይችልም፣ ከ{0} ረድፎች ውስጥም አንዱም የSDL ቅርጽ የሚቀበለውን ትስስር አይሰጥም።</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>ሌላ ፕሮግራም ቅንጥብ ሰሌዳውን እየተጠቀመ ነው። ምንም አልተቀዳም።</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>ረድፍዎ ተወግዷል። መሣሪያው ከዚያ በፊት እንደነበረው ይነበባል።</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>ከSDL አቀማመጥ እንደገና ተዛምዷል፦ {0}።</value></data>
@@ -5972,6 +6067,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge የያዛቸው ረድፎች</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>የሚዛመድ ረድፍ የለም።</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>የተመረጠው ረድፍ በራሱ መለያ ስር በ{0} ላይ ይተገበራል፣ ከ«ለጥፍ» ጋር በተመሳሳዩ ፍተሻ እና ምርጫ።</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>ሞተሩ ቆሟል፣ ስለዚህ ዝርዝሩ SDL የያዛቸውን ረድፎች፣ የራሱን እና አብሮ የተሰራውን የማኅበረሰብ ቅጂ አያካትትም። ሞተሩ ሲሄድ ይዘረዘራሉ።</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL በጊዜው አልመለሰም፣ ስለዚህ ዝርዝሩ የያዛቸውን ረድፎች፣ የራሱን እና አብሮ የተሰራውን የማኅበረሰብ ቅጂ አያካትትም።</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL ማዛመጃ ረድፍ</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>ለዚህ መሣሪያ የሆነ ረድፍ።</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>የተገመተ አቀማመጥ።</value></data>
@@ -5984,14 +6081,14 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows፣ {0} መስክ፣ ከተመሳሳዩ አቅራቢ እና ምርት በሌላ አውቶቡስ ወይም ስሪት። በዚህ መሣሪያ የራሱ መለያ ስር ይቀመጣል።</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows፣ {0} መስክ፣ የሌላ መሣሪያ ረድፍ። በዚህ መሣሪያ የራሱ መለያ ስር ይቀመጣል።</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} መስክ። SDL ይህንን መሣሪያ አያነብም፣ ስለዚህ PadForge ግብዓቶቹን በረድፉ መሠረት ያደራጃል።</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge ለእነዚህ መስኮች ቀላል አዝራር ወይም ዘንግ ስለሌለው ይተዋቸዋል፦ {0}።</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} መስክ፣ ከመሣሪያው ዘንጎች፣ አዝራሮች እና የኮፍያ ቁልፎች። በ«ግብዓቶችን ፈትሽ» ውስጥ ይፈትሹት፣ ከዚያ ያቆዩት ወይም እዚህ ይቀይሩት።</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>ይህ {0} እንዴት እንደሚነበብ ይቀይራል። በ{1} ውስጥ ያሉት ረድፎቹ ከአዲሱ አቀማመጥ እንደገና ይዛመዳሉ።</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>ይህ {0} እንዴት እንደሚነበብ ይቀይራል። በምንም መቆጣጠሪያ ላይ ስለሌለ ምንም ረድፍ አይቀየርም።</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>መሣሪያውን {0} የሚያነቡ የመገለጫ አቋራጮች የተዘጋጁላቸውን ግብዓቶች ያቆያሉ።</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>ረድፉ እንደ እርስዎ በPadForge.xml ውስጥ ይቀመጣል፣ ለዚህ መሣሪያም ከሌሎች ምንጮች ሁሉ በላይ ቅድሚያ ያገኛል። «የእኔን አስወግድ» የቀድሞውን ረድፍ እና የቀድሞዎቹን ረድፎች ይመልሳል።</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>ረድፎቹ እንደ እርስዎ በPadForge.xml ውስጥ ይቀመጣሉ፣ ለመሣሪያዎቻቸውም ከሌሎች ምንጮች ሁሉ በላይ ቅድሚያ ያገኛሉ። በ«የመቆጣጠሪያ ውሂብ ጎታ» ረድፍ «ተጨማሪ» ስር ያለው «አጽዳ» ያስወግዳቸዋል።</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>ለWindows {0} ረድፎች። ለሌሎች ሥርዓቶች የሆኑ {1} ታልፈዋል።</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>ለWindows {0} ረድፍ። ለሌሎች ሥርዓቶች የሆኑ {1} ታልፈዋል።</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>ለWindows {0:N0} ረድፎች።</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>ሁሉም {0:N0} ይታከላሉ። PadForge እስከ {1:N0} የእርስዎ ረድፎችን ያስቀምጣል።</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>ይታከላል። PadForge እስከ {1:N0} የእርስዎ ረድፎችን ያስቀምጣል።</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>አሁን {0:N0} የእርስዎ ረድፎች ተቀምጠዋል፣ ስለዚህ ከእነዚህ {1:N0} ይታከላሉ፣ {2:N0} ግን አይታከሉም።</value></data>
@@ -6001,7 +6098,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ጽሑፉ የSDL የመቆጣጠሪያ ውሂብ ጎታ ረድፍ አይደለም፦ 32 የሄክስ አሃዞች ያሉት መለያ፣ ስም፣ ከዚያ እንደ a:b0 ያሉ መስኮች።</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>ረድፎቹ ለሌሎች ሥርዓቶች ናቸው። PadForge የሚያነበው ለWindows ወይም ለየትኛውም የተለየ ሥርዓት ያልሆኑ ረድፎችን ነው።</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>የረድፉ መለያ የመሣሪያ መለያ አይደለም። 32 የሄክስ አሃዞች ያስፈልጉታል።</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>የረድፉ ስም ባዶ ነው፣ ከ128 ቁምፊዎች በላይ ነው፣ ወይም SDL እንደ መስክ የሚያነበው ቁምፊ ይዟል።</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>የረድፉ ስም ባዶ ነው፣ ከ128 ቁምፊዎች በላይ ነው፣ SDL የሚያነበውን እንደ «type:» ያለ የመስክ ምልክት ይዟል፣ ወይም ከፊደሎች፣ ከአሃዞች፣ ከሥርዓተ ነጥቦች፣ ከምልክቶች እና ከተራ ክፍተት ውጭ የሆነ ቁምፊ ይዟል።</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>ረድፉ ፍንጭ ወይም የAndroid መስክ ይዟል፣ PadForge ደግሞ እነዚህን አይቀበልም።</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>ረድፉ SDL የማያውቀው መስክ አለው።</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>አንድ ማሰሪያ በSDL ቅርጸት አይደለም፣ ለምሳሌ b3፣ a2፣ +a2፣ a2~ ወይም h0.4።</value></data>
@@ -6012,8 +6109,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>የእርስዎ ረድፎች</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>እዚህ የሚያክሏቸው፣ ወይም በመሣሪያ «SDL ማዛመጃ» ካርድ ላይ የሚለጥፏቸው ረድፎች ለመሣሪያዎቻቸው ከሌሎች ምንጮች ሁሉ በላይ ቅድሚያ ያገኛሉ፣ ዳግም ከማስጀመሩም በኋላ ይቆያሉ።</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ከፋይል ወይም ከቅንጥብ ሰሌዳ ረድፎችን አክል…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} ረድፎች፣ ለእያንዳንዱ መሣሪያ አንድ፣ ከሌሎች ምንጮች ሁሉ በላይ የእርስዎ።</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ረድፍ ለአንድ መሣሪያ፣ ከሌሎች ምንጮች ሁሉ በላይ የእርስዎ።</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} ረድፎች፣ የእርስዎ ከሌሎች ምንጮች ሁሉ ይቀድማሉ።</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>እስካሁን የለም።</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>የእርስዎ SDL_GAMECONTROLLERCONFIG ተለዋዋጭ PadForge የማያስቀምጣቸውን {0} ረድፎች ይዟል። «ከፋይል ወይም ከቅንጥብ ሰሌዳ ረድፎችን አክል» ከእነሱ ጋር ይከፈታል።</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>የእርስዎ SDL_GAMECONTROLLERCONFIG ተለዋዋጭ PadForge የማያስቀምጠውን {0} ረድፍ ይዟል። «ከፋይል ወይም ከቅንጥብ ሰሌዳ ረድፎችን አክል» ከእሱ ጋር ይከፈታል።</value></data>
@@ -6032,7 +6128,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>ቆሟል። የመጨረሻ ቃላቱ፦ {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>ሊጀመር አልቻለም።</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>ከአሁን በኋላ በዚህ ፒሲ ላይ የለም።</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>በዚህ ፒሲ ላይ ምንም የዋሻ ፕሮግራም አልተገኘም። PadForge ከcloudflared፣ devtunnel፣ ngrok እና Tailscale Funnel ጋር፣ ወይም ከራስዎ ዋሻ አድራሻ ጋር ይሠራል።</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge በዚህ ኮምፒውተር ላይ ከcloudflared፣ devtunnel፣ ngrok ወይም Tailscale Funnel አንዱንም አላገኘም። PadForge የሚያወርደውን ChatGPT Secure MCP Tunnel ይምረጡ፣ ወይም የራስዎን ዋሻ አድራሻ ይስጡ።</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>ለPadForge ይፋዊ አድራሻ ለመስጠት ዋሻ ይምረጡ።</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>እንዲሁም በዚህ ፒሲ ላይ፦ {0}።</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}፣ አድራሻው ተመሳሳይ ሆኖ የሚቆይ</value></data>
@@ -6040,7 +6136,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>የራስዎን ዋሻ ወደ http://127.0.0.1:{0} ያሂዱ እና የhttps አድራሻውን ይለጥፉ። የተሰየመ Cloudflare ዋሻ፣ ቋሚ dev tunnel፣ Tailscale Funnel እና የngrok የራሱ ጎራ አድራሻቸውን ያቆያሉ።</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>ዋሻዎ እንደሚሰጠው፣ ከ/mcp ውጭ ምንም ዱካ የሌለው የhttps አድራሻ ይለጥፉ።</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>የPadForge የድር አጋዥ በመጀመር ላይ።</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>የPadForge የድር አጋዥ ቆሟል ({0})። እንደገና ለማስጀመር «Reach PadForge From the Web»ን ያጥፉ እና ያብሩ።</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>የPadForge የድር አጋዥ ቆሟል ({0})። PadForge እሱን ለማስጀመር መሞከሩን ይቀጥላል።</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>አድራሻ</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>እስካሁን ይፋዊ አድራሻ የለም።</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>ወደ Claude አክል</value></data>
@@ -6079,11 +6175,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>በኮድ {0} አብቅቷል</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>«አውቶሜሽን» ጠፍቷል፣ ስለዚህ ምንም የድር ረዳት PadForge ላይ አይደርስም። የድር አጋዡ «አውቶሜሽን» ሲበራ ይጀምራል።</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>በመፈተሽ ላይ…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>አልተጫነም።</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>ተጭኗል እና የቅርብ ጊዜው ነው። ስክሪፕት በ{0} ይጀምራል።</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>ለ{0} ተጭኗል እና የቅርብ ጊዜው ነው። ስክሪፕት በ{1} ይጀምራል።</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>ተጭኗል። ይህ PadForge አዲስ ቅጂ አለው።</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>ለ{0} ተጭኗል። ይህ PadForge አዲስ ቅጂ አለው።</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>በመጫን ላይ…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ሊፈትሸው አልቻለም፦ {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>«ጫን» የPadForge ቤተ መጻሕፍትን ያ ቋንቋ በሚያገኘው ቦታ ያስቀምጣል። የሚጭነው ስክሪፕት ከላይ ባለው ደረጃ መሣሪያዎችን ያነባል እና ማዛመጃዎችን ይቆጣጠራል።</value></data>
@@ -6091,22 +6182,24 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>የተጫኑ ቅጂዎች</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>ሁሉንም አስወግድ</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>ተወግዷል።</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>የPadForge ቤተ መጻሕፍት ለ{0} ተጭኗል፣ ወቅታዊም ነው። ስክሪፕት በ{1} ይጀምራል።</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>ለ{0} ያለው የPadForge ቤተ መጻሕፍት ከዚህ PadForge ቅጂ ይለያል።</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>የPadForge ቤተ መጻሕፍት ለ{0} አልተጫነም።</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>የስክሪፕት መለያ</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>የስክሪፕት መለያው</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>ስክሪፕቶች መቆጣጠሪያ ክፍሎቹን {0} ብለው ይሰይማሉ።</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>ስክሪፕቶች ቁልፎቹን KeyA፣ KeySpace፣ KeyLeftShift እና የመሳሰሉትን ብለው ይሰይማሉ፣ እያንዳንዱንም ቁልፍ በኮዱ፣ ከVk0 እስከ Vk255።</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} በዚህ አውታረ መረብ ላይ ከ{1}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>በዚያው የ{0} የሰርቲፊኬት ቁልፍ የተፈረመ አዲስ ስሪት ያለ «አጽድቅ እና እንደገና አስጀምር» እንደገና ይጀምራል። ማንኛውም ሌላ ለውጥ መጀመሪያ እርስዎን ይጠይቃል።</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>በዚያው የሰርቲፊኬት ቁልፍ የተፈረመ አዲስ ስሪት ተቀብሏል</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>አድራሻ</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge የሚቀበለው በhttps:// የሚጀምር፣ አስተናጋጅ የሚጠቅስ፣ ነባሪውን ወደብ የሚጠቀም እና የተጠቃሚ ስም ወይም የይለፍ ቃል የሌለው አድራሻ ነው።</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge በhttps:// የሚጀምር፣ አስተናጋጅ የሚሰይም፣ በነባሪው ወደብ ላይ ያለ እና የተጠቃሚ ስም፣ የይለፍ ቃል ወይም ከ# በኋላ ያለ ክፍል የሌለው እስከ 2,048 ቁምፊዎች ያለው አድራሻ ይቀበላል።</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>ወደብ</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>ቀይር…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>ጥሪዎች እና ቁልፋቸው ይህን አውታረ መረብ ሳይመሰጠሩ ያቋርጣሉ። Windows የሚያስገባቸው በግል አውታረ መረቦች ላይ ብቻ ነው።</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>ጥሪዎች እና ቁልፋቸው ይህንን አውታረ መረብ ሳይመሰጠሩ ያቋርጣሉ። PadForge ለዚህ ወደብ የሚፈጥረው የWindows ፋየርዎል ደንብ የግል አውታረ መረቦችን ብቻ ይሰይማል።</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>ወደብ {0} በሌላ ፕሮግራም ጥቅም ላይ ነው። ከዚህ አውታረ መረብ PadForge ላይ ለመድረስ ይቀይሩት።</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows የPadForge አጋዥ በወደብ {0} ላይ እንዲያዳምጥ አልፈቀደም። PadForge ይህንን በአስተዳዳሪ መብቶች ይፈቅዳል፣ ስለዚህ PadForge በእነዚህ መብቶች ያስጀምሩ እና ይህንን ያጥፉ እና ያብሩ።</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows ለPadForge አጋዥ በወደብ {0} ላይ ምንም ቦታ አላስያዘም። ይህንን ያጥፉ እና ያብሩ፣ PadForge እንደገና ይፈጥረዋል።</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>የPadForge አጋዥ በወደብ {0} ላይ ማዳመጥ አልቻለም። ወደቡን ይቀይሩ፣ ወይም ይህንን ያጥፉ እና ያብሩ።</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>የPadForge አጋዥ ቆሟል ({0})። እንደገና ለማስጀመር «Reach PadForge From This Network»ን ያጥፉ እና ያብሩ።</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>የPadForge አጋዥ ቆሟል ({0})። PadForge እሱን ለማስጀመር መሞከሩን ይቀጥላል።</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>«አውቶሜሽን» ጠፍቷል፣ ስለዚህ በዚህ አውታረ መረብ ላይ ያለ ምንም ረዳት PadForge ላይ አይደርስም። አጋዡ «አውቶሜሽን» ሲበራ ይጀምራል።</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>ይህ ኮምፒውተር አሁን በግል አውታረ መረብ ላይ አድራሻ የለውም።</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>በዚህ አውታረ መረብ ላይ ያሉ ረዳቶች</value></data>
@@ -6123,7 +6216,23 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Reach_LocalCommands" xml:space="preserve"><value>ከትዕዛዝ መስመሩ የሚመጡ ትዕዛዞች ለእያንዳንዱ ፕሮግራም እንደሚያደርጉት አሁንም PadForge ላይ ይደርሳሉ።</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>የራሱን መሣሪያዎች ብቻ ለመቆጣጠር ይጠይቃል።</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>አንድ ጊዜ ብቻ ይጠይቃል። በ«አውቶሜሽን» ገጽ ላይ ሊያስወግዱት ወይም የሚደርስበትን ወሰን ሊቀይሩ ይችላሉ።</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>በመሄድ ላይ፣ በእርስዎ መብቶች፣ እና ዝግጁ። ChatGPT የራሱ መግቢያ ሳያስፈልገው በዚህ ዋሻ በኩል PadForge ላይ ይደርሳል፣ ከእርስዎ OpenAI ድርጅት ብቻ። ከPadForge ጋር እንደገና ይጀምራል።</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>በመሄድ ላይ፣ በእርስዎ መብቶች። OpenAI ዋሻው ዝግጁ መሆኑን እስኪያሳውቅ ይጠብቃል።</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge ቁልፉን ለእርስዎ ብቻ ተመስጥሮ ያስቀምጣል። ባዶ ሳጥን ቁልፉን ይረሳል። ChatGPT ከላይ ባለው ደረጃ ይሠራል።</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge የተሰኪ ኪቱን ማስቀመጥ አልቻለም።</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge እንቅስቃሴ {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>ድምጾች{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>አዶዎች{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>ለሌሎች ስርዓቶች የሆኑ {0:N0} ረድፎች ታልፈዋል።</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows በራስዎ መብቶች አላስጀመረውም።</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>በ{0} ሰከንድ ውስጥ አላበቃም።</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>በኮድ {0} አብቅቷል፣ ምንም ምክንያትም አልሰጠም።</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge በ{0} ውስጥ ያሉትን ቅንብሮች ማንበብ አይችልም፣ ስለዚህ ፋይሉን እንዳለ ተወው።</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge ፋይሉን {0} አልጻፈውም፣ ስለዚህ እንዳለ ተወው።</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows ለእርስዎ ምንም የ«ሰነዶች» አቃፊ አላሳወቀም።</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ለ{0} የእርስዎ የሆነ አቃፊ አያገኝም።</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>የ{0} የራሱ ትእዛዝ በኮድ {1} አብቅቷል።</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>የ{0} ትእዛዝ በዚህ ኮምፒውተር ላይ የለም።</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows PadForge የሚያስፈልገውን ፋይል እንዲያነብ ወይም እንዲጽፍ አልፈቀደም።</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ምንም Python አያገኝም፦ የተመዘገበ፣ ከMicrosoft Store የተጫነ፣ በpy ማስጀመሪያ የተዘረዘረ ወይም በእርስዎ PATH ላይ ያለ የለም።</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge ያገኘው ምንም Python በ{0} ሰከንድ ውስጥ አልመለሰም።</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>ሂደቱ PadForge የሚያውቀውን ምክንያት አልሰጠም።</value></data>
 </root>

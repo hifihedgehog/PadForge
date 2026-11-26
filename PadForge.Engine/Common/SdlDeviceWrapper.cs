@@ -2963,6 +2963,12 @@ namespace PadForge.Engine
         //  Device objects enumeration
         // ─────────────────────────────────────────────
 
+        /// <summary>True when the last <see cref="GetDeviceObjects"/> found a
+        /// joystick Raw Input's pump had not read yet, so a relative value
+        /// DirectInput left out may be missing from its objects until they
+        /// are read again (InputManager's device sweep).</summary>
+        public bool RelativeAxesUnread { get; private set; }
+
         /// <summary>
         /// Builds an array of <see cref="DeviceObjectItem"/> describing each axis,
         /// hat, and button on the device. This is the SDL equivalent of
@@ -2978,11 +2984,19 @@ namespace PadForge.Engine
             // A controller's relative values that SDL's DirectInput left out
             // (#600) follow SDL's axes as axes of PadForge's own, read from the
             // device's HID reports (RelativeHidAxes), so a spinner or a
-            // trackball can be marked as moving relatively.
+            // trackball can be marked as moving relatively. Only what Raw
+            // Input's pump has read is asked: a controller it has not read
+            // yet lists none, and its objects are read again once it has
+            // (RelativeAxesUnread).
+            RelativeAxesUnread = false;
             if (GameController == IntPtr.Zero && !string.IsNullOrEmpty(SdlDevicePath))
             {
                 int leftOut = 0;
-                try { leftOut = PadForge.Engine.Common.RelativeHidAxes.LeftOutRelative(SdlDevicePath, RawAxisCount); }
+                try
+                {
+                    if (!PadForge.Engine.Common.RelativeHidAxes.TryLeftOutRelative(SdlDevicePath, RawAxisCount, out leftOut))
+                        RelativeAxesUnread = true;
+                }
                 catch { }
                 leftOut = Math.Min(leftOut, Math.Max(0, CustomInputState.MaxAxis - RawAxisCount));
                 if (leftOut > 0)

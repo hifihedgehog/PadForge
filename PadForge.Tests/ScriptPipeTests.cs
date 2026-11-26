@@ -125,6 +125,24 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "Button0", "Button1", "Button2", "Fire", "Button4", "Button5", "Axis0" }, names);
         }
 
+        /// <summary>A declared name that reads as a hat's direction, a
+        /// button "DPad Up" beside a hat "DPad", keeps its numbered name:
+        /// DPadUp is the hat's up, and the button stays reachable by its
+        /// own name. The list keeps its order, buttons first.</summary>
+        [Fact]
+        public void ADeclaredName_ThatReadsAsAHatsDirection_KeepsItsNumberedName()
+        {
+            var shape = ProgramDeviceDeclaration.Parse(
+                "{\"buttons\":[\"DPad Up\",\"Fire\"],\"axes\":[{\"name\":\"DPad Left\"}],\"hats\":[\"DPad\"]}", out string error);
+            Assert.Null(error);
+            var controls = ScriptNames.Declared(shape);
+            Assert.Equal(new[] { "Button0", "Fire", "Axis0", "DPad" }, controls.Select(c => c.Name).ToArray());
+            Assert.True(ScriptNames.TryResolve("Button0", controls, out char kind, out int index));
+            Assert.Equal(('b', 0), (kind, index));
+            Assert.True(ScriptNames.TryDirection("DPadUp", controls, out int hat, out _));
+            Assert.Equal(0, hat);
+        }
+
         /// <summary>A press and its release sent between two passes land on
         /// two passes, on a program's own device and on a hold. The clocks
         /// stand still between the test's passes, as a running engine's 1 ms
@@ -528,7 +546,7 @@ namespace PadForge.Tests
             var pad = rig.AddDevice(InputDeviceType.Gamepad);
             string id = AutomationPipeRig.IdOf(pad);
             using var client = rig.Open();
-            Assert.StartsWith("err bad-argument ", client.Final("sub " + id + " A claim"));
+            Assert.StartsWith("err not-allowed ", client.Final("sub " + id + " A claim"));
             Assert.Equal("ok", client.Final("sub " + id + " A"));
             Assert.Null(ControlHolds.Current);
         }

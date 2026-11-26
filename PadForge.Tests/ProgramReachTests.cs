@@ -374,7 +374,7 @@ namespace PadForge.Tests
             var picked = new ProgramReach { Devices = new[] { new ReachDevice(Guid.NewGuid(), "Xbox Wireless Controller") } };
             var set = new List<(string, ProgramReach)>();
             var row = new AllowedProgramItem(new AllowedProgramView("k", "Steer Assist", @"AutoHotkey64.exe running C:\Scripts\steer.ahk",
-                AutomationLevel.SendInputs, null, true, picked), _ => { }, (k, r) => set.Add((k, r)), (n, r) => r);
+                AutomationLevel.SendInputs, null, true, picked), _ => { }, (k, r) => set.Add((k, r)), (k, n, r) => r);
             Assert.EndsWith("Drives its own devices and Xbox Wireless Controller. It still reads every device."
                 + " Commands from the command line still reach PadForge, as they do for every program.", row.Line);
             Assert.Equal(1, row.SelectedReach);

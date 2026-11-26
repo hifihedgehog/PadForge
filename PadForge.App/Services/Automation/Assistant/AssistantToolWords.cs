@@ -6,7 +6,7 @@ using PadForge.Engine.Common;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// What the user reads of an assistant's tools (#597): each tool's line in
+    /// What the user reads of an assistant's tools (#600): each tool's line in
     /// Activity and the words of the questions the request card puts. These
     /// are interface strings in the language in use. The words an assistant
     /// reads, the tools' names, titles and descriptions, are English and live
@@ -75,12 +75,17 @@ namespace PadForge.Services.Automation
             return string.Format(s.Automation_Tool_WithDetail_Format, phrase, Cut(detail));
         }
 
-        private static string Cut(string text)
+        internal static string Cut(string text)
         {
             // A program's text, shown to the user: no format character
             // can turn it around or hide part of it.
             text = ShownText.Clean((text ?? string.Empty).Replace('\r', ' ').Replace('\n', ' ')).Trim();
-            return text.Length > LongestDetail ? text.Substring(0, LongestDetail) + "…" : text;
+            if (text.Length <= LongestDetail) return text;
+            // An ellipsis in place of the rest, never half of a pair, as
+            // the pointer cuts a program's words (AssistantPointer.Clean).
+            int cut = LongestDetail;
+            if (char.IsHighSurrogate(text[cut - 1])) cut--;
+            return text.Substring(0, cut) + "…";
         }
 
         // ── The request card's questions ──

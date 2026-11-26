@@ -17,7 +17,7 @@
         AutomationProperties.Name="{Binding Extras_Automation_Card_Waiting, Source={x:Static strings:Strings.Instance}}">
 
     <!--
-        The request card (#597): a program asked for a change only the user
+        The request card (#600): a program asked for a change only the user
         may allow. It stands above other windows at the bottom right of the
         work area of PadForge's display, clear of the profile and layer
         flyouts at the bottom center. It is the On-Screen Keyboard's window

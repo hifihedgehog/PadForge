@@ -119,7 +119,7 @@ namespace PadForge.Common.Recording
 
     /// <summary>
     /// Turns what the capture handed over into the lines of a recording's
-    /// events (#597): one line for all that changed on one subject at one
+    /// events (#600): one line for all that changed on one subject at one
     /// time, a full frame when a device comes online and for each device and
     /// virtual controller every five seconds, and a line of its own for each
     /// event of another thread. Free text goes through the scrubber here.
@@ -180,6 +180,23 @@ namespace PadForge.Common.Recording
         internal long Lines { get; private set; }
 
         internal const string NewLine = "\r\n";
+
+        /// <summary>The most characters of text one line is given, a quarter
+        /// of the longest line a reader takes
+        /// (<see cref="BoundedLineReader.LongestLine"/>), so the time, layer
+        /// and subject before it always fit. Every read of a recording keeps
+        /// that limit, the finish at the stop among them, and a file with a
+        /// longer line could never be finished.</summary>
+        internal const int LongestText = BoundedLineReader.LongestLine / 4;
+
+        /// <summary>Text cut to <see cref="LongestText"/>, with "..." where
+        /// it was cut. A cut never splits a character in two.</summary>
+        internal static string Cut(string text)
+        {
+            if (text == null || text.Length <= LongestText) return text;
+            int keep = char.IsHighSurrogate(text[LongestText - 1]) ? LongestText - 1 : LongestText;
+            return text.Substring(0, keep) + "...";
+        }
 
         /// <param name="epoch">The Stopwatch timestamp the file counts its
         /// seconds from.</param>
@@ -253,7 +270,7 @@ namespace PadForge.Common.Recording
             Close();
             RecordingCodec.AppendTime(Out, Micros(ticks));
             Out.Append(' ').Append(RecordingCodec.LayerInput).Append(' ').Append(alias).Append(" device");
-            Out.Append(_describe(device, alias)).Append(NewLine);
+            Out.Append(Cut(_describe(device, alias))).Append(NewLine);
             Lines++;
             return alias;
         }
@@ -496,7 +513,7 @@ namespace PadForge.Common.Recording
 
             RecordingCodec.AppendTime(Out, Micros(e.Ticks));
             Out.Append(' ').Append(layer).Append(' ').Append(subject).Append(' ');
-            foreach (char c in text) Out.Append(c is '\r' or '\n' ? ' ' : c);
+            foreach (char c in Cut(text)) Out.Append(c is '\r' or '\n' ? ' ' : c);
             Out.Append(NewLine);
             Lines++;
         }
@@ -541,7 +558,7 @@ namespace PadForge.Common.Recording
             string alias = Declare(device, ticks);
             if (!Holds(layer)) return;
             RecordingCodec.AppendTime(Out, Micros(ticks));
-            Out.Append(' ').Append(layer).Append(' ').Append(alias).Append(' ').Append(_scrubber.Text(text ?? string.Empty)).Append(NewLine);
+            Out.Append(' ').Append(layer).Append(' ').Append(alias).Append(' ').Append(Cut(_scrubber.Text(text ?? string.Empty))).Append(NewLine);
             Lines++;
         }
 
@@ -551,7 +568,7 @@ namespace PadForge.Common.Recording
         {
             Close();
             RecordingCodec.AppendTime(Out, Micros(ticks));
-            Out.Append(' ').Append(layer).Append(" - ").Append(text).Append(NewLine);
+            Out.Append(' ').Append(layer).Append(" - ").Append(Cut(text)).Append(NewLine);
             Lines++;
         }
     }

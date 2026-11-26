@@ -115,8 +115,35 @@ namespace PadForge.Common.Input
             _workSignal.Set();
         }
 
+        /// <summary>The slot whose persona writes each pad's speaker and
+        /// haptic rings: the lowest live feed that targets the pad. Read by
+        /// the pumps without a lock, kept under the feed lock whenever a
+        /// feed's targets, its slot or its life changes.</summary>
+        private static readonly ConcurrentDictionary<Guid, int> _personaRingOwner = new();
+
+        /// <summary>Whether <paramref name="feed"/> writes the rings of
+        /// <paramref name="pad"/>: it is the pad's owner, or no owner is
+        /// known yet.</summary>
+        internal static bool WritesPersonaRings(PersonaFeed feed, Guid pad)
+            => !_personaRingOwner.TryGetValue(pad, out int owner) || owner == feed.Slot;
+
+        private static void RefreshPersonaRingOwnersNoLock()
+        {
+            var owners = new Dictionary<Guid, int>();
+            foreach (var f in _personaFeeds.Values)
+            {
+                if (f.Retired) continue;
+                foreach (var g in f.Targets)
+                    if (!owners.TryGetValue(g, out int slot) || f.Slot < slot) owners[g] = f.Slot;
+            }
+            foreach (var g in _personaRingOwner.Keys)
+                if (!owners.ContainsKey(g)) _personaRingOwner.TryRemove(g, out _);
+            foreach (var kv in owners) _personaRingOwner[kv.Key] = kv.Value;
+        }
+
         private static void ClearUnusedPersonaRingsNoLock(IEnumerable<Guid> targets)
         {
+            RefreshPersonaRingOwnersNoLock();
             _personaRingPruneCandidates.UnionWith(targets);
             // A moved feed has no active targets until its new route resolves.
             // Wait for the complete arrangement before declaring a ring unused.

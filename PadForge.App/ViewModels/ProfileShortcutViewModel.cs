@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
 using PadForge.Services;
 
@@ -75,11 +76,7 @@ namespace PadForge.ViewModels
                 if (string.IsNullOrEmpty(p.ProfileId))
                     p.DisplayName = Strings.Instance.Profile_Default;
             }
-            foreach (var d in _deviceChoices)
-            {
-                if (d.DeviceGuid == Guid.Empty)
-                    d.DisplayName = Strings.Instance.Profiles_ShortcutDevice_Any;
-            }
+            RefreshDeviceNames();
             RaiseCombo();
             OnPropertyChanged(nameof(LearnButtonText));
         }
@@ -191,13 +188,30 @@ namespace PadForge.ViewModels
         private readonly ObservableCollection<DeviceChoice> _deviceChoices = new();
         public ObservableCollection<DeviceChoice> DeviceChoices => _deviceChoices;
 
+        /// <summary>Names every entry of <see cref="DeviceChoices"/> again in
+        /// place, on a language change and on each walk of the device list
+        /// (InputService.OnDevicesUpdated): a device that connected or left
+        /// reads as it is now. No entry is added or removed, so the box keeps
+        /// its pick.</summary>
+        internal void RefreshDeviceNames()
+        {
+            foreach (var d in _deviceChoices)
+                d.DisplayName = d.DeviceGuid == Guid.Empty
+                    ? Strings.Instance.Profiles_ShortcutDevice_Any
+                    : ChoiceName(d.DeviceGuid);
+        }
+
         /// <summary>Rebuilds <see cref="DeviceChoices"/> from
         /// <see cref="SettingsManager.UserDevices"/>. Called from the page's
         /// DropDownOpened handler so newly-connected / disconnected devices
-        /// surface without a shortcut row teardown.</summary>
+        /// surface without a shortcut row teardown. The connected devices are
+        /// listed, and the shortcut's own device with them while it is not
+        /// connected, or after Remove Device took its record, so the box
+        /// shows the device the shortcut answers.</summary>
         public void RebuildDeviceChoices()
         {
             Guid currentGuid = Data.TriggerDeviceGuid;
+            bool listed = currentGuid == Guid.Empty;
             _deviceChoices.Clear();
             _deviceChoices.Add(new DeviceChoice(Guid.Empty, Strings.Instance.Profiles_ShortcutDevice_Any));
             var devices = SettingsManager.UserDevices?.Items;
@@ -207,11 +221,17 @@ namespace PadForge.ViewModels
                 {
                     foreach (var ud in devices)
                     {
-                        if (ud.IsOnline && !string.IsNullOrEmpty(ud.ResolvedName))
-                            _deviceChoices.Add(new DeviceChoice(ud.InstanceGuid, ud.ResolvedName));
+                        bool stored = ud.InstanceGuid == currentGuid;
+                        if (!ud.IsOnline && !stored) continue;
+                        listed |= stored;
+                        string name = ChoiceName(ud);
+                        if (!string.IsNullOrEmpty(name))
+                            _deviceChoices.Add(new DeviceChoice(ud.InstanceGuid, name));
                     }
                 }
             }
+            if (!listed)
+                _deviceChoices.Add(new DeviceChoice(currentGuid, Strings.Instance.Profiles_ShortcutDevice_Removed));
             // The stored device goes back first and the box reads it after,
             // the order the profile list below keeps: whatever the Clear()
             // wrote through the box is gone before anything reads it.
@@ -387,16 +407,37 @@ namespace PadForge.ViewModels
             return string.Format(s.DevObj_AxisN, index) + " " + dirSuffix;
         }
 
+        /// <summary>A key's device, named as the Devices page and Driven by
+        /// name it: a merged row and a built-in plugin's device in the
+        /// language in use.</summary>
         private static string ResolveDeviceName(Guid deviceGuid)
+            => InputService.LocalizedDeviceName(FindDevice(deviceGuid));
+
+        private static UserDevice FindDevice(Guid deviceGuid)
         {
             if (deviceGuid == Guid.Empty) return null;
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return null;
             lock (SettingsManager.UserDevices.SyncRoot)
-            {
-                var ud = devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
-                return ud?.ResolvedName;
-            }
+                return devices.FirstOrDefault(d => d.InstanceGuid == deviceGuid);
+        }
+
+        /// <summary>A device's entry in the Device picker, named as the
+        /// Devices page names it.</summary>
+        private static string ChoiceName(UserDevice ud)
+        {
+            string name = InputService.LocalizedDeviceName(ud);
+            if (string.IsNullOrEmpty(name) || ud.IsOnline) return name;
+            return string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                Strings.Instance.Profiles_ShortcutDevice_NotConnected_Format, name);
+        }
+
+        /// <summary>The picker's name for the device
+        /// <paramref name="deviceGuid"/>.</summary>
+        private static string ChoiceName(Guid deviceGuid)
+        {
+            var ud = FindDevice(deviceGuid);
+            return ud == null ? Strings.Instance.Profiles_ShortcutDevice_Removed : ChoiceName(ud);
         }
 
         // ─────────────────────────────────────────────

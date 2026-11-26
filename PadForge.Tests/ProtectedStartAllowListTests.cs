@@ -102,7 +102,7 @@ namespace PadForge.Tests
 
             string source = OffLimitsSource.Read("PadForge.App/Services/ProtectedStart.cs");
             string run = FenceSource.Body(source, "internal static void Run()");
-            int take = run.IndexOf("TakeHandover();", StringComparison.Ordinal);
+            int take = run.IndexOf("TakeHandover(System32Calls.GetVariable(HandoverVariable), ", StringComparison.Ordinal);
             int keep = run.IndexOf("KeepAllowListOnly(natives)", StringComparison.Ordinal);
             Assert.True(take > 0 && keep > take, "the handover is not taken before the variables are narrowed");
             string start = OffLimitsSource.Read("PadForge.App/Services/RightsVariables.Start.cs");

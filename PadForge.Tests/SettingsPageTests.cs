@@ -352,15 +352,18 @@ namespace PadForge.Tests
         }
 
         /// <summary>Every version the page shows reads bare. Two of the
-        /// four drivers' versions carried a "v" and two did not.</summary>
+        /// four drivers' versions carried a "v" and two did not. The
+        /// HIDMaestro and BthPS3 numbers are the installed drivers', made
+        /// where the status is read.</summary>
         [Fact]
         public void TheDriversVersions_ReadBare_AsEveryVersionOnThePage()
         {
-            var vm = new PadForge.ViewModels.SettingsViewModel();
-            Assert.Matches(@"^\d+\.\d+\.\d+$", vm.HIDMaestroVersion);
-            Assert.Matches(@"^\d+\.\d+\.\d+$", vm.BthPS3Version);
             string model = ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "SettingsViewModel.cs");
             Assert.DoesNotContain("$\"v{", model);
+            string main = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs");
+            Assert.Contains("_viewModel.Settings.BthPS3Version = v == null ? null : v.Major + \".\" + v.Minor + \".\" + Math.Max(0, v.Build);", main);
+            string removal = ExtrasPageTests.RepoText("PadForge.App", "Services", "HIDMaestroRemoval.cs");
+            Assert.Contains("newest.Major + \".\" + newest.Minor + \".\" + Math.Max(0, newest.Build)", removal);
         }
 
         /// <summary>The page as its board of the world-class pass draws it:

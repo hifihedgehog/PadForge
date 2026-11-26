@@ -6,7 +6,7 @@ namespace PadForge.Common.Input
 {
     /// <summary>
     /// Holds PadForge's keyboard and mouse output back from windows that run
-    /// with rights when a program fed it (#597, #600).
+    /// with rights when a program fed it (#600).
     ///
     /// <para>PadForge runs with administrator rights, so the keys and clicks
     /// it sends reach windows that a program without rights cannot reach
@@ -116,12 +116,9 @@ namespace PadForge.Common.Input
         /// <paramref name="cause"/> is held now.</summary>
         internal static bool HoldsKeys(OutputCause cause) => !cause.IsOwn && HoldsKeys();
 
-        /// <summary>Whether a button press or a wheel turn of
-        /// <paramref name="cause"/> is held now.</summary>
-        internal static bool HoldsButtons(OutputCause cause) => !cause.IsOwn && HoldsButtons();
-
-        private static int _heldCount;
         private static int _lastHeldProcess;
+        // The sessions told once that their output was held. A session's
+        // number leaves when the session ends (ForgetSession).
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, byte> _sessionsHeld = new();
 
         /// <summary>Raised the first time output a session fed is held, with
@@ -129,10 +126,6 @@ namespace PadForge.Common.Input
         /// it was held from, on the thread that held it. Must not
         /// block.</summary>
         internal static event Action<int, uint> FirstHeld;
-
-        /// <summary>How many sends held something since PadForge
-        /// started.</summary>
-        internal static int HeldCount => Volatile.Read(ref _heldCount);
 
         /// <summary>The process ID of the window with rights output was held
         /// from last, 0 when none was.</summary>
@@ -142,13 +135,18 @@ namespace PadForge.Common.Input
         /// the window in front, or from the one under the pointer.</summary>
         internal static void NoteHeld(OutputCause cause)
         {
-            Interlocked.Increment(ref _heldCount);
             uint process = Foreground.LastAboveProcess;
             if (process == 0) process = Pointer.LastAboveProcess;
             Volatile.Write(ref _lastHeldProcess, (int)process);
             int session = cause.Session;
             if (session > 0 && _sessionsHeld.TryAdd(session, 0)) FirstHeld?.Invoke(session, process);
         }
+
+        /// <summary>Session <paramref name="session"/> ended: its entry in
+        /// the record of sessions told once goes, so the record does not
+        /// grow with every session that ran. Numbers are never given
+        /// twice.</summary>
+        internal static void ForgetSession(int session) => _sessionsHeld.TryRemove(session, out _);
 
         /// <summary>The process of the window in front when it runs with
         /// rights and output was held from it last, else 0. Reads the window
@@ -184,11 +182,13 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Whether the message the interface's thread handles now
-        /// is PadForge's own output while a program drives PadForge. The
-        /// Allow and Don't Allow buttons ignore such a click or key.</summary>
+        /// is PadForge's own output while a program drives PadForge, or while
+        /// a slot's output still carries a program's mark
+        /// (<see cref="MarksKept"/>). The Allow and Don't Allow buttons ignore
+        /// such a click or key.</summary>
         internal static bool RefusesOwnOutputNow()
         {
-            if (!InForce) return false;
+            if (!InForce && !MarksKept) return false;
             var seam = ExtraInfoSeam;
             IntPtr extra = seam != null ? seam() : GetMessageExtraInfo();
             return IsOwnOutput(extra);
@@ -257,7 +257,6 @@ namespace PadForge.Common.Input
             Foreground.Forget();
             Pointer.Forget();
             IntegrityReads = 0;
-            Volatile.Write(ref _heldCount, 0);
             Volatile.Write(ref _lastHeldProcess, 0);
             _sessionsHeld.Clear();
         }

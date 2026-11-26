@@ -129,8 +129,10 @@ namespace PadForge.Views
             FamilyCombo.IsEnabled = false;
             SetStatus(Strings.Instance.Ds3Pair_Working, secondary: true);
 
-            var svc = new Ds3PairingService(msg =>
-                Dispatcher.BeginInvoke(new Action(() => SetStatus(msg, secondary: true))));
+            // The steps, from the string table. The English narration goes
+            // to the diagnostics log alone.
+            var svc = new Ds3PairingService(step: line =>
+                Dispatcher.BeginInvoke(new Action(() => SetStatus(line, secondary: true))));
 
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
@@ -145,8 +147,10 @@ namespace PadForge.Views
             {
                 // Held, not shown: the else branch below used to overwrite
                 // this with the generic verdict, so the one message that
-                // named the real fault never survived to the screen.
-                fault = ex.Message;
+                // named the real fault never survived to the screen. The
+                // line names the fault's kind in the UI's language, and the
+                // exception's own text goes to the diagnostics log.
+                fault = Ds3PairingService.FaultLine(ex);
             }
             finally
             {

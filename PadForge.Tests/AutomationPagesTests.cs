@@ -218,7 +218,8 @@ namespace PadForge.Tests
             // Another program holds the clipboard: the line says so.
             vm.AutomationClipboardSeam = _ => throw new System.Runtime.InteropServices.COMException("OpenClipboard failed");
             vm.CopyAutomationJsonCommand.Execute(null);
-            Assert.Equal(string.Format(Strings.Instance.Extras_Automation_NotCopied_Format, "OpenClipboard failed"), vm.AutomationCopyNote);
+            Assert.Equal(Strings.Instance.Extras_Automation_NotCopied, vm.AutomationCopyNote);
+            Assert.DoesNotContain("OpenClipboard failed", vm.AutomationCopyNote);
             // The test host's clipboard stays as it was without the seam.
             new DashboardViewModel().CopyAutomationJsonCommand.Execute(null);
         }
@@ -484,15 +485,19 @@ namespace PadForge.Tests
             foreach (string file in System.IO.Directory.EnumerateFiles(System.IO.Path.Combine(ExtrasPageTestsRoot(), "PadForge.App"), "*.cs", System.IO.SearchOption.AllDirectories))
             {
                 string code = System.IO.File.ReadAllText(file);
-                foreach (Match m in Regex.Matches(code, "\"error ([a-z][a-z-]*)"))
-                    words.Add(m.Groups[1].Value);
+                string slashed = file.Replace('\\', '/');
+                // The copy pipe answers another copy of PadForge only, which
+                // reads ok or not (RunningCopy), and Activity never records
+                // it: its words are no program's answer.
+                if (!slashed.EndsWith("/Services/InstanceSignal.cs", StringComparison.Ordinal))
+                    foreach (Match m in Regex.Matches(code, "\"error ([a-z][a-z-]*)"))
+                        words.Add(m.Groups[1].Value);
                 // The Automation pipe's codes, in its own folder: err and a
                 // code, the code a refusal or failure is given, and the
                 // request's own error.
                 // The assistants' tools and a script's call lines answer
                 // their codes as refusals and failures (#597), some of them
                 // from the window's part.
-                string slashed = file.Replace('\\', '/');
                 if (!slashed.Contains("/Services/Automation/", StringComparison.Ordinal)
                     && !slashed.EndsWith("/MainWindow.Assistant.cs", StringComparison.Ordinal)) continue;
                 foreach (string pattern in new[]
@@ -513,6 +518,11 @@ namespace PadForge.Tests
             table = table.Substring(0, table.IndexOf("};", StringComparison.Ordinal));
             foreach (Match m in Regex.Matches(table, "\"([a-z][a-z-]*)\" =>"))
                 pipeCodes.Add(m.Groups[1].Value);
+            // The copy pipe's exemption holds while its one reader takes ok
+            // or not and shows nothing of the answer.
+            string copy = System.IO.File.ReadAllText(System.IO.Path.Combine(ExtrasPageTestsRoot(), "PadForge.App", "Services", "RunningCopy.cs"));
+            Assert.Contains("return reply != null && reply.StartsWith(\"ok\", StringComparison.Ordinal);", copy);
+            Assert.Single(Regex.Matches(copy, @"ControlPipeClient\.Exchange\(SignalPipeName\("));
             // Positive controls: the command set's own words and the pipe's
             // are found.
             foreach (string known in new[] { "not-allowed", "not-available", "busy", "bad-argument", "unknown-profile",

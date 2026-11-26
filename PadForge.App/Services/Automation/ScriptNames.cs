@@ -27,8 +27,9 @@ namespace PadForge.Services.Automation
     /// for a mouse, KeyA for a keyboard, and Axis0, Slider0, Hat0 and Button0
     /// for any other. A program's own device has the names it declared, made
     /// into one word ("Left Pedal" is LeftPedal), unless a name would be no
-    /// word, would read as another control or a word of the pipe, or is
-    /// taken: that control keeps its numbered name. Every control also
+    /// word, would read as another control (a hat's direction among them)
+    /// or a word of the pipe, or is taken: that control keeps its numbered
+    /// name. The hats are named first. Every control also
     /// answers to its numbered name and to the pipe's short form (b3, a0,
     /// h0). Names are read without regard to case.</para>
     ///
@@ -85,7 +86,11 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>A program device's controls by the names it declared, as
-        /// one word each where that word is free.</summary>
+        /// one word each where that word is free. The hats are named first,
+        /// and each hat's name with Up, Right, Down and Left is taken with
+        /// it, so a button or an axis declared "DPad Up" beside a hat
+        /// "DPad" keeps its numbered name: that word is the hat's up. The
+        /// list keeps its order, buttons first.</summary>
         internal static List<ScriptControl> Declared(ProgramDeviceShape shape)
         {
             var list = new List<ScriptControl>();
@@ -97,12 +102,18 @@ namespace PadForge.Services.Automation
                 taken.Add(word);
                 return word;
             }
+            var hats = new string[shape.Hats.Count];
+            for (int i = 0; i < hats.Length; i++)
+            {
+                hats[i] = Pick(shape.Hats[i], "Hat" + Text(i));
+                foreach (var d in DirectionWords) taken.Add(hats[i] + d);
+            }
             foreach (var (index, name) in shape.Buttons)
                 list.Add(new ScriptControl(Pick(name, "Button" + Text(index)), 'b', index));
             foreach (var axis in shape.Axes)
                 list.Add(new ScriptControl(Pick(axis.Name, axis.IsSlider ? "Slider" + Text(axis.Index - ProgramAxis.FirstSlider) : "Axis" + Text(axis.Index)), 'a', axis.Index));
-            for (int i = 0; i < shape.Hats.Count; i++)
-                list.Add(new ScriptControl(Pick(shape.Hats[i], "Hat" + Text(i)), 'h', i));
+            for (int i = 0; i < hats.Length; i++)
+                list.Add(new ScriptControl(hats[i], 'h', i));
             return list;
         }
 

@@ -183,14 +183,15 @@ namespace PadForge.Engine.Common.Mapping
                              // read PER DEVICE from CustomInputState.AnalogKeys.
                              // Leading 'A' keeps it clear of the I/H prefix
                              // grammar.
-            MouseTravel,     // "Mouse Travel X" / "Mouse Travel Y" (issue #597).
+            MouseTravel,     // "Mouse Travel X" / "Mouse Travel Y" (issue #600).
                              // A mouse's raw counts added up and held as a
-                             // position, bipolar [-1..+1]. The position is a
-                             // mapping row's own, kept in the slot's
-                             // SourceKindRuntime, so SourceEvaluator reads it
-                             // and this class's own readers, which have no
-                             // row, read it at rest. Leading 'M' keeps it
-                             // clear of the I/H prefix grammar.
+                             // position, bipolar [-1..+1]. The position is
+                             // kept in the slot's SourceKindRuntime, so
+                             // SourceEvaluator reads it, and this class's own
+                             // readers ask the app for it
+                             // (TravelPositionProvider), at rest unwired.
+                             // Leading 'M' keeps it clear of the I/H prefix
+                             // grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -615,11 +616,6 @@ namespace PadForge.Engine.Common.Mapping
         /// raw corner to kg through this; without it, lean still works (a pure
         /// ratio) but Total Weight reports raw-proportional, not kg.</summary>
         public static Func<string, float[]> BalanceCalibrationProvider { get; set; }
-
-        /// <summary>Per-board tare offset in kg (issue #146), keyed by device GUID.
-        /// Subtracted from Total Weight so the user can zero the board with a stool
-        /// or shoes already on it. Returns 0 when untared.</summary>
-        public static Func<string, float> BalanceTareKgProvider { get; set; }
 
         /// <summary>Per-(device, slot) Wii IR pointer tuning (issue #146 Pointer
         /// group), keyed by device GUID + VC slot so two virtual controllers
@@ -1619,18 +1615,20 @@ namespace PadForge.Engine.Common.Mapping
         // mapping lacks.
 
         /// <summary>The placement of the device behind a device guid, or null
-        /// for a device read in SDL's layout already. Set by the app.</summary>
-        public static Func<string, BlissBoxGamepadMap> GamepadPlacementProvider { get; set; }
+        /// for a device read in SDL's layout already: a Bliss-Box port's
+        /// controller, or the user's controller database row for a device
+        /// SDL does not read. Set by the app.</summary>
+        public static Func<string, GamepadPlacement> GamepadPlacementProvider { get; set; }
 
-        [ThreadStatic] private static BlissBoxGamepadMap t_placement;
+        [ThreadStatic] private static GamepadPlacement t_placement;
 
         /// <summary>The placement the family resolves through on this thread,
         /// or null.</summary>
-        internal static BlissBoxGamepadMap ActivePlacement => t_placement;
+        internal static GamepadPlacement ActivePlacement => t_placement;
 
         /// <summary>Resolves the family through <paramref name="placement"/>
         /// until the scope is disposed, which restores the one before it.</summary>
-        public static PlacementScope UsePlacement(BlissBoxGamepadMap placement)
+        public static PlacementScope UsePlacement(GamepadPlacement placement)
         {
             var previous = t_placement;
             t_placement = placement;
@@ -1657,15 +1655,15 @@ namespace PadForge.Engine.Common.Mapping
         /// began.</summary>
         public readonly struct PlacementScope : IDisposable
         {
-            private readonly BlissBoxGamepadMap _previous;
-            internal PlacementScope(BlissBoxGamepadMap previous) => _previous = previous;
+            private readonly GamepadPlacement _previous;
+            internal PlacementScope(GamepadPlacement previous) => _previous = previous;
             public void Dispose() => t_placement = _previous;
         }
 
         /// <summary>The input <paramref name="placement"/> puts at the
         /// position the canonical descriptor names ("Button 0" is SDL's south
         /// button), or null where it puts nothing.</summary>
-        private static string Placed(BlissBoxGamepadMap placement, string canonical)
+        private static string Placed(GamepadPlacement placement, string canonical)
         {
             if (canonical.StartsWith("Button ", StringComparison.Ordinal))
                 return int.TryParse(canonical.AsSpan(7), NumberStyles.None, CultureInfo.InvariantCulture, out int b)
@@ -1673,7 +1671,15 @@ namespace PadForge.Engine.Common.Mapping
             if (canonical.StartsWith("Axis ", StringComparison.Ordinal))
                 return int.TryParse(canonical.AsSpan(5), NumberStyles.None, CultureInfo.InvariantCulture, out int a)
                     ? placement.Axis(a) : null;
-            return placement.DPad ? canonical : null;
+            if (placement.DPad) return canonical;
+            // A D-pad on four buttons: GamepadPlacement.DPadButton holds them
+            // up, down, left, right (the user's row for a device SDL does not
+            // read, ControllerDatabaseLayout.PlacementOf).
+            int d = canonical.EndsWith(" Up", StringComparison.Ordinal) ? 0
+                : canonical.EndsWith(" Down", StringComparison.Ordinal) ? 1
+                : canonical.EndsWith(" Left", StringComparison.Ordinal) ? 2
+                : canonical.EndsWith(" Right", StringComparison.Ordinal) ? 3 : -1;
+            return d < 0 ? null : placement.DPadButton(d);
         }
 
         /// <summary>True for any descriptor in the abstract gamepad family
@@ -1846,13 +1852,6 @@ namespace PadForge.Engine.Common.Mapping
             { halfAxis = true; return clean.Substring(1); }
             return clean;
         }
-
-        /// <summary>True for any MIDI-input descriptor
-        /// (<c>"Midi Note N"</c> / <c>"Midi CC N"</c> /
-        /// <c>"Midi Pitch Bend"</c>).</summary>
-        public static bool IsMidiDescriptor(string descriptor)
-            => !string.IsNullOrEmpty(descriptor)
-            && descriptor.StartsWith("Midi ", StringComparison.Ordinal);
 
         /// <summary>Prefix of the analog keyboard family (issue #468):
         /// <c>"Analog Key N"</c>, N the decimal key code of
@@ -2259,7 +2258,7 @@ namespace PadForge.Engine.Common.Mapping
             return v;
         }
 
-        // ─── Mouse Travel (#597) ───────────────────────────────────────
+        // ─── Mouse Travel (#600) ───────────────────────────────────────
         // "Mouse Travel X" / "Mouse Travel Y": a mouse's raw counts
         // (CustomInputState.MouseRawDX / MouseRawDY) added up and held as a
         // position from -1 to 1. The position is a mapping row's own, kept
@@ -2289,10 +2288,6 @@ namespace PadForge.Engine.Common.Mapping
             => !string.IsNullOrEmpty(descriptor)
             && (descriptor.StartsWith(MouseTravelPrefix, StringComparison.Ordinal)
                 || descriptor == WheelTravelDescriptor || descriptor == WheelTravelSidewaysDescriptor);
-
-        /// <summary>True for the two wheel descriptors of the family.</summary>
-        public static bool IsWheelTravelDescriptor(string descriptor)
-            => descriptor == WheelTravelDescriptor || descriptor == WheelTravelSidewaysDescriptor;
 
         /// <summary>The counts one pass of a mouse adds to a travel source:
         /// sideways for X, toward the user for Y, the frame the mouse's
@@ -2354,6 +2349,16 @@ namespace PadForge.Engine.Common.Mapping
         /// Unwired, every device answers null.</summary>
         public static Func<string, bool, int, long?> RelativeAxisTotalProvider { get; set; }
 
+        /// <summary>The app's wheel for a travel-family source (#600) that a
+        /// reader with no wheel of its own reads: a menu's host and click, a
+        /// macro's trigger, an activator, an engage input. The app steps it on
+        /// the slot's runtime and answers its position from -1 to 1, so the
+        /// source moves and presses as a row's does: the state, the source,
+        /// the slot and the device. Null for a read it does not take (off the
+        /// polling thread, no slot), and the source then reads at rest, as it
+        /// does unwired.</summary>
+        public static Func<CustomInputState, MappingSource, int, string, double?> TravelPositionProvider { get; set; }
+
         /// <summary>The device a mapping reads is a mouse (#600), by its
         /// GUID: a mouse's Axis 0 and 1 are Mouse Speed X and Y, which take
         /// their own settings. The app answers from its device list.
@@ -2396,6 +2401,13 @@ namespace PadForge.Engine.Common.Mapping
         /// lower values. 0 while no game sends one. Unwired, none does.</summary>
         public static Func<int, double> MouseTravelForceProvider { get; set; }
 
+        /// <summary>The app's wheel position for a travel-family source
+        /// (<see cref="TravelPositionProvider"/>), or null for any other
+        /// source, or where the app takes no read.</summary>
+        internal static double? TravelPosition(CustomInputState state, MappingSource src, int slotIndex, string evaluatedDeviceGuid)
+            => TravelPositionProvider is { } travel && SourceEvaluator.IsMouseTravel(src)
+                ? travel(state, src, slotIndex, evaluatedDeviceGuid) : null;
+
         /// <summary>A "Mouse Travel" position as a button: pressed once the
         /// wheel is past the source's deadzone, the gravity-lean pair's
         /// grammar for a position. Half picks one side and Invert which,
@@ -2434,6 +2446,26 @@ namespace PadForge.Engine.Common.Mapping
             return src.Invert ? -v : v;
         }
 
+        /// <summary>The sign <see cref="MouseTravelAsBipolar"/> puts between
+        /// a travel position and the axis it answers: Invert outside Half,
+        /// and under Half the side Invert picks times Flip Output. Under
+        /// Either (<paramref name="folds"/>) the axis reads how far the wheel
+        /// is from center either way, and the sign is Flip Output's on the
+        /// positive side and the other on the negative side.</summary>
+        public static double MouseTravelBipolarSign(MappingSource src, out bool folds)
+        {
+            folds = false;
+            if (src == null) return 1.0;
+            if (!src.HalfAxis) return src.Invert ? -1.0 : 1.0;
+            double flip = src.InvertOutput ? -1.0 : 1.0;
+            if (src.Bidirectional)
+            {
+                folds = true;
+                return flip;
+            }
+            return src.Invert ? -flip : flip;
+        }
+
         /// <summary>A "Mouse Travel" position as a trigger's pull: how far
         /// the wheel is from center, either way, and Invert reads the pull
         /// the other way around. Under Half one side pulls and Invert picks
@@ -2446,6 +2478,57 @@ namespace PadForge.Engine.Common.Mapping
                 return src.Bidirectional ? Math.Min(1f, Math.Abs(v)) : Math.Max(0f, Math.Min(1f, src.Invert ? -v : v));
             float pull = Math.Min(1f, Math.Abs(v));
             return src.Invert ? 1f - pull : pull;
+        }
+
+        /// <summary>A mouse's Axis 0 or 1 that steers by its own Mouse Speed
+        /// settings (#600), as a trigger's pull. Its answer, -1 to 1, is
+        /// read as the centered axis it stands for, in the plain read's
+        /// shape (<see cref="AxisPull"/>, <see cref="AxisPullTail"/>), so a
+        /// setting moved off its default changes the speed and nothing else:
+        /// without Half the pull rests at half, Half pulls on the side Invert
+        /// picks, and the source's Sensitivity, Acceleration, curve and
+        /// stamped dead zone act as they do there. Outside Half, Invert reads
+        /// the pull the other way, as the plain read's evaluator does.</summary>
+        public static float MouseSpeedAsTrigger(double speed, MappingSource src, CustomInputState state)
+        {
+            if (src == null) return 0f;
+            int idx = src.Descriptor == "Axis 1" ? 1 : 0;
+            float pull = AxisPullTail(src, AxisPull(state, src, idx, MouseSpeedAxisReading(speed)));
+            if (InvertConsumedByHalfAxisRead(src)) return pull;
+            return src.Invert ? 1f - pull : pull;
+        }
+
+        /// <summary>The button read of <see cref="MouseSpeedAsTrigger"/>'s
+        /// source: the plain read of the axis it stands for
+        /// (<see cref="AxisPressed"/>), which spends Invert inside.</summary>
+        public static bool MouseSpeedAsButton(double speed, MappingSource src, int globalThresholdPercent)
+            => src != null && AxisPressed(src, MouseSpeedAxisReading(speed),
+                Math.Max(EffectiveThresholdPercent(src, globalThresholdPercent), 0) / 100.0);
+
+        /// <summary>Mouse Speed's answer as the axis reading it stands for,
+        /// 0 to 65535 with rest at 32767, the mouse readers' center.</summary>
+        private static int MouseSpeedAxisReading(double speed)
+            => double.IsFinite(speed) ? (int)Math.Clamp(Math.Round(32767 + speed * 32767), 0, 65535) : 32767;
+
+        /// <summary>Mouse Position steering by its own settings (#600) as a
+        /// trigger's pull, in the plain read's shape: how far the pointer
+        /// is from its origin either way, with Invert reading the pull the
+        /// other way. The plain read reads no Half on this family.</summary>
+        public static float MousePositionAsTrigger(double position, MappingSource src)
+        {
+            if (src == null) return 0f;
+            float pull = Math.Min(1f, Math.Abs((float)position));
+            return src.Invert ? 1f - pull : pull;
+        }
+
+        /// <summary>Mouse Position steering by its own settings as a button,
+        /// in the plain read's shape: pressed once the pointer is past the
+        /// source's deadzone either way, and Invert turns that around.</summary>
+        public static bool MousePositionAsButton(double position, MappingSource src, int globalThresholdPercent)
+        {
+            if (src == null) return false;
+            bool past = Math.Abs((float)position) > Math.Max(EffectiveThresholdPercent(src, globalThresholdPercent), 1) / 100f;
+            return src.Invert ? !past : past;
         }
 
         /// <summary>The lineage's default aim-range normalization. All four
@@ -2698,7 +2781,7 @@ namespace PadForge.Engine.Common.Mapping
         ///   "Balance Lean X"  → center-of-gravity offset left↔right, bipolar [-1..+1]
         ///   "Balance Lean Y"  → CoG offset back↔front, bipolar [-1..+1]
         ///   "Balance Total Weight" → unipolar [0..1] of the kg sum over
-        ///       <see cref="BalanceMaxKg"/>, after the per-board tare.
+        ///       <see cref="BalanceMaxKg"/>.
         /// Lean is a pure ratio and needs no calibration; Total Weight uses
         /// <see cref="BalanceCalibrationProvider"/> per-corner kg interpolation when
         /// available, else a raw-proportional fallback.</summary>
@@ -2752,8 +2835,6 @@ namespace PadForge.Engine.Common.Mapping
                     // coarse fallback, replaced the moment calibration arrives).
                     kg = (tl + bl + tr + br) / 200f;
                 }
-                float tare = BalanceTareKgProvider?.Invoke(deviceGuid ?? "") ?? 0f;
-                kg -= tare;
                 if (kg < 0f) kg = 0f;
                 return Math.Min(1f, kg / BalanceMaxKg);
             }
@@ -3356,7 +3437,7 @@ namespace PadForge.Engine.Common.Mapping
         /// SDL's axis position <paramref name="position"/>, or -1 where it
         /// puts none or a button. A placement holds "Axis N" and "Button N"
         /// alone (BlissBoxControllers.GamepadMap).</summary>
-        private static int PlacedAxisIndex(BlissBoxGamepadMap placement, int position)
+        private static int PlacedAxisIndex(GamepadPlacement placement, int position)
             => NumberedAxisOf(placement.Axis(position));
 
         private static float ReadRingNormAxis(CustomInputState state, int idx)
@@ -4955,6 +5036,10 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return false;
+            // The travel family holds a wheel, which the app keeps
+            // (TravelPositionProvider).
+            if (TravelPosition(state, src, slotIndex, evaluatedDeviceGuid) is double travel)
+                return MouseTravelAsButton(travel, src, globalThresholdPercent);
             using var placement = ReadingDevice(src, evaluatedDeviceGuid);
 
             bool raw = ReadAsBool(state, src, globalThresholdPercent, slotIndex,
@@ -5961,6 +6046,8 @@ namespace PadForge.Engine.Common.Mapping
             bool relativeTouchpad = false, string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return 0f;
+            if (TravelPosition(state, src, slotIndex, evaluatedDeviceGuid) is double travel)
+                return MouseTravelAsBipolar(travel, src);
             using var placement = ReadingDevice(src, evaluatedDeviceGuid);
 
             float raw = ReadAsBipolar(state, src, slotIndex, relativeTouchpad,
@@ -5985,6 +6072,8 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return 0f;
+            if (TravelPosition(state, src, slotIndex, evaluatedDeviceGuid) is double travel)
+                return MouseTravelAsTrigger(travel, src);
             using var placement = ReadingDevice(src, evaluatedDeviceGuid);
 
             float raw = ReadAsUnipolar(state, src, slotIndex,
@@ -6038,7 +6127,7 @@ namespace PadForge.Engine.Common.Mapping
             // magnitude either way, so no output flip may ride the flag.
             // The gravity-lean pair (v26) consumes Invert as its wedge
             // direction selector, the Mouse Motion shape.
-            // Mouse Travel (#597) is a position and takes the gravity-lean
+            // Mouse Travel (#600) is a position and takes the gravity-lean
             // pair's grammar: under Half, Invert picks the side.
             return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
                 || s.StartsWith("Mouse Motion ", StringComparison.Ordinal)
@@ -6407,46 +6496,7 @@ namespace PadForge.Engine.Common.Mapping
 
                 case SourceType.Axis:
                     if (idx < 0 || idx >= CustomInputState.MaxAxis) return false;
-                    int av = state.Axis[idx];
-                    // Generic per-source Sensitivity (issue #9) scales the
-                    // value before the threshold test so the knob acts on
-                    // button targets too, mirroring how the gyro / mouse /
-                    // IR families consume theirs inside the read. Origin
-                    // follows the matching analog leg: deviation-from-center
-                    // for half-axis, magnitude-from-zero for full-axis
-                    // (trigger semantics). sens == 1 leaves every comparison
-                    // bit-identical to the unscaled path.
-                    float boolSens = PerSourceSensitivity(src);
-                    if (src.HalfAxis)
-                    {
-                        if (boolSens != 1f)
-                        {
-                            float scaled = 32768f + (av - 32768) * boolSens;
-                            av = scaled < 0f ? 0 : scaled > 65535f ? 65535 : (int)scaled;
-                        }
-                        if (src.Bidirectional)
-                        {
-                            // Either side of center past deadzone counts:
-                            // |av − 32768| > 32767 * thresh. Invert is
-                            // irrelevant here since mirroring around center
-                            // already covers both directions.
-                            int delta = av - 32768;
-                            if (delta < 0) delta = -delta;
-                            return delta > (int)(32767 * thresh);
-                        }
-                        if (src.Invert)
-                            return av < (int)(32767 * (1.0 - thresh));
-                        return av > (int)(32768 + 32767 * thresh);
-                    }
-                    if (boolSens != 1f)
-                    {
-                        float scaledFull = av * boolSens;
-                        av = scaledFull > 65535f ? 65535 : (int)scaledFull;
-                    }
-                    int hi = (int)(thresh * 65535);
-                    if (src.Invert)
-                        return av < 65535 - hi;
-                    return av > hi;
+                    return AxisPressed(src, state.Axis[idx], thresh);
 
                 case SourceType.Slider:
                     if (idx < 0 || idx >= CustomInputState.MaxSliders) return false;
@@ -7011,42 +7061,7 @@ namespace PadForge.Engine.Common.Mapping
 
                 case SourceType.Axis:
                     if (idx < 0 || idx >= CustomInputState.MaxAxis) return 0f;
-                    int av = state.Axis[idx];
-                    if (src.HalfAxis)
-                    {
-                        // Half-axis trigger: one half of the centered axis
-                        // drives the pull (rest = 0, full deflection that way
-                        // = 1). Half selection mirrors ReadButtonLikeBool:
-                        // default = upper half, Invert = lower half,
-                        // Bidirectional = either side. (The old read folded
-                        // both halves positive, so the trigger fired on both
-                        // directions, and the evaluator's 1-raw Invert
-                        // transform on top read full-pressed at rest.)
-                        // Invert is consumed HERE as the half selector. See
-                        // InvertConsumedByHalfAxisRead in the evaluators.
-                        int delta = av - 32768;
-                        if (src.Bidirectional)
-                            axisValue = Math.Min(1f, Math.Abs(delta) / 32767f);
-                        else if (src.Invert)
-                            axisValue = delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
-                        else
-                            axisValue = delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
-                    }
-                    else
-                    {
-                        // Trigger axes are unipolar 0..65535 with 0 = released
-                        // (matches the legacy MapToTriggerSingle clamp). Stick
-                        // axes mapped to triggers without HalfAxis sit at ~50 %
-                        // at rest, same as legacy. Users who want a clean
-                        // stick-to-trigger map opt in via HalfAxis.
-                        axisValue = Math.Max(0f, Math.Min(1f, av / 65535f));
-                        // A stamped dead zone the fold left on the row, as
-                        // the bipolar read applies it: a trigger axis has no
-                        // companion, so the test is the pull alone. The fold
-                        // clears the stamp when it moves it onto the card.
-                        if (src.ParamStickDeadZoneShape != 0)
-                            axisValue = ApplyStickDeadZoneShape(state, src, idx, axisValue);
-                    }
+                    axisValue = AxisPull(state, src, idx, state.Axis[idx]);
                     break;
 
                 case SourceType.Slider:
@@ -7062,11 +7077,111 @@ namespace PadForge.Engine.Common.Mapping
                     return 0f;
             }
 
+            return AxisPullTail(src, axisValue);
+        }
+
+        /// <summary>A centered axis's reading <paramref name="av"/>, 0 to
+        /// 65535, as a button past <paramref name="thresh"/>, a fraction of
+        /// full scale: the plain read of an Axis, with its Sensitivity.
+        /// Invert is spoken for inside.</summary>
+        private static bool AxisPressed(MappingSource src, int av, double thresh)
+        {
+            // Generic per-source Sensitivity (issue #9) scales the
+            // value before the threshold test so the knob acts on
+            // button targets too, mirroring how the gyro / mouse /
+            // IR families consume theirs inside the read. Origin
+            // follows the matching analog leg: deviation-from-center
+            // for half-axis, magnitude-from-zero for full-axis
+            // (trigger semantics). sens == 1 leaves every comparison
+            // bit-identical to the unscaled path.
+            float boolSens = PerSourceSensitivity(src);
+            if (src.HalfAxis)
+            {
+                if (boolSens != 1f)
+                {
+                    float scaled = 32768f + (av - 32768) * boolSens;
+                    av = scaled < 0f ? 0 : scaled > 65535f ? 65535 : (int)scaled;
+                }
+                if (src.Bidirectional)
+                {
+                    // Either side of center past deadzone counts:
+                    // |av − 32768| > 32767 * thresh. Invert is
+                    // irrelevant here since mirroring around center
+                    // already covers both directions.
+                    int delta = av - 32768;
+                    if (delta < 0) delta = -delta;
+                    return delta > (int)(32767 * thresh);
+                }
+                if (src.Invert)
+                    return av < (int)(32767 * (1.0 - thresh));
+                return av > (int)(32768 + 32767 * thresh);
+            }
+            if (boolSens != 1f)
+            {
+                float scaledFull = av * boolSens;
+                av = scaledFull > 65535f ? 65535 : (int)scaledFull;
+            }
+            int hi = (int)(thresh * 65535);
+            if (src.Invert)
+                return av < 65535 - hi;
+            return av > hi;
+        }
+
+        /// <summary>A centered axis's reading <paramref name="av"/>, 0 to
+        /// 65535, as a trigger's pull before Sensitivity and the curve
+        /// (<see cref="AxisPullTail"/>). <paramref name="idx"/> is the axis's
+        /// place, for a stamped dead zone's companion axis.</summary>
+        private static float AxisPull(CustomInputState state, MappingSource src, int idx, int av)
+        {
+            float axisValue;
+            if (src.HalfAxis)
+            {
+                // Half-axis trigger: one half of the centered axis
+                // drives the pull (rest = 0, full deflection that way
+                // = 1). Half selection mirrors ReadButtonLikeBool:
+                // default = upper half, Invert = lower half,
+                // Bidirectional = either side. (The old read folded
+                // both halves positive, so the trigger fired on both
+                // directions, and the evaluator's 1-raw Invert
+                // transform on top read full-pressed at rest.)
+                // Invert is consumed HERE as the half selector. See
+                // InvertConsumedByHalfAxisRead in the evaluators.
+                int delta = av - 32768;
+                if (src.Bidirectional)
+                    axisValue = Math.Min(1f, Math.Abs(delta) / 32767f);
+                else if (src.Invert)
+                    axisValue = delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
+                else
+                    axisValue = delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
+            }
+            else
+            {
+                // Trigger axes are unipolar 0..65535 with 0 = released
+                // (matches the legacy MapToTriggerSingle clamp). Stick
+                // axes mapped to triggers without HalfAxis sit at ~50 %
+                // at rest, same as legacy. Users who want a clean
+                // stick-to-trigger map opt in via HalfAxis.
+                axisValue = Math.Max(0f, Math.Min(1f, av / 65535f));
+                // A stamped dead zone the fold left on the row, as
+                // the bipolar read applies it: a trigger axis has no
+                // companion, so the test is the pull alone. The fold
+                // clears the stamp when it moves it onto the card.
+                if (src.ParamStickDeadZoneShape != 0)
+                    axisValue = ApplyStickDeadZoneShape(state, src, idx, axisValue);
+            }
+            return axisValue;
+        }
+
+        /// <summary>The unipolar read's tail for an axis or a slider: the
+        /// source's Sensitivity, Acceleration, curve and range.</summary>
+        private static float AxisPullTail(MappingSource src, float axisValue)
+        {
             // Generic per-source Sensitivity (issue #9): scale the plain
             // analog generic sources (Axis / Slider, including the abstract
             // Gamepad sticks and triggers that canonicalize to them), then
-            // re-clamp to the unipolar range. Specialized families returned
-            // above with their own sensitivity, so there is no double-scaling.
+            // re-clamp to the unipolar range. Specialized families return
+            // before this tail with their own sensitivity, so there is no
+            // double-scaling.
             axisValue *= PerSourceSensitivity(src);
             if (axisValue < 0f) axisValue = 0f;
             else if (axisValue > 1f) axisValue = 1f;
@@ -7306,14 +7421,16 @@ namespace PadForge.Engine.Common.Mapping
                 if (cpad == null || cpad.MaxFingers <= 0) return false;
                 if (!cpad.FingerDown[0] || !FingerInTouchpadHalf(cpad, 0, clickHalf)) return false;
                 if (padIdx != 0) return cpad.Clicked;
-                return state.Buttons != null && state.Buttons.Length > 16 && state.Buttons[16];
+                return state.FirstPadClicked;
             }
 
             // "Touchpad N Click"
             if (parts.Length == 3 && parts[2].Equals("Click", StringComparison.Ordinal))
             {
                 // Canonical pad-0 click rides Buttons[16] (the slot
-                // SdlDeviceWrapper populates from SDL_GAMEPAD_BUTTON_TOUCHPAD).
+                // SdlDeviceWrapper populates from SDL_GAMEPAD_BUTTON_TOUCHPAD),
+                // apart from a program's device whose button 16 is its own
+                // (CustomInputState.FirstPadClicked).
                 // Nonzero pads read their own per-pad Clicked, which the
                 // wrapper fills from the fork's touchpad-click-as-button
                 // recipe (pad 1 = MISC2 on Deck / SC 2026): Workshop imports
@@ -7329,8 +7446,7 @@ namespace PadForge.Engine.Common.Mapping
                     var npad = GetTouchpad(state, padIdx);
                     return npad != null && npad.Clicked;
                 }
-                if (state.Buttons == null || state.Buttons.Length <= 16) return false;
-                return state.Buttons[16];
+                return state.FirstPadClicked;
             }
 
             // "Touchpad N Finger M Down", plus the region-windowed

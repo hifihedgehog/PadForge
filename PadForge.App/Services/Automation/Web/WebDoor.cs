@@ -19,7 +19,9 @@ namespace PadForge.Services.Automation.Web
         Off,
         Starting,
         Running,
-        /// <summary>It could not start, or it ended and was not started again.</summary>
+        /// <summary>It could not start, or it ended, four times or more in a
+        /// row: PadForge starts it again every 30 seconds while a switch is
+        /// on.</summary>
         Stopped,
 
         /// <summary>The switch is on and Automation is off: it starts once
@@ -58,9 +60,15 @@ namespace PadForge.Services.Automation.Web
         internal static readonly TimeSpan ArmedFor = TimeSpan.FromMinutes(5);
 
         /// <summary>The waits before the helper is started again after it
-        /// ended by itself. Past the last, it stays stopped and the page says
-        /// so.</summary>
+        /// ended by itself or Windows did not start it. Past the last, it is
+        /// started again after the last wait for as long as a switch is on,
+        /// and the page says PadForge keeps trying.</summary>
         internal static readonly TimeSpan[] Restarts = { TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(30) };
+
+        /// <summary>How long a helper runs past its hello before the failures
+        /// before it no longer count, as a plugin's run that said hello and
+        /// lasted a minute (PluginManager.SteadyRunMs).</summary>
+        internal static readonly TimeSpan SteadyRun = TimeSpan.FromMilliseconds(PluginManager.SteadyRunMs);
 
         private static readonly ConditionalWeakTable<AutomationHost, WebDoor> Doors = new();
 
@@ -109,6 +117,7 @@ namespace PadForge.Services.Automation.Web
             _pipeName = pipeName ?? AutomationPipe.PipeName;
             _now = now ?? (() => DateTimeOffset.UtcNow);
             Doors.AddOrUpdate(host, this);
+            Remember();
             _store.Changed += OnStoreChanged;
             _store.Loaded += OnStoreLoaded;
             _host.Changed += OnHostChanged;
@@ -129,10 +138,51 @@ namespace PadForge.Services.Automation.Web
             else if (!_host.IsOn && Wanted && HelperState != WebHelperState.WaitsForAutomation) SetState(WebHelperState.WaitsForAutomation, null);
         }
 
+        /// <summary>The file was read in, as at a Reload on Settings: the
+        /// sessions of grants and keys it no longer holds close, the network
+        /// door's reservation follows its row and port, and the helper is
+        /// told the state, or stops when neither row is on.</summary>
         private void OnStoreLoaded(object sender, EventArgs e)
         {
+            Seen before;
+            lock (_sync) before = _seen;
+            var now = Remember();
+            // A row the file turns off closes all its sessions, as its
+            // switch does (TurnOff, TurnNetworkOff), and a grant or a key the
+            // file no longer holds closes its own.
+            foreach (string id in before.On && !now.On ? before.Grants : before.Grants.Except(now.Grants)) _host.Sessions.CloseWeb(WebKey(id));
+            foreach (string id in before.NetworkOn && !now.NetworkOn ? before.Keys : before.Keys.Except(now.Keys)) _host.Sessions.CloseWeb(NetKey(id));
+            if (before.NetworkOn && before.NetworkPort != 0 && (!now.NetworkOn || now.NetworkPort != before.NetworkPort))
+            {
+                lock (_sync) _readyPort = 0;
+                NetworkState = null;
+                if (now.NetworkOn) ApplyNetwork(before.NetworkPort);
+                else RunNetsh(() => _network.Remove(before.NetworkPort));
+            }
+            else if (now.NetworkOn && !before.NetworkOn) ApplyNetwork(0);
             Raise();
-            if (Wanted) Start();
+            if (!Wanted)
+            {
+                lock (_sync) _armedUntil = DateTimeOffset.MinValue;
+                Stop(WebHelperState.Off, null);
+                return;
+            }
+            Start();
+            _ = SayStateAsync();
+        }
+
+        /// <summary>What the door last saw in the store: the grants' and
+        /// keys' IDs and both rows, so a load can tell what it
+        /// dropped.</summary>
+        private sealed record Seen(IReadOnlyList<string> Grants, IReadOnlyList<string> Keys, bool On, bool NetworkOn, int NetworkPort);
+
+        private Seen _seen = new(Array.Empty<string>(), Array.Empty<string>(), false, false, 0);
+
+        private Seen Remember()
+        {
+            var seen = new Seen(_store.Grants.Select(g => g.Id).ToList(), _store.Keys.Select(k => k.Id).ToList(), _store.On, _store.NetworkOn, _store.NetworkPort);
+            lock (_sync) _seen = seen;
+            return seen;
         }
 
         /// <summary>Whether the helper should run: either switch is on.</summary>
@@ -163,19 +213,6 @@ namespace PadForge.Services.Automation.Web
 
         public bool Armed => _now() < ArmedUntil;
 
-        private long _helperArmedUntil;
-
-        /// <summary>Whether the helper holds the armed window the page set,
-        /// so a sign-in now is taken.</summary>
-        public bool HelperArmed
-        {
-            get
-            {
-                lock (_sync)
-                    return _armedUntil != DateTimeOffset.MinValue && _helperArmedUntil == _armedUntil.ToUnixTimeMilliseconds();
-            }
-        }
-
         /// <summary>The address to give a web assistant now, or null.</summary>
         public string PublicAddress
         {
@@ -197,16 +234,20 @@ namespace PadForge.Services.Automation.Web
         public void TurnOn()
         {
             _store.SetOn(true);
-            _failures = 0;
+            lock (_sync) _failures = 0;
             Start();
+            // A helper the network row keeps hears it at once.
+            _ = SayStateAsync();
         }
 
-        /// <summary>Turns the door off: its tunnel ends, and the helper too
-        /// unless the network door keeps it.</summary>
+        /// <summary>Turns the door off: its tunnel ends, every web
+        /// assistant's connection closes, and the helper ends too unless the
+        /// network door keeps it.</summary>
         public void TurnOff()
         {
             _store.SetOn(false);
             Disarm();
+            foreach (var grant in _store.Grants) _host.Sessions.CloseWeb(WebKey(grant.Id));
             if (_store.NetworkOn) _ = SayStateAsync();
             else Stop(WebHelperState.Off, null);
         }
@@ -228,7 +269,7 @@ namespace PadForge.Services.Automation.Web
                 string exe = _exe();
                 if (_launcher == null || string.IsNullOrEmpty(exe))
                 {
-                    SetState(WebHelperState.Stopped, s.Web_Helper_Why_NotStarted);
+                    StartAgainLocked(s.Web_Helper_Why_NotStarted);
                     return;
                 }
                 byte[] key = RandomNumberGenerator.GetBytes(32);
@@ -240,11 +281,15 @@ namespace PadForge.Services.Automation.Web
                     });
                 if (launch?.Process == null)
                 {
-                    SetState(WebHelperState.Stopped, s.Web_Helper_Why_NotStarted);
+                    // Windows did not start it, as at a sign-in before the
+                    // desktop shell runs: it is tried again after a pause.
+                    StartAgainLocked(s.Web_Helper_Why_NotStarted);
                     return;
                 }
                 _helper = helper = launch.Process;
                 _key = key;
+                _helloAt = DateTimeOffset.MinValue;
+                _foundSinceStart = false;
                 SetState(WebHelperState.Starting, null);
             }
             helper.Exited += code => OnHelperExited(helper, code);
@@ -252,26 +297,60 @@ namespace PadForge.Services.Automation.Web
 
         private void OnHelperExited(IPluginProcess helper, int code)
         {
-            bool again;
-            int failures;
             lock (_sync)
             {
                 if (!ReferenceEquals(_helper, helper)) return;
                 _helper = null;
                 _key = null;
-                failures = _failures++;
-                again = !_disposed && Wanted && failures < Restarts.Length;
+                // A helper that said hello and ran a minute was a good one:
+                // the failures before it no longer count. One that ended
+                // sooner, hello or not, is one more.
+                if (_helloAt != DateTimeOffset.MinValue && _now() - _helloAt >= SteadyRun) _failures = 0;
+                _helloAt = DateTimeOffset.MinValue;
                 _helperSid = null;
                 _readyPort = 0;
                 NetworkState = null;
-                SetState(again ? WebHelperState.Starting : WebHelperState.Stopped,
-                    string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Web_Helper_Why_Ended_Format,
-                        code.ToString(CultureInfo.InvariantCulture)));
                 Tunnel = null;
+                KeyNotKeptLocked();
+                if (!_disposed && Wanted)
+                    StartAgainLocked(string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Web_Helper_Why_Ended_Format,
+                        code.ToString(CultureInfo.InvariantCulture)));
+                else SetState(WebHelperState.Off, null);
             }
             try { helper.Dispose(); } catch { }
-            if (again) _ = Task.Delay(Restarts[failures]).ContinueWith(_ => Start(), TaskScheduler.Default);
         }
+
+        /// <summary>Under the lock: one more failure in a row, and a start
+        /// after its pause, 2, 10 and then 30 seconds for as long as a switch
+        /// is on. After the first three the row says it is starting, and
+        /// from the fourth on that PadForge keeps trying.</summary>
+        private void StartAgainLocked(string why)
+        {
+            int failures = _failures++;
+            SetState(failures < Restarts.Length ? WebHelperState.Starting : WebHelperState.Stopped, why);
+            var pause = Restarts[Math.Min(failures, Restarts.Length - 1)];
+            // One restart waits at a time: a later one, as from a second
+            // caller's refused start, takes the earlier one's place.
+            int restart = ++_restart;
+            _ = (DelaySeam ?? Task.Delay)(pause).ContinueWith(_ =>
+            {
+                lock (_sync) if (restart != _restart) return;
+                Start();
+            }, TaskScheduler.Default);
+        }
+
+        private int _restart;
+
+        private DateTimeOffset _helloAt = DateTimeOffset.MinValue;
+        private bool _foundSinceStart;
+
+        /// <summary>Waits before a restart. A test gives its own.</summary>
+        internal Func<TimeSpan, Task> DelaySeam { get; set; }
+
+        /// <summary>The SID of the user the helper runs as: the desktop
+        /// shell's, whose child the plugin launcher starts it as. A test
+        /// gives its own.</summary>
+        internal Func<string> HelperUserSeam { get; set; } = PadForge.Common.Input.Peripherals.WindowsLightingState.ShellUserSid;
 
         private void Stop(WebHelperState state, string words)
         {
@@ -282,6 +361,7 @@ namespace PadForge.Services.Automation.Web
                 _helper = null;
                 _key = null;
                 Tunnel = null;
+                KeyNotKeptLocked();
                 _helperSid = null;
                 _readyPort = 0;
                 NetworkState = null;
@@ -321,7 +401,9 @@ namespace PadForge.Services.Automation.Web
         /// comes from the helper PadForge started with its key, or null.</summary>
         internal WebGrant AcceptWeb(string key, int processId, string grantId)
         {
-            if (!AcceptHelper(key, processId) || string.IsNullOrEmpty(grantId)) return null;
+            // While the web row is off no web assistant comes in, as no
+            // network key does while its row is off.
+            if (!_store.On || !AcceptHelper(key, processId) || string.IsNullOrEmpty(grantId)) return null;
             return _store.Grants.FirstOrDefault(g => g.Id == grantId);
         }
 
@@ -344,9 +426,19 @@ namespace PadForge.Services.Automation.Web
         /// tunnel reports.</summary>
         internal async Task ServeHelperAsync(Stream stream, CancellationToken stopping)
         {
-            lock (_sync) _link = stream;
+            lock (_sync)
+            {
+                _link = stream;
+                // A line that says no helper runs is false from here.
+                if (_wordsSayNoHelper)
+                {
+                    _wordsSayNoHelper = false;
+                    RuntimeKeyWords = null;
+                }
+            }
             if (HelperState == WebHelperState.Starting) SetState(WebHelperState.Running, null);
-            lock (_sync) _failures = 0;
+            // Its failures count until it has run a while (SteadyRun).
+            lock (_sync) _helloAt = _now();
             await SayStateAsync().ConfigureAwait(false);
             try
             {
@@ -379,11 +471,19 @@ namespace PadForge.Services.Automation.Web
                     var found = new List<WebTunnelFound>();
                     if (message["tunnels"] is JsonArray list)
                         foreach (var item in list.OfType<JsonObject>())
-                            if (WebTunnels.Of(Str(item["key"])) != null && Str(item["path"]) is { } path && Path.IsPathFullyQualified(path))
+                            if (WebTunnels.Of(Str(item["key"])) is { Vendor: false } && Str(item["path"]) is { } path && Path.IsPathFullyQualified(path))
                                 found.Add(new WebTunnelFound(Str(item["key"]), path));
-                    lock (_sync) _found = found;
-                    // A tunnel-client on the PATH is used as it is.
-                    if (_store.Tunnel == TunnelClient.Key && found.Any(f => f.Key == TunnelClient.Key)) ReadyTunnelClient();
+                    bool first;
+                    lock (_sync)
+                    {
+                        _found = found;
+                        first = !_foundSinceStart;
+                        _foundSinceStart = true;
+                    }
+                    // The ChatGPT tunnel picked with no copy kept, as after a
+                    // fetch that failed: the helper's first word after a
+                    // start fetches tunnel-client again.
+                    if (first && _store.Tunnel == TunnelClient.Key && TunnelClientPath == null) ReadyTunnelClient();
                     Raise();
                     _ = SayStateAsync();
                     break;
@@ -394,11 +494,6 @@ namespace PadForge.Services.Automation.Web
                     break;
                 case "ask":
                     _ = AnswerAsync(message);
-                    break;
-                case "seen":
-                    if (message["armedUntil"] is JsonValue seen && seen.TryGetValue(out long until))
-                        lock (_sync) _helperArmedUntil = until;
-                    Raise();
                     break;
                 case "tokens":
                     var grant = WebWire.FromJson(message["grant"] as JsonObject);
@@ -416,19 +511,27 @@ namespace PadForge.Services.Automation.Web
                     // The runtime key's blob, which the helper made for the
                     // signed-in user (#600 DESIGN-2 N4). PadForge keeps it
                     // and never the key.
+                    lock (_sync) _protecting = false;
                     if (Str(message["blob"]) is { } blob)
                     {
                         _store.SetRuntimeKey(blob);
                         RuntimeKeyWords = null;
                         _ = SayStateAsync();
                     }
+                    // Windows did not encrypt it: the key is not kept.
+                    else RuntimeKeyWords = PadForge.Resources.Strings.Strings.Instance.Web_ChatGpt_KeyNotEncrypted;
                     Raise();
                     break;
                 case "who":
-                    // The helper's user, whom the reservation names.
+                    // The helper says it may listen, and whose it is. The
+                    // reservation names the desktop shell's user, whose
+                    // child the launcher started the helper as, and the
+                    // helper's word is taken only when it names that user:
+                    // a pipe message is no proof of whose a SID is.
                     string sid = Str(message["sid"]);
-                    if (!NetworkDoor.IsSid(sid)) break;
-                    lock (_sync) _helperSid = sid;
+                    string shell = HelperUserSeam?.Invoke();
+                    if (!NetworkDoor.IsSid(sid) || !NetworkDoor.IsSid(shell) || !string.Equals(sid, shell, StringComparison.OrdinalIgnoreCase)) break;
+                    lock (_sync) _helperSid = shell;
                     if (_store.NetworkOn) ApplyNetwork(0);
                     break;
                 case "net":
@@ -452,11 +555,15 @@ namespace PadForge.Services.Automation.Web
         /// reservation and the rule, and the helper starts or listens.</summary>
         public void TurnNetworkOn()
         {
+            // The pick runs netsh, which blocks: it goes to the pool with the
+            // other netsh runs, and the reservation follows it there.
             if (_store.NetworkPort == 0)
-            {
-                int port = _network.PickPort();
-                if (port != 0) _store.SetNetworkPort(port);
-            }
+                RunNetsh(() =>
+                {
+                    int port = _network.PickPort();
+                    if (port != 0 && _store.NetworkPort == 0) _store.SetNetworkPort(port);
+                    _ = SayStateAsync();
+                });
             _store.SetNetwork(true);
             lock (_sync) _failures = 0;
             ApplyNetwork(0);
@@ -470,10 +577,11 @@ namespace PadForge.Services.Automation.Web
         public void TurnNetworkOff()
         {
             _store.SetNetwork(false);
-            int port = _store.NetworkPort;
             lock (_sync) _readyPort = 0;
             NetworkState = null;
-            RunNetsh(() => _network.Remove(port));
+            // The port is read on the chain, after a first pick that waits on
+            // it, and only while the row is still off.
+            RunNetsh(() => { if (!_store.NetworkOn) _network.Remove(_store.NetworkPort); });
             foreach (var key in _store.Keys) _host.Sessions.CloseWeb(NetKey(key.Id));
             if (_store.On) _ = SayStateAsync();
             else Stop(WebHelperState.Off, null);
@@ -503,16 +611,19 @@ namespace PadForge.Services.Automation.Web
         /// tells the helper it may listen.</summary>
         private void ApplyNetwork(int before)
         {
-            string sid;
-            lock (_sync) sid = _helperSid;
-            int port = _store.NetworkPort;
-            if (sid == null || !NetworkDoor.IsPort(port))
-            {
-                if (before != 0 && before != port) RunNetsh(() => _network.Remove(before));
-                return;
-            }
+            // Read on the netsh chain, after a pick that waits on it.
             RunNetsh(() =>
             {
+                string sid;
+                lock (_sync) sid = _helperSid;
+                int port = _store.NetworkPort;
+                // A row turned off since makes nothing: its own Remove
+                // follows on the chain.
+                if (sid == null || !NetworkDoor.IsPort(port) || !_store.NetworkOn)
+                {
+                    if (before != 0 && before != port) _network.Remove(before);
+                    return;
+                }
                 _network.Apply(port, sid, before);
                 lock (_sync) if (_store.NetworkOn && _store.NetworkPort == port) _readyPort = port;
                 _ = SayStateAsync();
@@ -611,8 +722,9 @@ namespace PadForge.Services.Automation.Web
         {
             if (signIn?.Origin == null || signIn.Code is not { Length: 6 } || !signIn.Code.All(char.IsAsciiDigit)) return null;
             if (!Armed) return null;
-            // A client that signed in before signs in again in its own place.
-            // Past the most kept, no card asks for one that could not be kept.
+            // A client that signed in before signs in again in its own place,
+            // with the reach the user gave it. Past the most kept, no card
+            // asks for one that could not be kept.
             var before = _store.Grants.FirstOrDefault(g => g.ClientId == signIn.ClientId && g.RedirectUri == signIn.RedirectUri);
             if (before == null && _store.Grants.Count >= WebAccessStore.MostAssistants) return null;
             var s = PadForge.Resources.Strings.Strings.Instance;
@@ -641,6 +753,7 @@ namespace PadForge.Services.Automation.Web
             // A window that ran out while the card showed still counts: the
             // user answered a card the armed window raised.
             var now = _now();
+            before = _store.Grants.FirstOrDefault(g => g.ClientId == signIn.ClientId && g.RedirectUri == signIn.RedirectUri);
             var grant = new WebGrant
             {
                 Id = WebSecrets.New(12),
@@ -650,8 +763,8 @@ namespace PadForge.Services.Automation.Web
                 RedirectUri = signIn.RedirectUri,
                 Resource = signIn.Resource,
                 Allowed = now,
+                Reach = before?.Reach,
             };
-            before = _store.Grants.FirstOrDefault(g => g.ClientId == signIn.ClientId && g.RedirectUri == signIn.RedirectUri);
             if (before != null)
             {
                 _store.Revoke(before.Id);
@@ -733,19 +846,30 @@ namespace PadForge.Services.Automation.Web
         /// null.</summary>
         public string RuntimeKeyWords { get; private set; }
 
-        /// <summary>tunnel-client's path: the copy on the PATH the helper
-        /// found, else the one PadForge fetched and checked, or null.</summary>
+        /// <summary>tunnel-client's path: the copy PadForge fetched and
+        /// checked into its protected folder, or null. A copy on the PATH is
+        /// never used, since a program without rights can put one there.
+        /// The kept copy is looked for once, outside the door's lock, and a
+        /// fetch that ends sets it.</summary>
         internal string TunnelClientPath
         {
             get
             {
+                lock (_sync) if (_tunnelClient != null || _keptLooked) return _tunnelClient;
+                string kept = KeptSeam?.Invoke();
                 lock (_sync)
                 {
-                    string found = _found.FirstOrDefault(f => f.Key == TunnelClient.Key)?.Path;
-                    return found ?? (_tunnelClient ??= KeptSeam?.Invoke());
+                    if (!_keptLooked)
+                    {
+                        _keptLooked = true;
+                        _tunnelClient ??= kept;
+                    }
+                    return _tunnelClient;
                 }
             }
         }
+
+        private bool _keptLooked;
 
         /// <summary>A copy fetched before. A test gives none.</summary>
         internal Func<string> KeptSeam { get; set; } = TunnelClient.Kept;
@@ -771,7 +895,7 @@ namespace PadForge.Services.Automation.Web
                     var (exe, why) = await fetch(CancellationToken.None).ConfigureAwait(false);
                     lock (_sync)
                     {
-                        _tunnelClient = exe;
+                        if (exe != null) _tunnelClient = exe;
                         DownloadState = exe == null ? why ?? "?" : null;
                     }
                     if (exe != null) (_host.Sessions.Consent ?? AutomationConsent.Shared).AllowAssistant(exe, "ChatGPT");
@@ -807,12 +931,36 @@ namespace PadForge.Services.Automation.Web
             if (link == null)
             {
                 RuntimeKeyWords = PadForge.Resources.Strings.Strings.Instance.Web_ChatGpt_KeyNotKept;
+                lock (_sync) _wordsSayNoHelper = true;
                 Raise();
                 return false;
             }
+            lock (_sync) _protecting = true;
             _ = SayAsync(new JsonObject { ["t"] = "protect", ["key"] = key });
             return true;
         }
+
+        /// <summary>Whether a key went to the helper and its answer has not
+        /// come back. A helper that ends meanwhile kept nothing.</summary>
+        private bool _protecting;
+
+        /// <summary>Under the lock: a key sent to a helper that ended or
+        /// stopped before its answer is said not kept.</summary>
+        private void KeyNotKeptLocked()
+        {
+            if (!_protecting) return;
+            _protecting = false;
+            RuntimeKeyWords = PadForge.Resources.Strings.Strings.Instance.Web_ChatGpt_KeyHelperEnded;
+            _wordsSayNoHelper = false;
+        }
+
+        /// <summary>Whether RuntimeKeyWords says no helper runs, which a
+        /// helper that connects makes false.</summary>
+        private bool _wordsSayNoHelper;
+
+        /// <summary>Asks the helper to look for tunnel programs again, as
+        /// when the page shows.</summary>
+        public void LookForTunnels() => _ = SayAsync(new JsonObject { ["t"] = "find" });
 
         /// <summary>The Tunnel ID box.</summary>
         public void SetTunnelId(string id)
@@ -826,7 +974,11 @@ namespace PadForge.Services.Automation.Web
 
         // ─────────────────────────────────────────────
 
-        private void OnStoreChanged(object sender, EventArgs e) => Raise();
+        private void OnStoreChanged(object sender, EventArgs e)
+        {
+            Remember();
+            Raise();
+        }
 
         private void Raise()
         {

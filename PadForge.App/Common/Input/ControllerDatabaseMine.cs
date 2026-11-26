@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 using PadForge.Engine.Data;
 using PadForge.Services;
@@ -50,6 +51,52 @@ namespace PadForge.Common.Input
         /// (ControllerDatabaseEngine.UserRowOpened, and the profile switch),
         /// so its rows never meet a reading they were not made for.</summary>
         public IReadOnlyList<string> Mapped { get; init; } = Array.Empty<string>();
+
+        /// <summary>The devices and profiles (<see cref="Key"/>) whose rows an
+        /// earlier row of the user's under this ID mapped again, before this
+        /// row replaced it with other bindings. Their rows from before go back
+        /// with Remove Mine as <see cref="Mapped"/>'s do. This row maps them
+        /// again the first time PadForge reads the device through it with
+        /// that profile active, since their rows were made for the earlier
+        /// row's layout.</summary>
+        public IReadOnlyList<string> Owed { get; init; } = Array.Empty<string>();
+
+        /// <summary>Whether an earlier row under this ID mapped a device's
+        /// rows again with a profile (<see cref="Owed"/>).</summary>
+        public bool IsOwed(Guid instance, string profile) => Holds(Owed, Key(instance, profile));
+
+        /// <summary>What a row with other bindings that replaces this one
+        /// under the same ID owes: every device and profile this one mapped
+        /// again or owed.</summary>
+        internal IReadOnlyList<string> OwedOnReplace()
+        {
+            var keys = new List<string>(Owed);
+            foreach (string k in Mapped)
+                if (!Holds(keys, k)) keys.Add(k);
+            return keys;
+        }
+
+        /// <summary>The devices mapped again through this row, or owed by it,
+        /// with <paramref name="profile"/>.</summary>
+        internal List<Guid> DevicesFor(string profile)
+        {
+            var list = new List<Guid>();
+            foreach (string k in Mapped.Concat(Owed))
+            {
+                int at = k.IndexOf('@');
+                string p = at < 0 ? string.Empty : k.Substring(at + 1);
+                if (!string.Equals(p, profile ?? string.Empty, StringComparison.OrdinalIgnoreCase)) continue;
+                if (Guid.TryParse(at < 0 ? k : k.Substring(0, at), out Guid g) && !list.Contains(g)) list.Add(g);
+            }
+            return list;
+        }
+
+        private static bool Holds(IEnumerable<string> keys, string key)
+        {
+            foreach (string k in keys)
+                if (string.Equals(k, key, StringComparison.OrdinalIgnoreCase)) return true;
+            return false;
+        }
 
         /// <summary>A device and a profile as <see cref="Mapped"/> holds
         /// them: the instance ID, then "@" and the profile's ID for a profile
@@ -144,7 +191,18 @@ namespace PadForge.Common.Input
         {
             Rows = rows;
             PutBacks = putBacks;
+            // The placement of each device SDL does not read, built once here:
+            // the poll thread asks for it on every read of a Gamepad name.
+            foreach (var row in rows)
+                if (row.ForPadForgeDevice)
+                    (_placements ??= new Dictionary<Guid, PadForge.Engine.Common.GamepadPlacement>())[row.Device] =
+                        ControllerDatabaseLayout.PlacementOf(row.Row, out _);
         }
+
+        private readonly Dictionary<Guid, PadForge.Engine.Common.GamepadPlacement> _placements;
+
+        /// <summary>Whether a row lays out a device SDL does not read.</summary>
+        internal bool HasPlacements => _placements != null;
 
         /// <summary>These rows with rows from before owed to other
         /// profiles.</summary>
@@ -248,6 +306,38 @@ namespace PadForge.Common.Input
             return new ControllerDatabaseMine(rows, PutBacks);
         }
 
+        /// <summary>
+        /// The rows with what SDL held before each downloaded row taken back
+        /// (the row's reset): a row whose mapping from before is a downloaded
+        /// row for its ID, in the same bindings, takes the mapping that row
+        /// replaced, empty for none.
+        /// </summary>
+        internal ControllerDatabaseMine WithOldRowsBefore(IReadOnlyList<(string Id, string Text, string Before)> taken)
+        {
+            List<ControllerDatabaseMineRow> rows = null;
+            for (int i = 0; i < Rows.Count; i++)
+            {
+                var row = Rows[i];
+                if (row.ForPadForgeDevice || string.IsNullOrEmpty(row.OldRow)) continue;
+                string held = ControllerDatabaseSource.LayoutOf(row.OldRow);
+                foreach (var (id, text, before) in taken)
+                {
+                    if (held == null || !SdlMappingRow.Maps(id, row.Id)
+                        || !string.Equals(held, ControllerDatabaseSource.StoredLayoutOf(text), StringComparison.Ordinal))
+                        continue;
+                    rows ??= new List<ControllerDatabaseMineRow>(Rows);
+                    rows[i] = row with { OldRow = before ?? string.Empty };
+                    break;
+                }
+            }
+            return rows == null ? this : new ControllerDatabaseMine(rows, PutBacks);
+        }
+
+        /// <summary>No row, and the rows from before still owed to other
+        /// profiles (Clear).</summary>
+        internal ControllerDatabaseMine WithoutRows() =>
+            Rows.Count == 0 ? this : PutBacks.Count == 0 ? Empty : new ControllerDatabaseMine(Array.Empty<ControllerDatabaseMineRow>(), PutBacks);
+
         /// <summary>These rows without one.</summary>
         internal ControllerDatabaseMine Without(ControllerDatabaseMineRow row)
         {
@@ -272,19 +362,18 @@ namespace PadForge.Common.Input
                 if (!row.ForPadForgeDevice) yield return row.Text;
         }
 
-        /// <summary>How many devices the rows are for: each row is one.</summary>
-        internal int Devices => Rows.Count;
-
         /// <summary>
         /// Where a device SDL does not read puts its inputs in SDL's layout,
         /// by the user's row for it, or null. The default mapping reads it
-        /// as it reads a Bliss-Box port's (SettingsManager.CreateDefaultPadSetting).
+        /// as it reads a Bliss-Box port's (SettingsManager.CreateDefaultPadSetting),
+        /// and so do the Gamepad names (InputManager.GamepadPlacementFor).
+        /// No allocation: the poll thread asks.
         /// </summary>
         internal static PadForge.Engine.Common.GamepadPlacement PlacementFor(UserDevice ud)
         {
             if (ud == null || !string.IsNullOrEmpty(ud.SdlGuid)) return null;
-            var row = Current.ForPadForgeDevice(ud.InstanceGuid);
-            return row == null ? null : ControllerDatabaseLayout.PlacementOf(row.Row, out _);
+            var placements = Current._placements;
+            return placements != null && placements.TryGetValue(ud.InstanceGuid, out var placement) ? placement : null;
         }
 
         // ─────────────────────────────────────────────
@@ -343,6 +432,7 @@ namespace PadForge.Common.Input
                     Device = row.ForPadForgeDevice ? row.Device.ToString() : null,
                     Old = row.OldRow,
                     Mapped = row.Mapped.Count > 0 ? string.Join(",", row.Mapped) : null,
+                    Owed = row.Owed.Count > 0 ? string.Join(",", row.Owed) : null,
                     Text = row.Text,
                     Before = before.Length > 0 ? before : null,
                 };
@@ -357,6 +447,88 @@ namespace PadForge.Common.Input
         /// </summary>
         internal static ControllerDatabaseMine FromData(ControllerDatabaseMineData[] data, out bool changed) =>
             FromData(data, null, out changed);
+
+        /// <summary>The rows a settings file holds and the rows from before
+        /// it owes to other profiles, without what it keeps for a profile
+        /// not among <paramref name="profiles"/>, the IDs of the profiles the
+        /// file holds: a profile deleted since. Such an entry is put back only
+        /// when its profile is active, which never comes again, and the file
+        /// would carry it at every save. <paramref name="changed"/> then says
+        /// the file is to be saved again. Null keeps everything. A profile
+        /// the assistant's undo brings back in the same run is still in
+        /// memory, so the drop waits for a load.</summary>
+        internal static ControllerDatabaseMine FromData(ControllerDatabaseMineData[] data, ControllerDatabaseBeforeData[] putBacks,
+            IReadOnlyCollection<string> profiles, out bool changed)
+        {
+            var mine = FromData(data, putBacks, out changed);
+            if (profiles == null) return mine;
+            bool Known(string profile) => string.IsNullOrEmpty(profile) || profiles.Contains(profile, StringComparer.OrdinalIgnoreCase);
+            bool KnownKey(string key)
+            {
+                int at = key.IndexOf('@');
+                return at < 0 || Known(key.Substring(at + 1));
+            }
+            var owed = mine.PutBacks.Where(b => Known(b.Profile)).ToList();
+            var rows = new List<ControllerDatabaseMineRow>(mine.Rows.Count);
+            bool dropped = owed.Count != mine.PutBacks.Count;
+            foreach (var row in mine.Rows)
+            {
+                var before = (row.Before ?? Array.Empty<ControllerDatabaseBefore>()).Where(b => Known(b.Profile)).ToList();
+                var mapped = row.Mapped.Where(KnownKey).ToList();
+                var owedKeys = row.Owed.Where(KnownKey).ToList();
+                if (before.Count == (row.Before?.Count ?? 0) && mapped.Count == row.Mapped.Count && owedKeys.Count == row.Owed.Count)
+                {
+                    rows.Add(row);
+                    continue;
+                }
+                dropped = true;
+                rows.Add(row with { Before = before, Mapped = mapped, Owed = owedKeys });
+            }
+            if (!dropped) return mine;
+            changed = true;
+            return rows.Count == 0 && owed.Count == 0 ? Empty : new ControllerDatabaseMine(rows, owed);
+        }
+
+        /// <summary>
+        /// A profile made from the live setup (Save As, Save Current Setup
+        /// Here): its rows are the ones <paramref name="from"/> has now, made
+        /// under the user's rows, so it takes that profile's place in each
+        /// row's mapped and owed devices and its rows from before, and drops
+        /// what was owed to <paramref name="to"/> before.
+        /// </summary>
+        internal ControllerDatabaseMine CopyProfile(string from, string to)
+        {
+            from ??= string.Empty;
+            if (string.IsNullOrEmpty(to) || string.Equals(from, to, StringComparison.OrdinalIgnoreCase)) return this;
+            static string ProfileOf(string key)
+            {
+                int at = key.IndexOf('@');
+                return at < 0 ? string.Empty : key.Substring(at + 1);
+            }
+            static string DeviceOf(string key)
+            {
+                int at = key.IndexOf('@');
+                return at < 0 ? key : key.Substring(0, at);
+            }
+            List<string> Moved(IReadOnlyList<string> keys)
+            {
+                var list = keys.Where(k => !string.Equals(ProfileOf(k), to, StringComparison.OrdinalIgnoreCase)).ToList();
+                foreach (string k in keys)
+                    if (string.Equals(ProfileOf(k), from, StringComparison.OrdinalIgnoreCase)) list.Add(DeviceOf(k) + "@" + to);
+                return list;
+            }
+            var rows = new List<ControllerDatabaseMineRow>(Rows.Count);
+            foreach (var row in Rows)
+            {
+                var before = (row.Before ?? Array.Empty<ControllerDatabaseBefore>())
+                    .Where(b => !string.Equals(b.Profile, to, StringComparison.OrdinalIgnoreCase)).ToList();
+                foreach (var b in row.Before ?? Array.Empty<ControllerDatabaseBefore>())
+                    if (string.Equals(b.Profile, from, StringComparison.OrdinalIgnoreCase)) before.Add(b with { Profile = to });
+                rows.Add(row with { Before = before, Mapped = Moved(row.Mapped), Owed = Moved(row.Owed) });
+            }
+            var owed = PutBacks.Where(b => !string.Equals(b.Profile, to, StringComparison.OrdinalIgnoreCase)).ToList();
+            return rows.Count == 0 && owed.Count == 0 ? Empty : new ControllerDatabaseMine(rows, owed);
+        }
 
         /// <summary>The rows a settings file holds, and the rows from before
         /// it owes to other profiles.</summary>
@@ -398,19 +570,30 @@ namespace PadForge.Common.Input
                     if (read == null) changed = true;
                     else before.Add(read);
                 }
-                var mapped = new List<string>();
-                foreach (string part in (item.Mapped ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
-                {
-                    int at = part.IndexOf('@');
-                    if (Guid.TryParse(at < 0 ? part : part.Substring(0, at), out _)) mapped.Add(part);
-                    else changed = true;
-                }
-                var built = new ControllerDatabaseMineRow(row.Guid, row, added, old, device, before) { Mapped = mapped };
+                var mapped = Keys(item.Mapped, ref changed);
+                var owedKeys = Keys(item.Owed, ref changed);
+                var built = new ControllerDatabaseMineRow(row.Guid, row, added, old, device, before) { Mapped = mapped, Owed = owedKeys };
                 var next = mine.With(built);
                 if (next.Count == mine.Count) changed = true;
                 mine = next;
             }
             return mine;
+        }
+
+        /// <summary>Keys of devices and profiles as the settings file holds
+        /// them, joined by commas: one that names no device is dropped, and
+        /// <paramref name="changed"/> then says the file is to be saved
+        /// again.</summary>
+        private static List<string> Keys(string joined, ref bool changed)
+        {
+            var keys = new List<string>();
+            foreach (string part in (joined ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                int at = part.IndexOf('@');
+                if (Guid.TryParse(at < 0 ? part : part.Substring(0, at), out _)) keys.Add(part);
+                else changed = true;
+            }
+            return keys;
         }
 
         /// <summary>A copy of a mapping row that shares nothing with the
@@ -455,6 +638,11 @@ namespace PadForge.Services
         /// row, their instance IDs joined by commas.</summary>
         [XmlAttribute]
         public string Mapped { get; set; }
+
+        /// <summary>The devices whose rows an earlier row under the same ID
+        /// mapped again, in the same form.</summary>
+        [XmlAttribute]
+        public string Owed { get; set; }
 
         /// <summary>The row in the database's form.</summary>
         [XmlElement("Text")]

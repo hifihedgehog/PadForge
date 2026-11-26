@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using HIDMaestro;
@@ -40,34 +41,39 @@ namespace PadForge.Views
                 ? Strings.Instance.ImportFromDevice_UnnamedDevice
                 : Info.ProductString;
 
+            /// <summary>The device's ids, its kind and its maker, in the
+            /// interface's language: one format with the maker the device
+            /// names and one without.</summary>
             public string DetailLine
             {
                 get
                 {
-                    string vidpid = $"VID_{Info.VendorId:X4}:PID_{Info.ProductId:X4}";
+                    var s = Strings.Instance;
+                    string ids = $"VID_{Info.VendorId:X4}:PID_{Info.ProductId:X4}";
                     string usage = UsageLabel(Info.TopLevelUsagePage, Info.TopLevelUsage);
-                    string mfg = string.IsNullOrWhiteSpace(Info.ManufacturerString)
-                        ? ""
-                        : $" — {Info.ManufacturerString}";
-                    return $"{vidpid}  {usage}{mfg}";
+                    return string.IsNullOrWhiteSpace(Info.ManufacturerString)
+                        ? string.Format(s.ImportFromDevice_DeviceDetail_Format, ids, usage)
+                        : string.Format(s.ImportFromDevice_DeviceDetailMaker_Format, ids, usage, Info.ManufacturerString.Trim());
                 }
             }
 
+            /// <summary>The name of a Generic Desktop usage the picker knows,
+            /// and the page and usage numbers of any other.</summary>
             private static string UsageLabel(ushort page, ushort usage)
             {
+                var s = Strings.Instance;
                 if (page == 0x01)
                 {
-                    return usage switch
+                    switch (usage)
                     {
-                        0x02 => "(Mouse)",
-                        0x04 => "(Joystick)",
-                        0x05 => "(Gamepad)",
-                        0x06 => "(Keyboard)",
-                        0x08 => "(Multi-axis)",
-                        _ => $"(0x01:0x{usage:X2})"
-                    };
+                        case 0x02: return s.ImportFromDevice_UsageMouse;
+                        case 0x04: return s.ImportFromDevice_UsageJoystick;
+                        case 0x05: return s.ImportFromDevice_UsageGamepad;
+                        case 0x06: return s.ImportFromDevice_UsageKeyboard;
+                        case 0x08: return s.ImportFromDevice_UsageMultiAxis;
+                    }
                 }
-                return $"(0x{page:X2}:0x{usage:X2})";
+                return $"0x{page:X2}:0x{usage:X2}";
             }
         }
 
@@ -86,9 +92,38 @@ namespace PadForge.Views
             Loaded += (_, _) =>
             {
                 RefreshImportedList();
-                PopulateDevices(sayCount: true);
+                _ = PopulateDevices(sayCount: true);
                 ImportFromFileButton.Focus();
             };
+            Closed += (_, _) => _closed = true;
+        }
+
+        // The device list and the import read devices and load every built-in
+        // preset, which takes a while, so they run off the dispatcher. A
+        // result that comes back after the dialog closed is dropped, and an
+        // import stores nothing then.
+        private bool _closed;
+        private bool _busy;
+        private int _listGeneration;
+        private IInputElement _focusBeforeBusy;
+
+        /// <summary>While an import runs, its controls take no input and
+        /// the line says so. Afterwards the focus goes back where it
+        /// was.</summary>
+        private void SetBusy(bool busy)
+        {
+            _busy = busy;
+            if (busy)
+            {
+                _focusBeforeBusy = System.Windows.Input.Keyboard.FocusedElement;
+                StatusText.Text = Strings.Instance.ManageProfiles_StatusChecking;
+            }
+            ImportedList.IsEnabled = !busy;
+            ImportFromFileButton.IsEnabled = !busy;
+            DeviceList.IsEnabled = !busy;
+            ImportButton.IsEnabled = !busy && DeviceList.SelectedItem is DeviceRow;
+            if (!busy && !_closed && _focusBeforeBusy is UIElement { IsEnabled: true, IsVisible: true } back)
+                back.Focus();
         }
 
         // ─────────────────────────────────────────────
@@ -149,8 +184,9 @@ namespace PadForge.Views
             ImportFromFileButton.Focus();
         }
 
-        private void ImportFromFileButton_Click(object sender, RoutedEventArgs e)
+        private async void ImportFromFileButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_busy) return;
             var dlg = new OpenFileDialog
             {
                 Filter = Strings.Instance.FileDialog_HidMaestroProfileFilter + "|" + Strings.Instance.FileDialog_AllFilesFilter,
@@ -159,31 +195,53 @@ namespace PadForge.Views
                 Multiselect = false
             };
             if (dlg.ShowDialog(this) != true) return;
+            string path = dlg.FileName;
 
-            string json;
+            SetBusy(true);
             try
             {
-                json = System.IO.File.ReadAllText(dlg.FileName);
-            }
-            catch (Exception ex)
-            {
+                string json;
+                try
+                {
+                    json = await Task.Run(() => System.IO.File.ReadAllText(path));
+                }
+                catch (Exception ex)
+                {
+                    if (!_closed)
+                        StatusText.Text = string.Format(
+                            Strings.Instance.ManageProfiles_StatusImportFileFailed_Format, ex.Message);
+                    return;
+                }
+
+                var prepared = await Task.Run(() => Services.SettingsService.PrepareUserProfile(json));
+                string id = await StoreAsync(prepared);
+                if (_closed) return;
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    StatusText.Text = ImportFailedText(prepared?.Problem);
+                    return;
+                }
+
+                RefreshImportedList();
+                ImportedProfileId = id;
                 StatusText.Text = string.Format(
-                    Strings.Instance.ManageProfiles_StatusImportFileFailed_Format, ex.Message);
-                return;
+                    Strings.Instance.ManageProfiles_StatusImportFileSucceeded_Format,
+                    System.IO.Path.GetFileName(path));
             }
+            finally { SetBusy(false); }
+        }
 
-            string id = _settingsService.AddUserProfile(json, out string problem);
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                StatusText.Text = ImportFailedText(problem);
-                return;
-            }
-
-            RefreshImportedList();
-            ImportedProfileId = id;
-            StatusText.Text = string.Format(
-                Strings.Instance.ManageProfiles_StatusImportFileSucceeded_Format,
-                System.IO.Path.GetFileName(dlg.FileName));
+        /// <summary>Stores an import that was checked and found no problem
+        /// with: the catalog with it is built off the dispatcher, then the
+        /// store and the catalog change on it. Null when the import has a
+        /// problem, or the dialog closed first and nothing was stored.</summary>
+        private async Task<string> StoreAsync(Services.SettingsService.PreparedUserProfile prepared)
+        {
+            if (prepared == null || prepared.Problem != null || _closed) return null;
+            var jsons = _settingsService.UserProfileJsonsWith(prepared);
+            var built = await Task.Run(() => Common.Input.HMaestroProfileCatalog.Build(jsons));
+            if (_closed) return null;
+            return _settingsService.StorePreparedUserProfile(prepared, built);
         }
 
         // ─────────────────────────────────────────────
@@ -196,16 +254,20 @@ namespace PadForge.Views
         /// multi-axis device, else the first device. The count is said as
         /// the dialog opens. A refill as the picker opens says nothing
         /// unless it fails, so the line keeps what the last action said.</summary>
-        private void PopulateDevices(bool sayCount)
+        internal async Task PopulateDevices(bool sayCount)
         {
+            // A newer refill wins over one still reading.
+            int generation = ++_listGeneration;
+            var seam = ListDevicesSeam;
             try
             {
-                var devices = HMDeviceExtractor.ListDevices()
+                var devices = await Task.Run(() => (seam?.Invoke() ?? HMDeviceExtractor.ListDevices())
                     .OrderBy(d => d.VendorId)
                     .ThenBy(d => d.ProductId)
                     .ThenBy(d => d.TopLevelUsage)
                     .Select(d => new DeviceRow { Info = d })
-                    .ToList();
+                    .ToList());
+                if (_closed || generation != _listGeneration || _busy) return;
                 var before = (DeviceList.SelectedItem as DeviceRow)?.Info;
                 DeviceList.ItemsSource = devices;
                 int pick = PickAfterRefill(devices.Select(KeyOf).ToList(), before == null ? null : KeyOf(before));
@@ -216,10 +278,16 @@ namespace PadForge.Views
             }
             catch (Exception ex)
             {
+                if (_closed || generation != _listGeneration) return;
                 StatusText.Text = string.Format(
                     Strings.Instance.ImportFromDevice_StatusEnumFailed_Format, ex.Message);
             }
         }
+
+        /// <summary>Test seam for the devices connected now, null in
+        /// production, where HIDMaestro opens every HID interface on the PC
+        /// to list them.</summary>
+        internal Func<IEnumerable<HMHidDeviceInfo>> ListDevicesSeam { get; set; }
 
         private static (ushort Vendor, ushort Product, ushort Page, ushort Usage) KeyOf(DeviceRow row) => KeyOf(row.Info);
 
@@ -246,13 +314,13 @@ namespace PadForge.Views
 
         private void DeviceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ImportButton.IsEnabled = DeviceList.SelectedItem is DeviceRow;
+            ImportButton.IsEnabled = !_busy && DeviceList.SelectedItem is DeviceRow;
         }
 
         // A controller plugged in since the dialog opened is in the list.
-        private void DeviceList_DropDownOpened(object sender, EventArgs e) => PopulateDevices(sayCount: false);
+        private void DeviceList_DropDownOpened(object sender, EventArgs e) => _ = PopulateDevices(sayCount: false);
 
-        private void ImportButton_Click(object sender, RoutedEventArgs e) => TryImport();
+        private async void ImportButton_Click(object sender, RoutedEventArgs e) => await TryImport();
 
         /// <summary>Reports whether anything was imported, rather than a flat
         /// false. The two import lanes end differently on purpose: the device
@@ -268,18 +336,24 @@ namespace PadForge.Views
         private void CloseButton_Click(object sender, RoutedEventArgs e)
             => DialogResult = !string.IsNullOrWhiteSpace(ImportedProfileId);
 
-        private void TryImport()
+        /// <summary>The device lane: HIDMaestro reads the picked device's
+        /// descriptor, which opens the device, and checks the preset, both
+        /// off the dispatcher.</summary>
+        private async Task TryImport()
         {
-            if (DeviceList.SelectedItem is not DeviceRow row) return;
+            if (_busy || DeviceList.SelectedItem is not DeviceRow row) return;
 
+            SetBusy(true);
             try
             {
-                var profile = HMDeviceExtractor.Extract(row.Info);
-                string rawJson = HMDeviceExtractor.ToJson(profile);
-                string id = _settingsService.AddUserProfile(rawJson, out string problem);
+                var info = row.Info;
+                var prepared = await Task.Run(() =>
+                    Services.SettingsService.PrepareUserProfile(HMDeviceExtractor.ToJson(HMDeviceExtractor.Extract(info))));
+                string id = await StoreAsync(prepared);
+                if (_closed) return;
                 if (string.IsNullOrWhiteSpace(id))
                 {
-                    StatusText.Text = ImportFailedText(problem);
+                    StatusText.Text = ImportFailedText(prepared?.Problem);
                     return;
                 }
                 ImportedProfileId = id;
@@ -287,9 +361,11 @@ namespace PadForge.Views
             }
             catch (Exception ex)
             {
-                StatusText.Text = string.Format(
-                    Strings.Instance.ImportFromDevice_StatusExtractFailed_Format, ex.Message);
+                if (!_closed)
+                    StatusText.Text = string.Format(
+                        Strings.Instance.ImportFromDevice_StatusExtractFailed_Format, ex.Message);
             }
+            finally { SetBusy(false); }
         }
 
         /// <summary>The status line for an import that stored nothing: the

@@ -158,7 +158,7 @@ namespace PadForge.Engine.Recording
         }
 
         /// <summary>An XInput button word as its buttons' names joined by
-        /// plus signs, or 0 for none. A bit with no button is BitN.</summary>
+        /// plus signs, or 0 for none.</summary>
         public static void AppendXInputButtons(StringBuilder sb, int word)
         {
             word &= 0xFFFF;
@@ -169,7 +169,7 @@ namespace PadForge.Engine.Recording
                 if ((word & (1 << bit)) == 0) continue;
                 if (!first) sb.Append('+');
                 first = false;
-                sb.Append(XInputButtons[bit] ?? "Bit" + bit.ToString(CultureInfo.InvariantCulture));
+                sb.Append(XInputButtons[bit]);
             }
         }
 
@@ -189,8 +189,7 @@ namespace PadForge.Engine.Recording
                 text = plus < 0 ? default : text.Slice(plus + 1);
                 int bit = -1;
                 for (int i = 0; i < XInputButtons.Length; i++)
-                    if (XInputButtons[i] != null && name.SequenceEqual(XInputButtons[i])) { bit = i; break; }
-                if (bit < 0 && Numbered(name, "Bit", 16, out int raw)) bit = raw;
+                    if (name.SequenceEqual(XInputButtons[i])) { bit = i; break; }
                 if (bit < 0) return false;
                 word |= 1 << bit;
             }

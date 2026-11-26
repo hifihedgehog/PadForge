@@ -69,6 +69,7 @@ namespace PadForge.Tests
             ("PadForge.App/Services/StartWithRights.cs", 1, "the app with rights, at a start without them, which no element reaches"),
             ("PadForge.App/Services/UpdateController.cs", 1, "a release's page (route OpenReleaseNotesCommand)"),
             ("PadForge.App/Services/UpdateService.cs", 1, "StartProcess: the staged update's helper and the relaunch after it (routes InstallUpdateCommand, InstallUpdatesAutomatically)"),
+            ("PadForge.App/Services/UserSave.cs", 1, "the plugin kit's --plugin-kit copy as the user (route SavePluginKit_Click, the Plugins page's own)"),
             ("PadForge.App/Services/WebControllerServer.cs", 1, "netsh for the Web Controller's address and firewall rule (Asks, Network, on its page)"),
             ("PadForge.App/Services/WebControllerTls.cs", 1, "netsh for the Web Controller's certificate binding (Asks, Network, on its page)"),
             ("PadForge.App/ViewModels/DashboardViewModel.AutomationPage.cs", 1, "an assistant's settings file or its folder (route OpenSettingsCommand, the user's own)"),
@@ -98,7 +99,7 @@ namespace PadForge.Tests
             ("PadForge.App/MainWindow.Automation.cs", 2, "the command set's target: activate and deactivate, which a program's line reaches only through AutomationCommands.SwitchAsked"),
             ("PadForge.App/MainWindow.xaml.cs", 5, "the title bar's switcher, the Profiles page's Load and the default card's, which no program reaches. The Profiles page's Delete, which a program reaches through the confirm dialog's Delete and its card, and Get Profiles' Save and Apply, behind its import card: each card asks and names what the switch would turn on that listens on the network, off now, and the press goes only on what it named (Reach.Starts, AssistantPressPlan.Check)"),
             ("PadForge.App/Services/Automation/Assistant/AssistantTools.cs", 1, "delete_profile, which refuses to delete the profile in force while the default would turn on such an extra (MainWindow.Assistant.cs DeleteProfile)"),
-            ("PadForge.App/Services/Automation/Assistant/AssistantUndoStore.cs", 1, "undo, which puts back what was in force before the program's own run of changes, nothing that was off then"),
+            ("PadForge.App/Services/Automation/Assistant/AssistantUndoStore.cs", 1, "undo, whose program's own call is refused while it would turn on such an extra, off now (AssistantUndo.UndoNewestOf), and the Activity card's Undo, the user's own"),
             ("PadForge.App/Services/Automation/AutomationCommands.cs", 4, "activate and deactivate: a starting copy's own line at once, a program's after the card when it would start such an extra (SwitchAsked)"),
             ("PadForge.App/Services/InputService.cs", 9, "ExternalActivate and ExternalDeactivate (the command set), CompactSlotsForGaps (the setup in force, compacted), OnProfileSwitchRequired (the foreground watcher, a controller's profile shortcut from a macro the user set, a hotkey and the Web Controller's menus), ApplyDefaultProfile, DeleteProfile, LoadProfile and RevertToDefaultProfile (the window's)"),
         };
@@ -143,6 +144,7 @@ namespace PadForge.Tests
             new("Views/SettingsPage.xaml", RouteKind.Binding, "StartAtLogin", ReachClass.Asks, ReachReason.RunsProgram, "schtasks (MainWindow.xaml.cs, StartupHelper.SetStartupEnabled)"),
             new("Views/SettingsPage.xaml", RouteKind.Parameter, "StartAtLogin", ReachClass.Asks, ReachReason.RunsProgram, "schtasks, when the reset turns it off"),
             new("Views/SettingsPage.xaml", RouteKind.Parameter, "Window", ReachClass.Asks, ReachReason.RunsProgram, "schtasks, when the Window card's Reset All turns Start at Login off"),
+            new("Views/SettingsPage.xaml", RouteKind.Parameter, "Updates", ReachClass.Asks, ReachReason.RunsProgram, "a found update installed without a press, when the Updates card's Reset All turns the check back on with Install Updates Automatically on (UpdateController.AutoInstallOn)"),
             // Reset to Defaults deletes every controller, purges HidHide's
             // cloaks and turns Start at Login off. The settings view model's
             // reset, a name other view models give their own commands.
@@ -165,6 +167,12 @@ namespace PadForge.Tests
             new("Views/DevicesPage.xaml", RouteKind.Click, "MoveToOwnFolder_Click", ReachClass.Asks, ReachReason.RunsProgram, "the moved copy (App.StartMovedCopy)"),
             new("Views/DevicesPage.xaml", RouteKind.Click, "DriverBind_Click", ReachClass.Asks, ReachReason.UseOnly, "schtasks for the give-back task (GiveBackTask.RegisterKeyboard)"),
             new("Views/DevicesPage.xaml", RouteKind.Click, "DriverRestore_Click", ReachClass.Asks, ReachReason.UseOnly, "schtasks, the give-back task taken out (GiveBackTask.Delete)"),
+            // The device tools' pair starts no process: it moves a device
+            // that hides nothing to PadForge's WinUSB driver and back
+            // (VendorUsbDriverInstaller.Bind, Restore), and asks as a driver
+            // change apart from the hiding pair's schtasks.
+            new("Views/DevicesPage.xaml", RouteKind.Click, "DeviceToolsDriverBind_Click", ReachClass.Asks, ReachReason.Drivers, "the device moved to PadForge's WinUSB driver (VendorUsbDriverInstaller.Bind)"),
+            new("Views/DevicesPage.xaml", RouteKind.Click, "DeviceToolsDriverRestore_Click", ReachClass.Asks, ReachReason.Drivers, "Windows' driver given back (VendorUsbDriverInstaller.Restore)"),
             // Home.
             new("Views/HomePage.xaml", RouteKind.Click, "SharedFolderMove_Click", ReachClass.Asks, ReachReason.RunsProgram, "the moved copy (App.StartMovedCopy)"),
             // Get Profiles, the Workshop's panel.

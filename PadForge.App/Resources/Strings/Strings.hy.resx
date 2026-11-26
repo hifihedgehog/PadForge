@@ -299,6 +299,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Ցույց տալ կամ թաքցնել PadForge-ը</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Միացնել կամ անջատել վիրտուալ կառավարիչները</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Ցանկացած միացված սարք</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (միացված չէ)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Սարք, որը «Սարքեր» էջում չկա</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Գրանցվում է…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} վրկ)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>երբ</value></data>
@@ -565,7 +567,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Կարդալ</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Ուղարկել մուտքեր</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Փոխել կարգավորումները</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Ծրագրերը կարող են փոխել պրոֆիլները և ազատել դրանք, մեկնարկել ու կանգնեցնել մեխանիզմը, միացնել և անջատել վիրտուալ կառավարիչները, ցուցադրել և թաքցնել պատուհանը, փակել PadForge-ը, պահել ախտորոշման ակնթարթային պատկեր և հարցնել, թե ինչ է աշխատում։</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Ծրագրերը կարող են փոխել պրոֆիլները և ազատել դրանք, մեկնարկել ու կանգնեցնել մեխանիզմը, միացնել և անջատել վիրտուալ կառավարիչները, ցուցադրել և թաքցնել պատուհանը, փակել PadForge-ը, հարցնել, թե ինչ է աշխատում, պահել ախտորոշման ակնթարթային պատկեր, ինչպես նաև մեկնարկել, կանգնեցնել և նշել խնդրի գրառումը։</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Այն ամենը, ինչ «Հրամաններ» մակարդակում է, և ծրագրերը կարող են տեսնել սարքերը, վիրտուալ կառավարիչները, կապակցումները, պրոֆիլներն ու կարգավորումները, իրական ժամանակում հետևել յուրաքանչյուր սարքի մուտքերին և ցույց տալ ձեզ PadForge-ի որևէ վայր։ «Կարդալ» մակարդակի ծրագիրը տեսնում է յուրաքանչյուր սարքի յուրաքանչյուր սեղմված ստեղն, այդ թվում՝ ադմինիստրատորի իրավունքներով աշխատող պատուհաններում մուտքագրվածները։</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Այն ամենը, ինչ «Կարդալ» մակարդակում է, և ծրագրերը կարող են ավելացնել իրենց սեփական սարքերը և կառավարել դրանք, պահել ցանկացած սարքի կառավարման տարր և մակրոների ակտիվացուցիչներին փոխանցել անվանված արժեքներ։</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Այն ամենը, ինչ «Ուղարկել մուտքեր» մակարդակում է, և ծրագրերը կարող են փոխել այն, ինչ դուք կարող եք փոխել էջերում։ Որոշ փոփոխություններ միշտ նախ հարցնում են ձեզ PadForge-ի հարցման քարտում։</value></data>
@@ -578,7 +580,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Սպասում է ձեզ</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Գործունեություն</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Հետարկել</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ պահել այն՝ {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Քանի դեռ «Կարդալ» կամ ավելի բարձր մակարդակի ծրագիր է միացված, այն տեսնում է, թե ինչ է սեղմվում յուրաքանչյուր սարքում, ստեղնաշարերն էլ ներառյալ։</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Պլագիններ</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Գործարկել պլագինները</value></data>
@@ -598,7 +599,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0}՝ {1}-ից</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Վերարտադրում)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Խնդրի գրառումներ|*.zip;*.log|Բոլոր ֆայլերը|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ը չի կարող նվագարկել {0}։ Այն խնդրի գրառում չէ կամ սարքի մուտք չի պարունակում։</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge-ը չի կարող նվագարկել {0} ֆայլը։ Այն PadForge-ի կարդալու ունակ խնդրի գրառում չէ։</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge-ը չի կարող նվագարկել {0} ֆայլը։ Այն պարունակում է {1}-ից ավելի սարք, իսկ «Վերարտադրում»-ը նվագարկում է առավելագույնը {1} սարք։</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge-ը չի կարող նվագարկել {0} ֆայլը։ Այն ոչ մի սարքի մուտքագրում չի պարունակում։</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ կարդալ {0} ֆայլը։</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Ձեր պլագինները</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Ավելացնել պլագին…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Ծրագրեր և սկրիպտներ|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Բոլոր ֆայլերը|*.*</value></data>
@@ -612,8 +616,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Կանգնեց հինգ անընդմեջ ձախողումից հետո</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Չմեկնարկեց՝ ֆայլն այլևս չկա</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Չմեկնարկեց՝ Windows-ը այս տեսակի ֆայլի համար ծրագիր չունի</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Չմեկնարկեց՝ ոչ մի ծրագիր Python ֆայլեր չի բացում ձեզ համար, և PadForge-ը py գործարկիչ չի գտնում</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Չմեկնարկեց՝ PadForge-ը չի կարող կարդալ, թե որ ծրագիրն է բացում այս տեսակի ֆայլը ձեզ համար</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Չմեկնարկեց՝ այս տեսակի ֆայլը ձեզ համար բացող ծրագիրն այս համակարգչում չկա</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Չմեկնարկեց՝ աշխատասեղանի թաղանթ չկա, որի տակ այն մեկնարկի</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Չմեկնարկեց՝ աշխատասեղանի թաղանթն ունի ադմինիստրատորի իրավունքներ, ուստի պլագինն էլ կունենար դրանք</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Չմեկնարկեց՝ PadForge-ը չի կարող կարդալ, թե արդյոք այն ադմինիստրատորի իրավունքներ կունենա</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Չմեկնարկեց՝ Windows-ը դրան ադմինիստրատորի իրավունքներ տվեց, ուստի PadForge-ը ավարտեց այն մինչև աշխատելը</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Չմեկնարկեց՝ այն ադմինիստրատորի իրավունքներ է պահանջում</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Չմեկնարկեց՝ Windows-ը մերժեց {0} սխալով</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Չմեկնարկեց</value></data>
@@ -641,6 +650,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ավելացրել է՝ {0}։</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Ստորագրող՝ {0}։</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Չստորագրված է։</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}։</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Նրա կարգավորումները ցուցադրվում են այստեղ, քանի դեռ այն աշխատում է։</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Այն կարգավորումներ չի հայտարարում։</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Նրա կարգավորումները ցուցադրվում են այստեղ, երբ այն կապվի PadForge-ի հետ։</value></data>
@@ -743,8 +753,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ծրագիրը խոսում է PadForge-ին անծանոթ տարբերակով</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge-ը չտվեց այդ պլագինի բանալին</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge-ը չընդունեց այս ծրագրի կապը</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge-ը սարք չստեղծեց, քանի որ Windows-ը չանվանեց ծրագրի ֆայլը</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Կրկին խնդրվել է չափազանց շուտ</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Այս տեսակից ավելին չկա, մինչև PadForge-ը նորից մեկնարկի</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Ծրագրերի ստեղծած այս տեսակի չափազանց շատ նյութեր են սպասում ձեր դիտմանը «Գլխավոր» էջում</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-ը այդպիսի գործիք չունի</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Ծրագիրը կարդացել էր ավելի հին վիճակ</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ոչինչ չունի այդ ID-ն</value></data>
@@ -752,6 +763,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Դուք չթույլատրեցիք</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ոչ ոք ժամանակին չպատասխանեց</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Սպասում է ձեր պատասխանին</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Դուք դեռ չէիք պատասխանել</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Այդպիսի հարցում չկա</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Հետարկելու բան չկա</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Սա կարող եք փոխել միայն դուք</value></data>
@@ -867,6 +879,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Չստորագրված է։</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>«Կարդալ» և ավելի բարձր մակարդակում այն տեսնում է յուրաքանչյուր սարքի վրա սեղմված յուրաքանչյուր ստեղն, ստեղնաշարերն ընդգրկյալ։</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Այն հարցնում է մեկ անգամ։ Կարող եք հեռացնել այն «Ավտոմատացում» էջում։</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Մեկնարկել է ծրագիր, որին PadForge-ը չկարողացավ նույնականացնել։</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge-ը չի կարող այս ծրագիրը տարբերել մյուսից, ուստի նորից հարցնում է հաջորդ միացման ժամանակ։</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ի հրամանային տողը</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Սահմանում է {0}՝ {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Լսում է ցանցը, ուստի այլ սարքեր կարող են հասնել այս համակարգչին։</value></data>
@@ -882,7 +896,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Փոխանցել պրոֆիլ</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Ներմուծել պրոֆիլի ֆայլ մեկ այլ ծրագրից, ապա տեսնել, թե ինչ է փոխանցվել։</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} անգամ</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}՝ նույնատիպ {1} հարցումներից վերջինը</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 սկրիպտներ (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -912,6 +925,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Այս մեքենայում Logitech G-key SDK չկա։ Այն տեղադրվում է Logitech Gaming Software 8.55 կամ ավելի նոր տարբերակի հետ։</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK-ը գրանցված է, բայց դրա ֆայլը բացակայում է։ Նորից տեղադրեք Logitech Gaming Software-ը։</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK-ը գտնվեց, բայց չհաջողվեց բեռնել։</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK-ը գտնվեց, բայց չբեռնվեց, քանի որ PadForge-ը չկարողացավ հաստատել, որ այն կարող են փոխել միայն ադմինիստրատորները և որ Logitech-ը ստորագրել է այն։</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Այդ գրադարանը այն G-key SDK-ը չէ, որ սպասվում է։</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK-ը հրաժարվեց մեկնարկել։ Սովորաբար Logitech Gaming Software-ը չի աշխատում։</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Կապակցված է, ստեղն դեռ չի երևացել։ Logitech Gaming Software-ում քաշեք G-key հրամանը PadForge պրոֆիլի յուրաքանչյուր ստեղնի վրա և այդ պրոֆիլը դարձրեք մշտական։ G600 կամ G300 մկնիկը նույնպես պետք է դուրս լինի ներկառուցված հիշողության ռեժիմից։</value></data>
@@ -1016,14 +1030,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ը մեկնարկում է ինքնաշխատ, երբ մուտք եք գործում Windows։ Քանի դեռ սա միացված է, PadForge-ը մեկնարկում է նաև առանց Windows-ի հարցման՝ դյուրանցումից, սկրիպտից կամ մեկ այլ ծրագրից։</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge-ը աշխատում է այստեղից՝ {0}։</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Սա պահանջում է, որ PadForge-ը լինի իր սեփական թղթապանակում։ Նրա թղթապանակում այլ ֆայլեր կան, ուստի PadForge-ը չի կարող այլ ծրագրերին թույլ չտալ փոխել այն։</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Սա պահանջում է, որ PadForge-ը լինի թղթապանակում, որը այլ ծրագրեր չեն կարող փոխել։ PadForge-ը չկարողացավ թույլ չտալ նրանց փոխել իր թղթապանակը։</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Տեղափոխել PadForge-ը իր սեփական թղթապանակ</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Պատճենում է PadForge-ը և նրա կարգավորումները Program Files, այնտեղ է ուղղում նրա առաջադրանքները և մեկնարկում այնտեղից։ Այստեղի օրինակը մնում է անփոփոխ։</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0} թղթապանակում կան ֆայլեր, որոնք PadForge-ինը չեն։</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ» անջատվեց, քանի որ այն PadForge-ը աշխատեցնում էր այլ ֆայլեր պարունակող թղթապանակից։</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ Windows-ը Program Files թղթապանակ չունի։</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ կարդալ աշխատող PadForge-ը։</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ ստեղծել {0} թղթապանակը։</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ կարդալ, թե ինչ է պարունակում {0} թղթապանակը։</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ թույլ չտալ այլ ծրագրերին փոխել {0} թղթապանակը։</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0} թղթապանակի իր պատճենը չհամընկավ աշխատող PadForge-ի հետ։</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ պատճենելուց հետո {0} թղթապանակում կային ֆայլեր, որոնք PadForge-ինը չեն, կամ այլ ծրագրեր կարող էին փոխել այն։</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ այն PadForge-ը, որը աշխատել էր, այլևս չկա։</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ PadForge-ը չկարողացավ թույլ չտալ այլ ծրագրերին փոխել այն թղթապանակը, որից գործարկել էր PadForge-ը։</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ PadForge-ը չկարողացավ կարդալ, թե որ PadForge-ն էր աշխատել։</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ PadForge-ը չկարողացավ կարդալ այն PadForge-ի թղթապանակը, որը աշխատել էր։</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ ստեղծել իր պաշտպանված թղթապանակը՝ {0}։ PadForge-ը ադմինիստրատորի իրավունքներով աշխատող իր գրադարանները պահում է այնտեղ և առանց դրա չի կարող անվտանգ մեկնարկել։</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ նորից մեկնարկել իրեն իր պաշտպանված թղթապանակից՝ {0}։ PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է միայն այնտեղից, ուստի չմեկնարկեց։</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge-ը չկարողացավ ստեղծել փական, որը թույլ է տալիս աշխատել միայն մեկ օրինակի, ուստի չմեկնարկեց։</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է {0} թղթապանակից, որը այլ ծրագրեր կարող են փոխել։ Նրանք կարող են փոխել PadForge-ի կարգավորումներն այնտեղ, և PadForge-ը դրանց համաձայն գործում է իր իրավունքներով։</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է {0} թղթապանակից, որում այլ ֆայլեր կան։ PadForge-ը չի կարող թույլ չտալ այլ ծրագրերին փոխել իր կարգավորումներն այնտեղ, և գործում է դրանց համաձայն իր իրավունքներով։</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է {0} թղթապանակից, որը չկարողացավ կարդալ։ PadForge-ը չի կարող թույլ չտալ այլ ծրագրերին փոխել իր կարգավորումներն այնտեղ, և գործում է դրանց համաձայն իր իրավունքներով։</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Միշտ ցույց տալ համակարգային սկուտեղում</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Սկուտեղի պատկերակը տեսանելի է պատուհանը բաց ժամանակ, որպեսզի ընտրացանկի Ելքը միշտ մեկ սեղմումի հեռավորության վրա լինի։</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Թարմացումներ</value></data>
@@ -1038,7 +1067,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Տեղադրել և վերամեկնարկել</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Թողարկման նշումներ</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Կառավարիչների տվյալների բազա</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Թարմացնել հիմա»-ն GitHub-ից կամ «Ավելին»-ի տակ սահմանված հասցեից ներբեռնում է համայնքի կառավարիչների տվյալների բազան (SDL_GameControllerDB) և կարգավորումների ֆայլում պահում այն կապակցումները, որոնք PadForge-ի այս տարբերակը չունի։ Դրանք օգտագործվում են անմիջապես։ Այլ հասցեից պահվում են միայն նոր կապակցումները։ Նոր կապակցումն օգտագործվում է միայն այն կառավարչի համար, որը ոչ ոք այլ կերպ չի կարդում որպես խաղային կառավարիչ, որը նշանակված չէ և «Ստիպել հում ջոյստիկի ռեժիմ (շրջանցել կառավարչի վերակապակցումը)»-ում չէ։ Վերականգնումը հեռացնում է ներբեռնված բոլոր կապակցումները և նորից ներբեռնում GitHub-ից։ Ձեր սեփական տողերը «Ավելին»-ի տակ մնում են։</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Թարմացնել հիմա»-ն GitHub-ից կամ «Ավելին»-ի տակ սահմանված հասցեից ներբեռնում է համայնքի կառավարիչների տվյալների բազան (SDL_GameControllerDB) և կարգավորումների ֆայլում պահում այն կապակցումները, որոնք PadForge-ի այս տարբերակը չունի։ Դրանք օգտագործվում են անմիջապես։ Այլ հասցեից պահվում են միայն նոր կապակցումները։ Նոր կապակցումն սկզբում օգտագործվում է միայն այն կառավարչի համար, որը SDL-ը հաղորդում է որպես խաղային կառավարիչ կամ առանց որևէ հատուկ տեսակի, որը ոչ ոք այլ կերպ չի կարդում որպես խաղային կառավարիչ, որը նշանակված չէ և «Ստիպել հում ջոյստիկի ռեժիմ (շրջանցել կառավարչի վերակապակցումը)»-ում չէ։ Օգտագործվող դառնալուց հետո այն շարունակում է օգտագործվել նաև կառավարչին նշանակելուց հետո։ Վերականգնումը հեռացնում է ներբեռնված կապակցումները և «Ներբեռնման աղբյուր»-ը վերադարձնում է համայնքի ֆայլին, որը ներբեռնվում է հաջորդ «Թարմացնել հիմա»-ով։ Ձեր սեփական տողերը «Ավելին»-ի տակ մնում են։</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Թարմացնել հիմա</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Թարմացվում է…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Թարմացումների ստուգում…</value></data>
@@ -1071,9 +1100,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Ներկառուցված՝ {1} կապակցում, համայնքի պատճենը՝ {2}։ Ներբեռնվել է {3}՝ {4}-ից, նոր տողեր՝ {0}։</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Ներկառուցված՝ {1} կապակցում, համայնքի պատճենը՝ {2}։ Ներբեռնվել է {3}՝ {4}-ից, նոր տող՝ {0}։</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Համայնքի տվյալների բազան չի փոխվել վերջին թարմացումից հետո։</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>{0} հասցեի ֆայլը չի փոխվել վերջին թարմացումից հետո։</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Չհաջողվեց կապվել GitHub-ին՝ {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Չհաջողվեց կապվել {0}-ին՝ {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge-ը մերժեց ներբեռնումը, քանի որ դա այն կառավարիչների տվյալների բազան չէ, որին սպասում է։ Ոչինչ չփոխվեց։</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge-ը մերժեց GitHub-ի պատասխանը։ Ոչինչ չփոխվեց։</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge-ը մերժեց {0} հասցեի պատասխանը։ Ոչինչ չփոխվեց։</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Մեկնարկել ծալված</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Մեկնարկել մուտքի ժամանակ</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1116,6 +1148,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Թղթապանակ</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Ծառայության կարգավորում</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Հեռացման քայլ</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Ծառայություն</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Ֆայլ</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Վերին զտիչ</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Ռեեստրի արժեք</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Սարքավորման ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Պլանավորված առաջադրանք</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Տեղադրված հավելվածների գրառում</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP սարք</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Թույլ է տալիս PlayStation 3 կառավարիչներին, PlayStation Move-ին և Navigation կառավարիչին միանալ Bluetooth-ով։ Ներկառուցված է PadForge-ում և տեղադրվում է դրանցից որևէ մեկի առաջին զուգակցման ժամանակ։</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Միացնում է PlayStation 3 կառավարիչները Bluetooth-ով։</value></data>
@@ -1184,6 +1224,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Պահվեց {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Գրառումը չսկսվեց։ Ստուգումը գտավ այս PC-ի մասնավոր արժեք, որը չէր մնա ֆայլից դուրս։</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Գրառումը չսկսվեց։ {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge-ը մուտք գործած օգտատիրոջ ժամանակավոր ֆայլերի թղթապանակ չգտավ օգտատիրոջ պրոֆիլի ներսում՝ առանց հղման միջոցով հասնելու, որպեսզի գրառումը գրի այնտեղ։</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Գրառումների թղթապանակը հղում է դեպի այլ տեղ, որին PadForge-ը չի հետևում։</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Վերջին գրառումը դեռ ավարտվում է։</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«Հիշել վերջին 60 վայրկյանը» անջատված է, ուստի պահելու բան չկա։</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Գրառումը, որը PadForge-ը չէր կանգնեցրել, սպասում է, որ կարդաք այն «Գլխավոր»-ում՝ {0}</value></data>
@@ -1197,7 +1239,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge-ը, Windows-ը, ձեր սարքերը և կարգավորումները՝ ինչպես են հիմա, նույն վերանայմամբ։</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log՝ PadForge.exe-ի կողքին, որը կարող եք կարդալ այնտեղ։</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ինչ գրառել</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Բոլորը միացված են։ Անջատված մասը դուրս է մնում հաջորդ գրառումից, և ֆայլը նշում է, թե որ մասերն է պարունակում։</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Յուրաքանչյուր մաս լռելյայն միացված է։ Անջատված մասը դուրս է մնում հաջորդ գրառումից, և ֆայլը նշում է, թե որ մասերն է պարունակում։</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Այն խնդրի համար, որն առաջանում է երեկոյան մեկ անգամ։</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Գրառումը սպասում է, որ կարդաք այն «Գլխավոր»-ում։</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Ամփոփագիր</value></data>
@@ -1236,8 +1278,8 @@
   <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 արժեք</value></data>
   <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} մասնավոր տեսակ</value></data>
   <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 մասնավոր տեսակ</value></data>
-  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Մաքրման ստուգում՝ այս համակարգչի սեփական {0} արժեք դեռ կա ձեր պահած մասերում։ Անջատեք այդ մասերը կամ ջնջեք գրառումը։ «Պահել…»-ը մնում է անջատված մինչև այդ։</value></data>
-  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Մաքրման ստուգում՝ այս համակարգչի սեփական արժեքներից մեկը դեռ կա ձեր պահած մասերում։ Անջատեք այդ մասերը կամ ջնջեք գրառումը։ «Պահել…»-ը մնում է անջատված մինչև այդ։</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Մաքրման ստուգում՝ այս համակարգչի սեփական {0} արժեք դեռ կա ձեր պահած մասերում։ Անջատեք այդ մասերը կամ ջնջեք գրառումը։ «Պահել»-ը մնում է անջատված մինչև այդ։</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Մաքրման ստուգում՝ այս համակարգչի սեփական արժեքներից մեկը դեռ կա ձեր պահած մասերում։ Անջատեք այդ մասերը կամ ջնջեք գրառումը։ «Պահել»-ը մնում է անջատված մինչև այդ։</value></data>
   <data name="Review_Empty" xml:space="preserve"><value>Այս մասից ոչինչ տեղի չի ունեցել գրառման ընթացքում։</value></data>
   <data name="Review_Delete" xml:space="preserve"><value>Ջնջել</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Պատճենել ամփոփագիրը</value></data>
@@ -1248,6 +1290,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>Պահել գրառումը</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ֆայլեր</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Չպահվեց։ {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} ԿԲ</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} ՄԲ</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Մաքրման ստուգում՝ ստուգվում են ձեր պահած մասերը…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Մաքրման ստուգում՝ PadForge-ը չկարողացավ կարդալ ձեր պահած մասերը, ուստի «Պահել»-ը մնում է անջատված։</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Ձեր իրավունքներով պահումը չմեկնարկեց։</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Ձեր իրավունքներով պահումը չմեկնարկեց՝ աշխատասեղանի թաղանթ չի աշխատում, որի տակ այն մեկնարկվի։</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Ձեր իրավունքներով պահումը չմեկնարկեց՝ Windows-ը մերժեց {0} սխալով։</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Պահումը չավարտվեց {0} ընթացքում։</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows-ը թույլ չտվեց ֆայլը գրել այնտեղ։</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge-ը այս ֆայլը չընդունեց որպես իր սեփական գրառում։</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Պահումն ավարտվեց {0} կոդով։</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Պահվում է որպես դուք՝ առաջին անգամ ձեր Ներբեռնումներ թղթապանակում, հետո այնտեղ, որտեղ վերջին անգամ եք պահել, և ցուցադրվում է Explorer-ում։ Գրառումը, որը կանգնում է, երբ ոչ ոք էջի մոտ չէ (սահմանաչափը, մակրոն, ծրագիրը, օգնականի գործիքը կամ --record stop), սպասում է այս վերանայմանը «Գլխավոր»-ում և ջնջվում է 7 օր հետո, եթե չպահվի։ Ծրագրին ասվում է, որ այն սպասում է, բայց երբեք՝ որտեղ։</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Խնդրի գրառումը՝ {0}, սպասում է, որ կարդաք այն։</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Վերանայել</value></data>
@@ -1921,9 +1974,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Կարդալը ձախողվեց՝ {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro-ն մերժեց այս նախադրվածքը ({1})՝ {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Այս նախադրվածքը HID նկարագրիչ չունի, ուստի դրանից կառավարիչ ստեղծել հնարավոր չէ։</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ ստուգել այս նախադրվածքը՝ {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Նախադրվածքը ստուգվում է…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ոչինչ չներմուծվեց։ {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Ներմուծել</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(անանուն HID սարք)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Մկնիկ</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Ջոյստիկ</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Խաղային կառավարիչ</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Ստեղնաշար</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Բազմաառանցք կառավարիչ</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Գտնվեց {0} HID ինտերֆեյս։</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Գտնվեց 1 HID ինտերֆեյս։</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Թվարկումը ձախողվեց՝ {0}</value></data>
@@ -3054,7 +3116,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Պահելիս և կենտրոն</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Փոխանջատել</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ղեկավարման մուտք</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Կոճակը, որը թույլ է տալիս մկնիկին ղեկավարել, նույն սարքում, ինչ աղբյուրը։ Եթե ոչինչ ընտրված չէ, մկնիկը միշտ ղեկավարում է։</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Կոճակը, որը թույլ է տալիս մկնիկին ղեկավարել, այս բնիկի ցանկացած սարքում։ Եթե ոչինչ ընտրված չէ, մկնիկը միշտ ղեկավարում է։</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Հարթեցում</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Հարթեցնում է անհավասար հաղորդող մկնիկը։ Ձողը ձեռքից հետ է մնում մոտավորապես այդքան ժամանակով։ 0-ն անջատում է։</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Արգելափակում արագությամբ</value></data>
@@ -3075,7 +3137,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Սկսել ղեկավարման սկսվելու տեղից</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>«Ղեկավարման մուտք»-ի դեպքում ձողը չափվում է այն տեղից, որտեղ ցուցիչն էր ղեկավարումը սկսվելիս, ինչպես հեռախոսի էկրանի ձողն է սկսվում այնտեղ, որտեղ մատը դիպչում է։ Անջատված դեպքում այն չափվում է ցուցիչի մոնիտորի կենտրոնից։</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Այս առանցքը շարժվում է հարաբերական կերպով</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Թրեքբոլի կամ սպիների համար, որը հաղորդում է, թե որքան է պտտվել։ Միացված դեպքում առանցքը պահում է դիրք, ինչպես «Մկնիկի ընթացք»-ը, և ընդունում է ընթացքի կարգավորումները։ Windows-ը չի ասում, թե որ առանցքներն են այսպես շարժվում։</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Թրեքբոլի կամ սպիների համար, որը հաղորդում է, թե որքան է պտտվել։ Միացված դեպքում առանցքը պահում է դիրք, ինչպես «Մկնիկի ընթացք»-ը, և ընդունում է ընթացքի կարգավորումները։ SDL-ը ընդհանուր կառավարիչը կարդում է DirectInput-ի միջոցով, որն ամեն առանցք կարդում է որպես դիրք, ուստի այս անջատիչը ասում է, թե որ առանցքներն են այսպես շարժվում։</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} սմ</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Նախադիտում</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ցույց է տալիս, թե ինչպես է այս ընտանիքը հետևում ձեր սեփական մկնիկին։ Ոչինչ չի կապակցվում, քանի դեռ չեք ընտրել այն։</value></data>
@@ -3256,6 +3318,13 @@
 {0}
 
 PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գտնվող crash.log-ում։ Սա զեկուցելու համար սկսեք քննարկում {2} հասցեում և քաշեք crash.log-ը դրա վրա։
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Տեղի է ունեցել անսպասելի սխալ:
+
+{0}
+
+PadForge-ը չկարողացավ մանրամասները գրել PadForge.exe-ի կողքին գտնվող crash.log-ում։ Սա զեկուցելու համար սկսեք քննարկում {2} հասցեում, սեղմեք Ctrl+C այստեղ՝ այս հաղորդագրությունը պատճենելու համար, և տեղադրեք այն այնտեղ։
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} լրացուցիչ սխալ թաքցվել է)</value></data>
@@ -4149,7 +4218,7 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard ապասեղմում, որը SteamKit2-ն օգտագործում է Steam depot-ի կտորների համար, zstd գրադարանի C# պորտ, հեղինակ՝ Oleg Stepanischev։</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol սերվերը և հաճախորդը, որոնք կանգնած են օգնականի կապի և PadForge.exe --mcp հետևում, հեղինակ՝ Model Context Protocol a Series of LF Projects։</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol սերվերը և հաճախորդը, որոնք կանգնած են օգնականի կապի և PadForge.exe --mcp հետևում, հեղինակ՝ Model Context Protocol a Series of LF Projects, LLC։</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions և DependencyInjection.Abstractions, որոնց վրա կառուցված է MCP C# SDK-ը, հեղինակ՝ Microsoft։</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5464,7 +5533,18 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>WinUSB-ն կապվում է G19-ի էկրանին</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19-ի էկրանն այլ դրայվերի վրա է ({0}), ուստի գործարկեք Logitech Gaming Software-ը</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19-ի էկրանն այլ ծրագրի դրայվերի վրա է ({0}), որին PadForge-ը չի դիպչում</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Ստուգվում են PadForge-ի PlayStation Bluetooth դրայվերները…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Կարդացվում է այս համակարգչի Bluetooth ռադիոն…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Կառավարիչը բացվում է իր USB մալուխով…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Այս համակարգչի Bluetooth հասցեն գրվում է կառավարչի մեջ…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Կառավարիչը գրանցվում է Windows Bluetooth-ում…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Bluetooth-ը վերամեկնարկվում է…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Զուգակցումը դադարեց՝ Windows-ը PadForge-ին մերժեց մուտքը կառավարչին կամ Bluetooth-ի կարգավորումներին։ Մանրամասները ախտորոշման մատյանում են։</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Զուգակցումը դադարեց՝ կառավարչի կամ Bluetooth ռադիոյի կարդալը կամ գրելը ձախողվեց։ Մանրամասները ախտորոշման մատյանում են։</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Զուգակցումը դադարեց այնպիսի սխալից, որը PadForge-ը չէր սպասում։ Մանրամասները ախտորոշման մատյանում են։</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>պահանջվում է Logitech Gaming Software 8.52 կամ ավելի նոր տարբերակ</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>գտել է իր գրադարանը և չի բեռնել այն, քանի որ PadForge-ը չկարողացավ հաստատել, որ այն կարող են փոխել միայն ադմինիստրատորները և որ Logitech-ը ստորագրել է այն</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>գտել է իր գրադարանը և չի կարողացել օգտագործել այն, իսկ ախտորոշման մատյանում գրված է պատճառը</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>գործարկեք Logitech Gaming Software-ը</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>սպասում է Arx Control-ով հեռախոսի</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>հեռախոսում</value></data>
@@ -5560,6 +5640,8 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Ընտրել dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Բեռնում է Force Dimension-ի գրադարանի այս օրինակը մյուսների փոխարեն։ Մեկ այլ օրինակի վրա բաց Falcon-ը փակվում է և նորից բացվում այս օրինակի վրա։ SDK-ի տեղադրած օրինակները գտնվում են առանց դրա։</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Գրադարաններ (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK-ի ներբեռնման էջը չբացվեց՝ {0}։</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK-ի ներբեռնման էջը դեռ չի բացվել՝ {0}։</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Տեղադրել Falcon-ի դրայվերը</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>SDK պանակից տեղադրում է Force Dimension-ի դրայվերը այն Falcon-ի վրա, որն այն չունի։ Windows-ը կարող է նախ հարցնել՝ վստահե՞լ Force Dimension-ին։</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Ստանալ Force Dimension-ի SDK-ը</value></data>
@@ -5761,6 +5843,7 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Նոր կառավարիչ</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Կարգավորումներ</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Յուրաքանչյուր առանցք, կոճակ և սենսոր</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Դրա կառավարները սկրիպտների օգտագործած անուններով</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Սեղմված՝ {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Նույնացուցիչներ, ուղի, հնարավորություններ, Ստիպել հում ջոյստիկի ռեժիմ</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Նույնացուցիչներ, ուղի, հնարավորություններ</value></data>
@@ -5888,8 +5971,13 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Հեռացվում է…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Թարմացվում է…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Չավարտվեց՝ {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge-ի գրառումն ու հմտությունը մնում են, քանի որ {0}-ը կարդում է նույն կարգավորումների ֆայլը և հմտությունների թղթապանակը։</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge-ի գրառումը մնում է, քանի որ {0}-ը կարդում է նույն կարգավորումների ֆայլը։</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge-ը հեռացվել է այս ծրագրից։ Նրա հմտությունը մնում է, քանի որ {0}-ը հմտությունները կարդում է նույն թղթապանակից։</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge-ը չի կարող կարդալ {0}-ի կարգավորումները, ուստի չգիտի՝ PadForge-ը ավելացվա՞ծ է։</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Ավելացվել է։ PadForge-ը չկարողացավ կարդալ իր հմտությունների թղթապանակը։</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Պատճենվեց։</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Չպատճենվեց՝ {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Չպատճենվեց։ Windows-ը PadForge-ին թույլ չտվեց օգտագործել փոխանակման բուֆերը։</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Թույլատրված ծրագրեր</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ծրագիրը, որը ցանկանում է «Կարդալ» կամ ավելի, հարցնում է մեկ անգամ՝ առաջին միանալիս, և ստանում է խնդրած մակարդակը՝ մինչև վերևի մակարդակը։ Վերևում ավելացրած օգնականն այսպիսով թույլատրված է։</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}։ {1}։ {2}</value></data>
@@ -5905,6 +5993,8 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Ջոյստիկ։ PadForge-ը կարդում է այն հում, ուստի SDL-ի կապակցումը չի օգտագործվում։</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Ջոյստիկ, դասավորված որպես խաղային կառավարիչ ձեր տողով։</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL-ը կարդում է սարքերը, մինչ մեխանիզմը աշխատում է։</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Սարքը միացված չէ։ SDL-ը կկարդա այն, երբ միանա։</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL-ը PadForge-ին այս սարքի ընթերցում չտվեց։</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Համայնքի ներկառուցված պատճենը՝ {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ներբեռնված՝ {0}</value></data>
@@ -5942,6 +6032,11 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>տուրբո, փոխանջատիչներ և այլ գործողություններ</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} և {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Պատճենելու բան չկա՝ SDL-ը այս սարքի համար կապակցում չունի, և այն ոչ մի կառավարչի վրա չէ։</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Պատճենելու բան չկա՝ PadForge-ը չի կարող կարդալ SDL-ի կապակցումն այս սարքի համար, և իր կառավարիչների ոչ մի տող SDL-ի ձևի ընդունած կապ չի տալիս։</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Պատճենելու բան չկա՝ SDL-ը այս սարքի համար կապակցում չունի, և {0}-ի ոչ մի տող չի կարդում նրա կոճակներից, առանցքներից կամ հեդերից որևէ մեկը այնպես, ինչպես SDL-ի ձևն ընդունում է։</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Պատճենելու բան չկա՝ SDL-ը այս սարքի համար կապակցում չունի, և {0}-ի տողերը այն կարդում են միայն {1}-ի համար, որը SDL-ի ձևը չի կարող պարունակել։</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Պատճենելու բան չկա՝ PadForge-ը այժմ չի կարող կարդալ SDL-ի կապակցումն այս սարքի համար, և այն ոչ մի կառավարչի վրա չէ։</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Պատճենելու բան չկա՝ PadForge-ը այժմ չի կարող կարդալ SDL-ի կապակցումն այս սարքի համար, և {0}-ի ոչ մի տող SDL-ի ձևի ընդունած կապ չի տալիս։</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Մեկ այլ ծրագիր օգտագործում է փոխանակման բուֆերը։ Ոչինչ չպատճենվեց։</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Ձեր տողը հեռացվեց։ Սարքը կարդացվում է այնպես, ինչպես նախկինում։</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Նորից կապակցվեց SDL-ի դասավորությունից՝ {0}։</value></data>
@@ -5962,6 +6057,8 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Տողեր, որոնք PadForge-ը կրում է</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ոչ մի տող չի համապատասխանում։</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ընտրված տողը կիրառվում է {0}-ի վրա իր սեփական ID-ով՝ նույն ստուգմամբ և նույն ընտրությամբ, ինչ «Տեղադրել»-ը։</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Մեխանիզմը կանգնած է, ուստի ցանկում չկան SDL-ի պահած տողերը՝ նրա սեփականն ու ներկառուցված համայնքային պատճենը։ Դրանք կցուցակագրվեն, երբ մեխանիզմը աշխատի։</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL-ը ժամանակին չպատասխանեց, ուստի ցանկում չկան նրա պահած տողերը՝ նրա սեփականն ու ներկառուցված համայնքային պատճենը։</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL կապակցման տող</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Տող այս սարքի համար։</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Գուշակված դասավորություն։</value></data>
@@ -5974,14 +6071,14 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} դաշտ, նույն մատակարարից և արտադրանքից՝ մեկ այլ ինտերֆեյսով կամ տարբերակով։ Այն պահվում է այս սարքի սեփական ID-ով։</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} դաշտ, մեկ այլ սարքի տող։ Այն պահվում է այս սարքի սեփական ID-ով։</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} դաշտ։ SDL-ը չի կարդում այս սարքը, ուստի PadForge-ը դասավորում է նրա մուտքերը տողով։</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge-ը այս դաշտերի համար հասարակ կոճակ կամ առանցք չունի և դրանք բաց է թողնում՝ {0}։</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} դաշտ՝ սարքի առանցքներից, կոճակներից և ուղղորդ խաչերից։ Ստուգեք այն «Փորձարկել մուտքերը»-ում, ապա պահեք կամ փոխեք այստեղ։</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Սա փոխում է, թե ինչպես է կարդացվում {0}-ը։ Նրա տողերը՝ {1}, նորից կապակցվում են նոր դասավորությունից։</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Սա փոխում է, թե ինչպես է կարդացվում {0}-ը։ Այն ոչ մի կառավարչի վրա չէ, ուստի ոչ մի տող չի փոխվում։</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Պրոֆիլի դյուրանցումները, որոնք կարդում են {0}-ը, պահում են այն մուտքերը, որոնց սահմանվել են։</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Տողը պահվում է որպես ձերը PadForge.xml-ում և գերակայում է այս սարքի համար մյուս բոլոր աղբյուրներից։ «Հեռացնել ձերը»-ը վերադարձնում է հին տողը և հին տողերը։</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Տողերը պահվում են որպես ձերը PadForge.xml-ում և իրենց սարքերի համար գերակայում են մյուս բոլոր աղբյուրներից։ «Մաքրել»-ը՝ «Կառավարիչների տվյալների բազա» տողի «Ավելին»-ի տակ, հեռացնում է դրանք։</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} տող Windows-ի համար։ {1} այլ համակարգերի համար բաց են թողնվում։</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} տող Windows-ի համար։ {1} այլ համակարգերի համար բաց են թողնվում։</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} տող Windows-ի համար։</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Կավելացվեն բոլորը՝ {0:N0}։ PadForge-ը պահում է ձեր մինչև {1:N0} տող։</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Այն կավելացվի։ PadForge-ը պահում է ձեր մինչև {1:N0} տող։</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Ձեր {0:N0} տող պահվում է հիմա, ուստի սրանցից կավելացվի՝ {1:N0}, չի ավելացվի՝ {2:N0}։</value></data>
@@ -5991,7 +6088,7 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Տեքստը SDL-ի կառավարիչների տվյալների բազայի տող չէ՝ այն պետք է լինի 32 տասնվեցական թվանշանից բաղկացած ID, անուն, ապա դաշտեր, օրինակ՝ a:b0։</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Տողերը այլ համակարգերի համար են։ PadForge-ը կարդում է Windows-ի համար կամ առանց կոնկրետ համակարգի տողեր։</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Տողի ID-ն սարքի ID չէ։ Այն պետք է ունենա 32 տասնվեցական թվանշան։</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Տողի անունը դատարկ է, 128 նիշից երկար է կամ պարունակում է նիշ, որը SDL-ը կարդում է որպես դաշտ։</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Տողի անունը դատարկ է, 128 նիշից երկար է, պարունակում է SDL-ի կարդացող դաշտի նշան, օրինակ՝ «type:», կամ պարունակում է տառերից, թվանշաններից, կետադրական նշաններից, սիմվոլներից և հասարակ բացատից տարբեր նիշ։</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Տողը պարունակում է hint կամ Android դաշտ, որը PadForge-ը չի ընդունում։</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Տողն ունի դաշտ, որը SDL-ը չի ճանաչում։</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Կապակցումը SDL-ի ձևով չէ, օրինակ՝ b3, a2, +a2, a2~ կամ h0.4։</value></data>
@@ -6002,8 +6099,7 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ձեր տողերը</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Այստեղ ավելացրած կամ սարքի «SDL կապակցում» քարտում տեղադրած տողերը իրենց սարքերի համար գերակայում են մյուս բոլոր աղբյուրներից և մնում են վերականգնումից հետո։</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ավելացնել տողեր ֆայլից կամ փոխանակման բուֆերից…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} տող և նույնքան սարք՝ ձերը, մյուս բոլոր աղբյուրներից վեր։</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} տող և նույնքան սարք՝ ձերը, մյուս բոլոր աղբյուրներից վեր։</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} տող, ձերը՝ մյուս բոլոր աղբյուրներից վեր։</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Դեռ չկան։</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Ձեր SDL_GAMECONTROLLERCONFIG փոփոխականը պարունակում է {0} տող, որը PadForge-ը չի պահում։ «Ավելացնել տողեր ֆայլից կամ փոխանակման բուֆերից»-ը բացվում է դրանցով։</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Ձեր SDL_GAMECONTROLLERCONFIG փոփոխականը պարունակում է {0} տող, որը PadForge-ը չի պահում։ «Ավելացնել տողեր ֆայլից կամ փոխանակման բուֆերից»-ը բացվում է դրանով։</value></data>
@@ -6022,7 +6118,7 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Կանգնած է։ Նրա վերջին խոսքերը՝ {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Այն չհաջողվեց մեկնարկել։</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Այն այլևս այս համակարգչում չէ։</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Այս համակարգչում թունելի ծրագիր չի գտնվել։ PadForge-ը աշխատում է cloudflared-ի, devtunnel-ի, ngrok-ի և Tailscale Funnel-ի հետ կամ ձեր սեփական թունելի հասցեով։</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge-ը այս համակարգչում չգտավ cloudflared, devtunnel, ngrok կամ Tailscale Funnel։ Ընտրեք ChatGPT Secure MCP Tunnel, որը PadForge-ը ներբեռնում է, կամ տվեք ձեր սեփական թունելի հասցեն։</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Ընտրեք թունել՝ PadForge-ին հանրային հասցե տալու համար։</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Նաև այս համակարգչում՝ {0}։</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}՝ հասցեն նույնն է մնում</value></data>
@@ -6030,7 +6126,7 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Գործարկեք ձեր սեփական թունելը դեպի http://127.0.0.1:{0} և տեղադրեք նրա https հասցեն։ Անվանված Cloudflare թունելը, մշտական dev tunnel-ը, Tailscale Funnel-ը և ngrok-ի սեփական դոմենը պահում են իրենց հասցեն։</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Տեղադրեք https հասցե՝ առանց ուղու, բացի /mcp-ից, ինչպես տալիս է ձեր թունելը։</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-ի վեբ օգնականը մեկնարկում է։</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ի վեբ օգնականը կանգնեց ({0})։ Անջատեք և նորից միացրեք Reach PadForge From the Web՝ նորից սկսելու համար։</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge-ի վեբ օգնականը կանգ առավ ({0})։ PadForge-ը շարունակում է փորձել մեկնարկել այն։</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Հասցե</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Դեռ հանրային հասցե չկա։</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Ավելացնել Claude-ին</value></data>
@@ -6069,11 +6165,6 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ավարտվեց {0} կոդով</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Ավտոմատացումը անջատված է, ուստի ոչ մի վեբ օգնական չի հասնում PadForge-ին։ Վեբ օգնականը մեկնարկում է, երբ Ավտոմատացումը միանա։</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ստուգվում է…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Տեղադրված չէ։</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Տեղադրված է և արդիական։ Սկրիպտը սկսվում է՝ {0}։</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Տեղադրված է {0}-ի համար և արդիական։ Սկրիպտը սկսվում է՝ {1}։</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Տեղադրված է։ Այս PadForge-ն ունի ավելի նոր պատճեն։</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Տեղադրված է {0}-ի համար։ Այս PadForge-ն ունի ավելի նոր պատճեն։</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Տեղադրվում է…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ ստուգել այն՝ {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>«Տեղադրել»-ը դնում է PadForge-ի գրադարանը այնտեղ, որտեղ այդ լեզուն գտնում է այն։ Այն բեռնող սկրիպտը կարդում է սարքերը և կառավարում կապակցումները վերևի մակարդակով։</value></data>
@@ -6081,22 +6172,24 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Տեղադրված պատճեններ</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Հեռացնել բոլորը</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Հեռացվեց։</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge-ի գրադարանը տեղադրված է {0}-ի համար և արդի է։ Սկրիպտը սկսվում է {1} տողով։</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>PadForge-ի գրադարանը {0}-ի համար տարբերվում է այս PadForge-ի պատճենից։</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge-ի գրադարանը տեղադրված չէ {0}-ի համար։</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Սկրիպտի ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Նրա սկրիպտի ID-ն</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Սկրիպտները նրա կառավարման տարրերն անվանում են՝ {0}։</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Սկրիպտները նրա ստեղներն անվանում են KeyA, KeySpace, KeyLeftShift և նմանները, իսկ յուրաքանչյուր ստեղն՝ իր կոդով, Vk0-ից Vk255։</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} այս ցանցում՝ {1}-ից</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0}-ի նույն վկայագրի բանալիով ստորագրված նոր տարբերակը վերագործարկվում է առանց «Հաստատել և վերագործարկել»-ի։ Ցանկացած այլ փոփոխության մասին նախ հարցվում է ձեզ։</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Ընդունեց նույն վկայագրի բանալիով ստորագրված նոր տարբերակը</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Հասցե</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge-ը ընդունում է հասցե, որը սկսվում է https:// նախածանցով և նշում է հոսթ, լռելյայն պորտով, առանց օգտանվան կամ գաղտնաբառի։</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge-ը ընդունում է մինչև 2,048 նիշ երկարությամբ հասցե, որն սկսվում է https:// նշանակարգով և նշում է հոսթ, լռելյայն պորտով, առանց օգտանվան, գաղտնաբառի կամ # նշանից հետո գրված մասի։</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Պորտ</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Փոխել…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Կանչերը և դրանց բանալին այս ցանցով անցնում են չգաղտնագրված։ Windows-ը դրանց թույլ է տալիս միայն մասնավոր ցանցերում։</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Կանչերը և նրանց բանալին այս ցանցով անցնում են չգաղտնագրված։ Windows Firewall-ի կանոնը, որը PadForge-ը ստեղծում է այս պորտի համար, նշում է միայն մասնավոր ցանցերը։</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>{0} պորտը զբաղված է մեկ այլ ծրագրով։ Փոխեք այն՝ այս ցանցից PadForge-ին հասնելու համար։</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows-ը թույլ չտվեց PadForge-ի օգնականին լսել {0} պորտը։ PadForge-ը դա թույլատրում է ադմինիստրատորի իրավունքներով, ուստի մեկնարկեք PadForge-ը դրանցով և անջատեք ու նորից միացրեք սա։</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows-ը PadForge-ի օգնականի համար {0} պորտում ամրագրում չունի։ Անջատեք և նորից միացրեք սա, և PadForge-ը նորից կստեղծի այն։</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge-ի օգնականը չկարողացավ լսել {0} պորտը։ Փոխեք պորտը կամ անջատեք ու նորից միացրեք սա։</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ի օգնականը կանգնեց ({0})։ Անջատեք և նորից միացրեք Reach PadForge From This Network՝ նորից սկսելու համար։</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge-ի օգնականը կանգ առավ ({0})։ PadForge-ը շարունակում է փորձել մեկնարկել այն։</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Ավտոմատացումը անջատված է, ուստի այս ցանցի ոչ մի օգնական չի հասնում PadForge-ին։ Օգնականը մեկնարկում է, երբ Ավտոմատացումը միանա։</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Այս համակարգչում հիմա մասնավոր ցանցի հասցե չկա։</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Օգնականներ այս ցանցում</value></data>
@@ -6113,7 +6206,23 @@ PadForge-ը մանրամասները գրել է PadForge.exe-ի կողքին գ
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Հրամանի տողից հրամանները դեռ հասնում են PadForge-ին, ինչպես ցանկացած ծրագրի համար։</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Այն խնդրում է վարել միայն իր սեփական սարքերը։</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Այն հարցնում է մեկ անգամ։ Կարող եք հեռացնել այն կամ փոխել նրա հասանելիությունը «Ավտոմատացում» էջում։</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Աշխատում է՝ ձեր իրավունքներով, և պատրաստ է։ ChatGPT-ը PadForge-ին հասնում է այս թունելով՝ առանց իր սեփական մուտքի և միայն ձեր OpenAI կազմակերպությունից։ Այն նորից մեկնարկում է PadForge-ի հետ։</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Աշխատում է՝ ձեր իրավունքներով։ Սպասում է, որ OpenAI-ը ասի, թե թունելը պատրաստ է։</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge-ը բանալին պահում է գաղտնագրված՝ միայն ձեզ համար։ Դատարկ դաշտը մոռանում է այն։ ChatGPT-ը աշխատում է վերևի մակարդակով։</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge-ը չկարողացավ պահել պլագինների հավաքածուն։</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Գործունեություն {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Ձայներ{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Պատկերակներ{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} տող այլ համակարգերի համար բաց է թողնվում։</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows-ը այն չմեկնարկեց ձեր սեփական իրավունքներով։</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Այն չավարտվեց {0} վայրկյանում։</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Այն ավարտվեց {0} կոդով և պատճառ չտվեց։</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge-ը չի կարող կարդալ {0}-ի կարգավորումները, ուստի ֆայլը թողեց ինչպես կար։</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge-ը չի գրել {0} ֆայլը, ուստի թողեց այն ինչպես կար։</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows-ը ձեզ համար «Փաստաթղթեր» թղթապանակ չունի։</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge-ը ձեր թղթապանակը {0}-ի համար չի գտնում։</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0}-ի սեփական հրամանն ավարտվեց {1} կոդով։</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0}-ի հրամանն այս համակարգչում չկա։</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows-ը PadForge-ին թույլ չտվեց կարդալ կամ գրել իրեն պետք ֆայլը։</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge-ը Python չի գտնում՝ ոչ մեկը գրանցված չէ, տեղադրված չէ Microsoft Store-ից, ցուցակագրված չէ py գործարկիչում և չկա ձեր PATH-ում։</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge-ի գտած ոչ մի Python {0} վայրկյանում չպատասխանեց։</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Գործարկումը պատճառ չտվեց, որը PadForge-ը գիտի։</value></data>
 </root>

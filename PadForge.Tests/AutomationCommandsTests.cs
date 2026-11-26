@@ -19,7 +19,9 @@ namespace PadForge.Tests
         public bool HasTray = true;
         public EngineChange EngineAnswer = EngineChange.Done;
         public HashSet<int> Controllers = new HashSet<int> { 1, 2 };
-        public string SnapshotName = "diag-snapshot-20261123-150000.log";
+        /// <summary>How many snapshots were taken, each its own file.</summary>
+        public int Snapshots;
+        public static string SnapshotFile(int n) => @"C:\Recordings\PadForge-recording-" + n + ".zip";
         public Exception Throws;
         public AutomationState State = new AutomationState();
 
@@ -46,8 +48,13 @@ namespace PadForge.Tests
         public EngineChange SetEngine(bool on) { Note("engine " + (on ? "on" : "off")); return EngineAnswer; }
         public void SetAllControllers(bool on) => Note("controllers " + (on ? "on" : "off"));
         public bool SetController(int number, bool on) { Note("slot " + number + (on ? " on" : " off")); return Controllers.Contains(number); }
-        public bool? SnapshotScrubbed;
-        public string SaveSnapshot(bool scrubbed) { Note("snapshot"); SnapshotScrubbed = scrubbed; return SnapshotName; }
+        public int SnapshotFails;
+        public string SaveSnapshot()
+        {
+            Note("snapshot");
+            if (SnapshotFails > 0) { SnapshotFails--; throw new System.IO.IOException("The snapshot was not taken: Busy."); }
+            return SnapshotFile(++Snapshots);
+        }
         public AutomationState ReadState() { Note("state"); return State; }
     }
 
@@ -115,7 +122,7 @@ namespace PadForge.Tests
         [InlineData("slot 1 on", "slot 1 on", "ok 1 on")]
         [InlineData("slot 2 off", "slot 2 off", "ok 2 off")]
         [InlineData("slot  2   OFF", "slot 2 off", "ok 2 off")]
-        [InlineData("snapshot", "snapshot", "ok diag-snapshot-20261123-150000.log")]
+        [InlineData("snapshot", "snapshot", "ok waiting-for-review")]
         public void ALine_DoesWhatItsControlDoes_AndAnswers(string line, string call, string answer)
         {
             using var setup = new Setup();
@@ -527,6 +534,19 @@ namespace PadForge.Tests
             string longText = new AutomationAsk(AutomationAskKind.Unknown, new string('x', 500)).Text;
             Assert.True(longText.Length < 200, longText.Length.ToString());
             Assert.Contains("…", longText, StringComparison.Ordinal);
+        }
+
+        /// <summary>A cut never leaves half of a character that takes two
+        /// UTF-16 units, such as an emoji that straddles the cut.</summary>
+        [Fact]
+        public void ACutArgument_NeverEndsInHalfACharacter()
+        {
+            string name = new string('a', AutomationAsk.LongestArgument - 1) + "\U0001F600" + "and more";
+            string text = new AutomationAsk(AutomationAskKind.ActivateProfile, name).Text;
+            Assert.Contains(new string('a', AutomationAsk.LongestArgument - 1) + "…", text, StringComparison.Ordinal);
+            for (int i = 0; i < text.Length; i++)
+                if (char.IsHighSurrogate(text[i]))
+                    Assert.True(i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]), "a lone half at " + i);
         }
 
         /// <summary>The verbs and the answers are fixed ASCII. Localizing a

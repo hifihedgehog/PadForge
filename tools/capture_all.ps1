@@ -8073,7 +8073,7 @@ function Restore-DefaultProfile {
     return $false
 }
 
-# External Control (#366, #597): its card at the page's foot says in one
+# External Control (#366, #600): its card at the page's foot says in one
 # line what Automation allows and has the button that opens Automation's
 # page. The button is found by its AutomationId and checked to be in the
 # frame, and the shot is taken. Nothing is clicked, so the run leaves the
@@ -8440,7 +8440,7 @@ function Capture-MagnifierCard {
     else { Refuse-Shots @("extras-magnifier") "the Magnifier page never framed [Show Magnifier, Zoom]" }
 }
 
-# The Automation page of Extras (#597), framed from its switch down to the
+# The Automation page of Extras (#600), framed from its switch down to the
 # Level row. Automation stays as the staged file has it, off, so no program
 # reaches the app during the capture.
 function Capture-AutomationCard {
@@ -8450,7 +8450,7 @@ function Capture-AutomationCard {
     else { Refuse-Shots @("extras-automation") "the Automation page never framed [Allow Outside Programs, Level]" }
 }
 
-# The Plugins page of Extras (#597), framed from its switch. Plugins stay off,
+# The Plugins page of Extras (#600), framed from its switch. Plugins stay off,
 # so no plugin starts during the capture.
 function Capture-PluginsCard {
     if (-not (Want "extras-plugins")) { return }
@@ -9547,7 +9547,7 @@ Write-Host "[$(Next)/$total] Profiles"
 Nav "Profiles"; Cap "profiles"
 
 # External control (#366): the External Control card at the page's foot
-# (#574), which says what Automation allows and opens its page (#597).
+# (#574), which says what Automation allows and opens its page (#600).
 Capture-ExternalControl
 # The In front now line (#574), through the recipe the focused pass uses.
 Capture-ForegroundReadout

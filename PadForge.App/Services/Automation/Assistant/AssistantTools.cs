@@ -15,7 +15,7 @@ using PadForge.Engine.Data;
 namespace PadForge.Services.Automation
 {
     // ─────────────────────────────────────────────
-    //  Arguments and results (#597)
+    //  Arguments and results (#600)
     // ─────────────────────────────────────────────
 
     internal sealed class NoArguments { }
@@ -312,7 +312,7 @@ namespace PadForge.Services.Automation
         [Description("What else it has: gyro, accel, touchpad, battery.")]
         public List<string> Features { get; set; } = new();
 
-        [Description("The feedback it takes: rumble, trigger rumble, light, player number.")]
+        [Description("The feedback it takes: rumble, trigger rumble, trigger effects, light, player number.")]
         public List<string> Feedback { get; set; } = new();
 
         public List<int> Controllers { get; set; } = new();
@@ -521,7 +521,7 @@ namespace PadForge.Services.Automation
         [Description("The number to hand to the triggers that read the name. Leave it out with release.")]
         public double? Value { get; set; }
 
-        [Description("True to let go of the value, which then reads 0.")]
+        [Description("True to let go of the value this connection set, which then reads 0 unless another program set it since.")]
         public bool Release { get; set; }
     }
 
@@ -533,7 +533,7 @@ namespace PadForge.Services.Automation
         public double? Rest { get; set; }
     }
 
-    internal enum AssistantFeedback { Rumble, TriggerRumble, Light, Player }
+    internal enum AssistantFeedback { Rumble, TriggerRumble, Light, Player, TriggerEffects }
 
     internal sealed class AddDeviceArgs
     {
@@ -648,7 +648,7 @@ namespace PadForge.Services.Automation
         [Description("In place of path: the file's name, which says what kind of file it is.")]
         public string FileName { get; set; }
 
-        [Description("In place of path: the file's bytes in base64.")]
+        [Description("In place of path: the file's bytes in base64. A script's call line runs to 65,536 bytes, which holds a file of about 48 KB in base64.")]
         public string ContentBase64 { get; set; }
     }
 
@@ -780,8 +780,6 @@ namespace PadForge.Services.Automation
         public int RequestId { get; set; }
     }
 
-    internal sealed class ChangeOnlyResult : AssistantChangeResult { }
-
     // ─────────────────────────────────────────────
     //  The tools
     // ─────────────────────────────────────────────
@@ -805,7 +803,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// PadForge's tools for assistants (#597), in the order every list keeps,
+    /// PadForge's tools for assistants (#600), in the order every list keeps,
     /// by level: Commands, Read, Send Inputs, Change Settings. Each one sets
     /// all four hints, takes typed arguments and returns a typed result. A
     /// command goes through the core's executor, the one that answers the
@@ -1036,6 +1034,13 @@ namespace PadForge.Services.Automation
                 // when the user allows it.
                 "waiting" => new AssistantRefusal(word, "PadForge asks the user on its question card first, since the profile turns on an extra that listens on the network. It switches when the user allows it. Tell the user to look at the card, and do not ask again meanwhile. status says which profile is in force."),
                 "too-many-questions" => new AssistantRefusal(word, "Too many questions already wait for the user. Nothing changed. Wait for them to be answered, then ask again."),
+                // A program's snapshot against the command set's limits
+                // (AutomationCommands.Limit): one a minute, and none while
+                // the most PadForge takes from programs wait for review.
+                "too-soon" => new AssistantRefusal(word, "A program may have one diagnostics snapshot saved a minute. Wait a minute, then call again."),
+                "limit-reached" => new AssistantRefusal(word, AutomationCommands.MostWaitingFromPrograms
+                    + " snapshots that programs took already wait for the user's review on Home, the most PadForge takes from programs. Ask the user to save or delete them there, then call again."),
+                "bad-argument" => new AssistantRefusal(word, "PadForge did not take what this call gave it."),
                 _ => new AssistantRefusal("internal", "PadForge did not do it. The message line in its window says why."),
             };
         }
@@ -1066,7 +1071,7 @@ namespace PadForge.Services.Automation
                     {
                         Number = c.GetProperty("slot").GetInt32(),
                         Name = c.TryGetProperty("name", out var cn) ? cn.GetString() : null,
-                        Type = c.TryGetProperty("type", out var ct2) ? ct2.GetString() : null,
+                        Type = c.TryGetProperty("type", out var ct2) ? AssistantNames.FromPipe(ct2.GetString()) : null,
                         On = c.TryGetProperty("on", out var on) && on.ValueKind == JsonValueKind.True,
                         Devices = c.TryGetProperty("devices", out var d) ? d.GetInt32() : 0,
                         Online = c.TryGetProperty("online", out var o) ? o.GetInt32() : 0,
@@ -1187,7 +1192,11 @@ namespace PadForge.Services.Automation
             if (a.Outputs)
             {
                 foreach (var controller in result.Controllers)
-                    controller.Outputs = inv.App.Outputs(controller.Number);
+                {
+                    var outputs = inv.App.Outputs(controller.Number);
+                    if (outputs != null && outputs.TryGetValue("type", out string word)) outputs["type"] = AssistantNames.FromPipe(word);
+                    controller.Outputs = outputs;
+                }
             }
             return await Task.FromResult(result).ConfigureAwait(false);
         }
@@ -1380,13 +1389,20 @@ namespace PadForge.Services.Automation
                         if (r.Get("trigrumble") == "1") detail.Feedback.Add("trigger rumble");
                         if (r.Get("light") == "1") detail.Feedback.Add("light");
                         if (r.Get("player") == "1") detail.Feedback.Add("player number");
+                        if (r.Get("trigfx") == "1") detail.Feedback.Add("trigger effects");
                         break;
                 }
             }
             if (a.Live && ud.IsOnline && AutomationDevices.CopyState(ud) is { } state)
-                detail.State = StateOf(state, Math.Max(ud.CapButtonCount, CustomInputState.MaxButtons), AutomationSessions.RestsOf(ud, null));
+                detail.State = StateOf(state, ButtonsOf(ud), AutomationSessions.RestsOf(ud, null));
             return detail;
         }
+
+        /// <summary>How many buttons a device's state holds, as the pipe's
+        /// read of it counts them (AutomationSessions.Read): its count, or
+        /// past its last button's index.</summary>
+        internal static int ButtonsOf(UserDevice ud)
+            => Math.Max(ud.CapButtonCount, ud.CapButtonIndices is { Length: > 0 } b ? b[^1] + 1 : 0);
 
         /// <summary>A device's state in plain units (#600), each axis read
         /// against its rest.</summary>
@@ -1795,10 +1811,13 @@ namespace PadForge.Services.Automation
                     AssistantFeedback.TriggerRumble => "trigrumble",
                     AssistantFeedback.Light => "light",
                     AssistantFeedback.Player => "player",
+                    AssistantFeedback.TriggerEffects => "trigfx",
                     _ => "rumble",
                 }).Distinct().ToList();
             string json = JsonSerializer.Serialize(declaration);
-            var body = new StringBuilder("declare key=").Append(a.Key ?? string.Empty);
+            // Words of the line: a key or an ID with a space reaches the
+            // verb whole, and is refused there.
+            var body = new StringBuilder("declare key=").Append(AutomationLine.Word(a.Key ?? string.Empty));
             if (!string.IsNullOrWhiteSpace(a.Name)) body.Append(" name=").Append(AutomationLine.Quote(a.Name));
             body.Append(' ').Append(json);
             bool wasInForce = PadForge.Common.Input.ProgramInputGate.InForce;
@@ -1831,7 +1850,7 @@ namespace PadForge.Services.Automation
             // Plain units on the wire (#600): a percent for an axis, which
             // the pipe reads against the axis's rest, and degrees or
             // directions for a hat.
-            var body = new StringBuilder("s ").Append(a.Device);
+            var body = new StringBuilder("s ").Append(AutomationLine.Word(a.Device));
             if (a.Rest) body.Append(" rest");
             void Add(string prefix, string key, string value)
             {
@@ -1858,7 +1877,7 @@ namespace PadForge.Services.Automation
         private static async Task<DoneResult> RemoveDevice(AssistantInvocation inv, DeviceOnlyArgs a, CancellationToken ct)
         {
             inv.Detail = a.Device;
-            await Line(inv, "gone " + a.Device).ConfigureAwait(false);
+            await Line(inv, "gone " + AutomationLine.Word(a.Device)).ConfigureAwait(false);
             return new DoneResult { Message = "The device goes offline with its outputs at rest." };
         }
 
@@ -1870,12 +1889,12 @@ namespace PadForge.Services.Automation
                 throw new AssistantRefusal("bad-argument", "A control is b, a or h and its index, as in b3, a0 or h0.");
             if (a.Release)
             {
-                await Line(inv, "rel " + a.Device + " " + control).ConfigureAwait(false);
+                await Line(inv, "rel " + AutomationLine.Word(a.Device) + " " + control).ConfigureAwait(false);
                 return new DoneResult { Message = "Released. The control reads the device again." };
             }
             if (a.Value == null) throw new AssistantRefusal("bad-argument", "Give the value to hold the control at, or release.");
             bool wasInForce = PadForge.Common.Input.ProgramInputGate.InForce;
-            await Line(inv, "own " + a.Device + " " + control + "=" + HoldValue(control[0], a.Value.Value)).ConfigureAwait(false);
+            await Line(inv, "own " + AutomationLine.Word(a.Device) + " " + control + "=" + HoldValue(control[0], a.Value.Value)).ConfigureAwait(false);
             return new DoneResult { Message = WithGateNotice("Held until it is released or this connection ends.", wasInForce) };
         }
 
@@ -2020,8 +2039,18 @@ namespace PadForge.Services.Automation
                 throw new AssistantRefusal("bad-argument", "A value's name is a letter, then up to 31 letters, digits, _ . or -.");
             if (a.Release)
             {
-                await Line(inv, "var " + name + "=0").ConfigureAwait(false);
-                return new DoneResult { Message = "Let go. Triggers that read " + name + " read 0." };
+                var session = inv.Caller.Session
+                    ?? throw new AssistantRefusal("not-available", "This connection has no session that set a value.");
+                // Only what this session set last is let go: a value another
+                // program set since stays its own.
+                bool let = PadForge.Common.Input.ScriptValues.Release(name, session.Number);
+                await Task.CompletedTask.ConfigureAwait(false);
+                return new DoneResult
+                {
+                    Message = let || PadForge.Common.Input.ScriptValues.SetterOf(name) == 0
+                        ? "Let go. Triggers that read " + name + " read 0."
+                        : "Let go. Another program set " + name + " since, so triggers read its value.",
+                };
             }
             if (a.Value is not double value || double.IsNaN(value) || double.IsInfinity(value))
                 throw new AssistantRefusal("bad-argument", "Give the value as a number, or release.");
@@ -2091,6 +2120,24 @@ namespace PadForge.Services.Automation
         /// <summary>The most bytes a profile file may hold.</summary>
         internal const int LongestProfileFile = 16 * 1024 * 1024;
 
+        /// <summary>A profile file's bytes, read once from its open stream
+        /// and never past <see cref="LongestProfileFile"/>, whatever length
+        /// it gave when it was opened: a program can keep writing to its own
+        /// file while PadForge reads it. Throws IOException for a file past
+        /// it.</summary>
+        internal static byte[] ReadProfileBytes(System.IO.Stream stream)
+        {
+            using var memory = new System.IO.MemoryStream();
+            var chunk = new byte[81920];
+            int read;
+            while ((read = stream.Read(chunk, 0, chunk.Length)) > 0)
+            {
+                if (memory.Length + read > LongestProfileFile) throw new System.IO.IOException("too large");
+                memory.Write(chunk, 0, read);
+            }
+            return memory.ToArray();
+        }
+
         /// <summary>
         /// import_profile. PadForge runs with administrator rights, so it never
         /// opens a file at a program's word with its own: a path is read with
@@ -2119,9 +2166,8 @@ namespace PadForge.Services.Automation
                 {
                     bytes = AsClient(inv, () =>
                     {
-                        var info = new System.IO.FileInfo(a.Path);
-                        if (info.Length > LongestProfileFile) throw new System.IO.IOException("too large");
-                        return System.IO.File.ReadAllBytes(a.Path);
+                        using var file = new System.IO.FileStream(a.Path, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+                        return ReadProfileBytes(file);
                     });
                 }
                 catch (Exception error) when (error is System.IO.IOException or UnauthorizedAccessException or System.Security.SecurityException)
@@ -2137,38 +2183,21 @@ namespace PadForge.Services.Automation
                 if (bytes.Length > LongestProfileFile) throw new AssistantRefusal("bad-argument", "A profile file is at most 16 MB.");
             }
 
-            // PadForge's own copy, which the importers read on the
-            // interface's thread.
-            string copy = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForge-import-" + Guid.NewGuid().ToString("N") + System.IO.Path.GetExtension(fileName));
-            System.IO.File.WriteAllBytes(copy, bytes);
-            try
+            // The importers read these bytes, held here, on the interface's
+            // thread: the card's scan and the import read one buffer, and no
+            // file another program could rewrite while the card waits.
+            var import = inv.OnUi(() => inv.App.ReadProfileFile(fileName, bytes));
+            var detail = new List<string> { AssistantToolWords.FileLine(fileName) };
+            detail.AddRange(import.Asks);
+            // An import always asks, whatever it holds.
+            var ask = new AssistantAsk(AssistantToolWords.AskImport(import.Name), detail);
+            object result = await inv.AskThenAsync(ask, () =>
             {
-                var import = inv.OnUi(() => inv.App.ReadProfileFile(copy));
-                var detail = new List<string> { AssistantToolWords.FileLine(fileName) };
-                detail.AddRange(import.Asks);
-                // An import always asks, whatever it holds.
-                var ask = new AssistantAsk(AssistantToolWords.AskImport(import.Name), detail);
-                object result = await inv.AskThenAsync(ask, () =>
-                {
-                    var (id, name) = inv.App.AddProfile(import);
-                    return Done(new ProfileChangeResult { ProfileId = id, Name = OutsideText.Of(name) },
-                        import.Report ?? "Added. switch_profile puts it in force.");
-                }).ConfigureAwait(false);
-                return (ProfileChangeResult)result;
-            }
-            finally
-            {
-                // A question still open needs the copy for as long as it can
-                // be answered.
-                if (inv.Pending)
-                    _ = Task.Delay(inv.Host.Approvals.Wait + TimeSpan.FromSeconds(30)).ContinueWith(_ => Delete(copy), TaskScheduler.Default);
-                else Delete(copy);
-            }
-        }
-
-        private static void Delete(string path)
-        {
-            try { System.IO.File.Delete(path); } catch { }
+                var (id, name) = inv.App.AddProfile(import);
+                return Done(new ProfileChangeResult { ProfileId = id, Name = OutsideText.Of(name) },
+                    import.Report ?? "Added. switch_profile puts it in force.");
+            }).ConfigureAwait(false);
+            return (ProfileChangeResult)result;
         }
 
         /// <summary>export_profile: the file to the path given, written with
@@ -2267,17 +2296,33 @@ namespace PadForge.Services.Automation
                 Inverted = r.Inverted, HalfAxis = r.HalfAxis, DeadZone = r.DeadZone,
             }).ToList();
             AssistantAsk ask = null;
-            if (type == "keyboard_mouse" && edits.Any(e => !string.IsNullOrEmpty(e.Source)))
+            // A source and a negative source each press a key on a keyboard
+            // and mouse controller, and the card names the key as the
+            // controller's page does (get_mappings' label), as a layer's
+            // Paste names its keys (AssistantCatalog.RowKeyLines).
+            if (type == "keyboard_mouse" && edits.Any(e => !string.IsNullOrEmpty(e.Source) || !string.IsNullOrEmpty(e.NegativeSource)))
             {
-                var lines = edits.Where(e => !string.IsNullOrEmpty(e.Source))
-                    .Select(e => AssistantToolWords.KeyLine(e.Target, e.Source)).ToList();
+                var labels = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var row in inv.OnUi(() => inv.App.ReadMappings(a.Controller)))
+                    if (!string.IsNullOrEmpty(row.Target) && !string.IsNullOrEmpty(row.Label)) labels.TryAdd(row.Target, row.Label);
+                var lines = new List<string>();
+                foreach (var e in edits)
+                {
+                    string key = e.Target != null && labels.TryGetValue(e.Target, out string label) ? label : e.Target;
+                    foreach (string source in new[] { e.Source, e.NegativeSource })
+                    {
+                        if (string.IsNullOrEmpty(source)) continue;
+                        string line = AssistantToolWords.KeyLine(key, source);
+                        if (!lines.Contains(line)) lines.Add(line);
+                    }
+                }
                 ask = new AssistantAsk(AssistantToolWords.AskKeyboardMouse(), lines);
             }
             object result = await inv.ChangeAsync(ask, () =>
             {
                 // Every row cleared first, as the page's Clear All does, then
                 // the rows given, as one run of changes undo takes back whole.
-                if (a.ClearAll) inv.App.ClearMappings(a.Controller, null);
+                if (a.ClearAll) inv.App.ClearMappings(a.Controller);
                 if (edits.Count > 0) inv.App.SetMappings(a.Controller, edits);
                 var names = new HashSet<string>(edits.Select(e => e.Target), StringComparer.OrdinalIgnoreCase);
                 return Done(new MappingsChangeResult
@@ -2367,6 +2412,11 @@ namespace PadForge.Services.Automation
             VirtualControllerType.Vr => "vr",
             _ => type.ToString().ToLowerInvariant(),
         };
+
+        /// <summary>A type as the pipe words it (AutomationCommands.Word),
+        /// such as keyboard-mouse, in the word the tools use for it, such as
+        /// keyboard_mouse.</summary>
+        internal static string FromPipe(string word) => word?.Replace('-', '_');
 
         internal static VirtualControllerType ToType(string word) => Type(word) switch
         {

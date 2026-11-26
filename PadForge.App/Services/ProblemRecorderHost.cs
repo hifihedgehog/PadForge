@@ -18,7 +18,7 @@ using PadForge.ViewModels;
 namespace PadForge.Services
 {
     /// <summary>
-    /// What the problem recorder (#597) asks of the app around it: where the
+    /// What the problem recorder (#600) asks of the app around it: where the
     /// file goes, which devices there are, what this PC could give away, and
     /// the parts of the file that describe the system, the devices, the
     /// virtual controllers and the settings. This class answers from the
@@ -31,7 +31,8 @@ namespace PadForge.Services
     internal partial class RecorderHost
     {
         /// <summary>The engine whose slots, rate and macros the parts read,
-        /// set by the service that owns it.</summary>
+        /// set by the service that owns it as it starts, and null once it
+        /// stops.</summary>
         internal static InputManager Engine;
 
         /// <summary>The service whose Remote Link values count among this
@@ -107,7 +108,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// The addresses of this PC's network adapters, as the scrubber
-        /// searches for them (#597). They are read once and kept until
+        /// searches for them (#600). They are read once and kept until
         /// Windows reports an address changed (NetworkChange), since a read
         /// of every adapter took 68 ms at the median and up to 389 ms under a
         /// load of one busy process per core, on the line handler of every
@@ -210,11 +211,6 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Tells a scrubber the names the user typed, for a file
-        /// other than a recording that is scrubbed the same way: a
-        /// snapshot a program asked for (#597).</summary>
-        internal void KnowTypedNames(PrivacyScrubber scrubber) => KnowNames(scrubber);
-
         /// <summary>Tells a scrubber the names the user typed, so a line of
         /// free text that holds one is scrubbed like the settings part.</summary>
         protected virtual void KnowNames(PrivacyScrubber scrubber)
@@ -284,7 +280,8 @@ namespace PadForge.Services
         };
 
         /// <summary>Test seam: the image names of the running processes,
-        /// without ".exe", or null for the real list.</summary>
+        /// without ".exe", or a list that could not be read as null. The
+        /// seam itself null reads the real list.</summary>
         internal static Func<IReadOnlyCollection<string>> RunningImages;
 
         /// <summary>The names of the programs of <paramref name="known"/>
@@ -296,13 +293,15 @@ namespace PadForge.Services
             return names;
         }
 
+        /// <summary>The image names of the running processes, or null when
+        /// the process list could not be read.</summary>
         private static IReadOnlyCollection<string> Images()
         {
             var seam = RunningImages;
             if (seam != null) return seam();
             var running = RunningProcessList.Read();
+            if (running == null) return null;
             var images = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            if (running == null) return images;
             foreach (var process in running)
             {
                 string name = process.Name;
@@ -310,6 +309,14 @@ namespace PadForge.Services
             }
             return images;
         }
+
+        /// <summary>The system part's engine line. No engine is a stopped
+        /// one: a stop takes the engine from <see cref="Engine"/>.</summary>
+        internal static string EngineLine(InputManager engine)
+            => engine == null ? "Engine: stopped"
+                : "Engine: " + (engine.IsRunning ? "running" : "stopped") + ", " + engine.PollingRateHz.ToString(CultureInfo.InvariantCulture)
+                    + " passes a second set, " + engine.CurrentFrequency.ToString("F0", CultureInfo.InvariantCulture) + " measured"
+                    + (engine.IsIdle ? ", idle" : string.Empty);
 
         public virtual void SystemLines(PrivacyScrubber scrubber, List<string> into)
         {
@@ -320,19 +327,22 @@ namespace PadForge.Services
             // Windows and the processor count are on the build's line
             // (FactLines), written once.
 
-            var engine = Engine;
-            if (engine == null) into.Add("Engine: none");
-            else
-                into.Add("Engine: " + (engine.IsRunning ? "running" : "stopped") + ", " + engine.PollingRateHz.ToString(CultureInfo.InvariantCulture)
-                    + " passes a second set, " + engine.CurrentFrequency.ToString("F0", CultureInfo.InvariantCulture) + " measured"
-                    + (engine.IsIdle ? ", idle" : string.Empty));
+            into.Add(EngineLine(Engine));
             FactLines(into);
 
             var images = Images();
-            var controllers = RunningOf(images, ControllerPrograms);
-            var vendors = RunningOf(images, VendorPrograms.All);
-            into.Add("Other controller programs running: " + (controllers.Count == 0 ? "none of the " + ControllerPrograms.Count.ToString(CultureInfo.InvariantCulture) + " looked for" : string.Join(", ", controllers)));
-            into.Add("Device makers' programs running: " + (vendors.Count == 0 ? "none of the " + VendorPrograms.All.Count.ToString(CultureInfo.InvariantCulture) + " looked for" : string.Join(", ", vendors)));
+            if (images == null)
+            {
+                into.Add("Other controller programs running: the process list could not be read");
+                into.Add("Device makers' programs running: the process list could not be read");
+            }
+            else
+            {
+                var controllers = RunningOf(images, ControllerPrograms);
+                var vendors = RunningOf(images, VendorPrograms.All);
+                into.Add("Other controller programs running: " + (controllers.Count == 0 ? "none of the " + ControllerPrograms.Count.ToString(CultureInfo.InvariantCulture) + " looked for" : string.Join(", ", controllers)));
+                into.Add("Device makers' programs running: " + (vendors.Count == 0 ? "none of the " + VendorPrograms.All.Count.ToString(CultureInfo.InvariantCulture) + " looked for" : string.Join(", ", vendors)));
+            }
 
             // The driver and HidHide state a snapshot ends with, scrubbed:
             // its lines name device instances.
@@ -358,7 +368,10 @@ namespace PadForge.Services
         internal static string TypeWord(int type)
             => TypeWords.TryGetValue(type, out string word) ? word : type.ToString(CultureInfo.InvariantCulture);
 
-        /// <summary>The bus an SDL GUID's first two bytes name.</summary>
+        /// <summary>The bus an SDL GUID's first two bytes name, a
+        /// little-endian word. SDL sets four: 0x00 unknown, 0x03 USB, 0x05
+        /// Bluetooth and 0xFF for its virtual joysticks
+        /// (SDL_sysjoystick.h, SDL_HARDWARE_BUS_*).</summary>
         internal static string BusOf(string sdlGuid)
         {
             if (string.IsNullOrEmpty(sdlGuid) || sdlGuid.Length < 4) return "unknown";
@@ -366,7 +379,7 @@ namespace PadForge.Services
             {
                 "0300" => "usb",
                 "0500" => "bluetooth",
-                "0600" => "virtual",
+                "ff00" => "virtual",
                 "0000" => "none",
                 var other => other,
             };
@@ -743,19 +756,24 @@ namespace PadForge.Services
         //  The program in front
         // ─────────────────────────────────────────────
 
+        /// <summary>Test seam: what <see cref="ForegroundMonitorService.ReadInFront"/>
+        /// reads, or null for the real foreground.</summary>
+        internal static Func<(string ExePath, string ProfileId)> InFrontSeam;
+
         /// <summary>The program in front: its path, whether a profile rule
-        /// names it, and that profile's name. False when it cannot be read.
+        /// names it, and that profile's name. False when it cannot be read:
+        /// no window is in front, or its program's path could not be read.
         /// Window titles are never read.</summary>
         public virtual bool Front(out string path, out bool named, out string profile)
         {
-            var (exePath, profileId) = ForegroundMonitorService.ReadInFront();
+            var (exePath, profileId) = (InFrontSeam ?? ForegroundMonitorService.ReadInFront)();
             path = exePath;
             named = profileId != null;
             profile = null;
             if (named)
                 foreach (var candidate in Snapshot(SettingsManager.Profiles))
                     if (candidate != null && candidate.Id == profileId) profile = candidate.Name;
-            return true;
+            return !string.IsNullOrEmpty(path);
         }
     }
 }

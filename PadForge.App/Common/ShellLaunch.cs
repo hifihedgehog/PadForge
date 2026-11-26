@@ -16,7 +16,7 @@ namespace PadForge.Common
     /// <para>PadForge runs with administrator rights, and a program it
     /// started with <c>Process.Start</c> got them too, so a Run Program macro
     /// fired by a program at Send Inputs ran its target as administrator
-    /// (#597). Everything here starts through the desktop shell's own object
+    /// (#600). Everything here starts through the desktop shell's own object
     /// instead, the way PowerToys starts a program without rights
     /// (PowerToys src/common/utils/elevation.h, ShellExecuteFromExplorer):
     /// ShellWindows finds the desktop's window, its document is the desktop
@@ -57,6 +57,14 @@ namespace PadForge.Common
         /// <summary>How long the desktop shell is given to take a
         /// start.</summary>
         internal const int ShellWaitMs = 15000;
+
+        /// <summary>Why a start is not known to have happened when the shell
+        /// did not answer in <see cref="ShellWaitMs"/>. The thread that asked
+        /// it runs on with nothing to stop it, so the shell may still start
+        /// the program, and a caller says it has not started yet, never that
+        /// it did not start.</summary>
+        internal static readonly string NotAnswered = "the desktop shell has not answered in "
+            + (ShellWaitMs / 1000).ToString(System.Globalization.CultureInfo.InvariantCulture) + " seconds";
 
         /// <summary>Starts what <paramref name="psi"/> names with the user's
         /// rights, through the desktop shell. The shell gives no process
@@ -156,7 +164,7 @@ namespace PadForge.Common
         /// </summary>
         private static string ThroughTheDesktop(UserStart start)
         {
-            string why = "the desktop shell did not answer";
+            string why = NotAnswered;
             var thread = new Thread(() =>
             {
                 object windows = null, desktop = null, document = null, shell = null;
@@ -212,7 +220,7 @@ namespace PadForge.Common
             { IsBackground = true, Name = "PadForge shell start" };
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
-            return thread.Join(ShellWaitMs) ? why : "the desktop shell did not answer";
+            return thread.Join(ShellWaitMs) ? why : NotAnswered;
         }
 
         /// <summary>A call by name through the object's IDispatch, as a

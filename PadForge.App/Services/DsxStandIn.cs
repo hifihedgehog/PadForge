@@ -17,8 +17,9 @@ namespace PadForge.Services
     ///
     /// <para>The stand-in is PadForge.DsxStandIn, a .NET Framework program of
     /// a few kilobytes that Windows runs on its own framework. PadForge
-    /// embeds it, writes it to <c>%TEMP%\PadForge_DSX\DSX.exe</c> and starts
-    /// it with its own process id. It runs only while the game mod server
+    /// embeds it, writes it as DSX.exe into DSX in the protected folder's
+    /// Work folder (<see cref="Folder"/>) and starts it with its own process
+    /// id. It runs only while the game mod server
     /// listens with the switch on: it starts after the bind and stops before
     /// the socket closes, so a mod that sees it always gets its reply. It
     /// sits in a job object that ends it when PadForge ends, and it also
@@ -28,7 +29,7 @@ namespace PadForge.Services
     {
         internal const string ResourceName = "PadForge.DsxStandIn.exe";
 
-        /// <summary>The protected folder's DSX folder (#597), where only
+        /// <summary>The protected folder's DSX folder (#600), where only
         /// Administrators and SYSTEM can write. The stand-in runs with
         /// PadForge's rights, and Windows loads a library or a .config from a
         /// program's own folder first, so the user's temp folder, where it was

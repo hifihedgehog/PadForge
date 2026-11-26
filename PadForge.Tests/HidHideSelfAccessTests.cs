@@ -594,8 +594,11 @@ namespace PadForge.Tests
             Assert.Contains(@"found.Add(@""\\?\GLOBALROOT"" + native);", announce);
 
             string installer = File.ReadAllText(Path.Combine(dir.FullName, "PadForge.App", "Common", "DriverInstaller.cs"));
-            Assert.Equal("HidHideController.AnnounceThisProcessWhile(InstallHidHideNow);",
-                FenceSource.FirstStatement(installer, "public static void InstallHidHide()"));
+            // The install runs inside the announcing wrapper, and PadForge's
+            // own install then forgets what it read of HidHide's presence.
+            string install = FenceSource.Body(installer, "public static void InstallHidHide()");
+            Assert.Contains("try { HidHideController.AnnounceThisProcessWhile(InstallHidHideNow); }", install);
+            Assert.Contains("finally { s_hidHideReads.Forget(); }", install);
             // The wrapper's argument and the declaration: nothing else runs
             // the install.
             Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(installer, @"\bInstallHidHideNow\b").Count);

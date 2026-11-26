@@ -186,15 +186,7 @@ namespace PadForge.Services
             _settingsFilePath = FindSettingsFile();
 
             // Load settings from disk.
-            if (File.Exists(_settingsFilePath))
-            {
-                LoadFromFile(_settingsFilePath);
-            }
-            else
-            {
-                // No settings file — initialize profiles with the Default entry.
-                LoadProfiles(null, null);
-            }
+            LoadOrStartFresh(_settingsFilePath);
 
             // Push file path to ViewModel.
             _mainVm.Settings.SettingsFilePath = _settingsFilePath;
@@ -206,6 +198,26 @@ namespace PadForge.Services
             if (_accessCodeUnsavedOnLoad) { _accessCodeUnsavedOnLoad = false; MarkDirty(); }
             if (_peripheralSwitchesMigratedOnLoad) { _peripheralSwitchesMigratedOnLoad = false; MarkDirty(); }
             if (_controllerDatabaseChangedOnLoad) { _controllerDatabaseChangedOnLoad = false; MarkDirty(); }
+        }
+
+        /// <summary>Loads the settings file, or starts the settings of a
+        /// fresh install where there is none. A fresh install has no legacy
+        /// driver of PadForge v2 to clean up, so its cleanup offer starts as
+        /// shown (<see cref="AppSettingsData.LegacyDriverCleanupOffered"/>).
+        /// A vJoy the user installed for another program was offered for
+        /// removal on a first start.</summary>
+        internal void LoadOrStartFresh(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                LoadFromFile(filePath);
+            }
+            else
+            {
+                // No settings file. The profiles start with the Default entry.
+                LoadProfiles(null, null);
+                _mainVm.Settings.LegacyDriverCleanupOffered = true;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -273,9 +285,9 @@ namespace PadForge.Services
                 // the only other fold, will not run for them again.
                 data.FoldCarriedGyroStamps();
 
-                // The controller database section (#597), judged against
+                // The controller database section (#600), judged against
                 // what this release carries. A file without one has none.
-                LoadControllerDatabase(data.ControllerDatabase);
+                LoadControllerDatabase(data.ControllerDatabase, data.Profiles);
 
                 // Pre-deserialization migrations applied to every PadSetting
                 // before they're handed out to UserSettings or the VM.
@@ -370,6 +382,13 @@ namespace PadForge.Services
                             { voicePurged++; continue; }
                             if (ud != null && liveRecords.Remove(ud.InstanceGuid, out var prevLive))
                                 CarryRuntimeState(prevLive, ud);
+                            // Hide from Games on a device whose row has no
+                            // switch for it (the Test Controller, a replay, a
+                            // web controller, a program's device) hides
+                            // nothing, and the tick held the HidHide
+                            // uninstall back with no way to clear it.
+                            if (ud != null && ud.HidHideEnabled && !DeviceRowViewModel.HidHideCanCloakPath(ud.DevicePath))
+                                ud.HidHideEnabled = false;
                             SettingsManager.UserDevices.Items.Add(ud);
                         }
                         if (dropped > 0)
@@ -449,7 +468,7 @@ namespace PadForge.Services
                 }
 
                 // A program's device nobody assigned leaves with its program
-                // (#597, ProgramDevices). A row of one an earlier run saved
+                // (#600, ProgramDevices). A row of one an earlier run saved
                 // goes at the load, so none piles up in the file.
                 DropUnassignedProgramDevices();
 
@@ -809,7 +828,7 @@ namespace PadForge.Services
                 // Custom source positions are significant, including duplicates.
                 if (row?.Sources == null || row.CombineMode == "Custom") continue;
                 var seen = new HashSet<(string, string, bool, bool, bool, string, string, string, string, string, string,
-                    string, string, string, string)>();
+                    string, string, string, string, string)>();
                 int writeIdx = 0;
                 for (int i = 0; i < row.Sources.Count; i++)
                 {
@@ -828,14 +847,16 @@ namespace PadForge.Services
                     // sources stepping on the same keys of two controllers
                     // are two reads. So does the controller a kept input goes
                     // back to: two sources that part ways on the return to
-                    // Direct are two sources.
+                    // Direct are two sources. So does the device a mouse
+                    // source's Steer input is read on.
                     var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "",
                         s.Invert, s.HalfAxis, s.InvertOutput, s.Kind ?? "", s.GateDescriptor ?? "",
                         s.Gate2Descriptor ?? "", s.ParamUp ?? "", s.ParamDown ?? "",
                         s.ParamModifier ?? "", s.ParamUpDeviceGuid?.ToLowerInvariant(),
                         s.ParamDownDeviceGuid?.ToLowerInvariant(),
                         s.ParamModifierDeviceGuid?.ToLowerInvariant(),
-                        s.DescriptorDeviceGuid?.ToLowerInvariant());
+                        s.DescriptorDeviceGuid?.ToLowerInvariant(),
+                        s.ParamTravelSteerDeviceGuid?.ToLowerInvariant());
                     if (!seen.Add(key)) continue;
                     row.Sources[writeIdx++] = s;
                 }
@@ -859,6 +880,7 @@ namespace PadForge.Services
             to.Device = from.Device;
             to.IsOnline = from.IsOnline;
             to.InputState = from.InputState;
+            to.ReadInputState = from.ReadInputState;
             to.InputStateSeq = from.InputStateSeq;
             to.OldInputState = from.OldInputState;
             to.PtpStatePool = from.PtpStatePool;
@@ -881,8 +903,9 @@ namespace PadForge.Services
         internal static bool IsEmptyLegacyOrphan(UserSetting us)
             => us == null || (us.MapTo < 0 && us.GetPadSetting() == null);
 
-        /// <summary>Drops the rows of program devices (#597) that no
-        /// mapping row names and that no program drives now. Such a row is
+        /// <summary>Drops the rows of program devices (#600) that no
+        /// assignment names (a UserSettings row) and that no program drives
+        /// now. Such a row is
         /// what a program left behind: the user never assigned it, so it
         /// holds nothing of theirs. Internal so the round-trip tests pin
         /// it.</summary>
@@ -1207,7 +1230,7 @@ namespace PadForge.Services
                         };
                         // The source line's shaping dials and gates (the row's
                         // own, edited under the first source), and what a
-                        // "Mouse Travel" input is tuned by (#597).
+                        // "Mouse Travel" input is tuned by (#600).
                         mapping.StoreShapingAndGates(primarySource);
                         mapping.StoreMouseTravel(primarySource);
                         rebuiltSources.Add(primarySource);
@@ -2464,7 +2487,7 @@ namespace PadForge.Services
             ProblemRecorder.Instance.Parts = vm.ProblemRecordingParts;
             // The recorder takes its two switches here too, as the mirror
             // below takes its own: a session that starts with one on has no
-            // change to follow (#597).
+            // change to follow (#600).
             ProblemRecorder.Instance.MaskTypedKeys = appSettings.ProblemRecordingHideTypedKeys;
             ProblemRecorder.Instance.KeepLastMinute = appSettings.ProblemRecordingKeepLastMinute;
             // Arm the mirror on cold start (#303): the toggle's
@@ -2578,7 +2601,7 @@ namespace PadForge.Services
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
-            // Automation (#597): the level first, so the switch turns the
+            // Automation (#600): the level first, so the switch turns the
             // host on at the level the file holds.
             var automationLevel = Automation.AutomationLevels.FromSaved(appSettings.AutomationLevel);
             _mainVm.Dashboard.AutomationLevel = automationLevel;
@@ -2587,7 +2610,7 @@ namespace PadForge.Services
             SettingsManager.EnableAutomation = appSettings.EnableAutomation;
             _mainVm.Dashboard.EnablePlugins = appSettings.EnablePlugins;
             SettingsManager.EnablePlugins = appSettings.EnablePlugins;
-            // The plugins the user added and the two built in (#597).
+            // The plugins the user added and the two built in (#600).
             _mainVm.Dashboard.LoadPluginSettings(appSettings.Plugins, appSettings.TestControllerOn,
                 appSettings.TestControllerValues, appSettings.ReplayOn, appSettings.ReplayRepeat);
             vm.EnableCommunityConfigLookup = appSettings.EnableCommunityConfigLookup;
@@ -4837,20 +4860,20 @@ namespace PadForge.Services
         private bool _accessCodeUnsavedOnLoad;
 
         /// <summary>Set when the load read the controller database section
-        /// as another one than the file holds (#597): a row this release now
+        /// as another one than the file holds (#600): a row this release now
         /// carries was dropped, or the file came from another build.
         /// Re-armed after the same post-load clear, so the file follows.</summary>
         private bool _controllerDatabaseChangedOnLoad;
 
         /// <summary>
         /// Takes the file's controller database section, or its absence, as
-        /// the one in force (#597). Every row is judged again against this
+        /// the one in force (#600). Every row is judged again against this
         /// release's baseline (<see cref="ControllerDatabaseSection.FromData"/>),
         /// which is the prune a new version owes: a row the new SDL carries
         /// itself goes. A section that cannot be read is no section. It is
         /// never the reason a settings file fails to load.
         /// </summary>
-        private void LoadControllerDatabase(ControllerDatabaseData stored)
+        private void LoadControllerDatabase(ControllerDatabaseData stored, ProfileData[] profiles)
         {
             ControllerDatabaseSection section = null;
             bool changed;
@@ -4866,7 +4889,11 @@ namespace PadForge.Services
             }
             SettingsManager.ControllerDatabase = section;
             // The user's own rows (#600), read by the paste's own checks.
-            ControllerDatabaseMine.Current = ControllerDatabaseMine.FromData(stored?.Mine, stored?.PutBack, out bool mineChanged);
+            // What a profile the file no longer holds was owed goes (#600).
+            var profileIds = new List<string>();
+            foreach (var profile in profiles ?? Array.Empty<ProfileData>())
+                if (!string.IsNullOrEmpty(profile?.Id)) profileIds.Add(profile.Id);
+            ControllerDatabaseMine.Current = ControllerDatabaseMine.FromData(stored?.Mine, stored?.PutBack, profileIds, out bool mineChanged);
             // Download From (#600): an address the file holds that PadForge
             // does not take, or not in the form it writes, puts the
             // community's back.
@@ -4877,6 +4904,7 @@ namespace PadForge.Services
             if (changed || mineChanged || !fromRead) _controllerDatabaseChangedOnLoad = true;
             _mainVm.Settings.RaiseControllerDatabaseStatus();
             _mainVm.Settings.RaiseControllerDatabaseAddress();
+            ControllerDatabaseController.SettingsReplaced(toDefaults: false);
         }
 
         // ─────────────────────────────────────────────
@@ -5009,7 +5037,7 @@ namespace PadForge.Services
                 if (SettingsManager.Profiles.Count > 0)
                     data.Profiles = SettingsManager.Profiles.ToArray();
 
-                // The controller database section (#597). None, and the
+                // The controller database section (#600). None, and the
                 // element is left out of the file.
                 data.ControllerDatabase = ControllerDatabaseSection.Compose(SettingsManager.ControllerDatabase, ControllerDatabaseMine.Current,
                     SettingsManager.ControllerDatabaseFrom);
@@ -6225,6 +6253,11 @@ namespace PadForge.Services
         //  Reset
         // ─────────────────────────────────────────────
 
+        /// <summary>Turns Reach PadForge From the Web and From This Network
+        /// off as their switches do (WebDoor.TurnOff, TurnNetworkOff), for
+        /// Reset to Defaults. Set by the window, which holds the door.</summary>
+        internal Action TurnWebDoorsOff { get; set; }
+
         /// <summary>
         /// Resets all settings to defaults. Clears all mappings and device records.
         /// </summary>
@@ -6261,7 +6294,7 @@ namespace PadForge.Services
             SettingsManager.SlotMappingSets =
                 new Engine.Data.MappingSet[Common.Input.InputManager.MaxPads];
             SettingsManager.PendingDefaultSnapshot = null;
-            // The downloaded controller database rows (#597): a fresh
+            // The downloaded controller database rows (#600): a fresh
             // install has none. The section is no part of AppSettingsData,
             // so the rebuild below does not reach it.
             SettingsManager.ControllerDatabase = null;
@@ -6272,6 +6305,7 @@ namespace PadForge.Services
             ControllerDatabaseController.ForgetAllMine();
             _mainVm.Settings.RaiseControllerDatabaseStatus();
             _mainVm.Settings.RaiseControllerDatabaseAddress();
+            ControllerDatabaseController.SettingsReplaced(toDefaults: true);
             // Sibling contract from RemoveUserProfile: every _userProfiles
             // mutation reloads the HM catalog, or the Extended profile
             // dropdown keeps serving the wiped imports for the session.
@@ -6366,6 +6400,22 @@ namespace PadForge.Services
             // language", which takes its own path.
             _mainVm.Settings.ResetLanguageToSystemDefault();
 
+            // The consent goes too (#600): a fresh install has allowed no
+            // program, no web assistant and no device to answer PadForge's
+            // questions. The three stores load from the file alone, never
+            // through LoadAppSettings, so the rebuild above does not reach
+            // them. It did turn Automation off, which closes every session
+            // (AutomationHost.Apply, AutomationSessions.OnLevel) and stops the
+            // web helper (WebDoor.OnHostChanged).
+            // The two web doors are turned off first, as their switches turn
+            // them off: the network door's reservation and firewall rule go
+            // with the port the store is about to forget.
+            TurnWebDoorsOff?.Invoke();
+            Automation.AutomationConsent.Shared.Load(null);
+            Automation.Web.WebAccessStore.Shared.Load(null);
+            WebAnswer.Shared.CancelPairing();
+            WebAnswer.Shared.Load(null);
+
             // 4. Profiles: back to the single built-in Default entry.
             var settingsVm = _mainVm.Settings;
             SettingsManager.EnableAutoProfileSwitching = false;
@@ -6411,7 +6461,11 @@ namespace PadForge.Services
         {
             if (File.Exists(_settingsFilePath))
             {
+                var mineBefore = ControllerDatabaseMine.Current;
                 LoadFromFile(_settingsFilePath);
+                // SDL follows the user's rows the file holds now (#600), as
+                // Remove Mine and Add Rows have it follow the page.
+                ControllerDatabaseController.FollowReloadedRows(mineBefore);
                 _mainVm.StatusText = Strings.Instance.Status_SettingsReloaded;
             }
             else
@@ -6461,11 +6515,14 @@ namespace PadForge.Services
         /// <summary>The line Manage Profiles shows for a profile left out of
         /// the pickers: HIDMaestro's reason and JSON path for a refused file,
         /// which HIDMaestro writes in English as it writes its exception
-        /// messages, or the missing descriptor. Null for no problem.</summary>
+        /// messages, the failure that kept the profile from its check, or the
+        /// missing descriptor. Null for no problem.</summary>
         internal static string DescribeUserProfileProblem(
             Common.Input.HMaestroProfileCatalog.UserProfileProblem problem)
         {
             if (problem == null) return null;
+            if (problem.CheckFailure != null)
+                return string.Format(Strings.Instance.ManageProfiles_ProblemNotChecked_Format, problem.CheckFailure);
             return problem.Refusal != null
                 ? string.Format(Strings.Instance.ManageProfiles_ProblemRefused_Format,
                     problem.Refusal.Reason, problem.Refusal.JsonPath)
@@ -6560,7 +6617,29 @@ namespace PadForge.Services
         /// </summary>
         public string AddUserProfile(string extractedJson, out string problem)
         {
-            problem = null;
+            var prepared = PrepareUserProfile(extractedJson);
+            problem = prepared?.Problem;
+            if (prepared == null || prepared.Problem != null) return null;
+            return StorePreparedUserProfile(prepared, null);
+        }
+
+        /// <summary>An import <see cref="PrepareUserProfile"/> checked and
+        /// nothing has stored yet: the id and JSON it is stored under, or
+        /// why HIDMaestro would leave it out of the pickers.</summary>
+        internal sealed class PreparedUserProfile
+        {
+            public string Id { get; init; }
+            public string Json { get; init; }
+            public string Problem { get; init; }
+        }
+
+        /// <summary>The first half of <see cref="AddUserProfile"/>: the id
+        /// suffix, the name and HIDMaestro's check, which loads every built-in
+        /// profile in a context of its own. It reads and changes no store, so
+        /// Manage Profiles runs it off the UI thread. Null when the JSON has
+        /// no id to store it by.</summary>
+        internal static PreparedUserProfile PrepareUserProfile(string extractedJson)
+        {
             if (string.IsNullOrWhiteSpace(extractedJson)) return null;
 
             string suffixed;
@@ -6597,19 +6676,41 @@ namespace PadForge.Services
             if (string.IsNullOrWhiteSpace(id)) return null;
 
             var refusal = Common.Input.HMaestroProfileCatalog.CheckUserProfile(suffixed);
-            if (refusal != null)
+            return new PreparedUserProfile
             {
-                problem = DescribeUserProfileProblem(refusal);
-                return null;
-            }
+                Id = id,
+                Json = suffixed,
+                Problem = refusal != null ? DescribeUserProfileProblem(refusal) : null,
+            };
+        }
 
+        /// <summary>The user profiles' JSONs as the catalog will read them once
+        /// <paramref name="prepared"/> is stored, in the store's order, for a
+        /// catalog built off the UI thread.</summary>
+        internal IReadOnlyList<string> UserProfileJsonsWith(PreparedUserProfile prepared)
+            => _userProfiles
+                .Where(p => !string.Equals(p.Id, prepared.Id, StringComparison.OrdinalIgnoreCase))
+                .Where(p => !string.IsNullOrWhiteSpace(p?.Json))
+                .Select(p => p.Json)
+                .Append(prepared.Json)
+                .ToList();
+
+        /// <summary>The second half of <see cref="AddUserProfile"/>, on the UI
+        /// thread: stores a profile <see cref="PrepareUserProfile"/> found no
+        /// problem with, publishes the catalog (<paramref name="built"/>, which
+        /// HMaestroProfileCatalog.Build made off the UI thread, or null to
+        /// build it here), marks the settings dirty and returns the id.</summary>
+        internal string StorePreparedUserProfile(PreparedUserProfile prepared,
+            Common.Input.HMaestroProfileCatalog.Built built)
+        {
             _userProfiles.RemoveAll(p =>
-                string.Equals(p.Id, id, StringComparison.OrdinalIgnoreCase));
-            _userProfiles.Add(new UserProfileData { Id = id, Json = suffixed });
+                string.Equals(p.Id, prepared.Id, StringComparison.OrdinalIgnoreCase));
+            _userProfiles.Add(new UserProfileData { Id = prepared.Id, Json = prepared.Json });
 
-            Common.Input.HMaestroProfileCatalog.Reload();
+            if (built != null) Common.Input.HMaestroProfileCatalog.Publish(built);
+            else Common.Input.HMaestroProfileCatalog.Reload();
             MarkDirty();
-            return id;
+            return prepared.Id;
         }
 
         /// <summary>The mark the import once wrote into an imported
@@ -6907,7 +7008,7 @@ namespace PadForge.Services
         public string Path { get; set; }
     }
 
-    /// <summary>One plugin the user added (#597).</summary>
+    /// <summary>One plugin the user added (#600).</summary>
     public class PluginData
     {
         /// <summary>The file: a program, or a script for a program Windows
@@ -7134,7 +7235,7 @@ namespace PadForge.Services
     }
 
     /// <summary>
-    /// The controller database section (#597): where and when the community
+    /// The controller database section (#600): where and when the community
     /// database was fetched, and the rows of it that are new or changed
     /// against what the release that stored them carries. The whole of the
     /// feature's state is here, in the one settings file.
@@ -7259,7 +7360,7 @@ namespace PadForge.Services
         public ProfileData[] Profiles { get; set; }
 
         /// <summary>The controller database rows fetched since this release
-        /// (#597). Null, and so left out of the file, until Update Now has
+        /// (#600). Null, and so left out of the file, until Update Now has
         /// stored a download and again once the row's reset has emptied it.
         /// A file from before the feature has no such element and loads the
         /// same way.</summary>
@@ -7600,7 +7701,7 @@ namespace PadForge.Services
         [XmlElement]
         public bool DiagnosticsLoggingEnabled { get; set; }
 
-        /// <summary>Keep the Last 60 Seconds (#597): the problem recorder
+        /// <summary>Keep the Last 60 Seconds (#600): the problem recorder
         /// holds the last minute in memory for Save the Last 60 Seconds.
         /// Written only while on.</summary>
         [XmlElement]
@@ -7608,7 +7709,7 @@ namespace PadForge.Services
         public bool ShouldSerializeProblemRecordingKeepLastMinute() => ProblemRecordingKeepLastMinute;
 
         /// <summary>A problem recording writes a keyboard's letter and
-        /// number keys that no mapping and no macro reads as one key (#597).
+        /// number keys that no mapping and no macro reads as one key (#600).
         /// Written only while on.</summary>
         [XmlElement]
         public bool ProblemRecordingHideTypedKeys { get; set; }
@@ -7684,7 +7785,7 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableAutoProfileSwitching { get; set; }
 
-        /// <summary>Automation's switch (#597): outside programs reach
+        /// <summary>Automation's switch (#600): outside programs reach
         /// PadForge through its pipes. Default false. A file from before it
         /// deserializes to false unless it held the old External Control
         /// switch on (<see cref="LegacyEnableExternalControl"/>), so nothing
@@ -7699,13 +7800,13 @@ namespace PadForge.Services
         [XmlElement]
         public int AutomationLevel { get; set; }
 
-        /// <summary>The Plugins extra's switch (#597): PadForge runs the
+        /// <summary>The Plugins extra's switch (#600): PadForge runs the
         /// plugins the user approved. Default false, and false in a file from
         /// before it.</summary>
         [XmlElement]
         public bool EnablePlugins { get; set; }
 
-        /// <summary>The plugins the user added (#597), in the order added:
+        /// <summary>The plugins the user added (#600), in the order added:
         /// each one's file, the name its devices' identity is made from, the
         /// name it gave, the SHA-256 the user approved and its switch.
         /// Written only when the list holds one.</summary>
@@ -7738,7 +7839,7 @@ namespace PadForge.Services
         public AnswerDeviceData[] AnswerDevices { get; set; }
         public bool ShouldSerializeAnswerDevices() => AnswerDevices != null && AnswerDevices.Length > 0;
 
-        /// <summary>The built-in Test Controller's switch (#597). Off, and
+        /// <summary>The built-in Test Controller's switch (#600). Off, and
         /// left out of the file, until the user turns it on.</summary>
         [XmlElement]
         public bool TestControllerOn { get; set; }
@@ -7753,7 +7854,7 @@ namespace PadForge.Services
         public PluginValueData[] TestControllerValues { get; set; }
         public bool ShouldSerializeTestControllerValues() => TestControllerValues != null && TestControllerValues.Length > 0;
 
-        /// <summary>The built-in Replay's switch (#597). The recording it
+        /// <summary>The built-in Replay's switch (#600). The recording it
         /// plays is picked in each session and never saved.</summary>
         [XmlElement]
         public bool ReplayOn { get; set; }
@@ -7765,7 +7866,7 @@ namespace PadForge.Services
         public bool ReplayRepeat { get; set; }
         public bool ShouldSerializeReplayRepeat() => ReplayRepeat;
 
-        /// <summary>The External Control switch of #366 as files before #597
+        /// <summary>The External Control switch of #366 as files before #600
         /// saved it: a launcher or script could switch profiles over the
         /// control pipe. Read, turned into Automation at Commands, which
         /// allows what the old switch allowed
@@ -7775,7 +7876,7 @@ namespace PadForge.Services
         public bool ShouldSerializeLegacyEnableExternalControl() => false;
 
         /// <summary>The <see cref="OpenCards"/> key of the External Control
-        /// card's fold, which the Profiles page had from 6.0 until #597.</summary>
+        /// card's fold, which the Profiles page had from 6.0 until #600.</summary>
         internal const string RetiredExternalControlFoldKey = "Profiles.ExternalControl";
 
         /// <summary>
@@ -8011,13 +8112,13 @@ namespace PadForge.Services
         public bool EnableProfileOverlay { get; set; } = true;
 
         /// <summary>Whether the flyout names a mapped device when it
-        /// disconnects (#597). Default off, so a file from before it reads
+        /// disconnects (#600). Default off, so a file from before it reads
         /// off.</summary>
         [XmlElement]
         public bool EnableDeviceDisconnectedNote { get; set; }
 
         /// <summary>Whether the flyout names a mapped device when it connects
-        /// (#597). Default off.</summary>
+        /// (#600). Default off.</summary>
         [XmlElement]
         public bool EnableDeviceConnectedNote { get; set; }
 
@@ -8114,10 +8215,11 @@ namespace PadForge.Services
         /// <summary>
         /// True after the v3 first-run cleanup wizard has been shown to the
         /// user, regardless of whether they accepted or declined. Prevents
-        /// the dialog from re-prompting on every launch. Defaults to false
-        /// on v2.x settings files (so v2 → v3 upgraders see the prompt
-        /// once); v3 fresh-install settings files start true since there
-        /// are no legacy drivers to clean up.
+        /// the dialog from re-prompting on every launch. A v2.x settings file
+        /// lacks the element and loads false, so a v2 to v3 upgrader sees the
+        /// prompt once. A start with no settings file sets it true
+        /// (SettingsService.LoadOrStartFresh), since a fresh install has no
+        /// legacy driver to clean up, and the first save writes it.
         /// </summary>
         [XmlElement]
         public bool LegacyDriverCleanupOffered { get; set; }
@@ -8307,7 +8409,7 @@ namespace PadForge.Services
             }
             LegacyEnableExternalControl = false;
             // The External Control card on the Profiles page folded until
-            // #597 and holds no setting now, so the key a file kept for the
+            // #600 and holds no setting now, so the key a file kept for the
             // open fold names nothing and goes at the next save.
             OpenCards?.Remove(RetiredExternalControlFoldKey);
             // A file from before the Controllers On or Off row (#600) has no
@@ -8798,7 +8900,7 @@ namespace PadForge.Services
         [XmlElement] public SwitchProfileMode ProfileShortcutMode { get; set; }
         [XmlElement] public string ProfileShortcutName { get; set; }
 
-        /// <summary>Problem Recording (#597): what the step does. Written
+        /// <summary>Problem Recording (#600): what the step does. Written
         /// only for a step that does something other than start or stop.</summary>
         [XmlElement] public ViewModels.ProblemRecordingMode ProblemRecordingMode { get; set; }
         public bool ShouldSerializeProblemRecordingMode() => ProblemRecordingMode != ViewModels.ProblemRecordingMode.Toggle;
@@ -9190,13 +9292,13 @@ namespace PadForge.Services
         public bool EnableProfileOverlay { get; set; } = true;
 
         /// <summary>Whether the flyout names a mapped device when it
-        /// disconnects (#597), the profile's own copy. Default off, so a
+        /// disconnects (#600), the profile's own copy. Default off, so a
         /// profile saved before it reads off.</summary>
         [XmlElement]
         public bool EnableDeviceDisconnectedNote { get; set; }
 
         /// <summary>Whether the flyout names a mapped device when it connects
-        /// (#597), the profile's own copy. Default off.</summary>
+        /// (#600), the profile's own copy. Default off.</summary>
         [XmlElement]
         public bool EnableDeviceConnectedNote { get; set; }
 

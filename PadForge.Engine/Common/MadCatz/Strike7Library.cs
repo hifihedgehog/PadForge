@@ -24,7 +24,7 @@ namespace PadForge.Engine.Common.MadCatz
 
     /// <summary>The applet library as the Strike 7 screen uses it: the
     /// library itself in the library host (<see cref="Strike7Library"/>),
-    /// and PadForge's side of it over the host's channel (#597).</summary>
+    /// and PadForge's side of it over the host's channel (#600).</summary>
     public interface IStrike7Library
     {
         string Path { get; }

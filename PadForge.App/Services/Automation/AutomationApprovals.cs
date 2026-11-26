@@ -92,7 +92,7 @@ namespace PadForge.Services.Automation
 
     /// <summary>
     /// Asks the user before a change a program must not make by itself, and
-    /// waits (#597). A call on a worker thread puts its question here and
+    /// waits (#600). A call on a worker thread puts its question here and
     /// awaits the answer. The interface shows what waits and answers through
     /// <see cref="Answer"/>, and a device the user paired answers through
     /// <see cref="AnswerNamed"/> on PadForge's own listener (#600). No

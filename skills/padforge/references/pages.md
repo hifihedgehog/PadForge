@@ -472,15 +472,15 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 ### Macros & Menus
 
 - Macros & Menus: section, free. `pad.section/Pad_Section_Macros`
-- Copy More: menu item, asks (SendsInput). `pad.menuitem/MacroListMoreButton/Common_Copy#Common_More`
+- Copy More: menu item, asks. `pad.menuitem/MacroListMoreButton/Common_Copy#Common_More`
 - Paste More: menu item, asks (SendsInput). `pad.menuitem/MacroListMoreButton/Common_Paste#Common_More`
 - Copy From… More: menu item, asks (SendsInput). `pad.menuitem/MacroListMoreButton/Pad_CopyFrom#Common_More`
 - Macros: part, free. `pad.part/Pad_Macros`
 - Menus: part, free. `pad.part/Pad_Menus`
 - Duplicate More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Common_Duplicate#Common_More`
-- Copy More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Common_Copy#Common_More`
-- Clear Trigger More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Macro_ClearTrigger#Common_More`
-- Remove More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Common_Remove#Common_More`
+- Copy More: menu item, asks. `pad.menuitem/MacroMoreButton/Common_Copy#Common_More`
+- Clear Trigger More: menu item, asks. `pad.menuitem/MacroMoreButton/Macro_ClearTrigger#Common_More`
+- Remove More: menu item, asks. `pad.menuitem/MacroMoreButton/Common_Remove#Common_More`
 - Duplicate More: menu item, asks (SendsInput). `pad.menuitem/MenuMoreButton/Common_Duplicate#Common_More`
 - Remove Last Cell More: menu item, asks (SendsInput). `pad.menuitem/MenuMoreButton/Menu_RemoveLastCell#Common_More`
 - Remove More: menu item, asks (SendsInput). `pad.menuitem/MenuMoreButton/Common_Remove#Common_More`
@@ -785,14 +785,14 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Settings: card, free. `devices.card/SettingsCard/Devices_SettingsCard`
 - Hide from Games (HidHide) (Settings): switch, asks (Drivers). `devices/HidingRows/Devices_HideFromGames`
 - Consume Mapped Inputs (Hooks) (Settings): switch, free. `devices/HidingRows/Devices_ConsumeMapped`
-- Move PadForge to Its Own Folder (Settings): action, asks (RunsProgram). `devices.action/HidingRows/ExeFolder_Move`
+- Move PadForge to Its Own Folder (Settings): action, asks (RunsProgram). `devices.action/TouchpadFolderNote/ExeFolder_Move`
 - Mouse DPI (Settings): setting, free. `devices/MouseDpiRows/Devices_MouseDpi`
 - min (Settings): setting, free. `devices/IdleRow/Common_Min`
 - Disconnect Bluetooth When Plugged In over USB (Settings): switch, free. `devices/PowerRows/Devices_QuickCharge`
 - Read Arrows One by One (Settings): switch, free. `devices/SettingsCard/Devices_NativeArrows`
 - Calibrate (Settings): action, free. `devices.action/GunRows/Devices_GunCalibrate`
 - Gun Calibration (Settings): setting, free. `devices/GunRows/Devices_GunCalibration`
-- Restore the Windows Driver (Settings): action, asks (UseOnly). `devices.action/DeviceTools/Devices_DriverRestore`
+- Restore the Windows Driver (Settings): action, asks (Drivers). `devices.action/DeviceTools/Devices_DriverRestore`
 - Read as iCade Controller (Settings): action, free. `devices.action/DeviceTools/Devices_ReadAsICade`
 - Read as Keyboard (Settings): action, free. `devices.action/DeviceTools/Devices_ReadAsKeyboard`
 - Read as Tekken Sticks (Settings): action, free. `devices.action/DeviceTools/Devices_UsioTekken`
@@ -1022,6 +1022,15 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Get the Picture: action, free. `dialog.action/ProfileDialog/GameLookGetButton/Profile_GameLook_GetPicture`
 - Polling Rate: choice, free, under More. `dialog/ProfileDialog/ProfileMore/ProfileDialog_PollingRate`
 
+### RecordingReviewView
+
+- RecordingReviewView: dialog, yours-alone. `dialog.dialog/RecordingReviewView/==RecordingReviewView`
+- Close: action, yours-alone. `dialog.action/RecordingReviewView/CloseButton/Common_Close`
+- Delete: action, yours-alone. `dialog.action/RecordingReviewView/DeleteButton/Review_Delete`
+- Copy Summary: action, yours-alone. `dialog.action/RecordingReviewView/CopySummaryButton/Review_CopySummary`
+- Save…: action, yours-alone. `dialog.action/RecordingReviewView/SaveButton/Review_Save`
+- Save and Post: action, yours-alone. `dialog.action/RecordingReviewView/SaveAndPostButton/Review_SaveAndPost`
+
 ### RegisterNfcTagDialog
 
 - NFC Tags: dialog, free. `dialog.dialog/RegisterNfcTagDialog/Nfc_Title`
@@ -1144,7 +1153,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 
 ### Tray menu
 
-- Show PadForge: menu item, free. `window.menuitem/Tray/Main_ShowPadForge`
+- Show PadForge: menu item, yours-alone. `window.menuitem/Tray/Main_ShowPadForge`
 - Mark the Recording: menu item, free. `window.menuitem/Tray/Tray_MarkRecording`
 - Exit: menu item, free. `window.menuitem/Tray/Tray_Exit`
 

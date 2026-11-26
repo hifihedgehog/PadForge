@@ -87,11 +87,14 @@ namespace PadForge.Tests
         /// <summary>The class guard. A full walk of the kernel's process
         /// records costs a few milliseconds on one PC and hundreds on another,
         /// so no production code takes one: it reads RunningProcessList.
-        /// Comment lines may name the calls.</summary>
+        /// A Process object's memory, handle and thread counts take the same
+        /// walk (Process.cs, EnsureState(HaveProcessInfo)), so they are
+        /// banned too. Comment lines may name the calls.</summary>
         [Fact]
         public void NoProductionCode_WalksTheKernelsProcessRecords()
         {
-            string[] banned = { "GetProcesses(", "GetProcessesByName(", "CreateToolhelp32Snapshot", "Process32First", "Process32Next" };
+            string[] banned = { "GetProcesses(", "GetProcessesByName(", "CreateToolhelp32Snapshot", "Process32First", "Process32Next",
+                ".WorkingSet64", ".PrivateMemorySize64", ".HandleCount", ".Threads" };
             var hits = new List<string>();
             foreach (string project in new[] { "PadForge.App", "PadForge.Engine" })
             {

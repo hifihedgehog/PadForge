@@ -2275,47 +2275,33 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
-                                    <!-- Under More: a gamepad's full readout, and on every
-                                         device its script ID with Copy and its controls by the
-                                         names scripts use (#600 item 26). A device whose
-                                         readout is the card's body has only the script ID
-                                         here, and More says so. -->
+                                    <!-- Under More: a gamepad's full readout, and its controls
+                                         by the names scripts use (#600 item 26). A device whose
+                                         readout is the card's body has only the names here, and
+                                         More says so. One with neither shows no More. Its
+                                         script ID stands in Details, which every device shows. -->
                                     <controls:MoreRow x:Name="TestMore" StateKey="Devices.TestInputs.More"
                                                       AutomationProperties.AutomationId="Devices_More_TestInputs"
                                                       Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}">
                                         <controls:MoreRow.Style>
                                             <Style TargetType="controls:MoreRow" BasedOn="{StaticResource {x:Type controls:MoreRow}}">
-                                                <Setter Property="Hint" Value="{Binding Devices_More_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Setter Property="Hint" Value="{Binding Devices_More_ScriptNames, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding ShowGamepadTest}" Value="True">
                                                         <Setter Property="Hint" Value="{Binding Devices_More_TestInputs, Source={x:Static strings:Strings.Instance}}"/>
                                                     </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding ShowGamepadTest}" Value="False"/>
+                                                            <Condition Binding="{Binding SelectedDevice.HasScriptControlNames}" Value="False"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </MultiDataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </controls:MoreRow.Style>
                                         <StackPanel>
                                             <Border x:Name="RawMoreHost"/>
-                                            <Grid x:Name="ScriptIdRow" Margin="0,6,8,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource DetailKey}" VerticalAlignment="Center"
-                                                           Text="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
-                                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.ScriptId, Mode=OneWay}"
-                                                               AutomationProperties.AutomationId="Devices_ScriptId"
-                                                               AutomationProperties.Name="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <TextBlock Text="{Binding SelectedDevice.ScriptIdNote}" FontSize="13" Margin="12,0,0,0" VerticalAlignment="Center"
-                                                               common:LiveText.Polite="True" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                                </StackPanel>
-                                                <Button Grid.Column="2" Style="{StaticResource DeviceButton}"
-                                                        Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"
-                                                        Command="{Binding SelectedDevice.CopyScriptIdCommand}"
-                                                        AutomationProperties.AutomationId="Devices_CopyScriptId"
-                                                        AutomationProperties.HelpText="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
-                                            </Grid>
                                             <TextBlock Text="{Binding SelectedDevice.ScriptControlNames, Mode=OneWay}" FontSize="13" TextWrapping="Wrap"
                                                        Margin="0,6,8,4" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        AutomationProperties.AutomationId="Devices_ScriptNames"
@@ -2481,7 +2467,7 @@
                                         <TextBlock Style="{StaticResource CardTitle}" FontSize="15"
                                                    LineHeight="21.75" LineStackingStrategy="BlockLineHeight"
                                                    Text="{Binding Devices_SettingsCard, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ui:Button x:Name="ResetAllSettingsButton" Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
+                                        <ui:Button x:Name="ResetAllSettingsButton" common:Reach.Class="Asks" common:Reach.Why="Drivers" Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
                                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
                                                    Command="{Binding ResetSettingsCardCommand}"
                                                    Visibility="{Binding HasResettableSettings, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -2595,10 +2581,13 @@
                                                    Visibility="{Binding SelectedDevice.ShowTouchpadCaptureStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         <!-- A touchpad's give-back runs PadForge as SYSTEM
                                              at boot, which it may only do from a folder
-                                             of PadForge's own (#597). While the folder
-                                             holds other files the row says so and offers
-                                             the move. -->
-                                        <StackPanel Margin="0,0,0,8">
+                                             of PadForge's own (#600). While the folder
+                                             holds other files, or PadForge could not keep
+                                             other programs from changing it, the row says
+                                             which and offers the move: the touchpad's row,
+                                             and its mouse collection's row, which shows
+                                             the same switch. -->
+                                        <StackPanel x:Name="TouchpadFolderNote" Margin="0,0,0,8">
                                             <StackPanel.Style>
                                                 <Style TargetType="StackPanel">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -2610,11 +2599,22 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </MultiDataTrigger>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding SelectedDevice.IsTouchpadMouse}" Value="True"/>
+                                                                <Condition Binding="{Binding IsShared, Source={x:Static services:ExeFolderState.Instance}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </StackPanel.Style>
                                             <TextBlock Text="{Binding ExeFolder_NeedsOwnFolder, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceSmall}"
-                                                       TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                       TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Visibility="{Binding HoldsOtherFiles, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <TextBlock Text="{Binding ExeFolder_CouldNotProtect, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceSmall}"
+                                                       TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Visibility="{Binding CouldNotProtect, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <Button common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Content="{Binding ExeFolder_Move, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
                                                     ToolTip="{Binding ExeFolder_MoveTip, Source={x:Static strings:Strings.Instance}}"
                                                     IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
@@ -2750,11 +2750,11 @@
                                     <StackPanel x:Name="DeviceTools" Margin="0,8,0,4"
                                                 Visibility="{Binding ShowDeviceTools, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <controls:FlexLinePanel Gap="8" LineGap="8">
-                                            <Button common:Reach.Class="Asks" common:Reach.Why="UseOnly" Content="{Binding DriverBindText}" Style="{StaticResource DeviceButton}"
-                                                    Click="DriverBind_Click"
+                                            <Button common:Reach.Class="Asks" common:Reach.Why="Drivers" Content="{Binding DriverBindText}" Style="{StaticResource DeviceButton}"
+                                                    Click="DeviceToolsDriverBind_Click"
                                                     Visibility="{Binding ShowDriverBind, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                            <Button common:Reach.Class="Asks" common:Reach.Why="UseOnly" Content="{Binding Devices_DriverRestore, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
-                                                    Click="DriverRestore_Click"
+                                            <Button common:Reach.Class="Asks" common:Reach.Why="Drivers" Content="{Binding Devices_DriverRestore, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                    Click="DeviceToolsDriverRestore_Click"
                                                     Visibility="{Binding ShowDriverRestore, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <Button Content="{Binding Devices_ReadAsICade, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
                                                     Click="ReadAsICade_Click"
@@ -2841,10 +2841,17 @@
                                                AutomationProperties.HeadingLevel="Level2"
                                                Text="{Binding Title}"/>
                                     <local:PluginSettingsView DataContext="{Binding Settings}" LabelWidth="170" CompactMargin="0"/>
-                                    <Button HorizontalAlignment="Right" MinHeight="34" Padding="14,0" Margin="0,8,0,0"
-                                            AutomationProperties.AutomationId="Devices_PluginResetAll"
-                                            Command="{Binding Settings.ResetAllCommand}"
-                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Style="{StaticResource ResetAllButton}" HorizontalAlignment="Right" Margin="0,8,0,0"
+                                               AutomationProperties.AutomationId="Devices_PluginResetAll"
+                                               Command="{Binding Settings.ResetAllCommand}"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}">
+                                        <ui:Button.ToolTip>
+                                            <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                <Binding Path="Title"/>
+                                                <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                            </MultiBinding>
+                                        </ui:Button.ToolTip>
+                                    </ui:Button>
                                 </StackPanel>
                             </Border>
 
@@ -2968,6 +2975,25 @@
                                                    Visibility="{Binding SelectedDevice.SdlGuid, Converter={StaticResource StringToVisibility}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_SdlGuid, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.SdlGuid, Mode=OneWay}"/>
+                                        </DockPanel>
+                                        <!-- The script ID (#600 item 26) on every device, a
+                                             remembered one that is not connected included,
+                                             which a script names too (AutomationDevices). -->
+                                        <DockPanel x:Name="ScriptIdRow" Margin="0,5">
+                                            <TextBlock Style="{StaticResource DetailKey}" VerticalAlignment="Center"
+                                                       Text="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Button DockPanel.Dock="Right" Style="{StaticResource DeviceButton}" Margin="12,0,0,0"
+                                                    Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"
+                                                    Command="{Binding SelectedDevice.CopyScriptIdCommand}"
+                                                    AutomationProperties.AutomationId="Devices_CopyScriptId"
+                                                    AutomationProperties.HelpText="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.ScriptId, Mode=OneWay}"
+                                                           AutomationProperties.AutomationId="Devices_ScriptId"
+                                                           AutomationProperties.Name="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock Text="{Binding SelectedDevice.ScriptIdNote}" FontSize="13" Margin="12,0,0,0" VerticalAlignment="Center"
+                                                           common:LiveText.Polite="True" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            </StackPanel>
                                         </DockPanel>
                                         <!-- Force Raw Joystick Mode: a gamepad row that
                                              is no source of PadForge's own (a web pad, a

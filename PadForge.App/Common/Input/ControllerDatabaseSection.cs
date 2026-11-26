@@ -24,7 +24,7 @@ namespace PadForge.Common.Input
     internal sealed record ControllerDatabaseStoredRow(ControllerDatabaseRow Row, ControllerDatabaseRowKind Kind, bool InUse);
 
     /// <summary>
-    /// The controller database section of PadForge.xml (#597): the rows of
+    /// The controller database section of PadForge.xml (#600): the rows of
     /// the community's current copy that are new or changed against what this
     /// release carries, and where and when they were fetched. Never changed
     /// once built. Update Now, the row's reset and a load replace the whole

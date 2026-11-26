@@ -12,8 +12,9 @@ namespace PadForge.Services.Plugins
     /// A plugin's <c>input</c> setting picked by pressing it (#600 item 17),
     /// the way a mapping row records its source (RecorderService): each
     /// device's state when the pick starts is its baseline, and the first
-    /// button pressed, hat turned or axis moved past half its travel from
-    /// there wins. The words are the recorder's: <c>Button 3</c>,
+    /// button pressed, hat turned or axis moved more than a quarter of its
+    /// travel from there, the recorder's threshold, wins. A stick resting at
+    /// its center is taken pushed either way. The words are the recorder's: <c>Button 3</c>,
     /// <c>Axis 1</c>, <c>Slider 0</c>, <c>POV 0</c>. A device's own setting
     /// listens to that device alone, a plugin's to every connected device.
     /// Ten seconds with no input ends the pick with nothing. One pick at a
@@ -25,6 +26,11 @@ namespace PadForge.Services.Plugins
     {
         internal const int TimeoutMs = 10_000;
         internal const int PollMs = 30;
+
+        /// <summary>How far an axis or a slider moves from its baseline to
+        /// be picked: RecorderService's AxisThreshold, a quarter of the
+        /// range.</summary>
+        internal const int AxisThreshold = 16384;
 
         /// <summary>The devices to listen to: connected ones with a state.
         /// A test gives its own.</summary>
@@ -76,9 +82,9 @@ namespace PadForge.Services.Plugins
             for (int i = 0; i < now.Povs.Length && i < before.Povs.Length; i++)
                 if (now.Povs[i] != before.Povs[i] && now.Povs[i] >= 0) return "POV " + i;
             for (int i = 0; i < now.Axis.Length && i < before.Axis.Length; i++)
-                if (Math.Abs(now.Axis[i] - before.Axis[i]) > 32767) return "Axis " + i;
+                if (Math.Abs(now.Axis[i] - before.Axis[i]) > AxisThreshold) return "Axis " + i;
             for (int i = 0; i < now.Sliders.Length && i < before.Sliders.Length; i++)
-                if (Math.Abs(now.Sliders[i] - before.Sliders[i]) > 32767) return "Slider " + i;
+                if (Math.Abs(now.Sliders[i] - before.Sliders[i]) > AxisThreshold) return "Slider " + i;
             return null;
         }
 

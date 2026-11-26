@@ -15,8 +15,28 @@ namespace PadForge.Tests
     /// the pattern DS4Windows ships (DualSenseDevice.cs). An idle frame
     /// claims nothing. The virtual pad's motor gate follows the same
     /// release rule so no consumer keeps a stale motor pair.</summary>
-    public class Ds5RumbleModeTests
+    ///
+    /// <para>The mirror is process-wide, and the poll pass reads it for
+    /// every slot a program's device is on (InputManager.PassTriggerEffects).
+    /// A capture with the trigger bits set holds an effect for its slot, so
+    /// these tests run in the statics' collection and forget each slot they
+    /// wrote. Left behind on slot 13, the capture handed
+    /// ProgramTriggerEffectPassTests a zeroed effect in place of a macro's.</para></summary>
+    [Collection("SettingsManagerStatics")]
+    public class Ds5RumbleModeTests : System.IDisposable
     {
+        // Every slot a test here writes, the theory's three included.
+        private static readonly int[] Pads = { 1, 2, 3, 10, 11, 12, 13, 14, 15 };
+
+        public void Dispose()
+        {
+            const System.Reflection.BindingFlags Static = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic;
+            var gate = typeof(UserEffectsDispatcher).GetField("s_externalStateLock", Static)!.GetValue(null);
+            var state = (System.Collections.IDictionary)typeof(UserEffectsDispatcher).GetField("s_externalState", Static)!.GetValue(null);
+            lock (gate)
+                foreach (int pad in Pads) state.Remove(pad);
+        }
+
         private const byte Legacy = 0x01;          // validFlag0 bit 0
         private const byte HapticsSelect = 0x02;   // validFlag0 bit 1
         private const byte Improved = 0x04;        // validFlag2 bit 2

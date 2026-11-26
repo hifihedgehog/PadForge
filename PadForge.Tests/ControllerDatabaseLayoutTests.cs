@@ -184,6 +184,32 @@ namespace PadForge.Tests
             Assert.False(ControllerDatabaseLayout.PlacementOf(Sdl("a:b0,dpup:b11"), out leftOut).DPad);
         }
 
+        /// <summary>A D-pad on four buttons is the placement's D-pad
+        /// buttons, up, down, left and right, and a direction on a hat that
+        /// is not the whole D-pad is left out and named.</summary>
+        [Fact]
+        public void ARowsDPadOnButtons_IsThePlacementsDPadButtons()
+        {
+            var placement = ControllerDatabaseLayout.PlacementOf(Sdl("a:b0,dpup:b12,dpdown:b13,dpleft:b14,dpright:b15"), out var leftOut);
+            Assert.False(placement.DPad);
+            Assert.Equal("Button 12", placement.DPadButton(0));
+            Assert.Equal("Button 13", placement.DPadButton(1));
+            Assert.Equal("Button 14", placement.DPadButton(2));
+            Assert.Equal("Button 15", placement.DPadButton(3));
+            Assert.Empty(leftOut);
+
+            placement = ControllerDatabaseLayout.PlacementOf(Sdl("a:b0,dpup:h0.1,dpdown:b13"), out leftOut);
+            Assert.False(placement.DPad);
+            Assert.Null(placement.DPadButton(0));
+            Assert.Equal("Button 13", placement.DPadButton(1));
+            Assert.Equal(new[] { "dpup" }, leftOut);
+
+            // The paste dialog names what is left out for a device SDL does not read.
+            var check = PadForge.Views.SdlMappingDialog.Verdict(PadForge.Views.SdlMappingDialog.Mode.Paste,
+                "03000000aa0b00001100000000000000,Pad,a:b0,lefty:a1~,platform:Windows,", null, out _, out _);
+            Assert.Contains(string.Format(PadForge.Resources.Strings.Strings.Instance.SdlMappingDialog_Detail_LeftOut_Format, "lefty"), check.Detail);
+        }
+
         // ── Remove Mine's rows ──
 
         /// <summary>A snapshot's sources join the row of their target, or

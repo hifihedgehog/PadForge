@@ -44,27 +44,46 @@ namespace PadForge.ViewModels
 
     /// <summary>One key on the Assistants on This Network row (#600 item
     /// 53), with its reach (#600 DESIGN-2 N3), Pick Devices… while it is
-    /// held to its own devices, and Revoke.</summary>
-    public sealed class NetworkKeyItem
+    /// held to its own devices, and Revoke. The row is kept while its key
+    /// is, and shows the store's change (<see cref="Show"/>), so a reach box
+    /// the user works in stays where it is.</summary>
+    public sealed class NetworkKeyItem : ObservableObject
     {
-        private readonly ProgramReach _reach;
+        private ProgramReach _reach;
         private readonly Action<string, ProgramReach> _setReach;
+        private string _name, _line;
+        private bool _first;
+        private ReachWords.Language _language;
 
         internal NetworkKeyItem(string id, string name, string line, bool first, Action<string> revoke,
-            ProgramReach reach = null, Action<string, ProgramReach> setReach = null, Func<string, ProgramReach, ProgramReach> pick = null)
+            ProgramReach reach = null, Action<string, ProgramReach> setReach = null, Func<string, string, ProgramReach, ProgramReach> pick = null)
         {
             Id = id;
-            Name = name;
-            _reach = reach;
             _setReach = setReach;
-            Line = reach == null ? line : line + " " + ReachWords.Line(reach);
-            IsFirst = first;
+            Show(name, line, first, reach);
             RevokeCommand = new RelayCommand(() => revoke?.Invoke(id));
             PickCommand = new RelayCommand(() =>
             {
-                var picked = pick?.Invoke(name, _reach ?? ProgramReach.OwnDevices);
+                var picked = pick?.Invoke(WebDoor.NetKey(id), Name, _reach ?? ProgramReach.OwnDevices);
                 if (picked != null) _setReach?.Invoke(id, picked);
             });
+        }
+
+        /// <summary>Shows the key as the store holds it now.</summary>
+        internal void Show(string name, string line, bool first, ProgramReach reach)
+        {
+            bool wasLimited = _reach != null;
+            _reach = reach;
+            SetProperty(ref _name, name, nameof(Name));
+            SetProperty(ref _line, reach == null ? line : line + " " + ReachWords.Line(reach), nameof(Line));
+            SetProperty(ref _first, first, nameof(IsFirst));
+            bool newWords = _language.Follow();
+            if (newWords) OnPropertyChanged(nameof(ReachChoices));
+            if (newWords || wasLimited != (reach != null))
+            {
+                OnPropertyChanged(nameof(SelectedReach));
+                OnPropertyChanged(nameof(IsLimited));
+            }
         }
 
         public IReadOnlyList<string> ReachChoices => ReachWords.Choices;
@@ -76,7 +95,7 @@ namespace PadForge.ViewModels
             get => _reach == null ? 0 : 1;
             set
             {
-                if (value == SelectedReach) return;
+                if (value is not (0 or 1) || value == SelectedReach) return;
                 _setReach?.Invoke(Id, value == 0 ? null : _reach ?? ProgramReach.OwnDevices);
             }
         }
@@ -92,39 +111,58 @@ namespace PadForge.ViewModels
         public string Id { get; }
 
         /// <summary>The name the user gave its key.</summary>
-        public string Name { get; }
+        public string Name => _name;
 
-        public string Line { get; }
+        public string Line => _line;
 
         /// <summary>Whether the row's label stands beside it.</summary>
-        public bool IsFirst { get; }
+        public bool IsFirst => _first;
 
         public string RevokeId => "Net_Revoke_" + Id;
 
         public RelayCommand RevokeCommand { get; }
     }
 
-    /// <summary>One allowed web assistant on the Assistants on the Web card.</summary>
-    public sealed class WebAllowedItem
+    /// <summary>One allowed web assistant on the Assistants on the Web card.
+    /// The row is kept while its grant is, and shows the store's change
+    /// (<see cref="Show"/>), so a reach box the user works in stays where
+    /// it is.</summary>
+    public sealed class WebAllowedItem : ObservableObject
     {
-        private readonly ProgramReach _reach;
+        private ProgramReach _reach;
         private readonly Action<string, ProgramReach> _setReach;
+        private string _origin, _line;
+        private ReachWords.Language _language;
 
         internal WebAllowedItem(string id, string origin, string line, Action<string> revoke,
-            ProgramReach reach = null, Action<string, ProgramReach> setReach = null, Func<string, ProgramReach, ProgramReach> pick = null)
+            ProgramReach reach = null, Action<string, ProgramReach> setReach = null, Func<string, string, ProgramReach, ProgramReach> pick = null)
         {
             Id = id;
-            Origin = origin;
-            _reach = reach;
             _setReach = setReach;
-            // Its reach (#600 DESIGN-2 N3), said as a network key's row says it.
-            Line = reach == null ? line : line + " " + ReachWords.Line(reach);
+            Show(origin, line, reach);
             RevokeCommand = new RelayCommand(() => revoke?.Invoke(id));
             PickCommand = new RelayCommand(() =>
             {
-                var picked = pick?.Invoke(origin, _reach ?? ProgramReach.OwnDevices);
+                var picked = pick?.Invoke(WebDoor.WebKey(id), Origin, _reach ?? ProgramReach.OwnDevices);
                 if (picked != null) _setReach?.Invoke(id, picked);
             });
+        }
+
+        /// <summary>Shows the grant as the store holds it now. Its reach
+        /// (#600 DESIGN-2 N3) is said as a network key's row says it.</summary>
+        internal void Show(string origin, string line, ProgramReach reach)
+        {
+            bool wasLimited = _reach != null;
+            _reach = reach;
+            SetProperty(ref _origin, origin, nameof(Origin));
+            SetProperty(ref _line, reach == null ? line : line + " " + ReachWords.Line(reach), nameof(Line));
+            bool newWords = _language.Follow();
+            if (newWords) OnPropertyChanged(nameof(ReachChoices));
+            if (newWords || wasLimited != (reach != null))
+            {
+                OnPropertyChanged(nameof(SelectedReach));
+                OnPropertyChanged(nameof(IsLimited));
+            }
         }
 
         public IReadOnlyList<string> ReachChoices => ReachWords.Choices;
@@ -136,7 +174,7 @@ namespace PadForge.ViewModels
             get => _reach == null ? 0 : 1;
             set
             {
-                if (value == SelectedReach) return;
+                if (value is not (0 or 1) || value == SelectedReach) return;
                 _setReach?.Invoke(Id, value == 0 ? null : _reach ?? ProgramReach.OwnDevices);
             }
         }
@@ -153,9 +191,9 @@ namespace PadForge.ViewModels
         public string Id { get; }
 
         /// <summary>The host its sign-in returned to: what it is named by.</summary>
-        public string Origin { get; }
+        public string Origin => _origin;
 
-        public string Line { get; }
+        public string Line => _line;
 
         public string RevokeId => "Web_Revoke_" + Id;
 
@@ -201,8 +239,10 @@ namespace PadForge.ViewModels
         /// the user canceled.</summary>
         internal Func<int, int?> AskPort { get; set; }
 
-        /// <summary>Pick Devices… on a key's row (#600 DESIGN-2 N3).</summary>
-        internal Func<string, ProgramReach, ProgramReach> PickReachDevices { get; set; }
+        /// <summary>Pick Devices… on a key's row and an allowed web
+        /// assistant's (#600 DESIGN-2 N3): the consent key its connections
+        /// carry, its name and its reach in, the reach picked out.</summary>
+        internal Func<string, string, ProgramReach, ProgramReach> PickReachDevices { get; set; }
 
         /// <summary>The user's level now, which caps a new key's.</summary>
         internal Func<AutomationLevel> UserLevel { get; set; } = () => AutomationLevel.ChangeSettings;
@@ -230,6 +270,9 @@ namespace PadForge.ViewModels
             ChangePortCommand = new RelayCommand(ChangePort);
             AddKeyCommand = new RelayCommand(AddKey);
             _door.Changed += (_, _) => Post(Refresh);
+            // A file read in, as at a Reload on Settings, gives the paste box
+            // the address it holds.
+            _store.Loaded += (_, _) => { _pastedStale = true; Post(Refresh); };
             Refresh();
         }
 
@@ -311,6 +354,9 @@ namespace PadForge.ViewModels
         /// masked.</summary>
         public bool HasRuntimeKey => _store.RuntimeKeyBlob != null;
 
+        /// <summary>Whether the door accepts a new web assistant now.</summary>
+        public bool IsArmed => _door.Armed;
+
         /// <summary>Why the key pasted was not kept, or the line under the
         /// box.</summary>
         public string RuntimeKeyLine => _door.RuntimeKeyWords ?? Strings.Instance.Web_ChatGpt_KeyHint;
@@ -323,6 +369,12 @@ namespace PadForge.ViewModels
             Refresh();
         }
 
+        /// <summary>The Tunnel ID last said to the box. Refresh says it again
+        /// only when the store's differs: the box sends its text on
+        /// LostFocus, and each change notice puts the store's text over what
+        /// the user is typing.</summary>
+        private string _tunnelIdShown;
+
         public string TunnelIdText
         {
             get => _store.TunnelId;
@@ -330,6 +382,7 @@ namespace PadForge.ViewModels
             {
                 if (_refreshing || value == _store.TunnelId) return;
                 _door.SetTunnelId(value);
+                _tunnelIdShown = _store.TunnelId;
                 OnPropertyChanged();
             }
         }
@@ -374,6 +427,10 @@ namespace PadForge.ViewModels
 
         public bool HasNetworkAddress => NetworkAddresses.Count > 0;
 
+        /// <summary>Whether the Address row says this PC has no private
+        /// address.</summary>
+        public bool ShowsNoAddress => !HasNetworkAddress && _store.NetworkPort != 0;
+
         private string _networkPortText;
         public string NetworkPortText { get => _networkPortText; private set => SetProperty(ref _networkPortText, value); }
 
@@ -406,7 +463,6 @@ namespace PadForge.ViewModels
         private void AddKey()
         {
             if (!_store.NetworkOn) return;
-            var s = Strings.Instance;
             var asked = AskNewKey?.Invoke(UserLevel());
             if (asked == null) return;
             string key = _door.AddNetworkKey(asked.Value.Name, asked.Value.Level);
@@ -440,7 +496,7 @@ namespace PadForge.ViewModels
             }
             catch (Exception ex) when (ex is ExternalException or InvalidOperationException)
             {
-                NetworkNote = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_NotCopied_Format, ex.Message);
+                NetworkNote = Strings.Instance.Extras_Automation_NotCopied;
             }
         }
 
@@ -451,18 +507,18 @@ namespace PadForge.ViewModels
             string port = _store.NetworkPort.ToString(CultureInfo.InvariantCulture);
             if (_door.HelperState == WebHelperState.WaitsForAutomation) return s.Net_Helper_AutomationOff;
             if (_door.HelperState == WebHelperState.Stopped)
-                return string.Format(culture, s.Net_Helper_Stopped_Format, _door.HelperWords ?? "?");
+                return string.Format(culture, s.Net_Helper_Retrying_Format, _door.HelperWords ?? "?");
             var state = _door.NetworkState;
             if (state != null && state.Port == _store.NetworkPort)
             {
                 switch (state.State)
                 {
                     case "taken": return string.Format(culture, s.Net_Port_Taken_Format, port);
-                    case "denied": return string.Format(culture, s.Net_Port_Denied_Format, port);
+                    case "denied": return string.Format(culture, s.Net_Port_NoReservation_Format, port);
                     case "failed": return string.Format(culture, s.Net_Port_Failed_Format, port);
                 }
             }
-            return s.Net_Note;
+            return s.Net_Note_Rule;
         }
 
         /// <summary>A key's line: its level, when it was made and when it was
@@ -488,23 +544,27 @@ namespace PadForge.ViewModels
         private void RefreshNetwork(Strings s, CultureInfo culture)
         {
             OnPropertyChanged(nameof(IsNetworkOn));
-            var addresses = NetworkDoor.PrivateAddresses().Select((a, i) => NetworkDoor.Address(a, _store.NetworkPort)).ToList();
+            // Before the first pick ends the port is 0: no address is
+            // listed, and the row does not say the PC has none.
+            var addresses = _store.NetworkPort == 0 ? new List<string>()
+                : NetworkDoor.PrivateAddresses().Select(a => NetworkDoor.Address(a, _store.NetworkPort)).ToList();
             if (!NetworkAddresses.Select(a => a.Address).SequenceEqual(addresses))
             {
                 NetworkAddresses.Clear();
                 for (int i = 0; i < addresses.Count; i++) NetworkAddresses.Add(new NetworkAddressItem(addresses[i], i == 0, CopyNetwork));
                 OnPropertyChanged(nameof(HasNetworkAddress));
             }
+            OnPropertyChanged(nameof(ShowsNoAddress));
             NetworkPortText = _store.NetworkPort == 0 ? string.Empty : _store.NetworkPort.ToString(CultureInfo.CurrentCulture);
             NetworkLine = NetworkLineNow(s, culture);
-            var keys = _store.Keys.Select((k, i) => new NetworkKeyItem(k.Id, k.Name, KeyLine(k, s, culture), i == 0, id => _door.RevokeNetworkKey(id),
-                k.Reach, (id, reach) => _door.SetKeyReach(id, reach), PickReachDevices)).ToList();
-            if (!NetworkKeys.Select(k => k.Id + k.Line + k.SelectedReach).SequenceEqual(keys.Select(k => k.Id + k.Line + k.SelectedReach)))
-            {
-                NetworkKeys.Clear();
-                foreach (var key in keys) NetworkKeys.Add(key);
-                OnPropertyChanged(nameof(HasNetworkKeys));
-            }
+            // A key's row is kept while the key is: a reach picked in the
+            // row changes the store, whose Changed reads it again here.
+            bool had = NetworkKeys.Count > 0;
+            RowSync.Sync(NetworkKeys, _store.Keys.ToList(), row => row.Id, k => k.Id,
+                (k, i) => new NetworkKeyItem(k.Id, k.Name, KeyLine(k, s, culture), i == 0, id => _door.RevokeNetworkKey(id),
+                    k.Reach, (id, reach) => _door.SetKeyReach(id, reach), (key, name, reach) => PickReachDevices?.Invoke(key, name, reach)),
+                (row, k, i) => row.Show(k.Name, KeyLine(k, s, culture), i == 0, k.Reach));
+            if (had != NetworkKeys.Count > 0) OnPropertyChanged(nameof(HasNetworkKeys));
         }
 
         // ── The switch ──
@@ -552,6 +612,7 @@ namespace PadForge.ViewModels
         public bool IsPaste => _store.Tunnel == "paste";
 
         private string _pasted;
+        private volatile bool _pastedStale;
         public string PastedAddress
         {
             get => _pasted;
@@ -594,7 +655,8 @@ namespace PadForge.ViewModels
         public bool HasAllowed => Allowed.Count > 0;
 
 
-        /// <summary>Reads the door again, at most once a second while the
+        /// <summary>Reads the door again: on the door's Changed, when the card
+        /// comes into view, and once a second while the card shows and the
         /// armed window runs.</summary>
         internal void Refresh()
         {
@@ -608,35 +670,56 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsChatGpt));
                 OnPropertyChanged(nameof(ShowsAddress));
                 OnPropertyChanged(nameof(HasRuntimeKey));
+                OnPropertyChanged(nameof(IsArmed));
                 OnPropertyChanged(nameof(RuntimeKeyLine));
-                OnPropertyChanged(nameof(TunnelIdText));
+                if (_store.TunnelId != _tunnelIdShown)
+                {
+                    _tunnelIdShown = _store.TunnelId;
+                    OnPropertyChanged(nameof(TunnelIdText));
+                }
                 OnPropertyChanged(nameof(Footnote));
                 RefreshNetwork(s, culture);
 
                 // The list: None, each tunnel program found, the ChatGPT
                 // tunnel, which PadForge fetches, An Address I Paste.
                 var want = new List<WebTunnelChoice> { new(null, s.Web_Tunnel_None) };
-                foreach (var found in _door.Found.Where(f => f.Key != TunnelClient.Key))
+                foreach (var found in _door.Found)
                     want.Add(new WebTunnelChoice(found.Key, WebTunnels.Of(found.Key)?.Name ?? found.Key));
                 want.Add(new WebTunnelChoice(TunnelClient.Key, WebTunnels.Of(TunnelClient.Key).Name));
                 // A program picked before and not found now stays listed.
                 if (_store.Tunnel is { } picked && picked != "paste" && picked != TunnelClient.Key && want.All(w => w.Key != picked) && WebTunnels.Of(picked) is { } gone)
                     want.Add(new WebTunnelChoice(gone.Key, gone.Name));
                 want.Add(new WebTunnelChoice("paste", s.Web_Tunnel_Paste));
-                if (!Tunnels.SequenceEqual(want))
+                bool rebuilt = !Tunnels.SequenceEqual(want);
+                if (rebuilt)
                 {
                     Tunnels.Clear();
                     foreach (var w in want) Tunnels.Add(w);
                 }
+                // A rebuilt list leaves the box with no pick, the one it had
+                // being gone from it, so it is told its pick again even when
+                // the choice compares equal.
                 var selected = Tunnels.FirstOrDefault(t => t.Key == _store.Tunnel) ?? Tunnels[0];
-                if (!Equals(selected, _tunnel)) { _tunnel = selected; OnPropertyChanged(nameof(SelectedTunnel)); }
-                if (_store.Tunnel == "paste" && _pasted == null) { _pasted = _store.Address; OnPropertyChanged(nameof(PastedAddress)); }
+                if (rebuilt || !Equals(selected, _tunnel)) { _tunnel = selected; OnPropertyChanged(nameof(SelectedTunnel)); }
+                // The box holds the address the store keeps until the user
+                // types, and again after the file is read in.
+                if (_pasted == null || _pastedStale)
+                {
+                    _pastedStale = false;
+                    if (_pasted != _store.Address) { _pasted = _store.Address; OnPropertyChanged(nameof(PastedAddress)); }
+                }
                 OnPropertyChanged(nameof(PasteNote));
                 OnPropertyChanged(nameof(HasPasteNote));
 
                 TunnelLine = Line(s, culture);
                 Address = _door.PublicAddress;
                 OnPropertyChanged(nameof(HasAddress));
+                // A Copy's note is about the address it copied.
+                if (_noteFor != null && _noteFor != Address)
+                {
+                    _noteFor = null;
+                    AddressNote = null;
+                }
 
                 bool armed = _door.Armed;
                 AcceptLine = armed
@@ -644,14 +727,13 @@ namespace PadForge.ViewModels
                     : s.Web_Accept_Off;
                 AcceptWords = armed ? s.Web_Accept_Stop : s.Web_Accept_Start;
 
-                var items = _store.Grants.Select(g => new WebAllowedItem(g.Id, g.Origin, AllowedLine(g, s, culture), id => _door.Revoke(id),
-                    g.Reach, (id, reach) => _door.SetGrantReach(id, reach), PickReachDevices)).ToList();
-                if (!Allowed.Select(a => a.Id + a.Line + a.SelectedReach).SequenceEqual(items.Select(a => a.Id + a.Line + a.SelectedReach)))
-                {
-                    Allowed.Clear();
-                    foreach (var item in items) Allowed.Add(item);
-                    OnPropertyChanged(nameof(HasAllowed));
-                }
+                // A grant's row is kept while the grant is, as a key's is.
+                bool had = Allowed.Count > 0;
+                RowSync.Sync(Allowed, _store.Grants.ToList(), row => row.Id, g => g.Id,
+                    (g, _) => new WebAllowedItem(g.Id, g.Origin, AllowedLine(g, s, culture), id => _door.Revoke(id),
+                        g.Reach, (id, reach) => _door.SetGrantReach(id, reach), (key, name, reach) => PickReachDevices?.Invoke(key, name, reach)),
+                    (row, g, _) => row.Show(g.Origin, AllowedLine(g, s, culture), g.Reach));
+                if (had != Allowed.Count > 0) OnPropertyChanged(nameof(HasAllowed));
             }
             finally
             {
@@ -659,22 +741,26 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Asks the helper to look for tunnel programs again: the
+        /// card calls it when it shows and when the Tunnel list opens.</summary>
+        internal void LookForTunnels() => _door.LookForTunnels();
+
         /// <summary>The Tunnel row's status line: the helper, then the tunnel
         /// picked, whether it keeps its address, and the others on this PC.</summary>
         private string Line(Strings s, CultureInfo culture)
         {
             if (_door.HelperState == WebHelperState.Stopped)
-                return string.Format(culture, s.Web_Helper_Stopped_Format, _door.HelperWords ?? "?");
+                return string.Format(culture, s.Web_Helper_Retrying_Format, _door.HelperWords ?? "?");
             if (_door.HelperState == WebHelperState.Starting) return s.Web_Helper_Starting;
             if (_door.HelperState == WebHelperState.WaitsForAutomation) return s.Web_Helper_AutomationOff;
             if (_store.Tunnel == "paste")
                 return string.Format(culture, s.Web_Tunnel_Paste_Hint_Format, _door.Port.ToString(CultureInfo.InvariantCulture));
             if (_store.Tunnel == TunnelClient.Key) return ChatGptLine(s, culture);
-            var others = _door.Found.Where(f => f.Key != _store.Tunnel && f.Key != TunnelClient.Key).Select(f => WebTunnels.Of(f.Key)).Where(k => k != null)
+            var others = _door.Found.Where(f => f.Key != _store.Tunnel).Select(f => WebTunnels.Of(f.Key)).Where(k => k != null)
                 .Select(k => string.Format(culture, k.KeepsAddress ? s.Web_Tunnel_Keeps_Format : s.Web_Tunnel_Changes_Format, k.Name)).ToList();
             string also = others.Count == 0 ? string.Empty : " " + string.Format(culture, s.Web_Tunnel_AlsoFound_Format, string.Join(", ", others));
             var kind = WebTunnels.Of(_store.Tunnel);
-            if (kind == null) return (_door.Found.Count == 0 ? s.Web_Tunnel_NoneFound : s.Web_Tunnel_Choose) + also;
+            if (kind == null) return (_door.Found.Count == 0 ? s.Web_Tunnel_NoProgramFound : s.Web_Tunnel_Choose) + also;
             var status = _door.Tunnel?.Key == kind.Key ? _door.Tunnel : null;
             string state = status?.State switch
             {
@@ -698,12 +784,12 @@ namespace PadForge.ViewModels
             var status = _door.Tunnel?.Key == TunnelClient.Key ? _door.Tunnel : null;
             return status?.State switch
             {
-                "ready" => s.Web_ChatGpt_Ready,
-                "running" => s.Web_ChatGpt_Running,
+                "ready" => s.Web_ChatGpt_ReadyReported,
+                "running" => s.Web_ChatGpt_NotReadyYet,
                 "needs" => s.Web_ChatGpt_Needs,
                 "stopped" => status.Words == null ? s.Web_Tunnel_Stopped : string.Format(culture, s.Web_Tunnel_Stopped_Format, status.Words),
                 "failed" => s.Web_Tunnel_Failed,
-                "missing" => s.Web_ChatGpt_Needs,
+                "missing" => s.Web_ChatGpt_Missing,
                 _ => _store.RuntimeKeyBlob == null || _store.TunnelId == null ? s.Web_ChatGpt_Needs : s.Web_Tunnel_Starting,
             };
         }
@@ -725,9 +811,13 @@ namespace PadForge.ViewModels
             return local.Date == _now().ToLocalTime().Date ? local.ToString("t", culture) : local.ToString("g", culture);
         }
 
+        /// <summary>The address the Copy note is about.</summary>
+        private string _noteFor;
+
         private void Copy(string text)
         {
             if (string.IsNullOrEmpty(text)) return;
+            _noteFor = text;
             try
             {
                 if (ClipboardSeam != null) ClipboardSeam(text);
@@ -736,7 +826,7 @@ namespace PadForge.ViewModels
             }
             catch (Exception ex) when (ex is ExternalException or InvalidOperationException)
             {
-                AddressNote = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_NotCopied_Format, ex.Message);
+                AddressNote = Strings.Instance.Extras_Automation_NotCopied;
             }
         }
 

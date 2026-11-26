@@ -79,7 +79,7 @@ namespace PadForge.Views
         /// <summary>Whether the flyout shows anything.</summary>
         public bool IsUp => _showing != Showing.Nothing;
 
-        /// <summary>Whether what it shows is a device note (#597).</summary>
+        /// <summary>Whether what it shows is a device note (#600).</summary>
         public bool IsShowingDeviceNote => _showing == Showing.DeviceNote;
 
         public Func<(bool anyInitializing, bool allReady)> CheckInitState { get; set; }
@@ -229,7 +229,7 @@ namespace PadForge.Views
             _dismissTimer.Start();
         }
 
-        /// <summary>Shows one line about a mapped device (#597): a device
+        /// <summary>Shows one line about a mapped device (#600): a device
         /// that disconnects under the offline line's glyph in its amber for
         /// four seconds, one that connects under the check in the green of
         /// Virtual Controllers Enabled for two (<see cref="DeviceNoteTime"/>).

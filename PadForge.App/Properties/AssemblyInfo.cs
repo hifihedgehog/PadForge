@@ -16,6 +16,9 @@ using System.Windows;
 // The audio/haptic services are internal by convention; the test project
 // exercises them (e.g. the #185 mirror engage gate) through this grant.
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("PadForge.Tests")]
+// The output-family probe (tools/OutputFamilyProbe) drives the same packers
+// and controllers the poll loop does.
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("OutputFamilyProbe")]
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None,

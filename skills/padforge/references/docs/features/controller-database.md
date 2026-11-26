@@ -76,7 +76,7 @@ On **Settings**, the **Updates** card holds the **Controller Database** row. Its
 **Update Now** downloads the community database from its own repository on GitHub, or from the address set under **Download From**, over HTTPS, only when you click it. PadForge keeps, in PadForge.xml, the rows this release lacks, with the time, the source and a SHA-256, and uses them at once (**In use at once.**).
 
 - A changed row replaces the community copy's row for that device, never SDL's own or PadForge's.
-- A new row is used only for a controller that nothing else reads as a gamepad, that is not assigned, and that is not in Force Raw Joystick Mode.
+- A new row is first used only for a controller that SDL reports as a gamepad or as no particular type, that nothing else reads as a gamepad, that is not assigned, and that is not in Force Raw Joystick Mode. Once in use, it stays in use after the controller is assigned.
 - A downloaded row maps no device's rows again.
 - A file is refused whole when it is over 4 MB or under 100 KB, not plain UTF-8 text, or missing more than a fifth of the rows PadForge knows: **PadForge refused the download because it is not the controller database it expects. Nothing changed.**
 

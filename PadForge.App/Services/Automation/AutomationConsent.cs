@@ -63,6 +63,16 @@ namespace PadForge.Services.Automation
         /// <summary>What it may drive and change (#600 DESIGN-2 N3), null
         /// for all of PadForge.</summary>
         public ProgramReach Reach { get; init; }
+
+        /// <summary>Whether the connection is a copy of PadForge.exe, an
+        /// assistant's helper or the command line, named by the program
+        /// that started it. Read from the connection, never kept.</summary>
+        public bool ThroughHelper { get; init; }
+
+        /// <summary>Whether Windows named no program for it, so its key is
+        /// the connection's process ID and nothing tells it from another
+        /// program. Never kept.</summary>
+        public bool Unknown { get; init; }
     }
 
     /// <summary>
@@ -97,6 +107,10 @@ namespace PadForge.Services.Automation
 
         /// <summary>Raised after the list changes.</summary>
         public event EventHandler Changed;
+
+        /// <summary>The arguments <see cref="Changed"/> carries when the
+        /// list was loaded from PadForge.xml, which holds it already.</summary>
+        internal static readonly EventArgs FromFile = new EventArgs();
 
         /// <summary>The programs allowed, in the order allowed.</summary>
         public IReadOnlyList<AllowedProgram> Programs
@@ -217,19 +231,29 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>Notes that a program connected, for the page's line and
-        /// for which goes first past the limit. Raises no change of its
-        /// own: the next save keeps it.</summary>
-        public void Used(string key, DateTimeOffset when)
+        /// for which goes first past the limit, with the signer read of its
+        /// file at this connection, so its row names the file as it is now.
+        /// A connection of another file under the key (the program inside
+        /// an npm package, which Covering keys by the package's row) leaves
+        /// the row's signer as it was. Raises no change of its own: the
+        /// next save keeps it.</summary>
+        public void Used(string key, DateTimeOffset when, string path = null, string signer = null)
         {
             lock (_sync)
             {
                 int at = _programs.FindIndex(p => p.Key == key);
-                if (at >= 0) _programs[at] = _programs[at] with { LastUsed = when };
+                if (at < 0) return;
+                var row = _programs[at];
+                bool sameFile = path != null && string.Equals(row.Path, path, StringComparison.OrdinalIgnoreCase);
+                _programs[at] = row with { LastUsed = when, Signer = sameFile ? signer : row.Signer };
             }
         }
 
         /// <summary>The list from PadForge.xml, in place of what was
-        /// held.</summary>
+        /// held. <see cref="Changed"/> carries <see cref="FromFile"/>, so a
+        /// listener that keeps the list unsaved can leave it, and the open
+        /// sessions of the programs work within the list loaded
+        /// (AutomationSessions.Reconcile).</summary>
         public void Load(IEnumerable<AllowedProgramData> saved)
         {
             lock (_sync)
@@ -249,7 +273,7 @@ namespace PadForge.Services.Automation
                     if (_programs.Count >= MostPrograms) break;
                 }
             }
-            Changed?.Invoke(this, EventArgs.Empty);
+            Changed?.Invoke(this, FromFile);
         }
 
         /// <summary>The list as PadForge.xml keeps it, or null when it is
@@ -269,9 +293,19 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>A program's key: its kind, its path and its script,
-        /// without regard to case, since Windows' paths have none.</summary>
-        internal static string KeyOf(string kind, string path, string script)
-            => kind + "|" + (path ?? string.Empty).ToUpperInvariant() + (string.IsNullOrEmpty(script) ? string.Empty : "|" + script.ToUpperInvariant());
+        /// without regard to case, since Windows' paths have none. A command's
+        /// words in place of a script keep their case.</summary>
+        internal static string KeyOf(string kind, string path, string script, bool scriptIsWords = false)
+            => kind + "|" + (path ?? string.Empty).ToUpperInvariant()
+               + (string.IsNullOrEmpty(script) ? string.Empty : "|" + (scriptIsWords ? script : script.ToUpperInvariant()));
+
+        /// <summary>Whether a key names the program's process number in
+        /// place of its file: <see cref="Identify"/> keys a process by
+        /// "?" and its number when Windows gave neither its path nor its
+        /// image name. No path holds a "?", so the mark is that one
+        /// character after the kind.</summary>
+        internal static bool NamesOnlyAProcess(string key)
+            => key != null && key.Contains("|?", StringComparison.Ordinal);
 
         // ─────────────────────────────────────────────
         //  Who a connection is
@@ -304,32 +338,44 @@ namespace PadForge.Services.Automation
             if (image != null && IsPadForge(path))
             {
                 // A helper of PadForge's own: the program behind it asks.
-                int parent = ParentOf(process.Id);
-                string parentPath = parent <= 0 ? null
-                    : ParentPathSeam != null ? ParentPathSeam(parent) : PadForge.Common.Input.ProcessImage.PathOf(unchecked((uint)parent));
+                int parent = ParentOf(process.Id, out string parentPath);
                 string name = kind == "assistant"
                     ? claimedName
                     : PadForge.Resources.Strings.Strings.Instance.Automation_Consent_CommandLine;
                 if (kind != "assistant") kind = "command-line";
+                // The program that started it ended before it was read, or
+                // Windows would not name it: it is a program nobody can name,
+                // keyed by the helper's process as any such program is, and
+                // never named as PadForge itself.
+                if (parent <= 0 || parentPath == null)
+                    return new AllowedProgram(KeyOf(kind, "?" + process.Id, null), string.IsNullOrWhiteSpace(name) ? null : name, kind,
+                        null, null, null, AutomationLevel.Commands) { ThroughHelper = true, Unknown = true };
                 // A program an interpreter runs is its script, as for a
                 // script that connects itself: one answer for node.exe must
                 // not cover every program node.exe runs.
-                string parentImage = parentPath == null ? null : System.IO.Path.GetFileName(parentPath);
-                string parentScript = parentImage != null && Interpreters.Contains(parentImage.ToLowerInvariant()) ? ScriptOf(parent, parentImage) : null;
-                // An assistant goes by its script alone, as its row keys it.
-                string key = kind == "assistant"
-                    ? AssistantIdentity.ConsentKey(new AssistantIdentity.Identity(parentPath ?? path, parentScript, null))
-                    : KeyOf(kind, parentPath ?? path, parentScript);
+                string parentImage = System.IO.Path.GetFileName(parentPath);
+                bool parentWords = false;
+                string parentScript = Interpreters.Contains(parentImage.ToLowerInvariant()) ? ScriptOf(parent, parentImage, out parentWords) : null;
+                // An assistant goes by its script alone, as its row keys it,
+                // when the script is a file named in full. A relative name
+                // or a command's words go with the interpreter that runs
+                // them.
+                string key = kind == "assistant" && parentScript != null && System.IO.Path.IsPathFullyQualified(parentScript)
+                    || kind == "assistant" && parentScript == null
+                    ? AssistantIdentity.ConsentKey(new AssistantIdentity.Identity(parentPath, parentScript, null))
+                    : KeyOf(kind, parentPath, parentScript, parentWords);
                 return new AllowedProgram(key,
                     string.IsNullOrWhiteSpace(name) ? ShortName(parentScript ?? parentPath) : name, kind,
-                    parentPath ?? path, parentScript, AuthenticodeSigner.Of(parentPath ?? path), AutomationLevel.Commands);
+                    parentPath, parentScript, AuthenticodeSigner.Of(parentPath), AutomationLevel.Commands)
+                { ThroughHelper = true };
             }
             string script = null;
+            bool words = false;
             if (image != null && Interpreters.Contains(image.ToLowerInvariant()))
-                script = ScriptOf(process.Id, image);
+                script = ScriptOf(process.Id, image, out words);
             string named = !string.IsNullOrWhiteSpace(claimedName) ? claimedName : ShortName(script ?? path);
-            return new AllowedProgram(KeyOf(kind, path ?? image ?? "?" + (process?.Id ?? 0), script), named, kind, path, script,
-                process?.Signer, AutomationLevel.Commands);
+            return new AllowedProgram(KeyOf(kind, path ?? image ?? "?" + (process?.Id ?? 0), script, words), named, kind, path, script,
+                process?.Signer, AutomationLevel.Commands) { Unknown = path == null && image == null };
         }
 
         private static string ShortName(string path)
@@ -353,14 +399,27 @@ namespace PadForge.Services.Automation
         /// <summary>Test seam: a process's parent, by its ID.</summary>
         internal static Func<int, int> ParentSeam;
 
+        /// <summary>Test seam: a process's start, by its ID, in
+        /// GetProcessTimes' units, in place of the one Windows keeps, so a
+        /// test can give a process's parent ID to a younger process.</summary>
+        internal static Func<int, long> StartSeam;
+
         /// <summary>The script a process runs: the first word after the
-        /// interpreter that names a file by its extension, with the
-        /// interpreter's own switches and their values (such as Python's
-        /// -X utf8 and PowerShell's -ExecutionPolicy Bypass) passed over.
+        /// interpreter that names a file by its extension, as the command
+        /// line wrote it, with the interpreter's own switches and their
+        /// values (such as Python's -X utf8 and PowerShell's
+        /// -ExecutionPolicy Bypass) passed over.
         /// PowerShell's -File names the script next. Python's -m names a
-        /// module, and -c or -Command runs words with no file.</summary>
-        internal static string ScriptOf(int processId, string image)
+        /// module. A run with no file, -c, -Command, -EncodedCommand or
+        /// none, is named by its words (<see cref="WordsOf"/>).</summary>
+        internal static string ScriptOf(int processId, string image) => ScriptOf(processId, image, out _);
+
+        /// <summary><see cref="ScriptOf(int, string)"/>, and whether what it
+        /// gives is a command's words, whose case the key keeps: Windows'
+        /// paths have no case, and a command's text has.</summary>
+        internal static string ScriptOf(int processId, string image, out bool words)
         {
+            words = false;
             string line = CommandLineSeam != null ? CommandLineSeam(processId)
                 : processId > 0 ? PadForge.Common.Input.Peripherals.OpenRgbServerPort.CommandLineOf(unchecked((uint)processId)) : null;
             var args = PadForge.Common.Input.Peripherals.OpenRgbServerPort.Split(line);
@@ -372,21 +431,58 @@ namespace PadForge.Services.Automation
                 {
                     // PowerShell's -File names the script next.
                     if ((a.Equals("-File", StringComparison.OrdinalIgnoreCase) || a.Equals("-f", StringComparison.OrdinalIgnoreCase)) && i + 1 < args.Count)
-                        return Full(args[i + 1]);
+                        return AsWritten(args[i + 1]);
                     // Python's -m names a module: no file.
                     if (a.Equals("-m", StringComparison.Ordinal) && i + 1 < args.Count) return "-m " + args[i + 1];
-                    if (a.Equals("-c", StringComparison.Ordinal) || a.Equals("-Command", StringComparison.OrdinalIgnoreCase)) return null;
+                    if (a.Equals("-c", StringComparison.Ordinal) || a.Equals("-Command", StringComparison.OrdinalIgnoreCase)) return WordsOf(args, out words);
                     continue;
                 }
                 // A switch's value, such as utf8 or Bypass, names no file.
                 if (!System.IO.Path.HasExtension(a)) continue;
-                return Full(a);
+                return AsWritten(a);
             }
-            return null;
+            return WordsOf(args, out words);
         }
 
-        private static string Full(string path)
+        /// <summary>How much of a command line's words a card and a row
+        /// show.</summary>
+        internal const int LongestWords = 200;
+
+        /// <summary>A run with no script file, named by the words of its
+        /// command line after the interpreter, as -m names a module: each
+        /// distinct command is its own program. Words past
+        /// <see cref="LongestWords"/> are cut and the rest named by a hash
+        /// of all of them, so two long commands are still told apart. Null
+        /// for a run with no words, the interpreter alone.</summary>
+        private static string WordsOf(IReadOnlyList<string> args, out bool isWords)
         {
+            isWords = args.Count > 1;
+            var words = new System.Text.StringBuilder();
+            for (int i = 1; i < args.Count; i++)
+            {
+                if (words.Length > 0) words.Append(' ');
+                string a = args[i];
+                if (a.Length == 0 || a.IndexOf(' ') >= 0) words.Append('"').Append(a).Append('"');
+                else words.Append(a);
+            }
+            if (words.Length == 0) return null;
+            string all = words.ToString();
+            string shown = ProgramDeviceDeclaration.Clean(all, LongestWords);
+            if (shown == all) return shown;
+            // Cut, or cleaned of characters that hide text: a hash of all of
+            // it keeps the key its own.
+            byte[] hash = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(all));
+            return shown + (all.Length > LongestWords ? "\u2026" : string.Empty) + " " + Convert.ToHexString(hash, 0, 8).ToLowerInvariant();
+        }
+
+        /// <summary>A script's path as the command line wrote it. A full
+        /// path is normalized. A relative one is left as it is: it names a
+        /// file in the client's own folder, which sits in the client's
+        /// memory and is never read, and PadForge's folder would name
+        /// another file.</summary>
+        private static string AsWritten(string path)
+        {
+            if (!System.IO.Path.IsPathFullyQualified(path)) return path;
             try { return System.IO.Path.GetFullPath(path); }
             catch (Exception) { return path; }
         }
@@ -416,24 +512,85 @@ namespace PadForge.Services.Automation
 
         private const uint PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
 
-        /// <summary>The process that started a process, read with a limited
-        /// query of that process alone, as .NET's Process.ParentProcessId
-        /// reads it (ProcessBasicInformation). 0 when it cannot be read.</summary>
-        internal static int ParentOf(int processId)
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GetProcessTimes(IntPtr process, out long creation, out long exit, out long kernel, out long user);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern bool QueryFullProcessImageNameW(IntPtr process, uint flags, char[] name, ref uint size);
+
+        private const int ERROR_INSUFFICIENT_BUFFER = 122;
+
+        /// <summary>
+        /// The process that started a process and its image's path, read
+        /// with limited queries, as .NET's Process.ParentProcessId reads the
+        /// ID (ProcessBasicInformation). Windows keeps that ID after the
+        /// parent ends and gives it to a later process, so a parent counts
+        /// only when it started before the child, as .NET's IsParentOf
+        /// judges one (Process.Win32.cs, StartTime before the child's), and
+        /// its start and path are read through one handle. 0 and a null path
+        /// when it is gone, younger, or cannot be read.
+        /// </summary>
+        internal static int ParentOf(int processId, out string path)
         {
-            if (ParentSeam != null) return ParentSeam(processId);
+            path = null;
+            if (ParentSeam != null)
+            {
+                int seen = ParentSeam(processId);
+                if (seen > 0) path = ParentPathSeam != null ? ParentPathSeam(seen) : PadForge.Common.Input.ProcessImage.PathOf(unchecked((uint)seen));
+                return seen;
+            }
             if (processId <= 0) return 0;
-            IntPtr handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, processId);
-            if (handle == IntPtr.Zero) return 0;
+            IntPtr child = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, processId);
+            if (child == IntPtr.Zero) return 0;
             try
             {
                 var info = new PROCESS_BASIC_INFORMATION();
-                if (NtQueryInformationProcess(handle, ProcessBasicInformation, ref info, Marshal.SizeOf<PROCESS_BASIC_INFORMATION>(), out _) != 0) return 0;
-                return unchecked((int)info.InheritedFromUniqueProcessId.ToUInt64());
+                if (NtQueryInformationProcess(child, ProcessBasicInformation, ref info, Marshal.SizeOf<PROCESS_BASIC_INFORMATION>(), out _) != 0) return 0;
+                int parent = unchecked((int)info.InheritedFromUniqueProcessId.ToUInt64());
+                if (parent <= 0 || !StartOf(child, processId, out long childStarted)) return 0;
+                IntPtr handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, parent);
+                if (handle == IntPtr.Zero) return 0;
+                try
+                {
+                    if (!StartOf(handle, parent, out long parentStarted) || !StartedBefore(parentStarted, childStarted)) return 0;
+                    path = ParentPathSeam != null ? ParentPathSeam(parent) : ImagePathOf(handle);
+                    return path == null ? 0 : parent;
+                }
+                finally
+                {
+                    CloseHandle(handle);
+                }
             }
             finally
             {
-                CloseHandle(handle);
+                CloseHandle(child);
+            }
+        }
+
+        /// <summary>Whether a process that started at
+        /// <paramref name="parentStarted"/> started before one that started
+        /// at <paramref name="childStarted"/>, both as GetProcessTimes gives
+        /// them.</summary>
+        internal static bool StartedBefore(long parentStarted, long childStarted) => parentStarted < childStarted;
+
+        /// <summary>When an open process started, read through its handle,
+        /// or what <see cref="StartSeam"/> gives for its ID.</summary>
+        private static bool StartOf(IntPtr handle, int processId, out long started)
+        {
+            if (StartSeam != null) { started = StartSeam(processId); return true; }
+            return GetProcessTimes(handle, out started, out _, out _, out _);
+        }
+
+        /// <summary>The image's full path of an open process, or null.</summary>
+        private static string ImagePathOf(IntPtr handle)
+        {
+            var buffer = new char[1024];
+            while (true)
+            {
+                uint size = (uint)buffer.Length;
+                if (QueryFullProcessImageNameW(handle, 0, buffer, ref size)) return new string(buffer, 0, (int)size);
+                if (Marshal.GetLastWin32Error() != ERROR_INSUFFICIENT_BUFFER || buffer.Length >= 32768) return null;
+                buffer = new char[buffer.Length * 4];
             }
         }
 

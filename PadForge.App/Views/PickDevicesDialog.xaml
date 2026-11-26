@@ -9,8 +9,8 @@
         Width="520">
 
     <!-- Pick Devices… (#600 DESIGN-2 N3): the devices a program held to its
-         own devices may also drive and change. A device it added is always
-         its own and is not listed. The user's alone: no program widens its
+         own devices may also drive and change. A device it added is its own
+         while it is connected, and is not listed then. The user's alone: no program widens its
          own reach. -->
     <views:DialogWindow.Foot>
         <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">

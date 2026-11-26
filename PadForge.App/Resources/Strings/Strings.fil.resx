@@ -299,6 +299,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Ipakita o Itago ang PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>I-on o I-off ang mga Virtual Controller</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Anumang nakakonektang device</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (hindi nakakonekta)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Device na wala sa pahina ng Mga Device</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Nagre-record…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kapag</value></data>
@@ -565,7 +567,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Pagbasa</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Pagpapadala ng Input</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Pagbabago ng Setting</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Maaaring magpalit ng profile at bitawan ito ang mga program, magsimula at huminto ng engine, mag-on at mag-off ng mga virtual controller, magpakita at magtago ng window, magsara ng PadForge, mag-save ng diagnostics snapshot at magtanong kung ano ang tumatakbo.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Maaaring magpalit ng profile at bitawan ito ang mga program, magsimula at huminto ng engine, mag-on at mag-off ng mga virtual controller, magpakita at magtago ng window, magsara ng PadForge, magtanong kung ano ang tumatakbo, mag-save ng diagnostics snapshot, at magsimula, huminto at magmarka ng problem recording.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Lahat ng nasa Mga Command, at nakikita ng mga program ang mga device, virtual controller, mapping, profile at setting, nasusundan ang mga input ng bawat device habang nangyayari ang mga ito, at nakakapagpakita sila sa iyo ng isang lugar sa PadForge. Nakikita ng program na nasa Pagbasa ang bawat key na pinindot sa bawat device, pati ang mga key na tinipa sa mga window na tumatakbo bilang administrator.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Lahat ng nasa Pagbasa, at maaaring magdagdag ng sarili nilang device ang mga program at patakbuhin ang mga ito, humawak ng kontrol ng alinmang device at magbigay ng mga pinangalanang value sa mga macro trigger.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Lahat ng nasa Pagpapadala ng Input, at maaaring baguhin ng mga program ang mga maaari mong baguhin sa mga page. Ang ilang pagbabago ay palaging nagtatanong muna sa iyo sa question card ng PadForge.</value></data>
@@ -578,7 +580,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Naghihintay sa Iyo</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktibidad</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>I-undo</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Hindi ito na-save ng PadForge: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Habang nakakonekta ang isang program na nasa Pagbasa o mas mataas, nakikita nito ang pinipindot sa bawat device, kasama ang mga keyboard.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Mga Plugin</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Patakbuhin ang mga Plugin</value></data>
@@ -598,7 +599,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Replay)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Mga recording ng problema|*.zip;*.log|Lahat ng file|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>Hindi mapatugtog ng PadForge ang {0}. Hindi ito recording ng problema, o wala itong input ng anumang device.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>Hindi mapapatugtog ng PadForge ang {0}. Hindi ito problem recording na mababasa ng PadForge.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>Hindi mapapatugtog ng PadForge ang {0}. Mahigit {1} device ang laman nito, at {1} lang ang pinapatugtog ng Replay.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>Hindi mapapatugtog ng PadForge ang {0}. Walang input ng anumang device ang laman nito.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>Hindi mabasa ng PadForge ang {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Mga Plugin Mo</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Magdagdag ng Plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Mga program at script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Lahat ng file|*.*</value></data>
@@ -612,8 +616,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Huminto matapos ang limang sunod na pagkabigo</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Hindi nagsimula: wala na ang file</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Hindi nagsimula: walang program ang Windows para sa ganitong uri ng file</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Hindi nagsimula: walang program na nagbubukas ng mga Python file para sa iyo, at walang makitang py launcher ang PadForge</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Hindi nagsimula: hindi mabasa ng PadForge kung aling program ang nagbubukas ng ganitong uri ng file para sa iyo</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Hindi nagsimula: wala sa PC na ito ang program na nagbubukas ng ganitong uri ng file para sa iyo</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Hindi nagsimula: walang desktop shell na mapagsisimulan nito</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Hindi nagsimula: may karapatan ng administrator ang desktop shell, kaya magkakaroon din nito ang plugin</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Hindi nagsimula: hindi mabasa ng PadForge kung magkakaroon ito ng karapatan ng administrator</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Hindi nagsimula: binigyan ito ng Windows ng karapatan ng administrator, kaya tinapos ito ng PadForge bago tumakbo</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Hindi nagsimula: humihingi ito ng karapatan ng administrator</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Hindi nagsimula: tumanggi ang Windows na may error na {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Hindi nagsimula</value></data>
@@ -641,6 +650,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Idinagdag: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Nilagdaan ng {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Hindi nilagdaan.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Lumalabas dito ang mga setting nito habang tumatakbo ito.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Wala itong idinedeklarang setting.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Lalabas dito ang mga setting nito kapag nakakonekta na ito sa PadForge.</value></data>
@@ -743,8 +753,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Bersyong hindi alam ng PadForge ang gamit ng program</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Hindi ibinigay ng PadForge ang plugin key na iyon</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Hindi tinanggap ng PadForge ang koneksyon ng program na ito</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Walang ginawang device ang PadForge, dahil hindi pinangalanan ng Windows ang file ng program</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Humiling muli nang masyadong maaga</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Wala nang karagdagan nito hangga't hindi muling nagsisimula ang PadForge</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Masyadong marami nito na ginawa ng mga program ang naghihintay ng iyong review sa Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Walang ganoong tool ang PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Mas lumang estado ang nabasa ng program</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Walang may ganoong ID</value></data>
@@ -752,6 +763,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Hindi mo ito pinayagan</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Walang sumagot sa takdang oras</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Naghihintay sa sagot mo</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Hindi mo pa nasasagot</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Walang ganoong request</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Walang ipapawalang-bisa</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ikaw lang ang makakapagbago nito</value></data>
@@ -867,6 +879,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Hindi nilagdaan.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Sa Pagbasa at mas mataas, nakikita nito ang bawat key na pinindot sa bawat device, pati ang mga keyboard.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Isang beses lang itong nagtatanong. Maaari mo itong alisin sa page ng Awtomasyon.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Sinimulan ng program na hindi matukoy ng PadForge.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>Hindi matukoy ng PadForge kung alin ang program na ito sa iba, kaya magtatanong ulit ito sa susunod na koneksyon nito.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>command line ng PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Itinatakda ang {0} sa {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Nakikinig sa network, kaya maaabot ng ibang device ang PC na ito.</value></data>
@@ -882,7 +896,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Dalhin ang Isang Profile</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Mag-import ng profile file mula sa ibang program, tapos tingnan kung ano ang nakarating.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} beses</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ang huli sa {1} na ganito</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Mga AutoHotkey v2 Script (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -912,6 +925,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Walang Logitech G-key SDK sa makinang ito. Kasama itong ini-install ng Logitech Gaming Software 8.55 o mas bago.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>Nakarehistro ang G-key SDK pero nawawala ang file nito. I-install muli ang Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Nakita ang G-key SDK pero hindi ito ma-load.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Nakita ang G-key SDK pero hindi ito na-load, dahil hindi makumpirma ng PadForge na mga administrator lang ang makakabago nito at na nilagdaan ito ng Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Hindi ang G-key SDK na inaasahan nito ang library na iyon.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Tumangging magsimula ang G-key SDK. Kadalasan, hindi tumatakbo ang Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Nakakonekta, wala pang nakitang key. Sa Logitech Gaming Software, i-drag ang G-key command papunta sa bawat key sa profile ng PadForge, at gawing persistent ang profile na iyon. Kailangan ding wala sa on-board memory mode ang mouse na G600 o G300.</value></data>
@@ -1016,14 +1030,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Awtomatikong simulan ang PadForge kapag nag-sign in ka sa Windows. Habang naka-on ito, nagsisimula rin ang PadForge nang walang prompt ng Windows mula sa isang shortcut, isang script o ibang program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Tumatakbo ang PadForge mula sa {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Kailangan nito na nasa sarili nitong folder ang PadForge. May iba pang file ang folder nito, kaya hindi mapipigilan ng PadForge ang ibang program na baguhin ito.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Kailangan nito na nasa folder ang PadForge na hindi mababago ng ibang program. Hindi napigilan ng PadForge ang ibang program na baguhin ang folder nito.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Ilipat ang PadForge sa Sarili Nitong Folder</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kinokopya ang PadForge at ang mga setting nito sa Program Files, itinuturo roon ang mga task nito, at sinisimulan ito mula roon. Nananatili ang kopya rito.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: may mga file ang {0} na hindi sa PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>In-off ang Magsimula sa pag-login, dahil pinatatakbo nito ang PadForge mula sa folder na may iba pang file.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>Hindi lumipat ang PadForge: walang pinangalanang Program Files folder ang Windows.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito mabasa ang PadForge na tumatakbo.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito magawa ang {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito mabasa kung ano ang laman ng {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito napigilan ang ibang program na baguhin ang {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi tumugma sa PadForge na tumatakbo ang kopya nito sa {0}.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: pagkatapos ng kopya, may mga file ang {0} na hindi sa PadForge, o mababago ito ng ibang program.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil wala na ang PadForge na pinatakbo nito.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil hindi napigilan ng PadForge ang ibang program na baguhin ang folder kung saan nito pinatakbo ang PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil hindi mabasa ng PadForge kung aling PadForge ang pinatakbo nito.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil hindi mabasa ng PadForge ang folder ng PadForge na pinatakbo nito.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Hindi magawa ng PadForge ang protektadong folder nito, ang {0}. Doon itinatago ng PadForge ang mga library na pinatatakbo nito nang may karapatan ng administrator, at hindi ito makakapagsimula nang ligtas kung wala ito.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Hindi muling masimulan ng PadForge ang sarili nito mula sa protektadong folder nito, ang {0}. Tumatakbo lang ang PadForge nang may karapatan ng administrator mula roon, kaya hindi ito nagsimula.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>Hindi magawa ng PadForge ang lock na nagpapanatili dito sa isang tumatakbong kopya lang, kaya hindi ito nagsimula.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Tumatakbo ang PadForge nang may karapatan ng administrator mula sa {0}, isang folder na maaaring baguhin ng ibang program. Maaari nilang baguhin doon ang mga setting ng PadForge, at kumikilos ang PadForge sa mga ito gamit ang mga karapatan nito.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Tumatakbo ang PadForge nang may karapatan ng administrator mula sa {0}, isang folder na may iba pang file. Hindi mapipigilan ng PadForge ang ibang program na baguhin doon ang mga setting nito, at kumikilos ito sa mga iyon gamit ang mga karapatan nito.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Tumatakbo ang PadForge nang may karapatan ng administrator mula sa {0}, isang folder na hindi nito nabasa. Hindi mapipigilan ng PadForge ang ibang program na baguhin doon ang mga setting nito, at kumikilos ito sa mga iyon gamit ang mga karapatan nito.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Laging ipakita sa system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Panatilihing nakikita ang tray icon habang bukas ang window, kaya isang click lang ang layo ng Lumabas sa menu nito.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
@@ -1038,7 +1067,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>I-install at i-restart</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Release notes</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database ng Controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Dina-download ng I-update Ngayon ang database ng controller ng komunidad (SDL_GameControllerDB) mula sa GitHub, o mula sa address na itinakda sa ilalim ng Higit pa, at itinatago, sa settings file, ang mga mapping na kulang sa bersyong ito ng PadForge. Ginagamit agad ang mga ito. Mula sa ibang address, mga bagong mapping lang ang itinatago nito. Ginagamit lang ang bagong mapping para sa controller na wala nang ibang nagbabasa bilang gamepad, na hindi naka-assign at wala sa Pilitin ang Raw Joystick Mode (Laktawan ang Gamepad Remapping). Inaalis ng reset ang bawat na-download na mapping at nagda-download ulit mula sa GitHub. Nananatili ang sarili mong mga row, sa ilalim ng Higit pa.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Dina-download ng I-update Ngayon ang database ng controller ng komunidad (SDL_GameControllerDB) mula sa GitHub, o mula sa address na itinakda sa ilalim ng Higit pa, at itinatago, sa settings file, ang mga mapping na kulang sa bersyong ito ng PadForge. Ginagamit agad ang mga ito. Mula sa ibang address, mga bagong mapping lang ang itinatago nito. Ginagamit lang muna ang bagong mapping para sa controller na iniuulat ng SDL bilang gamepad o bilang walang partikular na uri, na wala nang ibang nagbabasa bilang gamepad, na hindi naka-assign at wala sa Pilitin ang Raw Joystick Mode (Laktawan ang Gamepad Remapping). Kapag ginagamit na, patuloy itong ginagamit pagkatapos ma-assign ang controller. Inaalis ng reset ang mga na-download na mapping at ibinabalik ang Pagkukunan ng Download sa file ng komunidad, na dina-download ng susunod na I-update Ngayon. Nananatili ang sarili mong mga row, sa ilalim ng Higit pa.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>I-update Ngayon</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Nag-a-update…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Tumitingin ng mga update…</value></data>
@@ -1071,9 +1100,12 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Built-in: {1} mapping, kopya ng komunidad noong {2}. Na-download noong {3} mula sa {4}: {0} bagong row.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Built-in: {1} mapping, kopya ng komunidad noong {2}. Na-download noong {3} mula sa {4}: {0} bagong row.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Walang nagbago sa database ng komunidad mula sa huling update.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Walang nagbago sa file sa {0} mula sa huling update.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Hindi maabot ang GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Hindi maabot ang {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Tinanggihan ng PadForge ang download dahil hindi ito ang database ng controller na inaasahan nito. Walang nagbago.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>Tinanggihan ng PadForge ang sagot ng GitHub. Walang nagbago.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>Tinanggihan ng PadForge ang sagot mula sa {0}. Walang nagbago.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Magsimulang naka-minimize</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Magsimula sa pag-login</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1116,6 +1148,14 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Setting ng service</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Hakbang sa pag-alis</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Service</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>File</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Upper filter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registry value</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardware ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Scheduled task</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Entry ng mga naka-install na app</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP device</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Nagpapakonekta sa mga PlayStation 3 controller, sa PlayStation Move at sa Navigation controller sa pamamagitan ng Bluetooth. Nakapaloob sa PadForge at ini-install sa unang pag-pair ng isa sa mga ito.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Nagkokonekta ng mga PlayStation 3 controller sa Bluetooth.</value></data>
@@ -1184,6 +1224,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Na-save ang {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Hindi nagsimula ang pag-record. May nakitang pribadong value ng PC na ito na hindi maitatago sa file.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Hindi nagsimula ang pag-record. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>Walang nakitang temp folder ng naka-sign in na user ang PadForge sa loob ng profile ng user, na naaabot nang walang link, para pagsulatan ng recording.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Link sa ibang lugar ang folder ng mga recording, na hindi sinusundan ng PadForge.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Tinatapos pa ang huling recording.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Naka-off ang Itago ang Huling 60 Segundo, kaya walang mase-save.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Naghihintay sa iyo sa Home na basahin ang recording na hindi pa naihinto ng PadForge: {0}</value></data>
@@ -1197,7 +1239,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>Ang PadForge, Windows, ang mga device at setting mo sa kasalukuyan, sa parehong pagsusuri.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log sa tabi ng PadForge.exe, na mababasa mo roon.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ano ang Ire-record</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Lahat ay naka-on. Ang bahaging pinatay ay hindi isasama sa susunod na recording, at sinasabi ng file kung aling mga bahagi ang laman nito.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Naka-on ang bawat bahagi bilang default. Ang bahaging pinatay ay hindi isasama sa susunod na recording, at sinasabi ng file kung aling mga bahagi ang laman nito.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Para sa problemang isang beses lang dumarating kada gabi.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Naghihintay ang recording na basahin mo ito sa Home.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Buod</value></data>
@@ -1248,6 +1290,17 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>I-save ang Recording</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Mga zip file</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Hindi na-save. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Scrub check: sinusuri ang mga bahaging itinatago mo…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Scrub check: hindi mabasa ng PadForge ang mga bahaging itinatago mo, kaya mananatiling naka-off ang I-save.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Hindi nagsimula ang pag-save gamit ang iyong mga karapatan.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Hindi nagsimula ang pag-save gamit ang iyong mga karapatan: walang desktop shell na tumatakbo para pagsimulan nito.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Hindi nagsimula ang pag-save gamit ang iyong mga karapatan: tumanggi ang Windows na may error {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Hindi natapos ang pag-save sa loob ng {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Hindi pinayagan ng Windows na maisulat doon ang file.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>Hindi tinanggap ng PadForge ang file na ito bilang sarili nitong recording.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Natapos ang pag-save na may code {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Sine-save bilang ikaw, sa folder ng Downloads mo sa unang pagkakataon, tapos sa huling pinag-saveng lugar, at ipinapakita sa File Explorer. Ang recording na humihinto habang walang nasa page (ang limitasyon nito, isang macro, isang program, ang assistant tool o --record stop) ay naghihintay ng pagsusuring ito sa Home, at binubura pagkalipas ng 7 araw kung hindi na-save. Sinasabihan ang isang program na naghihintay ito, ngunit hindi kung saan.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Naghihintay sa iyo ang recording ng problema mula {0} para basahin.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Suriin</value></data>
@@ -1921,9 +1974,18 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Nabigo ang pagbasa: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Tinanggihan ng HIDMaestro ang preset na ito sa {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Walang HID descriptor ang preset na ito, kaya walang controller na magagawa mula rito.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>Hindi masuri ng PadForge ang preset na ito: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Sinusuri ang preset…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Walang na-import. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>I-import</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID device na walang pangalan)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Multi-axis na controller</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>May {0} HID interface na natagpuan.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>May 1 HID interface na natagpuan.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Nabigo ang enumeration: {0}</value></data>
@@ -3042,7 +3104,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Habang Hawak at Gitna</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>I-toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input ng Pagpipihit</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ang button na nagpapahintulot sa mouse na magpihit, sa parehong device ng source. Kapag walang napili, palaging nagpipihit ang mouse.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ang button na nagpapahintulot sa mouse na magpihit, sa alinmang device ng slot na ito. Kapag walang napili, palaging nagpipihit ang mouse.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Smoothing</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Pinapantay ang mouse na hindi pantay mag-ulat. Nahuhuli ang stick sa kamay nang ganito katagal. Naka-off ang 0.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock sa Bilis</value></data>
@@ -3063,7 +3125,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Magsimula Kung Saan Nagsimula ang Pagpipihit</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Kapag may Input ng Pagpipihit, sumusukat ang stick mula sa kinaroroonan ng pointer nang magsimula ang pagpipihit, gaya ng stick sa screen ng telepono na nagsisimula kung saan dumapo ang daliri. Kapag naka-off, sumusukat ito mula sa gitna ng monitor ng pointer.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Relatibong gumagalaw ang axis na ito</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Para sa trackball o spinner na nag-uulat kung gaano kalayo ang naikot nito. Kapag naka-on, humahawak ang axis ng posisyon gaya ng ginagawa ng Mouse Travel at tinatanggap nito ang mga setting ng galaw. Hindi sinasabi ng Windows kung aling mga axis ang gumagalaw nang ganito.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Para sa trackball o spinner na nag-uulat kung gaano kalayo ang naikot nito. Kapag naka-on, humahawak ang axis ng posisyon gaya ng ginagawa ng Galaw ng Mouse at tinatanggap nito ang mga setting ng galaw. Binabasa ng SDL ang generic na controller sa pamamagitan ng DirectInput, na binabasa ang bawat axis bilang posisyon, kaya sinasabi ng switch na ito kung aling mga axis ang gumagalaw nang ganito.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Preview</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ipinapakita kung paano sinusundan ng pamilyang ito ang sarili mong mouse. Walang namamapa hangga't hindi mo ito pinipili.</value></data>
@@ -3189,6 +3251,13 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
 {0}
 
 Isinulat ng PadForge ang mga detalye sa crash.log sa tabi ng PadForge.exe. Para iulat ito, magsimula ng talakayan sa {2} at i-drop ang crash.log doon.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Nagkaroon ng hindi inaasahang error:
+
+{0}
+
+Hindi maisulat ng PadForge ang mga detalye sa crash.log sa tabi ng PadForge.exe. Para iulat ito, magsimula ng talakayan sa {2}, pindutin ang Ctrl+C dito para kopyahin ang mensaheng ito, at i-paste ito doon.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} karagdagang error ang pinigilan)</value></data>
@@ -3984,7 +4053,7 @@ Isinulat ng PadForge ang mga detalye sa crash.log sa tabi ng PadForge.exe. Para 
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard decompression na ginagamit ng SteamKit2 para sa mga Steam depot chunk, isang C# port ng zstd library ni Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ang Model Context Protocol server at client sa likod ng koneksyon ng assistant at ng PadForge.exe --mcp, mula sa Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ang Model Context Protocol server at client sa likod ng koneksyon ng assistant at ng PadForge.exe --mcp, mula sa Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions at DependencyInjection.Abstractions, na pinagbabatayan ng MCP C# SDK, mula sa Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5299,7 +5368,18 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>iniuugnay ang WinUSB sa screen ng G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>nasa ibang driver ang screen ng G19 ({0}), kaya simulan ang Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>nasa driver ng ibang program ang screen ng G19 ({0}), na hindi ginagalaw ng PadForge</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Sinusuri ang mga PlayStation Bluetooth driver ng PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Binabasa ang Bluetooth radio ng PC na ito…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Binubuksan ang controller sa USB cable nito…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Isinusulat ang Bluetooth address ng PC na ito sa controller…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Ini-register ang controller sa Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Nire-restart ang Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Huminto ang pairing: tinanggihan ng Windows ang PadForge na ma-access ang controller o ang mga setting ng Bluetooth. Nasa diagnostics log ang mga detalye.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Huminto ang pairing: nabigo ang pagbasa o pagsulat sa controller o sa Bluetooth radio. Nasa diagnostics log ang mga detalye.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Huminto ang pairing dahil sa error na hindi inaasahan ng PadForge. Nasa diagnostics log ang mga detalye.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>nangangailangan ng Logitech Gaming Software 8.52 o mas bago</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nakita ang library nito pero hindi ito na-load, dahil hindi makumpirma ng PadForge na mga administrator lang ang makakabago nito at na nilagdaan ito ng Logitech</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nakita ang library nito pero hindi ito magamit, at sinasabi ng diagnostics log kung bakit</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>simulan ang Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>naghihintay ng telepono na may Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>sa isang telepono</value></data>
@@ -5395,6 +5475,8 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Pumili ng dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Nilo-load ang kopyang ito ng library ng Force Dimension kapalit ng iba. Ang Falcon na nakabukas sa ibang kopya ay magsasara at magbubukas muli sa kopyang ito. Nahahanap ang mga kopyang ini-install ng SDK kahit wala ito.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Mga Library (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Hindi nabuksan ang download page ng Falcon SDK: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Hindi pa nabubuksan ang download page ng Falcon SDK: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>I-install ang Falcon Driver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Ini-install ang driver ng Force Dimension, mula sa SDK folder, sa Falcon na walang driver. Maaaring itanong muna ng Windows kung pagkakatiwalaan ang Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Kunin ang SDK ng Force Dimension</value></data>
@@ -5594,6 +5676,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Bagong Controller</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Settings</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Bawat axis, button at sensor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Ang mga control nito ayon sa mga pangalang ginagamit ng mga script</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Pinindot: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Mga ID, path, kakayahan, Pilitin ang Raw Joystick Mode</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Mga ID, path, kakayahan</value></data>
@@ -5734,8 +5817,13 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Inaalis…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ina-update…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Hindi ito natapos: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Nananatili ang entry at skill ng PadForge, dahil binabasa ng {0} ang parehong settings file at skill folder.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Nananatili ang entry ng PadForge, dahil binabasa ng {0} ang parehong settings file.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>Naalis ang PadForge sa program na ito. Nananatili ang skill nito, dahil binabasa ng {0} ang mga skill mula sa parehong folder.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>Hindi mabasa ng PadForge ang mga setting sa {0}, kaya hindi nito alam kung naidagdag ang PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Naidagdag. Hindi nabasa ng PadForge ang skill folder nito.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Nakopya.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Hindi nakopya: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Hindi nakopya. Hindi pinayagan ng Windows ang PadForge na gamitin ang clipboard.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Mga Pinayagang Program</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ang program na gustong magkaroon ng Pagbasa o higit pa ay nagtatanong nang isang beses, sa unang pagkakataong kumonekta ito, at nakukuha ang antas na hinihingi nito, hanggang sa antas sa itaas. Pinapayagan na ng pagdaragdag sa itaas ang isang assistant.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -5751,6 +5839,8 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Isang joystick. Binabasa ito ng PadForge nang raw, kaya hindi ginagamit ang mapping ng SDL.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Isang joystick, na inilatag bilang gamepad ng row mo.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>Nagbabasa ng mga device ang SDL habang tumatakbo ang engine.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Hindi nakakonekta ang device. Babasahin ito ng SDL kapag nakakonekta na.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Walang ibinigay na pagbasa ang SDL sa PadForge para sa device na ito.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ang kopya ng komunidad na kasama na, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download noong {0}</value></data>
@@ -5788,6 +5878,11 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, mga toggle at iba pang aksyon</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} at {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Walang makokopya: walang mapping ang SDL para sa device na ito, at wala ito sa anumang controller.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Walang makokopya: hindi mabasa ng PadForge ang mapping ng SDL para sa device na ito, at walang row ng mga controller nito ang may binding na tinatanggap ng anyo ng SDL.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Walang makokopya: walang mapping ang SDL para sa device na ito, at walang row ng {0} ang bumabasa sa isa sa mga button, axis o hat nito sa paraang tinatanggap ng anyo ng SDL.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Walang makokopya: walang mapping ang SDL para sa device na ito, at binabasa lang ito ng mga row ng {0} para sa {1}, na hindi kayang hawakan ng anyo ng SDL.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Walang makokopya: hindi mabasa ng PadForge ang mapping ng SDL para sa device na ito ngayon, at wala ito sa anumang controller.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Walang makokopya: hindi mabasa ng PadForge ang mapping ng SDL para sa device na ito ngayon, at walang row ng {0} ang may binding na tinatanggap ng anyo ng SDL.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Ginagamit ng ibang program ang clipboard. Walang nakopya.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Naalis ang row mo. Binabasa ang device gaya ng dati.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Na-map muli mula sa layout ng SDL: {0}.</value></data>
@@ -5808,6 +5903,8 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Mga row na dala ng PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Walang tumutugmang row.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ina-apply ang piniling row sa {0} sa sarili nitong ID, sa parehong pagsusuri at parehong pagpili gaya ng I-paste.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Nakahinto ang engine, kaya hindi kasama sa listahan ang mga row na hawak ng SDL, ang sarili nito at ang community copy na built in. Ililista ang mga ito kapag tumatakbo na ito.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>Hindi sumagot ang SDL sa tamang oras, kaya hindi kasama sa listahan ang mga row na hawak nito, ang sarili nito at ang community copy na built in.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Row ng SDL mapping</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Row para sa device na ito.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Isang hinulaang layout.</value></data>
@@ -5820,14 +5917,14 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} field, mula sa parehong vendor at produkto sa ibang bus o bersyon. Itinatago ito sa ilalim ng sariling ID ng device na ito.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} field, row ng ibang device. Itinatago ito sa ilalim ng sariling ID ng device na ito.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} field. Hindi binabasa ng SDL ang device na ito, kaya inilalatag ng PadForge ang mga input nito ayon sa row.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>Walang simpleng button o axis ang PadForge para sa mga field na ito at iniiwan ang mga ito: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} field, mula sa mga axis, button at hat ng device. Suriin ito sa Subukan ang mga Input, tapos itago o baguhin dito.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Binabago nito kung paano binabasa ang {0}. Ang mga row nito sa {1} ay imamapa muli mula sa bagong layout.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Binabago nito kung paano binabasa ang {0}. Wala ito sa anumang controller, kaya walang row na magbabago.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Pinapanatili ng mga shortcut ng profile na bumabasa sa {0} ang mga input na itinakda sa kanila.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Itinatago ang row bilang iyo sa PadForge.xml at nananaig ito sa bawat ibang pinagmulan para sa device na ito. Ibinabalik ng Alisin ang Akin ang lumang row at ang mga lumang row.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Itinatago ang mga row bilang iyo sa PadForge.xml at nananaig ang mga ito para sa kanilang mga device sa bawat ibang pinagmulan. Inaalis ang mga ito ng I-clear, sa ilalim ng Higit pa ng row ng Database ng Controller.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} row para sa Windows. Lalaktawan ang {1} para sa ibang system.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} row para sa Windows. Lalaktawan ang {1} para sa ibang system.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} row para sa Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Idaragdag ang lahat ng {0:N0}. Hanggang {1:N0} row mo ang itinatago ng PadForge.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Idaragdag ito. Hanggang {1:N0} row mo ang itinatago ng PadForge.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} row mo ang nakatago ngayon, kaya {1:N0} sa mga ito ang idaragdag at {2:N0} ang hindi.</value></data>
@@ -5837,7 +5934,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Hindi row ng controller database ng SDL ang text: isang ID na may 32 hex digit, isang pangalan, tapos mga field gaya ng a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Para sa ibang system ang mga row. Binabasa ng PadForge ang mga row para sa Windows, o para sa walang partikular na system.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Hindi sa isang device ang ID ng row. Kailangan nito ng 32 hex digit.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Walang laman ang pangalan ng row, mahigit 128 character, o may character na binabasa ng SDL bilang field.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Walang laman ang pangalan ng row, lampas ito sa 128 character, may field marker na binabasa ng SDL, gaya ng “type:”, o may character na hindi titik, digit, bantas, simbolo o karaniwang espasyo.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>May hint o Android field ang row, na hindi tinatanggap ng PadForge.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>May field ang row na hindi alam ng SDL.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Wala sa anyo ng SDL ang isang binding, gaya ng b3, a2, +a2, a2~ o h0.4.</value></data>
@@ -5848,8 +5945,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Mga Row Mo</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ang mga row na idinagdag mo rito, o na-paste mo sa SDL Mapping card ng isang device, ay nananaig para sa kanilang mga device sa bawat ibang pinagmulan at nananatili sa reset.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Magdagdag ng mga Row Mula sa File o Clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} row at device, sa iyo at nananaig sa bawat ibang pinagmulan.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} row at device, sa iyo at nananaig sa bawat ibang pinagmulan.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} row, nasa itaas ng bawat ibang pinagmulan ang sa iyo.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Wala pa.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>May {0} row ang variable mong SDL_GAMECONTROLLERCONFIG na hindi itinatago ng PadForge. Magbubukas ang Magdagdag ng mga Row Mula sa File o Clipboard na kasama ang mga ito.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>May {0} row ang variable mong SDL_GAMECONTROLLERCONFIG na hindi itinatago ng PadForge. Magbubukas ang Magdagdag ng mga Row Mula sa File o Clipboard na kasama nito.</value></data>
@@ -5868,7 +5964,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Nakahinto. Ang huli nitong sinabi: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Hindi ito masimulan.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Wala na ito sa PC na ito.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Walang nakitang tunnel program sa PC na ito. Gumagana ang PadForge sa cloudflared, devtunnel, ngrok at Tailscale Funnel, o sa address ng sarili mong tunnel.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>Walang nakitang cloudflared, devtunnel, ngrok o Tailscale Funnel ang PadForge sa PC na ito. Piliin ang ChatGPT Secure MCP Tunnel, na dina-download ng PadForge, o ibigay ang address ng sarili mong tunnel.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Pumili ng tunnel para bigyan ang PadForge ng pampublikong address.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Nasa PC na ito rin: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, na hindi nagbabago ang address</value></data>
@@ -5876,7 +5972,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Patakbuhin ang sarili mong tunnel papunta sa http://127.0.0.1:{0} at i-paste ang https address nito. Pinapanatili ang address ng named na Cloudflare tunnel, persistent na dev tunnel, Tailscale Funnel at sariling domain ng ngrok.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Mag-paste ng https address na walang path maliban sa /mcp, ayon sa bigay ng tunnel mo.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Sinisimulan ang web helper ng PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Huminto ang web helper ng PadForge ({0}). I-off at i-on ang Reach PadForge From the Web para simulan itong muli.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Huminto ang web helper ng PadForge ({0}). Patuloy na sinusubukan ng PadForge na simulan ito.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Address</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Wala pang pampublikong address.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Idagdag sa Claude</value></data>
@@ -5915,11 +6011,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>natapos ito sa code na {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Naka-off ang Awtomasyon, kaya walang web assistant na makakaabot sa PadForge. Magsisimula ang web helper kapag naka-on ang Awtomasyon.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Sinusuri…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Hindi naka-install.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Naka-install at napapanahon. Nagsisimula ang script sa {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Naka-install para sa {0} at napapanahon. Nagsisimula ang script sa {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Naka-install. May mas bagong kopya ang PadForge na ito.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Naka-install para sa {0}. May mas bagong kopya ang PadForge na ito.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Ini-install…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>Hindi ito masuri ng PadForge: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Inilalagay ng I-install ang library ng PadForge kung saan ito mahahanap ng wikang iyon. Ang script na naglo-load nito ay nagbabasa ng mga device at nagpapatakbo ng mga mapping sa antas sa itaas.</value></data>
@@ -5927,22 +6018,24 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Mga Naka-install na Kopya</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Alisin Lahat</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Naalis.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Naka-install ang library ng PadForge para sa {0} at napapanahon. Nagsisimula ang script sa {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Iba ang library ng PadForge para sa {0} sa kopya ng PadForge na ito.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Hindi naka-install ang library ng PadForge para sa {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Script ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Script ID nito</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Pinapangalanan ng mga script ang mga kontrol nito na {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Pinapangalanan ng mga script ang mga key nito na KeyA, KeySpace, KeyLeftShift at iba pa, at bawat key ayon sa code nito, Vk0 hanggang Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} sa network na ito mula sa {1}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Ang bagong bersyong pinirmahan gamit ang parehong certificate key ni {0} ay magre-restart nang hindi na kailangan ng Aprubahan at I-restart. Tatanungin ka muna sa anumang ibang pagbabago.</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Tinanggap ang bagong bersyong pinirmahan gamit ang parehong certificate key</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Address</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>Tumatanggap ang PadForge ng address na nagsisimula sa https:// at may pangalan ng host, sa default na port, na walang user name o password.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>Tumatanggap ang PadForge ng address na hanggang 2,048 character na nagsisimula sa https:// at may pangalan ng host, sa default na port, na walang user name, password o bahagi pagkatapos ng #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Baguhin…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Tumatawid sa network na ito nang walang encryption ang mga tawag at ang key nila. Pinapapasok lang ng Windows ang mga ito sa mga pribadong network.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Dumadaan sa network na ito nang hindi naka-encrypt ang mga tawag at ang key nila. Mga pribadong network lang ang pinangalanan ng Windows Firewall rule na ginagawa ng PadForge para sa port na ito.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Ginagamit ng ibang program ang port {0}. Baguhin ito para maabot ang PadForge mula sa network na ito.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Hindi pinayagan ng Windows ang helper ng PadForge na makinig sa port {0}. Pinapayagan ito ng PadForge gamit ang mga karapatan ng administrator, kaya simulan ang PadForge nang may mga ito at i-off at i-on ito.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Walang reservation ang Windows para sa helper ng PadForge sa port {0}. I-off at i-on ito, at gagawin itong muli ng PadForge.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Hindi nakapakinig ang helper ng PadForge sa port {0}. Baguhin ang port, o i-off at i-on ito.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Huminto ang helper ng PadForge ({0}). I-off at i-on ang Reach PadForge From This Network para simulan itong muli.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Huminto ang helper ng PadForge ({0}). Patuloy na sinusubukan ng PadForge na simulan ito.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Naka-off ang Awtomasyon, kaya walang assistant sa network na ito na makakaabot sa PadForge. Magsisimula ang helper kapag naka-on ang Awtomasyon.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Wala pang address ang PC na ito sa isang pribadong network.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Mga Assistant sa Network na Ito</value></data>
@@ -5959,7 +6052,23 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Naaabot pa rin ng mga command mula sa command line ang PadForge, tulad ng sa bawat program.</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Humihiling itong imaneho lang ang sarili nitong mga device.</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Isang beses lang itong nagtatanong. Maaari mo itong alisin o baguhin ang abot nito sa page ng Awtomasyon.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Tumatakbo, sa mga karapatan mo, at handa na. Naaabot ng ChatGPT ang PadForge sa tunnel na ito nang walang sarili nitong sign-in, at mula lang sa organisasyon mo sa OpenAI. Nagsisimula itong muli kasama ng PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Tumatakbo, sa mga karapatan mo. Hinihintay nitong sabihin ng OpenAI na handa na ang tunnel.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Itinatago ng PadForge ang key na naka-encrypt para sa iyo lang. Kinakalimutan ito ng walang lamang kahon. Gumagana ang ChatGPT sa antas sa itaas.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>Hindi na-save ng PadForge ang plugin kit.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Aktibidad {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Mga-Tunog{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Mga-Icon{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} row para sa ibang system ang nilaktawan.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Hindi ito sinimulan ng Windows gamit ang sarili mong mga karapatan.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Hindi ito natapos sa loob ng {0} segundo.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Natapos ito na may code {0} at walang ibinigay na dahilan.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>Hindi mabasa ng PadForge ang mga setting sa {0}, kaya iniwan nito ang file kung ano ito.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>Hindi isinulat ng PadForge ang {0}, kaya iniwan nito ito kung ano ito.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Walang pinangalanang Documents folder ang Windows para sa iyo.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>Walang makitang folder mo ang PadForge para sa {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Natapos ang sariling command ng {0} na may code {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Wala sa PC na ito ang command ng {0}.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Hindi pinayagan ng Windows ang PadForge na basahin o isulat ang file na kailangan nito.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>Walang makitang Python ang PadForge: wala ni isang nakarehistro, na-install mula sa Microsoft Store, nakalista ng py launcher o nasa iyong PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Walang Python na nakita ng PadForge ang sumagot sa loob ng {0} segundo.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Walang ibinigay na dahilan ang takbo na alam ng PadForge.</value></data>
 </root>

@@ -329,6 +329,8 @@ namespace PadForge.Tests
             Assert.Equal("ok second", await second.WaitAsync(TimeSpan.FromSeconds(10)));
         }
 
+        /// <summary>A request is taken up to 1,024 bytes, and an answer can
+        /// be longer. A line of exactly 1,024 bytes runs whole.</summary>
         [Fact]
         public async Task TheRequestIsCappedAt1024Bytes_AndTheAnswerIsNot()
         {
@@ -340,27 +342,48 @@ namespace PadForge.Tests
                 return "ok " + new string('y', 5000);
             }, pipe);
             service.Start();
-            string answer = await Task.Run(() => ControlPipeClient.Exchange(pipe, "activate " + new string('x', 3000), 5000));
+            string fits = "activate " + new string('x', 1024 - "activate ".Length);
+            string answer = await Task.Run(() => ControlPipeClient.Exchange(pipe, fits, 5000));
             Assert.Equal(1024, ExternalControlService.LongestRequest);
-            Assert.Equal(1024, seen.Length);
+            Assert.Equal(fits, seen);
             Assert.Equal(5003, answer.Length);
         }
 
-        /// <summary>A line past the cap is read to its end and dropped
-        /// from there, so the client that wrote it is not left in its write
-        /// and still gets its answer.</summary>
+        /// <summary>A line past the cap is read to its end, runs nothing and
+        /// is answered <c>error too-long</c>: its first 1,024 bytes are no
+        /// line the program sent, and a profile's name cut there names no
+        /// profile. The client that wrote it is not left in its write, and
+        /// the next line is served.</summary>
         [Fact]
-        public async Task ALinePastTheCap_IsReadToItsEnd()
+        public async Task ALinePastTheCap_IsReadToItsEnd_AndAnsweredTooLong()
         {
             string pipe = OwnPipe("drain");
             string seen = null;
             using var service = new ExternalControlService(line => { seen = line; return "ok"; }, pipe);
             service.Start();
             string big = "record mark " + new string('z', 40000);
-            Assert.Equal("ok", await Task.Run(() => ControlPipeClient.Exchange(pipe, big, 5000)));
-            Assert.Equal(big.Substring(0, 1024), seen);
+            Assert.Equal("error too-long", await Task.Run(() => ControlPipeClient.Exchange(pipe, big, 5000)));
+            Assert.Null(seen);
+            Assert.Equal("error too-long", await Task.Run(() => ControlPipeClient.Exchange(pipe, "activate " + new string('x', 1100), 5000)));
+            Assert.Null(seen);
             Assert.Equal("ok", await Task.Run(() => ControlPipeClient.Exchange(pipe, "query", 5000)));
             Assert.Equal("query", seen);
+        }
+
+        /// <summary>Through the host, a line past the cap reaches no
+        /// command and Activity keeps it as refused too long.</summary>
+        [Fact]
+        public void ALinePastTheCap_ThroughTheHost_IsInActivityAsTooLong()
+        {
+            string pipe = OwnPipe("hostlong");
+            using var host = NewHost(out var target, pipe);
+            host.Apply(true, AutomationLevel.Commands);
+            string name = string.Concat(Enumerable.Repeat("\u30ec\u30fc\u30b9", 120));
+            Assert.Equal("error too-long", ControlPipeClient.Exchange(pipe, "activate " + name, 5000));
+            Assert.Empty(target.Calls);
+            var entry = Assert.Single(host.Activity.Snapshot());
+            Assert.Equal(AutomationCommands.TooLong, entry.Result);
+            Assert.False(entry.Succeeded);
         }
 
         /// <summary>One connection is served at a time, so a client that

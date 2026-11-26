@@ -27,6 +27,12 @@ namespace PadForge.Engine
         /// none.</summary>
         bool HasExtraGenericAxes => false;
 
+        /// <summary>True when the device's reader writes the sideways wheel
+        /// (CustomInputState.MouseRawWheelH) on a mouse row, so Wheel Travel
+        /// Sideways can move (#600). A reader that hands one wheel only, a
+        /// touchpad's mouse or a TouchSense mouse, says false.</summary>
+        bool ReadsSidewaysWheel => true;
+
         int NumHats { get; }
 
         /// <summary>

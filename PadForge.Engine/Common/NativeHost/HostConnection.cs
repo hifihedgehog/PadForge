@@ -17,7 +17,7 @@ namespace PadForge.Engine.Common.NativeHost
     public delegate HostConnection HostOpener(string service, out string reason);
 
     /// <summary>
-    /// One channel between PadForge and its library host (#597): a pipe
+    /// One channel between PadForge and its library host (#600): a pipe
     /// that carries framed messages, each a four-byte little-endian length
     /// and that many bytes, at most <see cref="MaxFrame"/>. PadForge's side
     /// calls (<see cref="Call"/>): it writes one request and reads one

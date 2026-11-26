@@ -202,9 +202,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Muaj nyob hauv: {1} qhov mapping, zej zog daim qauv hnub {2}. Rub tawm {3} los ntawm {4}: {0} kab tshiab.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Muaj nyob hauv: {1} qhov mapping, zej zog daim qauv hnub {2}. Rub tawm {3} los ntawm {4}: {0} kab tshiab.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Lub database ntawm zej zog tsis tau hloov txij li zaum hloov tshiab kawg.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Daim ntawv ntawm {0} tsis tau hloov txij li zaum hloov tshiab kawg.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Mus tsis txog GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Mus tsis txog {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge tsis txais qhov rub tawm vim nws tsis yog lub database controller uas nws xav tau. Tsis muaj dab tsi hloov.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge tsis lees txais GitHub cov lus teb. Tsis muaj dab tsi hloov.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge tsis lees txais cov lus teb los ntawm {0}. Tsis muaj dab tsi hloov.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ntxiv…</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Tshem tawm HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Tab tom nyeem seb HIDMaestro tseg dab tsi rau ntawm lub PC no…</value></data>
@@ -232,6 +235,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Nplaub tshev</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Kev teeb tsa kev pab cuam</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Kauj ruam tshem tawm</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Service</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Ntaub ntawv</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Upper filter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registry value</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardware ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Txoj haujlwm teem sijhawm</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Kab hauv cov app uas nruab lawm</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Khoom siv USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Cia PlayStation 3 controller, PlayStation Move thiab Navigation controller txuas tau los ntawm Bluetooth. Nws nyob hauv PadForge thiab raug nruab thawj zaug uas ib lub ntawm cov no pair nrog lub PC.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Txuas PlayStation 3 controller los ntawm Bluetooth.</value></data>
@@ -416,6 +427,13 @@
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro tsis lees txais preset no ntawm {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Preset no tsis muaj HID descriptor, yog li ua tsis tau ib lub controller los ntawm nws.</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(khoom siv HID tsis muaj npe)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Controller ntau axis</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
@@ -700,6 +718,13 @@
 {0}
 
 PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhia txog qhov no, pib ib qho kev sib tham ntawm {2} thiab muab crash.log tso rau hauv.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Muaj ib qho yuam kev uas tsis tau xav txog tshwm sim:
+
+{0}
+
+PadForge sau tsis tau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhia txog qhov no, pib ib qho kev sib tham ntawm {2}, nias Ctrl+C ntawm no los theej cov lus no, thiab muab nws tso rau ntawd.
 
 {1}</value></data>
 
@@ -1302,7 +1327,18 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>los ntawm Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_Direct_Format" xml:space="preserve"><value>ncaj qha rau {0}</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>lub screen ntawm G19 nyob ntawm lwm qhov program tus driver ({0}), uas PadForge tsis kov</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Tab tom kuaj PadForge cov PlayStation Bluetooth driver…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Tab tom nyeem lub PC no lub Bluetooth radio…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Tab tom qhib lub controller ntawm nws txoj hlua USB…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Tab tom sau lub PC no qhov chaw nyob Bluetooth rau hauv lub controller…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Tab tom sau npe lub controller nrog Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Tab tom pib Bluetooth dua…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Kev txuas khub nres lawm: Windows tsis pub PadForge nkag mus rau lub controller los sis cov teeb tsa Bluetooth. Daim ntawv sau diagnostics muaj cov ntsiab lus.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Kev txuas khub nres lawm: kev nyeem los sis sau lub controller los sis lub Bluetooth radio ua tsis tau. Daim ntawv sau diagnostics muaj cov ntsiab lus.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Kev txuas khub nres lawm vim ib qho yuam kev uas PadForge tsis tau xav txog. Daim ntawv sau diagnostics muaj cov ntsiab lus.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>xav tau Logitech Gaming Software 8.52 los yog tshiab dua</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nrhiav tau nws lub library thiab tsis thauj nws, vim PadForge lees paub tsis tau tias tsuas yog cov administrator thiaj hloov tau nws thiab tias Logitech kos npe rau nws</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nrhiav tau nws lub library thiab siv tsis tau nws, thiab daim ntawv sau diagnostics qhia vim li cas</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>qhib Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>tos ib lub xov tooj uas muaj Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>nyob ntawm ib lub xov tooj</value></data>
@@ -1353,6 +1389,8 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Xaiv dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Thauj lub library no ntawm Force Dimension hloov chaw lwm lub. Ib lub Falcon uas qhib nrog lwm lub yuav kaw thiab rov qhib dua nrog lub no. Cov uas SDK nruab lawm nrhiav tau txawm tsis muaj qhov no.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Cov library (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Nplooj ntawv download Falcon SDK tsis qhib: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Nplooj ntawv download Falcon SDK tseem tsis tau qhib: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Nruab Falcon driver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Nruab Force Dimension tus driver, los ntawm lub SDK folder, rau ib lub Falcon uas tsis muaj driver. Windows yuav nug ua ntej seb puas ntseeg Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Rub Force Dimension lub SDK</value></data>
@@ -1474,6 +1512,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Devices_UsedBy" xml:space="preserve"><value>Siv los ntawm</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Kev teeb tsa</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Txhua axis, khawm thiab sensor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Nws cov tswj raws li cov npe uas script siv</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Nias: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Theej cov ntsiab lus</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Khoom</value></data>
@@ -1656,7 +1695,6 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Tos koj</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Kev ua</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Thim rov qab</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge khaws tsis tau: {0}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tsis muaj plugin twg khiav.</value></data>
   <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, ntev {1}</value></data>
   <data name="Plugins_Replay_Play" xml:space="preserve"><value>Ua si</value></data>
@@ -1709,8 +1747,9 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Qhov program siv ib version uas PadForge tsis paub</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge tsis tau muab tus yuam sij plugin ntawd</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tsis txais qhov program no txoj kev txuas</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge tsis tau ua lub khoom siv, vim Windows tsis tau qhia lub npe ntawm qhov program lub file</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Thov dua sai dhau</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tsis muaj ntxiv lawm txog thaum PadForge pib dua</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Muaj ntau dhau ntawm cov no uas cov program ua kom tos koj saib xyuas ntawm Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge tsis muaj tool no</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Qhov program nyeem ib lub xeev qub</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tsis muaj dab tsi muaj ID ntawd</value></data>
@@ -1718,6 +1757,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Koj tsis tau tso cai</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Tsis muaj leej twg teb raws sij hawm</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Tab tom tos koj teb</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Koj tseem tsis tau teb</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tsis muaj qhov kev thov no</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Tsis muaj dab tsi yuav thim rov qab</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Tsuas yog koj thiaj hloov tau qhov no</value></data>
@@ -1840,7 +1880,6 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Coj ib lub profile los</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Import ib daim ntawv profile los ntawm lwm qhov program, ces saib dab tsi tuaj txog.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} zaug</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, qhov kawg ntawm {1} qhov zoo li nws</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tso cai</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Tsis tso cai</value></data>
   <data name="Automation_Request_NotNow" xml:space="preserve"><value>Tsis yog tam sim no</value></data>
@@ -1853,7 +1892,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ntawm {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Yog tsis teb hauv {0} yuav suav tias tsis kam.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hloov tshiab tam sim no rub tawm lub database controller ntawm zej zog (SDL_GameControllerDB) los ntawm GitHub, los sis los ntawm qhov chaw nyob uas teeb hauv Ntxiv, thiab khaws cov mapping uas PadForge version no tsis muaj cia rau hauv daim ntawv teeb tsa. Lawv siv tau tam sim ntawd. Los ntawm lwm qhov chaw nyob nws tsuas khaws cov mapping tshiab xwb. Ib qho mapping tshiab tsuas siv rau ib lub controller uas tsis muaj lwm yam nyeem ua gamepad, tsis tau muab rau ib lub controller virtual thiab tsis nyob hauv Force Raw Joystick Mode xwb. Kev rov teeb tsa dua tshem txhua qho mapping uas rub tawm lawm thiab rub tawm los ntawm GitHub dua. Koj tus kheej cov kab, hauv Ntxiv, tseem nyob.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hloov tshiab tam sim no rub tawm lub database controller ntawm zej zog (SDL_GameControllerDB) los ntawm GitHub, los sis los ntawm qhov chaw nyob uas teeb hauv Ntxiv, thiab khaws cov mapping uas PadForge version no tsis muaj cia rau hauv daim ntawv teeb tsa. Lawv siv tau tam sim ntawd. Los ntawm lwm qhov chaw nyob nws tsuas khaws cov mapping tshiab xwb. Ib qho mapping tshiab thawj zaug tsuas siv rau ib lub controller uas SDL qhia tias yog gamepad los sis tsis yog hom twg tshwj xeeb, uas tsis muaj lwm yam nyeem ua gamepad, tsis tau muab rau ib lub controller virtual thiab tsis nyob hauv Force Raw Joystick Mode xwb. Thaum siv lawm, nws tseem siv mus tom qab lub controller raug muab lawm. Kev rov teeb tsa dua tshem cov mapping uas rub tawm lawm thiab muab Download From rov qab rau daim ntawv ntawm zej zog, uas zaum Hloov tshiab tam sim no tom ntej rub tawm. Koj tus kheej cov kab, hauv Ntxiv, tseem nyob.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Hloov tshiab tam sim no</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Tab tom hloov tshiab…</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Kev mus ntawm mouse X</value></data>
@@ -1876,7 +1915,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Thaum tuav thiab rov nruab nrab</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input tsav</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Lub khawm uas cia mouse tsav, nyob ntawm tib lub khoom siv li qhov source. Yog tsis xaiv ib lub, mouse ib txwm tsav.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Lub khawm uas cia mouse tsav, nyob ntawm ib lub khoom siv twg los tau ntawm lub slot no. Yog tsis xaiv ib lub, mouse ib txwm tsav.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ua kom du</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ua kom du ib lub mouse uas qhia tsis sib luag. Tus stick lag tom qab tes li ntawm ntev npaum no. 0 yog kaw.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kev tig thaum ceev</value></data>
@@ -1897,7 +1936,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Pib ntawm qhov chaw pib tsav</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Thaum muaj Input tsav, tus stick ntsuas ntawm qhov chaw pointer nyob thaum pib tsav, ib yam li tus stick ntawm lub xov tooj lub screen pib ntawm qhov chaw ntiv tes tsaws. Thaum kaw, nws ntsuas ntawm nruab nrab ntawm pointer lub monitor.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Axis no txav ua relative</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Rau ib lub trackball los yog spinner uas qhia nws tig deb npaum li cas. Thaum qhib, axis tuav ib qho chaw ib yam li Kev mus ntawm mouse thiab siv cov teeb tsa kev mus. Windows tsis qhia tias axis twg txav li no.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Rau ib lub trackball los yog spinner uas qhia nws tig deb npaum li cas. Thaum qhib, axis tuav ib qho chaw ib yam li Kev mus ntawm mouse thiab siv cov teeb tsa kev mus. SDL nyeem ib lub controller dav dav los ntawm DirectInput, uas nyeem txhua axis ua ib qho chaw, yog li lub switch no qhia tias axis twg txav li no.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Saib ua ntej</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Qhia tias pawg no ua raws koj lub mouse li cas. Tsis muaj dab tsi raug map kom txog thaum koj xaiv nws.</value></data>
@@ -1911,7 +1950,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Mapping_Preview_Center" xml:space="preserve"><value>nruab nrab</value></data>
   <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Txav thaum tuav {0}.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Lub server thiab client Model Context Protocol uas nyob tom qab kev txuas assistant thiab PadForge.exe --mcp, los ntawm Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Lub server thiab client Model Context Protocol uas nyob tom qab kev txuas assistant thiab PadForge.exe --mcp, los ntawm Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions thiab DependencyInjection.Abstractions, uas MCP C# SDK tsim rau saum, los ntawm Microsoft.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ntawv ceeb toom khoom siv tsis txuas</value></data>
@@ -1961,8 +2000,13 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Tab tom tshem…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Tab tom hloov tshiab…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nws ua tsis tiav: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge tus entry thiab skill tseem nyob, vim {0} nyeem tib daim ntawv teeb tsa thiab tib lub nplaub tshev skill.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge tus entry tseem nyob, vim {0} nyeem tib daim ntawv teeb tsa.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge raug tshem tawm ntawm qhov program no lawm. Nws tus skill tseem nyob, vim {0} nyeem cov skill los ntawm tib lub nplaub tshev.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nyeem tsis tau cov teeb tsa hauv {0}, yog li nws tsis paub tias PadForge puas tau ntxiv lawm.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Ntxiv lawm. PadForge nyeem tsis tau nws lub nplaub tshev skill.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Theej lawm.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Tsis tau theej: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Tsis tau theej. Windows tsis pub PadForge siv clipboard.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Cov program uas tso cai</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ib lub program uas xav tau Read los yog ntau dua nug ib zaug, thawj zaug nws txuas, thiab tau theem uas nws thov, mus txog rau theem saum toj no. Ib lub assistant uas koj ntxiv saum toj no tau kev tso cai los ntawm qhov ntawd.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -1975,6 +2019,8 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Ib lub joystick. PadForge nyeem nws raw, yog li tsis siv SDL qhov mapping.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Ib lub joystick, teeb ua gamepad los ntawm koj kab.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL nyeem cov khoom siv thaum lub engine khiav.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Lub khoom siv tsis tau txuas. SDL nyeem nws thaum nws txuas lawm.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL tsis muab PadForge ib qho kev nyeem ntawm lub khoom siv no.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Daim qauv zej zog uas muaj nyob hauv, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Rub tawm {0}</value></data>
@@ -2012,6 +2058,11 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle thiab lwm yam kev ua</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} thiab {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Tsis muaj dab tsi theej: SDL tsis muaj mapping rau lub khoom siv no, thiab nws tsis nyob ntawm controller twg.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Tsis muaj dab tsi theej: PadForge nyeem tsis tau SDL lub mapping rau lub khoom siv no, thiab tsis muaj kab twg ntawm nws cov controller muab ib qho binding uas hom ntawv SDL txais.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Tsis muaj dab tsi theej: SDL tsis muaj mapping rau lub khoom siv no, thiab tsis muaj kab twg ntawm {0} nyeem ib lub ntawm nws cov khawm, axis los sis hat raws li hom ntawv SDL txais.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Tsis muaj dab tsi theej: SDL tsis muaj mapping rau lub khoom siv no, thiab cov kab ntawm {0} nyeem nws rau {1} xwb, uas hom ntawv SDL tuav tsis tau.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Tsis muaj dab tsi theej: PadForge nyeem tsis tau SDL lub mapping rau lub khoom siv no tam sim no, thiab nws tsis nyob ntawm controller twg.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Tsis muaj dab tsi theej: PadForge nyeem tsis tau SDL lub mapping rau lub khoom siv no tam sim no, thiab tsis muaj kab twg ntawm {0} muab ib qho binding uas hom ntawv SDL txais.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Lwm lub program tab tom siv clipboard. Tsis tau theej dab tsi.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Koj kab raug tshem lawm. Lub khoom siv nyeem ib yam li ua ntej.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Map dua los ntawm SDL qhov layout: {0}.</value></data>
@@ -2032,6 +2083,8 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Cov kab uas PadForge nqa</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Tsis muaj kab twg phim.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Kab uas xaiv raug siv rau {0} nyob hauv nws tus kheej ID, dhau tib txoj kev kuaj thiab tib qho kev xaiv li Muab tso.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Lub engine nres lawm, yog li daim ntawv teev tsis muaj cov kab uas SDL tuav, nws tus kheej cov thiab daim qauv zej zog uas muaj nyob hauv. Lawv yuav raug teev thaum nws khiav.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL tsis teb raws sijhawm, yog li daim ntawv teev tsis muaj cov kab uas nws tuav, nws tus kheej cov thiab daim qauv zej zog uas muaj nyob hauv.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Kab mapping SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ib kab rau lub khoom siv no.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Ib qho layout uas twv.</value></data>
@@ -2044,14 +2097,14 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} qhov field, los ntawm tib lub tuam txhab thiab tib yam khoom ntawm lwm lub bus los yog version. Nws raug khaws nyob hauv lub khoom siv no tus kheej ID.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} qhov field, lwm lub khoom siv kab. Nws raug khaws nyob hauv lub khoom siv no tus kheej ID.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} qhov field. SDL tsis nyeem lub khoom siv no, yog li PadForge teeb nws cov input raws kab.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge tsis muaj khawm los sis axis yooj yim rau cov field no thiab tsis suav lawv: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} qhov field, los ntawm lub khoom siv cov axis, khawm thiab hat. Kuaj nws hauv Test Inputs, ces khaws los yog hloov nws ntawm no.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Qhov no hloov txoj kev nyeem {0}. Nws cov kab hauv {1} raug map dua los ntawm layout tshiab.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Qhov no hloov txoj kev nyeem {0}. Nws tsis nyob ntawm controller twg, yog li tsis muaj kab twg hloov.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Cov profile shortcut uas nyeem {0} khaws cov input uas lawv teeb rau.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Kab raug khaws ua koj li hauv PadForge.xml thiab siv ua ntej txhua qhov chaw rau lub khoom siv no. Tshem kuv li muab kab qub thiab cov kab qub rov qab los.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Cov kab raug khaws ua koj li hauv PadForge.xml thiab siv ua ntej txhua qhov chaw rau lawv cov khoom siv. Clear, hauv kab Database controller qhov Ntxiv, tshem lawv.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} kab rau Windows. {1} rau lwm lub system raug hla mus.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} kab rau Windows. {1} rau lwm lub system raug hla mus.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} kab rau Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Tag nrho {0:N0} yuav raug ntxiv. PadForge khaws tau txog {1:N0} kab ntawm koj li.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Nws yuav raug ntxiv. PadForge khaws tau txog {1:N0} kab ntawm koj li.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Tam sim no khaws {0:N0} kab ntawm koj li lawm, yog li {1:N0} ntawm cov no yuav raug ntxiv thiab {2:N0} yuav tsis raug ntxiv.</value></data>
@@ -2061,7 +2114,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Cov ntawv no tsis yog ib kab ntawm SDL lub database controller: ib tus ID 32 tus lej hex, ib lub npe, ces cov field xws li a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Cov kab yog rau lwm lub system. PadForge nyeem cov kab rau Windows, los yog rau tsis muaj system twg tshwj xeeb.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Kab tus ID tsis yog ib lub khoom siv li. Nws xav tau 32 tus lej hex.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Kab lub npe khoob, ntev tshaj 128 tus ntawv, los yog muaj ib tus ntawv uas SDL nyeem ua ib qho field.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Kab lub npe khoob, ntev tshaj 128 tus cim, muaj ib lub cim field uas SDL nyeem, xws li “type:”, los sis muaj ib tus cim uas tsis yog tsiaj ntawv, lej, cim sau ntawv, cim thiab qhov chaw khoob yooj yim.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Kab muaj ib qho hint los yog ib qho field Android, uas PadForge tsis txais.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Kab muaj ib qho field uas SDL tsis paub.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Ib qho binding tsis yog SDL daim ntawv, xws li b3, a2, +a2, a2~ los yog h0.4.</value></data>
@@ -2069,8 +2122,6 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Kab ntev tshaj 1,024 tus ntawv.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Kab tsis khi ib qho tswj twg.</value></data>
   <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Qhov chaw nws rub tawm los, koj tus kheej cov kab</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} kab, ib kab rau ib lub khoom siv, koj li siv ua ntej txhua qhov chaw.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} kab rau ib lub khoom siv, koj li siv ua ntej txhua qhov chaw.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Tseem tsis tau muaj.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Koj tus variable SDL_GAMECONTROLLERCONFIG muaj {0} kab uas PadForge tsis khaws. Add Rows From a File or the Clipboard qhib nrog lawv.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Koj tus variable SDL_GAMECONTROLLERCONFIG muaj {0} kab uas PadForge tsis khaws. Add Rows From a File or the Clipboard qhib nrog nws.</value></data>
@@ -2087,7 +2138,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Nres lawm. Nws cov lus kawg: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nws pib tsis tau.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Nws tsis nyob ntawm lub PC no lawm.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Nrhiav tsis tau ib lub tunnel program ntawm lub PC no. PadForge ua hauj lwm nrog cloudflared, devtunnel, ngrok thiab Tailscale Funnel, los yog nrog koj tus kheej lub tunnel qhov chaw nyob.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge nrhiav tsis tau cloudflared, devtunnel, ngrok los sis Tailscale Funnel ntawm lub PC no. Xaiv ChatGPT Secure MCP Tunnel, uas PadForge rub tawm, los sis muab koj lub tunnel qhov chaw nyob.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Xaiv ib lub tunnel los muab ib qho chaw nyob pej xeem rau PadForge.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Kuj nyob ntawm lub PC no: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, uas nws qhov chaw nyob tseem zoo li qub</value></data>
@@ -2095,7 +2146,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Khiav koj tus kheej lub tunnel mus rau http://127.0.0.1:{0} thiab muab nws qhov chaw nyob https tso. Ib lub Cloudflare tunnel uas muaj npe, ib lub dev tunnel ruaj khov, Tailscale Funnel thiab ngrok tus kheej domain khaws lawv qhov chaw nyob.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Muab ib qho chaw nyob https tso uas tsis muaj path tsuas yog /mcp, ib yam li koj lub tunnel muab.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Tab tom pib PadForge lub web helper.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge lub web helper nres lawm ({0}). Kaw thiab qhib Reach PadForge From the Web dua kom pib nws dua.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge lub web helper nres lawm ({0}). PadForge pheej sim pib nws.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Chaw nyob</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Tseem tsis tau muaj chaw nyob pej xeem.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Ntxiv rau Claude</value></data>
@@ -2133,9 +2184,6 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>nws xaus nrog code {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation kaw, yog li tsis muaj web assistant twg mus txog PadForge. Lub web helper pib thaum Automation qhib.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Tab tom kuaj…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Tsis tau nruab.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Nruab lawm. Lub PadForge no muaj ib daim qauv tshiab dua.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Nruab rau {0} lawm. Lub PadForge no muaj ib daim qauv tshiab dua.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Tab tom nruab…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge kuaj tsis tau nws: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Nruab muab PadForge lub tsev qiv tso rau qhov chaw uas hom lus ntawd nrhiav tau nws. Ib tsab script uas thauj nws nyeem tau cov khoom siv thiab tswj tau cov mapping raws li theem saum toj no.</value></data>
@@ -2143,8 +2191,10 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Cov qauv uas nruab lawm</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Tshem tawm tag nrho</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Tshem tawm lawm.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge lub library tau nruab rau {0} thiab yog qhov tshiab. Ib tsab script pib nrog {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>PadForge lub library rau {0} txawv ntawm PadForge no daim qauv.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge lub library tsis tau nruab rau {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID script</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Nws ID script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Cov script hu nws cov tswj ua {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Cov script hu nws cov key ua KeyA, KeySpace, KeyLeftShift thiab lwm yam zoo li ntawd, thiab txhua tus key raws nws code, Vk0 txog Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ntawm lub network no los ntawm {1}</value></data>
@@ -2152,11 +2202,11 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} pib lawm tab sis yeej tsis txuas rau PadForge.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Hloov…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Cov kev hu thiab lawv tus key hla lub network no yam tsis muaj encrypt. Windows tsuas pub lawv nkag los rau cov network private xwb.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Cov kev hu thiab lawv tus key hla lub network no yam tsis muaj encryption. Txoj cai Windows Firewall uas PadForge ua rau lub port no tsuas teev cov network private xwb.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} raug lwm lub program siv lawm. Hloov nws kom mus txog PadForge los ntawm lub network no.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows tsis pub PadForge lub helper mloog ntawm port {0}. PadForge pub nws nrog txoj cai administrator, yog li pib PadForge nrog txoj cai ntawd thiab kaw thiab qhib qhov no dua.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows tsis tuav ib qho kev tseg rau PadForge lub helper ntawm port {0}. Kaw thiab qhib qhov no dua, thiab PadForge yuav ua nws dua.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge lub helper mloog tsis tau ntawm port {0}. Hloov lub port, los sis kaw thiab qhib qhov no dua.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge lub helper nres lawm ({0}). Kaw thiab qhib Reach PadForge From This Network dua kom pib nws dua.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge lub helper nres lawm ({0}). PadForge pheej sim pib nws.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation kaw, yog li tsis muaj assistant twg ntawm lub network no mus txog PadForge. Lub helper pib thaum Automation qhib.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Lub PC no tam sim no tsis muaj chaw nyob ntawm ib lub network private.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Cov assistant ntawm lub network no</value></data>
@@ -2171,7 +2221,24 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Reach_Line_Format" xml:space="preserve"><value>Tswj nws tus kheej cov khoom siv thiab {0}. Nws tseem nyeem txhua lub khoom siv.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Tswj nws tus kheej cov khoom siv xwb. Nws tseem nyeem txhua lub khoom siv.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Cov lus txib los ntawm command line tseem mus txog PadForge, ib yam li lawv ua rau txhua lub program.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Tab tom khiav, nrog koj txoj cai, thiab npaj txhij. ChatGPT mus txog PadForge los ntawm lub tunnel no yam tsis tas sign in ntawm nws tus kheej, thiab tsuas yog los ntawm koj lub koom haum OpenAI xwb. Nws rov pib dua nrog PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Tab tom khiav, nrog koj txoj cai. Nws tos OpenAI hais tias lub tunnel npaj txhij lawm.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge khaws tus key encrypt cia rau koj ib leeg xwb. Ib lub thawv khoob ua rau PadForge hnov qab nws. ChatGPT ua hauj lwm raws li theem saum toj no.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge khaws tsis tau lub plugin kit.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Kev ua {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge ua tsis tau lub xauv uas cia nws khiav tsuas ib daim xwb, yog li nws tsis pib.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} kab rau lwm lub system raug hla dhau.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} kab, koj cov siv ua ntej txhua lwm qhov chaw.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows tsis pib nws nrog koj tus kheej txoj cai.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Nws tsis xaus hauv {0} vib nas this.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Nws xaus nrog code {0} thiab tsis qhia vim li cas.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nyeem tsis tau cov teeb tsa hauv {0}, yog li nws tso daim ntawv li qub.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge tsis tau sau {0}, yog li nws tso nws li qub.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows tsis muab lub nplaub tshev Documents rau koj.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge nrhiav tsis tau koj lub nplaub tshev rau {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0} nws tus kheej cov lus txib xaus nrog code {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0} cov lus txib tsis nyob ntawm lub PC no.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows tsis pub PadForge nyeem los sis sau ib daim ntawv uas nws xav tau.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge nrhiav tsis tau Python: tsis muaj ib qho tau sau npe, nruab los ntawm Microsoft Store, teev los ntawm ib lub py launcher los sis nyob hauv koj PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Tsis muaj Python twg uas PadForge nrhiav tau teb hauv {0} vib nas this.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Qhov kev khiav tsis qhia ib qho laj thawj uas PadForge paub.</value></data>
 </root>

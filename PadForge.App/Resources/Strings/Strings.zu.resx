@@ -348,8 +348,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Uhlelo lukhuluma inguqulo i-PadForge engayazi</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>I-PadForge ayizange inikeze lowo khiye we-plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>I-PadForge ayizange ilwamukele uxhumano lwalolu hlelo</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>I-PadForge ayizange yenze idivayisi, ngoba i-Windows ayizange isho igama lefayela lohlelo</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Kubuzwe futhi ngokushesha kakhulu</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Akusekho lokhu kuze kube i-PadForge iqala futhi</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Kuningi kakhulu kwalokhu izinhlelo ezikwenze kulindele ukuthi ukubuyekeze ekhasini elithi Ikhaya</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>I-PadForge ayinalo ithuluzi elinjalo</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Uhlelo lufunde isimo esidala</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Akukho okune-ID leyo</value></data>
@@ -357,6 +358,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Awuzange ukuvumele</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Akekho ophendule ngesikhathi</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Kulindelwe impendulo yakho</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Ubungakaphenduli</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Asikho isicelo esinjalo</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Akukho okungahlehliswa</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Nguwe kuphela ongashintsha lokhu</value></data>
@@ -472,6 +474,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Akusayinwe.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Ezingeni elithi Funda nangaphezulu libona wonke ukhiye ocindezelwe kuyo yonke idivayisi, kuhlanganise namakhibhodi.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Libuza kanye. Ungalisusa ekhasini elithi Ukuzenzakalela.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Kuqalwe uhlelo i-PadForge engakwazanga ukuluhlonza.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>I-PadForge ayikwazi ukuhlukanisa lolu hlelo kolunye, ngakho ibuza futhi uma luxhuma ngokulandelayo.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>Umugqa womyalo we-PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Isetha {0} ibe ngu-{1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ilalela kunethiwekhi, ngakho amanye amadivayisi angafinyelela le PC.</value></data>
@@ -487,7 +491,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Letha iphrofayela</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Ngenisa ifayela lephrofayela kolunye uhlelo, bese ubona okufikile.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, izikhathi ezingu-{1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, okokugcina kwezingu-{1} ezifanayo</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Imibhalo ye-AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -560,14 +563,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Qala i-PadForge ngokuzenzakalelayo uma ungena ku-Windows. Uma lokhu kuvuliwe, i-PadForge iqala futhi ngaphandle komyalezo we-Windows uma iqalwa yisinqamuleli, iskripthi noma olunye uhlelo.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>I-PadForge isebenza isuka ku-{0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Lokhu kudinga i-PadForge efolda yayo. Ifolda yayo inamanye amafayela, ngakho i-PadForge ayikwazi ukuvimbela ezinye izinhlelo ukuthi ziyishintshe.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Lokhu kudinga i-PadForge efolda ezinye izinhlelo ezingakwazi ukuyishintsha. I-PadForge ayikwazanga ukuzivimbela ukuthi zishintshe ifolda yayo.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Hambisa i-PadForge efolda yayo</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Ikopisha i-PadForge nezilungiselelo zayo ku-Program Files, ikhombise imisebenzi yayo lapho, futhi iyiqale isuka lapho. Ikhophi elapha ihlala injalo.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: {0} inamafayela angewona awe-PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Ukuthi Qala uma ungena kuvaliwe, ngoba bekuqala i-PadForge efolda enamanye amafayela.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>I-PadForge ayizange ihambe: i-Windows ayisho ifolda ye-Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>I-PadForge ayizange ihambe: ayikwazanga ukufunda i-PadForge esebenzayo.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: ayikwazanga ukudala ifolda {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: ayikwazanga ukufunda ukuthi ifolda {0} iqukethe ini.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: ayikwazanga ukuvimbela ezinye izinhlelo ukuthi zishintshe ifolda {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: ikhophi yayo ku-{0} ayifananga ne-PadForge esebenzayo.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>I-PadForge ayizange ihambe: ngemva kokukopisha, {0} ibinamafayela angewona awe-PadForge, noma ezinye izinhlelo bezingayishintsha.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Ukuthi Qala uma ungena kuvaliwe, ngoba i-PadForge ebikuqalisa ayisekho lapho.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Ukuthi Qala uma ungena kuvaliwe, ngoba i-PadForge ayikwazanga ukuvimbela ezinye izinhlelo ukuthi zishintshe ifolda ebiqalisa kuyo i-PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Ukuthi Qala uma ungena kuvaliwe, ngoba i-PadForge ayikwazanga ukufunda ukuthi ibiqalisa iyiphi i-PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Ukuthi Qala uma ungena kuvaliwe, ngoba i-PadForge ayikwazanga ukufunda ifolda ye-PadForge ebikuqalisa.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukudala ifolda yayo evikelekile, {0}. I-PadForge igcina lapho imitapo eyisebenzisa ngamalungelo omlawuli, futhi ayikwazi ukuqala ngokuphephile ngaphandle kwayo.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukuziqala futhi isuka efolda yayo evikelekile, {0}. I-PadForge isebenza ngamalungelo omlawuli kuphela isuka lapho, ngakho ayizange iqale.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>I-PadForge ayikwazanga ukwenza isikhiya esiyigcina ikhophi eyodwa esebenzayo, ngakho ayiqalanga.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>I-PadForge isebenza ngamalungelo omlawuli isuka ku-{0}, ifolda ezinye izinhlelo ezingayishintsha. Zingashintsha izilungiselelo ze-PadForge lapho, futhi i-PadForge yenza ngazo ngamalungelo ayo.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>I-PadForge isebenza ngamalungelo omlawuli isuka ku-{0}, ifolda enamanye amafayela. I-PadForge ayikwazi ukuvimbela ezinye izinhlelo ukuthi zishintshe izilungiselelo zayo lapho, futhi yenza ngazo ngamalungelo ayo.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>I-PadForge isebenza ngamalungelo omlawuli isuka ku-{0}, ifolda engakwazanga ukuyifunda. I-PadForge ayikwazi ukuvimbela ezinye izinhlelo ukuthi zishintshe izilungiselelo zayo lapho, futhi yenza ngazo ngamalungelo ayo.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Izibuyekezo</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Hlola izibuyekezo ngokuzenzakalelayo</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Faka izibuyekezo ngokuzenzakalelayo</value></data>
@@ -575,7 +593,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Faka bese uqala kabusha</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Amanothi okukhishwa</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Isizindalwazi sezilawuli</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ukuthi Buyekeza manje kulanda isizindalwazi sezilawuli somphakathi (SDL_GameControllerDB) ku-GitHub, noma ekhelini elisethwe ngaphansi kokuthi Okuningi, futhi kugcine, efayeleni lezilungiselelo, ukumaphwa okungekho kule nguqulo ye-PadForge. Kusetshenziswa ngaso leso sikhathi. Ekhelini elinye kugcina ukumaphwa okusha kuphela. Ukumaphwa okusha kusetshenziswa kuphela esilawulini okungekho okunye okusifunda njenge-gamepad, esinganikeziwe futhi esingekho ku-Force Raw Joystick Mode (Bypass Gamepad Remapping). Ukusetha kabusha kususa konke ukumaphwa okulandiwe futhi kulande futhi ku-GitHub. Imigqa yakho, ngaphansi kokuthi Okuningi, iyahlala.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ukuthi Buyekeza manje kulanda isizindalwazi sezilawuli somphakathi (SDL_GameControllerDB) ku-GitHub, noma ekhelini elisethwe ngaphansi kokuthi Okuningi, futhi kugcine, efayeleni lezilungiselelo, ukumaphwa okungekho kule nguqulo ye-PadForge. Kusetshenziswa ngaso leso sikhathi. Ekhelini elinye kugcina ukumaphwa okusha kuphela. Ukumaphwa okusha kuqala kusetshenziswe kuphela esilawulini i-SDL esibika njenge-gamepad noma njengesingenalo uhlobo oluthile, okungekho okunye okusifunda njenge-gamepad, esinganikeziwe futhi esingekho ku-Force Raw Joystick Mode (Bypass Gamepad Remapping). Uma sekusetshenziswa, kuqhubeka kusetshenziswa ngemva kokuba isilawuli sinikeziwe. Ukusetha kabusha kususa ukumaphwa okulandiwe futhi kubuyisele okuthi Umthombo wokulanda efayeleni lomphakathi, elilandwa wukuthi Buyekeza manje okulandelayo. Imigqa yakho, ngaphansi kokuthi Okuningi, iyahlala.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Buyekeza manje</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Kuyabuyekezwa…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Kuhlolwa izibuyekezo…</value></data>
@@ -592,9 +610,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Okwakhelwe ngaphakathi: ukumaphwa okungu-{1}, ikhophi yomphakathi ka-{2}. Kulandwe ngo-{3} kusuka ku-{4}: imigqa emisha {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Okwakhelwe ngaphakathi: ukumaphwa okungu-{1}, ikhophi yomphakathi ka-{2}. Kulandwe ngo-{3} kusuka ku-{4}: umugqa omusha {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Isizindalwazi somphakathi asishintshile selokhu kwaba nesibuyekezo sokugcina.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Ifayela eliku-{0} alishintshile selokhu kwaba nesibuyekezo sokugcina.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Akukwazekanga ukufinyelela i-GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Akukwazekanga ukufinyelela ku-{0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>I-PadForge yenqabe ukulanda ngoba akusona isizindalwazi sezilawuli esisilindele. Akukho okushintshile.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>I-PadForge yenqabe impendulo ye-GitHub. Akukho okushintshile.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>I-PadForge yenqabe impendulo evela ku-{0}. Akukho okushintshile.</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Qala uma ungena</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="Settings_HidHideDesc" xml:space="preserve"><value>Ifihla amadivayisi angokoqobo kumageyimu ukuze kugwenywe okokufaka okuphindwe kabili.</value></data>
@@ -631,6 +652,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Ifolda</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Isilungiselelo sesevisi</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Isinyathelo sokususa</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Isevisi</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Ifayela</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Isihlungi esiphezulu</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Inani lerejista</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>I-ID yehadiwe</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Umsebenzi ohleliwe</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Okufakwe ohlwini lwama-app afakiwe</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Idivayisi ye-USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ivumela izilawuli ze-PlayStation 3, i-PlayStation Move nesilawuli se-Navigation ukuthi zixhume nge-Bluetooth. Ifakwe ngaphakathi ku-PadForge, futhi ifakwa okokuqala lapho esinye sazo sibhangqwa.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ixhuma izilawuli ze-PlayStation 3 nge-Bluetooth.</value></data>
@@ -961,9 +990,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Ukufunda kuhlulekile: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>I-HIDMaestro yenqabe lokhu okusethwe ngaphambili ku-{1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Lokhu okusethwe ngaphambili akunayo i-HID descriptor, ngakho akukho silawuli esingenziwa ngakho.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukuhlola lokhu okusethiwe: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Kuhlolwa okusethiwe…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Akukho okungenisiwe. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Ngenisa</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(idivayisi ye-HID engenalo igama)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Igundane</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Ijoyistikhi</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>I-gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Ikhibhodi</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Isilawuli sama-eksisi amaningi</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Enza ngokwezifiso</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -1576,7 +1614,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ngesikhathi kubanjwe futhi kubuyele maphakathi</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Shintsha</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Okufakwayo kokushayela</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Inkinobho evumela igundane ukuthi lishayele, kudivayisi efanayo nomthombo. Uma ingekho ekhethiwe, igundane lihlala lishayela.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Inkinobho evumela igundane ukuthi lishayele, kunoma iyiphi idivayisi yalesi sikhala. Uma ingekho ekhethiwe, igundane lihlala lishayela.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ukushelelisa</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Kulinganisa igundane elibika ngokungalingani. Induku ilandela isandla ngemuva kwalesi sikhathi cishe. U-0 uvaliwe.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Umkhawulo ngesivinini</value></data>
@@ -1597,7 +1635,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Qala lapho ukushayela kuqale khona</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Uma kukhona Okufakwayo kokushayela, induku ilinganisa kusuka lapho isikhombi sasikhona lapho ukushayela kuqala, njengoba induku esikrinini sefoni iqala lapho umunwe uthinta khona. Uma kuvaliwe, ilinganisa kusuka maphakathi nemonitha yesikhombi.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Le eksisi inyakaza ngokuhlobene</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Okwe-trackball noma i-spinner ebika ukuthi ijike kangakanani. Uma kuvuliwe, i-eksisi igcina indawo njengoba kwenza Ukuhamba kwegundane futhi ithatha izilungiselelo zokuhamba. I-Windows ayisho ukuthi yiziphi ama-eksisi anyakaza ngale ndlela.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Okwe-trackball noma i-spinner ebika ukuthi ijike kangakanani. Uma kuvuliwe, i-eksisi igcina indawo njengoba kwenza Ukuhamba kwegundane futhi ithatha izilungiselelo zokuhamba. I-SDL ifunda isilawuli esijwayelekile nge-DirectInput, efunda yonke i-eksisi njengendawo, ngakho le swishi isho ukuthi yiziphi ama-eksisi anyakaza ngale ndlela.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Buka kuqala</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ibonisa ukuthi lo mndeni ulandela kanjani igundane lakho. Akukho okumephwayo uze uwukhethe.</value></data>
@@ -1744,6 +1782,13 @@
 {0}
 
 I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubike lokhu, qala ingxoxo ku-{2} bese udonsela i-crash.log kuyo.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Kuvele iphutha obekungalindelekile:
+
+{0}
+
+I-PadForge ayikwazanga ukubhala imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubike lokhu, qala ingxoxo ku-{2}, cindezela u-Ctrl+C lapha ukuze ukopishe lo mlayezo, bese uwunamathisela lapho.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(amaphutha engeziwe angu-{0} afihliwe)</value></data>
@@ -2662,6 +2707,8 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>isikrini se-G19 sisebenzisa omunye umshayeli ({0}), ngakho qala i-Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>isikrini se-G19 sisebenzisa umshayeli wolunye uhlelo ({0}), i-PadForge engawuthinti</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>idinga i-Logitech Gaming Software 8.52 noma eyakamuva</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ithole umtapo wayo kodwa ayiwulayishanga, ngoba i-PadForge ayikwazanga ukuqinisekisa ukuthi abalawuli kuphela abangawushintsha nokuthi i-Logitech iwusayinile</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ithole umtapo wayo kodwa ayikwazanga ukuwusebenzisa, futhi ilogi yokuxilonga isho ukuthi kungani</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>qala i-Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>kulindwe ifoni ene-Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>efonini</value></data>
@@ -2756,6 +2803,8 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Khetha i-dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Ilayisha le khophi yomtapo we-Force Dimension esikhundleni sanoma iyiphi enye. I-Falcon evulwe kwenye ikhophi iyavaleka bese iphinde ivuleke kule. Amakhophi afakwa yi-SDK atholakala ngaphandle kwayo.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Imitapo (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Ikhasi lokulanda le-Falcon SDK alivulekanga: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Ikhasi lokulanda le-Falcon SDK alikavuleki: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Faka umshayeli we-Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Ifaka umshayeli we-Force Dimension, osuka kufolda ye-SDK, ku-Falcon engenawo. I-Windows ingase iqale ibuze ukuthi iyayethemba yini i-Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Thola i-SDK ye-Force Dimension</value></data>
@@ -2980,6 +3029,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Isilawuli esisha</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Izilungiselelo</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Yonke i-eksisi, inkinobho nenzwa</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Izinto zayo zokulawula ngamagama imibhalo ewasebenzisayo</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Kucindezelwe: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopisha imininingwane</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Umkhiqizo</value></data>
@@ -3168,7 +3218,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Funda</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Thumela okufakwayo</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Shintsha izilungiselelo</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Izinhlelo zingashintsha amaphrofayela futhi ziwadedele, ziqale futhi zimise injini, zivule futhi zivale izilawuli ezibonakalayo, zibonise futhi zifihle iwindi, zivale i-PadForge, zilondoloze isithombe sokuxilonga futhi zibuze ukuthi yini esebenzayo.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Izinhlelo zingashintsha amaphrofayela futhi ziwadedele, ziqale futhi zimise injini, zivule futhi zivale izilawuli ezibonakalayo, zibonise futhi zifihle iwindi, zivale i-PadForge, zibuze ukuthi yini esebenzayo, zilondoloze isithombe sokuxilonga, futhi ziqale, zimise futhi ziphawule okuqoshiwe kwenkinga.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Konke okusezingeni elithi Imiyalo, futhi izinhlelo zingabona amadivayisi, izilawuli ezibonakalayo, ukumaphwa, amaphrofayela nezilungiselelo, zilandele okufakwayo kwayo yonke idivayisi ngesikhathi kwenzeka, futhi zikubonise indawo ku-PadForge. Uhlelo olusezingeni elithi Funda lubona yonke inkinobho ecindezelwa kuyo yonke idivayisi, kuhlanganise nokhiye abathayiphwa emawindini asebenza njengomlawuli.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Konke okusezingeni elithi Funda, futhi izinhlelo zingengeza amadivayisi azo futhi ziwaqhube, zibambe isilawuli sanoma iyiphi idivayisi futhi zinikeze amanani anamagama kuma-trigger ama-macro.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Konke okusezingeni elithi Thumela okufakwayo, futhi izinhlelo zingashintsha lokho ongakushintsha emakhasini. Ezinye izinguquko zihlale zikubuza kuqala ekhadini lombuzo le-PadForge.</value></data>
@@ -3181,7 +3231,6 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Kulindelwe wena</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Umsebenzi</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Hlehlisa</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukukulondoloza: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Ngenkathi uhlelo olusezingeni elithi Funda noma ngaphezulu luxhunyiwe, lubona okucindezelwa kuyo yonke idivayisi, kuhlanganise namakhibhodi.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Ama-plugin</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Qalisa ama-plugin</value></data>
@@ -3201,7 +3250,10 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} kwangu-{1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Ukuphinda udlale)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Okuqoshiwe kwezinkinga|*.zip;*.log|Wonke amafayela|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukudlala {0}. Akusikho okuqoshiwe kwenkinga, noma akunakho okufakwayo kwanoma iyiphi idivayisi.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukudlala i-{0}. Akusikho okuqoshiwe kwenkinga i-PadForge ekwazi ukukufunda.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukudlala i-{0}. Inamadivayisi angaphezu kuka-{1}, futhi Ukuphinda udlale kudlala amadivayisi angafika ku-{1} kuphela.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukudlala i-{0}. Ayinakho okokufaka kwanoma iyiphi idivayisi.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukufunda i-{0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Ama-plugin akho</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Engeza i-plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Izinhlelo nemibhalo|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Wonke amafayela|*.*</value></data>
@@ -3215,8 +3267,13 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Imisiwe ngemuva kokwehluleka kahlanu kulandelana</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ayiqalanga: ifayela alisekho</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ayiqalanga: i-Windows ayinalo uhlelo lwalolu hlobo lwefayela</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ayiqalanga: alukho uhlelo olukuvulela amafayela e-Python, futhi i-PadForge ayitholi isiqalisi se-py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ayiqalanga: i-PadForge ayikwazi ukufunda ukuthi yiluphi uhlelo olukuvulela lolu hlobo lwefayela</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ayiqalanga: uhlelo olukuvulela lolu hlobo lwefayela alukho kule PC</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ayiqalanga: alikho igobolondo ledeskithophu elisebenzayo ukuze iqale ngaphansi kwalo</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ayiqalanga: igobolondo ledeskithophu linamalungelo omlawuli, ngakho i-plugin nayo ibizowathola</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ayiqalanga: i-PadForge ayikwazi ukufunda ukuthi ibizoba namalungelo omlawuli yini</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ayiqalanga: i-Windows iyinike amalungelo omlawuli, ngakho i-PadForge iyiqede ingakasebenzi</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ayiqalanga: icela amalungelo omlawuli</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ayiqalanga: i-Windows yenqabile ngephutha {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ayiqalanga</value></data>
@@ -3244,6 +3301,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Yengeze {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Kusayinwe ngu-{0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Akusayinwe.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Izilungiselelo zayo zibonakala lapha ngesikhathi isebenza.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Ayimemezeli izilungiselelo.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Izilungiselelo zayo zibonakala lapha uma isixhumeke ku-PadForge.</value></data>
@@ -3294,7 +3352,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Khetha i-plugin ukuze ubone ilogi yayo.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Akukabikho lutho kulogi yale plugin.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Iseva neklayenti le-Model Context Protocol elingemuva koxhumano lomsizi ne-PadForge.exe --mcp, ngu-Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Iseva neklayenti le-Model Context Protocol elingemuva koxhumano lomsizi ne-PadForge.exe --mcp, ngu-Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>I-Microsoft.Extensions.AI.Abstractions, i-Logging.Abstractions ne-DependencyInjection.Abstractions, okwakhelwe phezu kwazo i-MCP C# SDK, ngu-Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Uhlelo</value></data>
@@ -3334,8 +3392,13 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Kuyasuswa…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Kuyabuyekezwa…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Akuphelanga: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Okufakwe kwe-PadForge nekhono layo kuyahlala, ngoba i-{0} ifunda ifayela elifanayo lezilungiselelo nefolda efanayo yamakhono.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Okufakwe kwe-PadForge kuyahlala, ngoba i-{0} ifunda ifayela elifanayo lezilungiselelo.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>I-PadForge isusiwe kulolu hlelo. Ikhono layo liyahlala, ngoba i-{0} ifunda amakhono efolda efanayo.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda izilungiselelo ku-{0}, ngakho ayazi ukuthi i-PadForge yengeziwe yini.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Kwengeziwe. I-PadForge ayikwazanga ukufunda ifolda yekhono layo.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kukopishiwe.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Akukopishwanga: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Akukopishwanga. I-Windows ayizange ivumele i-PadForge ukuthi isebenzise ibhodi lokunamathisela.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Izinhlelo ezivunyelwe</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Uhlelo olufuna Funda noma ngaphezulu lubuza kanye, okokuqala uma luxhuma, futhi luthola izinga eliliceliyo, kuze kufike ezingeni elingenhla. Umsizi omengeza ngenhla uvunyelwa yilokho.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -3351,6 +3414,8 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>I-joystick. I-PadForge iyifunda ingacutshungulwanga, ngakho ukumaphwa kwe-SDL akusetshenziswa.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>I-joystick, ehlelwe njenge-gamepad ngumugqa wakho.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>I-SDL ifunda amadivayisi ngesikhathi injini isebenza.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Idivayisi ayixhunyiwe. I-SDL iyayifunda uma isixhunyiwe.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>I-SDL ayizange inike i-PadForge ukufundwa kwale divayisi.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ikhophi yomphakathi efakiwe, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Kulandwe ngo-{0}</value></data>
@@ -3388,6 +3453,11 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>i-turbo, ukushintsha nezinye izenzo</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} kanye no-{1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Akukho okungakopishwa: i-SDL ayinakho ukumaphwa kwale divayisi, futhi ayikho kunoma yisiphi isilawuli.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Akukho okungakopishwa: i-PadForge ayikwazi ukufunda ukumaphwa kwe-SDL kwale divayisi, futhi awukho umugqa wezilawuli zayo onikeza ukubophezela okwamukelwa yifomu le-SDL.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Akukho okungakopishwa: i-SDL ayinakho ukumaphwa kwale divayisi, futhi awukho umugqa we-{0} ofunda inkinobho, i-eksisi noma i-hat yayo ngendlela eyamukelwa yifomu le-SDL.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Akukho okungakopishwa: i-SDL ayinakho ukumaphwa kwale divayisi, futhi imigqa ye-{0} iyifundela kuphela lokhu: {1}, ifomu le-SDL elingakwazi ukukuphatha.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Akukho okungakopishwa: i-PadForge ayikwazi ukufunda ukumaphwa kwe-SDL kwale divayisi manje, futhi ayikho kunoma yisiphi isilawuli.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Akukho okungakopishwa: i-PadForge ayikwazi ukufunda ukumaphwa kwe-SDL kwale divayisi manje, futhi awukho umugqa we-{0} onikeza ukubophezela okwamukelwa yifomu le-SDL.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Olunye uhlelo lusebenzisa ibhodi lokunamathisela. Akukho okukopishiwe.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Umugqa wakho ususiwe. Idivayisi ifundwa njengoba yayinjalo ngaphambi kwawo.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Kumephwe futhi kusuka esakhiweni se-SDL: {0}.</value></data>
@@ -3408,6 +3478,8 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Imigqa i-PadForge enayo</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Awukho umugqa ofanayo.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Umugqa okhethiwe usetshenziswa ku-{0} ngaphansi kwe-ID yayo, ngokuhlolwa okufanayo nokukhetha okufanayo ne-Namathisela.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Injini imisiwe, ngakho uhlu lushiya imigqa ephethwe yi-SDL, eyayo kanye nekhophi yomphakathi ekhelwe ngaphakathi. Iyavela ohlwini uma injini isisebenza.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>I-SDL ayiphendulanga ngesikhathi, ngakho uhlu lushiya imigqa eyiphethe, eyayo kanye nekhophi yomphakathi ekhelwe ngaphakathi.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Umugqa wokumaphwa we-SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Umugqa wale divayisi.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Isakhiwo esiqagelwe.</value></data>
@@ -3420,14 +3492,14 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, inkambu engu-{0}, kusuka kumthengisi nomkhiqizo ofanayo kwelinye ibhasi noma kwenye inguqulo. Igcinwa ngaphansi kwe-ID yale divayisi.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, inkambu engu-{0}, umugqa wenye idivayisi. Ugcinwa ngaphansi kwe-ID yale divayisi.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Inkambu engu-{0}. I-SDL ayiyifundi le divayisi, ngakho i-PadForge ihlela okufakwayo kwayo ngokomugqa.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>I-PadForge ayinayo inkinobho noma i-eksisi elula yalezi zinkambu futhi iyazishiya: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Inkambu engu-{0}, kusuka kuma-eksisi, izinkinobho nama-hat edivayisi. Kuhlole ku-Test Inputs, bese ukugcina noma ukushintsha lapha.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Lokhu kushintsha indlela {0} efundwa ngayo. Imigqa yayo ku-{1} imephwa futhi kusuka esakhiweni esisha.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Lokhu kushintsha indlela {0} efundwa ngayo. Ayikho kunoma yisiphi isilawuli, ngakho ayikho imigqa eshintshayo.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Izinqamuleli zephrofayela ezifunda {0} zigcina okufakwayo ezazisethelwe kukho.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Umugqa ugcinwa njengowakho ku-PadForge.xml futhi uhamba phambili kunawo wonke omunye umthombo wale divayisi. Susa okwami kubuyisela umugqa omdala nemigqa emidala.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Imigqa igcinwa njengeyakho ku-PadForge.xml futhi ihamba phambili emadivayisini ayo kunawo wonke omunye umthombo. Sula, ngaphansi kokuthi Okuningi komugqa we-Isizindalwazi sezilawuli, iyayisusa.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Imigqa engu-{0} ye-Windows. Engu-{1} yezinye izinhlelo iyashiywa.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Umugqa ongu-{0} we-Windows. Engu-{1} yezinye izinhlelo iyashiywa.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Imigqa engu-{0:N0} ye-Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Yonke engu-{0:N0} izongezwa. I-PadForge igcina imigqa yakho efika ku-{1:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Uzongezwa. I-PadForge igcina imigqa yakho efika ku-{1:N0}.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Engu-{0:N0} yakho igciniwe manje, ngakho engu-{1:N0} kule izongezwa kanti engu-{2:N0} ngeke yengezwe.</value></data>
@@ -3437,7 +3509,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Umbhalo awuwona umugqa wesizindalwazi sezilawuli se-SDL: i-ID yamadijithi angu-32 e-hex, igama, bese izinkambu ezifana no-a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Imigqa ingeyezinye izinhlelo. I-PadForge ifunda imigqa ye-Windows, noma engeyona yanoma yisiphi isistimu ngokuqondile.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>I-ID yomugqa akuyona eyedivayisi. Idinga amadijithi angu-32 e-hex.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Igama lomugqa alinalutho, lidlula izinhlamvu ezingu-128, noma linohlamvu i-SDL elufunda njengenkambu.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Igama lomugqa alinalutho, lidlula izinhlamvu ezingu-128, linomaki wenkambu i-SDL eyifundayo, njengokuthi “type:”, noma linohlamvu olungelona uhlamvu, idijithi, uphawu lokubhala, uphawu noma isikhala esivamile.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Umugqa unesiqondiso noma inkambu ye-Android, i-PadForge engakwamukeli.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Umugqa unenkambu i-SDL engayazi.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Ukubopha akukho efomini le-SDL, njengo-b3, a2, +a2, a2~ noma h0.4.</value></data>
@@ -3448,8 +3520,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Imigqa yakho</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Imigqa oyengeza lapha, noma oyinamathisela ekhadini le-Ukumaphwa kwe-SDL ledivayisi, ihamba phambili emadivayisini ayo kunawo wonke omunye umthombo futhi ihlala noma kusethwa kabusha.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Engeza imigqa kusuka efayeleni noma ebhodini lokunamathisela…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Imigqa engu-{0} yamadivayisi angu-{0}, eyakho ngaphezu kwawo wonke omunye umthombo.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Umugqa ongu-{0} wedivayisi engu-{0}, owakho ngaphezu kwawo wonke omunye umthombo.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Imigqa engu-{0:N0}, eyakho iphambili kunayo yonke eminye imithombo.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ayikho okwamanje.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Okuguquguqukayo kwakho kwe-SDL_GAMECONTROLLERCONFIG kunemigqa engu-{0} i-PadForge engayigcini. Ukuthi Engeza imigqa kusuka efayeleni noma ebhodini lokunamathisela kuvuleka nayo.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Okuguquguqukayo kwakho kwe-SDL_GAMECONTROLLERCONFIG kunomugqa ongu-{0} i-PadForge engawugcini. Ukuthi Engeza imigqa kusuka efayeleni noma ebhodini lokunamathisela kuvuleka nawo.</value></data>
@@ -3468,7 +3539,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Kumisiwe. Amazwi awo okugcina: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Awukwazanga ukuqaliswa.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Awusekho kule PC.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Alukho uhlelo lomhubhe olutholakele kule PC. I-PadForge isebenza ne-cloudflared, i-devtunnel, i-ngrok ne-Tailscale Funnel, noma nekheli lomhubhe wakho.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>I-PadForge ayitholanga noma yikuphi kokuthi cloudflared, devtunnel, ngrok noma Tailscale Funnel kule PC. Khetha i-ChatGPT Secure MCP Tunnel, i-PadForge eyilandayo, noma unikeze ikheli lomhubhe wakho.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Khetha umhubhe ukuze unikeze i-PadForge ikheli lomphakathi.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Futhi kule PC: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ikheli lawo elihlala lifana</value></data>
@@ -3476,7 +3547,7 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Qalisa umhubhe wakho uye ku-http://127.0.0.1:{0} bese unamathisela ikheli lawo le-https. Umhubhe we-Cloudflare onegama, i-dev tunnel ehlala njalo, i-Tailscale Funnel kanye nesizinda se-ngrok uqobo kugcina ikheli lakho.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Namathisela ikheli le-https elingenayo indlela ngaphandle kuka-/mcp, njengoba umhubhe wakho ulinikeza.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Kuqaliswa umsizi wewebhu we-PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Umsizi wewebhu we-PadForge umile ({0}). Vala bese uvula Reach PadForge From the Web ukuze uwuqale futhi.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Umsizi wewebhu we-PadForge umile ({0}). I-PadForge iyaqhubeka nokuzama ukuwuqalisa.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Ikheli</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Alikho ikheli lomphakathi okwamanje.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Engeza ku-Claude</value></data>
@@ -3515,11 +3586,6 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>uphele ngekhodi {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Ukuzenzakalela kuvaliwe, ngakho awukho umsizi wewebhu ofinyelela i-PadForge. Umsizi wewebhu uqala uma Ukuzenzakalela kuvuliwe.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Kuyahlolwa…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Akufakiwe.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Kufakiwe futhi kusesikhathini. Umbhalo uqala ngo-{0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Kufakelwe i-{0} futhi kusesikhathini. Umbhalo uqala ngo-{1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Kufakiwe. Le PadForge inekhophi entsha.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Kufakelwe i-{0}. Le PadForge inekhophi entsha.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Kuyafakwa…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>I-PadForge ayikwazanga ukukuhlola: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Faka ibeka umtapo we-PadForge lapho lolo limi luwuthola khona. Umbhalo owulayishayo ufunda amadivayisi futhi uqhuba ukumaphwa ezingeni elingenhla.</value></data>
@@ -3527,22 +3593,24 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Amakhophi afakiwe</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Susa konke</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Kususiwe.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Umtapo we-PadForge ufakiwe ku-{0} futhi ubuyekeziwe. Umbhalo uqala ngo-{1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Umtapo we-PadForge ku-{0} wehlukile kwikhophi yale PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Umtapo we-PadForge awufakiwe ku-{0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>I-ID yombhalo</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>I-ID yayo yombhalo</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Imibhalo ibiza izilawuli zayo ngokuthi {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Imibhalo ibiza okhiye bayo ngokuthi KeyA, KeySpace, KeyLeftShift nokunye okunjalo, kanye nawo wonke ukhiye ngekhodi yawo, Vk0 kuya ku-Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} kule nethiwekhi kusuka ku-{1}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Inguqulo entsha esayinwe ngokhiye wesitifiketi ofanayo ka-{0} iqala kabusha ngaphandle kokuthi Gunyaza futhi uqale kabusha. Noma yiluphi olunye ushintsho luzokubuza kuqala.</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Kwamukelwe inguqulo entsha esayinwe ngokhiye wesitifiketi ofanayo</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Ikheli</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>I-PadForge yamukela ikheli eliqala nge-https:// futhi elisho igama lomsingathi, kuphothi ezenzakalelayo, ngaphandle kwegama lomsebenzisi noma iphasiwedi.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>I-PadForge ithatha ikheli elinezinhlamvu ezingafika ku-2,048 eliqala ngo-https:// futhi eliqamba umsingathi, kuphothi ezenzakalelayo, ngaphandle kwegama lomsebenzisi, iphasiwedi noma ingxenye elandela u-#.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Iphothi</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Shintsha…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Izicelo nokhiye wazo zidlula kule nethiwekhi zingabethelwe. I-Windows iyazingenisa kumanethiwekhi angasese kuphela.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Izicelo nokhiye wazo zidlula kule nethiwekhi zingabethelwe. Umthetho we-Windows Firewall i-PadForge ewenzela le phothi uqamba amanethiwekhi angasese kuphela.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Iphothi {0} isetshenziswa ngolunye uhlelo. Yishintshe ukuze ufinyelele i-PadForge kusuka kule nethiwekhi.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>I-Windows ayivumelanga umsizi we-PadForge ukuthi ulalele kuphothi {0}. I-PadForge iyakuvumela lokho ngamalungelo omphathi, ngakho qala i-PadForge ngawo bese uvala futhi uvula lokhu.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>I-Windows ayinakho ukubekelwa umsizi we-PadForge kuphothi {0}. Vala futhi uvule lokhu, bese i-PadForge iyakwenza futhi.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Umsizi we-PadForge awukwazanga ukulalela kuphothi {0}. Shintsha iphothi, noma uvale futhi uvule lokhu.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Umsizi we-PadForge umile ({0}). Vala bese uvula Reach PadForge From This Network ukuze uwuqale futhi.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Umsizi we-PadForge umile ({0}). I-PadForge iyaqhubeka nokuzama ukuwuqalisa.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Ukuzenzakalela kuvaliwe, ngakho awukho umsizi kule nethiwekhi ofinyelela i-PadForge. Umsizi uqala uma Ukuzenzakalela kuvuliwe.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Le PC ayinalo ikheli kunethiwekhi engasese okwamanje.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Abasizi kule nethiwekhi</value></data>
@@ -3559,7 +3627,25 @@ I-PadForge ibhale imininingwane ku-crash.log eceleni kwe-PadForge.exe. Ukuze ubi
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Imiyalo evela kulayini womyalo isafinyelela i-PadForge, njengoba kwenzeka kuzo zonke izinhlelo.</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Licela ukulawula amadivayisi alo kuphela.</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Libuza kanye. Ungalisusa noma ushintshe ukufinyelela kwalo ekhasini elithi Ukuzenzakalela.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Kuyasebenza, ngamalungelo akho, futhi kulungile. I-ChatGPT ifinyelela i-PadForge ngalo mhubhe ngaphandle kokungena kwayo, futhi kuphela kusuka enhlanganweni yakho ye-OpenAI. Kuqala futhi ne-PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Kuyasebenza, ngamalungelo akho. Kulinde i-OpenAI ukuthi isho ukuthi umhubhe usulungile.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>I-PadForge igcina ukhiye ubethelwe wena wedwa. Ibhokisi elingenalutho liyawukhohlwa. I-ChatGPT isebenza ezingeni elingenhla.</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (ayixhunyiwe)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Idivayisi engekho ekhasini elithi Amadivayisi</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>I-PadForge ayikwazanga ukulondoloza ikhithi ye-plugin.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>Umsebenzi we-PadForge {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Imisindo{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Izithonjana{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Imigqa engu-{0:N0} yamanye amasistimu iyeqiwa.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>I-Windows ayizange ikuqale ngamalungelo akho.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Akuphelanga ngesikhathi (imizuzwana: {0}).</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Kuphele ngekhodi {0} futhi akuzange kunikeze isizathu.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda izilungiselelo ku-{0}, ngakho ishiye ifayela linjalo.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>I-PadForge ayizange ibhale ifayela {0}, ngakho ilishiye linjalo.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>I-Windows ayisho ifolda yakho ethi Amadokhumenti.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>I-PadForge ayitholi ifolda yakho ye-{0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Umyalo we-{0} ngokwawo uphele ngekhodi {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Umyalo we-{0} awukho kule PC.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>I-Windows ayizange ivumele i-PadForge ukuthi ifunde noma ibhale ifayela eyilidingayo.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>I-PadForge ayitholi i-Python: ayikho ebhalisiwe, efakwe ku-Microsoft Store, ebalwe yisiqalisi se-py noma eku-PATH yakho.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ayikho i-Python i-PadForge eyitholile ephendule ngesikhathi (imizuzwana: {0}).</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Ukusebenza akunikezanga isizathu i-PadForge esaziyo.</value></data>
 </root>

@@ -21,6 +21,14 @@ namespace PadForge
             // A change the user or a sign-in made is kept. A file read in
             // starts the helper through the door when its switch is on.
             WebAccessStore.Shared.Changed += (s, e) => Dispatcher.BeginInvoke(new Action(() => _settingsService?.MarkDirty()));
+            // Reset to Defaults turns both doors off as their switches do,
+            // before it empties the store.
+            if (_settingsService != null)
+                _settingsService.TurnWebDoorsOff = () =>
+                {
+                    if (WebAccessStore.Shared.NetworkOn) _webDoor?.TurnNetworkOff();
+                    if (WebAccessStore.Shared.On) _webDoor?.TurnOff();
+                };
             var view = new WebAccessViewModel(_webDoor, WebAccessStore.Shared)
             {
                 Post = action => Dispatcher.BeginInvoke(action),
@@ -36,9 +44,9 @@ namespace PadForge
                 AskPort = port => Views.NetworkPortDialog.Ask(this, port),
                 UserLevel = () => _automation?.Level ?? PadForge.Services.Automation.AutomationLevel.Commands,
                 // A key's reach (#600 DESIGN-2 N3), as an Allowed row's.
-                PickReachDevices = (name, reach) => Views.PickDevicesDialog.Pick(this, name, reach),
+                PickReachDevices = (key, name, reach) => Views.PickDevicesDialog.Pick(this, _automation?.Sessions.Devices, key, name, reach),
             };
-            _viewModel.Dashboard.PickReachDevices = (name, reach) => Views.PickDevicesDialog.Pick(this, name, reach);
+            _viewModel.Dashboard.PickReachDevices = (key, name, reach) => Views.PickDevicesDialog.Pick(this, _automation?.Sessions.Devices, key, name, reach);
             _viewModel.Dashboard.WebAccess = view;
             // The switch, the card's controls and each allowed web assistant
             // join the catalog, each the user's alone (#600 items 1 and 2).

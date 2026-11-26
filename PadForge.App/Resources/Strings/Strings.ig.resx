@@ -157,8 +157,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Mmemme ahụ na-asụ ụdị PadForge amaghị</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge enyeghị igodo plugin ahụ</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge anabataghị njikọ mmemme a</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge emeghị ngwaọrụ ọ bụla, ebe ọ bụ na Windows akpọghị aha faịlụ mmemme ahụ</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A jụrụ ọzọ ngwa ngwa karịa</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ọ dịghị ọzọ n'ụdị a ruo mgbe PadForge malitere ọzọ</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Ihe ndị a karịrị akarị nke mmemme mere ka ha chere nyocha gị na Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge enweghị ngwaọrụ dị otu a</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Mmemme ahụ gụrụ ọnọdụ ochie</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ọ dịghị ihe nwere ID ahụ</value></data>
@@ -166,6 +167,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ị kweghị ya</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ọ dịghị onye zara n'oge</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Na-echere azịza gị</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Ị zabeghị ya</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Enweghị arịrịọ dị otu a</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ọ dịghị ihe a ga-emegharị</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Naanị gị nwere ike ịgbanwe nke a</value></data>
@@ -288,7 +290,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Webata profile</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Bubata faịlụ profile sitere na mmemme ọzọ, wee hụ ihe bịara.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ugboro {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, nke ikpeazụ n'ime {1} dị otu a</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Jikọọ</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Enweghị ngwaọrụ</value></data>
 
@@ -331,6 +332,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folda</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Ntọala ọrụ</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Nzọụkwụ mwepụ</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Ọrụ</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Faịlụ</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Nzacha elu</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Uru registry</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID ngwaike</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Ọrụ a haziri ahazi</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Ntinye na ngwa etinyere</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Ngwaọrụ USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Na-enye controller PlayStation 3, PlayStation Move na Navigation controller ohere ijikọ site na Bluetooth. Ọ dị n'ime PadForge, a na-awụnye ya oge mbụ e jikọọrọ otu n'ime ha.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Na-ejikọ controller PlayStation 3 site na Bluetooth.</value></data>
@@ -764,6 +773,13 @@
 {0}
 
 PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nke a, malite mkparịta ụka na {2} ma tinye crash.log na ya.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Njehie a na-atụghị anya mere:
+
+{0}
+
+PadForge enweghị ike ide nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nke a, malite mkparịta ụka na {2}, pịa Ctrl+C ebe a iji detuo ozi a, ma mado ya n'ebe ahụ.
 
 {1}</value></data>
 
@@ -1344,7 +1360,18 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>agbanyụọla</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>site na Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>ihuenyo nke G19 dị na driver nke mmemme ọzọ ({0}), nke PadForge anaghị emetụ aka</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Na-elele draịva PlayStation Bluetooth nke PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Na-agụ redio Bluetooth nke PC a…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Na-emeghe controller ahụ site na eriri USB ya…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Na-ede adreesị Bluetooth nke PC a n'ime controller ahụ…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Na-edebanye controller ahụ aha na Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Na-amalitegharị Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Njikọ kwụsịrị: Windows jụrụ PadForge ohere ịbanye na controller ahụ ma ọ bụ ntọala Bluetooth. Ndekọ nchọpụta nwere nkọwa ya.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Njikọ kwụsịrị: ịgụ ma ọ bụ ide na controller ahụ ma ọ bụ redio Bluetooth dara. Ndekọ nchọpụta nwere nkọwa ya.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Njikọ kwụsịrị n'ihi njehie PadForge na-atụghị anya ya. Ndekọ nchọpụta nwere nkọwa ya.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>chọrọ Logitech Gaming Software 8.52 ma ọ bụ nke ọhụrụ karịa</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>chọtara ọbá akwụkwọ ya ma ebughị ya, n'ihi na PadForge enweghị ike ikwenye na ọ bụ naanị ndị nchịkwa nwere ike ịgbanwe ya nakwa na Logitech bịanyere aka na ya</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>chọtara ọbá akwụkwọ ya ma enweghị ike iji ya, ndekọ nchọpụta na-ekwukwa ihe kpatara ya</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>malite Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>na-eche ekwentị nwere Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>na ekwentị</value></data>
@@ -1522,6 +1549,7 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Devices_UsedBy" xml:space="preserve"><value>Ndị na-eji ya</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Ntọala</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, bọtịn na sensọ niile</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Njikwa ya site n'aha script na-eji</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Detuo nkọwa</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Ngwaahịa</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Ụdị</value></data>
@@ -1741,8 +1769,10 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} n'ime {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ọ bụrụ na azaghị n'ime {0}, ọ bụ mba.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda mmemme ndị ọzọ nwere ike ịgbanwe. Ha nwere ike ịgbanwe ntọala PadForge n'ebe ahụ, PadForge ga-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda nwere faịlụ ndị ọzọ. PadForge enweghị ike igbochi mmemme ndị ọzọ ịgbanwe ntọala ya n'ebe ahụ, ọ na-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda ọ na-enweghị ike ịgụ. PadForge enweghị ike igbochi mmemme ndị ọzọ ịgbanwe ntọala ya n'ebe ahụ, ọ na-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ọdụ data controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub, ma ọ bụ site na adreesị e setịrị n'okpuru More, ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. Ha nọ n'ọrụ ozugbo. Site na adreesị ọzọ, ọ na-edebe naanị mapping ọhụrụ. A na-eji mapping ọhụrụ naanị maka controller nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode (Bypass Gamepad Remapping). Ntọgharị ahụ na-ewepụ mapping niile e budatara ma budata ọzọ site na GitHub. Ahịrị nke gị, n'okpuru More, na-anọgide.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub, ma ọ bụ site na adreesị e setịrị n'okpuru More, ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. Ha nọ n'ọrụ ozugbo. Site na adreesị ọzọ, ọ na-edebe naanị mapping ọhụrụ. A na-ebu ụzọ jiri mapping ọhụrụ naanị maka controller nke SDL kọrọ dịka gamepad ma ọ bụ dịka nke na-enweghị ụdị a kapịrị ọnụ, nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode. Ozugbo ọ nọ n'ọrụ, ọ na-anọgide n'ọrụ mgbe e kenyechara controller ahụ. Ntọgharị ahụ na-ewepụ mapping e budatara ma tọghachi Budata site na ka ọ bụrụ faịlụ obodo, nke Melite ugbu a na-esote ga-ebudata. Ahịrị nke gị, n'okpuru More, na-anọgide.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Melite ugbu a</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Na-emelite…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Dị n'ime: mapping {0}, oyiri obodo nke {1}.</value></data>
@@ -1750,16 +1780,19 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Dị n'ime: mapping {1}, oyiri obodo nke {2}. E budatara {3} site na {4}: ahịrị ọhụrụ {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Dị n'ime: mapping {1}, oyiri obodo nke {2}. E budatara {3} site na {4}: ahịrị ọhụrụ {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ọdụ data obodo agbanwebeghị kemgbe mmelite ikpeazụ.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Faịlụ dị na {0} agbanwebeghị kemgbe mmelite ikpeazụ.</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge jụrụ ihe e budatara n'ihi na ọ bụghị ọdụ data controller ọ na-atụ anya ya. Ọ dịghị ihe gbanwere.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge jụrụ azịza GitHub. Ọ dịghị ihe gbanwere.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge jụrụ azịza si na {0}. Ọ dịghị ihe gbanwere.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Site na telemetry</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Mgbe niile</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mgbe a na-ejide ya ma laghachi n'etiti</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bọtịn na-ekwe ka mouse tụgharịa, n'otu ngwaọrụ ahụ dị ka isi iyi ahụ. Ọ bụrụ na a họrọghị nke ọ bụla, mouse na-atụgharị mgbe niile.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bọtịn na-ekwe ka mouse tụgharịa, na ngwaọrụ ọ bụla nke slot a. Ọ bụrụ na a họrọghị nke ọ bụla, mouse na-atụgharị mgbe niile.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Mgbe Telemetry egwuregwu gbanyere, ole n'ime lock fọdụrụ na 200 km/h. Na 100%, lock niile dị na ọsọ ọ bụla.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Sava na onye ahịa Model Context Protocol dị n'azụ njikọ assistant na PadForge.exe --mcp, nke Model Context Protocol a Series of LF Projects mere.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Sava na onye ahịa Model Context Protocol dị n'azụ njikọ assistant na PadForge.exe --mcp, nke Model Context Protocol a Series of LF Projects, LLC mere.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions na DependencyInjection.Abstractions, nke e wuru MCP C# SDK na ha, nke Microsoft mere.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Ọkwa ngwaọrụ kwụsịrị njikọ</value></data>
@@ -1811,8 +1844,13 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Na-ewepụ…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Na-emelite…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>O mechaghị: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Ntinye na skill PadForge na-anọgide, n'ihi na {0} na-agụ otu faịlụ ntọala ahụ na otu folda skill ahụ.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Ntinye PadForge na-anọgide, n'ihi na {0} na-agụ otu faịlụ ntọala ahụ.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>E wepụla PadForge na mmemme a. Skill ya na-anọgide, n'ihi na {0} na-agụ skill site n'otu folda ahụ.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge enweghị ike ịgụ ntọala dị na {0}, ya mere ọ maghị ma etinyela PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Etinyela. PadForge enweghị ike ịgụ folda skill ya.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Edetuola.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Edetughị ya: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Edetughị. Windows ekweghị ka PadForge jiri clipboard.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Mmemme a kwadoro</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Mmemme chọrọ Read ma ọ bụ karịa na-ajụ otu ugboro, oge mbụ ọ jikọrọ, ma nweta ọkwa ọ rịọrọ, ruo n'ọkwa dị n'elu. Assistant ị tinyere n'elu bụ nke a kwadoro site na nke ahụ.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -1825,6 +1863,8 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge na-agụ ya kpọmkwem, ya mere a naghị eji mapping SDL.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, nke ahịrị gị haziri dị ka gamepad.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL na-agụ ngwaọrụ mgbe engine na-agba.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Ejikọghị ngwaọrụ ahụ. SDL ga-agụ ya ozugbo e jikọrọ ya.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL enyeghị PadForge ọgụgụ ọ bụla nke ngwaọrụ a.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Oyiri obodo dị n'ime, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E budatara {0}</value></data>
@@ -1862,6 +1902,11 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle na omume ndị ọzọ</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} na {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Ọ dịghị ihe a ga-edetu: SDL enweghị mapping maka ngwaọrụ a, ọ nọghịkwa na controller ọ bụla.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Ọ dịghị ihe a ga-edetu: PadForge enweghị ike ịgụ mapping SDL maka ngwaọrụ a, ọ dịghịkwa ahịrị nke controller ya na-enye binding ụdị SDL na-anabata.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Ọ dịghị ihe a ga-edetu: SDL enweghị mapping maka ngwaọrụ a, ọ dịghịkwa ahịrị nke {0} na-agụ otu n'ime bọtịn, axis ma ọ bụ hat ya n'ụzọ ụdị SDL na-anabata.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Ọ dịghị ihe a ga-edetu: SDL enweghị mapping maka ngwaọrụ a, ahịrị nke {0} na-agụkwa ya naanị maka {1}, nke ụdị SDL enweghị ike ijide.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Ọ dịghị ihe a ga-edetu: PadForge enweghị ike ịgụ mapping SDL maka ngwaọrụ a ugbu a, ọ nọghịkwa na controller ọ bụla.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Ọ dịghị ihe a ga-edetu: PadForge enweghị ike ịgụ mapping SDL maka ngwaọrụ a ugbu a, ọ dịghịkwa ahịrị nke {0} na-enye binding ụdị SDL na-anabata.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Mmemme ọzọ na-eji clipboard. Edetughị ihe ọ bụla.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>E wepụla ahịrị gị. Ngwaọrụ ahụ na-agụ dị ka o si gụọ tupu ya.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Emegharịrị mapping site na layout SDL: {0}.</value></data>
@@ -1882,6 +1927,8 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Ahịrị PadForge bu</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ọ dịghị ahịrị dabara.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>A na-etinye ahịrị a họọrọ n'ọrụ na {0} n'okpuru ID nke ya, site n'otu nyocha na otu nhọrọ dị ka Mado.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Engine ahụ kwụsịrị, ya mere ndepụta ahụ ahapụla ahịrị ndị SDL ji, nke ya na oyiri obodo dị n'ime ya. A ga-edepụta ha ozugbo ọ malitere ịgba.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL azaghị n'oge, ya mere ndepụta ahụ ahapụla ahịrị ndị ọ ji, nke ya na oyiri obodo dị n'ime ya.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Ahịrị mapping SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ahịrị maka ngwaọrụ a.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Layout e chepụtara.</value></data>
@@ -1894,14 +1941,14 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, mpaghara {0}, site n'otu onye na-ere ahịa na ngwaahịa na bus ma ọ bụ version ọzọ. A na-edebe ya n'okpuru ID nke ngwaọrụ a.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, mpaghara {0}, ahịrị ngwaọrụ ọzọ. A na-edebe ya n'okpuru ID nke ngwaọrụ a.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Mpaghara {0}. SDL anaghị agụ ngwaọrụ a, ya mere PadForge na-ahazi ntinye ya site n'ahịrị ahụ.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge enweghị bọtịn ma ọ bụ axis nkịtị maka mpaghara ndị a, ọ na-ahapụkwa ha: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Mpaghara {0}, site na axis, bọtịn na hat ngwaọrụ ahụ. Lelee ya na Test Inputs, wee debe ya ma ọ bụ gbanwee ya ebe a.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Nke a na-agbanwe otú e si agụ {0}. A na-emegharị mapping ahịrị ya na {1} site na layout ọhụrụ ahụ.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Nke a na-agbanwe otú e si agụ {0}. Ọ nọghị na controller ọ bụla, ya mere ọ dịghị ahịrị na-agbanwe.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Shortcut profile na-agụ {0} na-edebe ntinye e tọrọ ha.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>A na-edebe ahịrị ahụ dị ka nke gị na PadForge.xml, ọ na-ebulikwa karịa isi iyi ọ bụla ọzọ maka ngwaọrụ a. Wepụ nke m na-eweghachi ahịrị ochie ahụ na ahịrị controller ochie.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>A na-edebe ahịrị ndị ahụ dị ka nke gị na PadForge.xml, ha na-ebulikwa karịa isi iyi ọ bụla ọzọ maka ngwaọrụ ha. Kpochapụ, n'okpuru More nke ahịrị Ọdụ data controller, na-ewepụ ha.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Ahịrị {0} maka Windows. A gafere {1} maka sistemụ ndị ọzọ.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Ahịrị {0} maka Windows. A gafere {1} maka sistemụ ndị ọzọ.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Ahịrị {0:N0} maka Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>A ga-agbakwunye ha {0:N0} niile. PadForge na-edebe ihe ruru ahịrị {1:N0} nke gị.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>A ga-agbakwunye ya. PadForge na-edebe ihe ruru ahịrị {1:N0} nke gị.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>E debere {0:N0} nke gị ugbu a, ya mere a ga-agbakwunye {1:N0} n'ime ndị a, a gaghị agbakwunye {2:N0}.</value></data>
@@ -1911,7 +1958,7 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ederede ahụ abụghị ahịrị ọdụ data controller SDL: ID nwere ọnụọgụ hex 32, aha, wee mpaghara dị ka a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ahịrị ndị ahụ bụ maka sistemụ ndị ọzọ. PadForge na-agụ ahịrị maka Windows, ma ọ bụ maka sistemụ ọ bụla akọwaghị.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID ahịrị ahụ abụghị nke ngwaọrụ. Ọ chọrọ ọnụọgụ hex 32.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Aha ahịrị ahụ tọgbọ chakoo, karịrị mkpụrụedemede 128, ma ọ bụ nwere mkpụrụedemede SDL na-agụ dị ka mpaghara.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Aha ahịrị ahụ tọgbọ chakoo, karịrị mkpụrụedemede 128, nwere akara mpaghara SDL na-agụ, dị ka “type:”, ma ọ bụ nwere mkpụrụedemede na-abụghị mkpụrụakwụkwọ, ọnụọgụ, akara edemede, akara ma ọ bụ oghere nkịtị.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Ahịrị ahụ nwere hint ma ọ bụ mpaghara Android, nke PadForge anaghị anabata.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Ahịrị ahụ nwere mpaghara SDL amaghị.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Otu binding adịghị n'ụdị SDL, dị ka b3, a2, +a2, a2~ ma ọ bụ h0.4.</value></data>
@@ -1922,8 +1969,7 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ahịrị gị</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ahịrị ị tinyere ebe a, ma ọ bụ mado na kaadị Mapping SDL nke ngwaọrụ, na-ebuli maka ngwaọrụ ha karịa isi iyi ọ bụla ọzọ ma na-anọgide mgbe ntọgharị gasịrị.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Tinye ahịrị site na faịlụ ma ọ bụ clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Ahịrị {0}, otu maka ngwaọrụ ọ bụla, nke gị karịa isi iyi ọ bụla ọzọ.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Ahịrị {0} maka otu ngwaọrụ, nke gị karịa isi iyi ọ bụla ọzọ.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Ahịrị {0:N0}, nke gị na-ebute ụzọ karịa isi iyi ọ bụla ọzọ.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ọ dịbeghị.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Variable SDL_GAMECONTROLLERCONFIG gị nwere ahịrị {0} nke PadForge anaghị edebe. Tinye ahịrị site na faịlụ ma ọ bụ clipboard na-emepe ha n'ime ya.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Variable SDL_GAMECONTROLLERCONFIG gị nwere ahịrị {0} nke PadForge anaghị edebe. Tinye ahịrị site na faịlụ ma ọ bụ clipboard na-emepe ahịrị ahụ n'ime ya.</value></data>
@@ -1942,7 +1988,7 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Akwụsịla. Okwu ikpeazụ ya: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Enweghị ike ịmalite ya.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ọ nọkwaghị na PC a.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Achọtaghị mmemme tunnel ọ bụla na PC a. PadForge na-arụ ọrụ na cloudflared, devtunnel, ngrok na Tailscale Funnel, ma ọ bụ na adreesị tunnel nke gị.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge achọtaghị cloudflared, devtunnel, ngrok ma ọ bụ Tailscale Funnel na PC a. Họrọ ChatGPT Secure MCP Tunnel, nke PadForge na-ebudata, ma ọ bụ nye adreesị tunnel nke gị.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Họrọ tunnel iji nye PadForge adreesị ọha.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Dịkwa na PC a: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, nke adreesị ya na-anọgide otu</value></data>
@@ -1950,7 +1996,7 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Gbaa tunnel nke gị gaa http://127.0.0.1:{0} ma mado adreesị https ya. Tunnel Cloudflare nwere aha, dev tunnel na-adịgide adịgide, Tailscale Funnel na domain ngrok n'onwe ya na-edebe adreesị ha.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Mado adreesị https na-enweghị path ọzọ karịa /mcp, dị ka tunnel gị si enye ya.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Na-amalite web helper PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Web helper PadForge kwụsịrị ({0}). Gbanyụọ ma gbanye Reach PadForge From the Web iji malite ya ọzọ.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Web helper PadForge kwụsịrị ({0}). PadForge na-anọgide na-anwa ịmalite ya.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adreesị</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Enwebeghị adreesị ọha.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Tinye na Claude</value></data>
@@ -1988,11 +2034,6 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ọ kwụsịrị na koodu {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation gbanyụrụ, ya mere ọ dịghị assistant weebụ na-eru PadForge. Web helper na-amalite ozugbo Automation gbanyere.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Na-elele…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Awụnyeghị ya.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Awụnyela ya ma ọ dị ọhụrụ. Script na-amalite na {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Awụnyela ya maka {0} ma ọ dị ọhụrụ. Script na-amalite na {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Awụnyela ya. PadForge a nwere oyiri ọhụrụ karị.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Awụnyela ya maka {0}. PadForge a nwere oyiri ọhụrụ karị.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Na-awụnye…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge enweghị ike ilele ya: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Wụnye na-etinye ọbá PadForge ebe asụsụ ahụ na-achọta ya. Script na-ebunye ya na-agụ ngwaọrụ ma na-achịkwa mapping n'ọkwa dị n'elu.</value></data>
@@ -2000,22 +2041,24 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Oyiri awụnyere</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Wepụ niile</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Ewepụla.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>E tinyela ọbá akwụkwọ PadForge maka {0}, ọ bụkwa nke kachasị ọhụrụ. Script na-amalite na {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Ọbá akwụkwọ PadForge maka {0} dị iche na oyiri dị na PadForge a.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>E tinyeghị ọbá akwụkwọ PadForge maka {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID script</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID script ya</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script na-akpọ njikwa ya {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script na-akpọ igodo ya KeyA, KeySpace, KeyLeftShift na ndị yiri ha, na igodo ọ bụla site na koodu ya, Vk0 ruo Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} na netwọk a site na {1}</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Gosi na folda</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} malitere, mana ọ dịghị mgbe o jikọrọ na PadForge.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adreesị</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge na-ewere adreesị malitere na https:// ma kpọọ aha host, na port ndabara, na-enweghị aha onye ọrụ ma ọ bụ paswọọdụ.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge na-anabata adreesị ruru mkpụrụedemede 2,048 nke na-amalite na https:// ma kpọọ aha host, na port ndabara, na-enweghị aha onye ọrụ, okwuntughe ma ọ bụ akụkụ dị mgbe #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Gbanwee…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Oku na igodo ha na-agafe netwọk a n'ezoghị ezo. Windows na-ahapụ ha ka ha banye naanị na netwọk nzuzo.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Oku na igodo ha na-agafe netwọk a n'enweghị izo ya ezo. Iwu Windows Firewall PadForge mere maka port a na-akpọ naanị netwọk nkeonwe.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Mmemme ọzọ na-eji port {0}. Gbanwee ya iji ruo PadForge site na netwọk a.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ekweghị ka helper PadForge gee ntị na port {0}. PadForge na-ekwe ya na ikike administrator, ya mere jiri ha malite PadForge, ma gbanyụọ ma gbanye nke a.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows enweghị ndoputa maka helper PadForge na port {0}. Gbanyụọ nke a ma gbanye ya, PadForge ga-emekwa ya ọzọ.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Helper PadForge enweghị ike ige ntị na port {0}. Gbanwee port ahụ, ma ọ bụ gbanyụọ ma gbanye nke a.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Helper PadForge kwụsịrị ({0}). Gbanyụọ ma gbanye Reach PadForge From This Network iji malite ya ọzọ.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Helper PadForge kwụsịrị ({0}). PadForge na-anọgide na-anwa ịmalite ya.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation gbanyụrụ, ya mere ọ dịghị assistant na netwọk a na-eru PadForge. Helper ahụ na-amalite ozugbo Automation gbanyere.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>PC a enweghị adreesị na netwọk nzuzo ugbu a.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Assistant na netwọk a</value></data>
@@ -2030,7 +2073,26 @@ PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nk
   <data name="Reach_Line_Format" xml:space="preserve"><value>Na-achị ngwaọrụ nke ya na {0}. Ọ ka na-agụ ngwaọrụ ọ bụla.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Na-achị naanị ngwaọrụ nke ya. Ọ ka na-agụ ngwaọrụ ọ bụla.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Iwu sitere na command line ka na-eru PadForge, dị ka ha na-eme maka mmemme ọ bụla.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Na-agba, na ikike gị, ma dị njikere. ChatGPT na-eru PadForge site na tunnel a na-enweghị mbanye nke ya, naanị site na nzukọ OpenAI gị. Ọ na-amalite ọzọ na PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Na-agba, na ikike gị. Ọ na-eche ka OpenAI kwuo na tunnel ahụ dị njikere.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge na-edebe igodo ahụ ka ezoro ezo maka naanị gị. Igbe efu na-echefu ya. ChatGPT na-arụ ọrụ n'ọkwa dị n'elu.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge enweghị ike ichekwa ngwa plugin ahụ.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Ihe omume {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Ụda{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Akarangosi{0}</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge enweghị ike ịmepụta mkpọchi na-eme ka naanị otu oyiri ya na-agba, ya mere o maliteghị.</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Ibe nbudata Falcon SDK emegheghị: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Ibe nbudata Falcon SDK emeghebeghị: {0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>A gafere ahịrị {0:N0} maka sistemụ ndị ọzọ.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows amaliteghị ya site n'ikike nke gị.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ọ kwụsịghị n'ime sekọnd {0}.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Ọ kwụsịrị na koodu {0}, o nyeghịkwa ihe kpatara ya.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge enweghị ike ịgụ ntọala dị na {0}, ya mere ọ hapụrụ faịlụ ahụ otú ọ dị.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>Ọ bụghị PadForge dere {0}, ya mere ọ hapụrụ ya otú ọ dị.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows enyeghị gị folda Akwụkwọ.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge achọtaghị folda nke gị maka {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Iwu nke {0} n'onwe ya kwụsịrị na koodu {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Iwu nke {0} adịghị na PC a.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows ekweghị ka PadForge gụọ ma ọ bụ dee faịlụ ọ chọrọ.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge achọtaghị Python: ọ dịghị nke e debanyere aha, nke e tinyere site na Microsoft Store, nke py launcher depụtara ma ọ bụ nke dị na PATH gị.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ọ dịghị Python PadForge chọtara zara n'ime sekọnd {0}.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Ọgbụgba ahụ enyeghị ihe kpatara ya PadForge maara.</value></data>
 </root>

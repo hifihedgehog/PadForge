@@ -1,7 +1,7 @@
 ; A PadForge plugin in AutoHotkey v2, from the PadForge Plugin Kit.
 ;
 ; To run it, keep this file beside PadForge.ahk, which the kit carries too,
-; and add it in PadForge: Extras, Plugins, Add a Plugin..., then pick this
+; and add it in PadForge: Extras, Plugins, Add a Plugin…, then pick this
 ; file, or drop it on that page. PadForge shows the file, its signer and its
 ; SHA-256, and runs it with your ordinary rights whenever the engine runs, in
 ; the AutoHotkey Windows opens .ahk files with. An edited file shows Approve

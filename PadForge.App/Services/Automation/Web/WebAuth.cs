@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -421,15 +420,24 @@ namespace PadForge.Services.Automation.Web
         private WebReply Refresh(Dictionary<string, string> form)
         {
             string token = Get(form, "refresh_token");
-            var now = _now();
-            var grant = Grants().FirstOrDefault(g => WebSecrets.Matches(token, g.RefreshHash));
-            if (grant == null || grant.RefreshUntil <= now) return WebReply.OAuthError(400, "invalid_grant", "The refresh token is unknown, used or expired.");
-            if (Get(form, "client_id") is { } clientId && clientId != grant.ClientId)
-                return WebReply.OAuthError(400, "invalid_grant", "The refresh token was issued to another client.");
-            if (Get(form, "resource") is { } resource && !WebAddress.SameResource(resource, grant.Resource))
-                return WebReply.OAuthError(400, "invalid_target", "The resource is not the one the token was issued for.");
-            return Issue(grant);
+            // One use only (OAuth 2.1 4.3.1): the find, the checks and the
+            // rotation hold one lock, so a second request with the same
+            // token finds its hash rotated already.
+            lock (_rotating)
+            {
+                var now = _now();
+                var grant = Grants().FirstOrDefault(g => WebSecrets.Matches(token, g.RefreshHash));
+                if (grant == null || grant.RefreshUntil <= now) return WebReply.OAuthError(400, "invalid_grant", "The refresh token is unknown, used or expired.");
+                if (Get(form, "client_id") is { } clientId && clientId != grant.ClientId)
+                    return WebReply.OAuthError(400, "invalid_grant", "The refresh token was issued to another client.");
+                if (Get(form, "resource") is { } resource && !WebAddress.SameResource(resource, grant.Resource))
+                    return WebReply.OAuthError(400, "invalid_target", "The resource is not the one the token was issued for.");
+                return Issue(grant);
+            }
         }
+
+        /// <summary>Held across a refresh token's find and its rotation.</summary>
+        private readonly object _rotating = new object();
 
         /// <summary>New access and refresh tokens for a grant. The old ones
         /// stop working at once, and only their hashes are kept.</summary>

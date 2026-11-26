@@ -24,7 +24,7 @@ namespace PadForge.Common.Recording
 
     /// <summary>
     /// The ring the poll thread writes changes into and the recorder's own
-    /// thread reads them out of (#597). One writer and one reader, so neither
+    /// thread reads them out of (#600). One writer and one reader, so neither
     /// takes a lock: the writer owns the head and the reader the tail, and
     /// each reads the other's with a volatile read. A push makes nothing. A
     /// push that finds the ring full is counted and left out.
@@ -245,7 +245,7 @@ namespace PadForge.Common.Recording
     }
 
     /// <summary>
-    /// The poll thread's side of a problem recording (#597). Each pass it
+    /// The poll thread's side of a problem recording (#600). Each pass it
     /// compares every device's state, every virtual controller's frame and
     /// what games sent back with what it last recorded, and pushes the
     /// fields that changed into a ring as plain values, each with its own
@@ -1267,13 +1267,6 @@ namespace PadForge.Common.Recording
         {
             _timedTicks += ticks;
             _timedPasses++;
-        }
-
-        /// <summary>What a pass ends with while the engine rests.</summary>
-        internal void RestingPass(int rest)
-        {
-            Rest(rest);
-            EndPass();
         }
 
         /// <summary>A marker set on the poll thread, by a macro, at the time

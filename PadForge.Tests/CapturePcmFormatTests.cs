@@ -188,6 +188,10 @@ public sealed class CapturePcmFormatTests
     [Fact] public void MonoMicrophonePreservesDownmixGainAndMute()
     {
         var (format,data)=Sample("pcm24");using var rig=new MicRig(format,1);rig.Start();
+        // A host that holds the stream open, so the ring takes every block:
+        // with none open it holds one block of lead (MicTakesBlock).
+        var engine=typeof(HMMicrophoneInput).GetField("_engine",Private)!.GetValue(rig.Microphone)!;
+        ((Dictionary<byte,byte>)engine.GetType().GetField("_altSetting",Private)!.GetValue(engine)!)[0]=1;
         rig.Capture.Emit(data);Assert.Equal(0,BitConverter.ToInt16(rig.Ring,0));
         rig.Feed.MicGain=.5f;rig.Capture.Emit([0,0,64,0,0,64]);Assert.Equal(8191,BitConverter.ToInt16(rig.Ring,2));
         rig.Feed.MicMuted=true;rig.Capture.Emit([0,0,64,0,0,64]);Assert.Equal(0,BitConverter.ToInt16(rig.Ring,4));

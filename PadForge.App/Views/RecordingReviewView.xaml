@@ -101,7 +101,7 @@
             <StackPanel>
                 <ItemsControl x:Name="PartList" ItemsSource="{Binding Parts}" ItemTemplate="{StaticResource PartRowTemplate}"
                               AutomationProperties.Name="{Binding Review_Title, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBlock Text="{Binding SizesText, Mode=OneWay}" Margin="10,16,0,0" FontSize="14" TextWrapping="Wrap"
+                <TextBlock Text="{Binding SizesText, Mode=OneWay}" Margin="10,16,0,0" FontSize="14" TextWrapping="Wrap" Typography.NumeralAlignment="Tabular"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                 <TextBlock x:Name="ScrubLine" Text="{Binding ScrubText, Mode=OneWay}" Margin="10,10,0,0" FontSize="14" TextWrapping="Wrap"
                            common:LiveText.Polite="True">
@@ -123,7 +123,7 @@
                     <StackPanel DockPanel.Dock="Top">
                         <TextBlock Text="{Binding ShownHeading, Mode=OneWay}" FontSize="14" AutomationProperties.HeadingLevel="Level2"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <TextBlock Text="{Binding ShownSizes, Mode=OneWay}" FontSize="13" Margin="0,2,0,8"
+                        <TextBlock Text="{Binding ShownSizes, Mode=OneWay}" FontSize="13" Margin="0,2,0,8" Typography.NumeralAlignment="Tabular"
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                         <TextBlock Text="{Binding Review_Empty, Source={x:Static strings:Strings.Instance}}" FontSize="14"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"

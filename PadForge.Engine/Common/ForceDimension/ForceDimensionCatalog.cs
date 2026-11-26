@@ -78,7 +78,7 @@ namespace PadForge.Engine.Common.ForceDimension
             }
 
             // The machine's FDSDK, which the SDK's installer sets, never the
-            // process's (#597): the process's comes from the user's part of the
+            // process's (#600): the process's comes from the user's part of the
             // registry, which the user's programs can write, and would choose
             // the library PadForge loads with its rights.
             Add(MachineEnvironment.Get("FDSDK"));

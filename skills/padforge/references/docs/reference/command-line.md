@@ -5,7 +5,7 @@
 
 PadForge runs as one copy. Starting PadForge.exe again with switches hands them to the running copy through the `PadForge.Control` pipe, prints the answer and exits, with no window. That hand-over runs with your ordinary rights, so a launcher gets no UAC prompt while PadForge runs. With no copy running, a switch that can start PadForge starts it, and Windows asks for its rights. While **Start at Login** is on, PadForge starts through its logon task instead, with no prompt, and the start switches are handed to the copy it starts. Started again with no switch, PadForge shows its window.
 
-A switch that reaches the running copy goes through [Automation](../features/automation.md): it needs **Allow Outside Programs** on, at **Commands** or higher. `--show` and `--exit` work with Automation off: they reach the running copy through the window message a second start uses to show it. The switches PadForge is started with apply to the copy they start, with no Automation needed.
+A switch that reaches the running copy goes through [Automation](../features/automation.md): it needs **Allow Outside Programs** on, at **Commands** or higher. `--show` and `--exit` work with Automation off: they reach the running copy over the signal pipe a second start uses to show it, or over its window message from a start with administrator rights. The switches PadForge is started with apply to the copy they start, with no Automation needed.
 
 ---
 
@@ -60,7 +60,7 @@ A line that holds a switch giving 4 with no copy running gives 4 as a whole.
 | `--install assistant <program>` | PadForge's entry in an assistant program's settings. |
 | `--install skill <program or folder>` | PadForge's skill, in the program's skills folder or a folder you name. |
 
-Add `--remove` to take it out, or `--check` to ask: exit code 0 and **current**, 6 and **older**, or 7 and **not installed**.
+Add `--remove` to take it out, or `--check` to ask: exit code 0 and **current**, 6 and **older** when a copy differs from this PadForge's, 7 and **not installed**, or 8 and **partial** when the library is current in some places and missing in the others. For `python`, 9 means PadForge found no Python and 10 that no Python it found answered.
 
 ## Exit codes
 
@@ -71,8 +71,11 @@ Add `--remove` to take it out, or `--check` to ask: exit code 0 and **current**,
 | 2 | A switch or value PadForge does not know, an unknown tool, or arguments it cannot read. |
 | 4 | PadForge is not running, or another program holds its pipe. |
 | 5 | Automation is off, or its level is too low for this. |
-| 6 | `--install … --check`: the installed copy is older. |
+| 6 | `--install … --check`: an installed copy differs from this PadForge's. |
 | 7 | `--install … --check`: nothing is installed. |
+| 8 | `--install … --check`: the library is current in some places and missing in the others. |
+| 9 | `--install python --check`: PadForge found no Python. |
+| 10 | `--install python --check`: no Python PadForge found answered. |
 
 With `--wait`, the code is the running copy's own when it exits.
 
@@ -80,7 +83,7 @@ With `--wait`, the code is the running copy's own when it exits.
 
 ## The `PadForge.Control` pipe
 
-A launcher can skip PadForge.exe and talk to the pipe directly. The pipe serves while Automation is on. Each connection takes one UTF-8 line ending in a newline and answers with one line. A line past 1,024 bytes is cut there. Verbs ignore case and never translate.
+A launcher can skip PadForge.exe and talk to the pipe directly. The pipe serves while Automation is on. Each connection takes one UTF-8 line ending in a newline and answers with one line. A line past 1,024 bytes is answered `error too-long` and runs nothing. Verbs ignore case and never translate.
 
 | Line | Answer |
 |---|---|
@@ -89,15 +92,15 @@ A launcher can skip PadForge.exe and talk to the pipe directly. The pipe serves 
 | `query` | `ok <name> pinned` or `ok <name> unpinned`, with `default` when no profile is active |
 | `state` | `ok` and one line of JSON |
 | `version` | `ok <version> r<build> <commit>` |
-| `engine on`, `engine off` | `ok on`, `ok off` |
+| `engine on`, `engine off` | `ok on`, `ok off`. `engine on` answers `error busy` while a stop is still under way |
 | `controllers on`, `controllers off` | `ok on`, `ok off` |
-| `slot <1-16> on`, `slot <1-16> off` | `ok <n> on`, `ok <n> off` |
-| `show`, `hide`, `minimize`, `maximize` | `ok` |
+| `slot <1-16> on`, `slot <1-16> off` | `ok <n> on`, `ok <n> off`, or `error unknown-slot` when no virtual controller has that number |
+| `show`, `hide`, `minimize`, `maximize` | `ok`. `hide` answers `error not-available` when PadForge has no tray icon to come back through, and the window stays |
 | `exit` | `ok`, then PadForge closes |
-| `snapshot` | `ok waiting-for-review`: the snapshot waits on Home for your review. A program may take one a minute, 20 a run, else `error too-soon` or `error limit-reached` |
-| `record start`, `record stop`, `record mark [words]` | `ok recording` after a start, or after a mark while recording, `ok waiting-for-review` after a stop, or `error busy`. A program may start one recording every ten seconds |
+| `snapshot` | `ok waiting-for-review`: the snapshot waits on Home for your review. A program may take one a minute, and none while 20 that programs took wait for your review, else `error too-soon` or `error limit-reached` |
+| `record start`, `record stop`, `record mark [words]` | `ok recording` after a start, or after a mark while recording, `ok waiting-for-review` after a stop, or `error busy`. `error not-available`: nothing records to stop or mark, or the file could not be made. A program may start one recording every ten seconds, and none while 20 that programs started wait for your review, else `error too-soon` or `error limit-reached` |
 
-Other answers: `error unknown-command`, `error bad-argument`, `error empty` for a blank line, `error not-allowed` when the level is too low, `error refused` for a program outside your Windows session or below medium integrity, and `error internal`. PadForge answers every connection, a blank line included.
+Other answers: `error unknown-command`, `error bad-argument`, `error empty` for a blank line, `error too-long` for a line past 1,024 bytes, `error not-allowed` when Automation is off, `error refused` for a program outside your Windows session or below medium integrity, and `error internal`. PadForge answers every connection, a blank line included.
 
 A program's `activate` or `deactivate` that would turn on an extra that listens on the network and is off now (Web Controller, Motion Server, Game Mods, Game Telemetry or Head Tracking's UDP input) is answered at once with `error waiting`. PadForge asks you on its question card first, naming the program, the profile and each extra, and makes the switch if you allow it. If you don't, or nobody answers in two minutes, the profile stays as it was. `error too-many-questions` means the card already holds too many questions to put this one, and nothing changed. A switch that turns on nothing new answers at once. `--profile` and `--default-profile` hand these answers back with exit code 1.
 

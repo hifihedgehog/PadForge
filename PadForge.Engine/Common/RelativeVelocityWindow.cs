@@ -73,6 +73,10 @@ namespace PadForge.Engine.Common
         private int _count;  // live entries
         private float _sumX, _sumY, _sumZ;
         private long _prevAddTicks;
+        // The last pass Add took: where it began, and the share a stall
+        // longer than the window scaled its deltas by.
+        private long _passStart;
+        private float _passShare = 1f;
 
         private static readonly long s_windowTicks =
             Stopwatch.Frequency * WindowMs / 1000;
@@ -98,9 +102,6 @@ namespace PadForge.Engine.Common
             long gap = _prevAddTicks == 0 ? 0 : nowTicks - _prevAddTicks;
             _prevAddTicks = nowTicks;
 
-            if (dx == 0f && dy == 0f && dz == 0f)
-                return;
-
             // The pass these deltas came in: from the previous add to now.
             long start = nowTicks - gap;
 
@@ -109,15 +110,46 @@ namespace PadForge.Engine.Common
             // fixed-window divisor below reads it as the stall's true
             // average velocity rather than a spike. What is left of it
             // stands for the window's length.
+            float share = 1f;
             if (gap > s_windowTicks)
             {
-                float share = (float)s_windowTicks / gap;
-                dx *= share;
-                dy *= share;
-                dz *= share;
+                share = (float)s_windowTicks / gap;
                 start = nowTicks - s_windowTicks;
             }
+            _passStart = start;
+            _passShare = share;
 
+            if (dx == 0f && dy == 0f && dz == 0f)
+                return;
+            Push(nowTicks, start, dx * share, dy * share, dz * share);
+        }
+
+        /// <summary>Adds more deltas to the pass the last <see cref="Add"/>
+        /// took, for a reader that folds several devices' counts into one
+        /// pass: the window then reads as if one Add had carried them
+        /// all.</summary>
+        public void AddToPass(float dx, float dy, float dz)
+        {
+            if (_prevAddTicks == 0 || (dx == 0f && dy == 0f && dz == 0f)) return;
+            dx *= _passShare;
+            dy *= _passShare;
+            dz *= _passShare;
+            int last = (_head - 1) & Mask;
+            if (_count > 0 && _ticks[last] == _prevAddTicks)
+            {
+                _dx[last] += dx;
+                _dy[last] += dy;
+                _dz[last] += dz;
+                _sumX += dx;
+                _sumY += dy;
+                _sumZ += dz;
+                return;
+            }
+            Push(_prevAddTicks, _passStart, dx, dy, dz);
+        }
+
+        private void Push(long nowTicks, long start, float dx, float dy, float dz)
+        {
             if (_count == Capacity)
             {
                 // Ring full (cannot happen at supported intervals, defensive):

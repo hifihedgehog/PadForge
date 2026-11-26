@@ -482,7 +482,7 @@ namespace PadForge.Tests
         {
             var s = New();
             Assert.Empty(PrivacyScrubber.ShapeSurvivors(s.Text));
-            Assert.Equal(new[] { PrivateKind.AudioDevice, PrivateKind.Phone, PrivateKind.Speech }, PrivacyScrubber.ShapeSurvivors(line => line));
+            Assert.Equal(new[] { PrivateKind.AudioDevice, PrivateKind.Phone, PrivateKind.Speech, PrivateKind.Key }, PrivacyScrubber.ShapeSurvivors(line => line));
         }
 
         [Fact]
@@ -509,6 +509,48 @@ namespace PadForge.Tests
             s.Know(PrivateKind.Peer, "3A7BD3E2");
             Assert.Equal("RELAY dial: relay host-key=<key 1> chan=0A1B2C3D", s.Text("RELAY dial: relay host-key=9F86D081884C7D65 chan=0A1B2C3D"));
             Assert.Equal("PATH upgraded for peer <peer 1>", s.Text("PATH upgraded for peer 3A7BD3E2"));
+        }
+
+        [Fact]
+        public void AKnownPhoneNameWithACommaInIt_IsReplacedWhole_BeforeTheWebControllerRuleCanCutIt()
+        {
+            var s = New();
+            s.Know(PrivateKind.Phone, "Smith, Jane");
+            string line = s.Text("DEV - Browser Gamepad: Smith, Jane");
+            Gone(line, "Jane");
+            Assert.Equal("DEV - Browser Gamepad: <phone 1>", line);
+            var late = New();
+            late.Know(PrivateKind.Phone, "Smith, Jane");
+            Assert.Equal("DEV - Browser Gamepad: <phone 1>", late.SearchFinished("DEV - Browser Gamepad: Smith, Jane"));
+            // A name known first as another kind is still the phone's.
+            var both = New();
+            both.Know(PrivateKind.DeviceName, "Smith, Jane");
+            both.Know(PrivateKind.Phone, "Smith, Jane");
+            Gone(both.Text("DEV - Browser Gamepad: Smith, Jane"), "Jane");
+            // A microphone whose name holds the user's keeps the one stand-in
+            // its typed name gets.
+            var typed = New();
+            string mic = "Headset (" + User + "'s Buds)";
+            Assert.Equal("VOICE [<audio 1>] listening", typed.Text("VOICE [" + mic + "] listening"));
+            Assert.Equal("<audio 1>", typed.Alias(PrivateKind.AudioDevice, mic));
+        }
+
+        [Fact]
+        public void TheKeyARelayLineNamesByItsFirstDigits_IsAStandIn_WhenNobodyNamedIt()
+        {
+            var s = New();
+            string connected = s.Text("RELAY identity-connected: relay.example.net as 9F86D081884C7D65");
+            Gone(connected, "9F86D081884C7D65");
+            Assert.EndsWith(" as <key 1>", connected);
+            // One key, one stand-in, wherever a relay line names it.
+            Assert.Equal("RELAY listen: caller <key 1>", s.Text("RELAY listen: caller 9F86D081884C7D65"));
+            Assert.Equal("RELAY identity dial: relay peer=<key 2> chan=0A1B2C3D",
+                s.Text("RELAY identity dial: relay peer=3A7BD3E29F86D081 chan=0A1B2C3D"));
+            // The search at the stop takes one out of a line written raw.
+            var late = New();
+            Assert.Equal("RELAY connect: HELLO from <key 1>", late.SearchFinished("RELAY connect: HELLO from 3a7bd3e29f86d081"));
+            // Sixteen hex digits outside a relay line are no key.
+            Assert.Equal("SDL pad 0123456789ABCDEF opened", New().Text("SDL pad 0123456789ABCDEF opened"));
         }
 
         [Fact]

@@ -238,6 +238,8 @@ namespace PadForge.Tests
                 AutomationConsent.CommandLineSeam = _ => "python.exe -m padforge_tool";
                 Assert.Equal("-m padforge_tool", AutomationConsent.ScriptOf(1, "python.exe"));
                 AutomationConsent.CommandLineSeam = _ => "python.exe -c \"print(1)\"";
+                Assert.Equal("-c print(1)", AutomationConsent.ScriptOf(1, "python.exe"));
+                AutomationConsent.CommandLineSeam = _ => "python.exe";
                 Assert.Null(AutomationConsent.ScriptOf(1, "python.exe"));
                 AutomationConsent.CommandLineSeam = _ => "AutoHotkey64.exe /ErrorStdOut C:\\ahk\\steer.ahk";
                 Assert.Equal(@"C:\ahk\steer.ahk", AutomationConsent.ScriptOf(1, "autohotkey64.exe"));

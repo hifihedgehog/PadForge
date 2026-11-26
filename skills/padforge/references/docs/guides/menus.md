@@ -177,7 +177,7 @@ Exporting a profile as a `.pfprofile` bundles every icon package its menus refer
 
 ## The overlay
 
-While a menu is engaged, a click-through overlay draws the ring or grid at the configured spot on the primary monitor, with the hovered cell highlighted in PadForge's ember accent. It never steals focus from the game.
+While a menu is engaged, a click-through overlay draws the ring or grid at the configured spot on the monitor of the window in front, the game's, with the hovered cell highlighted in PadForge's ember accent. It never steals focus from the game.
 
 Per-menu appearance controls: **Show Labels**, **Screen Position** (X and Y percent, default centered), **Size** (10–400%), and **Opacity** (5–100%, default 90).
 

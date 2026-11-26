@@ -147,7 +147,7 @@ namespace PadForge.Views
             }
             catch (Exception ex) when (ex is ExternalException or InvalidOperationException)
             {
-                LineHint.Text = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_NotCopied_Format, ex.Message);
+                LineHint.Text = Strings.Instance.Extras_Automation_NotCopied;
             }
         }
 

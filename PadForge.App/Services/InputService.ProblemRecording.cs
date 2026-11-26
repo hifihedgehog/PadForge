@@ -9,7 +9,7 @@ namespace PadForge.Services
     public partial class InputService
     {
         /// <summary>
-        /// The problem recorder's share of the UI tick (#597): what Problem
+        /// The problem recorder's share of the UI tick (#600): what Problem
         /// Recording macros asked for since the last tick, taken from the
         /// engine and done here, where a recording's file is made, and a
         /// look at the program in front.

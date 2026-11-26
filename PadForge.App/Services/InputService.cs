@@ -141,17 +141,15 @@ namespace PadForge.Services
         private Vibration _routeCfScratchSony;
         // #107 absolute cursor-position sampler (publishes SourceCoercion.MouseCursorProvider).
         private CursorControlService _cursorControlService;
-        // #146 Wii Balance Board: per-board parsed kg calibration (12 floats) and
-        // tare offset (kg), keyed by device GUID. Calibration is parsed once from
-        // the SDL "balance_board_calibration" hex property; tare is captured on
-        // demand. Both back the SourceCoercion.Balance* providers.
+        // #146 Wii Balance Board: per-board parsed kg calibration (12 floats),
+        // keyed by device GUID, parsed once from the SDL
+        // "balance_board_calibration" hex property. It backs
+        // SourceCoercion.BalanceCalibrationProvider.
         private readonly System.Collections.Generic.Dictionary<Guid, float[]> _balanceCalibration = new();
-        private readonly System.Collections.Generic.Dictionary<Guid, float> _balanceTareKg = new();
         private readonly object _balanceLock = new();
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private PadForge.Common.Input.Peripherals.PeripheralOutputHost _peripheralHost;
-        private ProfileData _defaultProfileSnapshot;
 
         // Active profile's touchpad custom-gesture working list. Mirrors
         // whichever profile is active so AddCustomTouchpadGesture /
@@ -226,6 +224,9 @@ namespace PadForge.Services
             private CustomInputState _lastSeen;
             private long _lastSeenSeq = -1;
             private long _dx, _dy, _scroll;
+            // The wheels' own units (#600, Wheel Travel), per-poll deltas as
+            // the counts are.
+            private long _wheel, _wheelH;
             private double _jc2dx, _jc2dy;
             private int _polls;
 
@@ -248,10 +249,14 @@ namespace PadForge.Services
                     {
                         _dx += s.MouseRawDX;
                         _dy += s.MouseRawDY;
-                        // SdlMouseWrapper: Axis[2] = 32767 + scroll * 128,
-                        // integer-exact below the clamp, so this recovers the
-                        // per-poll scroll count.
+                        // SdlMouseWrapper: Axis[2] = 32767 + the wheel's
+                        // 25 ms window sum * 128, integer-exact below the
+                        // clamp, so this recovers that window sum. It is a
+                        // held level, read again on every poll of the
+                        // window, which DrainInto averages over the polls.
                         _scroll += (s.Axis[2] - 32767) / 128;
+                        _wheel += s.MouseRawWheel;
+                        _wheelH += s.MouseRawWheelH;
                     }
                     _jc2dx += s.JoyCon2MouseDX;
                     _jc2dy += s.JoyCon2MouseDY;
@@ -273,6 +278,7 @@ namespace PadForge.Services
                         if (isMouse)
                         {
                             s.MouseRawDX = 0; s.MouseRawDY = 0;
+                            s.MouseRawWheel = 0; s.MouseRawWheelH = 0;
                             s.Axis[0] = 32767; s.Axis[1] = 32767; s.Axis[2] = 32767;
                         }
                         s.JoyCon2MouseDX = 0f; s.JoyCon2MouseDY = 0f;
@@ -304,6 +310,14 @@ namespace PadForge.Services
                         // until the next frame lands, not the whole sum.
                         _dx -= (long)qdx * n;
                         _dy -= (long)qdy * n;
+                        // The wheels' units are per-poll deltas as the
+                        // counts are, with the remainder carried the same
+                        // way, so a notch between two frames is not lost.
+                        int qw = (int)Math.Round((double)_wheel / n), qwh = (int)Math.Round((double)_wheelH / n);
+                        s.MouseRawWheel = qw;
+                        s.MouseRawWheelH = qwh;
+                        _wheel -= (long)qw * n;
+                        _wheelH -= (long)qwh * n;
                     }
                     s.JoyCon2MouseDX = (float)(_jc2dx / n);
                     s.JoyCon2MouseDY = (float)(_jc2dy / n);
@@ -323,6 +337,7 @@ namespace PadForge.Services
                 lock (_sync)
                 {
                     _dx = 0; _dy = 0; _scroll = 0;
+                    _wheel = 0; _wheelH = 0;
                     _jc2dx = 0; _jc2dy = 0;
                     _polls = 0;
                 }
@@ -839,7 +854,7 @@ namespace PadForge.Services
             // Heal any gaps in pad indices left over from saves taken
             // before compaction-on-delete landed. Done before the engine
             // starts so the InputManager sees a contiguous topology, and
-            // before _defaultProfileSnapshot is captured below so the
+            // before the default's snapshot is captured below so the
             // default snapshot also reflects the compacted layout.
             CompactSlotsForGaps();
 
@@ -908,7 +923,7 @@ namespace PadForge.Services
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             // The problem recorder reads the engine's slots and this
-            // service's Remote Link values for its file (#597).
+            // service's Remote Link values for its file (#600).
             RecorderHost.Engine = _inputManager;
             RecorderHost.Input = this;
             _inputManager.RemoteMidiInputDemand = HasFreshRemoteMidiDemand;
@@ -941,7 +956,7 @@ namespace PadForge.Services
             // restart re-baselines instead of offering every pad at once.
             _assignOfferBaselinePending = true;
             _assignOfferBaselineKnown.Clear();
-            // The device notes (#597) start over too, so the devices a run
+            // The device notes (#600) start over too, so the devices a run
             // finds connected raise none.
             StartDeviceNotes();
 
@@ -1611,6 +1626,7 @@ namespace PadForge.Services
             // released while the rows hold its input back.
             PadForge.Engine.Common.Mapping.SourceCoercion.KeyHeldProvider = InputManager.KeyHeld;
             PadForge.Engine.Common.Mapping.SourceCoercion.KeyHeldBackProvider = InputManager.KeyHeldBack;
+            PadForge.Engine.Common.Mapping.SourceCoercion.TravelPositionProvider = InputManager.TravelPosition;
 
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider =
                 _inputManager.ReadGyroTiltGravity;
@@ -1726,11 +1742,11 @@ namespace PadForge.Services
                 return _mainVm?.Settings?.PollingRateHz ?? InputManager.DefaultPollingRateHz;
             };
 
-            // Wii Balance Board (#146): per-board kg calibration + tare. The
+            // Wii Balance Board (#146): per-board kg calibration. The
             // calibration arrives as the SDL "balance_board_calibration" hex
             // property once the driver has read the board's EEPROM; parse it once
             // and cache. SourceCoercion's Total-Weight reader interpolates each raw
-            // corner to kg through this and subtracts the tare.
+            // corner to kg through this.
             PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = deviceGuid =>
             {
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return null;
@@ -1747,14 +1763,6 @@ namespace PadForge.Services
                 var parsed = ParseBalanceCalibrationHex(hex);
                 if (parsed != null) lock (_balanceLock) _balanceCalibration[g] = parsed;
                 return parsed;
-            };
-            PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = deviceGuid =>
-            {
-                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
-                lock (_balanceLock)
-                {
-                    return _balanceTareKg.TryGetValue(g, out var t) ? t : 0f;
-                }
             };
 
             // Wii IR pointer tuning (#146 IR Pointer group), per (device, slot): the
@@ -2276,7 +2284,7 @@ namespace PadForge.Services
                 return im.WithPersonaHaptics(slotIndex, im.GetInboundRumblePack(slotIndex), Environment.TickCount64);
             };
 
-            // Mouse Travel (#597): the road a game reports and the force it
+            // Mouse Travel (#600): the road a game reports and the force it
             // sends a slot's virtual wheel, for a source whose Centering or
             // Lock at Speed reads one. Each is asked only by such a source.
             PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelRoadProvider = InputManager.MouseTravelRoad;
@@ -2468,15 +2476,10 @@ namespace PadForge.Services
             // If the app restarted with a named profile active, LoadProfiles
             // already captured the default's state before overwriting with the
             // profile's topology. Use that instead of the current (profile) state.
-            if (SettingsManager.PendingDefaultSnapshot != null)
-            {
-                _defaultProfileSnapshot = SettingsManager.PendingDefaultSnapshot;
-            }
-            else
-            {
-                _defaultProfileSnapshot = SnapshotCurrentProfile();
-                SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
-            }
+            // It is the one copy of the default's snapshot: the load, a reset
+            // and an undo write it too, so a return to the default applies
+            // what they left, engine started or not.
+            SettingsManager.PendingDefaultSnapshot ??= SnapshotCurrentProfile();
 
             // Start engine background thread.
             _inputManager.Start();
@@ -2507,7 +2510,7 @@ namespace PadForge.Services
             // Start Remote Link server if enabled (issue #138).
             StartRemoteLinkIfEnabled();
 
-            // The devices programs added over the Automation pipe (#597)
+            // The devices programs added over the Automation pipe (#600)
             // join this engine's device list.
             AttachAutomationToEngine();
 
@@ -2568,7 +2571,7 @@ namespace PadForge.Services
             UpdateIdleState();
 
             // What this copy's own command line asked for once the engine is
-            // up (#366, #597): a profile, a recording. They run in process,
+            // up (#366, #600): a profile, a recording. They run in process,
             // so they work with Automation off (the control pipe is for a
             // program driving a copy that already runs, and this is the
             // start itself). Taken before they run, so a later engine start
@@ -2665,7 +2668,7 @@ namespace PadForge.Services
                     _switchOverlay.Close();
                     _switchOverlay = null;
                 }
-                // The device notes (#597) end with the window they show on.
+                // The device notes (#600) end with the window they show on.
                 StopDeviceNotes();
                 if (_shiftLayerFlyout != null)
                 {
@@ -2759,10 +2762,16 @@ namespace PadForge.Services
                     _mainVm.Dashboard.ClearFirstRunDevice();
                 });
                 _inputManager.Stop();
-                // The poll thread has ended: the devices programs added leave
-                // with this engine's list (#597), and their followers hear it.
+                // The poll thread has ended, or its run is retired past the
+                // stop's 3 s wait, which the watcher tells apart: the devices
+                // programs added leave with this engine's list (#600), and
+                // their followers hear it.
                 DetachAutomationFromEngine();
                 _inputManager.Dispose();
+                // The problem recorder reads no stopped engine's slots: a
+                // slot's type or preset changed while stopped would come out
+                // as the engine had it at the stop.
+                if (ReferenceEquals(RecorderHost.Engine, _inputManager)) RecorderHost.Engine = null;
                 _inputManager = null;
                 _inputManagerStatic = null;
                 // The dashboard tick stops with the engine, so the head
@@ -2820,8 +2829,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.KeyHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.KeyHeldBackProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.TravelPositionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
-                PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider = null;
                 InputManager.PointerModeCycleApply = null;
@@ -2892,6 +2901,12 @@ namespace PadForge.Services
                 _mainVm.Dashboard.PollingFrequency = 0;
                 _mainVm.Dashboard.OnlineDevices = 0;
                 _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
+                // The answer page needs no engine (#600): the web controller's
+                // listener went with the stop above, and the page takes one of
+                // its own again. Here, with _inputManager null, so the web
+                // controller reads as not wanted. The app's close sets
+                // _disposed first, and that starts nothing.
+                ApplyAnswerRoute();
 
                 // Clear "Initializing" indicators on Home's cards and
                 // sidebar nav items.  Engine-side _slotInitializing[] is
@@ -3033,6 +3048,122 @@ namespace PadForge.Services
             foreach (var slot in _mainVm.Dashboard.SlotSummaries)
                 if (slot.PadIndex >= 0 && slot.PadIndex < _mainVm.Pads.Count)
                     slot.ReadHeld(_mainVm.Pads[slot.PadIndex]);
+        }
+
+        /// <summary>The Gyro group's live rates, accelerometer readout and
+        /// calibration label for the device picked under Driven by on slot
+        /// <paramref name="i"/>, on the UI timer's lane. A device with no
+        /// reading now (one that has not connected this run, or has no such
+        /// sensor) and no device at all read as zero: a rate or a tilt left
+        /// standing was the device picked before.</summary>
+        internal void ShowDeviceMotion(PadViewModel padVm, int i, UserDevice ud)
+        {
+            if (ud == null || !(ud.HasGyro || ud.HasAccel))
+            {
+                ShowNoGyroRates(padVm);
+                ShowNoAccel(padVm);
+                return;
+            }
+            const double RadToDeg = 180.0 / System.Math.PI;
+            const double MsToG    = 1.0 / 9.80665;
+            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(ud.InstanceGuid, i);
+            var ps = us?.GetPadSetting();
+            // Bias memo: parse only when the source string
+            // references change (settings strings are
+            // replaced, never mutated), instead of three
+            // invariant parses per motion pad per tick.
+            ref var biasMemo = ref _gyroBiasMemo[i];
+            string bpS = ps?.GyroBiasPitch, byS = ps?.GyroBiasYaw, brS = ps?.GyroBiasRoll;
+            if (!ReferenceEquals(biasMemo.PitchSrc, bpS)
+                || !ReferenceEquals(biasMemo.YawSrc, byS)
+                || !ReferenceEquals(biasMemo.RollSrc, brS))
+            {
+                biasMemo.PitchSrc = bpS;
+                biasMemo.YawSrc = byS;
+                biasMemo.RollSrc = brS;
+                biasMemo.Pitch = GyroCalibratorService.ParseBias(bpS);
+                biasMemo.Yaw = GyroCalibratorService.ParseBias(byS);
+                biasMemo.Roll = GyroCalibratorService.ParseBias(brS);
+            }
+            float bp = biasMemo.Pitch;
+            float by = biasMemo.Yaw;
+            float br = biasMemo.Roll;
+            // The readout subtracts what the funnel subtracts
+            // (#474): a bias this device may not use reads as none.
+            bool biasApplies = GyroCalibratorService.CalibrationApplies(ud, ps, bp, by, br);
+            if (!biasApplies) { bp = 0f; by = 0f; br = 0f; }
+            var st = ud.InputState;
+            // Grip (#392): the readout shows the rotated frame,
+            // what the mappings and the virtual controller get.
+            if (st != null && ud.HasGyro && st.Gyro != null && st.Gyro.Length >= 3)
+            {
+                float lp = st.Gyro[0] - bp, ly = st.Gyro[1] - by, lr = st.Gyro[2] - br;
+                // Simulated pitch and roll (#472) stand in on the
+                // axes they supply, before the grip, as in the funnel.
+                PadForge.Engine.Common.Mapping.SourceCoercion.ApplySimulatedGyro(ud.InstanceGuidString, i, ref lp, ref ly, ref lr);
+                PadForge.Engine.Common.Mapping.SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref lp, ref ly, ref lr);
+                padVm.GyroLiveRatePitch = lp * RadToDeg;
+                padVm.GyroLiveRateYaw   = ly * RadToDeg;
+                padVm.GyroLiveRateRoll  = lr * RadToDeg;
+            }
+            else
+            {
+                ShowNoGyroRates(padVm);
+            }
+            if (st != null && ud.HasAccel && st.Accel != null && st.Accel.Length >= 3)
+            {
+                float lx = st.Accel[0], lyy = st.Accel[1], lz = st.Accel[2];
+                PadForge.Engine.Common.Mapping.SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref lx, ref lyy, ref lz);
+                padVm.AccelLiveX = lx * MsToG;
+                padVm.AccelLiveY = lyy * MsToG;
+                padVm.AccelLiveZ = lz * MsToG;
+            }
+            else
+            {
+                ShowNoAccel(padVm);
+            }
+            // Label memo keyed on the timestamp string
+            // reference: the parse + Format re-ran per tick
+            // for a label that changes on recalibration only.
+            string ts = biasApplies ? ps?.GyroCalibratedAtUtc : null;
+            // The format/never strings swap identity on a
+            // live language switch; keying on them keeps
+            // the label in the CURRENT language without a
+            // CultureChanged hook.
+            string neverStr = Strings.Instance.Settings_GyroNeverCalibrated;
+            if (!ReferenceEquals(_gyroBiasMemo[i].LabelSrc, ts)
+                || !ReferenceEquals(_gyroBiasMemo[i].LabelCultureSrc, neverStr))
+            {
+                _gyroBiasMemo[i].LabelSrc = ts;
+                _gyroBiasMemo[i].LabelCultureSrc = neverStr;
+                _gyroBiasMemo[i].Label =
+                    (string.IsNullOrEmpty(ts) ||
+                     !DateTime.TryParse(ts, System.Globalization.CultureInfo.InvariantCulture,
+                                        System.Globalization.DateTimeStyles.RoundtripKind, out var when))
+                    ? Strings.Instance.Settings_GyroNeverCalibrated
+                    : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, when.ToLocalTime());
+            }
+            // The manual Calibrate flow owns the label
+            // during a pass and briefly after a rejected
+            // one (round seven, R1); pushing the memo over
+            // it made "Calibrating…" invisible and a
+            // rejection look like nothing happened.
+            if (DateTime.UtcNow >= padVm.GyroCalibrationLabelHoldUntilUtc)
+                padVm.GyroCalibrationLabel = _gyroBiasMemo[i].Label;
+        }
+
+        private static void ShowNoGyroRates(PadViewModel padVm)
+        {
+            padVm.GyroLiveRatePitch = 0;
+            padVm.GyroLiveRateYaw = 0;
+            padVm.GyroLiveRateRoll = 0;
+        }
+
+        private static void ShowNoAccel(PadViewModel padVm)
+        {
+            padVm.AccelLiveX = 0;
+            padVm.AccelLiveY = 0;
+            padVm.AccelLiveZ = 0;
         }
 
         private void UiTimer_Tick(object sender, EventArgs e)
@@ -3270,111 +3401,20 @@ namespace PadForge.Services
                     {
                         UserDevice ud = FindUserDevice(selected.InstanceGuid);
                         // The device's own touchpad for the Touchpad card's
-                        // live view (the sections pass of #574): its first
-                        // pad's first two fingers, read as the Devices page's
-                        // preview reads them. A position is written before
-                        // its finger's contact, so a finger that lands is
-                        // drawn where it landed. No pad reads as no finger.
-                        {
-                            var pads = ud?.InputState?.Touchpads;
-                            var pad = ud != null && (ud.HasTouchpad || ud.IsTouchpad) && pads != null && pads.Length > 0 ? pads[0] : null;
-                            bool down0 = pad != null && pad.MaxFingers > 0 && pad.FingerDown[0];
-                            bool down1 = pad != null && pad.MaxFingers > 1 && pad.FingerDown[1];
-                            if (down0) { padVm.DeviceTouchX0 = pad.FingerX[0]; padVm.DeviceTouchY0 = pad.FingerY[0]; }
-                            if (down1) { padVm.DeviceTouchX1 = pad.FingerX[1]; padVm.DeviceTouchY1 = pad.FingerY[1]; }
-                            padVm.DeviceTouchDown0 = down0;
-                            padVm.DeviceTouchDown1 = down1;
-                            padVm.DeviceTouchTapered = ud != null && GameModEffects.IsSonyPad(ud.VendorId, ud.ProdId);
-                        }
-                        if (ud != null && (ud.HasGyro || ud.HasAccel))
-                        {
-                            const double RadToDeg = 180.0 / System.Math.PI;
-                            const double MsToG    = 1.0 / 9.80665;
-                            var us = SettingsManager.FindSettingByInstanceGuidAndSlot(selected.InstanceGuid, i);
-                            var ps = us?.GetPadSetting();
-                            // Bias memo: parse only when the source string
-                            // references change (settings strings are
-                            // replaced, never mutated), instead of three
-                            // invariant parses per motion pad per tick.
-                            ref var biasMemo = ref _gyroBiasMemo[i];
-                            string bpS = ps?.GyroBiasPitch, byS = ps?.GyroBiasYaw, brS = ps?.GyroBiasRoll;
-                            if (!ReferenceEquals(biasMemo.PitchSrc, bpS)
-                                || !ReferenceEquals(biasMemo.YawSrc, byS)
-                                || !ReferenceEquals(biasMemo.RollSrc, brS))
-                            {
-                                biasMemo.PitchSrc = bpS;
-                                biasMemo.YawSrc = byS;
-                                biasMemo.RollSrc = brS;
-                                biasMemo.Pitch = GyroCalibratorService.ParseBias(bpS);
-                                biasMemo.Yaw = GyroCalibratorService.ParseBias(byS);
-                                biasMemo.Roll = GyroCalibratorService.ParseBias(brS);
-                            }
-                            float bp = biasMemo.Pitch;
-                            float by = biasMemo.Yaw;
-                            float br = biasMemo.Roll;
-                            // The readout subtracts what the funnel subtracts
-                            // (#474): a bias this device may not use reads as none.
-                            bool biasApplies = GyroCalibratorService.CalibrationApplies(ud, ps, bp, by, br);
-                            if (!biasApplies) { bp = 0f; by = 0f; br = 0f; }
-                            var st = ud.InputState;
-                            // Grip (#392): the readout shows the rotated frame,
-                            // what the mappings and the virtual controller get.
-                            if (st != null && ud.HasGyro && st.Gyro != null && st.Gyro.Length >= 3)
-                            {
-                                float lp = st.Gyro[0] - bp, ly = st.Gyro[1] - by, lr = st.Gyro[2] - br;
-                                // Simulated pitch and roll (#472) stand in on the
-                                // axes they supply, before the grip, as in the funnel.
-                                PadForge.Engine.Common.Mapping.SourceCoercion.ApplySimulatedGyro(ud.InstanceGuidString, i, ref lp, ref ly, ref lr);
-                                PadForge.Engine.Common.Mapping.SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref lp, ref ly, ref lr);
-                                padVm.GyroLiveRatePitch = lp * RadToDeg;
-                                padVm.GyroLiveRateYaw   = ly * RadToDeg;
-                                padVm.GyroLiveRateRoll  = lr * RadToDeg;
-                            }
-                            if (st != null && ud.HasAccel && st.Accel != null && st.Accel.Length >= 3)
-                            {
-                                float lx = st.Accel[0], lyy = st.Accel[1], lz = st.Accel[2];
-                                PadForge.Engine.Common.Mapping.SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref lx, ref lyy, ref lz);
-                                padVm.AccelLiveX = lx * MsToG;
-                                padVm.AccelLiveY = lyy * MsToG;
-                                padVm.AccelLiveZ = lz * MsToG;
-                            }
-                            // Label memo keyed on the timestamp string
-                            // reference: the parse + Format re-ran per tick
-                            // for a label that changes on recalibration only.
-                            string ts = biasApplies ? ps?.GyroCalibratedAtUtc : null;
-                            // The format/never strings swap identity on a
-                            // live language switch; keying on them keeps
-                            // the label in the CURRENT language without a
-                            // CultureChanged hook.
-                            string neverStr = Strings.Instance.Settings_GyroNeverCalibrated;
-                            if (!ReferenceEquals(_gyroBiasMemo[i].LabelSrc, ts)
-                                || !ReferenceEquals(_gyroBiasMemo[i].LabelCultureSrc, neverStr))
-                            {
-                                _gyroBiasMemo[i].LabelSrc = ts;
-                                _gyroBiasMemo[i].LabelCultureSrc = neverStr;
-                                _gyroBiasMemo[i].Label =
-                                    (string.IsNullOrEmpty(ts) ||
-                                     !DateTime.TryParse(ts, System.Globalization.CultureInfo.InvariantCulture,
-                                                        System.Globalization.DateTimeStyles.RoundtripKind, out var when))
-                                    ? Strings.Instance.Settings_GyroNeverCalibrated
-                                    : string.Format(Strings.Instance.Settings_GyroLastCalibrated_Format, when.ToLocalTime());
-                            }
-                            // The manual Calibrate flow owns the label
-                            // during a pass and briefly after a rejected
-                            // one (round seven, R1); pushing the memo over
-                            // it made "Calibrating…" invisible and a
-                            // rejection look like nothing happened.
-                            if (DateTime.UtcNow >= padVm.GyroCalibrationLabelHoldUntilUtc)
-                                padVm.GyroCalibrationLabel = _gyroBiasMemo[i].Label;
-                        }
+                        // live view (the sections pass of #574), read as the
+                        // Devices page's preview reads it. The view picks the
+                        // pad (PadViewModel.ShowDeviceTouchpad).
+                        padVm.ShowDeviceTouchpad(selected.InstanceGuid,
+                            ud != null && (ud.HasTouchpad || ud.IsTouchpad) ? ud.InputState?.Touchpads : null,
+                            ud != null && GameModEffects.IsSonyPad(ud.VendorId, ud.ProdId));
+                        ShowDeviceMotion(padVm, i, ud);
                     }
                     else
                     {
                         // No device picked: no finger on the card's touchpad,
-                        // and the pad is drawn as no device's own.
-                        padVm.DeviceTouchDown0 = false;
-                        padVm.DeviceTouchDown1 = false;
-                        padVm.DeviceTouchTapered = false;
+                        // the pad is drawn as no device's own, and no motion.
+                        padVm.ShowDeviceTouchpad(Guid.Empty, null, false);
+                        ShowDeviceMotion(padVm, i, null);
                     }
                 }
                 }
@@ -3422,7 +3462,7 @@ namespace PadForge.Services
                 UpdateDashboard();
             }
 
-            // ── Device notes (#597): a mapped device that disconnects or
+            // ── Device notes (#600): a mapped device that disconnects or
             //    connects, each behind its own switch. Ahead of the layer
             //    flyout, which stands in the same place and gives a note
             //    its two seconds.
@@ -3521,7 +3561,7 @@ namespace PadForge.Services
             // ── Auto-profile switching (check foreground window) ──
             _foregroundMonitor?.CheckForegroundWindow();
 
-            // ── Problem recorder (#597): what its macros asked for, and the
+            // ── Problem recorder (#600): what its macros asked for, and the
             //    program in front ──
             TickProblemRecorder();
 
@@ -4501,7 +4541,7 @@ namespace PadForge.Services
                         && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2
                          || ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0);
                     // A PS Move sphere (#277), a browser pad's drawn bar and a
-                    // program device's light (#597, IRelayedFeedbackDevice) are
+                    // program device's light (#600, IRelayedFeedbackDevice) are
                     // lightbars the Lighting group already shows and edits, so the
                     // card owed them a stage. Kept OUT of sonyLightbar, which
                     // also gates the Audio stage below: neither has a speaker.
@@ -5340,7 +5380,7 @@ namespace PadForge.Services
                         // set, else the Sony player-color convention. Animated
                         // modes and overrides use the live dispatcher. Without
                         // one, this lane supplies the stored resting color. A
-                        // program's device (#597) takes both the same way.
+                        // program's device (#600) takes both the same way.
                         {
                             var wud = FindUserDevice(dev.InstanceGuid);
                             if (wud?.Device is PadForge.Engine.IRelayedFeedbackDevice web && wud.IsOnline)
@@ -6166,6 +6206,7 @@ namespace PadForge.Services
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.NoSdk => s.Settings_GKeysStatus_NoSdk,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.SdkPathStale => s.Settings_GKeysStatus_PathStale,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.LoadFailed => s.Settings_GKeysStatus_LoadFailed,
+                    PadForge.Engine.Common.Logitech.LogitechGKeyState.Refused => s.Settings_GKeysStatus_Refused,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.MissingExports => s.Settings_GKeysStatus_WrongLibrary,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.InitRefused => s.Settings_GKeysStatus_InitRefused,
                     // Connected and silent: no G-key command on the key, a
@@ -6189,7 +6230,7 @@ namespace PadForge.Services
         }
 
         /// <summary>The G-keys line warns in every state but running with keys
-        /// arriving (#574): the five failures, and running with none seen yet.</summary>
+        /// arriving (#574): the six failures, and running with none seen yet.</summary>
         internal static bool GKeysStatusIsWarning(PadForge.Engine.Common.Logitech.LogitechGKeyState state, long events)
             => !(state == PadForge.Engine.Common.Logitech.LogitechGKeyState.Running && events > 0);
 
@@ -6585,14 +6626,13 @@ namespace PadForge.Services
                 // Devices preview surfaces the first touchpad's first
                 // five fingers (Windows PTP max; SDL gamepad touchpads
                 // typically expose 1-2 so the higher slots stay idle
-                // there). Multi-pad devices (Steam Controller / Deck /
-                // Triton) have their additional pads surfaced through
-                // the mapping table's per-pad descriptors; preview
-                // shows pad 0 for parity with the pre-v3.3 single-
-                // pad model. Surfacing slots 2-4 lets the user verify
+                // there), and a second pad's below (Steam Controller,
+                // Deck, Triton). Surfacing slots 2-4 lets the user verify
                 // their PTP actually reports 3+ contacts (which the
                 // gesture engine then sees) instead of seeing only two
                 // dots and inferring "PTP doesn't support that here."
+                // A slot past the pad's fingers is written as up, which
+                // hides its dot: the row opened before may have drawn it.
                 var pad = state.Touchpads[0];
                 if (pad.MaxFingers > 0)
                 {
@@ -6600,30 +6640,35 @@ namespace PadForge.Services
                     devVm.TouchpadY0 = pad.FingerY[0];
                     devVm.TouchpadDown0 = pad.FingerDown[0];
                 }
+                else devVm.TouchpadDown0 = false;
                 if (pad.MaxFingers > 1)
                 {
                     devVm.TouchpadX1 = pad.FingerX[1];
                     devVm.TouchpadY1 = pad.FingerY[1];
                     devVm.TouchpadDown1 = pad.FingerDown[1];
                 }
+                else devVm.TouchpadDown1 = false;
                 if (pad.MaxFingers > 2)
                 {
                     devVm.TouchpadX2 = pad.FingerX[2];
                     devVm.TouchpadY2 = pad.FingerY[2];
                     devVm.TouchpadDown2 = pad.FingerDown[2];
                 }
+                else devVm.TouchpadDown2 = false;
                 if (pad.MaxFingers > 3)
                 {
                     devVm.TouchpadX3 = pad.FingerX[3];
                     devVm.TouchpadY3 = pad.FingerY[3];
                     devVm.TouchpadDown3 = pad.FingerDown[3];
                 }
+                else devVm.TouchpadDown3 = false;
                 if (pad.MaxFingers > 4)
                 {
                     devVm.TouchpadX4 = pad.FingerX[4];
                     devVm.TouchpadY4 = pad.FingerY[4];
                     devVm.TouchpadDown4 = pad.FingerDown[4];
                 }
+                else devVm.TouchpadDown4 = false;
 
                 // Second touchpad surface (Steam Controller 2026 / Deck / original
                 // Steam Controller). The preview previously stopped at pad 0; feed
@@ -6634,17 +6679,33 @@ namespace PadForge.Services
                 if (hasSecondPad)
                 {
                     var pad2 = state.Touchpads[1];
-                    if (pad2.MaxFingers > 0) { devVm.Pad2X0 = pad2.FingerX[0]; devVm.Pad2Y0 = pad2.FingerY[0]; devVm.Pad2Down0 = pad2.FingerDown[0]; }
-                    if (pad2.MaxFingers > 1) { devVm.Pad2X1 = pad2.FingerX[1]; devVm.Pad2Y1 = pad2.FingerY[1]; devVm.Pad2Down1 = pad2.FingerDown[1]; }
-                    if (pad2.MaxFingers > 2) { devVm.Pad2X2 = pad2.FingerX[2]; devVm.Pad2Y2 = pad2.FingerY[2]; devVm.Pad2Down2 = pad2.FingerDown[2]; }
-                    if (pad2.MaxFingers > 3) { devVm.Pad2X3 = pad2.FingerX[3]; devVm.Pad2Y3 = pad2.FingerY[3]; devVm.Pad2Down3 = pad2.FingerDown[3]; }
-                    if (pad2.MaxFingers > 4) { devVm.Pad2X4 = pad2.FingerX[4]; devVm.Pad2Y4 = pad2.FingerY[4]; devVm.Pad2Down4 = pad2.FingerDown[4]; }
+                    if (pad2.MaxFingers > 0) { devVm.Pad2X0 = pad2.FingerX[0]; devVm.Pad2Y0 = pad2.FingerY[0]; devVm.Pad2Down0 = pad2.FingerDown[0]; } else devVm.Pad2Down0 = false;
+                    if (pad2.MaxFingers > 1) { devVm.Pad2X1 = pad2.FingerX[1]; devVm.Pad2Y1 = pad2.FingerY[1]; devVm.Pad2Down1 = pad2.FingerDown[1]; } else devVm.Pad2Down1 = false;
+                    if (pad2.MaxFingers > 2) { devVm.Pad2X2 = pad2.FingerX[2]; devVm.Pad2Y2 = pad2.FingerY[2]; devVm.Pad2Down2 = pad2.FingerDown[2]; } else devVm.Pad2Down2 = false;
+                    if (pad2.MaxFingers > 3) { devVm.Pad2X3 = pad2.FingerX[3]; devVm.Pad2Y3 = pad2.FingerY[3]; devVm.Pad2Down3 = pad2.FingerDown[3]; } else devVm.Pad2Down3 = false;
+                    if (pad2.MaxFingers > 4) { devVm.Pad2X4 = pad2.FingerX[4]; devVm.Pad2Y4 = pad2.FingerY[4]; devVm.Pad2Down4 = pad2.FingerDown[4]; } else devVm.Pad2Down4 = false;
+                }
+                else
+                {
+                    HideTouchpadDots(devVm, firstPad: false);
                 }
             }
             else
             {
                 devVm.HasSecondTouchpadData = false;
+                HideTouchpadDots(devVm, firstPad: true);
+                HideTouchpadDots(devVm, firstPad: false);
             }
+        }
+
+        /// <summary>Writes every finger of one touchpad of the Devices page's
+        /// preview as up, which hides its dots.</summary>
+        private static void HideTouchpadDots(DevicesViewModel devVm, bool firstPad)
+        {
+            if (firstPad)
+                devVm.TouchpadDown0 = devVm.TouchpadDown1 = devVm.TouchpadDown2 = devVm.TouchpadDown3 = devVm.TouchpadDown4 = false;
+            else
+                devVm.Pad2Down0 = devVm.Pad2Down1 = devVm.Pad2Down2 = devVm.Pad2Down3 = devVm.Pad2Down4 = false;
         }
 
         // ─────────────────────────────────────────────
@@ -7252,7 +7313,7 @@ namespace PadForge.Services
                 if (tParts.Length < 3) return 0;
                 if (!int.TryParse(tParts[1], out int padIdx)) return 0;
                 if (tParts.Length == 3 && tParts[2].Equals("Click", StringComparison.Ordinal))
-                    return (state.Buttons != null && state.Buttons.Length > 16 && state.Buttons[16]) ? 1 : 0;
+                    return state.FirstPadClicked ? 1 : 0;
                 if ((tParts.Length != 5 && tParts.Length != 6)
                     || !tParts[2].Equals("Finger", StringComparison.Ordinal)
                     || !int.TryParse(tParts[3], out int fingerIdx))
@@ -8470,7 +8531,7 @@ namespace PadForge.Services
         }
 
         /// <summary>A built-in plugin's device in the language in use
-        /// (#597), unless the user named it: by the name this run gave it,
+        /// (#600), unless the user named it: by the name this run gave it,
         /// or, for a Replay row left offline by an earlier run, made from
         /// the recorded name the row keeps as its product's.</summary>
         private static string BuiltInName(UserDevice ud)
@@ -10093,14 +10154,6 @@ namespace PadForge.Services
             return new SlotLayout(sourceType, sourceIsExtended, raw, ProfileId: source.SlotProfileId);
         }
 
-        /// <summary>The row step of a Paste. On the layout the payload was
-        /// copied from, its table replaces the target's whole
-        /// (<see cref="CopiesWhole"/>), its rows moved by role first where
-        /// the payload came from another wire of the same pads
-        /// (<see cref="RawLanding.ByRole"/>), so the engine never reads one
-        /// on the control that shares its index. On another layout, and
-        /// between a Nintendo slot and a Valve one, its Base rows land by
-        /// position or by placement (<see cref="ReplaceBaseRowsTranslated"/>).</summary>
         /// <summary>The rows a Paste of these settings would give a slot of
         /// that layout, as <see cref="ApplySlotRowsFromClipboard"/> lands
         /// them, with nothing landed (#600): what a program's Paste names on
@@ -10121,6 +10174,14 @@ namespace PadForge.Services
             return rows.Where(r => r != null).ToList();
         }
 
+        /// <summary>The row step of a Paste. On the layout the payload was
+        /// copied from, its table replaces the target's whole
+        /// (<see cref="CopiesWhole"/>), its rows moved by role first where
+        /// the payload came from another wire of the same pads
+        /// (<see cref="RawLanding.ByRole"/>), so the engine never reads one
+        /// on the control that shares its index. On another layout, and
+        /// between a Nintendo slot and a Valve one, its Base rows land by
+        /// position or by placement (<see cref="ReplaceBaseRowsTranslated"/>).</summary>
         internal static void ApplySlotRowsFromClipboard(int padIndex, PadSetting source,
             VirtualControllerType sourceType, bool sourceIsExtended, SlotLayout target)
         {
@@ -11191,7 +11252,7 @@ namespace PadForge.Services
         }
 
         /// <summary>A controller was read through a new controller database
-        /// row for the first time (#597), raised on the poll thread. The row
+        /// row for the first time (#600), raised on the poll thread. The row
         /// carries a mark from then on, so the settings are saved with it.
         /// MarkDirty is safe from any thread.</summary>
         private void OnControllerDatabaseRowFirstUsed() => _settingsService?.MarkDirty();
@@ -11462,7 +11523,7 @@ namespace PadForge.Services
         // One walk of the device list waits on the interface's thread at a
         // time. Changes that land while it waits are its own, since it reads
         // the list as it runs, so a source that comes and goes in a loop (a
-        // program that declares and removes devices, #597) queues one walk
+        // program that declares and removes devices, #600) queues one walk
         // and never thousands. The sender is the latest one's.
         private int _devicesWalkQueued;
         private object _devicesWalkSender;
@@ -11486,6 +11547,10 @@ namespace PadForge.Services
                 RefreshVoiceObjects();
                 RefreshChatObjects();
                 UpdatePadDeviceInfo();
+                // A profile shortcut's Device box names its device as
+                // connected or not (ProfileShortcutViewModel.ChoiceName).
+                foreach (var shortcut in _mainVm.Settings.ProfileShortcuts)
+                    shortcut.RefreshDeviceNames();
                 // After the rosters, so "slot has devices" and "already on
                 // the slot" read this walk's truth. A walk queued before a
                 // stop can run during it, since the engine it came from is
@@ -12004,7 +12069,7 @@ namespace PadForge.Services
         //  DSU Motion Server lifecycle
         // ─────────────────────────────────────────────
 
-        // ── External control (#366, #597) ──
+        // ── External control (#366, #600) ──
         //
         // The three profile verbs of the command set, whose answers have
         // been a contract since #366. The command set reads the line and
@@ -12123,8 +12188,8 @@ namespace PadForge.Services
             string name;
             if (idOrName == null)
             {
-                if (SettingsManager.ActiveProfileId == null || _defaultProfileSnapshot == null) return Automation.ProfileStarts.None;
-                target = _defaultProfileSnapshot;
+                if (SettingsManager.ActiveProfileId == null || SettingsManager.PendingDefaultSnapshot == null) return Automation.ProfileStarts.None;
+                target = SettingsManager.PendingDefaultSnapshot;
                 name = Strings.Instance.Profile_Default;
             }
             else
@@ -13809,7 +13874,7 @@ namespace PadForge.Services
                                 || devType == InputDeviceType.GameTelemetry
                                 // And the chat words, THIS machine's list (#555).
                                 || devType == InputDeviceType.TwitchChat
-                                // And the names a program gave its device (#597).
+                                // And the names a program gave its device (#600).
                                 || devType == InputDeviceType.Program)
                                 try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
@@ -14556,7 +14621,7 @@ namespace PadForge.Services
             // having no mapping sets. Display only, so the engaged layer and
             // every row that resolves against it are unaffected.
             //
-            // A device note (#597) takes the flyout down the same way for
+            // A device note (#600) takes the flyout down the same way for
             // as long as it is up. The two windows stand in one place, and
             // the one shown last would lie over the other (seen 2026-11-23
             // with two topmost windows that take no focus). The director
@@ -14760,7 +14825,7 @@ namespace PadForge.Services
 
         /// <summary>The flyout's window, made the first time anything
         /// shows on it: a profile switch, the controllers turned on or off,
-        /// or a device note (#597).</summary>
+        /// or a device note (#600).</summary>
         private Views.ProfileSwitchOverlay SwitchOverlay()
         {
             if (_switchOverlay == null)
@@ -15424,6 +15489,11 @@ namespace PadForge.Services
                         }
                     }
                 }
+                // A program's device or a web pad no slot holds is let go of
+                // (#600): it shows no player and no light of PadForge's.
+                // Outside the settings lock, as the device list's lock comes
+                // first.
+                LetGoOfUnheldRelayedDevices(SettingsManager.UserDevices, guids);
                 foreach (var guid in guids)
                 {
                     var ud = SettingsManager.FindDeviceByInstanceGuid(guid);
@@ -17014,6 +17084,10 @@ namespace PadForge.Services
                                     AddKey(src.ParamUp, src.ParamUpDeviceGuid, src);
                                     AddKey(src.ParamDown, src.ParamDownDeviceGuid, src);
                                 }
+                                // A mouse source's Steer input on a device of
+                                // its own reads that device, as a key does.
+                                if (src.ParamTravelSteerDeviceGuid != null)
+                                    AddKey(src.GateDescriptor, src.ParamTravelSteerDeviceGuid, src);
 
                                 // Same device scoping the engine uses for a
                                 // per-device pass: empty DeviceGuid means "any
@@ -17028,7 +17102,7 @@ namespace PadForge.Services
                                 // suppressed source stayed unconsumed and leaked
                                 // to the foreground app. The touchpad auto-arm
                                 // classifier already walks both of them.
-                                AddDescriptor(src.GateDescriptor);
+                                if (src.ParamTravelSteerDeviceGuid == null) AddDescriptor(src.GateDescriptor);
                                 AddDescriptor(src.Gate2Descriptor);
 
                                 // Then exactly the descriptors each kind reads
@@ -17346,6 +17420,15 @@ namespace PadForge.Services
             return DeviceRowViewModel.FormatProductRevision(sdl?.ProductVersion ?? 0);
         }
 
+        /// <summary>Whether a device that relays its feedback (a program's
+        /// device, #600) takes rumble or trigger rumble. The engine rumbles
+        /// such a device as it does a pad, with the slot's gains, swap and
+        /// test (Step 2's HasRumble gate), so its Devices row and the Pad
+        /// page's Force Feedback tab count it as a rumble device, asked of
+        /// the device as the Lighting group asks it.</summary>
+        internal static bool RelaysRumble(UserDevice ud)
+            => ud?.Device is PadForge.Engine.IRelayedFeedbackDevice && (ud.Device.HasRumble || ud.Device.HasRumbleTriggers);
+
         /// <summary>
         /// Populates a DeviceRowViewModel from a UserDevice.
         /// </summary>
@@ -17418,11 +17501,14 @@ namespace PadForge.Services
                 || ud.CapType == InputDeviceType.FirstPerson
                 || ud.CapType == InputDeviceType.Supplemental;
             // A haptic mouse, keyboard or vendor row (#494) rumbles through
-            // its own Force Feedback group, the Pad page's peripheral gate.
+            // its own Force Feedback group, the Pad page's peripheral gate. A
+            // program's device that declares rumble (#600) is rumbled as a
+            // pad is, whatever its class (RelaysRumble).
             row.HasRumble = (rumbleClass
                 && (ud.HasForceFeedback || ud.HasRumbleTriggers || sonyLightbarPad
                     || switch2Pad
                     || PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud)))
+                || RelaysRumble(ud)
                 || PadForge.Common.Input.Peripherals.PeripheralOutputs.IsHapticPeripheral(ud);
             // An Xbox Elite's paddle route that is off says why, read from
             // SDL at this refresh (#600). Reading only: nothing here touches
@@ -18952,44 +19038,6 @@ namespace PadForge.Services
             return cal;
         }
 
-        /// <summary>Captures the Wii Balance Board's current total weight (#146) as
-        /// the tare zero-point for the given device, so "Balance Total Weight" reads
-        /// 0 with whatever is currently on the board. Call again with no load to
-        /// clear. Reads the live corner load cells from the device's last input
-        /// state and the cached kg calibration.</summary>
-        public void SetBalanceTare(Guid deviceGuid)
-        {
-            var ud = FindUserDevice(deviceGuid);
-            var st = ud?.InputState;
-            if (st?.Axis == null) return;
-            float tl = Math.Max(0, st.Axis[0] - 32768);
-            float bl = Math.Max(0, st.Axis[1] - 32768);
-            float tr = Math.Max(0, st.Axis[3] - 32768);
-            float br = Math.Max(0, st.Axis[4] - 32768);
-
-            float[] cal = PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider?
-                .Invoke(deviceGuid.ToString());
-            float kg;
-            if (cal != null && cal.Length >= 12)
-                kg = CornerKg(tl, cal, 0) + CornerKg(bl, cal, 1) + CornerKg(tr, cal, 2) + CornerKg(br, cal, 3);
-            else
-                kg = (tl + bl + tr + br) / 200f;
-
-            lock (_balanceLock) _balanceTareKg[deviceGuid] = kg;
-        }
-
-        private static float CornerKg(float raw, float[] cal, int corner)
-        {
-            float kg0 = cal[corner * 3 + 0], kg17 = cal[corner * 3 + 1], kg34 = cal[corner * 3 + 2];
-            if (raw < kg17)
-            {
-                float span = kg17 - kg0;
-                return span > 0f ? 17f * (raw - kg0) / span : 0f;
-            }
-            float span2 = kg34 - kg17;
-            return span2 > 0f ? 17f * (raw - kg17) / span2 + 17f : 17f;
-        }
-
         /// <summary>
         /// Finds the UserDevice for the device picked in the header's Driven by list.
         /// Falls back to the first device in the slot if nothing is selected.
@@ -19044,8 +19092,9 @@ namespace PadForge.Services
             // Every pulse writes its OWN target, Guid.Empty included. Setting
             // the filter only for a concrete device let an all-device pulse
             // inherit the previous targeted pulse's filter until THAT pulse's
-            // 500 ms timer expired, so Test Left Motor pressed right after a
-            // device Test Rumble reached one device instead of the slot.
+            // 500 ms timer expired, so a test with no device picked, pressed
+            // right after a device's Test Rumble, reached that one device
+            // instead of the slot.
             _inputManager.TestRumbleTargetGuid[padIndex] =
                 deviceGuid.HasValue ? deviceGuid.Value : Guid.Empty;
 
@@ -19079,6 +19128,17 @@ namespace PadForge.Services
                 _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
             };
             clearTimer.Start();
+        }
+
+        /// <summary>The Force Feedback group's Test beside Left Motor or
+        /// Right Motor on <paramref name="pad"/>'s page. It shakes the device
+        /// picked under Driven by, whose strength the row sets, as Test Rumble
+        /// and the impulse trigger Tests in the same group do. Every device
+        /// of the slot shakes only when none is picked.</summary>
+        internal void SendTestMotor(PadViewModel pad, bool left)
+        {
+            if (pad == null) return;
+            SendTestRumble(pad.PadIndex, pad.SelectedMappedDevice?.InstanceGuid, left, !left);
         }
 
         public void SendTestRumble(int padIndex, Guid? deviceGuid, bool left, bool right)
@@ -19613,7 +19673,7 @@ namespace PadForge.Services
             int padIndex = _recordingVariablePadIndex;
             if (padIndex < 0 || padIndex >= InputManager.MaxPads) return;
             // A telemetry variable is picked from a list (#531), and a
-            // program's value is named (#597). A device scan here would
+            // program's value is named (#600). A device scan here would
             // rebind either to whatever moved.
             if (_recordingVariable.Source is MacroTriggerSource.GameTelemetry or MacroTriggerSource.ScriptValue or MacroTriggerSource.DeviceConnection)
             {
@@ -21237,7 +21297,7 @@ namespace PadForge.Services
             _settingsService?.InvalidateAssignmentSnapshot();
 
             // A profile changes which devices are mapped, so the device
-            // notes (#597) read each one as for the first time and say
+            // notes (#600) read each one as for the first time and say
             // nothing of the switch.
             _deviceNotes.Reset();
 
@@ -21922,8 +21982,8 @@ namespace PadForge.Services
                 // Revert to default (root) profile using the startup snapshot.
                 SettingsManager.ActiveProfileId = null;
                 _mainVm.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
-                if (_defaultProfileSnapshot != null)
-                    ApplyProfile(_defaultProfileSnapshot);
+                if (SettingsManager.PendingDefaultSnapshot is { } byDefault)
+                    ApplyProfile(byDefault);
                 ResetRuntimeStateForProfileSwitch();
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
@@ -22029,7 +22089,6 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(activeId))
             {
                 // Currently on the default profile — update the default snapshot.
-                _defaultProfileSnapshot = snapshot;
                 SettingsManager.PendingDefaultSnapshot = snapshot;
             }
             else
@@ -22107,15 +22166,13 @@ namespace PadForge.Services
         /// </summary>
         public void RefreshDefaultSnapshot()
         {
-            _defaultProfileSnapshot = SnapshotCurrentProfile();
-            SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
+            SettingsManager.PendingDefaultSnapshot = SnapshotCurrentProfile();
         }
 
         /// <summary>Test seam: reproduces the post-restart state where no
         /// default snapshot was ever persisted.</summary>
         internal void ClearDefaultProfileSnapshotForTest()
         {
-            _defaultProfileSnapshot = null;
             SettingsManager.PendingDefaultSnapshot = null;
         }
 
@@ -22166,9 +22223,9 @@ namespace PadForge.Services
         public void ApplyDefaultProfile()
         {
             _settingsService?.InvalidateAssignmentSnapshot();
-            if (_defaultProfileSnapshot != null)
+            if (SettingsManager.PendingDefaultSnapshot is { } snapshot)
             {
-                ApplyProfile(_defaultProfileSnapshot);
+                ApplyProfile(snapshot);
                 return;
             }
 
@@ -22225,8 +22282,7 @@ namespace PadForge.Services
             // window on purpose: the grids were just reconciled against the
             // rebuilt sets, so the snapshot's own push has nothing stale left
             // to write and must be allowed to flush.
-            _defaultProfileSnapshot = SnapshotCurrentProfile();
-            SettingsManager.PendingDefaultSnapshot = _defaultProfileSnapshot;
+            SettingsManager.PendingDefaultSnapshot = SnapshotCurrentProfile();
         }
 
         /// <summary>
@@ -22291,6 +22347,9 @@ namespace PadForge.Services
             snapshot.ExecutableNames = pipeSeparatedExePaths;
             snapshot.PollingRateOverrideHz = pollingRateOverrideHz;
             SettingsManager.Profiles.Add(snapshot);
+            // Its rows were made under the user's controller database rows,
+            // so they are not mapped again on its first activation (#600).
+            ControllerDatabaseMine.Change(m => m.CopyProfile(ControllerDatabaseMineRow.ActiveProfile, snapshot.Id));
             return snapshot;
         }
 
@@ -22319,6 +22378,9 @@ namespace PadForge.Services
             snapshot.GameLook = stored.GameLook;
             snapshot.WorkshopSource = null;
             SettingsManager.Profiles[at] = snapshot;
+            // Its rows are now the live ones, made under the user's controller
+            // database rows (#600).
+            ControllerDatabaseMine.Change(m => m.CopyProfile(ControllerDatabaseMineRow.ActiveProfile, snapshot.Id));
             return snapshot;
         }
 

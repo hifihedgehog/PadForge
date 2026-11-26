@@ -1084,6 +1084,8 @@
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>ogue</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software rupi</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>oikotevẽ Logitech Gaming Software 8.52 térã ipyahuvéva</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ojuhu ibiblioteca ha nohupíri, PadForge ndaikatúigui ohechakuaa administrador añoite ikatuha omoambue ha Logitech ofirmaha</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ojuhu ibiblioteca ha ndaikatúi oiporu, ha diagnóstico registro he'i mba'érepa</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>oha'arõ peteĩ pumbyry Arx Control reheve</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>pumbyrýpe</value></data>
   <data name="KeyboardScreens_Status_Strike7Waiting" xml:space="preserve"><value>eiporavo PadForge V.E.N.O.M. mba'erechahápe</value></data>
@@ -1201,6 +1203,7 @@
   <data name="Devices_UsedBy" xml:space="preserve"><value>Oipurúva</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Ñemboheko</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Opaite eje, votõ ha sensor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Ijeporuha kuéra, script oiporúva héra reheve</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Ojejopýva: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Ekopia detalle</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Ikatúva</value></data>
@@ -1270,6 +1273,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Ñongatuha</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Servicio ñemboheko</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Ñemboguete rembiapo</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Servicio</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Archivo</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Filtro superior</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registro valor</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID hardware rehegua</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Tarea programada</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Aplicaciones instaladas rehegua</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP mba'e'oka</value></data>
   <data name="PickSound_Use" xml:space="preserve"><value>Eipuru ryapu</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Embojuaju ñembosarái oikóva</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Nohẽ {0}</value></data>
@@ -1398,8 +1409,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programa oiporu peteĩ versión PadForge ndoikuaáiva</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nome'ẽi upe plugin llave</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nomoneĩri ko programa joaju</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge ndojapói mba'e'oka, Windows nome'ẽi rupi programa archivo réra</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ojejerure jey pya'eterei</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ndaipóri hetave kóicha PadForge oñepyrũ jey peve</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Hetaiterei ko'ãichagua programa omoha'arõva rehecha hag̃ua Home-pe</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ndoguerekói upéicha tembiporu</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programa olee peteĩ estado tujavéva</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Mba'eve ndoguerekói upe ID</value></data>
@@ -1407,6 +1419,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Nde nemoneĩri</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Avave ndombohováiri hi'ára jave</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Oha'arõ nde mbohovái</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Nderembohováiri gueteri</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ndaipóri upéicha ñemaña</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ndaipóri mba'eve ojebojevy hag̃ua</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Nde añoite ikatu emoambue kóva</value></data>
@@ -1529,7 +1542,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Egueru peteĩ perfil</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Egueru peteĩ perfil archivo ambue programagui, upéi ehecha mba'épa og̃uahẽ.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} jey</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ipaha {1} ojoguáva apytégui</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Emoneĩ</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ani emoneĩ</value></data>
   <data name="Automation_Request_NotNow" xml:space="preserve"><value>Ani ko'ág̃a</value></data>
@@ -1537,18 +1549,19 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ha {0} hetave</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} {1} apytégui</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ndembohováiramo {0} ryepýpe, ojeipapa nahániri ramo.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now omboguejy mando aty tekoha rehegua (SDL_GameControllerDB) GitHub guive, térã dirección oñemoĩva More ryepýpe guive, ha oñongatu, configuración archivo ryepýpe, mapeo ko PadForge versión ndoguerekóiva. Ojeporu pya'e. Ambue dirección guive oñongatu mapeo pyahu añoite. Peteĩ mapeo pyahu ojeporu añoite peteĩ mando ambue mba'eve nolee'ỹva gamepad ramo, noñemoĩriva ha ndaiporiva Force Raw Joystick Mode ryepýpe. Restablecer omboguete opaite mapeo ojeboguejy va'ekue ha omboguejy jey GitHub guive. Nde tysýi kuéra, More ryepýpe, opyta.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now omboguejy mando aty tekoha rehegua (SDL_GameControllerDB) GitHub guive, térã dirección oñemoĩva More ryepýpe guive, ha oñongatu, configuración archivo ryepýpe, mapeo ko PadForge versión ndoguerekóiva. Ojeporu pya'e. Ambue dirección guive oñongatu mapeo pyahu añoite. Peteĩ mapeo pyahu ojeporu raẽ añoite peteĩ mando SDL he'íva gamepad térã tipo katu'ỹva ramo, ambue mba'eve nolee'ỹva gamepad ramo, noñemoĩriva ha ndaiporiva Force Raw Joystick Mode ryepýpe. Ojeporúma rire, ojeporu gueteri mando oñemoĩ rire. Restablecer omboguete mapeo ojeboguejy va'ekue ha omoĩ jey Mamógui ojeboguejy tekoha archivo-pe, Update Now oúva omboguejýva. Nde tysýi kuéra, More ryepýpe, opyta.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ijapytepegua: {0} mapeo, tekoha kopia {1} rehegua.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ijapytepegua: {0} mapeo, tekoha kopia {1} rehegua. Ojeboguejy {2}: tysýi pyahu {3}, oñemoambuéva {4}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Ijapytepegua: {1} mapeo, tekoha kopia {2} rehegua. Ojeboguejy {3} {4} guive: tysýi pyahu {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Ijapytepegua: {1} mapeo, tekoha kopia {2} rehegua. Ojeboguejy {3} {4} guive: tysýi pyahu {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Mando aty tekoha rehegua noñemoambuéi ipaha ñembopyahu guive.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Archivo oĩva {0}-pe noñemoambuéi ipaha ñembopyahu guive.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Akóinte</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alternar</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Botõ ombohapéva mouse omboguata hag̃ua, ñepyrũha mba'e'oka voi ári. Ndojeiporavóiramo mba'eve, mouse omboguata akóinte.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Botõ ombohapéva mouse omboguata hag̃ua, oimeraẽ mba'e'oka ko slot rehegua ári. Ndojeiporavóiramo mba'eve, mouse omboguata akóinte.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol servidor ha cliente oĩva pytyvõhára joaju ha PadForge.exe --mcp rapykuéri, Model Context Protocol a Series of LF Projects rembiapo.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol servidor ha cliente oĩva pytyvõhára joaju ha PadForge.exe --mcp rapykuéri, Model Context Protocol a Series of LF Projects, LLC rembiapo.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ha DependencyInjection.Abstractions, MCP C# SDK oñemopu'ãva hi'ári, Microsoft rembiapo.</value></data>
   <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Omba'apo.</value></data>
@@ -1590,8 +1603,13 @@
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Onohẽ…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ombopyahu…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ndopamói: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge ijeike ha ikatupyry opyta, {0} olee rupi upe configuración archivo ha katupyry ñongatuha.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge ijeike opyta, {0} olee rupi upe configuración archivo.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge oñemboguete ko programa guive. Ikatupyry opyta, {0} olee rupi katupyry upe ñongatuha guive.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ndaikatúi olee configuración {0}-pe, upévare ndoikuaái PadForge oñembojuajúpa.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Oñembojuaju. PadForge ndaikatúi olee ikatupyry ñongatuha.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Oñemonguatia.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Noñemonguatiái: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Noñemonguatiái. Windows nomoneĩri PadForge oiporu portapapeles.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programa oñemoneĩva</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Peteĩ programa oipotáva Read térã hetave oporandu peteĩ jey, ojoaju ypy jave, ha ohupyty nivel ojeruréva, yvategua nivel peve. Peteĩ pytyvõhára rembojuajúva yvate oñemoneĩ upéva rupi.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -1604,6 +1622,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Peteĩ joystick. PadForge olee ñemoambue'ỹre, upévare SDL mapeo ndojeporúi.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Peteĩ joystick, nde tysýi omohenda gamepad ramo.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL olee mba'e'oka motor oñemboguata aja.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Mba'e'oka noñembojoajúi. SDL olee oñembojoaju vove.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nome'ẽi PadForge-pe ko mba'e'oka jelee.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Tekoha kopia ijapytepeguáva, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ojeboguejy {0}</value></data>
@@ -1641,6 +1661,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle ha ambue tembiapo</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ha {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Ndaipóri mba'eve oñemonguatia hag̃ua: SDL ndoguerekói mapeo ko mba'e'oka peg̃uarã, ha ndaipóri mando ári.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Ndaipóri mba'eve oñemonguatia hag̃ua: PadForge ndaikatúi olee SDL mapeo ko mba'e'oka peg̃uarã, ha ni peteĩ tysýi imando kuéragui nome'ẽi joaju SDL forma ohupytýva.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Ndaipóri mba'eve oñemonguatia hag̃ua: SDL ndoguerekói mapeo ko mba'e'oka peg̃uarã, ha ni peteĩ tysýi {0} rehegua nolee ivotõ, eje térã hat SDL forma ohupytýva ramo.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Ndaipóri mba'eve oñemonguatia hag̃ua: SDL ndoguerekói mapeo ko mba'e'oka peg̃uarã, ha {0} tysýi kuéra olee {1} peg̃uarã añoite, SDL forma ndaikatúiva oguereko.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Ndaipóri mba'eve oñemonguatia hag̃ua: PadForge ndaikatúi olee ko'ág̃a SDL mapeo ko mba'e'oka peg̃uarã, ha ndaipóri mando ári.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Ndaipóri mba'eve oñemonguatia hag̃ua: PadForge ndaikatúi olee ko'ág̃a SDL mapeo ko mba'e'oka peg̃uarã, ha ni peteĩ tysýi {0} rehegua nome'ẽi joaju SDL forma ohupytýva.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Ambue programa oipuru portapapeles. Mba'eve noñemonguatiái.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Nde tysýi oñenohẽ. Mba'e'oka oñelee ojeleeháicha mboyve.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Oñemapea jey SDL ñemohenda guive: {0}.</value></data>
@@ -1661,6 +1686,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Tysýi PadForge ogueraháva</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ni peteĩ tysýi ndojojái.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Tysýi jeiporavopyre oñemoĩ {0} rehe ijee ID guýpe, upe jehecha ha jeporavo peteĩchagua Emboja ndive.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Motor ojejoko, upévare lista ndoguerekói tysýi SDL oñongatúva, ijeheguiete ha tekoha kópia oĩva ipype. Ojehechaukáta omba'apo vove.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL nombohováiri tiempo oñemoĩvape, upévare lista ndoguerekói tysýi oñongatúva, ijeheguiete ha tekoha kópia oĩva ipype.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL mapeo tysýi</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Peteĩ tysýi ko mba'e'oka peg̃uarã.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Peteĩ ñemohenda ojeimo'ãva.</value></data>
@@ -1673,14 +1700,14 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} campo, upe vendedor ha producto peteĩchagua guive ambue bus térã versión ári. Oñeñongatu ko mba'e'oka ID voi guýpe.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} campo, ambue mba'e'oka tysýi. Oñeñongatu ko mba'e'oka ID voi guýpe.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} campo. SDL nolee'i ko mba'e'oka, upévare PadForge omohenda ijeike kuéra tysýi he'iháicha.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge ndoguerekói votõ térã eje rei ko'ã campo peg̃uarã ha oheja okápe: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} campo, mba'e'oka eje, votõ ha hat kuéragui. Ehecha Test Inputs ryepýpe, upéi eñongatu térã emoambue ápe.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Kóva omoambue mba'éicha oñelee {0}. Hysýi kuéra {1} ryepýpe oñemapea jey ñemohenda pyahu guive.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Kóva omoambue mba'éicha oñelee {0}. Ndaipóri mando ári, upévare ni peteĩ tysýi noñemoambuéi.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Perfil atajo kuéra olee {0} oñongatu umi jeike oñemoĩ haguéicha.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Tysýi oñeñongatu nde mba'e ramo PadForge.xml ryepýpe ha ipu'aka opaite ambue ñepyrũha ári ko mba'e'oka peg̃uarã. Enohẽ che mba'e omoĩ jey tysýi yma ha umi tysýi yma.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Tysýi kuéra oñeñongatu nde mba'e ramo PadForge.xml ryepýpe ha ipu'aka imba'e'oka peg̃uarã opaite ambue ñepyrũha ári. Mopotĩ, Controller Database tysýi More ryepýpe, oipe'a chupekuéra.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} tysýi Windows peg̃uarã. {1} ambue sistema peg̃uarã ojeheja.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} tysýi Windows peg̃uarã. {1} ambue sistema peg̃uarã ojeheja.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} tysýi Windows peg̃uarã.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Oñembojoapýta opaite {0:N0}. PadForge oñongatu {1:N0} peve nde tysýi.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Oñembojoapýta. PadForge oñongatu {1:N0} peve nde tysýi.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Oñeñongatu ko'ágã {0:N0} nde mba'e, upévare oñembojoapýta {1:N0} ko'ãva apytégui ha {2:N0} noñembojoapymo'ãi.</value></data>
@@ -1690,7 +1717,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Moñe'ẽrã ndaha'éi SDL mando aty tysýi: peteĩ ID 32 hex dígito reheve, peteĩ héra, upéi campo kuéra a:b0 ramo.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Tysýi kuéra ambue sistema peg̃uarã. PadForge olee tysýi Windows peg̃uarã, térã ni peteĩ sistema peg̃uarã.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Tysýi ID ndaha'éi peteĩ mba'e'oka mba'e. Oikotevẽ 32 hex dígito.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Tysýi héra nandi, ohasa 128 letra, térã oguereko peteĩ letra SDL olee campo ramo.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Tysýi réra nandi, ohasa 128 carácter, oguereko campo marca SDL olee, “type:” ramo, térã oguereko carácter ndaha'éiva letra, dígito, puntuación, símbolo ha espacio rei.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Tysýi ogueraha peteĩ hint térã Android campo, ha PadForge nomoneĩri chupe.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Tysýi oguereko peteĩ campo SDL ndoikuaáiva.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Peteĩ binding ndaha'éi SDL formape, b3, a2, +a2, a2~ térã h0.4 ramo.</value></data>
@@ -1716,7 +1743,7 @@
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Ojejoko. Iñe'ẽ paha: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ndaikatúi oñepyrũ.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ndaipóri ko PCpe ko'ág̃a.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ndojejuhúi túnel programa ko PCpe. PadForge omba'apo cloudflared, devtunnel, ngrok ha Tailscale Funnel ndive, térã nde túnel dirección ndive.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge ndojuhúi cloudflared, devtunnel, ngrok térã Tailscale Funnel ko PC-pe. Eiporavo ChatGPT Secure MCP Tunnel, PadForge omboguejýva, térã eme'ẽ nde túnel dirección.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Eiporavo peteĩ túnel eme'ẽ hag̃ua PadForge peteĩ dirección pública.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Avei ko PCpe: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, idirección opytáva peteĩchagua</value></data>
@@ -1724,7 +1751,7 @@
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Emboguata nde túnel http://127.0.0.1:{0} peve ha emboja idirección https. Peteĩ Cloudflare túnel héra reheve, dev túnel opytáva, Tailscale Funnel ha ngrok dominio voi oñongatu idirección.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Emboja peteĩ dirección https, ndorekóiva tape /mcp ndaha'éiramo, nde túnel ome'ẽháicha.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Oñepyrũ PadForge web mba'epytyvõ.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge web mba'epytyvõ ojejoko ({0}). Embogue ha emyendy jey “Reach PadForge From the Web” oñepyrũ jey hag̃ua.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge web mba'epytyvõ ojejoko ({0}). PadForge oñeha'ã jey jey omoñepyrũ.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Dirección</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Ndaipóri gueteri dirección pública.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Embojuaju Claude ryepýpe</value></data>
@@ -1762,32 +1789,29 @@
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>opa código {0} reheve</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation oñembogue, upévare ni peteĩ Web pytyvõhára nog̃uahẽi PadForge rehe. Web mba'epytyvõ oñepyrũ Automation oñemyendy rire.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ohecha…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Noñemohendái.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Oñemohenda ha ipyahu. Script oñepyrũ {0} reheve.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Oñemohenda {0} peg̃uarã ha ipyahu. Script oñepyrũ {1} reheve.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Oñemohenda. Ko PadForge oguereko kopia ipyahuvéva.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Oñemohenda {0} peg̃uarã. Ko PadForge oguereko kopia ipyahuvéva.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Omohenda…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ndaikatúi ohecha: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Mohenda omoĩ PadForge aty upe ñe'ẽ ojuhuhápe. Script ohupíva olee mba'e'oka ha omboguata mapeo yvategua nivel peve.</value></data>
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kopia oñemohendáva</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Enohẽ opavave</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Oñenohẽ.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge biblioteca oñemoĩ {0} peg̃uarã ha ipyahu. Peteĩ script oñepyrũ {1} reheve.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>PadForge biblioteca {0} peg̃uarã iñambue ko PadForge kópiagui.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge biblioteca noñemoĩri {0} peg̃uarã.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Script ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Iscript ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script kuéra ombohéra icontrol kuéra {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script kuéra ombohéra itecla kuéra KeyA, KeySpace, KeyLeftShift ha ambue, ha opa tecla ikódigo rupive, Vk0 guive Vk255 peve.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ko red-pe {1} guive</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Ehechauka carpeta-pe</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Dirección</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge omoneĩ peteĩ dirección oñepyrũva https:// rehe ha omoherakuãva peteĩ host, puerto ojeporúva ijypýpe, ndorekóiva usuario réra ni contraseña.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge ohupyty peteĩ dirección 2.048 carácter peve oñepyrũva https:// reheve ha omoherakuãva peteĩ host, puerto predeterminado-pe, ndorekóiva usuario réra, contraseña térã pehẽ # rire.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Puerto</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Moambue…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Umi jehenói ha illave ohasa ko red rupi ñemi'ỹre. Windows omoinge chupekuéra red privada-pe añoite.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Ñehenói ha iclave ohasa ko red rupi ñemi'ỹre. Regla PadForge ojapóva Firewall de Windows-pe ko puerto peg̃uarã ohupyty red privada añoite.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Puerto {0} ojeporu ambue programa rupive. Emoambue reg̃uahẽ hag̃ua PadForge rehe ko red guive.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows nomoneĩri PadForge mba'epytyvõ ohendu puerto {0}-pe. PadForge omoneĩ upéva administrador derecho reheve, upévare emoñepyrũ PadForge umíva reheve ha embogue ha emyendy jey kóva.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows ndoguerekói reserva PadForge mba'epytyvõ peg̃uarã puerto {0}-pe. Embogue ha emyendy jey kóva, ha PadForge ojapo jey.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge mba'epytyvõ ndaikatúi ohendu puerto {0}-pe. Emoambue puerto, térã embogue ha emyendy jey kóva.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge mba'epytyvõ ojejoko ({0}). Embogue ha emyendy jey “Reach PadForge From This Network” oñepyrũ jey hag̃ua.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge mba'epytyvõ ojejoko ({0}). PadForge oñeha'ã jey jey omoñepyrũ.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation oñembogue, upévare ni peteĩ pytyvõhára ko red-pe nog̃uahẽi PadForge rehe. Mba'epytyvõ oñepyrũ Automation oñemyendy rire.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Ko PC ndorekói ko'ágã dirección red privada-pe.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Pytyvõhára ko red-pe</value></data>
@@ -1802,7 +1826,24 @@
   <data name="Reach_Line_Format" xml:space="preserve"><value>Omoguata imba'e'oka ha {0}. Olee gueteri opaite mba'e'oka.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Omoguata imba'e'oka añoite. Olee gueteri opaite mba'e'oka.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Umi comando línea de comando guive og̃uahẽ gueteri PadForge rehe, opaite programa-pe g̃uarãicha.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Omba'apo, nde derecho reheve, ha oĩma. ChatGPT og̃uahẽ PadForge rehe ko túnel rupi ijeike'ỹre, ha nde OpenAI organización guive añoite. Oñepyrũ jey PadForge ndive.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Omba'apo, nde derecho reheve. Oha'arõ OpenAI he'i peve túnel oĩmaha.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge oñongatu llave ñemíme nde añoite peg̃uarã. Peteĩ caja nandi ohesarái chugui. ChatGPT omba'apo yvategua nivel-pe.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge ndaikatúi oñongatu plugin ryru.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Tembiapo {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge omboyke GitHub mbohovái. Mba'eve noñemoambuéi.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge omboyke mbohovái {0} guive. Mba'eve noñemoambuéi.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} tysýi ambue sistema peg̃uarã oñeheja.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows nomoñepyrũi nde derecho tee reheve.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Nopahái {0} segundo ryepýpe.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Opa código {0} reheve ha nome'ẽi mba'érepa.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ndaikatúi olee configuración {0}-pe, upévare oheja archivo oĩháicha.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge nohaíri {0}, upévare oheja oĩháicha.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows nomoherakuãi ndéve Documentos ñongatuha.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ndojuhúi nde ñongatuha {0} peg̃uarã.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0} comando tee opa código {1} reheve.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0} comando ndaipóri ko PC-pe.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows nomoneĩri PadForge olee térã ohai peteĩ archivo oikotevẽva.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ndojuhúi Python: ni peteĩ noñemboheraguapýi, noñemoĩri Microsoft Store guive, py lanzador nohechaukái térã ndaipóri nde PATH-pe.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ni peteĩ Python PadForge ojuhúva nombohováiri {0} segundo ryepýpe.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Ñemongu'e nome'ẽi mba'érepa PadForge oikuaáva.</value></data>
 </root>

@@ -67,25 +67,41 @@ namespace PadForge.Search
 
         internal IReadOnlyList<SearchEntry> Index => _index;
 
-        /// <summary>Builds the index on a worker and takes it on the
-        /// dispatcher's thread. A failed build is logged, and Search keeps
-        /// its dynamic results.</summary>
+        /// <summary>Builds the pages' index and the dialogs' catalog on a
+        /// worker, each apart from the other, and takes what was built on the
+        /// dispatcher's thread. A failed build is logged and leaves the other:
+        /// without the pages' index Search keeps its dynamic results, and
+        /// without the catalog it offers no dialog.</summary>
         internal void BuildIndex(Dispatcher dispatcher)
         {
-            Task.Run(() => (Pages: SearchIndexBuilder.Build(SearchSources.Load()), Dialogs: SearchIndexBuilder.BuildCatalog(SearchSources.LoadCatalog()))).ContinueWith(done =>
+            Task.Run(() => BuildApart(() => SearchIndexBuilder.Build(SearchSources.Load()), () => SearchIndexBuilder.BuildCatalog(SearchSources.LoadCatalog())))
+                .ContinueWith(done =>
             {
-                if (done.IsFaulted)
-                {
-                    PadForge.Engine.SdlDiagLog.WriteLine("Search: the index could not be built: " + done.Exception?.GetBaseException().Message);
-                    return;
-                }
+                var (pages, dialogs) = done.Result;
                 dispatcher.BeginInvoke(new Action(() =>
                 {
-                    SetIndex(done.Result.Pages);
-                    SetDialogs(done.Result.Dialogs);
+                    if (pages != null) SetIndex(pages);
+                    if (dialogs != null) SetDialogs(dialogs);
                     IndexBuilt?.Invoke(this, EventArgs.Empty);
                 }));
             }, TaskScheduler.Default);
+        }
+
+        /// <summary>Builds the pages' index and the dialogs' catalog, each
+        /// apart: one that throws is logged and given as null, and the other
+        /// is kept.</summary>
+        internal static (IReadOnlyList<SearchEntry> Pages, IReadOnlyList<SearchEntry> Dialogs) BuildApart(
+            Func<IReadOnlyList<SearchEntry>> pages, Func<IReadOnlyList<SearchEntry>> dialogs)
+            => (Built(pages, "the index"), Built(dialogs, "the dialogs' catalog"));
+
+        private static IReadOnlyList<SearchEntry> Built(Func<IReadOnlyList<SearchEntry>> build, string what)
+        {
+            try { return build(); }
+            catch (Exception error)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine("Search: " + what + " could not be built: " + error.GetBaseException().Message);
+                return null;
+            }
         }
 
         /// <summary>Takes an index made elsewhere (the tests, and the
@@ -119,12 +135,12 @@ namespace PadForge.Search
             return _index.FirstOrDefault(e => e.Kind is SearchKind.Action or SearchKind.MenuItem && e.Page == opener.Page && e.Handler == opener.Handler);
         }
 
-        /// <summary>An entry's stable ID (#597), the same in every
+        /// <summary>An entry's stable ID (#600), the same in every
         /// language.</summary>
         internal string IdOf(SearchEntry entry) => entry != null && _ids.TryGetValue(entry, out string id) ? id : null;
 
         /// <summary>One entry that shows now, as the settings catalog reads
-        /// it (#597): the entry, its item, its label's element, the
+        /// it (#600): the entry, its item, its label's element, the
         /// controller it stands on and that controller's section name, and
         /// the value read for a controller the page is no longer bound
         /// to.</summary>
@@ -316,6 +332,8 @@ namespace PadForge.Search
             // A row's gates, each read once: the options of a row share them.
             List<MappingItem> rows = null;
             var passes = new Dictionary<(object, SearchGate), bool>();
+            // Each page's elements that have a menu, walked once.
+            var menuOwners = new Dictionary<SearchPage, List<FrameworkElement>>();
             bool RowPasses(object item, SearchGate gate)
             {
                 if (!passes.TryGetValue((item, gate), out bool pass))
@@ -366,9 +384,14 @@ namespace PadForge.Search
                     else if (entry.Page == SearchPage.Devices && _vm.Devices?.SelectedDevice == null)
                         continue;
 
-                    if (entry.Kind is SearchKind.Section or SearchKind.Part or SearchKind.Extra or SearchKind.MenuItem)
+                    if (entry.Kind is SearchKind.Section or SearchKind.Part or SearchKind.Extra)
                     {
                         Add(entry, null, null);
+                        continue;
+                    }
+                    if (entry.Kind == SearchKind.MenuItem)
+                    {
+                        if (MenuShows(entry, menuOwners)) Add(entry, null, null);
                         continue;
                     }
                     if (entry.RowOptions)
@@ -398,6 +421,33 @@ namespace PadForge.Search
                     PadForge.Engine.SdlDiagLog.WriteLine("Search: entry " + entry.Label?.Key + entry.Label?.Path + " could not be read: " + error.Message);
                 }
             }
+        }
+
+        /// <summary>Whether a menu item's entry shows: a page's menu when a
+        /// button that shows in the entry's place has it, and a menu each
+        /// item of a list has of its own when the list shows and has an
+        /// item, read from the list's data as a card per item is. The
+        /// landing finds that item's button once the page shows
+        /// (SearchNavigator.MenuOwnerOf).</summary>
+        private bool MenuShows(SearchEntry entry, Dictionary<SearchPage, List<FrameworkElement>> owners)
+        {
+            var page = _pageOf(entry.Page);
+            if (page == null) return false;
+            if (entry.ItemsList != null)
+            {
+                if (page.FindName(entry.ItemsList) is not ItemsControl list || !Shows(entry, list)) return false;
+                foreach (object item in list.Items)
+                    if (item is not UIElement) return true;
+                return false;
+            }
+            if (!owners.TryGetValue(entry.Page, out var withMenus))
+            {
+                withMenus = new List<FrameworkElement>();
+                foreach (var element in SearchLocator.LogicalDescendants(page))
+                    if (element is FrameworkElement { ContextMenu: not null } owner) withMenus.Add(owner);
+                owners[entry.Page] = withMenus;
+            }
+            return SearchNavigator.MenuItemAmong(withMenus, entry, e => Shows(entry, e)).Owner != null;
         }
 
         /// <summary>The results for a query, grouped and ranked: each group's
@@ -464,7 +514,9 @@ namespace PadForge.Search
         {
             foreach (var dialog in _dialogs)
             {
-                if (dialog.Kind != SearchKind.Dialog || dialog.Page != SearchPage.Dialog || OpenerOf(dialog) is not { } opener) continue;
+                // A dialog whose title is set in code is named by its
+                // class, which Search never shows.
+                if (dialog.Kind != SearchKind.Dialog || dialog.Page != SearchPage.Dialog || dialog.Label?.Key == null || OpenerOf(dialog) is not { } opener) continue;
                 var shown = _available.FirstOrDefault(a => ReferenceEquals(a.Entry, opener));
                 if (shown == null) continue;
                 string title = SearchLocator.LabelText(dialog.Label, null) ?? string.Empty;
@@ -493,13 +545,16 @@ namespace PadForge.Search
             return string.IsNullOrEmpty(name) || words.Contains(name, StringComparison.CurrentCultureIgnoreCase) ? words : words + " " + name;
         }
 
-        private static int Weight(SearchEntry entry)
+        /// <summary>What an entry's kind adds to its score. A menu item sits
+        /// in the Actions group with the page's buttons and weighs as they
+        /// do.</summary>
+        internal static int Weight(SearchEntry entry)
         {
             int weight = entry.Kind switch
             {
                 SearchKind.Extra or SearchKind.Section or SearchKind.Part => 8,
                 SearchKind.Card => 4,
-                SearchKind.Action => -2,
+                SearchKind.Action or SearchKind.MenuItem => -2,
                 _ => 0,
             };
             if (entry.UnderMore) weight -= 3;

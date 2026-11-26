@@ -113,30 +113,32 @@ namespace PadForge.Services.Plugins
                     _declarations.Add(declaration);
                 }
                 _refused = null;
-                // A kept value the new declaration no longer takes, such as
-                // a choice it dropped or a number out of its new range, gives
-                // way to the default. One that is the new default is no
-                // longer kept. Either way PadForge.xml loses it.
-                var k = (declaration.Device, declaration.Key);
-                if (_values.TryGetValue(k, out var kept))
-                {
-                    string fits = declaration.HoldsValue ? PluginValues.Normalize(declaration, kept, out _) : null;
-                    if (fits == null || fits == declaration.Default)
-                    {
-                        _values.Remove(k);
-                        keptMoved = true;
-                    }
-                    else
-                    {
-                        _values[k] = fits;
-                        keptMoved = fits != kept;
-                    }
-                }
+                keptMoved = RefitKeptLocked(declaration);
                 value = ValueLocked(declaration);
             }
             Changed?.Invoke();
             if (keptMoved) KeptChanged?.Invoke();
             return (null, null);
+        }
+
+        /// <summary>
+        /// Under the lock: a kept value the declaration no longer takes, such
+        /// as a choice it dropped or a number out of its new range, gives way
+        /// to the default. One that is the default is no longer kept. Either
+        /// way PadForge.xml loses it. True when the kept value moved.
+        /// </summary>
+        private bool RefitKeptLocked(PluginDeclaration declaration)
+        {
+            var k = (declaration.Device, declaration.Key);
+            if (!_values.TryGetValue(k, out var kept)) return false;
+            string fits = declaration.HoldsValue ? PluginValues.Normalize(declaration, kept, out _) : null;
+            if (fits == null || fits == declaration.Default)
+            {
+                _values.Remove(k);
+                return true;
+            }
+            _values[k] = fits;
+            return fits != kept;
         }
 
         /// <summary>A refused declaration, which the card names.</summary>
@@ -249,18 +251,37 @@ namespace PadForge.Services.Plugins
             return n;
         }
 
-        /// <summary>The plugin keeps a choice's list current.</summary>
+        /// <summary>The plugin keeps a choice's list current. A default the
+        /// new list no longer holds gives way to its first entry, as a choice
+        /// declared with no default starts there, and a kept value it no
+        /// longer holds gives way to the default, as for a new declaration
+        /// (<see cref="RefitKeptLocked"/>). When the value in force moved,
+        /// the plugin hears it as <c>e setting</c>.</summary>
         public string SetChoices(string device, string key, JsonElement list)
         {
             var choices = new List<PluginChoice>();
             if (!PluginDeclarations.ReadChoices(list, choices, out string error)) return error;
+            string line = null;
+            bool keptMoved;
             lock (_sync)
             {
                 var d = FindLocked(device, key);
                 if (d == null || d.Kind != PluginSettingKind.Choice) return "no choice " + key + " is declared";
+                string before = ValueLocked(d);
+                if (choices.Count > 0 && !choices.Exists(c => string.Equals(c.Value, d.Default, StringComparison.Ordinal)))
+                {
+                    var moved = PluginDeclarations.With(d, defaultValue: choices[0].Value);
+                    _declarations[_declarations.IndexOf(d)] = moved;
+                    d = moved;
+                }
                 d.Choices = choices;
+                keptMoved = RefitKeptLocked(d);
+                string after = ValueLocked(d);
+                if (after != before) line = SettingLine(device, key, after);
             }
+            if (line != null) Post(line);
             Changed?.Invoke();
+            if (keptMoved) KeptChanged?.Invoke();
             return null;
         }
 

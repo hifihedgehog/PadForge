@@ -247,7 +247,7 @@ namespace PadForge.Tests
             Assert.DoesNotContain("CreateScheduledTask(exe)", source, StringComparison.Ordinal);
             Assert.DoesNotContain("/SC ONLOGON", source, StringComparison.Ordinal);
             Assert.DoesNotContain("/RL HIGHEST", source, StringComparison.Ordinal);
-            string audit = FenceSource.Body(source, "internal static bool AuditTask()");
+            string audit = FenceSource.Body(source, "internal static TaskRemoval AuditTask()");
             Assert.Contains("if (!IsCurrent(definition, task.Exe, sid, FileLength(task.Exe), ProtectedFolder.Natives)", audit, StringComparison.Ordinal);
             Assert.Contains("CreateScheduledTask(task.Exe, sid);", audit, StringComparison.Ordinal);
             string create = FenceSource.Body(source, "private static bool CreateScheduledTask(string exePath, string sid)");

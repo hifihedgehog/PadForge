@@ -9,7 +9,7 @@ namespace PadForge.Common.Input
     /// Read-only catalog of HIDMaestro profiles, partitioned by the v3
     /// category dropdown (Xbox / PlayStation / Extended). Owns its own
     /// metadata-only HMContext: it calls LoadDefaultProfiles to enumerate
-    /// the embedded profile JSONs (337 in the shipped SDK) but never instantiates HMController
+    /// the embedded profile JSONs (344 in HIDMaestro 2.4.0) but never instantiates HMController
     /// or installs the driver. The engine's separate HMContext in
     /// InputManager.Step5 owns the live device lifecycle.
     ///
@@ -108,6 +108,12 @@ namespace PadForge.Common.Input
             /// and it has no HID descriptor, which keeps it out of the
             /// pickers all the same.</summary>
             public HMProfileLoadIssue Refusal { get; init; }
+
+            /// <summary>Why the profile could not be staged and loaded for
+            /// the check, as the failure says it, or null when it was
+            /// checked. A profile that was never checked is kept out of
+            /// the pickers and refused by the import.</summary>
+            public string CheckFailure { get; init; }
         }
 
         /// <summary>
@@ -199,8 +205,12 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>True for a keyboard or mouse profile, by the profile's own
-        /// type, the field HIDMaestro decides delivery by
-        /// (ControllerProfile.IsKeyboardOrMouse).</summary>
+        /// type (ControllerProfile.IsKeyboardOrMouse). HIDMaestro delivers
+        /// every report of more than these (ControllerProfile.DeliversEveryReport):
+        /// the touchscreen, touchpad and pen types, and an "other" profile
+        /// whose descriptor has a mouse, keyboard, touch or pen collection.
+        /// Those stay in Extended, and their frames go out in order on a
+        /// submit lane (HMaestroVirtualController.FinishConnect).</summary>
         internal static bool IsKeyboardOrMouseProfile(HMProfile p) =>
             p != null
             && (string.Equals(p.Type, "keyboard", StringComparison.OrdinalIgnoreCase)
@@ -251,6 +261,15 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Test seam for the folder the user's profiles are staged
+        /// under, null in production, where it is the protected folder's
+        /// Work\HIDMaestroProfiles. A test throws from it as that folder
+        /// throws when it cannot be made. The setting thread's alone, so the
+        /// checks of other tests running beside it stage as they
+        /// would.</summary>
+        [System.ThreadStatic]
+        internal static System.Func<string> StagingFolderSeam;
+
         /// <summary>
         /// Loads the user's profile JSONs into <paramref name="ctx"/>, which
         /// already holds the built-in catalog, and returns why each one that
@@ -274,15 +293,20 @@ namespace PadForge.Common.Input
             var problems = new Dictionary<string, UserProfileProblem>(StringComparer.Ordinal);
             if (ctx == null || userJsons == null || userJsons.Count == 0) return problems;
 
-            // A folder of its own under the protected folder's Work folder
-            // (#597): HIDMaestro reads every profile in it, and in the temp
-            // folder any program of the user could add one. The test host
-            // keeps the temp folder.
-            string dir = System.IO.Path.Combine(
-                PadForge.Services.ProtectedWork.FolderInTheApp("HIDMaestroProfiles", System.IO.Path.GetTempPath()),
-                $"padforge-userprofiles-{Guid.NewGuid():N}");
+            string dir = null;
             try
             {
+                // A folder of its own under the protected folder's Work
+                // folder (#600): HIDMaestro reads every profile in it, and in
+                // the temp folder any program of the user could add one. The
+                // test host keeps the temp folder. In the app a Work folder
+                // that cannot be made throws, inside this try, so it costs the
+                // user's profiles their check and never the built-in catalog.
+                var stagingSeam = StagingFolderSeam;
+                dir = System.IO.Path.Combine(
+                    stagingSeam != null ? stagingSeam()
+                        : PadForge.Services.ProtectedWork.FolderInTheApp("HIDMaestroProfiles", System.IO.Path.GetTempPath()),
+                    $"padforge-userprofiles-{Guid.NewGuid():N}");
                 System.IO.Directory.CreateDirectory(dir);
                 // The load names each file under the full path of the
                 // directory it was given (ProfileDatabase.Load), so the
@@ -328,16 +352,24 @@ namespace PadForge.Common.Input
                     problems[json] = new UserProfileProblem();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Best effort, as the catalog has always been: a staging or
-                // load failure must not break the built-in profiles, which
-                // are already loaded.
+                // A staging or load failure must not break the built-in
+                // profiles, which are already loaded. A profile it left
+                // unchecked has a problem of its own, so the import refuses
+                // it and Manage Profiles says why it is not in the pickers.
+                PadForge.Engine.SdlDiagLog.WriteLine($"PROFILES: user profiles not checked: {ex.GetType().Name}: {ex.Message}");
+                foreach (string json in userJsons)
+                    if (!string.IsNullOrWhiteSpace(json) && !problems.ContainsKey(json))
+                        problems[json] = new UserProfileProblem { CheckFailure = ex.Message };
             }
             finally
             {
-                try { System.IO.Directory.Delete(dir, recursive: true); }
-                catch { }
+                if (dir != null)
+                {
+                    try { System.IO.Directory.Delete(dir, recursive: true); }
+                    catch { }
+                }
             }
             return problems;
         }
@@ -350,6 +382,41 @@ namespace PadForge.Common.Input
         {
             // The catalog in place stays in place while the new one builds.
             lock (_initLock) s_loaded = Load();
+            foreach (var reloaded in s_catalogReloaded.Live()) reloaded(null, System.EventArgs.Empty);
+        }
+
+        /// <summary>A catalog <see cref="Build"/> made and
+        /// <see cref="Publish"/> has not published yet, with the user
+        /// profiles it was built from.</summary>
+        public sealed class Built
+        {
+            internal object Catalog;
+            internal IReadOnlyList<string> UserJsons;
+        }
+
+        /// <summary>Builds the catalog with <paramref name="userJsons"/> as
+        /// the user's profiles, and publishes nothing. It loads every
+        /// built-in profile in a context of its own, so Manage Profiles runs
+        /// it off the UI thread.</summary>
+        public static Built Build(IReadOnlyList<string> userJsons)
+        {
+            var jsons = userJsons?.ToList() ?? new List<string>();
+            return new Built { Catalog = Load(jsons), UserJsons = jsons };
+        }
+
+        /// <summary>Publishes a catalog <see cref="Build"/> made, as
+        /// <see cref="Reload"/> publishes its own, while the user's profiles
+        /// are still the ones it was built from. When they changed since, the
+        /// catalog is built again here.</summary>
+        public static void Publish(Built built)
+        {
+            var now = UserProfilesProvider?.Invoke() ?? (IReadOnlyList<string>)System.Array.Empty<string>();
+            if (built?.Catalog is not Loaded catalog || !now.SequenceEqual(built.UserJsons, StringComparer.Ordinal))
+            {
+                Reload();
+                return;
+            }
+            lock (_initLock) s_loaded = catalog;
             foreach (var reloaded in s_catalogReloaded.Live()) reloaded(null, System.EventArgs.Empty);
         }
 
@@ -373,8 +440,14 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Builds the catalog. Caller holds _initLock.</summary>
-        private static Loaded Load()
+        /// <summary>Builds the catalog with the provider's user profiles.
+        /// Caller holds _initLock.</summary>
+        private static Loaded Load() => Load(UserProfilesProvider?.Invoke());
+
+        /// <summary>Builds the catalog with <paramref name="userJsons"/> as the
+        /// user's profiles. It publishes nothing and shares nothing, so
+        /// <see cref="Build"/> runs it without the lock.</summary>
+        private static Loaded Load(IReadOnlyList<string> userJsons)
         {
             var c = new Loaded();
             try
@@ -392,7 +465,7 @@ namespace PadForge.Common.Input
                 // context, so they get the same parse and checks as the
                 // built-in catalog, and each one that does not make the
                 // pickers keeps its reason for Manage Profiles.
-                c.UserProfileProblems = LoadUserProfiles(ctx, UserProfilesProvider?.Invoke());
+                c.UserProfileProblems = LoadUserProfiles(ctx, userJsons);
 
                 // Filter undeployable profiles at catalog load. HIDMaestro
                 // ships some profile JSONs that lack a HID descriptor, and
@@ -632,6 +705,47 @@ namespace PadForge.Common.Input
 
             // Generic Desktop / Mouse and Generic Desktop / Keyboard.
             return firstInputPage == 0x01 && (firstInputUsage == 0x02 || firstInputUsage == 0x06);
+        }
+
+        /// <summary>True when the descriptor declares an input the host
+        /// reads as a movement: a Main Input item that is data, not
+        /// constant, with the Relative flag (bit 2 of the item's data, HID
+        /// 1.11 section 6.2.2.5), as a mouse's X, Y and wheel are.
+        /// HIDMaestro packs a state's axes into such a field as they are
+        /// (HidReportBuilder.BuildReportInto, whose InputField keeps no
+        /// Relative flag), so each report the device sends is one movement.
+        /// A long item (0xFE) is stepped over.</summary>
+        internal static bool DeclaresRelativeInput(byte[] descriptor)
+        {
+            if (descriptor == null) return false;
+            for (int i = 0; i < descriptor.Length;)
+            {
+                byte prefix = descriptor[i];
+                if (prefix == 0xFE)
+                {
+                    int longSize = i + 1 < descriptor.Length ? descriptor[i + 1] : 0;
+                    i += 3 + longSize;
+                    continue;
+                }
+                int size = prefix & 0x03;
+                if (size == 3) size = 4;
+                int type = (prefix >> 2) & 0x03;
+                int tag = (prefix >> 4) & 0x0F;
+                uint val = 0;
+                for (int j = 0; j < size && i + 1 + j < descriptor.Length; j++)
+                    val |= (uint)descriptor[i + 1 + j] << (8 * j);
+                if (type == 0 && tag == 8 && (val & 0x01) == 0 && (val & 0x04) != 0) return true;
+                i += 1 + size;
+            }
+            return false;
+        }
+
+        internal static bool DeclaresRelativeInput(HMProfile p)
+        {
+            byte[] desc;
+            try { desc = p?.GetDescriptorBytes(); }
+            catch { return false; }
+            return DeclaresRelativeInput(desc);
         }
 
         internal static bool LeadsWithAPointingReport(HMProfile p)
@@ -883,7 +997,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Build the synthetic "Custom" profile that anchors the Extended
         /// dropdown. Standard Xbox 360-like layout: 2 16-bit sticks, 2
-        /// 8-bit triggers, 1 hat switch, 11 buttons. Matches the default
+        /// 16-bit triggers, 1 hat switch, 11 buttons. Matches the default
         /// ExtendedConfig values so the dropdown and the override fields
         /// agree on initial selection. Users edit any of these via the
         /// Customize panel.

@@ -40,8 +40,8 @@ namespace PadForge.Common.Input.Peripherals
             var links = PeripheralOutputs.Links.For(ud.InstanceGuid);
             bool linked = links != null && links.Haptics.Length > 0;
             bool sensa = ud.InstanceGuid == PeripheralOutputRow.IdentityFor(PeripheralRowKind.RazerSensa);
-            // The Sensa row links only where the engine loads and Synapse is
-            // installed. Where the engine cannot load, its record reads the
+            // The Sensa row links only where the engine loads and Razer's
+            // Sensa runtime is installed. Where the engine cannot load, its record reads the
             // platform's limit ahead of the two checks below: they hide a
             // route, and the limit holds with the engine stopped or the
             // controller gone.

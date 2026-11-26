@@ -59,6 +59,8 @@ namespace PadForge.Tests
                     Assert.Contains("PadForge Plugin Kit", head);
                     Assert.Contains("Plugins", head);
                     Assert.Contains("Add a Plugin", head);
+                    // The button's words, with the one-character ellipsis.
+                    Assert.DoesNotContain("Add a Plugin...", text);
                     Assert.DoesNotContain("\t", text);
                 }
                 foreach (var library in AutomationLibraries.All)

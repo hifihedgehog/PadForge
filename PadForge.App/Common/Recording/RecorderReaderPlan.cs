@@ -12,7 +12,7 @@ namespace PadForge.Common.Recording
     {
         /// <summary>None, for the reason the classification gives.</summary>
         None,
-        /// <summary>A pad at an XInput place, compared with XInput's own read.</summary>
+        /// <summary>A pad at an XInput number, compared with the read of that number through the same library.</summary>
         XInput,
         /// <summary>SDL reads it through DirectInput: Raw Input's copy through
         /// DirectInput's own objects and SDL's numbering.</summary>
@@ -119,8 +119,13 @@ namespace PadForge.Common.Recording
                 case 0:
                     return (ReaderClass.DirectInput, null);
                 case 'h':
-                    if (ProvenFor(vendor, product) != null && Bus(sdlGuid) == BusUsb && gamepadLayout) return (ReaderClass.Hidapi, null);
-                    return (ReaderClass.None, "SDL's driver numbers its controls its own way");
+                    // A driver with no proof, or a proven one read in the
+                    // joystick layout, numbers the controls PadForge reads
+                    // its own way. A proven one off USB numbers them as the
+                    // proof does, but the proof is of the USB report layout.
+                    if (ProvenFor(vendor, product) == null || !gamepadLayout) return (ReaderClass.None, "SDL's driver numbers its controls its own way");
+                    if (Bus(sdlGuid) != BusUsb) return (ReaderClass.None, "the comparison is proven on its USB reports only");
+                    return (ReaderClass.Hidapi, null);
                 case 'x':
                     return (ReaderClass.None, "SDL reads it through XInput at no place PadForge can name");
                 case 'g':

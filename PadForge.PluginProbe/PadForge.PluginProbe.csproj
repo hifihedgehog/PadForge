@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <!-- The tests' helper for plugins (#597). It compiles the plugin kit's C#
+  <!-- The tests' helper for plugins (#600). It compiles the plugin kit's C#
        file as the console program the kit's comment says to build, with the
        settings dotnet new console gives one, so a kit that would not build
        or warns fails this build. Run with "kit" it is that plugin. Run with

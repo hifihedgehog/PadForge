@@ -54,7 +54,6 @@ namespace PadForge.Common.Input.KeyboardScreens
         private static readonly object s_loadLock = new();
         private static LogitechLcdLibrary s_library;
         private static long s_nextLoad;
-        private static string s_reason = "missing";
 
         private readonly System.Func<long, ILogitechLcd> _library;
         private readonly System.Func<uint[]> _lgsIds;
@@ -87,20 +86,13 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// applet is down.</summary>
         public int ButtonFlags { get; private set; }
 
-        /// <summary>Why the library is not loaded: "gate", "missing", "load"
-        /// or "exports", or empty once it is.</summary>
-        public static string LoadReason
-        {
-            get { lock (s_loadLock) return s_library != null ? string.Empty : s_reason; }
-        }
-
         private static LogitechLcdLibrary Library(long now)
         {
             lock (s_loadLock)
             {
                 if (s_library != null || now < s_nextLoad) return s_library;
                 s_nextLoad = now + LoadRetryMs;
-                s_library = LogitechLcdLibrary.TryLoad(out s_reason);
+                s_library = LogitechLcdLibrary.TryLoad(out _);
                 return s_library;
             }
         }

@@ -84,13 +84,6 @@ namespace PadForge.Engine.Common
             Volatile.Write(ref s_table, table.ByHandle.Count == 0 ? null : table);
         }
 
-        /// <summary>Keeps the watch from lapsing.</summary>
-        public static void Renew()
-        {
-            var table = Volatile.Read(ref s_table);
-            if (table != null) Volatile.Write(ref table.Renewed, Stopwatch.GetTimestamp());
-        }
-
         /// <summary>Ends every watch.</summary>
         public static void Clear() => Volatile.Write(ref s_table, null);
 

@@ -68,7 +68,7 @@ namespace PadForge.Tests
                 "1.000000 I D1 a0=51000",
                 "6.000000 I D1 a0=50500");
             var finding = Only(summary, FindingPlace.Device);
-            Assert.Equal("D1 Axis0 never came to rest: it stayed between 50000 and 51000 for the whole recording. Look at the device or its driver.", finding.Text);
+            Assert.Equal("D1 Axis0 never came to rest: it stayed between 50000 and 51000 the whole time it was online. Look at the device or its driver.", finding.Text);
             Assert.Equal("First place to look: the device or its driver.", summary.Lines()[1]);
         }
 
@@ -93,12 +93,12 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AButtonDownForTheWholeRecording_PointsAtTheDevice()
+        public void AButtonDownTheWholeTimeItWasOnline_PointsAtTheDevice()
         {
             var summary = Summarize(
                 "0.000000 I D1 full online a1=32768 b5+",
                 "6.000000 I D1 a1=33000");
-            Assert.Equal("D1 Button5 was down for the whole recording. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
+            Assert.Equal("D1 Button5 was down the whole time it was online. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
 
             var released = Summarize(
                 "0.000000 I D1 full online a1=32768 b5+",
@@ -108,12 +108,12 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AHatOffCenterForTheWholeRecording_PointsAtTheDevice()
+        public void AHatOffCenterTheWholeTimeItWasOnline_PointsAtTheDevice()
         {
             var summary = Summarize(
                 "0.000000 I D1 full online h0=9000",
                 "6.000000 I D1 a1=33000");
-            Assert.Equal("D1 Hat0 was off center for the whole recording. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
+            Assert.Equal("D1 Hat0 was off center the whole time it was online. Look at the device or its driver.", Only(summary, FindingPlace.Device).Text);
 
             None(Summarize(
                 "0.000000 I D1 full online h0=9000",
@@ -359,6 +359,102 @@ namespace PadForge.Tests
                 "6.000000 I D1 a1=33000");
             Assert.Empty(summary.Findings);
             Assert.Contains(summary.Lines(), l => l.Contains("1 diagnostics line"));
+        }
+
+        // ── A file from anyone ──
+
+        [Fact]
+        public void AnAxisValueFarPastItsRange_IsSummarized_AndThrowsNothing()
+        {
+            // -2147450880 less the center 32768 is int.MinValue, whose
+            // absolute value an int cannot hold.
+            var summary = Summarize("0.000001 I D1 a0=-2147450880");
+            Assert.StartsWith("Length: ", summary.Lines()[0]);
+        }
+
+        [Fact]
+        public void AnAxisThatTravelsTheWholeIntRange_CountsAsMoved()
+        {
+            var summary = Summarize(new[] { Pad },
+                new[]
+                {
+                    "assign device=D1 controller=C1",
+                    "row controller=C1 target=LeftThumbAxisX layer=Base sources=1 src1=D1 in1=\"Axis 0\" kind1=Direct dz1=0",
+                },
+                "0.000000 I D1 full online a0=-2147483648 a1=32768",
+                "0.000000 S C1 sent=ok type=" + Xbox,
+                "0.000000 O C1 full type=" + Xbox,
+                "1.000000 I D1 a0=2147483647",
+                "2.000000 O C1 bt=" + ButtonA,
+                "7.000000 I D1 a1=33000");
+            Assert.Contains("D1 Axis 0 moved from -2147483648 to 2147483647 and C1 LeftThumbAxisX never changed.",
+                Only(summary, FindingPlace.Settings).Text);
+        }
+
+        [Fact]
+        public void TwoThousandMarkers_AreFortyInTheSummary_AndOneLineSaysHowManyMore()
+        {
+            var events = new List<string> { "0.000000 I D1 full online a1=32768" };
+            for (int i = 0; i < 2_000; i++)
+            {
+                var sb = new StringBuilder();
+                RecordingCodec.AppendTime(sb, 1_000_000 + i * 400);
+                events.Add(sb + " M - mark");
+            }
+            events.Add("2.000000 I D1 a1=33000");
+            var lines = Summarize(events.ToArray()).Lines();
+            Assert.Equal(RecordingSummary.MostMarkers, lines.Count(l => l.StartsWith("Marker at ", StringComparison.Ordinal)));
+            Assert.Single(lines, "1,960 more markers past the first 40 were left out.");
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task RumbleAskedForManyTimesInASecond_IsCountedWithoutWalkingEveryAskOnEveryLine()
+        {
+            // 200,000 rises of a game's rumble inside one second, then
+            // 200,000 lines inside the same second: every rise waits for its
+            // answer, and a walk of every waiting rise on every line takes
+            // minutes.
+            var events = new List<string>(800_004) { "0.000000 I D1 full online a1=32768" };
+            for (int i = 0; i < 200_000; i++)
+            {
+                events.Add("0.100000 F C1 rumble=30000,30000,0,0");
+                events.Add("0.100000 F C1 rumble=0,0,0,0");
+            }
+            for (int i = 0; i < 200_000; i++) events.Add("0.200000 I D1 a1=" + (32768 + i % 2).ToString(CultureInfo.InvariantCulture));
+            events.Add("3.000000 I D1 a1=40000");
+            var read = System.Threading.Tasks.Task.Run(() => Summarize(new[] { Pad }, new[] { "assign device=D1 controller=C1" }, events.ToArray()));
+            // A summary that walks every waiting rise on every line runs past
+            // the wait, which then throws.
+            var summary = await read.WaitAsync(TimeSpan.FromSeconds(20));
+            var finding = Only(summary, FindingPlace.Feedback);
+            Assert.StartsWith("A game asked C1 to rumble 200,000 times and none of its devices was written within a second, first at 0.100 s.", finding.Text);
+        }
+
+        [Fact]
+        public void TheProgramInFront_ChangesOnlyWhenItIsAnotherProgram()
+        {
+            var summary = Summarize(
+                "0.000000 I D1 full online a1=32768",
+                "0.000000 W - front=quarry.exe",
+                "1.000000 W - window stopped answering 1.0 s ago; the window",
+                "2.000000 W - front=quarry.exe",
+                "3.000000 W - front=launcher.exe",
+                "6.000000 I D1 a1=33000");
+            Assert.Contains(summary.Lines(), l => l.Contains("the program in front changed 1 time,", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void ASettingsPartOfManyRows_IsReadWithTheRowsASummaryKeeps()
+        {
+            var rows = new List<string>();
+            for (int i = 0; i < 20_000; i++)
+                rows.Add("row controller=C1 target=ButtonA layer=Base sources=1 src1=D1 in1=\"Button 0\" kind1=Direct n=" + i.ToString(CultureInfo.InvariantCulture));
+            var summary = Summarize(new[] { Pad }, rows, "0.000000 I D1 full online a1=32768", "6.000000 I D1 a1=33000");
+            var kept = (System.Collections.ICollection)typeof(RecordingSummary)
+                .GetField("_rows", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(summary);
+            Assert.Equal(RecordingSummary.MostRows, kept.Count);
+            // Every row is still counted: the ones past the limit as not checked.
+            Assert.Contains(summary.Lines(), l => l.Contains("0 mapping rows checked and 20,000 not.", StringComparison.Ordinal));
         }
 
         [Fact]

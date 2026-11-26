@@ -299,6 +299,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Näita või peida PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Lülita virtuaalsed kontrollerid sisse või välja</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Mis tahes ühendatud seade</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (pole ühendatud)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Seade, mida lehel Seadmed pole</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Lindistamine…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kui</value></data>
@@ -565,7 +567,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lugemine</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Sisendite saatmine</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Sätete muutmine</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmid saavad vahetada profiile ja neid vabastada, käivitada ja peatada mootori, lülitada virtuaalseid kontrollereid sisse ja välja, näidata ja peita akent, sulgeda programmi PadForge, salvestada diagnostika hetktõmmise ja küsida, mis töötab.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmid saavad vahetada profiile ja neid vabastada, käivitada ja peatada mootori, lülitada virtuaalseid kontrollereid sisse ja välja, näidata ja peita akent, sulgeda programmi PadForge, küsida, mis töötab, salvestada diagnostika hetktõmmise ning käivitada, peatada ja märgistada probleemisalvestise.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Kõik, mis tasemel Käsud, ning programmid näevad seadmeid, virtuaalseid kontrollereid, vastendusi, profiile ja sätteid, jälgivad iga seadme sisendeid nende toimumise ajal ja näitavad teile kohta programmis PadForge. Tasemel Lugemine olev programm näeb iga seadme iga vajutatud klahvi, ka administraatorina töötavatesse akendesse sisestatud klahve.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Kõik, mis tasemel Lugemine, ning programmid saavad lisada oma seadmeid ja neid juhtida, hoida mis tahes seadme juhtelementi ja anda makropäästikutele nimega väärtusi.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Kõik, mis tasemel Sisendite saatmine, ning programmid saavad muuta kõike, mida saate lehtedel ise muuta. Mõned muudatused küsivad alati enne teilt programmi PadForge küsimuskaardil.</value></data>
@@ -578,7 +580,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ootab teie vastust</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Tegevus</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Võta tagasi</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ei saanud seda salvestada: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Kui tasemel Lugemine või kõrgemal olev programm on ühendatud, näeb see, mida igas seadmes vajutatakse, ka klaviatuurides.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pistikprogrammid</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Käivita pistikprogrammid</value></data>
@@ -598,7 +599,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (kordusesitus)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Probleemisalvestised|*.zip;*.log|Kõik failid|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ei saa faili {0} esitada. See pole probleemisalvestis või selles pole ühegi seadme sisendit.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge ei saa faili {0} esitada. See pole probleemisalvestis, mida PadForge oskab lugeda.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge ei saa faili {0} esitada. Selles on rohkem kui {1} seadet ja Kordusesitus esitab kuni {1} seadet.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge ei saa faili {0} esitada. Selles pole ühegi seadme sisendit.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge ei saanud faili {0} lugeda.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Teie pistikprogrammid</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Lisa pistikprogramm…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmid ja skriptid|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Kõik failid|*.*</value></data>
@@ -612,8 +616,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Peatatud pärast viit järjestikust tõrget</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ei käivitunud: faili pole enam</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ei käivitunud: Windowsil pole selle failitüübi jaoks programmi</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ei käivitunud: ükski programm ei ava teie jaoks Python-faile ja PadForge ei leia py käivitit</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ei käivitunud: PadForge ei saa lugeda, milline programm avab selle failitüübi teie jaoks</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ei käivitunud: programmi, mis avab selle failitüübi teie jaoks, pole selles arvutis</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ei käivitunud: töölauakest, mille all käivitada, ei tööta</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ei käivitunud: töölauakestal on administraatoriõigused, seega oleksid need ka pistikprogrammil</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ei käivitunud: PadForge ei saa lugeda, kas sellel oleksid administraatoriõigused</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ei käivitunud: Windows andis sellele administraatoriõigused, seega lõpetas PadForge selle enne töölehakkamist</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ei käivitunud: see nõuab administraatoriõigusi</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ei käivitunud: Windows keeldus veaga {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ei käivitunud</value></data>
@@ -641,6 +650,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Lisas: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Allkirjastaja: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Allkirjastamata.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Selle sätted ilmuvad siia, kui see töötab.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>See ei deklareeri ühtegi sätet.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Selle sätted ilmuvad siia, kui see programmiga PadForge ühenduse loob.</value></data>
@@ -743,8 +753,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programm räägib versiooni, mida PadForge ei tunne</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ei andnud seda pistikprogrammi võtit</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ei võtnud selle programmi ühendust vastu</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge ei teinud seadet, sest Windows ei nimetanud programmi faili</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Küsiti liiga vara uuesti</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Rohkem neid ei tehta, kuni PadForge uuesti käivitub</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Avalehel ootab teie ülevaatamist liiga palju programmide tehtuid</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Sellist tööriista programmis PadForge pole</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programm luges vanemat olekut</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ühelgi asjal pole seda ID-d</value></data>
@@ -752,6 +763,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Te ei lubanud seda</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Keegi ei vastanud õigel ajal</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ootab teie vastust</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Te polnud veel vastanud</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Sellist päringut pole</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Pole midagi tagasi võtta</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Seda saate muuta ainult teie</value></data>
@@ -867,6 +879,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Allkirjastamata.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Tasemel Lugemine ja kõrgemal näeb see iga seadmel vajutatud klahvi, ka klaviatuuridel.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>See küsib ühe korra. Saate selle eemaldada lehel Automatiseerimine.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Käivitas programm, mida PadForge ei suutnud tuvastada.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge ei erista seda programmi teistest, seega küsib ta uuesti järgmisel ühendamisel.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge käsurida</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Seab {0} väärtuseks {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Kuulab võrgus, nii et teised seadmed pääsevad sellele arvutile ligi.</value></data>
@@ -882,7 +896,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Too profiil üle</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Impordi teise programmi profiilifail ja vaata, mis üle tuli.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} korda</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, viimane {1} sellisest</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skriptid (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -912,6 +925,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Selles arvutis pole Logitechi G-key SDK-d. See installitakse koos Logitech Gaming Software'i versiooniga 8.55 või uuemaga.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK on registreeritud, kuid selle fail puudub. Installige Logitech Gaming Software uuesti.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK leiti, kuid seda ei õnnestunud laadida.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK leiti, kuid seda ei laaditud, sest PadForge ei saanud kinnitada, et seda saavad muuta ainult administraatorid ja et Logitech on selle allkirjastanud.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>See teek pole oodatud G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK keeldus käivitumast. Tavaliselt tähendab see, et Logitech Gaming Software ei tööta.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Ühendatud, ühtegi klahvi pole veel tuvastatud. Lohistage Logitech Gaming Software'is käsk „G-key“ PadForge'i profiilis igale klahvile ja muutke see profiil püsivaks. G600- või G300-hiir peab olema ka sisemälu režiimist väljas.</value></data>
@@ -1016,14 +1030,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Käivita PadForge automaatselt, kui logite Windowsi sisse. Kui see on sees, käivitub PadForge ka ilma Windowsi viipata otsetee, skripti või muu programmi kaudu.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge töötab asukohast {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>See nõuab, et PadForge asuks omaette kaustas. Selle kaustas on teisi faile, seega ei saa PadForge takistada teistel programmidel seda muutmast.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>See nõuab, et PadForge asuks kaustas, mida teised programmid ei saa muuta. PadForge ei suutnud takistada neil oma kausta muutmast.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Teisalda PadForge omaette kausta</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopeerib programmi PadForge ja selle sätted kausta Program Files, suunab selle ülesanded sinna ja käivitab selle sealt. Siinne koopia jääb samaks.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ei teisaldunud: kaustas {0} on faile, mis pole programmi PadForge omad.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ei teisaldunud: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest see käivitas programmi PadForge kaustast, kus on teisi faile.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ei teisaldunud: Windows ei nimeta kausta Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud lugeda praegu töötavat programmi PadForge.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud luua kausta {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud lugeda, mis kaustas {0} on.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud takistada teisi programme kausta {0} muutmast.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ei teisaldunud: selle koopia kaustas {0} ei vastanud töötavale programmile PadForge.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ei teisaldunud: pärast kopeerimist oli kaustas {0} faile, mis pole programmi PadForge omad, või said teised programmid seda muuta.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge, mida see käivitas, pole enam seal.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge ei suutnud takistada teisi programme muutmast kausta, kust see programmi PadForge käivitas.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge ei saanud lugeda, millist programmi PadForge see käivitas.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge ei saanud lugeda selle programmi PadForge kausta, mida see käivitas.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ei saanud luua oma kaitstud kausta {0}. PadForge hoiab seal teeke, mida ta administraatoriõigustega kasutab, ning ilma selleta ei saa see turvaliselt käivituda.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ei saanud end uuesti käivitada oma kaitstud kaustast {0}. PadForge töötab administraatoriõigustega ainult sealt, seega see ei käivitunud.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge ei saanud luua lukku, mis lubab töötada ainult ühel koopial, seega ta ei käivitunud.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge töötab administraatoriõigustega asukohast {0}, kaustast, mida teised programmid saavad muuta. Nad saavad seal muuta programmi PadForge sätteid ja PadForge tegutseb nende järgi oma õigustega.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge töötab administraatoriõigustega asukohast {0}, kaustast, kus on teisi faile. PadForge ei saa takistada teistel programmidel seal oma sätteid muutmast ja tegutseb nende järgi oma õigustega.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge töötab administraatoriõigustega asukohast {0}, kaustast, mida PadForge ei saanud lugeda. PadForge ei saa takistada teistel programmidel seal oma sätteid muutmast ja tegutseb nende järgi oma õigustega.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Kuva alati teavitusalal</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Teavitusala ikoon jääb nähtavaks ka siis, kui aken on avatud, nii et menüükäsk Välju on alati ühe klõpsu kaugusel.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Värskendused</value></data>
@@ -1038,7 +1067,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installi ja taaskäivita</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Väljaande märkmed</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrollerite andmebaas</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Nupp Uuenda kohe laadib saidilt GitHub või jaotises Rohkem määratud aadressilt alla kogukonna kontrollerite andmebaasi (SDL_GameControllerDB) ja hoiab sättefailis need vastendused, mida selles PadForge versioonis pole. Need on kohe kasutusel. Muult aadressilt hoiab see ainult uusi vastendusi. Uut vastendust kasutatakse ainult kontrolleri puhul, mida miski muu ei loe mängupuldina, mis pole määratud ja mis pole režiimis Sunni toores juhtkangirežiim. Lähtestus eemaldab kõik allalaaditud vastendused ja laadib uuesti alla saidilt GitHub. Teie enda read jaotises Rohkem jäävad.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Nupp Uuenda kohe laadib saidilt GitHub või jaotises Rohkem määratud aadressilt alla kogukonna kontrollerite andmebaasi (SDL_GameControllerDB) ja hoiab sättefailis need vastendused, mida selles PadForge versioonis pole. Need on kohe kasutusel. Muult aadressilt hoiab see ainult uusi vastendusi. Uut vastendust kasutatakse esmalt ainult kontrolleri puhul, mida SDL teatab mängupuldina või ilma kindla tüübita, mida miski muu ei loe mängupuldina, mis pole määratud ja mis pole režiimis Sunni toores juhtkangirežiim. Kui vastendus on kasutusel, jääb see kasutusele ka pärast kontrolleri määramist. Lähtestus eemaldab allalaaditud vastendused ja seab sätte Allalaadimise allikas tagasi kogukonna failile, mille laadib alla järgmine Uuenda kohe. Teie enda read jaotises Rohkem jäävad.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Uuenda kohe</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Uuendamine…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Värskenduste otsimine…</value></data>
@@ -1071,9 +1100,12 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Sisseehitatud: {1} vastendust, kogukonna koopia kuupäevast {2}. Allalaaditud {3} aadressilt {4}: uusi ridu {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Sisseehitatud: {1} vastendust, kogukonna koopia kuupäevast {2}. Allalaaditud {3} aadressilt {4}: {0} uus rida.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Kogukonna andmebaas pole pärast viimast uuendust muutunud.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Fail aadressil {0} pole pärast viimast uuendust muutunud.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Saiti GitHub ei saanud kätte: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Aadressi {0} ei saanud kätte: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge keeldus allalaadimisest, sest see pole andmebaas, mida programm ootab. Midagi ei muutunud.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge ei võtnud saidi GitHub vastust vastu. Midagi ei muutunud.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge ei võtnud aadressi {0} vastust vastu. Midagi ei muutunud.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Käivita minimeeritult</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Käivita sisselogimisel</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1116,6 +1148,14 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Kaust</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Teenuse säte</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Eemaldamise samm</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Teenus</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Fail</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Ülemfilter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registriväärtus</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Riistvara ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Ajastatud ülesanne</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Installitud rakenduste kirje</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP-seade</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Võimaldab PlayStation 3 kontrolleritel, PlayStation Move'il ja Navigation-kontrolleril ühenduda Bluetoothi kaudu. Manustatud PadForge'i ja installitakse, kui üks neist esimest korda seotakse.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ühendab PlayStation 3 kontrollerid Bluetoothi kaudu.</value></data>
@@ -1184,6 +1224,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvestatud {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Salvestamine ei alanud. Kontroll leidis selle PC privaatse väärtuse, mida failist välja ei jääks.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Salvestamine ei alanud. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge ei leidnud sisselogitud kasutaja ajutiste failide kausta kasutaja profiili seest, milleni jõuab ilma lingita, kuhu salvestist kirjutada.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Salvestiste kaust on link teise kohta, mida PadForge ei järgi.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Eelmist salvestist alles lõpetatakse.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Säte Hoia viimast 60 sekundit on väljas, seega pole midagi salvestada.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Salvestis, mida PadForge polnud peatanud, ootab lehel Avaleht, et selle läbi loeksite: {0}</value></data>
@@ -1197,7 +1239,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, teie seadmed ja sätted sellisena, nagu need praegu on, sama ülevaatuse kaudu.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log asub faili PadForge.exe kõrval, kus saate seda lugeda.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Mida salvestada</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Kõik sees. Väljalülitatud osa jäetakse järgmisest salvestisest välja ja fail ütleb, milliseid osi see sisaldab.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Vaikimisi on iga osa sees. Väljalülitatud osa jäetakse järgmisest salvestisest välja ja fail ütleb, milliseid osi see sisaldab.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Probleemi jaoks, mis tuleb korra õhtus.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Salvestis ootab, et loeksite selle läbi lehel Avaleht.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Kokkuvõte</value></data>
@@ -1236,8 +1278,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Review_ScrubOneValue" xml:space="preserve"><value>1</value></data>
   <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0}</value></data>
   <data name="Review_ScrubOneKind" xml:space="preserve"><value>1</value></data>
-  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Puhastuskontroll: osades, mille te alles hoiate, on veel selle arvuti enda väärtusi: {0}. Lülitage need osad välja või kustutage salvestis. Nupp Salvesta… jääb seni välja lülitatuks.</value></data>
-  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Puhastuskontroll: osades, mille te alles hoiate, on veel üks selle arvuti enda väärtus. Lülitage need osad välja või kustutage salvestis. Nupp Salvesta… jääb seni välja lülitatuks.</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Puhastuskontroll: osades, mille te alles hoiate, on veel selle arvuti enda väärtusi: {0}. Lülitage need osad välja või kustutage salvestis. Nupp Salvesta jääb seni välja lülitatuks.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Puhastuskontroll: osades, mille te alles hoiate, on veel üks selle arvuti enda väärtus. Lülitage need osad välja või kustutage salvestis. Nupp Salvesta jääb seni välja lülitatuks.</value></data>
   <data name="Review_Empty" xml:space="preserve"><value>Salvestamise ajal ei juhtunud selle osaga midagi.</value></data>
   <data name="Review_Delete" xml:space="preserve"><value>Kustuta</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Kopeeri kokkuvõte</value></data>
@@ -1248,6 +1290,17 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Salvesta salvestis</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-failid</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ei salvestatud. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Puhastuskontroll: alles hoitavate osade kontrollimine…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Puhastuskontroll: PadForge ei saanud lugeda osi, mille te alles hoiate, seega jääb Salvesta välja lülitatuks.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Salvestamine teie õigustega ei käivitunud.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Salvestamine teie õigustega ei käivitunud: puudub töötav töölauakest, mille all seda käivitada.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Salvestamine teie õigustega ei käivitunud: Windows keeldus veaga {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Salvestamine ei lõppenud {0} jooksul.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ei lubanud faili sinna kirjutada.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ei võtnud seda faili oma salvestisena vastu.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Salvestamine lõppes koodiga {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Salvestatakse teie nime all, esimest korda kausta Allalaadimised, seejärel sinna, kuhu viimati salvestasite, ning näidatakse Failiuurijas. Salvestis, mis peatub, kui keegi pole lehe juures (selle piir, makro, programm, assistendi tööriist või --record stop), ootab seda ülevaatust lehel Avaleht ja kustutatakse 7 päeva pärast, kui seda ei salvestata. Programmile öeldakse, et see ootab, kuid mitte kus.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Probleemisalvestis ajast {0} ootab, et selle läbi loeksite.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Vaata läbi</value></data>
@@ -1921,9 +1974,18 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lugemine nurjus: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro keeldus seda eelseadistust vastu võtmast kohas {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Selles eelseadistuses pole HID-deskriptorit, seega ei saa selle põhjal kontrollerit luua.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge ei saanud seda eelseadistust kontrollida: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Eelseadistuse kontrollimine…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Midagi ei imporditud. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Impordi</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(nimetu HID-seade)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Hiir</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Juhtkang</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Mängupult</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Klaviatuur</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Mitmeteljeline kontroller</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Leiti HID-liideseid: {0}.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Leiti 1 HID-liides.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Loendamine nurjus: {0}</value></data>
@@ -3054,7 +3116,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Hoidmise ajal ja keskele</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Lülitus</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Roolimise nupp</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Nupp, mis laseb hiirel rooli keerata, samas seadmes, kus on allikas. Kui ühtegi pole valitud, roolib hiir alati.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Nupp, mis laseb hiirel rooli keerata, selle pesa mis tahes seadmel. Kui ühtegi pole valitud, roolib hiir alati.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Silumine</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Silub ebaühtlaselt teatava hiire. Juhtkang jääb käest maha umbes nii pikaks ajaks. 0 on väljas.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lukk kiirusel</value></data>
@@ -3075,7 +3137,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Alusta roolimise algusest</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Roolimise nupu korral mõõdetakse juhtkangi sealt, kus kursor oli roolimise alguses, nagu telefoni ekraani juhtkang algab sealt, kuhu sõrm puutub. Väljas mõõdetakse kursori monitori keskelt.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>See telg liigub suhteliselt</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Hiirepalli või pöördketta jaoks, mis teatab, kui kaugele see pöörati. Sees hoiab telg asendit nagu Hiire liikumine ja kasutab liikumissätteid. Windows ei ütle, millised teljed nii liiguvad.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Hiirepalli või pöördketta jaoks, mis teatab, kui kaugele see pöörati. Sees hoiab telg asendit nagu Hiire liikumine ja kasutab liikumissätteid. SDL loeb üldist kontrollerit DirectInput-i kaudu, mis loeb iga telje asendina, seega see lüliti ütleb, millised teljed nii liiguvad.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Eelvaade</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Näitab, kuidas see rühm järgib teie enda hiirt. Midagi ei vastendata, kuni te seda ei vali.</value></data>
@@ -3267,6 +3329,13 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
 {0}
 
 PadForge kirjutas üksikasjad faili crash.log kausta, kus asub PadForge.exe. Selle teatamiseks alustage arutelu aadressil {2} ja lohistage sellele fail crash.log.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Ilmnes ootamatu viga:
+
+{0}
+
+PadForge ei saanud üksikasju faili crash.log kirjutada kausta, kus asub PadForge.exe. Selle teatamiseks alustage arutelu aadressil {2}, vajutage siin kopeerimiseks Ctrl+C ja kleepige see sinna.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(veel {0} viga summutati)</value></data>
@@ -4190,7 +4259,7 @@ PadForge kirjutas üksikasjad faili crash.log kausta, kus asub PadForge.exe. Sel
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandardi lahtipakkimine, mida SteamKit2 kasutab Steami depootükkide jaoks, zstd-teegi C#-port, autor Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocoli server ja klient assistendi ühenduse ja PadForge.exe --mcp taga, autor Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocoli server ja klient assistendi ühenduse ja PadForge.exe --mcp taga, autor Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ja DependencyInjection.Abstractions, millele MCP C# SDK tugineb, autor Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5502,7 +5571,18 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>seob WinUSB G19 ekraaniga</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19 ekraan kasutab teist draiverit ({0}), seega käivita Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19 ekraan kasutab teise programmi draiverit ({0}), mida PadForge ei puuduta</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Programmi PadForge PlayStation Bluetooth draiverite kontrollimine…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Selle arvuti Bluetoothi raadio lugemine…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Kontrolleri avamine selle USB-kaablil…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Selle arvuti Bluetoothi aadressi kirjutamine kontrollerisse…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Kontrolleri registreerimine süsteemi Windows Bluetoothi juures…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Bluetoothi taaskäivitamine…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Sidumine peatus: Windows keelas programmil PadForge juurdepääsu kontrollerile või Bluetoothi sätetele. Üksikasjad on diagnostikalogis.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Sidumine peatus: kontrolleri või Bluetoothi raadio lugemine või kirjutamine nurjus. Üksikasjad on diagnostikalogis.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Sidumine peatus veal, mida programm PadForge ei oodanud. Üksikasjad on diagnostikalogis.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>vajab Logitech Gaming Software'i versiooni 8.52 või uuemat</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>leidis oma teegi, kuid ei laadinud seda, sest PadForge ei saanud kinnitada, et seda saavad muuta ainult administraatorid ja et Logitech on selle allkirjastanud</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>leidis oma teegi, kuid ei saanud seda kasutada, ja diagnostikalogi ütleb, miks</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>käivita Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ootab telefoni rakendusega Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>telefonis</value></data>
@@ -5598,6 +5678,8 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Vali dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Laadib selle Force Dimensioni teegi koopia mis tahes teise asemel. Teisel koopial avatud Falcon suletakse ja avatakse uuesti sellel. SDK installitud koopiad leitakse ka ilma selleta.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Teegid (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK allalaadimisleht ei avanenud: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK allalaadimisleht pole veel avanenud: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installi Falcon-draiver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Installib Force Dimensioni draiveri SDK kaustast Falconile, millel seda pole. Windows võib enne küsida, kas Force Dimensionit usaldada.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Hangi Force Dimensioni SDK</value></data>
@@ -5799,6 +5881,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Uus kontroller</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Sätted</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Iga telg, nupp ja andur</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Selle juhtelemendid skriptide kasutatavate nimedega</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Vajutatud: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID-d, tee, võimekused, sunni toores juhtkangirežiim</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID-d, tee, võimekused</value></data>
@@ -5926,8 +6009,13 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Eemaldamine…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Uuendamine…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>See ei lõppenud: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Programmi PadForge kirje ja oskus jäävad, sest {0} loeb sama sättefaili ja oskuste kausta.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Programmi PadForge kirje jääb, sest {0} loeb sama sättefaili.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge eemaldati sellest programmist. Selle oskus jääb, sest {0} loeb oskusi samast kaustast.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ei saa lugeda sätteid failis {0}, seega ta ei tea, kas PadForge on lisatud.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Lisatud. PadForge ei saanud lugeda oma oskuste kausta.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopeeritud.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ei kopeeritud: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Ei kopeeritud. Windows ei lubanud programmil PadForge lõikelauda kasutada.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Lubatud programmid</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Programm, mis soovib taset Lugemine või rohkem, küsib ühe korra, esimesel ühendumisel, ja saab taseme, mida ta küsib, kuni ülaltoodud tasemeni. Assistent, mille ülal lisate, on sellega lubatud.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -5943,6 +6031,8 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Juhtkang. PadForge loeb seda toorelt, seega SDL vastendust ei kasutata.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Juhtkang, mängupuldina paigutatud teie rea järgi.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL loeb seadmeid, kui mootor töötab.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Seade pole ühendatud. SDL loeb seda, kui see on ühendatud.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ei andnud programmile PadForge selle seadme lugemit.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Sisseehitatud kogukonna koopia, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Allalaaditud {0}</value></data>
@@ -5980,6 +6070,11 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, lülitid ja muud toimingud</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ja {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Pole midagi kopeerida: SDL-il pole selle seadme jaoks vastendust ja see pole ühelgi kontrolleril.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Pole midagi kopeerida: PadForge ei saa lugeda SDL-i vastendust selle seadme jaoks ja ükski selle kontrollerite rida ei anna sidet, mida SDL-i vorm võtab.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Pole midagi kopeerida: SDL-il pole selle seadme jaoks vastendust ja ükski kontrolleri {0} rida ei loe selle nuppe, telgi ega ristnuppe nii, nagu SDL-i vorm võtab.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Pole midagi kopeerida: SDL-il pole selle seadme jaoks vastendust ja kontrolleri {0} read loevad seda ainult osas {1}, mida SDL-i vorm ei saa hoida.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Pole midagi kopeerida: PadForge ei saa praegu lugeda SDL-i vastendust selle seadme jaoks ja see pole ühelgi kontrolleril.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Pole midagi kopeerida: PadForge ei saa praegu lugeda SDL-i vastendust selle seadme jaoks ja ükski kontrolleri {0} rida ei anna sidet, mida SDL-i vorm võtab.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Teine programm kasutab lõikelauda. Midagi ei kopeeritud.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Teie rida on eemaldatud. Seade loeb nii, nagu enne seda.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Vastendatud uuesti SDL paigutusest: {0}.</value></data>
@@ -6000,6 +6095,8 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Read, mida PadForge kannab</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ükski rida ei sobi.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Valitud rida rakendatakse seadmele {0} selle enda ID all, sama kontrolli ja sama valikuga nagu Kleebi.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Mootor on peatatud, seega loend jätab välja read, mida SDL hoiab, nii enda omad kui sisseehitatud kogukonna koopia. Need loetletakse, kui mootor töötab.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL ei vastanud õigel ajal, seega loend jätab välja read, mida see hoiab, nii enda omad kui sisseehitatud kogukonna koopia.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL vastenduse rida</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Rida sellele seadmele.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Oletatud paigutus.</value></data>
@@ -6012,14 +6109,14 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} väli, sama tootja ja toote oma teisel siinil või versioonil. See hoitakse selle seadme enda ID all.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} väli, teise seadme rida. See hoitakse selle seadme enda ID all.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} väli. SDL ei loe seda seadet, seega paigutab PadForge selle sisendid rea järgi.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>Programmil PadForge pole nende väljade jaoks lihtsat nuppu ega telge ja see jätab need välja: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} väli, seadme telgede, nuppude ja ristikute põhjal. Kontrollige seda kohas Testi sisendeid, siis hoidke see või muutke siin.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>See muudab, kuidas seadet {0} loetakse. Selle read kontrolleril {1} vastendatakse uuesti uuest paigutusest.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>See muudab, kuidas seadet {0} loetakse. See pole ühelgi kontrolleril, seega ükski rida ei muutu.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profiilide otseteed, mis loevad seadet {0}, säilitavad sisendid, mille neile seati.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Rida hoitakse teie omana failis PadForge.xml ja see on selle seadme jaoks ülimuslik kõigi teiste allikate ees. Eemalda minu oma toob tagasi vana rea ja vanad read.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Read hoitakse teie omana failis PadForge.xml ja need on oma seadmete jaoks ülimuslikud kõigi teiste allikate ees. Tühjenda rea Kontrollerite andmebaas valikus Rohkem eemaldab need.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rida Windowsile. {1} muudele süsteemidele jäetakse vahele.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rida Windowsile. {1} muudele süsteemidele jäetakse vahele.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Ridu süsteemi Windows jaoks: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Kõik {0:N0} lisatakse. PadForge hoiab kuni {1:N0} teie rida.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>See lisatakse. PadForge hoiab kuni {1:N0} teie rida.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Teie ridu on praegu hoitud {0:N0}, seega lisatakse neist {1:N0} ja {2:N0} mitte.</value></data>
@@ -6029,7 +6126,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Tekst pole SDL kontrollerite andmebaasi rida: 32 kuueteistkümnendnumbriga ID, nimi, siis väljad nagu a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Read on muudele süsteemidele. PadForge loeb ridu Windowsile või ilma kindla süsteemita.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Rea ID ei ole seadme oma. See vajab 32 kuueteistkümnendnumbrit.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Rea nimi on tühi, üle 128 märgi pikk või sisaldab märki, mida SDL loeb väljana.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Rea nimi on tühi, üle 128 märgi pikk, sisaldab välja markerit, mida SDL loeb, nagu „type:“, või sisaldab märki, mis pole täht, number, kirjavahemärk, sümbol ega tavaline tühik.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Rida sisaldab vihjet või Android välja, mida PadForge ei võta vastu.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Real on väli, mida SDL ei tunne.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Sidumine pole SDL vormis, nagu b3, a2, +a2, a2~ või h0.4.</value></data>
@@ -6040,8 +6137,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Teie read</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Read, mille te siin lisate või kleebite seadme kaardil SDL vastendus, on oma seadmete jaoks ülimuslikud kõigi teiste allikate ees ja jäävad ka lähtestuse järel.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Lisa ridu failist või lõikelaualt…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Ridu ja seadmeid kumbagi {0}, teie omad kõigi teiste allikate ees.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rida ühe seadme kohta, teie oma kõigi teiste allikate ees.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Ridu: {0:N0}, teie omad on kõigist teistest allikatest eespool.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Veel pole.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Teie muutuja SDL_GAMECONTROLLERCONFIG sisaldab {0} rida, mida PadForge ei hoia. Lisa ridu failist või lõikelaualt avaneb nendega.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Teie muutuja SDL_GAMECONTROLLERCONFIG sisaldab {0} rida, mida PadForge ei hoia. Lisa ridu failist või lõikelaualt avaneb sellega.</value></data>
@@ -6060,7 +6156,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Peatatud. Selle viimased sõnad: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Seda ei saanud käivitada.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>See pole enam selles arvutis.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Sellest arvutist ei leitud ühtegi tunneliprogrammi. PadForge töötab programmidega cloudflared, devtunnel, ngrok ja Tailscale Funnel või teie enda tunneli aadressiga.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge ei leidnud sellest arvutist ühtegi programmidest cloudflared, devtunnel, ngrok ega Tailscale Funnel. Valige ChatGPT Secure MCP Tunnel, mille PadForge alla laadib, või andke oma tunneli aadress.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Valige tunnel, et anda programmile PadForge avalik aadress.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Ka sellel arvutil: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, mille aadress jääb samaks</value></data>
@@ -6068,7 +6164,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Käitage oma tunnelit aadressile http://127.0.0.1:{0} ja kleepige selle https aadress. Nimega Cloudflare tunnel, püsiv arendustunnel, Tailscale Funnel ja ngrok oma domeen säilitavad oma aadressi.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Kleepige https aadress, milles pole teed peale /mcp, nii nagu teie tunnel selle annab.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Käivitub programmi PadForge veebiabiline.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Programmi PadForge veebiabiline peatus ({0}). Selle uuesti käivitamiseks lülitage Reach PadForge From the Web välja ja uuesti sisse.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Programmi PadForge veebiabiline peatus ({0}). PadForge proovib seda edasi käivitada.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Aadress</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Avalikku aadressi veel pole.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Lisa Claude'ile</value></data>
@@ -6107,11 +6203,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>see lõppes koodiga {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatiseerimine on väljas, seega ükski veebiassistent ei pääse programmi PadForge juurde. Veebiabiline käivitub, kui Automatiseerimine on sees.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Kontrollimine…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Pole installitud.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Installitud ja ajakohane. Skript algab reaga {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Installitud keelele {0} ja ajakohane. Skript algab reaga {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Installitud. Sellel programmil PadForge on uuem koopia.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Installitud keelele {0}. Sellel programmil PadForge on uuem koopia.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Installimine…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ei saanud seda kontrollida: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Nupp Installi paneb programmi PadForge teegi sinna, kust see keel selle leiab. Skript, mis selle laadib, loeb seadmeid ja juhib vastendusi ülaltoodud tasemel.</value></data>
@@ -6119,22 +6210,24 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Installitud koopiad</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Eemalda kõik</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Eemaldatud.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Programmi PadForge teek on {0} jaoks installitud ja ajakohane. Skript algab reaga {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Programmi PadForge teek, mis on {0} jaoks installitud, erineb selle programmi PadForge koopiast.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Programmi PadForge teek pole {0} jaoks installitud.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Skripti ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Selle skripti ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skriptid nimetavad selle juhtelemente {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skriptid nimetavad selle klahve KeyA, KeySpace, KeyLeftShift ja nii edasi, ning iga klahvi selle koodi järgi, Vk0 kuni Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} sellest võrgust aadressilt {1}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Uus versioon, mis on allkirjastatud sama sertifikaadivõtmega, mille allkirjastaja on {0}, käivitub uuesti ilma toiminguta Kinnita ja taaskäivita. Mis tahes muu muudatus küsib enne teilt.</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Võttis vastu uue versiooni, mis on allkirjastatud sama sertifikaadivõtmega</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Aadress</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge võtab vastu aadressi, mis algab https:// ja nimetab hosti, vaikeportiga, ilma kasutajanime ja paroolita.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge võtab aadressi, mis on kuni 2 048 märki pikk, algab https:// ja nimetab hosti, kasutab vaikeporti ning milles pole kasutajanime, parooli ega osa pärast märki #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Muuda…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Kutsed ja nende võti liiguvad üle selle võrgu krüptimata. Windows lubab need sisse ainult eravõrkudes.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Kutsed ja nende võti liiguvad üle selle võrgu krüptimata. Windowsi tulemüüri reegel, mille PadForge selle pordi jaoks teeb, nimetab ainult privaatvõrke.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} on teise programmi kasutuses. Muutke seda, et programmile PadForge sellest võrgust ligi pääseda.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ei lubanud programmi PadForge abilisel pordil {0} kuulata. PadForge lubab seda administraatoriõigustega, seega käivitage PadForge nendega ja lülitage see välja ja uuesti sisse.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windowsil pole programmi PadForge abilise jaoks pordil {0} reservatsiooni. Lülitage see välja ja uuesti sisse, siis teeb PadForge selle uuesti.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Programmi PadForge abiline ei saanud pordil {0} kuulata. Muutke porti või lülitage see välja ja uuesti sisse.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Programmi PadForge abiline peatus ({0}). Selle uuesti käivitamiseks lülitage Reach PadForge From This Network välja ja uuesti sisse.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Programmi PadForge abiline peatus ({0}). PadForge proovib seda edasi käivitada.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatiseerimine on väljas, seega ükski selle võrgu assistent ei pääse programmi PadForge juurde. Abiline käivitub, kui Automatiseerimine on sees.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Sellel arvutil pole praegu eravõrgus aadressi.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Assistendid selles võrgus</value></data>
@@ -6151,7 +6244,23 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Käsurea käsud jõuavad programmini PadForge siiski, nagu iga programmi puhul.</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>See palub lubada juhtida ainult oma seadmeid.</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>See küsib ühe korra. Saate selle eemaldada või selle ulatust muuta lehel Automatiseerimine.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Töötab, teie õigustega, ja on valmis. ChatGPT jõuab programmi PadForge sellest tunnelist ilma oma sisselogimiseta ja ainult teie OpenAI organisatsioonist. See käivitub uuesti koos programmiga PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Töötab, teie õigustega. See ootab, millal OpenAI ütleb, et tunnel on valmis.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge hoiab võtit krüptituna ainult teie jaoks. Tühi väli unustab selle. ChatGPT töötab ülaltoodud tasemel.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge ei saanud pistikprogrammi komplekti salvestada.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge tegevus {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Helid{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Ikoonid{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Ridu teiste süsteemide jaoks, mis jäetakse vahele: {0:N0}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ei käivitanud seda teie enda õigustega.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>See ei lõppenud {0} sekundi jooksul.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>See lõppes koodiga {0} ja ei andnud põhjust.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ei saa lugeda sätteid failis {0}, seega jättis ta faili muutmata.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge ei kirjutanud faili {0}, seega jättis ta selle muutmata.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows ei nimeta teile kausta Dokumendid.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ei leia teie kausta programmi {0} jaoks.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Programmi {0} enda käsk lõppes koodiga {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Programmi {0} käsku pole selles arvutis.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows ei lubanud programmil PadForge lugeda või kirjutada vajalikku faili.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ei leia Python-installatsiooni: ükski pole registreeritud, installitud Microsoft Store kaudu, loetletud py käiviti kaudu ega teie PATH-is.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ükski Python, mille PadForge leidis, ei vastanud {0} sekundi jooksul.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Käivitus ei andnud põhjust, mida PadForge teab.</value></data>
 </root>

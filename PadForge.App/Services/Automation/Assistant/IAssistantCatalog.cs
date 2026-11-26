@@ -229,6 +229,9 @@ namespace PadForge.Services.Automation
         [Description("The virtual controller whose page shows, by its number.")]
         public int? Controller { get; set; }
 
+        [Description("The device picked under Driven by on that controller's page, whose settings the page shows, by its short ID.")]
+        public string ControllerDevice { get; set; }
+
         [Description("The device picked on the Devices page, by its short ID.")]
         public string Device { get; set; }
 

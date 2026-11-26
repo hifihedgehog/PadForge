@@ -336,38 +336,75 @@ namespace PadForge.Tests
             public Action<PadForge.Engine.Common.MadCatz.Strike7Event> Subscriber;
             public readonly List<(ushort Applet, int Bytes)> Draws = new();
             public ushort Next = 7;
+            private readonly object _gate = new();
+            private ushort _open;
             public string Path => @"C:\Users\sonic\Downloads\Strike7API.dll";
             public ushort Open(string name, int w, int h, byte[] icon, Action<PadForge.Engine.Common.MadCatz.Strike7Event> subscriber)
             {
-                Subscriber = subscriber;
-                return Next++;
+                lock (_gate)
+                {
+                    Subscriber = subscriber;
+                    return _open = Next++;
+                }
             }
-            public void Close(ushort applet) => Subscriber = null;
+            // The host that ended closes its applet on its own thread, which
+            // can come after the next host opened the new one. That close
+            // leaves the new applet's events alone, as the library's Close
+            // does for an applet other than the one it closes.
+            public void Close(ushort applet)
+            {
+                lock (_gate)
+                {
+                    if (applet != _open) return;
+                    Subscriber = null;
+                    _open = 0;
+                }
+            }
             public void DrawScreen(ushort applet, ushort endpoint, byte[] bgra) { lock (Draws) Draws.Add((applet, bgra.Length)); }
         }
 
         private const int ScreenBytes = 480 * 320 * 4;
 
+        /// <summary>How long a Strike 7 wait allows for the library's poll, here and in
+        /// NativeHostChannelTests.</summary>
+        internal const int PollWaitMs = 10_000;
+
         /// <summary>The applet's events cross on the screen's own pace, held
         /// to the screen's bounds, and a host that ended opens the applet
-        /// again in the next one under the ID the screen holds.</summary>
+        /// again in the next one under the ID the screen holds.
+        ///
+        /// <para>The events come on the library's poll, every 20 ms on the
+        /// thread pool. While every core is busy, as at the start of a full
+        /// run, a wait of 2 s ran out before the poll came (audit 16), so each
+        /// wait allows <see cref="PollWaitMs"/> and ends once its event is in.
+        /// The library is closed in the finally: one left open polls on and
+        /// opens its applet again through the next test's host.</para></summary>
         [Fact]
         public void TheStrike7_CrossesTheHost_AndOpensAgainAfterTheHostEnds()
         {
             var fake = new FakeStrike7();
             Strike7HostService.LoadSeam = path => (fake, null);
             var servers = new List<HostConnection>();
-            NativeHost.OpenSeam = service => service == Strike7HostService.Name ? Serve(new Strike7HostService(), servers) : null;
+            NativeHost.OpenSeam = service =>
+            {
+                if (service != Strike7HostService.Name) return null;
+                lock (servers) return Serve(new Strike7HostService(), servers);
+            };
+            int Servers() { lock (servers) return servers.Count; }
+            HostConnection Server(int i) { lock (servers) return servers[i]; }
+            PadForge.Engine.Common.MadCatz.IStrike7Library library = null;
+            ushort applet = 0;
             try
             {
-                var (library, reason) = RemoteStrike7Library.Load(NativeHost.Shared, fake.Path);
+                string reason;
+                (library, reason) = RemoteStrike7Library.Load(NativeHost.Shared, fake.Path);
                 Assert.NotNull(library);
                 Assert.Equal(string.Empty, reason);
                 var seen = new System.Collections.Concurrent.ConcurrentQueue<PadForge.Engine.Common.MadCatz.Strike7Event>();
-                ushort applet = library.Open("PadForge", 2, 2, new byte[16], seen.Enqueue);
+                applet = library.Open("PadForge", 2, 2, new byte[16], seen.Enqueue);
                 Assert.Equal(7, applet);
                 fake.Subscriber(new PadForge.Engine.Common.MadCatz.Strike7Event(PadForge.Engine.Common.MadCatz.Strike7EventKind.Touch, 7, 1, 100, 200, true));
-                Assert.True(SpinWait.SpinUntil(() => !seen.IsEmpty, 2000));
+                Assert.True(SpinWait.SpinUntil(() => !seen.IsEmpty, PollWaitMs));
                 Assert.True(seen.TryDequeue(out var touch));
                 Assert.Equal((7, 100, 200, true), (touch.AppletId, touch.X, touch.Y, touch.Pressed));
                 library.DrawScreen(applet, 1, new byte[ScreenBytes]);
@@ -375,22 +412,25 @@ namespace PadForge.Tests
 
                 // The host ends: a reset reaches the screen, the applet opens
                 // again in the new host, and draws reach it under the old ID.
-                servers[0].Dispose();
-                Assert.True(SpinWait.SpinUntil(() => seen.Any(e => e.Kind == PadForge.Engine.Common.MadCatz.Strike7EventKind.Reset), 2000));
-                Assert.True(SpinWait.SpinUntil(() => servers.Count == 2, 2000));
+                Server(0).Dispose();
+                Assert.True(SpinWait.SpinUntil(() => seen.Any(e => e.Kind == PadForge.Engine.Common.MadCatz.Strike7EventKind.Reset), PollWaitMs));
+                Assert.True(SpinWait.SpinUntil(() => Servers() == 2, PollWaitMs));
                 library.DrawScreen(applet, 1, new byte[ScreenBytes]);
-                Assert.True(SpinWait.SpinUntil(() => fake.Draws.Count == 2, 2000));
+                Assert.True(SpinWait.SpinUntil(() => fake.Draws.Count == 2, PollWaitMs));
                 Assert.Equal(8, fake.Draws[1].Applet);
                 fake.Subscriber(new PadForge.Engine.Common.MadCatz.Strike7Event(PadForge.Engine.Common.MadCatz.Strike7EventKind.Active, 8, 1, 0, 0, false));
-                Assert.True(SpinWait.SpinUntil(() => seen.Any(e => e.Kind == PadForge.Engine.Common.MadCatz.Strike7EventKind.Active), 2000));
+                Assert.True(SpinWait.SpinUntil(() => seen.Any(e => e.Kind == PadForge.Engine.Common.MadCatz.Strike7EventKind.Active), PollWaitMs));
                 Assert.Equal(7, seen.First(e => e.Kind == PadForge.Engine.Common.MadCatz.Strike7EventKind.Active).AppletId);
-                // A touch off the screen breaks the protocol.
-                fake.Subscriber(new PadForge.Engine.Common.MadCatz.Strike7Event(PadForge.Engine.Common.MadCatz.Strike7EventKind.Touch, 8, 1, 4000, 0, true));
-                Assert.True(SpinWait.SpinUntil(() => servers[1].Broken, 2000));
-                library.Close(applet);
+                // A touch the library places off the screen is held to its
+                // edge in the host.
+                fake.Subscriber(new PadForge.Engine.Common.MadCatz.Strike7Event(PadForge.Engine.Common.MadCatz.Strike7EventKind.Touch, 8, 1, 4000, 9000, true));
+                Assert.True(SpinWait.SpinUntil(() => seen.Any(e => e.Kind == PadForge.Engine.Common.MadCatz.Strike7EventKind.Touch && e.X == 479), PollWaitMs));
+                Assert.Equal(319, seen.Last(e => e.Kind == PadForge.Engine.Common.MadCatz.Strike7EventKind.Touch).Y);
+                Assert.False(Server(1).Broken);
             }
             finally
             {
+                if (library != null && applet != 0) library.Close(applet);
                 Strike7HostService.LoadSeam = null;
             }
         }

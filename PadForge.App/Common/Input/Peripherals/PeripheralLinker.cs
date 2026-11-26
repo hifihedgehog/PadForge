@@ -16,6 +16,11 @@ namespace PadForge.Common.Input.Peripherals
     {
         public static readonly PeripheralPresence None = new(false, false, false, false, false);
 
+        /// <summary>Razer's Sensa HD Haptics runtime, RzInterHaptics.dll, is
+        /// where the Interhaptics provider loads it from
+        /// (<see cref="PadForge.Services.SensaHapticsService.RuntimePath"/>).</summary>
+        public bool RazerSensaRuntime { get; init; }
+
         /// <summary>Logitech Gaming Software runs and G HUB does not, so the
         /// Lighting group names it as the program lighting Logitech
         /// devices.</summary>
@@ -86,6 +91,42 @@ namespace PadForge.Common.Input.Peripherals
         /// closes the direct path, the safe side to be wrong on.</summary>
         internal static readonly string[] SteelSeriesHostPrefixes = { "SteelSeriesGG", "SteelSeriesEngine", "SteelSeriesPrism" };
 
+        /// <summary>The Uninstall key and display name SteelSeries GG's
+        /// installer registers: the key <c>SteelSeries GG</c> under HKLM's
+        /// Uninstall, and a name such as SteelSeries GG 75.0.0, with
+        /// <c>C:\Program Files\SteelSeries\GG\uninst.exe</c> as its
+        /// uninstaller (advanceduninstaller.com's page for SteelSeries GG
+        /// 75.0.0, which also says the folder is "frequently" that one, so
+        /// another is possible).</summary>
+        internal const string SteelSeriesGGUninstallKey = "SteelSeries GG";
+
+        /// <summary>Whether SteelSeries GG is installed on this PC.</summary>
+        internal static bool SteelSeriesGGInstalled()
+            => SteelSeriesGGInstalled(PadForge.Common.UninstallRegistry.Machine.Entries, Directory.Exists);
+
+        /// <summary>
+        /// Whether SteelSeries GG is installed: its Uninstall entry, which
+        /// stands wherever its folder is, or its default install folder.
+        /// coreProps.json is no install mark: SteelSeries Engine creates it
+        /// when it starts, and "If this file is not present, then SteelSeries
+        /// Engine 3 is not running" (gamesense-sdk
+        /// doc/api/sending-game-events.md:19 and 33). Any program may create
+        /// it, since Users may create folders and files under ProgramData,
+        /// and a removal can leave it.
+        /// </summary>
+        internal static bool SteelSeriesGGInstalled(IEnumerable<PadForge.Common.UninstallRegistry.Entry> entries, Func<string, bool> folderExists)
+        {
+            foreach (var entry in entries)
+            {
+                if (string.Equals(entry.SubKeyName, SteelSeriesGGUninstallKey, StringComparison.OrdinalIgnoreCase)) return true;
+                if (entry.DisplayName is string name
+                    && (name.Equals(SteelSeriesGGUninstallKey, StringComparison.OrdinalIgnoreCase)
+                        || name.StartsWith(SteelSeriesGGUninstallKey + " ", StringComparison.OrdinalIgnoreCase)))
+                    return true;
+            }
+            return folderExists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "SteelSeries", "GG"));
+        }
+
         /// <summary>What is installed, from the registry and files alone.
         /// No process is looked at, and no running flag is set: what runs
         /// is read by the host's <see cref="VendorProgramWatch"/>, from one
@@ -114,12 +155,7 @@ namespace PadForge.Common.Input.Peripherals
             catch { }
 
             bool gg = false;
-            try
-            {
-                gg = File.Exists(GameSenseClient.DefaultCorePropsPath)
-                     || Directory.Exists(Path.Combine(
-                         Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "SteelSeries", "GG"));
-            }
+            try { gg = SteelSeriesGGInstalled(); }
             catch { }
 
             bool aura = false;
@@ -134,11 +170,16 @@ namespace PadForge.Common.Input.Peripherals
             try { icue = PadForge.Services.IcueSdkNative.Installed(); }
             catch { }
 
+            bool sensaRuntime = false;
+            try { sensaRuntime = PadForge.Services.SensaHapticsService.RuntimePath() != null; }
+            catch { }
+
             return new PeripheralPresence(ledSdk, false, synapse, gg, PlatformSupport.SensaAvailable)
             {
                 AsusAuraSdk = aura,
                 MsiMysticLightSdk = mysticLight,
                 CorsairIcueSdk = icue,
+                RazerSensaRuntime = sensaRuntime,
             };
         }
 

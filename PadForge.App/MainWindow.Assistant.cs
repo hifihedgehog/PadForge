@@ -20,7 +20,7 @@ using PadForge.ViewModels;
 namespace PadForge
 {
     /// <summary>
-    /// The main window's part in the assistants' tools (#597): what an
+    /// The main window's part in the assistants' tools (#600): what an
     /// assistant's tool acts on, through the same calls the pages make. Every
     /// member runs on the interface's thread unless its summary says
     /// otherwise.
@@ -49,12 +49,14 @@ namespace PadForge
                 PressTray = key =>
                 {
                     if (key == "Exit") ExitFromTray();
+                    else if (key == "Mark") Services.ProblemRecorder.Instance.Mark();
                 },
                 MainWindow = () => this,
                 Pointer = _pointer,
             };
             var catalog = new AssistantCatalog(_searchService, _searchNavigator, SearchPageOf, _viewModel, BindPadPage, app.WindowPlace, parts);
-            var undo = new AssistantUndo(app.TakeUndoState, app.RestoreUndoState);
+            var undo = new AssistantUndo(app.TakeUndoState, app.RestoreUndoState,
+                networkStarts: state => AssistantUndoStore.NetworkStarts(state, _viewModel));
             var ui = new DispatcherAutomationUi(Dispatcher);
             var calls = new AssistantCalls(_automation, app, catalog, ui, undo, AssistantTools.All);
             _assistants = new AssistantServer(_automation, calls, ui);
@@ -63,7 +65,12 @@ namespace PadForge
             // entries offer Undo.
             undo.Changed += (s, e) => _viewModel.Dashboard.RefreshAutomationUndoFromHost();
             // The programs the user allowed are kept in PadForge.xml (#600).
-            AutomationConsent.Shared.Changed += (s, e) => Dispatcher.BeginInvoke(new Action(() => _settingsService?.MarkDirty()));
+            // A list loaded from the file is what the file holds already.
+            AutomationConsent.Shared.Changed += (s, e) =>
+            {
+                if (ReferenceEquals(e, AutomationConsent.FromFile)) return;
+                Dispatcher.BeginInvoke(new Action(() => _settingsService?.MarkDirty()));
+            };
             // The Automation page lists them with Remove, and its Add on an
             // assistant's row is the consent for it.
             ConsentForPage = new AutomationConsentForPage(AutomationConsent.Shared, _automation.Sessions, _automation.Clients);
@@ -76,6 +83,78 @@ namespace PadForge
         }
 
         private AssistantPointer _pointer;
+
+        private static string Blank(string text) => string.IsNullOrWhiteSpace(text) ? null : text;
+
+        /// <summary>The drivers and helper programs the system read lists,
+        /// the rows of the Settings page's Drivers card, each read as the card
+        /// reads it: Windows MIDI Services is there while either of its APIs
+        /// runs, the one built into Windows or the App SDK runtime (whose
+        /// version alone is read), SDL while its library loaded with a
+        /// version, and BthPS3 while either of its drivers is installed. A
+        /// version is given only for a thing that is there.</summary>
+        internal static List<AssistantDriverState> DriverRows(SettingsViewModel s)
+        {
+            var midi = s.ActiveMidiApi;
+            bool sdl = s.SdlVersionState == SettingsViewModel.SdlVersionKind.Number;
+            return new List<AssistantDriverState>
+            {
+                new AssistantDriverState { Name = "HIDMaestro", Installed = s.IsHIDMaestroInstalled, Version = Blank(s.HIDMaestroVersion), For = "The virtual controllers games see." },
+                new AssistantDriverState { Name = "HidHide", Installed = s.IsHidHideInstalled, Version = Blank(s.HidHideVersion), For = "Hiding a physical device from games, so a game sees only the virtual controller." },
+                new AssistantDriverState
+                {
+                    Name = "Windows MIDI Services",
+                    Installed = midi is MidiApiKind.InBox or MidiApiKind.AppSdk,
+                    Version = midi == MidiApiKind.AppSdk ? Blank(s.MidiRuntimeVersion) : null,
+                    For = "MIDI virtual controllers and MIDI devices.",
+                },
+                new AssistantDriverState { Name = "SteamVR", Installed = s.IsSteamVrInstalled, For = "VR virtual controllers." },
+                new AssistantDriverState { Name = "SDL", Installed = sdl, Version = sdl ? Blank(s.SdlVersion) : null, For = "Reading game controllers." },
+                new AssistantDriverState
+                {
+                    Name = "BthPS3",
+                    Installed = s.IsBthPS3Installed,
+                    Version = s.IsBthPS3Installed ? Blank(s.BthPS3Version) : null,
+                    For = "Pairing PlayStation 3, Move and Navigation controllers over Bluetooth. PadForge installs it at the first such pairing.",
+                },
+            };
+        }
+
+        /// <summary>A profile's .pfprofile bytes, for export_profile, made in
+        /// memory: a file in the user's temp folder could be swapped by a
+        /// program without rights between its write and its read.</summary>
+        internal static byte[] ExportFile(ProfileData profile)
+        {
+            using var file = new MemoryStream();
+            PadForge.Common.ProfileTransfer.Export(profile, file);
+            return file.ToArray();
+        }
+
+        /// <summary>A finished recording's summary, for record_problem. The
+        /// zip sits in the user's own folder, where a program without rights
+        /// can swap it after the recorder moved it there, so it is read
+        /// within BoundedLineReader's limits, as RecordingSummaryPrint reads
+        /// a file, and one past them is refused.</summary>
+        internal static string SummaryOf(string zip)
+        {
+            try
+            {
+                using var reader = new PadForge.Engine.Recording.RecordingReader(
+                    new PadForge.Engine.Recording.BoundedLineReader(PadForge.Engine.Recording.RecordingReader.OpenText(zip)));
+                return string.Join("\n", PadForge.Engine.Recording.RecordingSummary.Read(reader).Lines());
+            }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException or InvalidDataException
+                or ArgumentException or NotSupportedException or OverflowException or FormatException)
+            {
+                throw new AssistantRefusal("internal", "PadForge could not read the recording it saved, so it gives no summary. The user can open the recording in PadForge.");
+            }
+        }
+
+        /// <summary>Whether a macro's text holds a value PadForge left out
+        /// for privacy: one of the stand-ins the scrubber writes, such as
+        /// <c>&lt;folder&gt;</c> and <c>&lt;user&gt;</c>, by the scrubber's
+        /// own list of them.</summary>
+        internal static bool LeftOutForPrivacy(string text) => PrivacyScrubber.HoldsStandIn(text);
 
         /// <summary>The consent store in the Automation page's terms, which
         /// the page's AttachConsent takes.</summary>
@@ -118,17 +197,12 @@ namespace PadForge
                     RunningAtHz = Math.Round(_w._inputService?.EngineFrequency ?? 0, 1),
                     HidHideInstalled = s.IsHidHideInstalled,
                 };
-                result.Drivers.Add(new AssistantDriverState { Name = "HIDMaestro", Installed = s.IsHIDMaestroInstalled, Version = Blank(s.HIDMaestroVersion), For = "The virtual controllers games see." });
-                result.Drivers.Add(new AssistantDriverState { Name = "HidHide", Installed = s.IsHidHideInstalled, Version = Blank(s.HidHideVersion), For = "Hiding a physical device from games, so a game sees only the virtual controller." });
-                result.Drivers.Add(new AssistantDriverState { Name = "Windows MIDI Services", Installed = s.IsMidiRuntimeInstalled, Version = Blank(s.MidiRuntimeVersion), For = "MIDI virtual controllers and MIDI devices." });
-                result.Drivers.Add(new AssistantDriverState { Name = "SteamVR", Installed = s.IsSteamVrInstalled, For = "VR virtual controllers." });
-                result.Drivers.Add(new AssistantDriverState { Name = "SDL", Installed = true, Version = Blank(s.SdlVersion), For = "Reading game controllers." });
+                result.Drivers.AddRange(DriverRows(s));
                 var devices = SettingsManager.UserDevices;
                 if (devices != null) lock (devices.SyncRoot) result.DevicesHidden = devices.Items.Count(d => d != null && d.HidHideEnabled);
                 return result;
             }
 
-            private static string Blank(string text) => string.IsNullOrWhiteSpace(text) ? null : text;
 
             private static bool IsActive(ProfileListItem item)
                 => item.IsDefault ? SettingsManager.ActiveProfileId == null : SettingsManager.ActiveProfileId == item.Id;
@@ -471,27 +545,33 @@ namespace PadForge
                 _w.DeleteListedProfile(item);
             }
 
-            /// <summary>What an import reads: a .pfprofile with its packages
-            /// left in the file, or another program's file translated.</summary>
+            /// <summary>What an import reads: a .pfprofile's bytes with its
+            /// packages left in them, or another program's file
+            /// translated.</summary>
             private sealed class ImportSource
             {
-                public string Path;
+                public byte[] Bytes;
                 public ProfileData Profile;
                 public PadForge.Common.ConfigImport.ForeignImportResult Foreign;
             }
 
-            public AssistantImport ReadProfileFile(string path)
+            public AssistantImport ReadProfileFile(string fileName, byte[] bytes)
             {
-                var source = new ImportSource { Path = path };
+                var source = new ImportSource { Bytes = bytes };
                 string report = null;
-                if (path.EndsWith(PadForge.Common.ProfileTransfer.FileExtension, StringComparison.OrdinalIgnoreCase))
+                if (fileName.EndsWith(PadForge.Common.ProfileTransfer.FileExtension, StringComparison.OrdinalIgnoreCase))
                 {
-                    source.Profile = PadForge.Common.ProfileTransfer.Peek(path)
+                    source.Profile = PadForge.Common.ProfileTransfer.Peek(bytes)
                         ?? throw new AssistantRefusal("bad-argument", "That file is no PadForge profile PadForge can read.");
                 }
                 else
                 {
-                    var foreign = PadForge.Common.ConfigImport.ForeignConfigImporter.Translate(path);
+                    // The translators open no file but the ones beside the
+                    // path they name: a path in the temp folder, as the copy
+                    // this read once made, names the profile by the file's
+                    // own name.
+                    var foreign = PadForge.Common.ConfigImport.ForeignConfigImporter.Translate(bytes,
+                        Path.Combine(Path.GetTempPath(), Path.GetFileName(fileName)));
                     if (foreign.Refused) throw new AssistantRefusal("bad-argument", Strings.Get(foreign.RefusedKey));
                     source.Foreign = foreign;
                     source.Profile = foreign.Profile;
@@ -522,8 +602,9 @@ namespace PadForge
                 if (source.Foreign != null) profile = source.Foreign.Profile;
                 else
                 {
-                    // The .pfprofile import, which lands its sound packages.
-                    profile = PadForge.Common.ProfileTransfer.Import(source.Path, out _)
+                    // The .pfprofile import, which lands its sound packages,
+                    // from the bytes the card's scan read.
+                    profile = PadForge.Common.ProfileTransfer.Import(source.Bytes, out _)
                         ?? throw new AssistantRefusal("bad-argument", "That file is no PadForge profile PadForge can read.");
                 }
                 string name = _w.AddWorkshopProfile(profile, applyAfter: false);
@@ -541,7 +622,6 @@ namespace PadForge
                     : SettingsManager.Profiles.Find(p => p.Id == item.Id);
                 if (profile == null) throw new AssistantRefusal("unknown-profile", "That profile holds nothing to export.");
                 string exportName = item.IsDefault ? item.Name : profile.Name;
-                string temp = Path.Combine(Path.GetTempPath(), "PadForge-export-" + Guid.NewGuid().ToString("N") + PadForge.Common.ProfileTransfer.FileExtension);
                 string priorName = profile.Name, priorPicture = profile.DreamcastPicture, priorScreen = profile.KeyboardScreenPicture;
                 try
                 {
@@ -551,15 +631,13 @@ namespace PadForge
                         profile.DreamcastPicture = Vm.Settings.DefaultProfileDreamcastPicture;
                         profile.KeyboardScreenPicture = Vm.Settings.DefaultProfileKeyboardScreenPicture;
                     }
-                    PadForge.Common.ProfileTransfer.Export(profile, temp);
-                    return (File.ReadAllBytes(temp), exportName + PadForge.Common.ProfileTransfer.FileExtension);
+                    return (ExportFile(profile), exportName + PadForge.Common.ProfileTransfer.FileExtension);
                 }
                 finally
                 {
                     profile.Name = priorName;
                     profile.DreamcastPicture = priorPicture;
                     profile.KeyboardScreenPicture = priorScreen;
-                    try { File.Delete(temp); } catch { }
                 }
             }
 
@@ -700,22 +778,13 @@ namespace PadForge
                 return (ud == null ? null : InputService.LocalizedDeviceName(ud)) ?? guid;
             }
 
-            public void ClearMappings(int number, IReadOnlyList<string> targets)
+            public void ClearMappings(int number)
             {
                 var pad = PadOf(number);
-                var rows = RowsOf(pad);
-                if (targets == null || targets.Count == 0)
-                {
-                    pad.ClearMappingRows(pad.Mappings);
-                }
-                else
-                {
-                    var picked = new List<MappingItem>();
-                    foreach (string target in targets)
-                        picked.Add(rows.FirstOrDefault(m => string.Equals(m.TargetSettingName, target, StringComparison.OrdinalIgnoreCase))
-                            ?? throw new AssistantRefusal("bad-argument", "Controller " + number + " has no row with the target " + target + ". get_mappings gives the targets."));
-                    pad.ClearMappingRows(picked);
-                }
+                // The slot's rows are read into the page first, as SetMappings
+                // reads them, so Clear All clears what the slot holds now.
+                RowsOf(pad);
+                pad.ClearMappingRows(pad.Mappings);
                 _w._settingsService.MarkDirty();
             }
 
@@ -753,11 +822,6 @@ namespace PadForge
                 return JsonSerializer.SerializeToElement(node);
             }
 
-            /// <summary>The stand-ins the scrubber writes, such as
-            /// <c>&lt;folder&gt;</c> and <c>&lt;user 1&gt;</c>.</summary>
-            private static readonly System.Text.RegularExpressions.Regex StandIn =
-                new(@"<[a-z][a-z-]*( [0-9]+)?>", System.Text.RegularExpressions.RegexOptions.CultureInvariant);
-
             /// <summary>A macro's data as a program gives it back: a device's
             /// short ID turned into its instance GUID again. Refused when the
             /// data still holds a value PadForge left out for privacy, which
@@ -768,7 +832,7 @@ namespace PadForge
                 bool left = false;
                 var node = AssistantJson.ScrubStrings(JsonSerializer.SerializeToNode(json), (property, text) =>
                 {
-                    if (StandIn.IsMatch(text)) left = true;
+                    if (LeftOutForPrivacy(text)) left = true;
                     if (!text.StartsWith(DevicePrefix, StringComparison.Ordinal)) return text;
                     var (ud, entry) = _w._automation.Sessions.FindDevice(text.Substring(DevicePrefix.Length));
                     Guid guid = ud?.InstanceGuid ?? entry?.Guid ?? Guid.Empty;
@@ -875,10 +939,7 @@ namespace PadForge
                 string zip = _lastRecording;
                 if (zip == null || !File.Exists(zip))
                     throw new AssistantRefusal("internal", "The recording stopped before its time. It waits in PadForge for the user to look over and save.");
-                string summary;
-                using (var reader = PadForge.Engine.Recording.RecordingReader.Open(zip))
-                    summary = string.Join("\n", PadForge.Engine.Recording.RecordingSummary.Read(reader).Lines());
-                return new AssistantRecording { Summary = summary };
+                return new AssistantRecording { Summary = SummaryOf(zip) };
             }
 
             private string _lastRecording;

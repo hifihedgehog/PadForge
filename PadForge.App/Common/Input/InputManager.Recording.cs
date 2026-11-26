@@ -15,7 +15,7 @@ namespace PadForge.Common.Input
     public partial class InputManager
     {
         // ─────────────────────────────────────────────
-        //  The problem recorder's taps (#597)
+        //  The problem recorder's taps (#600)
         //
         //  Each tap reads RecordingCapture.Active once, a volatile read, and
         //  does nothing more while no recording runs and no last minute is
@@ -37,7 +37,7 @@ namespace PadForge.Common.Input
         /// thread, as it takes <see cref="PendingToggleWindow"/>.</summary>
         internal int PendingProblemRecording;
 
-        /// <summary>A Problem Recording macro action (#597). Starting,
+        /// <summary>A Problem Recording macro action (#600). Starting,
         /// stopping and saving make a file, so they are left for the UI
         /// thread. A marker is written here, at the time the macro fired.</summary>
         private void RunProblemRecordingAction(PadForge.ViewModels.MacroAction action)
@@ -192,6 +192,10 @@ namespace PadForge.Common.Input
                 state = _slotInactiveCounter[padIndex] == 0 ? RecordingCodec.SentState.Absent : RecordingCodec.SentState.Resting;
             else if (!vc.IsConnected)
                 state = RecordingCodec.SentState.Disconnected;
+            // HIDMaestro refused a frame of it, and nothing reaches it until
+            // it is made again (HMaestroRefusalLatch).
+            else if (vc is HMaestroVirtualController { SubmitsRefused: true })
+                state = RecordingCodec.SentState.Failed;
             else
                 state = _slotInactiveCounter[padIndex] <= 1 ? RecordingCodec.SentState.Ok : RecordingCodec.SentState.Resting;
             if (state != RecordingCodec.SentState.Ok) rec.Sent(padIndex, state, (int)SlotControllerTypes[padIndex]);

@@ -1027,7 +1027,7 @@
                               IsChecked="{Binding ParamAxisRelative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamAxisRelative" SettingLabel="{Binding Mapping_AxisRelative, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamAxisRelative"/>
                 </StackPanel>
-                <!-- A held position (#597, #600): "Mouse Travel X/Y", the two
+                <!-- A held position (#600): "Mouse Travel X/Y", the two
                      wheels and an axis marked as moving relatively, and each
                      setting only where it applies: Return Time for the two
                      kinds of centering that take the wheel back over it, and
@@ -1084,15 +1084,20 @@
                               Style="{StaticResource LinePicker}" MinWidth="180"/>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamTravelSteer" SettingLabel="{Binding Mapping_MouseTravelSteer, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamTravelSteer"/>
                 </StackPanel>
-                <!-- The input Steer waits on: an on/off input of the source's
-                     own device, which is where the engine reads it. -->
+                <!-- The input Steer waits on: any on/off input of the slot,
+                     grouped by device. The engine reads it on the device its
+                     entry names. -->
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MouseTravelSteerInput_Tooltip, Source={x:Static strings:Strings.Instance}}"
                             Visibility="{Binding IsTravelSteerInputShown, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MouseTravelSteerInput, Source={x:Static strings:Strings.Instance}}"/>
                     <ComboBox AutomationProperties.Name="{Binding Mapping_MouseTravelSteerInput, Source={x:Static strings:Strings.Instance}}"
                               ItemsSource="{Binding TravelSteerInputs}"
                               SelectedItem="{Binding TravelSteerInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Style="{StaticResource LineInputPicker}" Width="150"/>
+                              Style="{StaticResource LineInputPicker}" Width="150">
+                        <ComboBox.GroupStyle>
+                            <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                        </ComboBox.GroupStyle>
+                    </ComboBox>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="TravelSteerInputChoice" SettingLabel="{Binding Mapping_MouseTravelSteerInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_TravelSteerInputChoice"/>
                 </StackPanel>
                 <!-- Mouse Position's anchor (#600): with a Steer input, the
@@ -1169,7 +1174,7 @@
             <controls:FlexLinePanel common:Reach.Class="Free" Gap="0" LineGap="0">
                 <!-- On a "Mouse Travel" source the gate is the Steer input,
                      and the Steer Input picker of the source's dials shows
-                     it (#597). -->
+                     it (#600). -->
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_Gate_Tooltip, Source={x:Static strings:Strings.Instance}}"
                             Visibility="{Binding IsGateShown, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_Gate, Source={x:Static strings:Strings.Instance}}"/>
@@ -13340,7 +13345,7 @@
                                               Data="M0,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M7,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M14,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"/>
                                         <ui:Button.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"/>
+                                                <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}" common:Reach.Class="Asks"/>
                                                 <MenuItem Header="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteMacroCommand}"/>
                                                 <MenuItem Header="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroFromCommand}"
                                                           ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -13486,14 +13491,16 @@
                                                 <ui:Button.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem Header="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMacroCommand}"/>
-                                                        <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"/>
+                                                        <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}" common:Reach.Class="Asks"/>
                                                         <!-- Shown for a macro fired by a recorded trigger, as the Clear
-                                                             button was in the trigger's own panel before it came here. -->
-                                                        <MenuItem Header="{Binding Macro_ClearTrigger, Source={x:Static strings:Strings.Instance}}" Command="{Binding SelectedMacro.ClearTriggerCommand}"
+                                                             button was in the trigger's own panel before it came here.
+                                                             Copy, Clear Trigger and Remove send no input, so each asks
+                                                             with no reason of the section's (#600). -->
+                                                        <MenuItem Header="{Binding Macro_ClearTrigger, Source={x:Static strings:Strings.Instance}}" Command="{Binding SelectedMacro.ClearTriggerCommand}" common:Reach.Class="Asks"
                                                                   Visibility="{Binding SelectedMacro.ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                   AutomationProperties.AutomationId="MacroClearTrigger"/>
                                                         <Separator/>
-                                                        <MenuItem Header="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}"
+                                                        <MenuItem Header="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}" common:Reach.Class="Asks"
                                                                   Foreground="{DynamicResource DangerInkBrush}"
                                                                   AutomationProperties.AutomationId="MacroRemoveButton"/>
                                                     </ContextMenu>
@@ -13974,10 +13981,12 @@
                                                               Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=GameTelemetry}"/>
                                                     <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TelemetryChannel" SettingLabel="{Binding Macro_GameTelemetry, Source={x:Static strings:Strings.Instance}}" Visibility="{Binding Source, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=GameTelemetry}" AutomationProperties.AutomationId="Reset_MacroExpressionVariable_TelemetryChannel_1648" Margin="4,0,8,0"/>
                                                     <!-- A value a program sets by name over the Automation
-                                                         pipe (#597): the names programs set this run, or
-                                                         one typed for a script that has not set it yet. -->
+                                                         pipe (#600): the names programs set this run, or
+                                                         one typed for a script that has not set it yet. A
+                                                         name that leaves the list when its program exits
+                                                         stays in the box (KeptComboText). -->
                                                     <ComboBox ItemsSource="{x:Static vm:ScriptValueNames.Items}"
-                                                              IsEditable="True"
+                                                              IsEditable="True" common:KeptComboText.IsOn="True"
                                                               Text="{Binding ScriptValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                               MinWidth="220" Margin="0,0,8,0"
                                                               AutomationProperties.Name="{Binding Macro_ScriptValue, Source={x:Static strings:Strings.Instance}}"
@@ -14100,7 +14109,7 @@
                                                              fields took about 200 ms each time a step was picked. -->
                                     <!-- Disconnect Controller editor (#162). Target mode + device picker -->
                                                         <DataTemplate x:Key="StepFieldsDisconnectController">
-                                    <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput" Margin="0,0,0,6">
+                                    <StackPanel common:Reach.Class="Asks" Margin="0,0,0,6">
                                         <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                             <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroDisconnect_Target_Label, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBox SelectedValue="{Binding DisconnectTarget, Mode=TwoWay}"
@@ -14225,7 +14234,7 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                                         </DataTemplate>
-                                    <!-- Center Mouse Steering card (#597). Parameter-less. The card
+                                    <!-- Center Mouse Steering card (#600). Parameter-less. The card
                                          says what one fire does, mirroring the Gyro Recenter card
                                          shape. -->
                                                         <DataTemplate x:Key="StepFieldsCenterMouseSteering">
@@ -14557,7 +14566,7 @@
                                          this virtual controller while the action runs. The
                                          hold is the Duration row above. -->
                                                         <DataTemplate x:Key="StepFieldsSetChromaColor">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,4"
                                                                       Red="{Binding LightbarR, Mode=TwoWay}"
                                                                       Green="{Binding LightbarG, Mode=TwoWay}"
@@ -14584,7 +14593,7 @@
                                          Keys go by HID usage, so the action lights the same keys
                                          on every keyboard this virtual controller lights. -->
                                                         <DataTemplate x:Key="StepFieldsSetKeyColors">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"/>
                                                 <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding MacroAction_KeyColors_AllLights, Source={x:Static strings:Strings.Instance}}"
@@ -14694,7 +14703,7 @@
                                     <!-- Clear Key Colors card (#557): the lights whose Set Key
                                          Colors it ends, or none for every one. -->
                                                         <DataTemplate x:Key="StepFieldsClearKeyColors">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"/>
                                                 <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorTargets" SettingLabel="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorTargets_55707"/>
@@ -14728,7 +14737,7 @@
                                          one to remove it), how long each shows and how many
                                          times the set plays. -->
                                                         <DataTemplate x:Key="StepFieldsShowDreamcastScreen">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Dreamcast_Pictures, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="{Binding Macro_Dreamcast_AddPicture, Source={x:Static strings:Strings.Instance}}"
@@ -14772,7 +14781,7 @@
                                          Screen and Keyboard Screen Mode: the kinds in their own
                                          order, so the index is the kind. -->
                                                         <DataTemplate x:Key="StepFieldsKeyboardScreenKind">
-                                    <controls:FlexLinePanel common:Reach.Class="Asks" common:Reach.Why="SendsInput" Style="{DynamicResource RowOptionLine}">
+                                    <controls:FlexLinePanel common:Reach.Class="Asks" Style="{DynamicResource RowOptionLine}">
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBox SelectedIndex="{Binding ScreenKindIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                   AutomationProperties.Name="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}">
@@ -14805,10 +14814,10 @@
                                         <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ProfileShortcutMode" SettingLabel="{Binding MacroAction_Type_ProfileShortcut, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ProfileShortcutMode_2980"/>
                                     </controls:FlexLinePanel>
                                                         </DataTemplate>
-                                    <!-- Problem Recording (#597): start or stop a recording, mark
+                                    <!-- Problem Recording (#600): start or stop a recording, mark
                                          the one that runs, or save the last minute, from the controller. -->
                                                         <DataTemplate x:Key="StepFieldsProblemRecording">
-                                    <controls:FlexLinePanel common:Reach.Class="Asks" common:Reach.Why="SendsInput" Style="{DynamicResource RowOptionLine}">
+                                    <controls:FlexLinePanel common:Reach.Class="Asks" Style="{DynamicResource RowOptionLine}">
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_Type_ProblemRecording, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBox VerticalAlignment="Center" SelectedIndex="{Binding ProblemRecordingModeIndex}" MinWidth="200"
                                                   AutomationProperties.Name="{Binding MacroAction_Type_ProblemRecording, Source={x:Static strings:Strings.Instance}}">
@@ -14823,7 +14832,7 @@
                                          Keyboard Screen Mode with that kind, Toggle Screen Overlay,
                                          and Pan Keyboard Screen Picture. -->
                                                         <DataTemplate x:Key="StepFieldsScreenOverlayTarget">
-                                    <controls:FlexLinePanel common:Reach.Class="Asks" common:Reach.Why="SendsInput" Style="{DynamicResource RowOptionLine}">
+                                    <controls:FlexLinePanel common:Reach.Class="Asks" Style="{DynamicResource RowOptionLine}">
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBox ItemsSource="{Binding ScreenOverlayChoices}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding ScreenOverlayNumber, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                   AutomationProperties.Name="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"/>
@@ -14833,7 +14842,7 @@
                                     <!-- Which crosshair (#585): Toggle Crosshair, the Screen
                                          Overlay box's shape. -->
                                                         <DataTemplate x:Key="StepFieldsCrosshairTarget">
-                                    <controls:FlexLinePanel common:Reach.Class="Asks" common:Reach.Why="SendsInput" Style="{DynamicResource RowOptionLine}">
+                                    <controls:FlexLinePanel common:Reach.Class="Asks" Style="{DynamicResource RowOptionLine}">
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Crosshair, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBox ItemsSource="{Binding CrosshairChoices}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding CrosshairNumber, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                   AutomationProperties.Name="{Binding Macro_Crosshair, Source={x:Static strings:Strings.Instance}}"/>
@@ -14844,7 +14853,7 @@
                                          Screen card's shape, the pictures drawn as the kind's
                                          screen draws them (click one to remove it). -->
                                                         <DataTemplate x:Key="StepFieldsShowKeyboardScreen">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Dreamcast_Pictures, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Content="{Binding Macro_Dreamcast_AddPicture, Source={x:Static strings:Strings.Instance}}"
@@ -14887,7 +14896,7 @@
                                     <!-- Keyboard Screen Mode card (#519): the modes in their own
                                          order, so the index is the mode. -->
                                                         <DataTemplate x:Key="StepFieldsKeyboardScreenMode">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox SelectedIndex="{Binding ScreenModeIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
@@ -14912,7 +14921,7 @@
                                                         </DataTemplate>
                                     <!-- Stopwatch card (#519). -->
                                                         <DataTemplate x:Key="StepFieldsStopwatch">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Stopwatch_Action, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox SelectedIndex="{Binding StopwatchActionIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
@@ -14929,7 +14938,7 @@
                                                         </DataTemplate>
                                     <!-- Pan Keyboard Screen Picture card (#519). -->
                                                         <DataTemplate x:Key="StepFieldsPanKeyboardScreen">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Pan_Direction, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox SelectedIndex="{Binding PanDirectionIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
@@ -14954,7 +14963,7 @@
                                                         </DataTemplate>
                                     <!-- Lightbar Color card (Reactive | Sticky) -->
                                                         <DataTemplate x:Key="StepFieldsLightbar">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox VerticalAlignment="Center" SelectedValue="{Binding LightbarHoldMode, Mode=TwoWay}"
@@ -15069,7 +15078,7 @@
                                                         </DataTemplate>
                                     <!-- Lightbar Mode Set card -->
                                                         <DataTemplate x:Key="StepFieldsLightbarModeSet">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_LightbarTargetMode_Label, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox VerticalAlignment="Center" SelectedValue="{Binding LightbarTargetMode, Mode=TwoWay}"
@@ -15099,7 +15108,7 @@
                                                         </DataTemplate>
                                     <!-- Lightbar Mode Cycle card. Checkbox grid bound through LightbarCycleModesCsv via the action's CycleModeOptions list. -->
                                                         <DataTemplate x:Key="StepFieldsLightbarModeCycle">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"/>
                                                 <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetLightbarCycleModesCommand}" SettingLabel="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"/>
@@ -15198,7 +15207,7 @@
                                          brightness write for every capable controller on
                                          the slot (Xbox over USB, 2015 Steam Controller). -->
                                                         <DataTemplate x:Key="StepFieldsGuideLedBrightness">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <TextBlock Text="{Binding Macro_GuideLedBrightness_Hint, Source={x:Static strings:Strings.Instance}}"
                                                        FontSize="12" TextWrapping="Wrap" Margin="0,0,0,6"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -15216,7 +15225,7 @@
                                          Rumble action and the trigger-channel RumbleTrigger action
                                          (#102). The header title switches per action type. -->
                                                         <DataTemplate x:Key="StepFieldsAnyRumbleSet">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_RumbleHold_Label, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox VerticalAlignment="Center" SelectedValue="{Binding RumbleHoldMode, Mode=TwoWay}"
@@ -15275,7 +15284,7 @@
                                          RumbleTriggerStop (trigger channel, #102). Title + body switch
                                          per action type. -->
                                                         <DataTemplate x:Key="StepFieldsAnyRumbleStop">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <TextBlock Text="{Binding RumbleStopEditorBody}"
                                                        FontSize="12" TextWrapping="Wrap"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -15285,7 +15294,7 @@
                                          effect, its parameters by name within the ranges the
                                          #529 encoder takes, and how long it holds. -->
                                                         <DataTemplate x:Key="StepFieldsTriggerEffect">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_TriggerEffect_Side, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox VerticalAlignment="Center" SelectedValue="{Binding TriggerEffectSide, Mode=TwoWay}"
@@ -15358,7 +15367,7 @@
                                                         </DataTemplate>
                                     <!-- Stop Adaptive Trigger Effect card (#531): which trigger. -->
                                                         <DataTemplate x:Key="StepFieldsTriggerEffectStop">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_TriggerEffect_Side, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox VerticalAlignment="Center" SelectedValue="{Binding TriggerEffectSide, Mode=TwoWay}"
@@ -15377,7 +15386,7 @@
                                                         </DataTemplate>
                                     <!-- Play Sound card (issue #83). File + volume + loop + preview -->
                                                         <DataTemplate x:Key="StepFieldsPlaySound">
-                                        <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput">
+                                        <StackPanel common:Reach.Class="Asks">
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Sound_File_Label, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding SoundFilePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -15633,7 +15642,7 @@
                                                         </DataTemplate>
                                     <!-- Source axis + process name. For AppVolume -->
                                                         <DataTemplate x:Key="StepFieldsAppVolume">
-                                    <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput" Margin="0,0,0,6">
+                                    <StackPanel common:Reach.Class="Asks" Margin="0,0,0,6">
                                         <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                             <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Process, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBox VerticalAlignment="Center" IsEditable="True"

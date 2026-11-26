@@ -35,7 +35,7 @@ namespace PadForge.Tests
             var sources = SearchSources.LoadCatalog();
             var expected = Directory.EnumerateFiles(Path.Combine(ReachMarkup.AppRoot, "Views"), "*Dialog.xaml")
                 .Select(Path.GetFileNameWithoutExtension)
-                .Concat(new[] { "AutomationRequestCard", "AddControllerView", "SearchPanel" })
+                .Concat(new[] { "AutomationRequestCard", "AddControllerView", "SearchPanel", "RecordingReviewView" })
                 .OrderBy(n => n, StringComparer.Ordinal).ToList();
             Assert.Equal(expected.Concat(new[] { "AboutPage", "HomePage", "MainWindow" }).OrderBy(n => n, StringComparer.Ordinal),
                 sources.Keys.OrderBy(n => n, StringComparer.Ordinal));
@@ -102,7 +102,31 @@ namespace PadForge.Tests
             foreach (var (page, text) in SearchSources.Load())
                 inMarkup += XDocument.Parse(text).Descendants().Count(d => d.Name.LocalName == "MenuItem" && ReachMarkup.Attr(d, "Header")?.Contains("Strings.Instance") == true);
             Assert.Equal(inMarkup, items.Count);
-            Assert.Contains(items, e => e.Label.Key == "Macro_ClearTrigger" && e.Reach == ReachClass.Asks && e.Why == ReachReason.SendsInput);
+            Assert.Contains(items, e => e.Label.Key == "Macro_ClearTrigger" && e.Reach == ReachClass.Asks && e.Why == ReachReason.None);
+        }
+
+        /// <summary>The macro menus' items ask as what each does (#600):
+        /// Remove, Copy and Clear Trigger send no keys or mouse input, so
+        /// their card gives no such reason, while Duplicate, Paste and Copy
+        /// From make macros that do. An item's own reason stands at the
+        /// section's class, as Reach.Of reads it.</summary>
+        [Fact]
+        public void TheMacroMenus_RemoveCopyAndClearTrigger_AskWithNoInputReason()
+        {
+            var macro = Pages.Value.Where(e => e.Kind == SearchKind.MenuItem && e.Page == SearchPage.Pad && e.Handler != null).ToList();
+            foreach (string handler in new[] { "RemoveMacroCommand", "CopyMacroCommand", "SelectedMacro.ClearTriggerCommand" })
+            {
+                var items = macro.Where(e => e.Handler == handler).ToList();
+                Assert.NotEmpty(items);
+                Assert.All(items, e =>
+                {
+                    Assert.Equal((ReachClass.Asks, ReachReason.None), (e.Reach, e.Why));
+                    Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Automation_Ask_Always, PadForge.Services.Automation.AssistantToolWords.Reason(e.Why));
+                });
+            }
+            Assert.Equal(2, macro.Count(e => e.Handler == "CopyMacroCommand"));
+            foreach (string handler in new[] { "DuplicateMacroCommand", "PasteMacroCommand", "CopyMacroFromCommand" })
+                Assert.All(macro.Where(e => e.Handler == handler), e => Assert.Equal((ReachClass.Asks, ReachReason.SendsInput), (e.Reach, e.Why)));
         }
 
         [Fact]

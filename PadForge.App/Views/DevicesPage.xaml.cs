@@ -13,8 +13,10 @@ namespace PadForge.Views
     /// connected, a search and the Show and connection segments, one list
     /// card (a table of the devices connected now, then the ones PadForge
     /// remembers folded to a line), and the selected device's
-    /// panel of four cards: the device's picture, facts and the controllers
-    /// that use it, its test, its settings and tools, and its details. Wide, the list and the panel scroll
+    /// panel of up to six cards: the device's picture, facts and the
+    /// controllers that use it, its test, its SDL Mapping for a joystick,
+    /// its settings and tools, the settings a plugin declared for a
+    /// plugin's device, and its details. Wide, the list and the panel scroll
     /// on their own. Narrower than the two need, the panel stands under the
     /// list and the page scrolls whole.</summary>
     public partial class DevicesPage : UserControl
@@ -679,15 +681,6 @@ namespace PadForge.Views
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
         }
 
-        /// <summary>
-        /// Persists the idle-disconnect minutes (#162) when the box loses focus,
-        /// through the same DevicesViewModel → DeviceService channel as the
-        /// hiding toggles. The binding is force-committed first: WPF does not
-        /// guarantee the LostFocus-triggered source update runs before this
-        /// instance handler, and when the handler won the race it persisted the
-        /// STALE value, which the next device-list sync then wrote back over
-        /// the user's edit (observed: 1 → 0 reverted to 1).
-        /// </summary>
         /// <summary>The Mouse DPI box lost focus (#600): the number goes to the
         /// row and is saved, as the idle countdown's is.</summary>
         private void MouseDpi_LostFocus(object sender, RoutedEventArgs e)
@@ -700,6 +693,15 @@ namespace PadForge.Views
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
         }
 
+        /// <summary>
+        /// Persists the idle-disconnect minutes (#162) when the box loses focus,
+        /// through the same DevicesViewModel → DeviceService channel as the
+        /// hiding toggles. The binding is force-committed first: WPF does not
+        /// guarantee the LostFocus-triggered source update runs before this
+        /// instance handler, and when the handler won the race it persisted the
+        /// STALE value, which the next device-list sync then wrote back over
+        /// the user's edit (observed: 1 → 0 reverted to 1).
+        /// </summary>
         private void IdleDisconnect_LostFocus(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.DevicesViewModel;
@@ -859,11 +861,11 @@ namespace PadForge.Views
         {
             if (SdlCard is not { Host: { } host } card || card.Instance == Guid.Empty) return;
             Guid instance = card.Instance;
-            var rows = await host.AllRowsAsync(instance);
+            var (rows, missing) = await host.AllRowsAsync(instance);
             if (card.Instance != instance) return;
             var dialog = new SdlMappingDialog(SdlMappingDialog.Mode.Find, card.DeviceName, SdlGuidOf(card),
                 host.ControllerNames(instance).ToList(), null, PadForge.Services.ControllerDatabaseController.NamedByShortcuts(instance));
-            dialog.SetRows(rows);
+            dialog.SetRows(rows, missing);
             if (SdlMappingDialog.Show(dialog, Window.GetWindow(this))) await card.ApplyAsync(dialog.PickedRow);
         }
 
@@ -902,10 +904,22 @@ namespace PadForge.Views
         private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
             => PadForge.Services.ExeFolderState.Instance.RequestMove();
 
+        // Two pairs of buttons ask for the same switch. The Input Hiding
+        // pair is a keyboard's or a mouse's Use Only in PadForge, and a
+        // touchpad's, with the give-back task. The device tools' pair moves
+        // a device that hides nothing to PadForge's WinUSB driver and back,
+        // a driver change. Each pair has handlers of its own, so each asks
+        // with its own reason (AskFirstSweepTests).
         private void DriverBind_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverBind();
 
         private void DriverRestore_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverRestore();
+
+        private void DeviceToolsDriverBind_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverBind();
+
+        private void DeviceToolsDriverRestore_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverRestore();
 
         private void ReadAsICade_Click(object sender, RoutedEventArgs e)

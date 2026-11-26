@@ -115,7 +115,11 @@ public class Strings : INotifyPropertyChanged
         }
     }
 
-    public static string Get(string key) => _rm.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+    public static string Get(string key) => (ValueSeam?.Invoke(key)) ?? _rm.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+
+    /// <summary>Test seam: a key's value as a locale would give it, or null
+    /// for the resource's own. Null in production.</summary>
+    internal static Func<string, string> ValueSeam;
 
     /// <summary>
     /// The strings that put a count before a noun, each with the string that
@@ -174,12 +178,13 @@ public class Strings : INotifyPropertyChanged
         [nameof(SdlMappingDialog_Detail_Other_Format)] = nameof(SdlMappingDialog_Detail_Other_One_Format),
         [nameof(SdlMappingDialog_Detail_PadForge_Format)] = nameof(SdlMappingDialog_Detail_PadForge_One_Format),
         [nameof(SdlMappingDialog_Detail_Guess_Format)] = nameof(SdlMappingDialog_Detail_Guess_One_Format),
-        [nameof(SdlMappingDialog_AddFound_Format)] = nameof(SdlMappingDialog_AddFound_One_Format),
-        [nameof(ControllerDatabase_Mine_Format)] = nameof(ControllerDatabase_Mine_One_Format),
+        [nameof(SdlMappingDialog_AddWindows_Format)] = nameof(SdlMappingDialog_AddWindows_One_Format),
+        [nameof(ControllerDatabase_Rows_Format)] = nameof(ControllerDatabase_Rows_One_Format),
         [nameof(ControllerDatabase_ProfileRows_Format)] = nameof(ControllerDatabase_ProfileRows_One_Format),
         [nameof(SdlMappingDialog_AddAll_Format)] = nameof(SdlMappingDialog_AddAll_One_Format),
         [nameof(SdlMappingDialog_AddSome_Format)] = nameof(SdlMappingDialog_AddSome_One_Format),
         [nameof(ControllerDatabase_BuiltInUpdatedFrom_Format)] = nameof(ControllerDatabase_BuiltInUpdatedFrom_One_Format),
+        [nameof(SdlMappingDialog_AddOther_Format)] = nameof(SdlMappingDialog_AddOther_One_Format),
     };
 
     /// <summary>The words a count is written in: the string for a count of
@@ -489,6 +494,8 @@ public class Strings : INotifyPropertyChanged
     public string Profiles_ShortcutMode_ToggleWindow => Get("Profiles_ShortcutMode_ToggleWindow");
     public string Profiles_ShortcutMode_ToggleVCsDisabled => Get("Profiles_ShortcutMode_ToggleVCsDisabled");
     public string Profiles_ShortcutDevice_Any => Get("Profiles_ShortcutDevice_Any");
+    public string Profiles_ShortcutDevice_NotConnected_Format => Get("Profiles_ShortcutDevice_NotConnected_Format");
+    public string Profiles_ShortcutDevice_Removed => Get("Profiles_ShortcutDevice_Removed");
     public string Profiles_ShortcutLearning => Get("Profiles_ShortcutLearning");
     public string Profiles_ShortcutCountdown_Format => Get("Profiles_ShortcutCountdown_Format");
     public string Profiles_Shortcut_When => Get("Profiles_Shortcut_When");
@@ -766,7 +773,6 @@ public class Strings : INotifyPropertyChanged
     public string Extras_Automation_Card_Waiting => Get("Extras_Automation_Card_Waiting");
     public string Extras_Automation_Card_Activity => Get("Extras_Automation_Card_Activity");
     public string Extras_Automation_Undo => Get("Extras_Automation_Undo");
-    public string Extras_Automation_NotSaved_Format => Get("Extras_Automation_NotSaved_Format");
     public string Extras_Automation_Note => Get("Extras_Automation_Note");
     public string Extras_Plugins_Title => Get("Extras_Plugins_Title");
     public string Extras_Plugins_Switch => Get("Extras_Plugins_Switch");
@@ -786,7 +792,15 @@ public class Strings : INotifyPropertyChanged
     public string Plugins_Replay_Position_Format => Get("Plugins_Replay_Position_Format");
     public string Plugins_Replay_DeviceName_Format => Get("Plugins_Replay_DeviceName_Format");
     public string Plugins_Replay_Filter => Get("Plugins_Replay_Filter");
-    public string Plugins_Replay_NotOpened_Format => Get("Plugins_Replay_NotOpened_Format");
+    public string Plugins_Replay_NotARecording_Format => Get("Plugins_Replay_NotARecording_Format");
+    public string Extras_Automation_NotSaved => Get("Extras_Automation_NotSaved");
+    public string Plugins_Kit_NotSaved => Get("Plugins_Kit_NotSaved");
+    public string Extras_Automation_ExportFileName_Format => Get("Extras_Automation_ExportFileName_Format");
+    public string Pad_Audio_Packages_DefaultFileName_Format => Get("Pad_Audio_Packages_DefaultFileName_Format");
+    public string Pad_Menus_IconPackages_DefaultFileName_Format => Get("Pad_Menus_IconPackages_DefaultFileName_Format");
+    public string Plugins_Replay_TooManyDevices_Format => Get("Plugins_Replay_TooManyDevices_Format");
+    public string Plugins_Replay_NoInput_Format => Get("Plugins_Replay_NoInput_Format");
+    public string Plugins_Replay_Unreadable_Format => Get("Plugins_Replay_Unreadable_Format");
     public string Plugins_Card_Yours => Get("Plugins_Card_Yours");
     public string Plugins_Add => Get("Plugins_Add");
     public string Plugins_Add_Filter => Get("Plugins_Add_Filter");
@@ -803,8 +817,13 @@ public class Strings : INotifyPropertyChanged
     public string Plugins_State_Failed => Get("Plugins_State_Failed");
     public string Plugins_Refused_Missing => Get("Plugins_Refused_Missing");
     public string Plugins_Refused_NoProgram => Get("Plugins_Refused_NoProgram");
+    public string Plugins_Refused_NoPython => Get("Plugins_Refused_NoPython");
+    public string Plugins_Refused_ProgramUnreadable => Get("Plugins_Refused_ProgramUnreadable");
+    public string Plugins_Refused_ProgramMissing => Get("Plugins_Refused_ProgramMissing");
     public string Plugins_Refused_NoShell => Get("Plugins_Refused_NoShell");
     public string Plugins_Refused_ShellElevated => Get("Plugins_Refused_ShellElevated");
+    public string Plugins_Refused_RightsUnknown => Get("Plugins_Refused_RightsUnknown");
+    public string Plugins_Refused_StartedElevated => Get("Plugins_Refused_StartedElevated");
     public string Plugins_Refused_NeedsAdministrator => Get("Plugins_Refused_NeedsAdministrator");
     public string Plugins_Refused_Failed_Format => Get("Plugins_Refused_Failed_Format");
     public string Plugins_Refused_Other => Get("Plugins_Refused_Other");
@@ -832,6 +851,7 @@ public class Strings : INotifyPropertyChanged
     public string Plugins_Row_Added_Format => Get("Plugins_Row_Added_Format");
     public string Plugins_Row_Signed_Format => Get("Plugins_Row_Signed_Format");
     public string Plugins_Row_NotSigned => Get("Plugins_Row_NotSigned");
+    public string Plugins_Row_State_Format => Get("Plugins_Row_State_Format");
     public string Plugins_Missing_NotRunning => Get("Plugins_Missing_NotRunning");
     public string Plugins_Missing_None => Get("Plugins_Missing_None");
     public string Plugins_Missing_NotConnected => Get("Plugins_Missing_NotConnected");
@@ -935,8 +955,9 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Result_UnsupportedProtocol => Get("Automation_Result_UnsupportedProtocol");
     public string Automation_Result_Denied => Get("Automation_Result_Denied");
     public string Automation_Result_Refused => Get("Automation_Result_Refused");
+    public string Automation_Result_UnnamedProgram => Get("Automation_Result_UnnamedProgram");
     public string Automation_Result_TooSoon => Get("Automation_Result_TooSoon");
-    public string Automation_Result_LimitReached => Get("Automation_Result_LimitReached");
+    public string Automation_Result_TooManyWaiting => Get("Automation_Result_TooManyWaiting");
     public string Automation_Result_UnknownTool => Get("Automation_Result_UnknownTool");
     public string Automation_Result_Stale => Get("Automation_Result_Stale");
     public string Automation_Result_UnknownSetting => Get("Automation_Result_UnknownSetting");
@@ -944,6 +965,7 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Result_Declined => Get("Automation_Result_Declined");
     public string Automation_Result_TimedOut => Get("Automation_Result_TimedOut");
     public string Automation_Result_Waiting => Get("Automation_Result_Waiting");
+    public string Automation_Result_NotAnswered => Get("Automation_Result_NotAnswered");
     public string Automation_Result_UnknownRequest => Get("Automation_Result_UnknownRequest");
     public string Automation_Result_NothingToUndo => Get("Automation_Result_NothingToUndo");
     public string Automation_Result_UsersOwn => Get("Automation_Result_UsersOwn");
@@ -1059,6 +1081,8 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Consent_NotSigned => Get("Automation_Consent_NotSigned");
     public string Automation_Consent_ReadsKeys => Get("Automation_Consent_ReadsKeys");
     public string Automation_Consent_AsksOnce => Get("Automation_Consent_AsksOnce");
+    public string Automation_Consent_StartedByUnknown => Get("Automation_Consent_StartedByUnknown");
+    public string Automation_Consent_AsksEachTime => Get("Automation_Consent_AsksEachTime");
     public string Automation_Consent_CommandLine => Get("Automation_Consent_CommandLine");
     public string Automation_Ask_SetsTo_Format => Get("Automation_Ask_SetsTo_Format");
     public string Automation_Ask_Network => Get("Automation_Ask_Network");
@@ -1074,7 +1098,6 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Prompt_Import_Title => Get("Automation_Prompt_Import_Title");
     public string Automation_Prompt_Import_Description => Get("Automation_Prompt_Import_Description");
     public string Automation_Asked_Repeated_Format => Get("Automation_Asked_Repeated_Format");
-    public string Automation_Asked_RepeatedLast_Format => Get("Automation_Asked_RepeatedLast_Format");
     public string Automation_Library_AutoHotkey => Get("Automation_Library_AutoHotkey");
     public string Automation_Library_AutoHotkey_Filter => Get("Automation_Library_AutoHotkey_Filter");
     public string Automation_Library_Python => Get("Automation_Library_Python");
@@ -1104,6 +1127,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GKeysStatus_NoSdk => Get("Settings_GKeysStatus_NoSdk");
     public string Settings_GKeysStatus_PathStale => Get("Settings_GKeysStatus_PathStale");
     public string Settings_GKeysStatus_LoadFailed => Get("Settings_GKeysStatus_LoadFailed");
+    public string Settings_GKeysStatus_Refused => Get("Settings_GKeysStatus_Refused");
     public string Settings_GKeysStatus_WrongLibrary => Get("Settings_GKeysStatus_WrongLibrary");
     public string Settings_GKeysStatus_InitRefused => Get("Settings_GKeysStatus_InitRefused");
     public string Settings_GKeysStatus_NoKeysYet => Get("Settings_GKeysStatus_NoKeysYet");
@@ -1351,14 +1375,29 @@ public class Strings : INotifyPropertyChanged
     public string Settings_StartAtLoginTip => Get("Settings_StartAtLoginTip");
     public string ExeFolder_RunsFrom_Format => Get("ExeFolder_RunsFrom_Format");
     public string ExeFolder_NeedsOwnFolder => Get("ExeFolder_NeedsOwnFolder");
+    public string ExeFolder_CouldNotProtect => Get("ExeFolder_CouldNotProtect");
     public string ExeFolder_Move => Get("ExeFolder_Move");
     public string ExeFolder_MoveTip => Get("ExeFolder_MoveTip");
     public string ExeFolder_TargetTaken_Format => Get("ExeFolder_TargetTaken_Format");
     public string ExeFolder_MoveFailed_Format => Get("ExeFolder_MoveFailed_Format");
     public string ExeFolder_StartAtLoginTurnedOff => Get("ExeFolder_StartAtLoginTurnedOff");
+    public string ExeFolder_NoProgramFiles => Get("ExeFolder_NoProgramFiles");
+    public string ExeFolder_NoImage => Get("ExeFolder_NoImage");
+    public string ExeFolder_NotMade_Format => Get("ExeFolder_NotMade_Format");
+    public string ExeFolder_Unreadable_Format => Get("ExeFolder_Unreadable_Format");
+    public string ExeFolder_NotProtected_Format => Get("ExeFolder_NotProtected_Format");
+    public string ExeFolder_CopyDiffers_Format => Get("ExeFolder_CopyDiffers_Format");
+    public string ExeFolder_NotSound_Format => Get("ExeFolder_NotSound_Format");
+    public string ExeFolder_StartAtLoginTurnedOff_ExeGone => Get("ExeFolder_StartAtLoginTurnedOff_ExeGone");
+    public string ExeFolder_StartAtLoginTurnedOff_Unprotected => Get("ExeFolder_StartAtLoginTurnedOff_Unprotected");
+    public string ExeFolder_StartAtLoginTurnedOff_Unreadable => Get("ExeFolder_StartAtLoginTurnedOff_Unreadable");
+    public string ExeFolder_StartAtLoginTurnedOff_FolderUnread => Get("ExeFolder_StartAtLoginTurnedOff_FolderUnread");
     public string Start_NoProtectedFolder_Format => Get("Start_NoProtectedFolder_Format");
     public string Start_NoProtectedRestart_Format => Get("Start_NoProtectedRestart_Format");
+    public string Start_NoLock => Get("Start_NoLock");
     public string Home_SharedFolder_Format => Get("Home_SharedFolder_Format");
+    public string Home_SharedFolderOthers_Format => Get("Home_SharedFolderOthers_Format");
+    public string Home_SharedFolderUnread_Format => Get("Home_SharedFolderUnread_Format");
     public string Settings_AlwaysShowTrayIcon => Get("Settings_AlwaysShowTrayIcon");
     public string Settings_AlwaysShowTrayIconTip => Get("Settings_AlwaysShowTrayIconTip");
     public string Settings_Updates => Get("Settings_Updates");
@@ -1404,9 +1443,12 @@ public class Strings : INotifyPropertyChanged
     public string ControllerDatabase_BuiltInUpdatedFrom_Format => Get("ControllerDatabase_BuiltInUpdatedFrom_Format");
     public string ControllerDatabase_BuiltInUpdatedFrom_One_Format => Get("ControllerDatabase_BuiltInUpdatedFrom_One_Format");
     public string ControllerDatabase_NothingChanged => Get("ControllerDatabase_NothingChanged");
+    public string ControllerDatabase_NothingChangedAt_Format => Get("ControllerDatabase_NothingChangedAt_Format");
     public string ControllerDatabase_NoNetwork_Format => Get("ControllerDatabase_NoNetwork_Format");
     public string ControllerDatabase_NoNetworkAt_Format => Get("ControllerDatabase_NoNetworkAt_Format");
     public string ControllerDatabase_Refused => Get("ControllerDatabase_Refused");
+    public string ControllerDatabase_AnswerRefused => Get("ControllerDatabase_AnswerRefused");
+    public string ControllerDatabase_AnswerRefusedAt_Format => Get("ControllerDatabase_AnswerRefusedAt_Format");
     public string Settings_StartMinimized => Get("Settings_StartMinimized");
     public string Settings_StartAtLogin => Get("Settings_StartAtLogin");
     public string Settings_HidHide => Get("Settings_HidHide");
@@ -1449,6 +1491,14 @@ public class Strings : INotifyPropertyChanged
     public string HIDMaestroUninstall_KindFolder => Get("HIDMaestroUninstall_KindFolder");
     public string HIDMaestroUninstall_KindServiceSetting => Get("HIDMaestroUninstall_KindServiceSetting");
     public string HIDMaestroUninstall_KindStep => Get("HIDMaestroUninstall_KindStep");
+    public string HIDMaestroUninstall_KindService => Get("HIDMaestroUninstall_KindService");
+    public string HIDMaestroUninstall_KindFile => Get("HIDMaestroUninstall_KindFile");
+    public string HIDMaestroUninstall_KindUpperFilter => Get("HIDMaestroUninstall_KindUpperFilter");
+    public string HIDMaestroUninstall_KindRegistryValue => Get("HIDMaestroUninstall_KindRegistryValue");
+    public string HIDMaestroUninstall_KindHardwareId => Get("HIDMaestroUninstall_KindHardwareId");
+    public string HIDMaestroUninstall_KindScheduledTask => Get("HIDMaestroUninstall_KindScheduledTask");
+    public string HIDMaestroUninstall_KindAppsEntry => Get("HIDMaestroUninstall_KindAppsEntry");
+    public string HIDMaestroUninstall_KindUsbipImport => Get("HIDMaestroUninstall_KindUsbipImport");
     public string Settings_BthPS3 => Get("Settings_BthPS3");
     public string Settings_BthPS3Desc => Get("Settings_BthPS3Desc");
     public string Settings_BthPS3Line => Get("Settings_BthPS3Line");
@@ -1511,6 +1561,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_RecordProblem_Saved_Format => Get("Settings_RecordProblem_Saved_Format");
     public string Settings_RecordProblem_Refused => Get("Settings_RecordProblem_Refused");
     public string Settings_RecordProblem_FileError_Format => Get("Settings_RecordProblem_FileError_Format");
+    public string Settings_RecordProblem_NoTempFolder => Get("Settings_RecordProblem_NoTempFolder");
+    public string Settings_RecordProblem_FolderIsLink => Get("Settings_RecordProblem_FolderIsLink");
     public string Settings_RecordProblem_Busy => Get("Settings_RecordProblem_Busy");
     public string Settings_RecordProblem_NothingKept => Get("Settings_RecordProblem_NothingKept");
     public string Settings_RecordProblem_LeftOver_Format => Get("Settings_RecordProblem_LeftOver_Format");
@@ -1575,6 +1627,17 @@ public class Strings : INotifyPropertyChanged
     public string Review_SaveTitle => Get("Review_SaveTitle");
     public string Review_SaveFilter => Get("Review_SaveFilter");
     public string Review_SaveFailed_Format => Get("Review_SaveFailed_Format");
+    public string Review_SizeKB_Format => Get("Review_SizeKB_Format");
+    public string Review_SizeMB_Format => Get("Review_SizeMB_Format");
+    public string Review_Scrub_Checking => Get("Review_Scrub_Checking");
+    public string Review_Scrub_Unread => Get("Review_Scrub_Unread");
+    public string Review_SaveNotStarted => Get("Review_SaveNotStarted");
+    public string Review_SaveNoShell => Get("Review_SaveNoShell");
+    public string Review_SaveStartRefused_Format => Get("Review_SaveStartRefused_Format");
+    public string Review_SaveTimedOut_Format => Get("Review_SaveTimedOut_Format");
+    public string Review_SaveNotWritten => Get("Review_SaveNotWritten");
+    public string Review_SaveNotOwn => Get("Review_SaveNotOwn");
+    public string Review_SaveEnded_Format => Get("Review_SaveEnded_Format");
     public string Review_Footnote => Get("Review_Footnote");
     public string Home_RecordingWaiting_Format => Get("Home_RecordingWaiting_Format");
     public string Home_RecordingWaiting_Review => Get("Home_RecordingWaiting_Review");
@@ -2115,6 +2178,7 @@ public class Strings : INotifyPropertyChanged
     public string Devices_UsedBy_New => Get("Devices_UsedBy_New");
     public string Devices_SettingsCard => Get("Devices_SettingsCard");
     public string Devices_More_TestInputs => Get("Devices_More_TestInputs");
+    public string Devices_More_ScriptNames => Get("Devices_More_ScriptNames");
     public string Devices_Pressed_Format => Get("Devices_Pressed_Format");
     public string Devices_Details_FoldHint => Get("Devices_Details_FoldHint");
     public string Devices_Details_FoldHintShort => Get("Devices_Details_FoldHintShort");
@@ -2648,6 +2712,13 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ExtendedClone_Overflow_Format => Get("Pad_ExtendedClone_Overflow_Format");
     public string ImportFromDevice_Import => Get("ImportFromDevice_Import");
     public string ImportFromDevice_UnnamedDevice => Get("ImportFromDevice_UnnamedDevice");
+    public string ImportFromDevice_DeviceDetail_Format => Get("ImportFromDevice_DeviceDetail_Format");
+    public string ImportFromDevice_DeviceDetailMaker_Format => Get("ImportFromDevice_DeviceDetailMaker_Format");
+    public string ImportFromDevice_UsageMouse => Get("ImportFromDevice_UsageMouse");
+    public string ImportFromDevice_UsageJoystick => Get("ImportFromDevice_UsageJoystick");
+    public string ImportFromDevice_UsageGamepad => Get("ImportFromDevice_UsageGamepad");
+    public string ImportFromDevice_UsageKeyboard => Get("ImportFromDevice_UsageKeyboard");
+    public string ImportFromDevice_UsageMultiAxis => Get("ImportFromDevice_UsageMultiAxis");
     public string ImportFromDevice_StatusFound_Format => Get("ImportFromDevice_StatusFound_Format");
     public string ImportFromDevice_StatusFoundOne => Get("ImportFromDevice_StatusFoundOne");
     public string ImportFromDevice_StatusEnumFailed_Format => Get("ImportFromDevice_StatusEnumFailed_Format");
@@ -2671,6 +2742,8 @@ public class Strings : INotifyPropertyChanged
     public string ManageProfiles_StatusImportFileFailed_Format => Get("ManageProfiles_StatusImportFileFailed_Format");
     public string ManageProfiles_ProblemRefused_Format => Get("ManageProfiles_ProblemRefused_Format");
     public string ManageProfiles_ProblemNoDescriptor => Get("ManageProfiles_ProblemNoDescriptor");
+    public string ManageProfiles_ProblemNotChecked_Format => Get("ManageProfiles_ProblemNotChecked_Format");
+    public string ManageProfiles_StatusChecking => Get("ManageProfiles_StatusChecking");
     public string ManageProfiles_StatusImportRefused_Format => Get("ManageProfiles_StatusImportRefused_Format");
     public string Pad_ExtendedCustomize => Get("Pad_ExtendedCustomize");
     public string Pad_ExtendedCustomizeTooltip => Get("Pad_ExtendedCustomizeTooltip");
@@ -4740,6 +4813,7 @@ public class Strings : INotifyPropertyChanged
     public string App_FatalError => Get("App_FatalError");
     public string App_Error => Get("App_Error");
     public string App_UnexpectedError_Format => Get("App_UnexpectedError_Format");
+    public string App_UnexpectedErrorNotWritten_Format => Get("App_UnexpectedErrorNotWritten_Format");
     public string App_SuppressedErrors_Format => Get("App_SuppressedErrors_Format");
     public string Dashboard_PollingHz_Format => Get("Dashboard_PollingHz_Format");
     public string Dashboard_PollingDash => Get("Dashboard_PollingDash");
@@ -5755,6 +5829,17 @@ public class Strings : INotifyPropertyChanged
     public string KeyboardScreens_Status_G19OtherDriver_Format => Get("KeyboardScreens_Status_G19OtherDriver_Format");
     public string KeyboardScreens_Status_G19ForeignDriver_Format => Get("KeyboardScreens_Status_G19ForeignDriver_Format");
     public string KeyboardScreens_Status_ArxNoLibrary => Get("KeyboardScreens_Status_ArxNoLibrary");
+    public string KeyboardScreens_Status_ArxRefused => Get("KeyboardScreens_Status_ArxRefused");
+    public string Ds3Pair_Step_Drivers => Get("Ds3Pair_Step_Drivers");
+    public string Ds3Pair_Step_Radio => Get("Ds3Pair_Step_Radio");
+    public string Ds3Pair_Step_Usb => Get("Ds3Pair_Step_Usb");
+    public string Ds3Pair_Step_Write => Get("Ds3Pair_Step_Write");
+    public string Ds3Pair_Step_Register => Get("Ds3Pair_Step_Register");
+    public string Ds3Pair_Step_Restart => Get("Ds3Pair_Step_Restart");
+    public string Ds3Pair_FaultAccess => Get("Ds3Pair_FaultAccess");
+    public string Ds3Pair_FaultDevice => Get("Ds3Pair_FaultDevice");
+    public string Ds3Pair_FaultOther => Get("Ds3Pair_FaultOther");
+    public string KeyboardScreens_Status_ArxLoadFailed => Get("KeyboardScreens_Status_ArxLoadFailed");
     public string KeyboardScreens_Status_ArxNotRunning => Get("KeyboardScreens_Status_ArxNotRunning");
     public string KeyboardScreens_Status_ArxWaiting => Get("KeyboardScreens_Status_ArxWaiting");
     public string KeyboardScreens_Status_ArxOnPhone => Get("KeyboardScreens_Status_ArxOnPhone");
@@ -5857,6 +5942,8 @@ public class Strings : INotifyPropertyChanged
     public string Falcon_PickLibrary => Get("Falcon_PickLibrary");
     public string Falcon_PickLibrary_Tooltip => Get("Falcon_PickLibrary_Tooltip");
     public string Falcon_LibraryFilter => Get("Falcon_LibraryFilter");
+    public string Falcon_DownloadNotOpened_Format => Get("Falcon_DownloadNotOpened_Format");
+    public string Falcon_DownloadNotAnswered_Format => Get("Falcon_DownloadNotAnswered_Format");
     public string Falcon_InstallDriver => Get("Falcon_InstallDriver");
     public string Falcon_InstallDriver_Tooltip => Get("Falcon_InstallDriver_Tooltip");
     public string Falcon_OpenDownload => Get("Falcon_OpenDownload");
@@ -6435,12 +6522,17 @@ public class Strings : INotifyPropertyChanged
     public string Extras_Automation_State_Removing => Get("Extras_Automation_State_Removing");
     public string Extras_Automation_State_Updating => Get("Extras_Automation_State_Updating");
     public string Extras_Automation_State_Failed_Format => Get("Extras_Automation_State_Failed_Format");
+    public string Extras_Automation_State_KeptBoth_Format => Get("Extras_Automation_State_KeptBoth_Format");
+    public string Extras_Automation_State_KeptEntry_Format => Get("Extras_Automation_State_KeptEntry_Format");
+    public string Extras_Automation_State_KeptSkill_Format => Get("Extras_Automation_State_KeptSkill_Format");
+    public string Extras_Automation_State_SettingsUnreadable_Format => Get("Extras_Automation_State_SettingsUnreadable_Format");
+    public string Extras_Automation_State_SkillUnreadable => Get("Extras_Automation_State_SkillUnreadable");
     public string Extras_Automation_OtherAssistants => Get("Extras_Automation_OtherAssistants");
     public string Extras_Automation_OtherAssistantsHint => Get("Extras_Automation_OtherAssistantsHint");
     public string Extras_Automation_CopySettings => Get("Extras_Automation_CopySettings");
     public string Extras_Automation_CopyMessage => Get("Extras_Automation_CopyMessage");
     public string Extras_Automation_Copied => Get("Extras_Automation_Copied");
-    public string Extras_Automation_NotCopied_Format => Get("Extras_Automation_NotCopied_Format");
+    public string Extras_Automation_NotCopied => Get("Extras_Automation_NotCopied");
     public string Extras_Automation_Message_Format => Get("Extras_Automation_Message_Format");
     public string Extras_Automation_Message_Off => Get("Extras_Automation_Message_Off");
     public string Extras_Automation_Card_Allowed => Get("Extras_Automation_Card_Allowed");
@@ -6461,6 +6553,8 @@ public class Strings : INotifyPropertyChanged
     public string SdlMapping_ReadRaw => Get("SdlMapping_ReadRaw");
     public string SdlMapping_PadForgeDeviceMapped => Get("SdlMapping_PadForgeDeviceMapped");
     public string SdlMapping_Stopped => Get("SdlMapping_Stopped");
+    public string SdlMapping_Away => Get("SdlMapping_Away");
+    public string SdlMapping_NoAnswer => Get("SdlMapping_NoAnswer");
     public string SdlMapping_From_Sdl => Get("SdlMapping_From_Sdl");
     public string SdlMapping_From_Community_Format => Get("SdlMapping_From_Community_Format");
     public string SdlMapping_From_Downloaded_Format => Get("SdlMapping_From_Downloaded_Format");
@@ -6498,6 +6592,11 @@ public class Strings : INotifyPropertyChanged
     public string SdlMapping_LeftOut_Actions => Get("SdlMapping_LeftOut_Actions");
     public string SdlMapping_ListAnd_Format => Get("SdlMapping_ListAnd_Format");
     public string SdlMapping_CopyNothing => Get("SdlMapping_CopyNothing");
+    public string SdlMapping_CopyUnreadable => Get("SdlMapping_CopyUnreadable");
+    public string SdlMapping_CopyNothingInRows_Format => Get("SdlMapping_CopyNothingInRows_Format");
+    public string SdlMapping_CopyOnlyLeftOut_Format => Get("SdlMapping_CopyOnlyLeftOut_Format");
+    public string SdlMapping_CopyNotRead => Get("SdlMapping_CopyNotRead");
+    public string SdlMapping_CopyNotReadInRows_Format => Get("SdlMapping_CopyNotReadInRows_Format");
     public string SdlMapping_ClipboardBusy => Get("SdlMapping_ClipboardBusy");
     public string SdlMapping_Removed => Get("SdlMapping_Removed");
     public string SdlMapping_MappedAgain_Format => Get("SdlMapping_MappedAgain_Format");
@@ -6518,6 +6617,8 @@ public class Strings : INotifyPropertyChanged
     public string SdlMappingDialog_FindList => Get("SdlMappingDialog_FindList");
     public string SdlMappingDialog_FindNone => Get("SdlMappingDialog_FindNone");
     public string SdlMappingDialog_FindNote_Format => Get("SdlMappingDialog_FindNote_Format");
+    public string SdlMappingDialog_FindStopped => Get("SdlMappingDialog_FindStopped");
+    public string SdlMappingDialog_FindNoAnswer => Get("SdlMappingDialog_FindNoAnswer");
     public string SdlMappingDialog_RowBox => Get("SdlMappingDialog_RowBox");
     public string SdlMappingDialog_ForThisDevice => Get("SdlMappingDialog_ForThisDevice");
     public string SdlMappingDialog_GuessLead => Get("SdlMappingDialog_GuessLead");
@@ -6530,14 +6631,17 @@ public class Strings : INotifyPropertyChanged
     public string SdlMappingDialog_Detail_SameProduct_One_Format => Get("SdlMappingDialog_Detail_SameProduct_One_Format");
     public string SdlMappingDialog_Detail_Other_One_Format => Get("SdlMappingDialog_Detail_Other_One_Format");
     public string SdlMappingDialog_Detail_PadForge_One_Format => Get("SdlMappingDialog_Detail_PadForge_One_Format");
+    public string SdlMappingDialog_Detail_LeftOut_Format => Get("SdlMappingDialog_Detail_LeftOut_Format");
     public string SdlMappingDialog_Detail_Guess_One_Format => Get("SdlMappingDialog_Detail_Guess_One_Format");
     public string SdlMappingDialog_Remaps_Format => Get("SdlMappingDialog_Remaps_Format");
     public string SdlMappingDialog_NoController_Format => Get("SdlMappingDialog_NoController_Format");
     public string SdlMappingDialog_Shortcuts_Format => Get("SdlMappingDialog_Shortcuts_Format");
     public string SdlMappingDialog_Note => Get("SdlMappingDialog_Note");
     public string SdlMappingDialog_AddNote => Get("SdlMappingDialog_AddNote");
-    public string SdlMappingDialog_AddFound_Format => Get("SdlMappingDialog_AddFound_Format");
-    public string SdlMappingDialog_AddFound_One_Format => Get("SdlMappingDialog_AddFound_One_Format");
+    public string SdlMappingDialog_AddWindows_Format => Get("SdlMappingDialog_AddWindows_Format");
+    public string SdlMappingDialog_AddWindows_One_Format => Get("SdlMappingDialog_AddWindows_One_Format");
+    public string SdlMappingDialog_AddOther_Format => Get("SdlMappingDialog_AddOther_Format");
+    public string SdlMappingDialog_AddOther_One_Format => Get("SdlMappingDialog_AddOther_One_Format");
     public string SdlMappingDialog_AddAll_Format => Get("SdlMappingDialog_AddAll_Format");
     public string SdlMappingDialog_AddAll_One_Format => Get("SdlMappingDialog_AddAll_One_Format");
     public string SdlMappingDialog_AddSome_Format => Get("SdlMappingDialog_AddSome_Format");
@@ -6547,7 +6651,7 @@ public class Strings : INotifyPropertyChanged
     public string SdlMappingDialog_Refused_NotARow => Get("SdlMappingDialog_Refused_NotARow");
     public string SdlMappingDialog_Refused_OtherPlatform => Get("SdlMappingDialog_Refused_OtherPlatform");
     public string SdlMappingDialog_Refused_BadId => Get("SdlMappingDialog_Refused_BadId");
-    public string SdlMappingDialog_Refused_BadName => Get("SdlMappingDialog_Refused_BadName");
+    public string SdlMappingDialog_Refused_Name => Get("SdlMappingDialog_Refused_Name");
     public string SdlMappingDialog_Refused_Hint => Get("SdlMappingDialog_Refused_Hint");
     public string SdlMappingDialog_Refused_UnknownField => Get("SdlMappingDialog_Refused_UnknownField");
     public string SdlMappingDialog_Refused_BadBinding => Get("SdlMappingDialog_Refused_BadBinding");
@@ -6558,8 +6662,8 @@ public class Strings : INotifyPropertyChanged
     public string ControllerDatabase_YourRows => Get("ControllerDatabase_YourRows");
     public string ControllerDatabase_YourRowsTip => Get("ControllerDatabase_YourRowsTip");
     public string ControllerDatabase_AddRows => Get("ControllerDatabase_AddRows");
-    public string ControllerDatabase_Mine_Format => Get("ControllerDatabase_Mine_Format");
-    public string ControllerDatabase_Mine_One_Format => Get("ControllerDatabase_Mine_One_Format");
+    public string ControllerDatabase_Rows_Format => Get("ControllerDatabase_Rows_Format");
+    public string ControllerDatabase_Rows_One_Format => Get("ControllerDatabase_Rows_One_Format");
     public string ControllerDatabase_MineNone => Get("ControllerDatabase_MineNone");
     public string ControllerDatabase_ProfileRows_Format => Get("ControllerDatabase_ProfileRows_Format");
     public string ControllerDatabase_ProfileRows_One_Format => Get("ControllerDatabase_ProfileRows_One_Format");
@@ -6569,7 +6673,7 @@ public class Strings : INotifyPropertyChanged
     public string ControllerDatabase_DownloadFromChange => Get("ControllerDatabase_DownloadFromChange");
     public string ControllerDatabase_UseCommunityFile => Get("ControllerDatabase_UseCommunityFile");
     public string ControllerDatabase_DownloadFromBox => Get("ControllerDatabase_DownloadFromBox");
-    public string ControllerDatabase_DownloadFromRefused => Get("ControllerDatabase_DownloadFromRefused");
+    public string ControllerDatabase_DownloadFromRule => Get("ControllerDatabase_DownloadFromRule");
     public string Web_Reach_Label => Get("Web_Reach_Label");
     public string Web_Reach_Hint => Get("Web_Reach_Hint");
     public string Web_Reach_Ask_Title => Get("Web_Reach_Ask_Title");
@@ -6586,7 +6690,7 @@ public class Strings : INotifyPropertyChanged
     public string Web_Tunnel_Stopped_Format => Get("Web_Tunnel_Stopped_Format");
     public string Web_Tunnel_Failed => Get("Web_Tunnel_Failed");
     public string Web_Tunnel_Missing => Get("Web_Tunnel_Missing");
-    public string Web_Tunnel_NoneFound => Get("Web_Tunnel_NoneFound");
+    public string Web_Tunnel_NoProgramFound => Get("Web_Tunnel_NoProgramFound");
     public string Web_Tunnel_Choose => Get("Web_Tunnel_Choose");
     public string Web_Tunnel_AlsoFound_Format => Get("Web_Tunnel_AlsoFound_Format");
     public string Web_Tunnel_Keeps_Format => Get("Web_Tunnel_Keeps_Format");
@@ -6594,7 +6698,7 @@ public class Strings : INotifyPropertyChanged
     public string Web_Tunnel_Paste_Hint_Format => Get("Web_Tunnel_Paste_Hint_Format");
     public string Web_Tunnel_Paste_Wrong => Get("Web_Tunnel_Paste_Wrong");
     public string Web_Helper_Starting => Get("Web_Helper_Starting");
-    public string Web_Helper_Stopped_Format => Get("Web_Helper_Stopped_Format");
+    public string Web_Helper_Retrying_Format => Get("Web_Helper_Retrying_Format");
     public string Web_Address_Label => Get("Web_Address_Label");
     public string Web_Address_None => Get("Web_Address_None");
     public string Web_Address_AddToClaude => Get("Web_Address_AddToClaude");
@@ -6633,11 +6737,6 @@ public class Strings : INotifyPropertyChanged
     public string Web_Helper_Why_Ended_Format => Get("Web_Helper_Why_Ended_Format");
     public string Web_Helper_AutomationOff => Get("Web_Helper_AutomationOff");
     public string Extras_Automation_Scripts_Checking => Get("Extras_Automation_Scripts_Checking");
-    public string Extras_Automation_Scripts_NotInstalled => Get("Extras_Automation_Scripts_NotInstalled");
-    public string Extras_Automation_Scripts_Current_Format => Get("Extras_Automation_Scripts_Current_Format");
-    public string Extras_Automation_Scripts_CurrentFor_Format => Get("Extras_Automation_Scripts_CurrentFor_Format");
-    public string Extras_Automation_Scripts_Older => Get("Extras_Automation_Scripts_Older");
-    public string Extras_Automation_Scripts_OlderFor_Format => Get("Extras_Automation_Scripts_OlderFor_Format");
     public string Extras_Automation_Scripts_Installing => Get("Extras_Automation_Scripts_Installing");
     public string Extras_Automation_Scripts_CheckFailed_Format => Get("Extras_Automation_Scripts_CheckFailed_Format");
     public string Extras_Automation_Scripts_Hint => Get("Extras_Automation_Scripts_Hint");
@@ -6645,8 +6744,27 @@ public class Strings : INotifyPropertyChanged
     public string Extras_Automation_Scripts_Installed => Get("Extras_Automation_Scripts_Installed");
     public string Extras_Automation_Scripts_RemoveAll => Get("Extras_Automation_Scripts_RemoveAll");
     public string Extras_Automation_Scripts_Removed => Get("Extras_Automation_Scripts_Removed");
+    public string Extras_Automation_Scripts_State_Current_Format => Get("Extras_Automation_Scripts_State_Current_Format");
+    public string Extras_Automation_Scripts_State_Older_Format => Get("Extras_Automation_Scripts_State_Older_Format");
+    public string Extras_Automation_Scripts_State_Missing_Format => Get("Extras_Automation_Scripts_State_Missing_Format");
+    public string Extras_Automation_Scripts_State_CurrentOlder_Format => Get("Extras_Automation_Scripts_State_CurrentOlder_Format");
+    public string Extras_Automation_Scripts_State_CurrentMissing_Format => Get("Extras_Automation_Scripts_State_CurrentMissing_Format");
+    public string Extras_Automation_Scripts_State_OlderMissing_Format => Get("Extras_Automation_Scripts_State_OlderMissing_Format");
+    public string Extras_Automation_Scripts_State_CurrentOlderMissing_Format => Get("Extras_Automation_Scripts_State_CurrentOlderMissing_Format");
+    public string Extras_Automation_Reason_NotStarted => Get("Extras_Automation_Reason_NotStarted");
+    public string Extras_Automation_Reason_TimedOut_Format => Get("Extras_Automation_Reason_TimedOut_Format");
+    public string Extras_Automation_Reason_ExitCode_Format => Get("Extras_Automation_Reason_ExitCode_Format");
+    public string Extras_Automation_Reason_SettingsUnreadable_Format => Get("Extras_Automation_Reason_SettingsUnreadable_Format");
+    public string Extras_Automation_Reason_NotOurs_Format => Get("Extras_Automation_Reason_NotOurs_Format");
+    public string Extras_Automation_Reason_NoDocuments => Get("Extras_Automation_Reason_NoDocuments");
+    public string Extras_Automation_Reason_NoUserFolder_Format => Get("Extras_Automation_Reason_NoUserFolder_Format");
+    public string Extras_Automation_Reason_HostCommandFailed_Format => Get("Extras_Automation_Reason_HostCommandFailed_Format");
+    public string Extras_Automation_Reason_HostCommandMissing_Format => Get("Extras_Automation_Reason_HostCommandMissing_Format");
+    public string Extras_Automation_Reason_FileRefused => Get("Extras_Automation_Reason_FileRefused");
+    public string Extras_Automation_Reason_NoPython => Get("Extras_Automation_Reason_NoPython");
+    public string Extras_Automation_Reason_NoPythonAnswered_Format => Get("Extras_Automation_Reason_NoPythonAnswered_Format");
+    public string Extras_Automation_Reason_Other => Get("Extras_Automation_Reason_Other");
     public string Devices_ScriptId => Get("Devices_ScriptId");
-    public string Devices_More_ScriptId => Get("Devices_More_ScriptId");
     public string Devices_ScriptNames_Format => Get("Devices_ScriptNames_Format");
     public string Devices_ScriptKeys => Get("Devices_ScriptKeys");
     public string Net_Caller_Format => Get("Net_Caller_Format");
@@ -6658,11 +6776,11 @@ public class Strings : INotifyPropertyChanged
     public string Net_Reach_Ask_Body => Get("Net_Reach_Ask_Body");
     public string Net_Port_Label => Get("Net_Port_Label");
     public string Net_Port_Change => Get("Net_Port_Change");
-    public string Net_Note => Get("Net_Note");
+    public string Net_Note_Rule => Get("Net_Note_Rule");
     public string Net_Port_Taken_Format => Get("Net_Port_Taken_Format");
-    public string Net_Port_Denied_Format => Get("Net_Port_Denied_Format");
+    public string Net_Port_NoReservation_Format => Get("Net_Port_NoReservation_Format");
     public string Net_Port_Failed_Format => Get("Net_Port_Failed_Format");
-    public string Net_Helper_Stopped_Format => Get("Net_Helper_Stopped_Format");
+    public string Net_Helper_Retrying_Format => Get("Net_Helper_Retrying_Format");
     public string Net_Helper_AutomationOff => Get("Net_Helper_AutomationOff");
     public string Net_NoAddress => Get("Net_NoAddress");
     public string Net_Keys_Label => Get("Net_Keys_Label");
@@ -6706,11 +6824,12 @@ public class Strings : INotifyPropertyChanged
     public string Reach_Pick_Title => Get("Reach_Pick_Title");
     public string Reach_Pick_Subtitle_Format => Get("Reach_Pick_Subtitle_Format");
     public string Reach_Pick_None => Get("Reach_Pick_None");
-    public string Web_ChatGpt_Ready => Get("Web_ChatGpt_Ready");
-    public string Web_ChatGpt_Running => Get("Web_ChatGpt_Running");
+    public string Web_ChatGpt_ReadyReported => Get("Web_ChatGpt_ReadyReported");
+    public string Web_ChatGpt_NotReadyYet => Get("Web_ChatGpt_NotReadyYet");
     public string Web_ChatGpt_Downloading => Get("Web_ChatGpt_Downloading");
     public string Web_ChatGpt_DownloadFailed_Format => Get("Web_ChatGpt_DownloadFailed_Format");
     public string Web_ChatGpt_Needs => Get("Web_ChatGpt_Needs");
+    public string Web_ChatGpt_Missing => Get("Web_ChatGpt_Missing");
     public string Web_ChatGpt_KeyLabel => Get("Web_ChatGpt_KeyLabel");
     public string Web_ChatGpt_KeyHint => Get("Web_ChatGpt_KeyHint");
     public string Web_ChatGpt_MakeOne => Get("Web_ChatGpt_MakeOne");
@@ -6719,6 +6838,8 @@ public class Strings : INotifyPropertyChanged
     public string Web_ChatGpt_Open => Get("Web_ChatGpt_Open");
     public string Web_ChatGpt_Footnote => Get("Web_ChatGpt_Footnote");
     public string Web_ChatGpt_KeyNotKept => Get("Web_ChatGpt_KeyNotKept");
+    public string Web_ChatGpt_KeyHelperEnded => Get("Web_ChatGpt_KeyHelperEnded");
+    public string Web_ChatGpt_KeyNotEncrypted => Get("Web_ChatGpt_KeyNotEncrypted");
     public string Answer_Label => Get("Answer_Label");
     public string Answer_Hint => Get("Answer_Hint");
     public string Answer_Where => Get("Answer_Where");
@@ -6736,6 +6857,7 @@ public class Strings : INotifyPropertyChanged
     public string Answer_Pair_Until_Format => Get("Answer_Pair_Until_Format");
     public string Answer_Pair_Starting => Get("Answer_Pair_Starting");
     public string Answer_Pair_NoPage_Format => Get("Answer_Pair_NoPage_Format");
+    public string Answer_NoPrivateAddress => Get("Answer_NoPrivateAddress");
     public string Answer_Pair_NotHidden => Get("Answer_Pair_NotHidden");
     public string Answer_Pair_CodeClosed_Format => Get("Answer_Pair_CodeClosed_Format");
     public string Answer_Pair_Ended_Expired => Get("Answer_Pair_Ended_Expired");

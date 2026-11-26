@@ -50,8 +50,8 @@ namespace PadForge.Common
     /// element carries in the markup (#600): <c>common:Reach.Class</c> on a
     /// page's, a dialog's or a window's root, and on any part below it that
     /// differs, with <c>common:Reach.Why</c> where it asks. An element's
-    /// class is the nearest one set on it or above it
-    /// (<see cref="Of"/>). Search's index reads the same attributes from
+    /// class is the strictest one set on it or above it, and its reason the
+    /// one set beside the nearest of those (<see cref="Of"/>). Search's index reads the same attributes from
     /// the same markup (SearchIndexBuilder), so a catalog entry and its
     /// element always carry one class.
     ///

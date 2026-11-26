@@ -264,6 +264,14 @@ namespace PadForge.Engine
         private int _lastLed = -1;
         private int _lastPlayer = -1;
 
+        /// <summary>The player number the browser shows now, 0 or below for
+        /// none (#600).</summary>
+        public int ShownPlayer => _lastPlayer;
+
+        /// <summary>Whether the browser shows a lit bar now: a color other
+        /// than black was set (#600).</summary>
+        public bool ShowsLight => _lastLed > 0;
+
         /// <summary>Sets the lightbar color shown on the browser client.</summary>
         public void SetLed(byte r, byte g, byte b)
         {

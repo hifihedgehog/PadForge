@@ -42,6 +42,15 @@ namespace PadForge.Views
         /// not have. Null in the app.</summary>
         internal static Func<IntPtr, WorkArea> MonitorSeam;
 
+        /// <summary>Test seam: true reads every monitor as one Windows
+        /// cannot describe, as GetMonitorInfo fails for a monitor that went
+        /// away between the two calls. False in the app.</summary>
+        internal static bool MonitorUnreadSeam;
+
+        /// <summary>Test seam: the system's dots per inch, in place of
+        /// GetDpiForSystem. Null in the app.</summary>
+        internal static Func<uint> SystemDpiSeam;
+
         /// <summary>Room the flyout's panel, border, padding and glyph take
         /// beside its line, and 16 more to keep it off the monitor's
         /// sides, in DIPs.</summary>
@@ -80,6 +89,15 @@ namespace PadForge.Views
 
         [DllImport("shcore.dll")]
         private static extern int GetDpiForMonitor(IntPtr hmonitor, int dpiType, out uint dpiX, out uint dpiY);
+
+        [DllImport("user32.dll")]
+        private static extern uint GetDpiForSystem();
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SystemParametersInfo(uint action, uint param, ref RECT rect, uint winIni);
+
+        private const uint SPI_GETWORKAREA = 0x0030;
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -151,11 +169,19 @@ namespace PadForge.Views
                 ? MonitorFromWindow(window, MONITOR_DEFAULTTONEAREST)
                 : MonitorFromPoint(new POINT(), MONITOR_DEFAULTTOPRIMARY);
             var info = new MONITORINFO { cbSize = Marshal.SizeOf<MONITORINFO>() };
-            if (monitor == IntPtr.Zero || !GetMonitorInfo(monitor, ref info))
+            if (monitor == IntPtr.Zero || MonitorUnreadSeam || !GetMonitorInfo(monitor, ref info))
             {
-                // What WPF knows of the primary monitor, at the scale of 1.
+                // The primary monitor's work area in its pixels, which WPF
+                // reads with SPI_GETWORKAREA and then turns into DIPs at the
+                // system's scale (SystemParameters.WorkArea), and that scale.
+                double system = (SystemDpiSeam != null ? SystemDpiSeam() : GetDpiForSystem()) / 96.0;
+                if (system <= 0) system = 1.0;
+                var work = new RECT();
+                if (SystemParametersInfo(SPI_GETWORKAREA, 0, ref work, 0))
+                    return new WorkArea(work.Left, work.Top, work.Right, work.Bottom, system);
                 var area = SystemParameters.WorkArea;
-                return new WorkArea((int)area.Left, (int)area.Top, (int)area.Right, (int)area.Bottom, 1.0);
+                return new WorkArea((int)Math.Round(area.Left * system), (int)Math.Round(area.Top * system),
+                    (int)Math.Round(area.Right * system), (int)Math.Round(area.Bottom * system), system);
             }
             double scale = GetDpiForMonitor(monitor, MDT_EFFECTIVE_DPI, out uint dpiX, out _) == 0 ? dpiX / 96.0 : 1.0;
             return new WorkArea(info.rcWork.Left, info.rcWork.Top, info.rcWork.Right, info.rcWork.Bottom, scale);

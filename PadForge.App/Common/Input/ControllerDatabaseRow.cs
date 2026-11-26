@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// One Windows row of the community controller database (#597), held to
+    /// One Windows row of the community controller database (#600), held to
     /// the form PadForge's own rows are held to (GamepadMappingFileTests) and
     /// to the limits a row from the network needs: a controller ID in the USB
     /// form with a vendor and a product, a name of at most 128 characters,

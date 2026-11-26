@@ -25,6 +25,21 @@ namespace PadForge.Tests
         }
     }
 
+    /// <summary>A library written into a test's own folder through the
+    /// install's writer in this process, as <c>--install</c> writes it for
+    /// the user. The app's Save a Library starts that copy with the user's
+    /// rights, which a test does not.</summary>
+    internal static class LibraryFiles
+    {
+        internal static void Write(AutomationLibraryKind kind, string path)
+        {
+            string error = null;
+            int code = PadForge.Services.Install.UserInstall.Run(
+                new PadForge.Services.Install.InstallRequest(AutomationLibraries.WhatOf(kind), path), _ => { }, e => error = e);
+            if (code != PadForge.Services.Install.UserInstall.Done) throw new IOException(error ?? "The library was not written.");
+        }
+    }
+
     /// <summary>
     /// The script libraries PadForge carries (#597): each is saved where the
     /// user says, opens with what it is, and works against a real host on a
@@ -105,7 +120,7 @@ namespace PadForge.Tests
                     Assert.EndsWith("|*" + Path.GetExtension(library.FileName), library.Filter);
                     string path = Path.Combine(dir, library.FileName);
                     File.WriteAllText(path, "old");
-                    AutomationLibraries.Save(library.Kind, path);
+                    LibraryFiles.Write(library.Kind, path);
                     byte[] saved = File.ReadAllBytes(path);
                     Assert.Equal(AutomationLibraries.Read(library.Kind), saved);
                     string text = Encoding.UTF8.GetString(saved);
@@ -117,7 +132,7 @@ namespace PadForge.Tests
                     Assert.Contains("Example", head);
                     Assert.DoesNotContain("\t", text);
                 }
-                Assert.Throws<ArgumentException>(() => AutomationLibraries.Save(AutomationLibraryKind.Python, " "));
+                Assert.Throws<ArgumentException>(() => ((IAutomationLibraries)AutomationLibraries.Instance).Save(AutomationLibraryKind.Python, " "));
             }
             finally
             {
@@ -133,7 +148,7 @@ namespace PadForge.Tests
                 string text = Encoding.UTF8.GetString(AutomationLibraries.Read(library.Kind));
                 Assert.Contains("PadForge is not running.", text);
                 Assert.Contains("PadForge is running, but Automation is off. Turn it on in Extras, Automation.", text);
-                Assert.Contains("too low for it. Raise it in Extras, Automation.", text);
+                Assert.Contains("which does not allow it.", text);
                 Assert.Contains("PadForge.Instance", text);
             }
         }

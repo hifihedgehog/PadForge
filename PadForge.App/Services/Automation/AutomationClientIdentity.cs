@@ -26,7 +26,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// Who is at the other end of the Automation pipe (#597). The decision is
+    /// Who is at the other end of the Automation pipe (#600). The decision is
     /// made from the token Windows hands the server, never from the process
     /// ID, which a program can stage (Project Zero, 2019). The server
     /// impersonates the client for the read and reads the user, the session,
@@ -102,7 +102,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>The user of a token, as a SID string, or null. The one
         /// reader of a token's user: a pipe client's here, and each session's
-        /// user in the logon start (#597).</summary>
+        /// user in the logon start (#600).</summary>
         internal static string ReadUser(IntPtr token)
         {
             GetTokenInformation(token, TokenUser, IntPtr.Zero, 0, out int size);
@@ -204,8 +204,12 @@ namespace PadForge.Services.Automation
     /// The process at the other end of a connection, held open for as long
     /// as the connection lasts, so a process ID Windows hands to a new
     /// program after this one exits is never shown as the program that
-    /// connected (GameModSender's pattern). The ID, the image's path and its
-    /// signer are for the user's eyes and decide nothing.
+    /// connected (GameModSender's pattern). The ID and the signer are for
+    /// the user's eyes. The image's path is the program's consent key
+    /// (AutomationConsent.Identify), so it decides the level a grant the
+    /// user kept gives with no card. Consent is no barrier against software
+    /// already running as the user, which can start an allowed program
+    /// itself.
     /// </summary>
     internal sealed class AutomationClientProcess : IDisposable
     {
@@ -268,7 +272,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>The process ID of the pipe's client, or 0 when it cannot
         /// be read. The one reader of it: the Automation pipe, the control
-        /// pipe and the library host's channels (#597).</summary>
+        /// pipe and the library host's channels (#600).</summary>
         internal static int IdOf(NamedPipeServerStream server)
         {
             try

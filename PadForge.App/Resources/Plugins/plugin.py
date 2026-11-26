@@ -1,11 +1,11 @@
 """A PadForge plugin in Python, from the PadForge Plugin Kit.
 
 To run it, keep this file beside padforge.py, which the kit carries too, and
-add it in PadForge: Extras, Plugins, Add a Plugin..., then pick this file, or
+add it in PadForge: Extras, Plugins, Add a Plugin…, then pick this file, or
 drop it on that page. PadForge shows the file, its signer and its SHA-256,
 and runs it with your ordinary rights whenever the engine runs, in the Python
-Windows opens .py files with. An edited file shows Approve and Restart on its
-card.
+Windows opens .py files with for you, or in the py launcher when Windows names
+none. An edited file shows Approve and Restart on its card.
 
 What it does: it connects as a plugin with the one-time key PadForge put in
 its environment, declares a controller with two buttons, a stick and rumble,

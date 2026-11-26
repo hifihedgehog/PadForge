@@ -282,6 +282,8 @@
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Perfil spesífiko</value></data>
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Mustra òf skonde PadForge</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Kualke aparato konektá</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (no konektá)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Un aparato ku no ta riba e página Aparatonan</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ta graba…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ora</value></data>
@@ -422,8 +424,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>E programa ta papia un vershon ku PadForge no konosé</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge no a duna e yabi di plugin ei</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge no a aseptá e konekshon di e programa aki</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge no a traha ningun aparato, pasobra Windows no a duna e nòmber di e archivo di e programa</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A pidi atrobe muchu lihé</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>No mas di esakinan te ora PadForge kuminsá di nobo</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Muchu di e tipo aki ku programa a laga warda pa bo revisá riba Inisio</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge no tin e hèrmèntè ei</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>E programa a lesa un estado mas bieu</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nada no tin e ID ei</value></data>
@@ -431,6 +434,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Bo no a permití esaki</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ningun hende no a kontestá na tempu</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ta warda bo kontesta</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Bo no a kontestá ainda</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>E petishon no ta eksistí</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nada pa deshasí</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Solamente bo por kambia esaki</value></data>
@@ -553,7 +557,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Trese un perfil over</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importá un archivo di perfil for di otro programa, despues mira kiko a pasa over.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} biaha</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, e último di {1} parecido</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa teklanan G di Logitech</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
   <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
@@ -604,14 +607,28 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Kuminsá PadForge outomátikamente ora bo drenta Windows. Miéntras esaki ta sendé, PadForge ta kuminsá tambe sin e pregunta di Windows for di un ataho, un script òf otro programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ta kore for di {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Esaki ta nesesitá PadForge den su mes mapa. Su mapa tin otro archivo, p'esei PadForge no por stroba otro programa di kambi'é.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Esaki ta nesesitá PadForge den un mapa ku otro programa no por kambia. PadForge no por a stroba nan di kambia su mapa.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Move PadForge na su mes mapa</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Ta kopia PadForge i su konfigurashon na Program Files, ta pone su tareanan apunta einan, i ta kuminsá e for di einan. E kopia aki ta keda manera e ta.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no a move: {0} tin archivo ku no ta di PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no a move: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>A paga Start at Login, pasobra e tabata kore PadForge for di un mapa ku tin otro archivo.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge no a move: Windows no ta nombra ningun mapa Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge no a move: e no por a lesa e PadForge ku ta kore.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge no a move: e no por a traha {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge no a move: e no por a lesa loke {0} tin.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge no a move: e no por a stroba otro programa di kambia {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge no a move: su kopia den {0} no a kuadra ku e PadForge ku ta kore.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge no a move: despues di e kopia, {0} tabatin archivo ku no ta di PadForge, òf otro programa por a kambi'é.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra e PadForge ku e tabata kore no ta einan mas.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra PadForge no por a stroba otro programa di kambia e mapa for di kaminda e tabata kore PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra PadForge no por a lesa kua PadForge e tabata kore.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra PadForge no por a lesa e mapa di e PadForge ku e tabata kore.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge no por a krea su mapa protehá, {0}. PadForge ta warda einan e bibliotekanan ku e ta kore ku derechi di atministradó, i e no por kuminsá sigur sin e mapa ei.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge no por a kuminsá su mes di nobo for di su mapa protehá, {0}. PadForge ta kore ku derechi di atministradó solamente for di einan, p'esei e no a kuminsá.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ta kore ku derechi di atministradó for di {0}, un mapa ku otro programa por kambia. Nan por kambia e konfigurashon di PadForge einan, i PadForge ta aktua riba nan ku su derechinan.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ta kore ku derechi di atministradó for di {0}, un mapa ku tin otro archivo. PadForge no por stroba otro programa di kambia su konfigurashon einan, i e ta aktua riba nan ku su derechinan.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ta kore ku derechi di atministradó for di {0}, un mapa ku e no por a lesa. PadForge no por stroba otro programa di kambia su konfigurashon einan, i e ta aktua riba nan ku su derechinan.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mustra semper den área di notifikashon</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualisashon</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Buska aktualisashon outomátikamente</value></data>
@@ -622,7 +639,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalá i kuminsá di nobo</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Nota di vershon</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Base di dato di kontrol</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aktualisá awor ta deskargá e base di dato di kontrol di komunidat (SDL_GameControllerDB) for di GitHub, òf for di e adrès poné bou di Mas, i ta warda, den e archivo di konfigurashon, e asignashonnan ku e vershon aki di PadForge no tin. Nan ta na uso mesora. For di otro adrès e ta warda solamente asignashon nobo. Un asignashon nobo ta wòrdu usá solamente pa un kontrol ku nada otro no ta lesa komo gamepad, ku no ta asigná i ku no ta den Force Raw Joystick Mode. E reset ta kita tur asignashon deskargá i ta deskargá atrobe for di GitHub. Bo mes filanan, bou di Mas, ta keda.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aktualisá awor ta deskargá e base di dato di kontrol di komunidat (SDL_GameControllerDB) for di GitHub, òf for di e adrès poné bou di Mas, i ta warda, den e archivo di konfigurashon, e asignashonnan ku e vershon aki di PadForge no tin. Nan ta na uso mesora. For di otro adrès e ta warda solamente asignashon nobo. Un asignashon nobo ta wòrdu usá na promé instante solamente pa un kontrol ku SDL ta reportá komo gamepad òf komo ningun tipo partikular, ku nada otro no ta lesa komo gamepad, ku no ta asigná i ku no ta den Force Raw Joystick Mode. Una bes na uso, e ta keda na uso despues ku e kontrol ta wòrdu asigná. E reset ta kita e asignashonnan deskargá i ta pone Deskargá for di bek na e archivo di komunidat, ku e siguiente Aktualisá awor ta deskargá. Bo mes filanan, bou di Mas, ta keda.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Aktualisá awor</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ta aktualisá…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Ta buska aktualisashon…</value></data>
@@ -641,9 +658,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Integrá: {1} asignashon, kopia di komunidat di {2}. Deskargá {3} for di {4}: {0} fila nobo.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Integrá: {1} asignashon, kopia di komunidat di {2}. Deskargá {3} for di {4}: {0} fila nobo.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>E base di dato di komunidat no a kambia desde e último aktualisashon.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>E archivo na {0} no a kambia desde e último aktualisashon.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>No por a alkansá GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>No por a alkansá {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge a nenga e deskarga pasobra e no ta e base di dato di kontrol ku e ta spera. Nada no a kambia.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge a rechasá e kontesta di GitHub. Nada no a kambia.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge a rechasá e kontesta for di {0}. Nada no a kambia.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Kuminsá minimisá</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="Settings_HidHideDesc" xml:space="preserve"><value>Ta skonde aparatonan físiko for di wega pa evitá entrada dobel.</value></data>
@@ -681,6 +701,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Karpeta</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Konfigurashon di servisio</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Paso di eliminashon</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Servisio</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Archivo</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Filtro superior</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Balor di registro</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID di hardware</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Tarea programá</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Entrada di aplikashon instalá</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Aparato USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ta permití kontrolnan di PlayStation 3, e PlayStation Move i e kontrol Navigation konektá via Bluetooth. E ta inkluí den PadForge i ta wòrdu instalá e promé biaha ku un di nan wòrdu pareá.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ta konektá kontrolnan di PlayStation 3 via Bluetooth.</value></data>
@@ -1009,9 +1037,18 @@
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importá for di {0}.</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro a rechasá e preset aki na {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>E preset aki no tin deskriptor HID, p'esei no por traha ningun kontrol for di dje.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge no por a chek e preset aki: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Ta chek e preset…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nada no a wòrdu importá. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importá</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(aparato HID sin nòmber)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Teklado</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Kontrol ku hopi eje</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
@@ -2621,7 +2658,18 @@
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>via Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_Direct_Format" xml:space="preserve"><value>direktamente riba e {0}</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>e pantaya di e G19 ta riba e driver di otro programa ({0}), ku PadForge ta laga trankil</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Ta chek e drivernan di PlayStation Bluetooth di PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Ta lesa e radio di Bluetooth di e PC aki…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Ta habri e kontrol riba su kabel USB…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Ta skirbi e adrès di Bluetooth di e PC aki den e kontrol…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Ta registrá e kontrol ku Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Ta reinisiá Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Pareamentu a para: Windows a nenga PadForge akseso na e kontrol òf na e konfigurashon di Bluetooth. E log di diagnóstiko tin e detayenan.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Pareamentu a para: lesa òf skirbi e kontrol òf e radio di Bluetooth a faya. E log di diagnóstiko tin e detayenan.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Pareamentu a para riba un eror ku PadForge no tabata spera. E log di diagnóstiko tin e detayenan.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>mester Logitech Gaming Software 8.52 òf mas nobo</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>a haña su biblioteka i no a kark'é, pasobra PadForge no por a konfirmá ku solamente atministradó por kambi'é i ku Logitech a firm'é</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>a haña su biblioteka i no por a us'é, i e log di diagnóstiko ta bisa dikon</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>habri Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ta warda un telefòn ku Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>riba un telefòn</value></data>
@@ -2694,6 +2742,8 @@
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Skohe dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Ta karga e kopia aki di e biblioteka di Force Dimension na lugá di kualke otro. Un Falcon habrí riba otro kopia ta sera i ta habri di nobo riba esaki. E kopianan ku e SDK ta instalá ta wòrdu hañá sin esaki.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliotekanan (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>E página di deskarga di e SDK di Falcon no a habri: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>E página di deskarga di e SDK di Falcon no a habri ainda: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalá driver di Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Ta instalá e driver di Force Dimension, for di e mapa di SDK, riba un Falcon ku no tin ningun. Windows por puntra promé si e mester konfia den Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Haña e SDK di Force Dimension</value></data>
@@ -2952,6 +3002,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Kontrol nobo</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Konfigurashon</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Tur eje, boton i sensor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Su kontrolnan pa e nòmbernan ku script ta usa</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Primí: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopiá detayenan</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produkto</value></data>
@@ -3148,7 +3199,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ta warda bo</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktividat</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Deshasí</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge no por a warda esaki: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kore pluginnan</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ningun plugin no ta kore.</value></data>
   <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} largu</value></data>
@@ -3204,7 +3254,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Miéntras bo tene primí i sentro</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Aktivá/desaktivá</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input di stür</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>E boton ku ta laga e mouse stür, riba e mesun aparato ku e fuente. Sin ningun skohí, e mouse ta stür semper.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>E boton ku ta laga e mouse stür, riba kualke aparato di e slot aki. Sin ningun skohí, e mouse ta stür semper.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavisashon</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ta nivelá un mouse ku ta reportá desigual. E stick ta bai tras di e man mas o ménos asina largu. 0 ta pagá.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Límite na velosidat</value></data>
@@ -3225,7 +3275,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Kuminsá unda e stür a kuminsá</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Ku un Input di stür, e stick ta midi for di unda e puntero tabata ora e stür a kuminsá, manera un stick riba pantaya di un telefòn ta kuminsá unda e dede ta toka. Pagá, e ta midi for di e sentro di e monitor di e puntero.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>E eje aki ta move relativamente</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pa un trackball òf un spinner ku ta reportá kuantu e a dera. Sendé, e eje ta tene un posishon manera Rekorido di mouse ta hasi i ta tuma e konfigurashon di rekorido. Windows no ta bisa kua eje ta move asina.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pa un trackball òf un spinner ku ta reportá kuantu e a dera. Sendé, e eje ta tene un posishon manera Rekorido di mouse ta hasi i ta tuma e konfigurashon di rekorido. SDL ta lesa un kontrol genérico pa medio di DirectInput, ku ta lesa tur eje komo un posishon, p'esei e switch aki ta bisa kua eje ta move asina.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Vista previo</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ta mustra kon e famia aki ta sigui bo mes mouse. Nada no ta asigná te ora bo skoh'é.</value></data>
@@ -3242,7 +3292,7 @@
   <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>E pasonan ku e mouse aki ta reportá pa kada pulgada ku e move, manera e software di su fabrikante ta pon'é.</value></data>
   <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Ku e DPI poné, Rekorido di mouse ta mustra su rekorido tambe den sentímeter. 0 ta nifiká no poné.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>E server i kliente di Model Context Protocol tras di e konekshon ku asistente i PadForge.exe --mcp, dor di Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>E server i kliente di Model Context Protocol tras di e konekshon ku asistente i PadForge.exe --mcp, dor di Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions i DependencyInjection.Abstractions, riba kua e MCP C# SDK ta konstruí, dor di Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
@@ -3292,8 +3342,13 @@
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Ta kita…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ta aktualisá…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>E no a kaba: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>E entrada i e skill di PadForge ta keda, pasobra {0} ta lesa e mesun archivo di konfigurashon i mapa di skill.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>E entrada di PadForge ta keda, pasobra {0} ta lesa e mesun archivo di konfigurashon.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge a wòrdu kitá for di e programa aki. Su skill ta keda, pasobra {0} ta lesa skill for di e mesun mapa.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge no por lesa e konfigurashon den {0}, p'esei e no sa si PadForge ta agregá.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Agregá. PadForge no por a lesa su mapa di skill.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopiá.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>No kopiá: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>No kopiá. Windows no a laga PadForge usa e klipbòrt.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programanan permití</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Un programa ku ke Read òf mas ta puntra un biaha, e promé biaha ku e konektá, i ta haña e nivel ku e pidi, te na e nivel ariba. Un asistente ku bo agregá ariba ta permití pa esei.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -3309,6 +3364,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Un joystick. PadForge ta les'é kru, p'esei e asignashon di SDL no ta wòrdu usá.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Un joystick, ordená komo gamepad pa bo fila.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL ta lesa aparato miéntras e motor ta kore.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>E aparato no ta konektá. SDL ta les'é ora e ta konektá.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL no a duna PadForge ningun lektura di e aparato aki.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>E kopia di komunidat integrá, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Deskargá {0}</value></data>
@@ -3346,6 +3403,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, aktivá/desaktivá i otro akshon</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} i {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nada pa kopia: SDL no tin asignashon pa e aparato aki, i e no ta riba ningun kontrol.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Nada pa kopia: PadForge no por lesa e asignashon di SDL pa e aparato aki, i ningun fila di su kontrolnan no ta duna un asignashon ku e forma di SDL ta aseptá.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Nada pa kopia: SDL no tin asignashon pa e aparato aki, i ningun fila di {0} no ta lesa un di su botonnan, ejenan òf hatnan na un manera ku e forma di SDL ta aseptá.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Nada pa kopia: SDL no tin asignashon pa e aparato aki, i e filanan di {0} ta les'é solamente pa {1}, ku e forma di SDL no por tene.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Nada pa kopia: PadForge no por lesa e asignashon di SDL pa e aparato aki awor, i e no ta riba ningun kontrol.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Nada pa kopia: PadForge no por lesa e asignashon di SDL pa e aparato aki awor, i ningun fila di {0} no ta duna un asignashon ku e forma di SDL ta aseptá.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Un otro programa ta usa e klipbòrt. Nada no a wòrdu kopiá.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Bo fila a wòrdu kitá. E aparato ta lesa manera e tabata promé.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Asigná atrobe for di e layout di SDL: {0}.</value></data>
@@ -3366,6 +3428,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Fila ku PadForge tin</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ningun fila no ta kuadra.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>E fila skohí ta wòrdu apliká na {0} bou di su mes ID, pa medio di e mesun chèk i e mesun eskoho ku Pega.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>E motor ta pará, p'esei e lista ta laga afó e filanan ku SDL tin, esnan di dje mes i e kopia di komunidat ku ta inkluí. Nan ta wòrdu mustrá ora e ta kore.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL no a kontestá na tempu, p'esei e lista ta laga afó e filanan ku e tin, esnan di dje mes i e kopia di komunidat ku ta inkluí.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Fila di asignashon SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Un fila pa e aparato aki.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Un layout suponé.</value></data>
@@ -3378,14 +3442,14 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} kampo, for di e mesun fabrikante i produkto riba un otro bus òf vershon. E ta wòrdu wardá bou di e ID propio di e aparato aki.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} kampo, fila di un otro aparato. E ta wòrdu wardá bou di e ID propio di e aparato aki.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} kampo. SDL no ta lesa e aparato aki, p'esei PadForge ta ordená su inputnan segun e fila.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge no tin un boton òf eje simpel pa e kamponan aki i ta laga nan afó: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} kampo, for di e eje, boton i hat di e aparato. Chek e den Test Inputs, despues warda e òf kambia e aki.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Esaki ta kambia kon {0} ta wòrdu lesá. Su filanan den {1} ta wòrdu asigná atrobe for di e layout nobo.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Esaki ta kambia kon {0} ta wòrdu lesá. E no ta riba ningun kontrol, p'esei ningun fila no ta kambia.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Atahonan di perfil ku ta lesa {0} ta keda ku e inputnan ku nan a wòrdu poné.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>E fila ta wòrdu wardá komo bo esun den PadForge.xml i ta gana riba tur otro fuente pa e aparato aki. Kita esun di mi ta pone bek e fila bieu i e filanan bieu.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>E filanan ta wòrdu wardá komo bo esun den PadForge.xml i ta gana pa nan aparatonan riba tur otro fuente. Limpia, bou di Mas di e fila Base di dato di kontrol, ta kita nan.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Fila pa Windows: {0}. Esnan pa otro sistema ({1}) ta keda afó.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} fila pa Windows. Esnan pa otro sistema ({1}) ta keda afó.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} fila pa Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Lo agregá tur {0:N0}. PadForge ta warda te {1:N0} fila di bo.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Lo agreg'é. PadForge ta warda te {1:N0} fila di bo.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Fila di bo wardá awor: {0:N0}. P'esei lo agregá {1:N0} di esakinan i {2:N0} no.</value></data>
@@ -3395,7 +3459,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>E teksto no ta un fila di e base di dato di kontrol di SDL: un ID di 32 sifra heksadesimal, un nòmber, despues kamponan manera a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>E filanan ta pa otro sistema. PadForge ta lesa fila pa Windows, òf pa ningun sistema spesífiko.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>E ID di e fila no ta di un aparato. E mester di 32 sifra heksadesimal.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>E nòmber di e fila ta bashí, ta mas di 128 karakter, òf tin un karakter ku SDL ta lesa komo un kampo.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>E nòmber di e fila ta bashí, tin mas di 128 karakter, tin un marka di kampo ku SDL ta lesa, manera “type:”, òf tin un karakter otro ku lèter, sifra, puntuashon, símbolo i e espasio simpel.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>E fila tin un hint òf un kampo di Android, kual PadForge no ta aseptá.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>E fila tin un kampo ku SDL no konosé.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Un enlase no ta den e forma di SDL, manera b3, a2, +a2, a2~ òf h0.4.</value></data>
@@ -3406,8 +3470,7 @@
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Bo filanan</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Filanan ku bo agregá aki, òf pega riba e karchi Asignashon SDL di un aparato, ta gana pa nan aparatonan riba tur otro fuente i ta keda despues di e reset.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Agregá fila for di un archivo òf e klipbòrt…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} fila pa {0} aparato, di bo riba tur otro fuente.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} fila pa {0} aparato, di bo riba tur otro fuente.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} fila, bo filanan riba tur otro fuente.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ningun ainda.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Bo variabel SDL_GAMECONTROLLERCONFIG tin {0} fila ku PadForge no ta warda. Agregá fila for di un archivo òf e klipbòrt ta habri ku nan.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Bo variabel SDL_GAMECONTROLLERCONFIG tin {0} fila ku PadForge no ta warda. Agregá fila for di un archivo òf e klipbòrt ta habri kuné.</value></data>
@@ -3426,7 +3489,7 @@
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>A para. Su último palabranan: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>E no por a kuminsá.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>E no ta riba e PC aki mas.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ningun programa di tùnel no a wòrdu haña riba e PC aki. PadForge ta traha ku cloudflared, devtunnel, ngrok i Tailscale Funnel, òf ku e adrès di bo mes tùnel.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge no a haña ni cloudflared, devtunnel, ngrok ni Tailscale Funnel riba e PC aki. Skohe ChatGPT Secure MCP Tunnel, ku PadForge ta deskargá, òf duna e adrès di bo mes tùnel.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Skohe un tùnel pa duna PadForge un adrès públiko.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Tambe riba e PC aki: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, kende su adrès ta keda meskos</value></data>
@@ -3434,7 +3497,7 @@
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Kore bo mes tùnel na http://127.0.0.1:{0} i pega su adrès https. Un tùnel di Cloudflare ku nòmber, un dev tunnel permanente, Tailscale Funnel i e dominio propio di ngrok ta keda ku nan adrès.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Pega un adrès https sin otro kaminda ku /mcp, manera bo tùnel ta dun'é.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Ta kuminsá e yudante di web di PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>E yudante di web di PadForge a para ({0}). Paga i sende Reach PadForge From the Web pa kuminsá e atrobe.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>E yudante di web di PadForge a para ({0}). PadForge ta sigui purba kuminsá e.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adrès</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Ningun adrès públiko ainda.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Agregá na Claude</value></data>
@@ -3472,11 +3535,6 @@
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>e a terminá ku kódigo {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation ta pagá, p'esei ningun asistente di web no ta alkansá PadForge. E yudante di web ta kuminsá ora Automation ta sendé.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ta chek…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>No instalá.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Instalá i aktual. Un script ta kuminsá ku {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Instalá pa {0} i aktual. Un script ta kuminsá ku {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Instalá. E PadForge aki tin un kopia mas nobo.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Instalá pa {0}. E PadForge aki tin un kopia mas nobo.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Ta instalá…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge no por a chek e: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instalá ta pone e biblioteka di PadForge kaminda e lenga ei ta hañ'é. Un script ku karga e ta lesa aparatonan i ta manehá asignashonnan na e nivel ariba.</value></data>
@@ -3484,22 +3542,24 @@
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kopianan instalá</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Kita tur</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Kitá.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>E biblioteka di PadForge ta instalá pa {0} i ta aktual. Un script ta kuminsá ku {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>E biblioteka di PadForge pa {0} ta diferente for di e kopia di e PadForge aki.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>E biblioteka di PadForge no ta instalá pa {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID di script</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Su ID di script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scriptnan ta yama su kontrolnan {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scriptnan ta yama su teklanan KeyA, KeySpace, KeyLeftShift i asina mas, i tur tekla pa su kódigo, Vk0 te Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} riba e red aki for di {1}</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Mustra den mapa</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} a kuminsá, pero nunka no a konektá ku PadForge.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adrès</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge ta aseptá un adrès ku ta kuminsá ku https:// i ta nombra un host, riba e porta standart, sin nòmber di usuario ni kontraseña.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge ta aseptá un adrès di te 2,048 karakter ku ta kuminsá ku https:// i ta nombra un host, riba e porta standard, sin nòmber di usuario, kontraseña òf parti despues di #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Porta</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Kambia…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Yamadanan i nan yabi ta krusa e red aki sin enkriptashon. Windows ta laga nan drenta riba red privá so.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Yamadanan i nan yabi ta krusa e red aki sin enkriptashon. E regla di Windows Firewall ku PadForge ta traha pa e porta aki ta nombra solamente red privá.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Porta {0} ta na uso dor di otro programa. Kambi'é pa alkansá PadForge for di e red aki.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows no a laga e yudante di PadForge skucha riba porta {0}. PadForge ta permití esaki ku derecho di administradó, p'esei kuminsá PadForge ku nan i paga i sende esaki atrobe.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows no tin ningun reservashon pa e yudante di PadForge riba porta {0}. Paga i sende esaki atrobe, i PadForge ta traha e atrobe.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>E yudante di PadForge no por a skucha riba porta {0}. Kambia e porta, òf paga i sende esaki atrobe.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>E yudante di PadForge a para ({0}). Paga i sende Reach PadForge From This Network pa kuminsá e atrobe.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>E yudante di PadForge a para ({0}). PadForge ta sigui purba kuminsá e.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation ta pagá, p'esei ningun asistente riba e red aki no ta alkansá PadForge. E yudante ta kuminsá ora Automation ta sendé.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>E PC aki no tin adrès riba un red privá awor.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Asistentenan riba e red aki</value></data>
@@ -3514,7 +3574,27 @@
   <data name="Reach_Line_Format" xml:space="preserve"><value>Ta maneha su mes aparatonan i {0}. E ta sigui lesa tur aparato.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Ta maneha su mes aparatonan so. E ta sigui lesa tur aparato.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Komando for di e liña di komando ta sigui alkansá PadForge, manera nan ta hasi pa tur programa.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Ta kore, ku bo derechonan, i kla. ChatGPT ta alkansá PadForge via e tùnel aki sin drentamentu propio, i solamente for di bo organisashon di OpenAI. E ta kuminsá atrobe ku PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Ta kore, ku bo derechonan. E ta warda OpenAI bisa ku e tùnel ta kla.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge ta warda e yabi enkriptá pa bo so. Un kaha bashí ta lubid'é. ChatGPT ta traha na e nivel ariba.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge no por a warda e kit di plugin.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Aktividat {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Zonidonan{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Ikononan{0}</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>A haña e SDK di teklanan G i no a kark'é, pasobra PadForge no por a konfirmá ku solamente atministradó por kambi'é i ku Logitech a firm'é.</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge no a haña ningun mapa temporal di e usuario ku a drenta, aden di e perfil di e usuario i alkansá sin ningun link, pa skirbi e grabashon aden.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>E mapa di grabashon ta un link na otro lugá, ku PadForge no ta sigui.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} fila pa otro sistema ta wòrdu pasá por haltu.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows no a kuminsá e ku bo mes derechinan.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>E no a terminá den {0} sekonde.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>E a terminá ku kódigo {0} i no a duna ningun motibu.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge no por lesa e konfigurashon den {0}, p'esei e a laga e archivo manera e ta.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge no a skirbi {0}, p'esei e a lag'é manera e ta.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows no ta nombra ningun mapa Documents pa bo.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge no ta haña ningun mapa di bo pa {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>E kòmando di {0} mes a terminá ku kódigo {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>E kòmando di {0} no ta riba e PC aki.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows no a laga PadForge lesa òf skirbi un archivo ku e mester.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge no ta haña ningun Python: ningun no ta registrá, instalá for di Microsoft Store, mustrá pa un py launcher òf riba bo PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ningun Python ku PadForge a haña no a kontestá den {0} sekonde.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>E ehekushon no a duna ningun motibu ku PadForge ta konosé.</value></data>
 </root>

@@ -127,10 +127,15 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             /// <summary>The collections each Input field with a Wheel usage
             /// sits in, innermost last.</summary>
             public List<int[]> WheelCollections { get; } = new();
+
+            /// <summary>The same for each Input field with the Consumer
+            /// page's AC Pan, the horizontal wheel.</summary>
+            public List<int[]> PanCollections { get; } = new();
         }
 
         internal const uint ResolutionMultiplier = (0x01u << 16) | 0x48;
         internal const uint WheelUsage = (0x01u << 16) | 0x38;
+        internal const uint PanUsage = (0x0Cu << 16) | 0x238;
 
         private const int LogicalCollectionType = 2;
 
@@ -315,6 +320,8 @@ namespace PadForge.Common.Input.WinUsbKeyboards
 
                             if (usages.Contains(WheelUsage))
                                 shape.WheelCollections.Add(collections.ConvertAll(c => c.Index).ToArray());
+                            if (usages.Contains(PanUsage))
+                                shape.PanCollections.Add(collections.ConvertAll(c => c.Index).ToArray());
 
                             // A field with no usage is padding (:334-335).
                             if (usages.Count > 0 && globals.ReportSize > 0 && globals.ReportSize <= 32

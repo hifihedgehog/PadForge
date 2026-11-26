@@ -489,20 +489,24 @@
                                 </controls:SettingItem>
                                 <!-- Where PadForge runs from, and the move to a folder of
                                      its own while its folder holds other files, which no
-                                     task with rights may run it from (#597,
+                                     task with rights may run it from (#600,
                                      Services/ExeFolderState.cs). -->
                                 <controls:SettingItem>
                                     <StackPanel Margin="20,6,20,10">
                                     <TextBlock Text="{Binding RunsFromText, Source={x:Static services:ExeFolderState.Instance}}"
                                                FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                Visibility="{Binding RunsFromText, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource StringToVisibility}}"/>
-                                    <TextBlock Text="{Binding ExeFolder_StartAtLoginTurnedOff, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Text="{Binding StartAtLoginTurnedOffText, Source={x:Static services:ExeFolderState.Instance}}"
                                                FontSize="13" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                Visibility="{Binding StartAtLoginTurnedOff, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     <StackPanel Margin="0,6,0,0"
                                                 Visibility="{Binding IsShared, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding ExeFolder_NeedsOwnFolder, Source={x:Static strings:Strings.Instance}}"
-                                                   FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                   FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Visibility="{Binding HoldsOtherFiles, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <TextBlock Text="{Binding ExeFolder_CouldNotProtect, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Visibility="{Binding CouldNotProtect, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         <Button Content="{Binding ExeFolder_Move, Source={x:Static strings:Strings.Instance}}"
                                                 ToolTip="{Binding ExeFolder_MoveTip, Source={x:Static strings:Strings.Instance}}"
                                                 IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
@@ -527,7 +531,7 @@
                                 <DockPanel LastChildFill="False" MinHeight="52" Margin="20,0,10,0">
                                     <TextBlock Text="{Binding Settings_Updates, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"
                                                ToolTip="{Binding Settings_UpdatesDesc, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ui:Button Style="{StaticResource ResetAllButton}" Command="{Binding ResetCardCommand}" CommandParameter="Updates"
+                                    <ui:Button common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Style="{StaticResource ResetAllButton}" Command="{Binding ResetCardCommand}" CommandParameter="Updates"
                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
                                                AutomationProperties.AutomationId="Settings_ResetAll_Updates">
                                         <ui:Button.ToolTip>
@@ -656,7 +660,7 @@
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_IncludePreReleaseUpdates_4573"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
-                                <!-- Controller Database (#597): the community's controller
+                                <!-- Controller Database (#600): the community's controller
                                      mappings, fetched when the user presses Update Now and kept
                                      in PadForge.xml. The status line counts what this version
                                      reads out of the box and what the last update added, and
@@ -1316,8 +1320,9 @@
                             </controls:SettingItem>
 
                             <!-- HIDMaestro. Lit while the driver is in the driver store. The
-                                 version is the SDK PadForge carries, which installs the
-                                 driver with the first virtual controller. Uninstall (#518)
+                                 version is the installed driver's, read from the driver
+                                 store, and none shows while no driver is installed. PadForge
+                                 installs the driver with the first virtual controller. Uninstall (#518)
                                  opens a preview to confirm in and stays with the driver gone,
                                  since HIDMaestro can leave other things behind. -->
                             <controls:SettingItem MinHeight="63">
@@ -1366,9 +1371,10 @@
                                 </controls:FlexLinePanel>
                             </controls:SettingItem>
 
-                            <!-- BthPS3. Lit while either BthPS3 driver is installed as a
-                                 service. The version is the BthPS3 PadForge carries, which a
-                                 pairing installs. Uninstall opens a preview to confirm in and
+                            <!-- BthPS3. Lit while either BthPS3 driver is installed with its
+                                 package. The version is the installed BthPS3.sys file's, and
+                                 none shows while BthPS3 is not installed. A pairing installs
+                                 PadForge's copy. Uninstall opens a preview to confirm in and
                                  stays with the drivers gone, since PadForge's WinUSB package
                                  and certificate can remain. -->
                             <controls:SettingItem MinHeight="63">
@@ -1842,7 +1848,7 @@
                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,44,0"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
-                                <!-- Record a Problem (#597, #600): start, make the problem
+                                <!-- Record a Problem (#600): start, make the problem
                                      happen, stop, and the review opens. The line beside the
                                      button says what the file holds, the keys and buttons of
                                      every device among it, and asks the user to read it before

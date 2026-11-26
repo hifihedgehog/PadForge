@@ -18,19 +18,30 @@ The **Scripts** card on the Automation page has a row for each language. Each ro
 
 | Line | Button |
 |---|---|
-| **Not installed.** | **Install** |
-| **Installed and current. A script starts with …** | **Open Folder** |
-| **Installed. This PadForge has a newer copy.** | **Update** |
+| **Checking…** | None until the check answers |
+| **PadForge’s library is installed for … and current. A script starts with …** | **Open Folder** |
+| **PadForge’s library is not installed for ….** | **Install** |
+| **PadForge’s library is current for … and not installed for ….** | **Install** |
+| **PadForge’s library for … differs from this PadForge’s copy.** | **Update** |
+| **PadForge’s library is current for …. The copy for … differs from this PadForge’s.** | **Update** |
+| **PadForge’s library for … differs from this PadForge’s copy, and it is not installed for ….** | **Update** |
+| **PadForge’s library is current for …. The copy for … differs from this PadForge’s, and it is not installed for ….** | **Update** |
+| **Installing…**, while **Install** or **Update** runs | The same button, which does nothing until the run ends |
+| **PadForge finds no Python: none is registered, installed from the Microsoft Store, listed by a py launcher or on your PATH.**, on the Python row | None |
+| **No Python PadForge found answered within 10 seconds.**, on the Python row | None |
+| **PadForge could not check it:** and the reason, such as **Windows names no Documents folder for you.** | None |
+
+Each line names the places by what they are for: AutoHotkey v2, PowerShell 7, Windows PowerShell, or a Python by its version, such as Python 3.14.
 
 **Install** writes the library with your own rights, even while PadForge runs as administrator, where the language finds it:
 
 | Language | Where | A script starts with |
 |---|---|---|
 | AutoHotkey v2 | `Documents\AutoHotkey\Lib\PadForge.ahk` | `#Include <PadForge>` |
-| PowerShell | Both module folders, `Documents\PowerShell\Modules` and `Documents\WindowsPowerShell\Modules` | `Import-Module PadForge` |
+| PowerShell | A `PadForge` module folder for PowerShell 7 and one for Windows PowerShell. PowerShell 7's goes in the first folder of `PSModulePath` in `Documents\PowerShell\powershell.config.json`, or in `Documents\PowerShell\Modules` when that file names none. Windows PowerShell's goes in the first folder of your own `PSModulePath` variable, or in `Documents\WindowsPowerShell\Modules` when you have none | `Import-Module PadForge` |
 | Python | The user site of each Python found | `import padforge` |
 
-Documents moved to OneDrive counts. With several Pythons, the row names which ones the library is installed for. Under the card's **More**, **Save a Library…** writes one library where you pick, and **Remove All** takes out every installed copy. `PadForge.exe --install autohotkey`, `powershell` or `python` does the same from the [command line](../reference/command-line.md#-install), with `--remove` or `--check`.
+Documents moved to OneDrive counts. Under the card's **More**, **Save a Library…** writes one library where you pick, and **Remove All** takes out every installed copy. `PadForge.exe --install autohotkey`, `powershell` or `python` does the same from the [command line](../reference/command-line.md#-install), with `--remove` or `--check`.
 
 Turn on Automation at the level the script needs: **Read** to follow devices, **Send Inputs** to hold controls, take them in hotkeys and add controllers. A script that asks for more than Commands asks once, on PadForge's question card, which names its interpreter and its script file. Once it is allowed, its row under **Allowed Programs** can hold it to [its own devices and the ones you pick](automation.md#a-programs-reach). It still reads every device.
 
@@ -82,7 +93,7 @@ A device is found by its script ID, its type (`gamepad`, `keyboard`, `mouse`, `w
 
 Its properties are its controls by the names scripts use: `A`, `B`, `LeftX`, `RightTrigger`, `DPad` for a pad, `MouseX` and `MouseLeft` for a mouse, `KeyA` for a keyboard, and `Axis0`, `Slider0`, `Hat0` and `Button0` for any device. They also go by number: `pad.Button[0]`, `pad.Axis[0]`, `pad.Slider[0]`, `pad.Hat[0]`. Python and PowerShell read names without regard to case. A name that is also a method's reads by index, as `pad["Set"]`.
 
-To find a device's script ID and its control names, select it on the **Devices** page and open **More** under **Test Inputs**. **Script ID** shows the ID with **Copy**, and a line lists the device's controls by their script names. A keyboard's keys are `KeyA`, `KeySpace`, `KeyLeftShift` and the like, and every key by its code, `Vk0` to `Vk255`. The ID is the same in every run and names nothing of the device's serial number or path.
+To find a device's script ID and its control names, select it on the **Devices** page. **Details** shows its **Script ID** with **Copy**, for a device that is not connected too, and **More** under **Test Inputs** lists the device's controls by their script names. A keyboard's keys are `KeyA`, `KeySpace`, `KeyLeftShift` and the like, and every key by its code, `Vk0` to `Vk255`. The ID is the same in every run and names nothing of the device's serial number or path.
 
 Values are plain units:
 
@@ -157,7 +168,7 @@ In Python, callbacks run one at a time, in order, on a thread of the library's o
 - The commands of the [Commands level](automation.md#the-level): switch and release a profile, start and stop the engine, turn controllers on and off, show and hide the window, take a snapshot, and read the state.
 - `Outputs(1)` reads what virtual controller 1 sends the game now.
 - `Devices()` lists every device with its controls. A listed device is the same object `Device()` gives for its script ID, and it follows itself on its first use of any kind: a read, a hotkey, a change callback, a hold, **Set**, **Tap** or **Sequence**. As with `Device()`, reads give nothing until PadForge sends the device's state, on its next pass.
-- `Tool("press", '{"id":"..."}')` runs any [assistant tool](assistants.md), at the tool's own level.
+- `Tool("press", '{"id":"..."}')` runs any [assistant tool](assistants.md), at the tool's own level. Its line runs to 65,536 bytes, so `import_profile` takes a profile file of about 48 KB in `content_base64`.
 
 ---
 

@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 namespace PadForge.Services.Plugins
 {
     /// <summary>
-    /// The names of the built-in plugins' devices (#597) in the language in
+    /// The names of the built-in plugins' devices (#600) in the language in
     /// use, by the device's identity. PadForge words these names itself, so
     /// they follow a change of the interface language as the merged
     /// keyboards' and the Touchpad Overlay's do: the Devices page and every

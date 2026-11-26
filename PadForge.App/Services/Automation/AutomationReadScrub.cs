@@ -6,7 +6,7 @@ using PadForge.Engine.Privacy;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// The scrubber every free-text field a program reads goes through (#597):
+    /// The scrubber every free-text field a program reads goes through (#600):
     /// a device's name in <c>devices</c>, a control's name in <c>caps</c>,
     /// the names in <c>state</c>, <c>query</c> and <c>e profile</c>, and
     /// every string of an assistant's tool result (AssistantCalls). What
@@ -134,35 +134,6 @@ namespace PadForge.Services.Automation
             }
             live.RemoveAll(v => string.IsNullOrWhiteSpace(v.Item2));
             return live;
-        }
-
-        /// <summary>
-        /// The scrub of a whole file a program can read, a snapshot it asked
-        /// for: a scrubber made for it alone, told the live values and the
-        /// names the user typed for profiles, macros, tags and phrases, as
-        /// the problem recorder's is. Each line goes through it, and then the
-        /// whole text is searched again for every value it learned on the
-        /// way (PrivacyScrubber.SearchFinished), as the recorder does at its
-        /// stop.
-        /// </summary>
-        internal static Func<string, string> FileScrub()
-        {
-            var seam = Seam;
-            PrivacyScrubber scrubber;
-            if (seam != null) scrubber = seam();
-            else
-            {
-                scrubber = Make();
-                try { ProblemRecorder.Instance.Host.KnowTypedNames(scrubber); }
-                catch (InvalidOperationException) { /* a list that changed under the walk; the values above still go in */ }
-            }
-            return text =>
-            {
-                if (string.IsNullOrEmpty(text)) return text;
-                string[] lines = text.Replace("\r\n", "\n").Split('\n');
-                for (int i = 0; i < lines.Length; i++) lines[i] = scrubber.Text(lines[i]);
-                return scrubber.SearchFinished(string.Join(Environment.NewLine, lines), count: false);
-            };
         }
 
         /// <summary>

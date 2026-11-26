@@ -490,23 +490,16 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Whether HidHide is installed the ARM64 way. Nothing registers this
-        /// install with Windows Installer, so it is read from what the install
-        /// leaves behind: the service, the HIDClass filter and the device
-        /// node. All three, because a device with no filter yet is an
-        /// install that stopped for a restart, and Install has to stay
-        /// available to finish it.
+        /// Whether HidHide is installed, on either machine
+        /// (DriverInstaller.TryGetHidHideStatus): the service, the HIDClass
+        /// filter and the device node. All three, because a device with no
+        /// filter yet is an install that stopped for a restart, and Install
+        /// has to stay available to finish it.
         ///
         /// <para>The two registry reads come first and the device
-        /// enumeration last. The status timer asks this every five seconds
-        /// on the UI thread, and on a machine without HidHide the registry
+        /// enumeration last, so on a machine without HidHide the registry
         /// says no before any device is enumerated.</para>
         /// </summary>
-        public static bool IsInstalled()
-            => IsInstalled(() => RegisteredDriverPath() != null,
-                           () => FilterListed(HidClass),
-                           () => DeviceNodeState() == true);
-
         internal static bool IsInstalled(Func<bool> serviceRegistered, Func<bool> hidClassFiltered,
                                          Func<bool> deviceNodePresent)
             => serviceRegistered() && hidClassFiltered() && deviceNodePresent();
@@ -516,7 +509,7 @@ namespace PadForge.Common
         /// <summary>Whether the root\HidHide device node is present, or null
         /// when the enumeration itself failed. The two are kept apart because
         /// Uninstall reads "absent" as "the removal is complete".</summary>
-        private static bool? DeviceNodeState()
+        internal static bool? DeviceNodeState()
         {
             try
             {

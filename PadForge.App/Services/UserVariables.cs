@@ -5,7 +5,9 @@ namespace PadForge.Services
 {
     /// <summary>
     /// The variables of a process PadForge starts as the user without rights
-    /// (#597): a plugin, the library host and the failed start's copy. They
+    /// (#600): every process <see cref="Plugins.PluginLauncher"/> starts (a
+    /// plugin, the library host, the install and check copy, a recording's
+    /// save and the web helper), and the failed start's copy. They
     /// are the variables Windows builds for that user's own token from the
     /// user's profile and the machine's
     /// (<see cref="System32Calls.VariablesOfProcess"/>), so the process gets

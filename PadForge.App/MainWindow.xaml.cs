@@ -52,12 +52,12 @@ namespace PadForge
 
         /// <summary>Exposes the app's SettingsService to dialogs / pages
         /// that need to persist runtime changes (e.g. the Import from
-        /// Device dialog's AddUserProfile call). Reachable via
+        /// Device dialog's import). Reachable via
         /// Application.Current.MainWindow cast.</summary>
         public SettingsService SettingsService => _settingsService;
 
         /// <summary>
-        /// Move PadForge to Its Own Folder (#597): the settings are saved and
+        /// Move PadForge to Its Own Folder (#600): the settings are saved and
         /// copied with the exe into %ProgramFiles%\PadForge, the logon task and
         /// the give-back tasks are pointed at the copy, and this copy closes as
         /// Exit does, after which the copy starts (App.StartMovedCopy). The exe
@@ -428,7 +428,7 @@ namespace PadForge
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
             // The External Control card says what Automation allows, which
             // the Extras view model holds, and its button opens Automation's
-            // page (#597).
+            // page (#600).
             ProfilesPageView.BindAutomationState(_viewModel.Dashboard);
             ProfilesPageView.OpenAutomationRequested += (s, e) => OpenExtra("Automation");
             // Drop-zone import (#175): dropped profile files run the same
@@ -462,11 +462,12 @@ namespace PadForge
                 }
                 else
                 {
-                    // Foreground and visible — minimize.
-                    if (_viewModel.Settings.MinimizeToTray)
+                    // Foreground and visible: minimize. A window in its
+                    // shutdown goes to the taskbar, never to the tray.
+                    if (_viewModel.Settings.MinimizeToTray && !_shutdownStarted)
                     {
                         Hide();
-                        _notifyIcon.Visible = true;
+                        if (_notifyIcon != null) _notifyIcon.Visible = true;
                     }
                     else
                         WindowState = WindowState.Minimized;
@@ -575,7 +576,7 @@ namespace PadForge
             PadForge.Common.Themes.GameLooks.Start(Dispatcher);
             Services.ExeFolderState.Instance.MoveRequested += OnMoveToOwnFolder;
             // A logon task this start removed, for running PadForge from a
-            // shared folder, turns the switch off (#597).
+            // shared folder, turns the switch off (#600).
             Services.ExeFolderState.Instance.PropertyChanged += (_, e) =>
             {
                 if (e.PropertyName == nameof(Services.ExeFolderState.StartAtLoginTurnedOff)
@@ -598,7 +599,7 @@ namespace PadForge
             _viewModel.Settings.PropertyChanged += (s, e) =>
             {
                 // A logon task may only run PadForge from a folder of its own
-                // (#597): from a shared one the switch goes back off, and the
+                // (#600): from a shared one the switch goes back off, and the
                 // row says why.
                 if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin)
                     && !Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin))
@@ -607,7 +608,7 @@ namespace PadForge
                 if (e.PropertyName == nameof(SettingsViewModel.DiagnosticsLoggingEnabled))
                     Common.DiagnosticsLogControl.Apply(_viewModel.Settings.DiagnosticsLoggingEnabled);
 
-                // The problem recorder's two switches (#597) reach it as they
+                // The problem recorder's two switches (#600) reach it as they
                 // change, and as the settings load.
                 if (e.PropertyName == nameof(SettingsViewModel.ProblemRecordingKeepLastMinute))
                     Services.ProblemRecorder.Instance.KeepLastMinute = _viewModel.Settings.ProblemRecordingKeepLastMinute;
@@ -763,7 +764,7 @@ namespace PadForge
                      or nameof(DashboardViewModel.ReplayRepeat))
                     _settingsService.MarkDirty();
                 // A "Mouse Travel" source shows Lock at Speed only while
-                // Game Telemetry is on (#597), so the rows hear the switch.
+                // Game Telemetry is on (#600), so the rows hear the switch.
                 if (e.PropertyName == nameof(DashboardViewModel.EnableGameTelemetry))
                     foreach (var pad in _viewModel.Pads) pad.RaiseMouseTravelRoadChanged();
             };
@@ -1053,15 +1054,13 @@ namespace PadForge
                 };
                 pad.TestLeftMotorRequested += (s, e) =>
                 {
-                    // The Force Feedback group's Test beside Left Motor: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, null, true, false);
+                        _inputService.SendTestMotor(pvm, left: true);
                 };
                 pad.TestRightMotorRequested += (s, e) =>
                 {
-                    // The Force Feedback group's Test beside Right Motor: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
-                        _inputService.SendTestRumble(pvm.PadIndex, null, false, true);
+                        _inputService.SendTestMotor(pvm, left: false);
                 };
                 pad.TestLeftImpulseTriggerRequested += (s, e) =>
                 {
@@ -2163,20 +2162,9 @@ namespace PadForge
                     // Mouse-gesture custom activation record button (#216).
                     if (activePad.MouseGestureCustomEngageRecording)
                         activePad.MouseGestureCustomEngageRecording = false;
-                    // Menu editor host / steer / click recording (#9). Its
-                    // freeform completion callback is what normally clears
-                    // this, and CancelRecording drops that callback without
-                    // invoking it, so a timeout left the button stuck at Stop
-                    // and consumed the user's next click as a cancel
-                    // (round 34).
-                    if (activePad.SelectedMenu != null && activePad.SelectedMenu.HostRecording)
-                        activePad.SelectedMenu.HostRecording = false;
-                    // A keyboard row's recording and Map All (#566) stop with it.
-                    if (activePad.SelectedMenu != null)
-                    {
-                        activePad.SelectedMenu.RecordingKeyboardRow = null;
-                        activePad.SelectedMenu.KeyboardMapAllActive = false;
-                    }
+                    // The menu editor's record buttons are left by the
+                    // RecordingCanceled handler above: a timeout cancels
+                    // first, and the cancel drops their callback.
                 }
             };
 
@@ -2603,7 +2591,7 @@ namespace PadForge
 
             // Expose where the window first is for App.OnStartup: what this
             // copy's command line says (--show, --minimized, --tray), and the
-            // Start Minimized settings where it says nothing (#597).
+            // Start Minimized settings where it says nothing (#600).
             var firstWindow = FirstWindowState(App.StartupRequest.Window,
                 _viewModel.Settings.StartMinimized, _viewModel.Settings.MinimizeToTray);
             ShouldStartMinimized = firstWindow == CommandLineSwitches.WindowStart.Minimized;
@@ -2690,12 +2678,12 @@ namespace PadForge
             // Virtual controllers are created on demand by the engine
             // (CreateHMaestroController) when slots become active. No
             // pre-creation needed at startup.
-            // Automation (#597). The host is made here, with the settings
+            // Automation (#600). The host is made here, with the settings
             // loaded and before the engine: its pipe is served for as long
             // as the app runs, engine or no engine, and the steps of this
             // copy's own command line run through its command set.
             StartAutomationHost();
-            // Plugins (#597) connect over the host's pipe, and start with the
+            // Plugins (#600) connect over the host's pipe, and start with the
             // engine while the Plugins switch is on.
             StartPlugins();
 
@@ -2745,7 +2733,7 @@ namespace PadForge
             // which never fires for a launch straight to the tray.
             _updateController = new Services.UpdateController(_viewModel, ExitForUpdate);
             _updateController.Start();
-            // The Controller Database row of the same card (#597).
+            // The Controller Database row of the same card (#600).
             _controllerDatabaseController = new Services.ControllerDatabaseController(_viewModel, _settingsService.MarkDirty,
                 () => _inputService?.RefreshDeviceList());
             _controllerDatabaseController.Start();
@@ -3374,7 +3362,9 @@ namespace PadForge
                 // A touchpad or tablet a refused HidHide write kept from
                 // Windows, or a hide a release could not take off.
                 _inputService?.RetryOwedGiveBacks();
-                // A pairing installs BthPS3. Two registry reads.
+                // A pairing installs BthPS3. Two service reads, and the
+                // driver database only after a device change or PadForge's
+                // own BthPS3 install or removal.
                 RefreshBthPS3Status();
                 RefreshMidiServicesStatus();
                 // Status decay (#175 item 7) rides this always-on 5 s lane
@@ -3610,7 +3600,7 @@ namespace PadForge
             {
                 // This copy is closing. A second copy that finds no control
                 // pipe from here waits for the exit and takes it for what it
-                // is, and no program's command runs into the teardown (#597).
+                // is, and no program's command runs into the teardown (#600).
                 App.InstanceSignal?.MarkClosing();
                 // The plugins end first, while the pipe they speak on stands.
                 StopPlugins();
@@ -3620,7 +3610,7 @@ namespace PadForge
                 _requestCard = null;
 
                 // A problem recording that still runs is stopped and its
-                // file finished while everything it describes is here (#597).
+                // file finished while everything it describes is here (#600).
                 Services.ProblemRecorder.Instance.Shutdown();
 
                 // Stop HID arrival notifications first. Shutdown tears down the
@@ -3666,7 +3656,7 @@ namespace PadForge
                 _workshopUpdateCts?.Cancel();
                 // And any app update check or download (#457).
                 _updateController?.Dispose();
-                // And a controller database download (#597).
+                // And a controller database download (#600).
                 _controllerDatabaseController?.Dispose();
 
                 // Stop the SDL event pump BEFORE the disposal Task.Run below reaches
@@ -4894,7 +4884,7 @@ namespace PadForge
         /// <summary>The delete itself, on the interface's thread and outside
         /// any click of the controller's own: the three places that offer
         /// Delete come here deferred, and an assistant's remove_controller
-        /// at once (#597).</summary>
+        /// at once (#600).</summary>
         private void DeleteSlotNow(int slotIndex)
         {
             // Leave the page of the controller being deleted.
@@ -7004,7 +6994,7 @@ namespace PadForge
         /// request card agreed: the profile, its game look's picture when no
         /// other profile wears it, its list entry, and the default in force
         /// when it was the active one. The Delete button and an assistant's
-        /// delete_profile both come here (#597).</summary>
+        /// delete_profile both come here (#600).</summary>
         private void DeleteListedProfile(ViewModels.ProfileListItem selected)
         {
             int lookAppId = SettingsManager.Profiles.Find(p => p.Id == selected.Id)?.GameLook?.AppId ?? 0;
@@ -7124,6 +7114,11 @@ namespace PadForge
             }
         }
 
+        /// <summary>Whether the foreground watcher switches by game: the page's
+        /// switch, or the watcher's own flag, which follows the page at the
+        /// next save (#600).</summary>
+        private bool SwitchingByGame() => _viewModel.Settings.EnableAutoProfileSwitching || SettingsManager.EnableAutoProfileSwitching;
+
         /// <summary>Opens Get Profiles on a tab (#574): starter profiles, community
         /// configs and files from another tool in one window. What lands goes
         /// through AddWorkshopProfile or ImportProfileFile, so a starter, a
@@ -7133,11 +7128,6 @@ namespace PadForge
         /// community opt-in off, the Community tab opens on its cold state and
         /// its enable action flips the same persisted setting the Settings
         /// card toggles.</summary>
-        /// <summary>Whether the foreground watcher switches by game: the page's
-        /// switch, or the watcher's own flag, which follows the page at the
-        /// next save (#600).</summary>
-        private bool SwitchingByGame() => _viewModel.Settings.EnableAutoProfileSwitching || SettingsManager.EnableAutoProfileSwitching;
-
         internal void ShowGetProfiles(ViewModels.GetProfilesTab tab)
         {
             var dlg = new Views.GetProfilesDialog(_viewModel.Settings, tab) { Owner = this };
@@ -7627,6 +7617,7 @@ namespace PadForge
                     or nameof(MappingItem.ParamStickDeadZoneInner)
                     or nameof(MappingItem.GateDescriptor)
                     or nameof(MappingItem.Gate2Descriptor)
+                    or nameof(MappingItem.TravelSteerDeviceGuid)
                     or nameof(MappingItem.ParamTravelCounts)
                     or nameof(MappingItem.ParamTravelCentering)
                     or nameof(MappingItem.ParamTravelReturnTime)
@@ -7790,6 +7781,7 @@ namespace PadForge
                         or nameof(MappingSourceItem.ParamStickDeadZoneInner)
                         or nameof(MappingSourceItem.GateDescriptor)
                         or nameof(MappingSourceItem.Gate2Descriptor)
+                        or nameof(MappingSourceItem.TravelSteerDeviceGuid)
                         or nameof(MappingSourceItem.ParamTravelCounts)
                         or nameof(MappingSourceItem.ParamTravelCentering)
                         or nameof(MappingSourceItem.ParamTravelReturnTime)
@@ -8016,7 +8008,7 @@ namespace PadForge
             {
                 // Mark the Recording shows only while a problem recording
                 // runs or the last minute is kept (#600).
-                if (item.Key == "Mark" && !Services.ProblemRecorder.Instance.IsCapturing) continue;
+                if (!PadForge.Services.Catalog.TrayMenu.Shows(item.Key)) continue;
                 if (item.SeparatorBefore) menu.Items.Add(new System.Windows.Controls.Separator());
                 var menuItem = new System.Windows.Controls.MenuItem
                 {
@@ -8040,10 +8032,13 @@ namespace PadForge
 
         private void OnStateChanged(object sender, EventArgs e)
         {
-            if (WindowState == WindowState.Minimized && _viewModel.Settings.MinimizeToTray)
+            // A window in its shutdown stays where the user can see it: the
+            // close shows it under the shutdown overlay and has let go of the
+            // tray icon, as RestoreFromTray says.
+            if (WindowState == WindowState.Minimized && _viewModel.Settings.MinimizeToTray && !_shutdownStarted)
             {
                 Hide();
-                _notifyIcon.Visible = true;
+                if (_notifyIcon != null) _notifyIcon.Visible = true;
             }
 
             // Persist window state (Normal or Maximized, not Minimized).
@@ -9205,11 +9200,15 @@ namespace PadForge
                 Views.UninstallHIDMaestroDialog.ShowReport(this, report, line);
         }
 
-        /// <summary>Lights the Settings card's HIDMaestro status from the
-        /// driver store, never from an HIDMaestro context
-        /// (HIDMaestroRemoval.IsDriverInstalled).</summary>
+        /// <summary>Lights the Settings card's HIDMaestro status and the
+        /// installed driver's version from the driver store, never from an
+        /// HIDMaestro context (HIDMaestroRemoval.IsDriverInstalled).</summary>
         private void RefreshHIDMaestroStatus()
-            => _viewModel.Settings.IsHIDMaestroInstalled = HIDMaestroRemoval.IsDriverInstalled();
+        {
+            bool installed = HIDMaestroRemoval.IsDriverInstalled(out string version);
+            _viewModel.Settings.IsHIDMaestroInstalled = installed;
+            _viewModel.Settings.HIDMaestroVersion = version;
+        }
 
         /// <summary>
         /// Removes BthPS3 from the PC, after the user confirmed it against
@@ -9255,9 +9254,15 @@ namespace PadForge
         }
 
         /// <summary>Lights the Settings card's BthPS3 status from the two
-        /// driver services (Ds3DriverInstaller.IsAnyBthPs3DriverInstalled).</summary>
+        /// drivers (Ds3DriverInstaller.IsAnyBthPs3DriverInstalled), and its
+        /// version from the BthPS3.sys the profile driver's service names
+        /// (Ds3DriverInstaller.InstalledBthPs3Version).</summary>
         private void RefreshBthPS3Status()
-            => _viewModel.Settings.IsBthPS3Installed = Ds3DriverInstaller.IsAnyBthPs3DriverInstalled();
+        {
+            _viewModel.Settings.IsBthPS3Installed = Ds3DriverInstaller.IsAnyBthPs3DriverInstalled();
+            Version v = Ds3DriverInstaller.InstalledBthPs3Version();
+            _viewModel.Settings.BthPS3Version = v == null ? null : v.Major + "." + v.Minor + "." + Math.Max(0, v.Build);
+        }
 
         /// <summary>
         /// Rebuilds Home's SlotSummaries from SettingsManager state.

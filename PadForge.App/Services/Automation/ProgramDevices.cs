@@ -10,7 +10,7 @@ using PadForge.Engine.Common;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// The engine as the Automation pipe reaches it (#597), present while the
+    /// The engine as the Automation pipe reaches it (#600), present while the
     /// engine runs. The input service gives one at the engine's start and
     /// takes it back at its stop.
     /// </summary>
@@ -97,9 +97,22 @@ namespace PadForge.Services.Automation
                             foreach (var pad in property.Value.EnumerateArray())
                             {
                                 int count = 2;
-                                if (pad.ValueKind == JsonValueKind.Number && pad.TryGetInt32(out int n)) count = n;
-                                else if (pad.ValueKind == JsonValueKind.Object && pad.TryGetProperty("fingers", out var f) && f.TryGetInt32(out int m)) count = m;
-                                else if (pad.ValueKind != JsonValueKind.Object) { error = "a touchpad is its finger count"; return null; }
+                                // TryGetInt32 throws on an element that is
+                                // not a number, so each kind is read first.
+                                if (pad.ValueKind == JsonValueKind.Number)
+                                {
+                                    if (!pad.TryGetInt32(out count)) { error = "a touchpad is its finger count"; return null; }
+                                }
+                                else if (pad.ValueKind == JsonValueKind.Object)
+                                {
+                                    if (pad.TryGetProperty("fingers", out var f)
+                                        && (f.ValueKind != JsonValueKind.Number || !f.TryGetInt32(out count)))
+                                    {
+                                        error = "fingers is a whole number";
+                                        return null;
+                                    }
+                                }
+                                else { error = "a touchpad is its finger count"; return null; }
                                 if (count < 1 || count > MostFingers) { error = "a touchpad has 1 to 10 fingers"; return null; }
                                 fingers.Add(count);
                             }
@@ -195,7 +208,7 @@ namespace PadForge.Services.Automation
                 {
                     if (item.TryGetProperty("index", out var i))
                     {
-                        if (!i.TryGetInt32(out index)) { error = "an index is a whole number"; return false; }
+                        if (i.ValueKind != JsonValueKind.Number || !i.TryGetInt32(out index)) { error = "an index is a whole number"; return false; }
                     }
                     if (item.TryGetProperty("name", out var n) && n.ValueKind == JsonValueKind.String) name = n.GetString();
                     if (item.TryGetProperty("rest", out var r))
@@ -205,7 +218,7 @@ namespace PadForge.Services.Automation
                         bool read = hasRest && (r.ValueKind == JsonValueKind.String
                             ? PlainUnits.TryParsePercent(r.GetString(), out double share) && share >= 0 && share <= 100
                               && (rest = PlainUnits.AxisToRaw(share, 0)) >= 0
-                            : r.TryGetInt32(out rest) && rest >= 0 && rest <= 65535);
+                            : r.ValueKind == JsonValueKind.Number && r.TryGetInt32(out rest) && rest >= 0 && rest <= 65535);
                         if (!read) { error = "a rest is 0 to 65535, or a percent of the travel such as 50%"; return false; }
                     }
                 }
@@ -244,9 +257,10 @@ namespace PadForge.Services.Automation
             return true;
         }
 
-        /// <summary>The device's instance GUID: from the program's kind, its
-        /// name and the key, so a program that restarts finds its device
-        /// and its mappings again.</summary>
+        /// <summary>The device's instance GUID: from the program's kind, who
+        /// it is (<see cref="ProgramDevices.IdentityOf"/>, or a built-in
+        /// plugin's name) and the key, so a program that restarts finds its
+        /// device and its mappings again.</summary>
         internal static Guid InstanceGuid(string kind, string name, string key)
             => Hash("pfprogram:" + kind + "\n" + name + "\n" + key);
 
@@ -260,7 +274,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// The devices programs add (#597), for as long as PadForge runs. Each is
+    /// The devices programs add (#600), for as long as PadForge runs. Each is
     /// owned by the session that declared it. A session that ends rests its
     /// devices at once and takes them offline after
     /// <see cref="OfflineAfterMs"/>, unless a program declares the same key
@@ -274,13 +288,31 @@ namespace PadForge.Services.Automation
     /// <para>Limits: <see cref="MostPerSession"/> devices a session
     /// (<see cref="MostPerPlugin"/> for a plugin) and
     /// <see cref="MostInAll"/> online at once, and in one run of PadForge
-    /// <see cref="MostMadePerProgram"/> devices for one program's name and
-    /// <see cref="MostMadeInAll"/> in all. A device declared again by the
-    /// same program under the same key is the same device and counts
-    /// once.</para>
+    /// <see cref="MostMadePerProgram"/> devices for one program
+    /// (<see cref="IdentityOf"/>) and <see cref="MostMadeInAll"/> in all. A
+    /// device declared again by the same program under the same key is the
+    /// same device and counts once.</para>
     /// </summary>
     internal sealed class ProgramDevices
     {
+        /// <summary>
+        /// Who a session's devices belong to, which their identity is made
+        /// from: a script's and an assistant's consent key, which
+        /// AutomationConsent.Identify reads from what Windows says of the
+        /// process, never the name the hello claims, as <see cref="IsOwn"/>
+        /// judges ownership. A plugin goes by the name it was approved under,
+        /// a web assistant by its grant's address and a network caller by
+        /// its key's name, each PadForge's own record. Null when the program
+        /// is known only by its process number (AutomationConsent.KeyOf with
+        /// no path or image), which its next start does not keep.
+        /// </summary>
+        internal static string IdentityOf(AutomationSession session)
+        {
+            if (session.Kind is not (AutomationClientKind.Script or AutomationClientKind.Assistant)) return session.IdentityName;
+            string key = session.Who?.Key;
+            return key == null || AutomationConsent.NamesOnlyAProcess(key) ? null : key;
+        }
+
         internal const int MostPerSession = 8;
 
         /// <summary>The devices one plugin may add (#600 item 18).</summary>
@@ -341,10 +373,10 @@ namespace PadForge.Services.Automation
         private readonly Func<long> _nowMs;
         private IAutomationEngine _engine;
 
-        // Every device made this run, and how many of them each program's
-        // name made, for the run's limits.
+        // Every device made this run, and how many of them each program
+        // (IdentityOf) made, for the run's limits.
         private readonly HashSet<Guid> _made = new();
-        private readonly Dictionary<(string Kind, string Program), int> _madeBy = new();
+        private readonly Dictionary<(string Kind, string Identity), int> _madeBy = new();
 
         // How many devices this registry told the input gate are online, and
         // whether its host went.
@@ -423,6 +455,19 @@ namespace PadForge.Services.Automation
             }
         }
 
+        /// <summary>The devices an open session of the program whose consent
+        /// key is <paramref name="key"/> owns now: the ones its reach always
+        /// takes (<see cref="IsOwn"/>).</summary>
+        internal HashSet<Guid> OwnedByKey(string key)
+        {
+            var owned = new HashSet<Guid>();
+            if (string.IsNullOrEmpty(key)) return owned;
+            lock (_sync)
+                foreach (var e in _entries.Values)
+                    if (!e.BuiltIn && e.Owner is { } owner && string.Equals(owner.Who?.Key, key, StringComparison.Ordinal)) owned.Add(e.Guid);
+            return owned;
+        }
+
         internal List<Entry> OwnedBy(AutomationSession session)
         {
             lock (_sync)
@@ -436,7 +481,10 @@ namespace PadForge.Services.Automation
         /// <summary>
         /// Adds a device or, for a key the program declared before, gives it
         /// the new shape and keeps the device and its mappings. Returns the
-        /// error code, or null with <paramref name="entry"/> set.
+        /// error code, or null with <paramref name="entry"/> set. A program
+        /// <see cref="IdentityOf"/> cannot name gets no device, as
+        /// "unnamed-program": its session stays, and only the device is not
+        /// made.
         /// </summary>
         internal string Declare(AutomationSession session, string key, string name, ProgramDeviceShape shape,
             out Entry entry, out bool known)
@@ -444,8 +492,10 @@ namespace PadForge.Services.Automation
             entry = null;
             known = false;
             string kind = session.KindWord;
+            string identity = IdentityOf(session);
+            if (identity == null) return "unnamed-program";
             string program = session.IdentityName;
-            Guid guid = ProgramDeviceDeclaration.InstanceGuid(kind, program, key);
+            Guid guid = ProgramDeviceDeclaration.InstanceGuid(kind, identity, key);
             IAutomationEngine engine;
             bool register;
             lock (_sync)
@@ -471,13 +521,13 @@ namespace PadForge.Services.Automation
                     if (CountOwned(session) >= MostFor(session) || CountLive() >= MostInAll) return "too-many";
                     if (!_made.Contains(guid))
                     {
-                        _madeBy.TryGetValue((kind, program), out int byProgram);
+                        _madeBy.TryGetValue((kind, identity), out int byProgram);
                         if (byProgram >= MostMadePerProgram || _made.Count >= MostMadeInAll) return "too-many";
                         _made.Add(guid);
-                        _madeBy[(kind, program)] = byProgram + 1;
+                        _madeBy[(kind, identity)] = byProgram + 1;
                     }
                     string id = AutomationDevices.IdOf(guid);
-                    var device = new ProgramDevice(guid, ProgramDeviceDeclaration.ProductGuid(kind, program, key),
+                    var device = new ProgramDevice(guid, ProgramDeviceDeclaration.ProductGuid(kind, identity, key),
                         "program://" + id, name, shape);
                     device.SetAttached(true);
                     device.OwnerSession = session.Number;
@@ -606,9 +656,9 @@ namespace PadForge.Services.Automation
             foreach (var e in OwnedBy(session)) e.Device.Rest();
         }
 
-        /// <summary>A script was silent too long (#600 item 24): its devices
-        /// go offline at rest, through the path that rests their mapped
-        /// outputs, and stay the script's.</summary>
+        /// <summary>A script or a plugin was silent too long (#600 items 18
+        /// and 24): its devices go offline at rest, through the path that
+        /// rests their mapped outputs, and stay its own.</summary>
         internal void Sleep(AutomationSession session)
         {
             IAutomationEngine engine;
@@ -632,8 +682,8 @@ namespace PadForge.Services.Automation
             if (engine != null) foreach (var d in unregister) engine.Unregister(d);
         }
 
-        /// <summary>The script spoke again: its devices are back
-        /// online.</summary>
+        /// <summary>The script or the plugin spoke again: its devices are
+        /// back online.</summary>
         internal void Wake(AutomationSession session)
         {
             IAutomationEngine engine;
@@ -742,6 +792,10 @@ namespace PadForge.Services.Automation
             if (due != null) TakeOffline(due);
         }
 
+        /// <summary>The kind a built-in plugin's device's identity is made
+        /// with.</summary>
+        internal const string BuiltInKind = "builtin";
+
         /// <summary>
         /// Puts a built-in plugin's device on the list, or gives the one it
         /// had the new name and shape: the Test Controller and each device
@@ -750,18 +804,20 @@ namespace PadForge.Services.Automation
         /// Its identity is made from <paramref name="program"/> and
         /// <paramref name="key"/>, so its mappings survive a restart.
         /// </summary>
-        /// <summary>The kind a built-in plugin's device's identity is made
-        /// with.</summary>
-        internal const string BuiltInKind = "builtin";
-
         /// <param name="productName">The name the row keeps as its product's,
         /// in no language (ProgramDevice.ProductName). Null keeps
         /// <paramref name="name"/>.</param>
         /// <param name="pathKind">A word the device's path carries after the
         /// scheme, <c>program://kind/id</c>, so its row is known for what it
         /// is in a later run. Null for <c>program://id</c>.</param>
+        /// <param name="live">The state worked out on the poll thread
+        /// (ProgramDevice.Live), or null.</param>
+        /// <param name="livePeek">The same for a reader off the poll thread
+        /// (ProgramDevice.LivePeek), or null. Both are set before the
+        /// engine lists the device.</param>
         internal Entry DeclareBuiltIn(string program, string key, string name, ProgramDeviceShape shape,
-            string productName = null, string pathKind = null)
+            string productName = null, string pathKind = null,
+            Func<CustomInputState> live = null, Func<CustomInputState> livePeek = null)
         {
             const string kind = BuiltInKind;
             Guid guid = ProgramDeviceDeclaration.InstanceGuid(kind, program, key);
@@ -782,6 +838,8 @@ namespace PadForge.Services.Automation
                 }
                 entry.Device.ProductName = productName;
                 entry.Device.PadForgeOwn = true;
+                entry.Device.Live = live;
+                entry.Device.LivePeek = livePeek;
                 entry.BuiltIn = true;
                 entry.OfflineAtMs = 0;
                 engine = _engine;
@@ -795,8 +853,9 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>Takes a built-in plugin's device offline at once, its
-        /// mapped outputs at rest. Its row stays on the Devices page as any
-        /// disconnected device's does.</summary>
+        /// mapped outputs at rest. Its row stays on the Devices page when the
+        /// device is assigned to a virtual controller, as any disconnected
+        /// device's does, and goes, row and all, when it is not.</summary>
         internal void RemoveBuiltIn(Entry entry)
         {
             if (entry == null) return;

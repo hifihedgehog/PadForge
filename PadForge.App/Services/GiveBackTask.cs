@@ -47,7 +47,7 @@ namespace PadForge.Services
     /// localized, and started by its full path in System32.</para>
     ///
     /// <para>A task runs as SYSTEM, so what it runs and what it reads must be
-    /// out of reach of every account without rights (#597). Its action runs
+    /// out of reach of every account without rights (#600). Its action runs
     /// PadForge.exe only when the exe's folder is PadForge's own and no other
     /// account can change it (<see cref="ExeFolder.MayHoldTasks"/>), and
     /// otherwise falls to Windows' and HidHide's own tools alone. The run
@@ -182,7 +182,7 @@ namespace PadForge.Services
         /// <summary>Where a run's native libraries are unpacked: the protected
         /// folder a start with rights uses (<see cref="ProtectedStart"/>), so the
         /// run as SYSTEM needs no second start and finds the app's own copy.
-        /// Before #597 this was the app's base, the user's temp folder, which
+        /// Before #600 this was the app's base, the user's temp folder, which
         /// every program of the user can write.</summary>
         private static string ExtractBase()
         {

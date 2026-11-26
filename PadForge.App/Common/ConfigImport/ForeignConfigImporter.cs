@@ -122,18 +122,26 @@ namespace PadForge.Common.ConfigImport
     {
         /// <summary>The file picker's places, when they exist on this PC:
         /// reWASD's shared profile folder, DS4Windows' per-user one and DSX's
-        /// in each Steam library.</summary>
+        /// in each Steam library. The per-user folder and Steam's own path
+        /// are the desktop user's (<see cref="PadForge.Common.ShellUser"/>),
+        /// never the account PadForge runs as when an administrator's
+        /// credentials were typed at its rights prompt.</summary>
         public static IEnumerable<string> ProfileFolders()
+            => ProfileFolders(PadForge.Common.ShellUser.Folder);
+
+        internal static IEnumerable<string> ProfileFolders(Func<PadForge.Services.Install.UserFolder, string> userFolder)
         {
             string rewasd = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
                 "reWASD", "Profiles");
             if (System.IO.Directory.Exists(rewasd)) yield return rewasd;
 
-            string ds4 = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "DS4Windows", "Profiles");
-            if (System.IO.Directory.Exists(ds4)) yield return ds4;
+            string roaming = userFolder(PadForge.Services.Install.UserFolder.RoamingData);
+            if (!string.IsNullOrEmpty(roaming))
+            {
+                string ds4 = System.IO.Path.Combine(roaming, "DS4Windows", "Profiles");
+                if (System.IO.Directory.Exists(ds4)) yield return ds4;
+            }
 
             foreach (string dsx in DsxProfileFolders(SteamLibraries())) yield return dsx;
         }
@@ -173,7 +181,7 @@ namespace PadForge.Common.ConfigImport
             var steam = new List<string>();
             try
             {
-                using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
+                using var key = PadForge.Common.ShellUser.OpenKey(@"Software\Valve\Steam");
                 if (key?.GetValue("SteamPath") is string path && path.Length > 0)
                     steam.Add(path.Replace('/', '\\'));
             }

@@ -232,7 +232,7 @@ namespace PadForge.Common.Input
         /// frees for the next type. Tests shorten the create's
         /// bound.</summary>
         internal static int ConnectTimeoutMs = 15_000;
-        private const int DisconnectTimeoutMs = 8_000;
+        internal const int DisconnectTimeoutMs = 8_000;
 
         // Claim-or-dispose generation: each create attempt carries a gen;
         // a timeout bumps it, so a late-landing creation sees itself

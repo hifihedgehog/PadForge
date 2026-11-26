@@ -67,6 +67,11 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         // Guarded by _sync.
         private int _wheelFine;
 
+        // The horizontal wheel's the same way (AC Pan), for Wheel Travel
+        // Sideways, divided by its own Resolution Multiplier
+        // (HidMouseReports.PanMultiplierFeature). Guarded by _sync.
+        private int _panFine;
+
         /// <param name="start">False leaves the reader off, for a test that
         /// feeds reports itself (<see cref="Feed"/>).</param>
         /// <param name="timestamp">The clock the motion window runs on,
@@ -194,7 +199,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             if (!IsAttached) return null;
-            int dx, dy, wheel, buttons, wheelUnits;
+            int dx, dy, wheel, buttons, wheelUnits, panUnits;
             lock (_sync)
             {
                 dx = _dx;
@@ -205,6 +210,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 int multiplier = Math.Max(1, _channel.WheelMultiplier);
                 wheelUnits = _wheelFine / multiplier;
                 _wheelFine -= wheelUnits * multiplier;
+                int panMultiplier = Math.Max(1, _channel.PanMultiplier);
+                panUnits = _panFine / panMultiplier;
+                _panFine -= panUnits * panMultiplier;
             }
 
             var state = _statePool.Next();
@@ -215,6 +223,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             state.MouseRawDX = dx;
             state.MouseRawDY = dy;
             state.MouseRawWheel = wheelUnits;
+            state.MouseRawWheelH = panUnits;
             _velocity.WindowSums(out _, out _, out float scrollSum);
             state.Axis[2] = Math.Clamp(AxisCenter + (int)(scrollSum * ScrollScale), 0, 65535);
 
@@ -246,10 +255,11 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             if (pointer == null) return;
             lock (_sync)
             {
-                int dx = 0, dy = 0, wheel = 0, buttons = _buttons;
-                if (!pointer.Decode(report, ref dx, ref dy, ref wheel, ref buttons)) return;
+                int dx = 0, dy = 0, wheel = 0, pan = 0, buttons = _buttons;
+                if (!pointer.Decode(report, ref dx, ref dy, ref wheel, ref pan, ref buttons)) return;
                 _dx += dx;
                 _dy += dy;
+                _panFine += pan * WheelDelta;
                 if (wheel != 0)
                 {
                     _wheelFine += wheel * WheelDelta;

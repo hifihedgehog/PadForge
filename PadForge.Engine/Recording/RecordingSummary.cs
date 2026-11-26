@@ -24,7 +24,7 @@ namespace PadForge.Engine.Recording
     public sealed record RecordingFinding(FindingPlace Place, long Microseconds, string Text);
 
     /// <summary>
-    /// What a problem recording says went wrong (#597), read from its own
+    /// What a problem recording says went wrong (#600), read from its own
     /// lines. One pass over the events fills it, and <see cref="Lines"/>
     /// writes the summary that stands first in the file.
     ///
@@ -65,6 +65,15 @@ namespace PadForge.Engine.Recording
         /// <summary>Two changes of a device further apart than this belong
         /// to two runs of motion, and the time between them is rest, no gap.</summary>
         public const long RunBreakMicros = 250_000;
+
+        /// <summary>The most markers the summary takes, as it writes at most
+        /// 40 findings. A line says how many more the file holds.</summary>
+        public const int MostMarkers = 40;
+
+        /// <summary>The most mapping rows the summary judges: 1,024 for each
+        /// of the 16 virtual controllers. A row past it is counted as not
+        /// checked.</summary>
+        public const int MostRows = 16 * 1024;
 
         private sealed class AxisStat
         {
@@ -129,7 +138,9 @@ namespace PadForge.Engine.Recording
             public bool Rumbling;
             public int RumbleRises, RumbleUnanswered;
             public long FirstUnanswered = -1;
-            public readonly List<long> Waiting = new();
+            /// <summary>The times of the rumble asked for that waits for a
+            /// write, oldest first.</summary>
+            public readonly Queue<long> Waiting = new();
         }
 
         private sealed class MarkerWindow
@@ -173,11 +184,12 @@ namespace PadForge.Engine.Recording
         private readonly Dictionary<int, DeviceStats> _devices = new();
         private readonly Dictionary<int, ControllerStats> _controllers = new();
         private readonly List<MarkerWindow> _markers = new();
+        private long _markersLeftOut;
         private readonly List<RecordingFinding> _findings = new();
         private readonly List<(long At, string Text)> _stalls = new();
         private readonly List<(long At, string Text)> _slowSeconds = new();
         private readonly List<(long At, string Text)> _errors = new();
-        private readonly Dictionary<int, List<int>> _devicesOfController = new();
+        private readonly Dictionary<int, HashSet<int>> _devicesOfController = new();
         private readonly List<Dictionary<string, string>> _rows = new();
 
         private long _last;
@@ -192,7 +204,6 @@ namespace PadForge.Engine.Recording
         private bool _resting;
         private int _rowsChecked, _rowsSkipped;
         private string _ending = string.Empty;
-        private bool _readerEnded, _readerHashOk, _readerHasHash;
 
         /// <summary>What the summary found, in the order of the path an
         /// input takes.</summary>
@@ -212,9 +223,6 @@ namespace PadForge.Engine.Recording
             for (int i = 0; i < SlotCount; i++) summary._slots[i] = new Slot();
             summary.ReadSettings(reader.Settings);
             while (reader.Read()) summary.Take(reader);
-            summary._readerEnded = reader.Ended;
-            summary._readerHasHash = reader.HasHash;
-            summary._readerHashOk = reader.HashMatches;
             summary.Finish(reader);
             return summary;
         }
@@ -231,14 +239,19 @@ namespace PadForge.Engine.Recording
                 {
                     var facts = RecordingCodec.ParseFacts(line.AsSpan(7));
                     int device = Number(facts, "device", 'D'), controller = Number(facts, "controller", 'C');
-                    if (device <= 0 || controller <= 0) continue;
-                    if (!_devicesOfController.TryGetValue(controller, out var list))
-                        _devicesOfController[controller] = list = new List<int>();
-                    if (!list.Contains(device)) list.Add(device);
+                    // A file from anyone holds as many assign lines as it
+                    // likes: only the controllers and devices a reader keeps
+                    // are taken.
+                    if (device <= 0 || controller <= 0 || controller > RecordingReader.MostControllers) continue;
+                    if (!_devicesOfController.TryGetValue(controller, out var set))
+                        _devicesOfController[controller] = set = new HashSet<int>();
+                    if (set.Count < RecordingReader.MostDevices) set.Add(device);
                 }
                 else if (line.StartsWith("row ", StringComparison.Ordinal))
                 {
-                    _rows.Add(RecordingCodec.ParseFacts(line.AsSpan(4)));
+                    // A file from anyone holds as many row lines as it likes.
+                    if (_rows.Count < MostRows) _rows.Add(RecordingCodec.ParseFacts(line.AsSpan(4)));
+                    else _rowsSkipped++;
                 }
             }
         }
@@ -265,14 +278,15 @@ namespace PadForge.Engine.Recording
 
             // Rumble a game asked for more than a second ago and no device
             // was written after has gone unanswered.
+            // The oldest waits first, so a line looks at no more than the
+            // rumble that ran out of time.
             foreach (var c in _controllers.Values)
             {
-                for (int i = c.Waiting.Count - 1; i >= 0; i--)
+                while (c.Waiting.Count > 0 && at - c.Waiting.Peek() > RumbleWaitMicros)
                 {
-                    if (at - c.Waiting[i] <= RumbleWaitMicros) continue;
-                    if (c.FirstUnanswered < 0) c.FirstUnanswered = c.Waiting[i];
+                    long asked = c.Waiting.Dequeue();
+                    if (c.FirstUnanswered < 0) c.FirstUnanswered = asked;
                     c.RumbleUnanswered++;
-                    c.Waiting.RemoveAt(i);
                 }
             }
 
@@ -283,7 +297,7 @@ namespace PadForge.Engine.Recording
                 case RecordingCodec.LayerSent: TakeSent(reader, at); break;
                 case RecordingCodec.LayerFeedback: TakeFeedback(reader, at); break;
                 case RecordingCodec.LayerTiming: TakeTiming(reader, at); break;
-                case RecordingCodec.LayerWindow: _windowChanges++; break;
+                case RecordingCodec.LayerWindow: TakeWindow(reader); break;
                 case RecordingCodec.LayerError:
                     _errorCount++;
                     if (_errors.Count < 5) _errors.Add((at, Clip(reader.Payload.ToString(), 160)));
@@ -293,6 +307,21 @@ namespace PadForge.Engine.Recording
                 case RecordingCodec.LayerMarker: TakeMarker(reader, at); break;
             }
         }
+
+        /// <summary>The program in front changed when a front line names
+        /// another than the line before it. The first names where it stood,
+        /// and the window's other lines (one that stopped answering) are no
+        /// change of program.</summary>
+        private void TakeWindow(RecordingReader reader)
+        {
+            var payload = reader.Payload;
+            if (!payload.StartsWith("front=")) return;
+            string front = payload.ToString();
+            if (_front != null && front != _front) _windowChanges++;
+            _front = front;
+        }
+
+        private string _front;
 
         private static string Clip(string text, int length)
             => text.Length <= length ? text : text.Substring(0, length) + "...";
@@ -440,7 +469,9 @@ namespace PadForge.Engine.Recording
         {
             if (value < stat.Min) stat.Min = value;
             if (value > stat.Max) stat.Max = value;
-            if (Math.Abs(value - 32768) <= RestBand || value <= RestBand || value >= 65535 - RestBand) stat.Rested = true;
+            // In long: a file from anyone can hold any int, and the distance
+            // of int.MinValue from the center is no int.
+            if (Math.Abs((long)value - 32768) <= RestBand || value <= RestBand || value >= 65535 - RestBand) stat.Rested = true;
         }
 
         private static void Hold(AxisStat stat, long until)
@@ -620,7 +651,7 @@ namespace PadForge.Engine.Recording
                 if (any && !stats.Rumbling)
                 {
                     stats.RumbleRises++;
-                    if (HasRumbleDevice(reader, reader.Controller.Number)) stats.Waiting.Add(at);
+                    if (HasRumbleDevice(reader, reader.Controller.Number)) stats.Waiting.Enqueue(at);
                     Note(at, reader.Controller.Alias + " game rumble");
                 }
                 stats.Rumbling = any;
@@ -706,6 +737,11 @@ namespace PadForge.Engine.Recording
                 return;
             }
             if (!payload.StartsWith("mark")) return;
+            if (_markers.Count >= MostMarkers)
+            {
+                _markersLeftOut++;
+                return;
+            }
             var marker = new MarkerWindow { At = at, Text = payload.Length > 5 ? payload.Slice(5).ToString() : string.Empty };
             // What the five seconds before it held.
             long slotNow = at / SlotMicros;
@@ -797,11 +833,11 @@ namespace PadForge.Engine.Recording
                 for (int i = 0; i < stats.ButtonDownMicros.Length; i++)
                     if (stats.ButtonDownMicros[i] >= stats.OnlineMicros && stats.ButtonPresses[i] <= 1 && stats.ButtonDownMicros[i] > 0)
                         device.Add(new RecordingFinding(FindingPlace.Device, 0,
-                            alias + " " + ControlName(stats.Device, RecordingField.Button, i) + " was down for the whole recording. Look at the device or its driver."));
+                            alias + " " + ControlName(stats.Device, RecordingField.Button, i) + " was down the whole time it was online. Look at the device or its driver."));
                 for (int i = 0; i < stats.HatOffMicros.Length; i++)
                     if (stats.HatOffMicros[i] >= stats.OnlineMicros && stats.HatOffMicros[i] > 0)
                         device.Add(new RecordingFinding(FindingPlace.Device, 0,
-                            alias + " " + ControlName(stats.Device, RecordingField.Hat, i) + " was off center for the whole recording. Look at the device or its driver."));
+                            alias + " " + ControlName(stats.Device, RecordingField.Hat, i) + " was off center the whole time it was online. Look at the device or its driver."));
             }
             // Controls first, then the offline lines the events already added.
             _findings.InsertRange(0, device);
@@ -866,7 +902,7 @@ namespace PadForge.Engine.Recording
             findings.Add(new RecordingFinding(FindingPlace.Device, 0,
                 alias + " " + name + " never came to rest: it stayed between "
                 + axis.Min.ToString(CultureInfo.InvariantCulture) + " and " + axis.Max.ToString(CultureInfo.InvariantCulture)
-                + " for the whole recording. Look at the device or its driver."));
+                + " the whole time it was online. Look at the device or its driver."));
         }
 
         private static List<T> Sorted<T>(Dictionary<int, T> map)
@@ -950,7 +986,7 @@ namespace PadForge.Engine.Recording
         private static bool AxisMoved(AxisStat axis, string descriptor, out string moved)
         {
             moved = null;
-            if (axis == null || !axis.Seen || axis.Max - axis.Min < MovedSpan) return false;
+            if (axis == null || !axis.Seen || (long)axis.Max - axis.Min < MovedSpan) return false;
             moved = descriptor + " moved from " + axis.Min.ToString(CultureInfo.InvariantCulture) + " to " + axis.Max.ToString(CultureInfo.InvariantCulture);
             return true;
         }
@@ -1104,6 +1140,9 @@ namespace PadForge.Engine.Recording
                 lines.Add("  After, 5 s: " + WindowText(marker.After));
                 foreach (string note in marker.Notable) lines.Add("  " + note);
             }
+            if (_markersLeftOut > 0)
+                lines.Add(Count(_markersLeftOut, "more marker") + " past the first " + MostMarkers.ToString(CultureInfo.InvariantCulture)
+                    + (_markersLeftOut == 1 ? " was left out." : " were left out."));
 
             foreach (var stats in Sorted(_devices))
             {
@@ -1220,9 +1259,5 @@ namespace PadForge.Engine.Recording
             }
             return sb.Append('.').ToString();
         }
-
-        /// <summary>What the reader found at the end of the file it read,
-        /// for a file that is being finished after the fact.</summary>
-        public bool FileWasWhole => _readerEnded && _readerHasHash && _readerHashOk;
     }
 }

@@ -24,13 +24,18 @@ namespace PadForge.Services.Automation.Web
         /// null.</summary>
         internal Func<string, string> AddressIn { get; init; }
 
+        /// <summary>The line its address follows, or null when any line may
+        /// carry it. No line before it is read for an address.</summary>
+        internal Func<string, bool> Banner { get; init; }
+
         /// <summary>The folders it installs to beside the PATH.</summary>
         internal Func<IEnumerable<string>> Folders { get; init; }
 
         /// <summary>OpenAI's tunnel-client (#600 DESIGN-2 N4): it serves no
         /// address, starts PadForge's stdio copy itself, takes a runtime key
-        /// and a tunnel ID, and PadForge fetches it when it is not on the
-        /// PATH.</summary>
+        /// and a tunnel ID, and PadForge fetches and checks it into its
+        /// protected folder and runs that copy alone. A copy on the PATH is
+        /// never looked for: a program without rights can put one there.</summary>
         internal bool Vendor { get; init; }
     }
 
@@ -84,12 +89,41 @@ namespace PadForge.Services.Automation.Web
 
         private static readonly Regex Https = new(@"https://[A-Za-z0-9.\-]+(:\d+)?", RegexOptions.Compiled);
 
+        /// <summary>The quick-tunnel service's own address, cloudflared's
+        /// default --quick-service (cmd/cloudflared/tunnel/cmd.go).</summary>
+        private const string CloudflareApi = "https://api.trycloudflare.com";
+
+        /// <summary>Reads a tunnel's address from its lines, one after
+        /// another: the first one that carries it, after the banner when the
+        /// kind has one. Each process gets its own.</summary>
+        internal static Func<string, string> AddressReader(WebTunnelKind kind)
+        {
+            int opened = kind.Banner == null ? 1 : 0;
+            return text =>
+            {
+                if (text == null) return null;
+                if (Volatile.Read(ref opened) == 0)
+                {
+                    if (kind.Banner(text)) Volatile.Write(ref opened, 1);
+                    return null;
+                }
+                return kind.AddressIn(text);
+            };
+        }
+
         internal static readonly IReadOnlyList<WebTunnelKind> All = new[]
         {
             new WebTunnelKind("cloudflared", "cloudflared", "cloudflared.exe", KeepsAddress: false)
             {
                 Arguments = port => "tunnel --no-autoupdate --url http://127.0.0.1:" + port,
-                AddressIn = line => Https.Matches(line).Select(m => m.Value).FirstOrDefault(u => u.EndsWith(".trycloudflare.com", StringComparison.OrdinalIgnoreCase)),
+                // The quick tunnel's own host, never the service's: a failed
+                // request prints "failed to request quick Tunnel: Post
+                // "https://api.trycloudflare.com/tunnel"" (quick_tunnel.go
+                // RunQuickTunnel), and the address comes on the line after
+                // the banner (quickTunnelStartupLines).
+                AddressIn = line => Https.Matches(line).Select(m => m.Value).FirstOrDefault(u => u.EndsWith(".trycloudflare.com", StringComparison.OrdinalIgnoreCase)
+                    && !u.Equals(CloudflareApi, StringComparison.OrdinalIgnoreCase)),
+                Banner = line => line.Contains("quick Tunnel has been created! Visit it at", StringComparison.Ordinal),
                 Folders = () => new[] { ProgramFiles(true, "cloudflared"), ProgramFiles(false, "cloudflared") },
             },
             new WebTunnelKind("devtunnel", "devtunnel", "devtunnel.exe", KeepsAddress: false)
@@ -140,13 +174,14 @@ namespace PadForge.Services.Automation.Web
         }
 
         /// <summary>The tunnel programs on this PC: on the PATH of the user
-        /// this helper runs as, or in the folders each installs to.</summary>
+        /// this helper runs as, or in the folders each installs to.
+        /// tunnel-client is not one of them (<see cref="WebTunnelKind.Vendor"/>).</summary>
         internal static IReadOnlyList<WebTunnelFound> Find(string pathVariable = null)
         {
             var found = new List<WebTunnelFound>();
             var folders = (pathVariable ?? Environment.GetEnvironmentVariable("PATH") ?? string.Empty)
                 .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
-            foreach (var kind in All)
+            foreach (var kind in All.Where(k => !k.Vendor))
             {
                 foreach (string folder in folders.Concat(kind.Folders()).Where(f => !string.IsNullOrEmpty(f)))
                 {
@@ -193,11 +228,12 @@ namespace PadForge.Services.Automation.Web
             }
             if (process == null) return null;
             int said = 0;
+            var reader = AddressReader(kind);
             void Read(string text)
             {
                 if (text == null) return;
                 line?.Invoke(text);
-                string found = kind.AddressIn(text);
+                string found = reader(text);
                 if (found != null && Interlocked.Exchange(ref said, 1) == 0) address?.Invoke(found);
             }
             process.EnableRaisingEvents = true;
@@ -268,20 +304,28 @@ namespace PadForge.Services.Automation.Web
                 process.BeginErrorReadLine();
             }
             catch (InvalidOperationException) { }
-            _ = WatchReadyAsync(healthPort, ready, watch.Token);
+            _ = WatchReadyAsync(healthPort, ready, watch);
             return process;
         }
 
         /// <summary>Reads tunnel-client's /readyz on its loopback health port
-        /// every two seconds and says when the answer changes.</summary>
-        private static async Task WatchReadyAsync(int port, Action<bool> ready, CancellationToken stop)
+        /// every two seconds and says when the answer changes, until its
+        /// source is canceled at the program's end. It disposes the
+        /// source.</summary>
+        private static async Task WatchReadyAsync(int port, Action<bool> ready, CancellationTokenSource watch)
         {
+            using var owned = watch;
+            var stop = watch.Token;
             using var http = new System.Net.Http.HttpClient { Timeout = TimeSpan.FromSeconds(2) };
             bool? said = null;
             while (!stop.IsCancellationRequested)
             {
                 bool now;
-                try { now = (await http.GetAsync("http://127.0.0.1:" + port + "/readyz", stop).ConfigureAwait(false)).IsSuccessStatusCode; }
+                try
+                {
+                    using var answer = await http.GetAsync("http://127.0.0.1:" + port + "/readyz", stop).ConfigureAwait(false);
+                    now = answer.IsSuccessStatusCode;
+                }
                 catch (Exception error) when (error is System.Net.Http.HttpRequestException or TaskCanceledException) { now = false; }
                 if (stop.IsCancellationRequested) return;
                 if (said != now) { said = now; ready?.Invoke(now); }

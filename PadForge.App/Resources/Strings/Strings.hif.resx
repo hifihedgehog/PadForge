@@ -893,6 +893,8 @@
   <data name="Falcon_Status_NotFound" xml:space="preserve"><value>Koi Falcon nahi mila. Iske power aur USB cable lagao.</value></data>
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>dhd64.dll choose karo…</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Library (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK download page nai khula: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK download page abhi tak nai khula: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon driver install karo</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension ke SDK lo</value></data>
   <data name="Falcon_Calibrate_Done_Format" xml:space="preserve"><value>Calibrate hoe gais. {0}</value></data>
@@ -1047,6 +1049,7 @@
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>battery {0}, charge hoe raha</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Naya controller</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Har axis, button aur sensor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Iske control, script wala naam se</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Dabaa hai: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Detail copy karo</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Link</value></data>
@@ -1164,6 +1167,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Service ke setting</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Hatae ke step</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Service</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>File</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Upper filter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registry value</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardware ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Scheduled task</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Installed apps ke entry</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP device</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b default</value></data>
   <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
   <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Send kare tak controller tak kuch nai pahunche.</value></data>
@@ -1264,8 +1275,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program aisan version bole hai jon PadForge nai jaane</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge uu plugin key nai dis</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ii program ke connection nai lis</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge koi device nai banais, kaahe ki Windows program ke file ke naam nai dis</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Bahut jaldi phir se maangis</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge phir se chalu hoe tak aur nai</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Program ke banaawa ii wala bahut chiij Home pe aap ke review ke intazaar me hai</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ke paas aisan koi tool nai hai</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program purana state padhis</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Koi cheez ke uu ID nai hai</value></data>
@@ -1273,6 +1285,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Aap allow nai karaa</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Time pe koi jawaab nai dis</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Aap ke jawaab ke intazaar hai</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Aap abhi tak jawaab nai dewa rahaa</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Aisan koi request nai hai</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Undo kare ke kuch nai hai</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Khali aap ii badle sakta</value></data>
@@ -1395,7 +1408,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Profile le aao</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Dusra program se profile file import karo, phir dekho kya aais.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} baar</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, aisan {1} me se aakhri</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Allow karo</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Allow mat karo</value></data>
   <data name="Automation_Request_NotNow" xml:space="preserve"><value>Abhi nai</value></data>
@@ -1408,7 +1420,9 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{1} me se {0}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} me jawaab nai mile to nai gina jaai.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge administrator rights ke saathe {0} se chale hai, jon folder ke dusra program badle sake hai. Uu wahan PadForge ke settings badle sake hai, aur PadForge apan rights se uske pe kaam kari.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Abhi update karo GitHub se, ya Aur ke niche set karaa address se, community controller database (SDL_GameControllerDB) download kare hai, aur settings file me uu mapping rakhe hai jon PadForge ke ii version me nai hai. Uu turant use me hai. Dusra address se ii khali naya mapping rakhe hai. Naya mapping khali uu controller ke liye use hoi jiske aur koi gamepad jaisan nai padhe, jon assign nai hai aur jon Force Raw Joystick Mode me nai hai. Reset sab download karaa mapping hataawe hai aur GitHub se phir download kare hai. Aap ke apan row, Aur ke niche, rahi.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge administrator rights ke saathe {0} se chale hai, jon folder me dusra file hai. PadForge dusra program ke wahan iske settings badle se nai rok sake hai, aur PadForge apan rights se uske pe kaam kari.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge administrator rights ke saathe {0} se chale hai, jon folder ke PadForge nai padhe sakaa. PadForge dusra program ke wahan iske settings badle se nai rok sake hai, aur PadForge apan rights se uske pe kaam kari.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Abhi update karo GitHub se, ya Aur ke niche set karaa address se, community controller database (SDL_GameControllerDB) download kare hai, aur settings file me uu mapping rakhe hai jon PadForge ke ii version me nai hai. Uu turant use me hai. Dusra address se ii khali naya mapping rakhe hai. Naya mapping pahile khali uu controller ke liye use hoi jiske SDL gamepad, ya bina koi khaas type ke, batawe hai, jiske aur koi gamepad jaisan nai padhe, jon assign nai hai aur jon Force Raw Joystick Mode me nai hai. Ek baar use me aawe pe, controller assign hoe ke baad bhi uu use me rahi. Reset download karaa mapping hataawe hai aur Kahan se download ke community ke file pe wapas set kare hai, jiske agla Abhi update karo download kari. Aap ke apan row, Aur ke niche, rahi.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Abhi update karo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Update hoe rahaa…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Andar se: {0} mapping, community copy {1} ke.</value></data>
@@ -1416,14 +1430,15 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Andar se: {1} mapping, community copy {2} ke. {3} ke {4} se download bhais: {0} naya row.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Andar se: {1} mapping, community copy {2} ke. {3} ke {4} se download bhais: {0} naya row.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Pichhla update se community database nai badla hai.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Pichhla update se {0} pe wala file nai badla hai.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetry se</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Hamesa</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Uu button jon mouse ke steer kare deve hai, source wala device pe. Koi nai chuna to mouse hamesa steer kare hai.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Uu button jon mouse ke steer kare deve hai, ii slot ke koi bhi device pe. Koi nai chuna to mouse hamesa steer kare hai.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game telemetry On rahe pe, 200 km/h pe kitna lock bache hai. 100% pe pura lock har speed pe rahe hai.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol server aur client jon assistant connection aur PadForge.exe --mcp ke peechhe hai, Model Context Protocol a Series of LF Projects ke banaawa.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol server aur client jon assistant connection aur PadForge.exe --mcp ke peechhe hai, Model Context Protocol a Series of LF Projects, LLC ke banaawa.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions aur DependencyInjection.Abstractions, jon pe MCP C# SDK banaa hai, Microsoft ke banaawa.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Program</value></data>
@@ -1476,8 +1491,13 @@
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Hataawe rahaa…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Update hoe rahaa…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ii pura nai bhais: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge ke entry aur skill rahi, kaahe ki {0} wahi settings file aur skill folder padhe hai.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge ke entry rahi, kaahe ki {0} wahi settings file padhe hai.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge ii program se hataa diya gais. Iske skill rahi, kaahe ki {0} wahi folder se skill padhe hai.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge {0} me settings nai padhe sake hai, to ii nai jaane ki PadForge add hai ki nai.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Add hai. PadForge iske skill folder nai padhe sakaa.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Copy hoe gais.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Copy nai bhais: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Copy nai bhais. Windows PadForge ke clipboard use kare nai dees.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Allow karaa program</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Jon program Read ya aur mange hai, uu ek baar puchhe hai, pahila baar connect hoe pe, aur jon level mange uu paawe hai, upar wala level tak. Jon assistant aap upar add karo, uu ii se allow hai.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -1489,6 +1509,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Ek joystick. PadForge isse raw padhe hai, to SDL ke mapping use nai hoe hai.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Ek joystick, aap ke row se gamepad jaisan lagaa.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL device ke tab padhe hai jab engine chale hai.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Device connect nai hai. Connect hoe pe SDL isse padhi.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL PadForge ke ii device ke koi reading nai dees.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Andar wala community copy, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Download bhais {0}</value></data>
@@ -1526,6 +1548,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle aur dusra action</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} aur {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Copy kare ke kuch nai hai: SDL ke lage ii device ke koi mapping nai hai, aur ii koi controller pe nai hai.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Copy kare ke kuch nai hai: PadForge ii device ke SDL mapping nai padhe sake hai, aur iske controller ke koi row aisan binding nai dewe jon SDL ke form lee hai.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Copy kare ke kuch nai hai: SDL ke lage ii device ke koi mapping nai hai, aur {0} ke koi row iske button, axis ya hat ke aisan nai padhe jon SDL ke form lee hai.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Copy kare ke kuch nai hai: SDL ke lage ii device ke koi mapping nai hai, aur {0} ke row isse khali {1} ke liye padhe hai, jon SDL ke form nai rakhe sake hai.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Copy kare ke kuch nai hai: PadForge abhi ii device ke SDL mapping nai padhe sake hai, aur ii koi controller pe nai hai.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Copy kare ke kuch nai hai: PadForge abhi ii device ke SDL mapping nai padhe sake hai, aur {0} ke koi row aisan binding nai dewe jon SDL ke form lee hai.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Dusra program clipboard use kare hai. Kuch copy nai bhais.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Aap ke row hat gais. Device waise padha jaae hai jaise pahile.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL ke layout se phir se map bhais: {0}.</value></data>
@@ -1546,6 +1573,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge ke lage wala row</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Koi row nai mile hai.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Chuna wala row {0} pe uske apan ID ke niche lagaa jaai, Paste karo wala check aur choice se.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Engine band hai, to list me uu row nai hai jon SDL rakhe hai, iske apan aur andar wala community copy. Engine chale pe uu list me aai.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL time pe jawaab nai dees, to list me uu row nai hai jon SDL rakhe hai, iske apan aur andar wala community copy.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL mapping row</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ii device ke liye ek row.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Guess karaa layout.</value></data>
@@ -1558,14 +1587,14 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} field, wahi vendor aur product se, dusra bus ya version pe. Ii device ke apan ID ke niche rakha jaae hai.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} field, dusra device ke row. Ii device ke apan ID ke niche rakha jaae hai.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} field. SDL ii device ke nai padhe hai, to PadForge iske input row se lagaawe hai.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge ke lage ii field ke liye koi saadha button ya axis nai hai, to PadForge inke chhod dewe hai: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} field, device ke axis, button aur hat se. Test Inputs me check karo, phir rakho ya hian badlo.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ii badle hai ki {0} kaise padha jaae hai. {1} me iske row naya layout se phir se map hoi.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ii badle hai ki {0} kaise padha jaae hai. Ii koi controller pe nai hai, to koi row nai badli.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Jon profile shortcut {0} padhe hai, uu apan set karaa input rakhi.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Row PadForge.xml me aap ke jaisan rakha jaae hai aur ii device ke liye har dusra source se upar hai. Apan wala hataao purana row aur purana controller row waapas rakhe hai.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Row sab PadForge.xml me aap ke jaisan rakha jaae hai aur apan device ke liye har dusra source se upar hai. Controller Database row ke Aur ke niche, Saaf karo unke hataawe hai.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows ke liye {0} row. Dusra system ke {1} chhod diya jaae hai.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows ke liye {0} row. Dusra system ke {1} chhod diya jaae hai.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Windows ke liye row: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Sab {0:N0} jod diya jaai. PadForge aap ke {1:N0} row tak rakhe hai.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ii jod diya jaai. PadForge aap ke {1:N0} row tak rakhe hai.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Aap ke {0:N0} abhi rakha hai, to inme se {1:N0} jod diya jaai aur {2:N0} nai.</value></data>
@@ -1575,7 +1604,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ii text SDL ke controller database ke row nai hai: 32 hex digit ke ID, ek naam, phir field jaise a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Row sab dusra system ke liye hai. PadForge Windows ke row padhe hai, ya uu row jon koi khaas system ke nai hai.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Row ke ID koi device ke nai hai. Isme 32 hex digit chahi.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Row ke naam khali hai, 128 character se lamba hai, ya isme aisan character hai jiske SDL field jaisan padhe hai.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Row ke naam khali hai, 128 character se lamba hai, ek field marker rakhe hai jon SDL padhe hai, jaise “type:”, ya letter, digit, punctuation, symbol aur saadha space ke alawa koi character rakhe hai.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Row me ek hint ya Android field hai, jiske PadForge nai le hai.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Row me ek field hai jiske SDL nai jaane hai.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Ek binding SDL ke form me nai hai, jaise b3, a2, +a2, a2~ ya h0.4.</value></data>
@@ -1600,7 +1629,7 @@
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Ruk gais. Iske aakhri baat: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ii suru nai hoe sakaa.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ii ab ii PC pe nai hai.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ii PC pe koi tunnel program nai mila. PadForge cloudflared, devtunnel, ngrok aur Tailscale Funnel ke saathe kaam kare hai, ya aap ke apan tunnel ke address ke saathe.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge ii PC pe cloudflared, devtunnel, ngrok ya Tailscale Funnel me se koi nai paais. ChatGPT Secure MCP Tunnel chuno, jon PadForge download kari, ya apan tunnel ke address do.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge ke ek public address deve ke liye ek tunnel chuno.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Ii PC pe aur: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, jiske address wahi rahe hai</value></data>
@@ -1608,7 +1637,7 @@
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Apan tunnel http://127.0.0.1:{0} tak chalaao aur uske https address paste karo. Named Cloudflare tunnel, persistent dev tunnel, Tailscale Funnel aur ngrok ke apan domain apan address rakhe hai.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Ek https address paste karo jisme /mcp ke chhod ke koi path nai hai, jaise aap ke tunnel deve hai.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge ke web helper suru hoe rahaa.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge ke web helper ruk gais ({0}). Isse phir suru kare ke liye Reach PadForge From the Web ke off aur on karo.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge ke web helper ruk gais ({0}). PadForge isse suru kare ke koshish karte rahi.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Address</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Abhi koi public address nai hai.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude me add karo</value></data>
@@ -1646,11 +1675,6 @@
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ii code {0} ke saathe khatam bhais</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation off hai, to koi web assistant PadForge tak nai pahunche hai. Web helper tab suru hoi jab Automation on hoi.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Check hoe rahaa…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Install nai hai.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Install hai aur naya hai. Script {0} se suru hoe hai.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} ke liye install hai aur naya hai. Script {1} se suru hoe hai.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Install hai. Ii PadForge ke lage naya copy hai.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} ke liye install hai. Ii PadForge ke lage naya copy hai.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Install hoe rahaa…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge isse check nai kare sakaa: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Install karo PadForge ke library uu jagah rakhe hai jahan uu language isse paawe hai. Jon script isse load kare, uu upar wala level pe device padhe hai aur mapping chalaawe hai.</value></data>
@@ -1658,22 +1682,24 @@
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Install karaa copy</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Sab hatao</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Hat gais.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge ke library {0} ke liye install hai aur current hai. Script {1} se suru hoe hai.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>{0} ke liye PadForge ke library ii PadForge ke copy se alag hai.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge ke library {0} ke liye install nai hai.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Script ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Iske script ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script iske control ke {0} naam se bulaawe hai.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script iske key ke KeyA, KeySpace, KeyLeftShift jaisan naam deve hai, aur har key ke uske code se, Vk0 se Vk255 tak.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ii network pe {1} se</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Folder me dekhao</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} suru bhais lekin kabhi PadForge se connect nai bhais.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Address</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge uu address lee hai jon https:// se suru hoe aur ek host ke naam lee, default port pe, aur jisme koi user name ya password nai hoe.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge aisan address lee hai jon 2,048 character tak ke hai, https:// se suru hoe hai aur ek host ke naam dewe hai, default port pe, bina user name, password ya # ke baad wala hissa.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Badlo…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Call aur unke key ii network pe bina encrypt ke jaae hai. Windows unke khali private network pe andar aawe de hai.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Call aur uske key ii network ke paar bina encryption ke jaawe hai. Windows Firewall rule jon PadForge ii port ke liye banaawe hai, khali private network ke naam lewe hai.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} ke dusra program use kare hai. Ii network se PadForge tak pahunche ke liye isse badlo.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows PadForge ke helper ke port {0} pe sune nai dees. PadForge administrator ke adhikar se isse allow kare hai, to PadForge ke unke saathe suru karo aur isse off aur on karo.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows ke lage port {0} pe PadForge ke helper ke liye koi reservation nai hai. Isse off aur on karo, aur PadForge isse phir banaai.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge ke helper port {0} pe nai sun sakis. Port badlo, ya isse off aur on karo.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge ke helper ruk gais ({0}). Isse phir suru kare ke liye Reach PadForge From This Network ke off aur on karo.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge ke helper ruk gais ({0}). PadForge isse suru kare ke koshish karte rahi.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation off hai, to ii network pe koi assistant PadForge tak nai pahunche hai. Helper tab suru hoi jab Automation on hoi.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Ii PC ke abhi private network pe koi address nai hai.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Ii network pe assistant</value></data>
@@ -1688,7 +1714,26 @@
   <data name="Reach_Line_Format" xml:space="preserve"><value>Apan device aur {0} ke chalaawe hai. Abhi bhi sab device padhe hai.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Khali apan device chalaawe hai. Abhi bhi sab device padhe hai.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Command line ke command abhi bhi PadForge tak pahunche hai, jaise har program ke liye.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Chale hai, aap ke adhikar ke saathe, aur taiyaar hai. ChatGPT ii tunnel se PadForge tak pahunche hai bina apan sign in ke, aur khali aap ke OpenAI organization se. Ii PadForge ke saathe phir se suru hoi.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Chale hai, aap ke adhikar ke saathe. Ii OpenAI ke bole ke intezaar kare hai ki tunnel taiyaar hai.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge key ke khali aap ke liye encrypt karke rakhe hai. Khali box isse bhula de hai. ChatGPT upar wala level pe kaam kare hai.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge plugin kit save nai kare sakaa.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Activity {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge GitHub ke jawaab nai lees. Kuch nai badla.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge {0} se aawa jawaab nai lees. Kuch nai badla.</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>iske library mila aur isse load nai karis, kaahe ki PadForge pakka nai kare sakaa ki khali administrator isse badle sake hai aur Logitech isse sign karis hai</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>iske library mila aur isse use nai kare sakis, aur diagnostics log me likha hai kaahe</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Dusra system ke liye row, jon chhod diya gais: {0:N0}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows isse aap ke apan rights se suru nai karis.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ii {0} second me khatam nai bhais.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Ii code {0} ke saathe khatam bhais aur koi kaaran nai dees.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge {0} me settings nai padhe sake hai, to file ke jaisan rahaa waisan chhod dees.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge {0} nai likhis, to isse jaisan rahaa waisan chhod dees.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows aap ke liye koi Documents folder ke naam nai dewe hai.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ke {0} ke liye aap ke koi folder nai mile hai.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0} ke apan command code {1} ke saathe khatam bhais.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0} ke command ii PC pe nai hai.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows PadForge ke ek file padhe ya likhe nai dees jon iske chahi.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ke koi Python nai mile hai: koi registered nai hai, Microsoft Store se install nai hai, koi py launcher list nai kare hai, aur aap ke PATH pe bhi nai hai.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge ke mila koi Python {0} second ke andar jawaab nai dees.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Run koi aisan kaaran nai dees jon PadForge jaane hai.</value></data>
 </root>

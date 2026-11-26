@@ -209,7 +209,7 @@ namespace PadForge.Services
         /// provider's order, that holds it. Null when none does. The provider
         /// would then look beside PadForge.exe, a folder others can change
         /// when PadForge runs from a shared one, so the provider is not
-        /// started at all (#597).
+        /// started at all (#600).
         /// </summary>
         internal static string RuntimePath()
         {
@@ -416,7 +416,7 @@ namespace PadForge.Services
                             // Razer's runtime loads into PadForge only from
                             // a folder only administrators can change and
                             // signed by Razer, held from the check through
-                            // the provider's load (#597).
+                            // the provider's load (#600).
                             string why = null;
                             using var runtime = PadForge.Engine.Common.VendorProgramGate.Refuses ? null : HoldRuntime(out why);
                             if (runtime != null) providerUp = Provider.ProviderInit();

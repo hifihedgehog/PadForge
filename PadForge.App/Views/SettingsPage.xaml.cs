@@ -288,7 +288,7 @@ namespace PadForge.Views
         }
 
         /// <summary>What the page's recording buttons ask the window for
-        /// (#597, #600): Start or Stop Recording, Save the Last 60 Seconds and
+        /// (#600): Start or Stop Recording, Save the Last 60 Seconds and
         /// Save a Snapshot…. The window owns the recorder's wiring and says
         /// here what became of the request.</summary>
         internal static Action<MainWindow.RecorderAsk> ProblemRecordingAsked;

@@ -39,7 +39,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// What one session sends, and the one task that writes it (#597).
+    /// What one session sends, and the one task that writes it (#600).
     /// Answers, rows and events go through one queue in the order they were
     /// made, so the lines of an answer stay together. The poll thread puts
     /// its events here and returns: it takes this lock for a moment and
@@ -106,7 +106,7 @@ namespace PadForge.Services.Automation
         public int Cap { get; }
 
         /// <summary>Where lines go in place of the pipe once an assistant's
-        /// session has handed its stream to the protocol (#597): the pipe is
+        /// session has handed its stream to the protocol (#600): the pipe is
         /// the protocol's then, and a line written into it would break it.
         /// A text line is handed over at once, its after-write step runs at
         /// once, and the events of devices followed are dropped, since an

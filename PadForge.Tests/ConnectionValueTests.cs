@@ -248,6 +248,98 @@ namespace PadForge.Tests
             Assert.Contains("_inputManager.IsIdle = !s_benchStayAwake && !anyActive && !remoteSharing && !teardownPending;", service, StringComparison.Ordinal);
         }
 
+        /// <summary>A connection macro the engine evaluates while it idles,
+        /// with the device connected so the macro rests. The interface swaps
+        /// the slot's snapshot for a new array of the same macros at 30 Hz,
+        /// so <paramref name="body"/> gets the engine and two such
+        /// arrays.</summary>
+        private static void WithIdleConnectionMacro(Action<InputManager, MacroItem, MacroItem[], MacroItem[]> body)
+        {
+            var pad = Device("DualSense Wireless Controller", PadPath, online: true, slots: 0);
+            var macro = new MacroItem
+            {
+                IsEnabled = true, PadIndex = 0, TriggerMode = MacroTriggerMode.CustomExpression,
+                TriggerExpression = "!a", RepeatMode = MacroRepeatMode.UntilRelease,
+            };
+            macro.TriggerExpressionVariables.Add(new MacroExpressionVariable { Spec = "con:" + pad.InstanceGuid });
+            macro.Actions.Add(new MacroAction { Type = MacroActionType.ButtonPress, ButtonFlags = Gamepad.A, DurationMs = 60000 });
+            var other = new MacroItem { IsEnabled = true, PadIndex = 0, TriggerMode = MacroTriggerMode.OnPress, TriggerButtons = Gamepad.B };
+            var im = new InputManager();
+            var running = typeof(InputManager).GetField("_running", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            try
+            {
+                int run = im.StampRun();
+                running.SetValue(im, true);
+                im.NoteEnumerationBegan(run, 1000);
+                im.NoteDevicesEnumerated(run);
+                body(im, macro, new[] { other, macro }, new[] { other, macro });
+            }
+            finally
+            {
+                running.SetValue(im, false);
+                im.MacroSnapshots[0] = null;
+            }
+        }
+
+        /// <summary>The idle pass picks a slot's connection macros out of a
+        /// snapshot the interface replaces 30 times a second, and allocates
+        /// nothing while the macros it picks stay the same.</summary>
+        [Fact]
+        public void TheIdlePass_AllocatesNothing_WhileTheSlotsConnectionMacrosStayTheSame()
+        {
+            WithIdleConnectionMacro((im, macro, first, second) =>
+            {
+                bool flip = false;
+                void Pass()
+                {
+                    flip = !flip;
+                    im.MacroSnapshots[0] = flip ? first : second;
+                    im.EvaluateConnectionMacros();
+                }
+                Pass();
+                Assert.Equal(new long[] { 0, 0, 0 }, AllocationWindow.Clean(Pass, 200));
+                Assert.False(macro.IsExecuting);
+            });
+        }
+
+        /// <summary>The active pass lets go of the idle pass's arrays of
+        /// connection macros, so none holds a macro the person deletes while
+        /// the engine is active.</summary>
+        [Fact]
+        public void TheActivePass_LetsGoOfTheIdlePassesArrays()
+        {
+            WithIdleConnectionMacro((im, macro, first, _) =>
+            {
+                var arrays = (MacroItem[][])typeof(InputManager)
+                    .GetField("_connectionMacros", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                    .GetValue(im);
+                im.MacroSnapshots[0] = first;
+                im.EvaluateConnectionMacros();
+                Assert.NotNull(arrays[0]);
+
+                typeof(InputManager)
+                    .GetMethod("EvaluateMacros", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                    .Invoke(im, null);
+                Assert.All(arrays, a => Assert.Null(a));
+            });
+        }
+
+        /// <summary>A menu cell that names a connection macro and was held on
+        /// the last active pass is not held in the idle pass, which runs no
+        /// menu: the macro gets its release on the first idle pass.</summary>
+        [Fact]
+        public void AMenuCellsStamp_FromTheLastActivePass_IsNotCurrentInTheIdlePass()
+        {
+            WithIdleConnectionMacro((im, macro, first, _) =>
+            {
+                im.MacroSnapshots[0] = first;
+                macro.MenuTriggerTick = im.MacroPassTick;
+                im.EvaluateConnectionMacros();
+                im.EvaluateConnectionMacros();
+                Assert.False(macro.WasTriggerActive);
+            });
+        }
+
         /// <summary>The variable and the mode go through the settings file
         /// and the clipboard, which carry a macro as its data, and the
         /// screens list's cleaning on load keeps mode 9.</summary>

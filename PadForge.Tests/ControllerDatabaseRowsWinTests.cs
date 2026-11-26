@@ -142,7 +142,7 @@ namespace PadForge.Tests
 
             string devices = OffLimitsSource.Read("PadForge.App/Services/ControllerDatabaseController.Devices.cs");
             Assert.Contains("var texts = ControllerDatabaseEngine.GiveBack(row);",
-                FenceSource.Body(devices, "private static Task GiveBackAsync(ControllerDatabaseMineRow row)"), StringComparison.Ordinal);
+                FenceSource.Body(devices, "private static Task GiveBackAsync(ControllerDatabaseMineRow row,"), StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -441,7 +441,7 @@ namespace PadForge.Tests
 
             string devices = OffLimitsSource.Read("PadForge.App/Services/ControllerDatabaseController.Devices.cs");
             Assert.Contains("ControllerDatabaseEngine.TakeCopies(row.Id, ControllerDatabaseMine.Current)",
-                FenceSource.Body(devices, "private static Task GiveBackAsync(ControllerDatabaseMineRow row)"), StringComparison.Ordinal);
+                FenceSource.Body(devices, "private static Task GiveBackAsync(ControllerDatabaseMineRow row,"), StringComparison.Ordinal);
         }
 
         // ── A row compared the way SDL stores it (brief part 4) ──
@@ -531,8 +531,11 @@ namespace PadForge.Tests
             string engine = OffLimitsSource.Read("PadForge.App/Common/Input/InputManager.ControllerDatabase.cs");
             Assert.DoesNotContain("Row.Layout", devices, StringComparison.Ordinal);
             Assert.DoesNotContain("Row.Layout", engine, StringComparison.Ordinal);
-            Assert.Contains("ControllerDatabaseSource.StoredLayout(keptRow)", devices, StringComparison.Ordinal);
-            Assert.Contains("ControllerDatabaseSource.StoredLayout(row)", engine, StringComparison.Ordinal);
+            // Each comparison goes through the one that reads the stored form.
+            Assert.Contains("ControllerDatabaseSource.ReadsThrough(Sanitized(after.Mapping), keptRow)", devices, StringComparison.Ordinal);
+            Assert.Contains("ControllerDatabaseSource.ReadsThrough(ControllerDatabaseEngine.MappingForId(wrapper.SdlInstanceId), row)", engine, StringComparison.Ordinal);
+            string source = OffLimitsSource.Read("PadForge.App/Common/Input/ControllerDatabaseSource.cs");
+            Assert.Contains("string stored = StoredLayout(row);", FenceSource.Body(source, "internal static bool ReadsThrough("), StringComparison.Ordinal);
         }
 
         /// <summary>The wrapper's word for the raw list says how long it

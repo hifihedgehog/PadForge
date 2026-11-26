@@ -47,28 +47,46 @@ namespace PadForge.Views
 
         /// <summary>A kind as a row's first line, in the app's language.
         /// HIDMaestro names its kinds in English, KindDevnode to KindStep in
-        /// HIDMaestro.Core's Uninstaller, and they showed untranslated. A
+        /// HIDMaestro.Core's Uninstaller and string literals in its
+        /// usbip-win2 part (UsbipRemoval.cs, listed in HMUninstallEntry.Kind's
+        /// doc at 2.4.0), and they showed untranslated. The usbip-win2 part's
+        /// failure row names the product, which keeps its own spelling. A
         /// kind a later HIDMaestro adds shows in its own words, its first
         /// letter upper.</summary>
-        internal static string KindTitle(string kind) => kind switch
+        internal static string KindTitle(string kind)
         {
-            "devnode" => Strings.Instance.HIDMaestroUninstall_KindDevice,
-            "interface registration" => Strings.Instance.HIDMaestroUninstall_KindInterface,
-            "shared registry key" => Strings.Instance.HIDMaestroUninstall_KindSharedKey,
-            "shared registry value" => Strings.Instance.HIDMaestroUninstall_KindSharedValue,
-            "WinUSB binding" => Strings.Instance.HIDMaestroUninstall_KindWinUsb,
-            "OEM name override" => Strings.Instance.HIDMaestroUninstall_KindOemName,
-            "DeviceOverrides key" => Strings.Instance.HIDMaestroUninstall_KindDeviceOverrides,
-            "OpenVR registration" => Strings.Instance.HIDMaestroUninstall_KindOpenVr,
-            "driver package" => Strings.Instance.HIDMaestroUninstall_KindPackage,
-            "WUDF service key" => Strings.Instance.HIDMaestroUninstall_KindWudf,
-            "registry key" => Strings.Instance.HIDMaestroUninstall_KindRegistryKey,
-            "certificate" => Strings.Instance.HIDMaestroUninstall_KindCertificate,
-            "folder" => Strings.Instance.HIDMaestroUninstall_KindFolder,
-            "service setting" => Strings.Instance.HIDMaestroUninstall_KindServiceSetting,
-            "removal step" => Strings.Instance.HIDMaestroUninstall_KindStep,
-            null or "" => kind,
-            _ => char.ToUpperInvariant(kind[0]) + kind.Substring(1),
+            if (string.IsNullOrEmpty(kind) || kind == "usbip-win2") return kind;
+            return KindKey(kind) is string key ? Strings.Get(key) : char.ToUpperInvariant(kind[0]) + kind.Substring(1);
+        }
+
+        /// <summary>The string key that titles a kind, or null for a kind
+        /// with none.</summary>
+        internal static string KindKey(string kind) => kind switch
+        {
+            "devnode" => nameof(Strings.HIDMaestroUninstall_KindDevice),
+            "interface registration" => nameof(Strings.HIDMaestroUninstall_KindInterface),
+            "shared registry key" => nameof(Strings.HIDMaestroUninstall_KindSharedKey),
+            "shared registry value" => nameof(Strings.HIDMaestroUninstall_KindSharedValue),
+            "WinUSB binding" => nameof(Strings.HIDMaestroUninstall_KindWinUsb),
+            "OEM name override" => nameof(Strings.HIDMaestroUninstall_KindOemName),
+            "DeviceOverrides key" => nameof(Strings.HIDMaestroUninstall_KindDeviceOverrides),
+            "OpenVR registration" => nameof(Strings.HIDMaestroUninstall_KindOpenVr),
+            "driver package" => nameof(Strings.HIDMaestroUninstall_KindPackage),
+            "WUDF service key" => nameof(Strings.HIDMaestroUninstall_KindWudf),
+            "registry key" => nameof(Strings.HIDMaestroUninstall_KindRegistryKey),
+            "certificate" => nameof(Strings.HIDMaestroUninstall_KindCertificate),
+            "folder" => nameof(Strings.HIDMaestroUninstall_KindFolder),
+            "service setting" => nameof(Strings.HIDMaestroUninstall_KindServiceSetting),
+            "removal step" => nameof(Strings.HIDMaestroUninstall_KindStep),
+            "service" => nameof(Strings.HIDMaestroUninstall_KindService),
+            "file" => nameof(Strings.HIDMaestroUninstall_KindFile),
+            "upper filter" => nameof(Strings.HIDMaestroUninstall_KindUpperFilter),
+            "registry value" => nameof(Strings.HIDMaestroUninstall_KindRegistryValue),
+            "hardware id" => nameof(Strings.HIDMaestroUninstall_KindHardwareId),
+            "scheduled task" => nameof(Strings.HIDMaestroUninstall_KindScheduledTask),
+            "Apps entry" => nameof(Strings.HIDMaestroUninstall_KindAppsEntry),
+            "USB/IP import" => nameof(Strings.HIDMaestroUninstall_KindUsbipImport),
+            _ => null,
         };
 
         private readonly Func<bool, Task<HMUninstallReport>> _preview;

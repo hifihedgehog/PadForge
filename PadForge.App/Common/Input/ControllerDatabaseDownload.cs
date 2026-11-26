@@ -22,7 +22,7 @@ namespace PadForge.Common.Input
     }
 
     /// <summary>
-    /// A downloaded copy of the community controller database (#597), read
+    /// A downloaded copy of the community controller database (#600), read
     /// and checked. No publisher digest exists for the file, so what stands
     /// between the network and SDL is HTTPS to a fixed host, the caps, the
     /// row grammar (<see cref="ControllerDatabaseRow"/>) and the count of

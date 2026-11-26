@@ -214,6 +214,24 @@ namespace PadForge.Engine
         /// <summary>True if the device reports as charging or fully charged.</summary>
         public bool BatteryCharging;
 
+        /// <summary>Whether button 16 is a button of the device's own, so
+        /// its first touchpad's click is that pad's
+        /// <see cref="TouchpadInputState.Clicked"/> alone (#600): a program's
+        /// device that declared both. False for every other device, whose
+        /// first pad's click rides <c>Buttons[16]</c>, SDL's
+        /// SDL_GAMEPAD_BUTTON_TOUCHPAD. A property and not a field: the
+        /// recording keeps no copy of it, since a replayed device reads it
+        /// from its shape again (ProgramDevice). CopyInto and ResetForReuse
+        /// carry it, and the Remote Link codec sends it.</summary>
+        public bool OwnButtonSixteen { get; set; }
+
+        /// <summary>The first touchpad's click, wherever this state keeps
+        /// it (<see cref="OwnButtonSixteen"/>). Every reader of a
+        /// "Touchpad 0 Click" reads it here.</summary>
+        public bool FirstPadClicked => OwnButtonSixteen
+            ? Touchpads is { Length: > 0 } pads && pads[0] != null && pads[0].Clicked
+            : Buttons != null && Buttons.Length > 16 && Buttons[16];
+
         /// <summary>
         /// Creates a new zeroed input state with default array sizes.
         /// All axes and sliders default to 0, all POVs default to -1 (centered),
@@ -332,6 +350,7 @@ namespace PadForge.Engine
             dst.MouseRawWheelH = MouseRawWheelH;
             dst.BatteryPercent = BatteryPercent;
             dst.BatteryCharging = BatteryCharging;
+            dst.OwnButtonSixteen = OwnButtonSixteen;
         }
 
         /// <summary>Returns this instance to the exact fresh-constructed
@@ -374,6 +393,7 @@ namespace PadForge.Engine
             MouseRawWheelH = 0;
             BatteryPercent = -1;
             BatteryCharging = false;
+            OwnButtonSixteen = false;
         }
 
         // ─────────────────────────────────────────────

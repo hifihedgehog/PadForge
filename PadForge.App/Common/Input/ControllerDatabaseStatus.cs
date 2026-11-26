@@ -6,7 +6,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// The Controller Database row's status line (#597): what PadForge reads
+    /// The Controller Database row's status line (#600): what PadForge reads
     /// out of the box, and what the last Update Now added. Every number is
     /// counted from the baseline, PadForge's own rows and the section, so
     /// the line cannot say more than the files hold.

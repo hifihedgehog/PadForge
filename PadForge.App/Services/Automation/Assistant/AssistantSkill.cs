@@ -15,7 +15,7 @@ using ModelContextProtocol.Server;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// PadForge's own skill (#597): a folder with SKILL.md and its references,
+    /// PadForge's own skill (#600): a folder with SKILL.md and its references,
     /// carried inside the executable, so it always matches the version in use.
     /// It is served through the protocol's Skills extension
     /// (<c>io.modelcontextprotocol/skills</c>): <c>skills/list</c> and
@@ -175,8 +175,13 @@ namespace PadForge.Services.Automation
             foreach (var file in Files)
                 yield return new AssistantTextResource(file.Uri, Name + "/" + file.Path,
                     file.Path == "SKILL.md" ? "PadForge's skill" : "PadForge's skill: " + file.Path,
-                    "text/markdown", () => file.Text, file.Size);
+                    MimeOf(file.Path), () => file.Text, file.Size);
         }
+
+        /// <summary>A skill file's type by its extension: the project embeds
+        /// the skill's Markdown and JSON files.</summary>
+        internal static string MimeOf(string path)
+            => path.EndsWith(".json", StringComparison.OrdinalIgnoreCase) ? "application/json" : "text/markdown";
 
         /// <summary>Save the Skill in this process: brings the folder
         /// <c>padforge</c> in <paramref name="folder"/> to exactly the skill's

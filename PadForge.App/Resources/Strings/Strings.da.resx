@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Vis eller skjul PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Slå virtuelle controllere til eller fra</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Enhver tilsluttet enhed</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (ikke tilsluttet)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>En enhed, der ikke er på siden Enheder</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Optager…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>når</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Læs</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Send input</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Ændr indstillinger</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmer kan skifte profiler og frigive dem, starte og stoppe motoren, slå virtuelle controllere til og fra, vise og skjule vinduet, lukke PadForge, gemme et diagnosticeringsøjebliksbillede og spørge, hvad der kører.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmer kan skifte profiler og frigive dem, starte og stoppe motoren, slå virtuelle controllere til og fra, vise og skjule vinduet, lukke PadForge, spørge, hvad der kører, gemme et diagnosticeringsøjebliksbillede og starte, stoppe og markere en problemoptagelse.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Alt på niveauet Kommandoer, og programmer kan se enheder, virtuelle controllere, tildelinger, profiler og indstillinger, følge hver enheds input, mens de sker, og vise dig et sted i PadForge. Et program på niveauet Læs ser hver tast, der trykkes på hver enhed, også taster, der skrives i vinduer, der kører som administrator.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Alt på niveauet Læs, og programmer kan tilføje egne enheder og styre dem, holde en kontrol på en hvilken som helst enhed nede og give navngivne værdier videre til makrotriggere.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alt på niveauet Send input, og programmer kan ændre det, du selv kan ændre på siderne. Nogle ændringer spørger dig altid først på spørgsmålskortet i PadForge.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Venter på dig</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivitet</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Fortryd</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kunne ikke gemme den: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge kunne ikke gemme filen.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge kunne ikke gemme plugin-kittet.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Aktivitet {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Lyde{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Ikoner{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Mens et program på niveauet Læs eller højere er tilsluttet, ser det, hvad der trykkes på hver enhed, også tastaturer.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kør plugins</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} af {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (afspilning)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problemoptagelser|*.zip;*.log|Alle filer|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge kan ikke afspille {0}. Det er ingen problemoptagelse, eller den indeholder ingen enheds input.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge kan ikke afspille {0}. Den er ikke en problemoptagelse, som PadForge kan læse.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge kan ikke afspille {0}. Den indeholder mere end {1} enheder, og Afspilning afspiller højst {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge kan ikke afspille {0}. Den indeholder ingen enheds input.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge kunne ikke læse {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Dine plugins</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Tilføj et plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmer og scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Alle filer|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Stoppet efter fem fejl i træk</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ikke startet: filen er væk</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ikke startet: Windows har intet program til denne slags fil</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ikke startet: intet program åbner Python-filer for dig, og PadForge finder ingen py-starter</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ikke startet: PadForge kan ikke læse, hvilket program der åbner denne slags fil for dig</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ikke startet: programmet, der åbner denne slags fil for dig, findes ikke på denne pc</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ikke startet: ingen skrivebordsskal kører at starte det under</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ikke startet: skrivebordsskallen har administratorrettigheder, så pluginet ville få dem også</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ikke startet: PadForge kan ikke læse, om det ville få administratorrettigheder</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ikke startet: Windows gav det administratorrettigheder, så PadForge afsluttede det, før det kørte</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ikke startet: det beder om administratorrettigheder</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ikke startet: Windows afviste med fejl {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ikke startet</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Tilføjede {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Underskrevet af {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ikke underskrevet.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Dets indstillinger vises her, mens det kører.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Det erklærer ingen indstillinger.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Dets indstillinger vises her, når det har forbindelse til PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programmet taler en version, PadForge ikke kender</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gav ikke den plugin-nøgle</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tog ikke imod dette programs forbindelse</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge lavede ingen enhed, fordi Windows ikke gav navnet på programmets fil</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Spurgt igen for hurtigt</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ikke flere af disse, før PadForge starter igen</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>For mange af disse, som programmer har lavet, venter på din gennemgang på Hjem</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge har intet sådant værktøj</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programmet læste en ældre tilstand</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Intet har det ID</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Du tillod det ikke</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ingen svarede i tide</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Venter på dit svar</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Du havde ikke svaret endnu</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ingen sådan anmodning</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Intet at fortryde</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Kun du kan ændre dette</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Ikke underskrevet.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>På niveauet Læs og derover ser det hver tast, der trykkes på hver enhed, også tastaturer.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Det spørger én gang. Du kan fjerne det på siden Automatisering.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Startet af et program, som PadForge ikke kunne identificere.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge kan ikke kende dette program fra et andet, så det spørger igen ved næste forbindelse.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>kommandolinjen til PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Sætter {0} til {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lytter på netværket, så andre enheder kan nå denne pc.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Tag en profil med over</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importer en profilfil fra et andet program, og se derefter, hvad der kom med.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} gange</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, den sidste af {1} som den</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2-scripts (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Der er ikke noget Logitech G-key SDK på denne maskine. Det installeres sammen med Logitech Gaming Software 8.55 eller nyere.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK er registreret, men filen er væk. Geninstaller Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK blev fundet, men kunne ikke indlæses.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK blev fundet, men ikke indlæst, da PadForge ikke kunne bekræfte, at kun administratorer kan ændre det, og at Logitech har signeret det.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Det bibliotek er ikke det G-key SDK, som PadForge forventer.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK nægtede at starte. Som regel kører Logitech Gaming Software ikke.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Forbundet, ingen tast registreret endnu. I Logitech Gaming Software skal du trække G-key-kommandoen hen på hver tast i PadForge-profilen og gøre profilen vedvarende. En G600- eller G300-mus skal også være ude af tilstanden med indbygget hukommelse.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatisk, når du logger på Windows. Mens dette er slået til, starter PadForge også uden Windows' spørgsmål fra en genvej, et script eller et andet program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge kører fra {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dette kræver, at PadForge ligger i en mappe for sig selv. Dens mappe indeholder andre filer, så PadForge kan ikke holde andre programmer fra at ændre den.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Dette kræver, at PadForge ligger i en mappe, som andre programmer ikke kan ændre. PadForge kunne ikke holde dem fra at ændre sin mappe.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Flyt PadForge til sin egen mappe</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopierer PadForge og dets indstillinger til Program Files, peger dets opgaver dertil og starter det derfra. Kopien her bliver, som den er.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: {0} indeholder filer, der ikke hører til PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start ved logon blev slået fra, fordi det kørte PadForge fra en mappe med andre filer.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge blev ikke flyttet: Windows har ingen mappe med navnet Programmer.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke læse den PadForge, der kører.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke oprette {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke læse, hvad {0} indeholder.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke holde andre programmer fra at ændre {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: dens kopi i {0} passede ikke med den PadForge, der kører.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: efter kopieringen indeholdt {0} filer, der ikke hører til PadForge, eller andre programmer kunne ændre den.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Start ved logon blev slået fra, da den PadForge, der kørte, ikke længere findes.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Start ved logon blev slået fra, da PadForge ikke kunne holde andre programmer fra at ændre den mappe, PadForge kørte fra.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Start ved logon blev slået fra, da PadForge ikke kunne læse, hvilken PadForge den kørte.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Start ved logon blev slået fra, da PadForge ikke kunne læse mappen til den PadForge, den kørte.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge kunne ikke oprette sin beskyttede mappe, {0}. PadForge opbevarer de biblioteker, det kører med administratorrettigheder, dér, og det kan ikke starte sikkert uden den.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge kunne ikke starte sig selv igen fra sin beskyttede mappe, {0}. PadForge kører kun med administratorrettigheder derfra, så det startede ikke.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge kunne ikke oprette den lås, der begrænser det til én kørende kopi, så det startede ikke.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge kører med administratorrettigheder fra {0}, en mappe, som andre programmer kan ændre. De kan ændre PadForges indstillinger dér, og PadForge handler på dem med sine rettigheder.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge kører med administratorrettigheder fra {0}, en mappe, der indeholder andre filer. PadForge kan ikke holde andre programmer fra at ændre dets indstillinger dér, og det handler på dem med sine rettigheder.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge kører med administratorrettigheder fra {0}, en mappe, som det ikke kunne læse. PadForge kan ikke holde andre programmer fra at ændre dets indstillinger dér, og det handler på dem med sine rettigheder.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vis altid i meddelelsesområdet</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hold ikonet i meddelelsesområdet synligt, mens vinduet er åbent, så Afslut i dets menu altid kun er ét klik væk.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Opdateringer</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installer og genstart</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Udgivelsesnoter</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Controllerdatabase</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdater nu henter den fælles controllerdatabase (SDL_GameControllerDB) fra GitHub eller fra adressen under Mere og gemmer i indstillingsfilen de mappinger, som denne version af PadForge mangler. De er i brug med det samme. Fra en anden adresse gemmer den kun nye mappinger. En ny mapping bruges kun til en controller, som intet andet læser som en gamepad, som ikke er tildelt, og som ikke er i Gennemtving rå joysticktilstand. Nulstillingen fjerner alle downloadede mappinger og downloader fra GitHub igen. Dine egne rækker under Mere består.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdater nu henter den fælles controllerdatabase (SDL_GameControllerDB) fra GitHub eller fra adressen under Mere og gemmer i indstillingsfilen de mappinger, som denne version af PadForge mangler. De er i brug med det samme. Fra en anden adresse gemmer den kun nye mappinger. En ny mapping bruges først kun til en controller, som SDL melder som en gamepad eller som ingen bestemt type, som intet andet læser som en gamepad, som ikke er tildelt, og som ikke er i Gennemtving rå joysticktilstand. Når den først er i brug, forbliver den i brug, efter at controlleren er tildelt. Nulstillingen fjerner de downloadede mappinger og sætter Download fra tilbage til fællesskabets fil, som næste Opdater nu downloader. Dine egne rækker under Mere består.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Opdater nu</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Opdaterer…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Søger efter opdateringer…</value></data>
@@ -1126,9 +1160,12 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Indbygget: {1} mappinger, fælles kopi fra {2}. Downloadet {3} fra {4}: {0} nye rækker.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Indbygget: {1} mappinger, fælles kopi fra {2}. Downloadet {3} fra {4}: {0} ny række.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Den fælles database er ikke ændret siden sidste opdatering.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Filen på {0} er ikke ændret siden sidste opdatering.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Kunne ikke nå GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Kunne ikke nå {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge afviste downloaden, fordi det ikke er den controllerdatabase, det forventer. Intet er ændret.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge afviste svaret fra GitHub. Intet blev ændret.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge afviste svaret fra {0}. Intet blev ændret.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Start minimeret</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Start ved logon</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Mappe</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Serviceindstilling</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Fjernelsestrin</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Tjeneste</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Fil</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Øvre filter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registreringsdatabaseværdi</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardware-id</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Planlagt opgave</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Post i Installerede apps</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP-enhed</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Lader PlayStation 3-controllere, PlayStation Move og Navigation-controlleren oprette forbindelse via Bluetooth. Indlejret i PadForge og installeret, første gang en af dem parres.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Forbinder PlayStation 3-controllere via Bluetooth.</value></data>
@@ -1239,6 +1284,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Gemt {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Optagelsen startede ikke. En kontrol fandt en privat værdi fra denne PC, som ikke ville blive holdt ude af filen.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Optagelsen startede ikke. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge fandt ingen temp-mappe for den loggede bruger i brugerens profil, nået uden et link, at skrive optagelsen til.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Optagelsesmappen er et link til et andet sted, som PadForge ikke følger.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Den sidste optagelse bliver stadig gjort færdig.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Gem de sidste 60 sekunder er slået fra, så der er intet at gemme.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>En optagelse, PadForge ikke havde stoppet, venter på, at du læser den på Hjem: {0}</value></data>
@@ -1252,7 +1299,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, dine enheder og indstillinger, som de er nu, gennem den samme gennemgang.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log ved siden af PadForge.exe, som du kan læse dér.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Hvad der optages</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Alt er slået til. En del, der slås fra, udelades af den næste optagelse, og filen siger, hvilke dele den indeholder.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Alle dele er slået til som standard. En del, der slås fra, udelades af den næste optagelse, og filen siger, hvilke dele den indeholder.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Til et problem, der kommer én gang om aftenen.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Optagelsen venter på, at du læser den på Hjem.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Oversigt</value></data>
@@ -1303,6 +1350,17 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Gem optagelsen</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-filer</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ikke gemt. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Rensekontrol: Kontrollerer de dele, du beholder…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Rensekontrol: PadForge kunne ikke læse de dele, du beholder, så Gem forbliver slået fra.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Lagringen med dine rettigheder blev ikke startet.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Lagringen med dine rettigheder blev ikke startet: der kører intet skrivebordsskal at starte den under.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Lagringen med dine rettigheder blev ikke startet: Windows afviste med fejl {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Lagringen sluttede ikke inden for {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows lod ikke filen blive skrevet dér.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge tog ikke denne fil for en optagelse, den selv har lavet.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Lagringen sluttede med kode {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Gemt som dig, første gang i din mappe Overførsler, derefter dér, hvor du sidst gemte, og vist i Stifinder. En optagelse, der stopper, mens ingen er på siden (dens grænse, en makro, et program, assistentværktøjet eller --record stop), venter på denne gennemgang på Hjem og slettes efter 7 dage, medmindre den gemmes. Et program får at vide, at den venter, men aldrig hvor.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>En problemoptagelse fra {0} venter på, at du læser den.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Gennemgå</value></data>
@@ -1653,6 +1711,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Ny controller</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Indstillinger</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Alle akser, knapper og sensorer</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Dens kontroller med de navne, scripts bruger</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Trykket: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID'er, sti, egenskaber, Gennemtving rå joysticktilstand</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID'er, sti, egenskaber</value></data>
@@ -2154,9 +2213,18 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Læsningen mislykkedes: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro afviste dette preset ved {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dette preset har ingen HID-deskriptor, så der kan ikke oprettes en controller ud fra det.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge kunne ikke kontrollere dette preset: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Kontrollerer presettet…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Intet blev importeret. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importer</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(unavngiven HID-enhed)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Mus</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Tastatur</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Controller med flere akser</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Fandt {0} HID-grænseflader.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Fandt 1 HID-grænseflade.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumereringen mislykkedes: {0}</value></data>
@@ -3288,7 +3356,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mens holdt nede og centrer</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Skift</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Styreinput</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Knappen, der lader musen styre, på den samme enhed som kilden. Hvis ingen er valgt, styrer musen altid.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Knappen, der lader musen styre, på enhver enhed i denne plads. Hvis ingen er valgt, styrer musen altid.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Udjævning</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Jævner en mus ud, der melder uens. Sticken halter omtrent så længe efter hånden. 0 er slået fra.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Udslag ved fart</value></data>
@@ -3309,7 +3377,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Start, hvor styringen begyndte</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Med et Styreinput måler sticken fra dér, hvor markøren var, da styringen begyndte, som en stick på en telefonskærm starter, hvor fingeren lander. Slået fra måler den fra midten af markørens skærm.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Denne akse bevæger sig relativt</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Til en trackball eller en spinner, der melder, hvor langt den er drejet. Slået til holder aksen en position, som Musebevægelse gør, og tager bevægelsesindstillingerne. Windows siger ikke, hvilke akser der bevæger sig sådan.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Til en trackball eller en spinner, der melder, hvor langt den er drejet. Slået til holder aksen en position, som Musebevægelse gør, og tager bevægelsesindstillingerne. SDL læser en generisk controller gennem DirectInput, som læser hver akse som en position, så denne kontakt siger, hvilke akser der bevæger sig sådan.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Eksempel</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Viser, hvordan denne familie følger din egen mus. Intet tildeles, før du vælger den.</value></data>
@@ -3502,6 +3570,13 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
 {0}
 
 PadForge skrev detaljerne til crash.log ved siden af PadForge.exe. Start en diskussion på {2}, og slip crash.log på den for at rapportere dette.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Der opstod en uventet fejl:
+
+{0}
+
+PadForge kunne ikke skrive detaljerne til crash.log ved siden af PadForge.exe. Start en diskussion på {2}, tryk på Ctrl+C her for at kopiere denne meddelelse, og indsæt den dér for at rapportere dette.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} yderligere fejl undertrykt)</value></data>
@@ -4430,7 +4505,7 @@ PadForge skrev detaljerne til crash.log ved siden af PadForge.exe. Start en disk
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-dekomprimering, som SteamKit2 bruger til Steam-depotblokke, en C#-portering af zstd-biblioteket af Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol-serveren og -klienten bag assistentforbindelsen og PadForge.exe --mcp, af Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol-serveren og -klienten bag assistentforbindelsen og PadForge.exe --mcp, af Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions og DependencyInjection.Abstractions, som MCP C# SDK er bygget på, af Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>binder WinUSB til G19-skærmen</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19-skærmen bruger en anden driver ({0}), så start Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19-skærmen bruger et andet programs driver ({0}), som PadForge lader være i fred</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Kontrollerer Bluetooth-driverne til PlayStation i PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Læser denne pcs Bluetooth-radio…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Åbner controlleren på dens USB-kabel…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Skriver denne pcs Bluetooth-adresse til controlleren…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Registrerer controlleren hos Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Genstarter Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Parringen stoppede: Windows nægtede PadForge adgang til controlleren eller Bluetooth-indstillingerne. Diagnoselogfilen har detaljerne.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Parringen stoppede: det mislykkedes at læse fra eller skrive til controlleren eller Bluetooth-radioen. Diagnoselogfilen har detaljerne.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Parringen stoppede på en fejl, som PadForge ikke havde ventet. Diagnoselogfilen har detaljerne.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>kræver Logitech Gaming Software 8.52 eller nyere</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>fandt sit bibliotek og indlæste det ikke, da PadForge ikke kunne bekræfte, at kun administratorer kan ændre det, og at Logitech har signeret det</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>fandt sit bibliotek og kunne ikke bruge det, og diagnoselogfilen siger hvorfor</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>start Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>venter på en telefon med Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>på en telefon</value></data>
@@ -5938,6 +6024,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Vælg dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Indlæser denne kopi af Force Dimensions bibliotek i stedet for alle andre. En Falcon, der er åben på en anden kopi, lukkes og åbnes igen på denne. De kopier, SDK'et installerer, findes uden den.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Biblioteker (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Downloadsiden til Falcon SDK blev ikke åbnet: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Downloadsiden til Falcon SDK er ikke åbnet endnu: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installer Falcon Driver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Installerer Force Dimensions driver fra SDK-mappen på en Falcon, der ingen har. Windows spørger muligvis først, om du vil stole på Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Hent Force Dimensions SDK</value></data>
@@ -6604,12 +6692,17 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Fjerner…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Opdaterer…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Det blev ikke færdigt: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge-posten og PadForge-skillen forbliver, da {0} læser den samme indstillingsfil og skill-mappe.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge-posten forbliver, da {0} læser den samme indstillingsfil.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge er fjernet fra dette program. Dets skill forbliver, da {0} læser skills fra den samme mappe.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge kan ikke læse indstillingerne i {0}, så det ved ikke, om PadForge er tilføjet.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Tilføjet. PadForge kunne ikke læse dens skill-mappe.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Andre assistenter</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Til en assistent, der ikke er på listen ovenfor: Kopier indstillinger giver posten til dens MCP-indstillinger, og Kopier en besked giver en kort tekst til enhver chat, der siger, hvordan man forbinder, og hvad man først skal spørge om.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Kopier indstillinger</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Kopier en besked</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopieret.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ikke kopieret: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Ikke kopieret. Windows lod ikke PadForge bruge udklipsholderen.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Forbind til PadForge, controllermapperen på min pc. Det er en lokal MCP-server, der kører over stdio: kommandoen er {0} med argumentet --mcp. Som JSON-indstillinger: {1} Når du er forbundet, så kald først dens status-værktøj og spørg mig så, hvad jeg vil sætte op, for eksempel: “Vis mig, hvor jeg tildeler min controllers triggere.”</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Automatisering i PadForge er slået fra nu: slå den først til i PadForge under Ekstra, Automatisering.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Tilladte programmer</value></data>
@@ -6630,6 +6723,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>En joystick. PadForge læser den rå, så SDL-mappingen bruges ikke.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>En joystick, lagt ud som en gamepad af din række.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL læser enheder, mens motoren kører.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Enheden er ikke tilsluttet. SDL læser den, så snart den er det.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL gav PadForge ingen aflæsning af denne enhed.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Den fælles kopi, der er bygget ind, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Downloadet {0}</value></data>
@@ -6667,6 +6762,11 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, skift og andre handlinger</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} og {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Intet at kopiere: SDL har ingen mapping til denne enhed, og den er ikke på nogen controller.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Intet at kopiere: PadForge kan ikke læse SDL’s mapping for denne enhed, og ingen række på dens controllere giver en binding, som SDL’s form tager imod.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Intet at kopiere: SDL har ingen mapping til denne enhed, og ingen række på {0} læser en af dens knapper, akser eller hats på en måde, som SDL’s form tager imod.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Intet at kopiere: SDL har ingen mapping til denne enhed, og rækkerne på {0} læser den kun til {1}, som SDL’s form ikke kan rumme.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Intet at kopiere: PadForge kan ikke læse SDL’s mapping for denne enhed nu, og den er ikke på nogen controller.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Intet at kopiere: PadForge kan ikke læse SDL’s mapping for denne enhed nu, og ingen række på {0} giver en binding, som SDL’s form tager imod.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Et andet program bruger udklipsholderen. Intet blev kopieret.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Din række er fjernet. Enheden læses, som den blev før den.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Tildelt igen ud fra SDL’s layout: {0}.</value></data>
@@ -6687,6 +6787,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rækker, PadForge har</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ingen række passer.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Den valgte række bruges til {0} under dens eget ID, gennem den samme kontrol og det samme valg som Indsæt.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Motoren er stoppet, så listen udelader de rækker, SDL har, både dens egne og den indbyggede kopi fra fællesskabet. De vises, når den kører.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL svarede ikke i tide, så listen udelader de rækker, den har, både dens egne og den indbyggede kopi fra fællesskabet.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL-mappingrække</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>En række til denne enhed.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Et gættet layout.</value></data>
@@ -6699,14 +6801,17 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} felt, fra samme producent og produkt på en anden bus eller version. Den beholdes under denne enheds eget ID.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} felt, en anden enheds række. Den beholdes under denne enheds eget ID.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} felt. SDL læser ikke denne enhed, så PadForge lægger dens input ud efter rækken.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge har ingen almindelig knap eller akse til disse felter og udelader dem: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} felt, ud fra enhedens akser, knapper og hatte. Kontrollér det i Test input, og behold det eller ændr det her.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Dette ændrer, hvordan {0} læses. Dens rækker i {1} tildeles igen ud fra det nye layout.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Dette ændrer, hvordan {0} læses. Den er på ingen controller, så ingen rækker ændres.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profilgenveje, der læser {0}, beholder de input, de var sat til.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Rækken beholdes som din i PadForge.xml og har forrang for alle andre kilder for denne enhed. Fjern min sætter den gamle række og de gamle rækker tilbage.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rækkerne beholdes som dine i PadForge.xml og har forrang for deres enheder over alle andre kilder. Ryd under Mere på rækken Controllerdatabase fjerner dem.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rækker til Windows. {1} til andre systemer springes over.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} række til Windows. {1} til andre systemer springes over.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} rækker til Windows.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} række til Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} rækker til andre systemer springes over.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} række til et andet system springes over.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Alle {0:N0} tilføjes. PadForge beholder op til {1:N0} af dine rækker.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Den tilføjes. PadForge beholder op til {1:N0} af dine rækker.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} af dine beholdes nu, så {1:N0} af disse tilføjes, og {2:N0} tilføjes ikke.</value></data>
@@ -6716,7 +6821,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teksten er ingen række i SDL’s controllerdatabase: et ID på 32 hex-cifre, et navn og så felter som a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Rækkerne er til andre systemer. PadForge læser rækker til Windows eller til intet bestemt system.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Rækkens ID hører ikke til en enhed. Det kræver 32 hex-cifre.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Rækkens navn er tomt, over 128 tegn eller har et tegn, SDL læser som et felt.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Rækkens navn er tomt, er over 128 tegn, indeholder en feltmarkør, som SDL læser, såsom “type:”, eller indeholder et tegn, der ikke er bogstav, ciffer, tegnsætning, symbol eller almindeligt mellemrum.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Rækken har et hint eller et Android-felt, som PadForge ikke tager imod.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Rækken har et felt, SDL ikke kender.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>En binding er ikke i SDL’s form, såsom b3, a2, +a2, a2~ eller h0.4.</value></data>
@@ -6727,8 +6832,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Dine rækker</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rækker, du tilføjer her eller indsætter på en enheds SDL-mapping-kort, har forrang for deres enheder over alle andre kilder og består gennem nulstillingen.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Tilføj rækker fra en fil eller udklipsholderen…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rækker, hver for én enhed, dine over alle andre kilder.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} række for én enhed, din over alle andre kilder.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} rækker, dine frem for alle andre kilder.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} række, din frem for alle andre kilder.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ingen endnu.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Din variabel SDL_GAMECONTROLLERCONFIG indeholder {0} rækker, som PadForge ikke beholder. Tilføj rækker fra en fil eller udklipsholderen åbner med dem.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Din variabel SDL_GAMECONTROLLERCONFIG indeholder {0} række, som PadForge ikke beholder. Tilføj rækker fra en fil eller udklipsholderen åbner med den.</value></data>
@@ -6738,7 +6843,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Skift…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Brug fællesskabets fil</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adresse</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge tager en adresse, der starter med https:// og navngiver en vært, på standardporten, uden brugernavn eller adgangskode.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge tager en adresse på op til 2.048 tegn, der starter med https:// og angiver en vært, på standardporten, uden brugernavn, adgangskode eller del efter #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Nå PadForge fra nettet</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>En assistent, der kører på et websted, når PadForge gennem et tunnelprogram på denne pc. Du bliver spurgt først, når du slår dette til.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Nå PadForge fra nettet?</value></data>
@@ -6755,7 +6860,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Stoppet. Dens sidste ord: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Den kunne ikke startes.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Den er ikke længere på denne pc.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Der blev ikke fundet noget tunnelprogram på denne pc. PadForge virker med cloudflared, devtunnel, ngrok og Tailscale Funnel eller med adressen på din egen tunnel.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge fandt hverken cloudflared, devtunnel, ngrok eller Tailscale Funnel på denne pc. Vælg ChatGPT Secure MCP Tunnel, som PadForge downloader, eller angiv adressen på din egen tunnel.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Vælg en tunnel for at give PadForge en offentlig adresse.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Også på denne pc: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, hvis adresse er den samme</value></data>
@@ -6763,7 +6868,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Kør din egen tunnel til http://127.0.0.1:{0}, og indsæt dens https-adresse. En navngivet Cloudflare-tunnel, en vedvarende dev tunnel, Tailscale Funnel og ngroks eget domæne beholder deres adresse.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Indsæt en https-adresse uden anden sti end /mcp, som din tunnel giver den.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Starter webhjælperen til PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Webhjælperen til PadForge stoppede ({0}). Slå Nå PadForge fra nettet fra og til for at starte den igen.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Webhjælperen til PadForge stoppede ({0}). PadForge bliver ved med at prøve at starte den.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adresse</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Ingen offentlig adresse endnu.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Tilføj til Claude</value></data>
@@ -6802,11 +6907,6 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>den sluttede med kode {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatisering er slået fra, så ingen webassistent når PadForge. Webhjælperen starter, når Automatisering er slået til.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Kontrollerer…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Ikke installeret.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Installeret og opdateret. Et script starter med {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Installeret til {0} og opdateret. Et script starter med {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Installeret. Denne PadForge har en nyere kopi.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Installeret til {0}. Denne PadForge har en nyere kopi.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Installerer…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge kunne ikke kontrollere det: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Installer lægger biblioteket fra PadForge, hvor det sprog finder det. Et script, der indlæser det, læser enheder og styrer tildelinger på niveauet ovenfor.</value></data>
@@ -6814,8 +6914,27 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Installerede kopier</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Fjern alle</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Fjernet.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge-biblioteket er installeret til {0} og aktuelt. Et script starter med {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>PadForge-biblioteket til {0} afviger fra kopien i denne PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge-biblioteket er ikke installeret til {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>PadForge-biblioteket er aktuelt til {0}. Kopien til {1} afviger fra den i denne PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>PadForge-biblioteket er aktuelt til {0} og ikke installeret til {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>PadForge-biblioteket til {0} afviger fra kopien i denne PadForge, og det er ikke installeret til {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>PadForge-biblioteket er aktuelt til {0}. Kopien til {1} afviger fra den i denne PadForge, og det er ikke installeret til {2}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows startede det ikke med dine egne rettigheder.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Det sluttede ikke inden for {0} sekunder.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Det sluttede med kode {0} og gav ingen begrundelse.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge kan ikke læse indstillingerne i {0}, så det lod filen være, som den er.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge skrev ikke {0}, så det lod den være, som den er.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows har ingen mappe med navnet Dokumenter til dig.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge finder ingen mappe til dig for {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Kommandoen til {0} sluttede med kode {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Kommandoen til {0} findes ikke på denne pc.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows lod ikke PadForge læse eller skrive en fil, det har brug for.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge finder ingen Python: ingen er registreret, installeret fra Microsoft Store, opført af en py-starter eller på din PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ingen Python, som PadForge fandt, svarede inden for {0} sekunder.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Kørslen gav ingen begrundelse, som PadForge kender.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Script-ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Dens script-ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scripts kalder dens kontroller {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scripts kalder dens taster KeyA, KeySpace, KeyLeftShift og lignende og hver tast ved dens kode, Vk0 til Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} på dette netværk fra {1}</value></data>
@@ -6827,11 +6946,11 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Hjælperen til PadForge, som kører uden administratorrettigheder, lytter på denne pcs netværksadresser, og PadForge lukker kun sin port ind på private netværk. En assistent på en anden pc kommer kun ind med en nøgle, du opretter her. Kald og deres nøgle krydser netværket ukrypteret.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Skift…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Kald og deres nøgle krydser dette netværk ukrypteret. Windows lukker dem kun ind på private netværk.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Kald og deres nøgle krydser dette netværk ukrypteret. Den regel i Windows Firewall, som PadForge opretter til denne port, nævner kun private netværk.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} bruges af et andet program. Skift den for at nå PadForge fra dette netværk.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows lod ikke hjælperen til PadForge lytte på port {0}. PadForge tillader det med administratorrettigheder, så start PadForge med dem, og slå dette fra og til.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows har ingen reservation til hjælperen til PadForge på port {0}. Slå dette fra og til, så opretter PadForge den igen.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Hjælperen til PadForge kunne ikke lytte på port {0}. Skift porten, eller slå dette fra og til.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Hjælperen til PadForge stoppede ({0}). Slå Nå PadForge fra dette netværk fra og til for at starte den igen.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Hjælperen til PadForge stoppede ({0}). PadForge bliver ved med at prøve at starte den.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatisering er slået fra, så ingen assistent på dette netværk når PadForge. Hjælperen starter, når Automatisering er slået til.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Denne pc har ingen adresse på et privat netværk lige nu.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Assistenter på dette netværk</value></data>
@@ -6875,11 +6994,12 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Vælg enheder</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} må styre sine egne enheder og dem, du sætter flueben ved. Det læser stadig hver enhed.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Ingen enheder er på siden Enheder.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Kører, med dine rettigheder, og klar. ChatGPT når PadForge gennem denne tunnel uden eget login og kun fra din OpenAI organisation. Den starter igen med PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Kører, med dine rettigheder. Den venter på, at OpenAI siger, at tunnelen er klar.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Kører, med dine rettigheder, og tunnel-client melder sig klar. Den starter igen med PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Kører, med dine rettigheder. tunnel-client melder sig ikke klar nu.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Downloader OpenAI tunnel-client og kontrollerer den mod sin udgivelses SHA-256 summer.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client kunne ikke downloades: {0}. Vælg tunnelen igen for at prøve igen.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Indsæt en runtimenøgle og et tunnel ID herunder, så starter tunnelen.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>OpenAI tunnel-client findes endnu ikke på denne pc. Vælg tunnelen igen for at downloade den.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Runtimenøgle</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Begrænset, med Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Opret en</value></data>
@@ -6888,6 +7008,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Åbn ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge gemmer nøglen krypteret, kun til dig. En tom boks glemmer den. ChatGPT arbejder på niveauet ovenfor.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Nøglen blev ikke gemt: Webhjælperen til PadForge kører ikke, og kun den kan kryptere nøglen til dig.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Nøglen blev ikke gemt: Webhjælperen til PadForge sluttede, før den krypterede nøglen. Indsæt den igen.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Nøglen blev ikke gemt: Windows kunne ikke kryptere den til dig. Indsæt den igen.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Svar fra en anden enhed</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Besvar spørgsmål fra PadForge fra en telefon eller en anden pc, mens du er væk fra denne.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Virker kun på dette netværk, gennem webcontrollerens adresse.</value></data>
@@ -6905,9 +7027,10 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Koden virker én gang, indtil {0}. Fem forkerte forsøg lukker den, og QR-koden virker stadig.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Starter webcontrollerens adresse…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Siden kan ikke åbne: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Denne pc har ingen adresse på et privat netværk.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows ville ikke skjule dette vindue for skærmoptagelse, så det viser ingen kode.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Den skrevne kode er lukket efter fem forkerte forsøg. QR-koden virker stadig indtil {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Koden udløb. Par en enhed… opretter en ny.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Koden udløb. Par en enhed opretter en ny.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge beholder højst {0} netværksnøgle. Tilbagekald den først.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Farverne sendes direkte til {0}. Skiftende farver, for eksempel et farveskift eller farver, der følger lyd, når den ikke. En farve, der forbliver den samme, gør.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Alle filer (*.*)|*.*</value></data>

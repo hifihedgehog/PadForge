@@ -366,6 +366,10 @@ namespace PadForge.Tests
                 state.Axis[0] = i % 65536;
                 state.Axis[1] = (i * 7) % 65536;
                 capture.Input(pad, state);
+                // Each pass at its own time, as the poll thread's are: the
+                // passes of one moment are one line, and a line longer than a
+                // reader takes leaves the file unfinished.
+                capture.Advance(0.0001);
                 if (i % 500 == 0) System.Threading.Thread.Sleep(5);
             }
             string path = WaitForTheEnd(recorder);
@@ -559,6 +563,25 @@ namespace PadForge.Tests
                 RecordingCodec.LayerLine, RecordingCodec.LayerMarker));
         }
 
+        /// <summary>The issue gate counts a pasted recording's event lines by
+        /// their layer letter (.github/workflows/issue-log-gate.yml), so its
+        /// letter class holds every layer the codec writes, format 2's
+        /// Reader, XInput read-back, Activity and setting-change layers
+        /// among them, and no other letter.</summary>
+        [Fact]
+        public void TheIssueGate_CountsAnEventLineOfEveryLayer()
+        {
+            var layers = typeof(RecordingCodec).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(f => f.IsLiteral && f.FieldType == typeof(char) && f.Name.StartsWith("Layer", StringComparison.Ordinal))
+                .Select(f => (char)f.GetRawConstantValue())
+                .OrderBy(c => c).ToArray();
+            Assert.Equal(13, layers.Length);
+            string gate = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine(".github", "workflows", "issue-log-gate.yml")));
+            var match = System.Text.RegularExpressions.Regex.Match(gate, @"\\\.\[0-9\]\{6\} \[([A-Z]+)\] \[A-Z0-9-\]\+");
+            Assert.True(match.Success, "the gate has no event-line pattern");
+            Assert.Equal(new string(layers), new string(match.Groups[1].Value.OrderBy(c => c).ToArray()));
+        }
+
         [Theory]
         [InlineData(0.25f, "0.25")]
         [InlineData(-0.5f, "-0.5")]
@@ -594,6 +617,57 @@ namespace PadForge.Tests
                 Assert.True(RecordingCodec.TryParseToken(sb.ToString(), out _, out _, out int a, out _, out _), sb.ToString());
                 Assert.Equal(bits, a);
             }
+        }
+
+        [Fact]
+        public void AHandOrTouchPastTheTwoTheFrameHas_ChangesNothing()
+        {
+            var output = new RecordedOutputState();
+            foreach (string token in new[] { "vh7=1,2,3", "vs7=5,6", "ot7=1,0.5,0.5", "vh-1=1,2,3" })
+            {
+                if (!RecordingCodec.TryParseOutputToken(token, out var field, out int index, out int a, out int b, out int c)) continue;
+                RecordingCodec.Apply(output, field, index, a, b, c);
+            }
+            Assert.Equal(default(PadForge.Engine.VrHandRaw), output.Left);
+            Assert.Equal(default(PadForge.Engine.VrHandRaw), output.Right);
+            Assert.False(output.TouchDown0 || output.TouchDown1);
+            Assert.Equal(0f, output.TouchX1);
+
+            // The two hands and the two touches still land where they go.
+            foreach (string token in new[] { "vh0=1,2,3", "vh1=4,5,6", "ot0=1,0.25,0.5", "ot1=1,0.75,1" })
+            {
+                Assert.True(RecordingCodec.TryParseOutputToken(token, out var field, out int index, out int a, out int b, out int c));
+                RecordingCodec.Apply(output, field, index, a, b, c);
+            }
+            Assert.Equal(1, output.Left.Buttons);
+            Assert.Equal(4, output.Right.Buttons);
+            Assert.True(output.TouchDown0 && output.TouchDown1);
+            Assert.Equal(0.75f, output.TouchX1);
+        }
+
+        [Fact]
+        public void AFileThatNamesTenThousandDevices_IsReadWithTheDevicesAReaderKeeps()
+        {
+            var sb = new StringBuilder();
+            void Line(string text) => sb.Append(text).Append("\r\n");
+            Line(RecordingCodec.FirstLine);
+            Line(RecordingCodec.StatusRecording);
+            Line(RecordingCodec.DevicesHeader);
+            Line(RecordingCodec.ControllersHeader);
+            Line("C17 type=xbox");
+            Line(RecordingCodec.EventsHeader);
+            for (int i = 1; i <= 10_000; i++) Line("0.000001 I D" + i.ToString(System.Globalization.CultureInfo.InvariantCulture) + " a0=1");
+            Line("0.000002 O C17 bt=0x0001");
+            Line("0.000003 O C99 bt=0x0001");
+            Line(RecordingCodec.EndHeader);
+            using var reader = new RecordingReader(new StringReader(sb.ToString()));
+            while (reader.Read()) { }
+            Assert.Equal(RecordingReader.MostDevices, reader.Devices.Count);
+            Assert.Empty(reader.Controllers);
+            Assert.Equal(10_000 - RecordingReader.MostDevices + 2, reader.UnreadableLines);
+            // The caps are the recorder's own counts.
+            Assert.Equal(PadForge.Common.Input.InputManager.MaxPads, RecordingReader.MostControllers);
+            Assert.True(RecordingCapture.MaxDevices <= RecordingReader.MostDevices);
         }
 
         [Fact]

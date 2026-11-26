@@ -372,7 +372,7 @@ namespace PadForge.ViewModels
                 if (_enableGameTelemetry == value) return;
                 // The engine's flag first, then the change: a listener reads
                 // the flag, as a "Mouse Travel" source's Lock at Speed does
-                // to show or hide itself (#597).
+                // to show or hide itself (#600).
                 PadForge.Common.Input.Telemetry.GameTelemetryRuntime.Enabled = value;
                 SetProperty(ref _enableGameTelemetry, value);
             }
@@ -1644,7 +1644,7 @@ namespace PadForge.ViewModels
         private bool _enableDeviceDisconnectedNote;
 
         /// <summary>Whether the flyout names a mapped device when it
-        /// disconnects (#597). Default off, as every new notice is. Display
+        /// disconnects (#600). Default off, as every new notice is. Display
         /// only: the device and its mappings are read the same either
         /// way.</summary>
         public bool EnableDeviceDisconnectedNote
@@ -1656,7 +1656,7 @@ namespace PadForge.ViewModels
         private bool _enableDeviceConnectedNote;
 
         /// <summary>Whether the flyout names a mapped device when it connects
-        /// (#597). Default off.</summary>
+        /// (#600). Default off.</summary>
         public bool EnableDeviceConnectedNote
         {
             get => _enableDeviceConnectedNote;

@@ -68,17 +68,24 @@ namespace PadForge.Common.Input
         private readonly OutputCause[] _layerCausesKept = new OutputCause[MaxPads];
         private readonly bool[] _causesKeptValid = new bool[MaxPads];
 
-        /// <summary>Whether a program fed any device read on this
-        /// pass.</summary>
-        internal bool AnyProgramMarks => _programMarks.Count > 0;
-
         /// <summary>What a program fed of a device on this pass, or
         /// null.</summary>
         internal ProgramMark ProgramMarkOf(Guid device)
             => _programMarks.TryGetValue(device, out var mark) ? mark : null;
 
+        // The devices a program fed whole on the last pass, with the session,
+        // so the pass a device leaves on (gone, taken offline) still knows
+        // its cause.
+        private readonly Dictionary<Guid, int> _wholeMarksLastPass = new();
+
         /// <summary>Step 2, before the devices are read.</summary>
-        private void BeginProgramMarks() => _programMarks.Clear();
+        private void BeginProgramMarks()
+        {
+            _wholeMarksLastPass.Clear();
+            foreach (var pair in _programMarks)
+                if (pair.Value.Whole) _wholeMarksLastPass[pair.Key] = pair.Value.Session;
+            _programMarks.Clear();
+        }
 
         /// <summary>Step 2, for every device read: marks what a program fed
         /// of it. <paramref name="own"/> is the device's own state, before
@@ -205,6 +212,9 @@ namespace PadForge.Common.Input
                 WorkOutSlotCauses(slot, set, _causeSlotDevices);
                 anyMarked |= !SlotMacroCauses[slot].IsOwn || CombinedKbmCauses[slot].AnyMarked;
             }
+            // The devices that left serve this one pass. The idle pass works
+            // the causes out again with no Step 2, and must not find them.
+            _wholeMarksLastPass.Clear();
             ProgramInputGate.MarksKept = anyMarked;
         }
 
@@ -220,9 +230,11 @@ namespace PadForge.Common.Input
             {
                 // A device of the slot that a program fed reaches its macros
                 // and any target its rows leave to the legacy read.
+                // Indexed: a foreach over the interface boxes the list's
+                // enumerator on every call.
                 var deviceCause = OutputCause.Own;
-                foreach (var g in devices)
-                    if (_programMarks.TryGetValue(g, out var m)) deviceCause = deviceCause.And(m.Cause);
+                for (int d = 0; d < devices.Count; d++)
+                    if (_programMarks.TryGetValue(devices[d], out var m)) deviceCause = deviceCause.And(m.Cause);
                 slotCause = deviceCause;
 
                 ulong row0 = 0, row1 = 0, row2 = 0, row3 = 0;
@@ -298,6 +310,15 @@ namespace PadForge.Common.Input
                 else if (_causesKeptValid[slot] && !_layerCausesKept[slot].IsOwn) layerCause = _layerCausesKept[slot];
             }
             _layerCausesKept[slot] = layerCause;
+
+            // A program's device of the slot that was read on the last pass
+            // and is not on this one left with what it fed: the release its
+            // leaving makes is read on this pass, with the slot at rest, and
+            // is the program's.
+            if (_wholeMarksLastPass.Count > 0)
+                for (int i = 0; i < devices.Count; i++)
+                    if (!_programMarks.ContainsKey(devices[i]) && _wholeMarksLastPass.TryGetValue(devices[i], out int session))
+                        slotCause = slotCause.And(OutputCause.Program(session));
 
             // The slot's own state read by its macros keeps a mark until it
             // comes to rest.
@@ -438,7 +459,7 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(deviceGuid))
             {
                 var cause = OutputCause.Own;
-                foreach (var g in devices) cause = cause.And(ReadCause(g, descriptor, wholeDevice));
+                for (int d = 0; d < devices.Count; d++) cause = cause.And(ReadCause(devices[d], descriptor, wholeDevice));
                 return cause;
             }
             return Guid.TryParse(deviceGuid, out var device) ? ReadCause(device, descriptor, wholeDevice) : OutputCause.Own;

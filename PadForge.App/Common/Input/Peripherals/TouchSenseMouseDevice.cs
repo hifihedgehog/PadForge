@@ -120,6 +120,10 @@ namespace PadForge.Common.Input.Peripherals
         public Guid InstanceGuid { get; }
         public Guid ProductGuid { get; }
         public string DevicePath { get; }
+
+        /// <summary>TouchSense's report carries one wheel only
+        /// (TouchSenseProtocol.TryDecodeInput).</summary>
+        public bool ReadsSidewaysWheel => false;
         public string SerialNumber => string.Empty;
         public string SdlGuid => string.Empty;
 

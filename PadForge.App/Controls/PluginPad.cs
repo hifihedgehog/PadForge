@@ -20,7 +20,16 @@ namespace PadForge.Controls
     {
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             nameof(Position), typeof(Point), typeof(PluginPad),
-            new FrameworkPropertyMetadata(default(Point), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(default(Point), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender,
+                OnPositionChanged));
+
+        /// <summary>A screen reader hears the new position, as a RangeBase's
+        /// peer hears its value (RangeBase.OnValueChanged).</summary>
+        private static void OnPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (System.Windows.Automation.Peers.UIElementAutomationPeer.FromElement((PluginPad)d) is PluginPadPeer peer)
+                peer.RaiseValueChanged(PluginPadPeer.Words((Point)e.OldValue), PluginPadPeer.Words((Point)e.NewValue));
+        }
 
         public static readonly DependencyProperty StayProperty = DependencyProperty.Register(
             nameof(Stay), typeof(bool), typeof(PluginPad), new PropertyMetadata(false));
@@ -152,21 +161,42 @@ namespace PadForge.Controls
 
         protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() => new PluginPadPeer(this);
 
-        /// <summary>Gives a screen reader the position as the pad's value.</summary>
-        private sealed class PluginPadPeer : System.Windows.Automation.Peers.FrameworkElementAutomationPeer
+        /// <summary>Gives a screen reader the position as the pad's value,
+        /// read only through UI Automation's Value pattern, and raises its
+        /// change as a TextBox's peer does
+        /// (TextBoxAutomationPeer.RaiseValuePropertyChangedEvent).</summary>
+        private sealed class PluginPadPeer : System.Windows.Automation.Peers.FrameworkElementAutomationPeer,
+            System.Windows.Automation.Provider.IValueProvider
         {
             public PluginPadPeer(PluginPad owner) : base(owner) { }
+
+            internal static string Words(Point p)
+                => string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0}, {1:0}", p.X, p.Y);
 
             protected override System.Windows.Automation.Peers.AutomationControlType GetAutomationControlTypeCore()
                 => System.Windows.Automation.Peers.AutomationControlType.Custom;
 
-            protected override string GetItemStatusCore()
-            {
-                var pad = (PluginPad)Owner;
-                return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0}, {1:0}", pad.X, pad.Y);
-            }
+            public override object GetPattern(System.Windows.Automation.Peers.PatternInterface patternInterface)
+                => patternInterface == System.Windows.Automation.Peers.PatternInterface.Value ? this : base.GetPattern(patternInterface);
+
+            protected override string GetItemStatusCore() => Words(((PluginPad)Owner).Position);
 
             protected override bool IsKeyboardFocusableCore() => true;
+
+            public string Value => Words(((PluginPad)Owner).Position);
+
+            /// <summary>The pad is moved by hand and by its keys, never set
+            /// through the pattern: a set is refused as a read-only TextBox's
+            /// peer refuses one.</summary>
+            public bool IsReadOnly => true;
+
+            public void SetValue(string value) => throw new System.Windows.Automation.ElementNotEnabledException();
+
+            internal void RaiseValueChanged(string before, string after)
+            {
+                if (before != after)
+                    RaisePropertyChangedEvent(System.Windows.Automation.ValuePatternIdentifiers.ValueProperty, before, after);
+            }
         }
     }
 }

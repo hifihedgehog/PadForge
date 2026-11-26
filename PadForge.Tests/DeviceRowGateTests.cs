@@ -270,5 +270,24 @@ namespace PadForge.Tests
             Assert.True(vm.ShowSubmitMapping);
         }
 
+        /// <summary>A replay's device takes the type its recording names, so
+        /// a replayed joystick or wheel typed as hardware, but a program
+        /// feeds it and there is no hardware to describe. Its path says so,
+        /// and a path set after the type redraws the button.</summary>
+        [Theory]
+        [InlineData("Joystick")]
+        [InlineData("Driving")]
+        [InlineData("Device")]
+        public void AProgramsDevice_OfAnyType_DoesNotOfferSubmitMapping(string typeKey)
+        {
+            var vm = new DeviceRowViewModel { DeviceTypeKey = typeKey };
+            Assert.True(vm.ShowSubmitMapping);
+            var changed = new System.Collections.Generic.List<string>();
+            vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+            vm.DevicePath = "program://replay-1-045e028e";
+            Assert.False(vm.ShowSubmitMapping, typeKey + " fed by a program must not offer Submit Device Mapping");
+            Assert.Contains(nameof(DeviceRowViewModel.ShowSubmitMapping), changed);
+        }
+
     }
 }

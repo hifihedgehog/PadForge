@@ -148,9 +148,10 @@ namespace PadForge.Common.Input
             if (LookupUserDevice(deviceGuid)?.Device is not SdlDeviceWrapper sdl || sdl.GamepadHandle != IntPtr.Zero)
                 return null;
             int axis = slider ? CustomInputState.MaxAxis + index : index;
-            foreach (string path in new[] { sdl.SdlDevicePath, sdl.DevicePath })
-                if (RelativeHidAxes.TryGetTotal(path, axis, sdl.RawAxisCount, out long total))
-                    return total;
+            // Each path in turn, with no array: this runs on every poll.
+            if (RelativeHidAxes.TryGetTotal(sdl.SdlDevicePath, axis, sdl.RawAxisCount, out long total)
+                || RelativeHidAxes.TryGetTotal(sdl.DevicePath, axis, sdl.RawAxisCount, out total))
+                return total;
             return null;
         }
 

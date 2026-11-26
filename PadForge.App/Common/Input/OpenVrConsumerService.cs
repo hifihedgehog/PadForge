@@ -49,7 +49,7 @@ namespace PadForge.Common.Input
         /// openvr_api.dll and the vrclient it loads live in folders other
         /// accounts can change (Steam's folder gives Users full control), so
         /// they are loaded in the library host with the user's rights, never
-        /// in this process (#597, <see cref="PadForge.Services.NativeHost.RemoteVrClient"/>).
+        /// in this process (#600, <see cref="PadForge.Services.NativeHost.RemoteVrClient"/>).
         /// A tick starts with <see cref="PollQuit"/>, which reads the frame,
         /// and the tick's other reads answer from that frame.
         /// <see cref="IDisposable.Dispose"/> shuts the client down.
@@ -150,6 +150,26 @@ namespace PadForge.Common.Input
             return string.IsNullOrWhiteSpace(path) ? null : path;
         }
 
+        /// <summary>
+        /// OpenVR's path registry, the file vrpathreg and SteamVR read:
+        /// VR_PATHREG_OVERRIDE where it is set, as the reference honors it
+        /// (vrpathregistry_public.cpp:136), else
+        /// <c>openvr\openvrpaths.vrpath</c> under
+        /// <paramref name="localAppData"/>. The registry is per account
+        /// (vrpathregistry_public.cpp:133-150), and SteamVR reads the one of
+        /// the user it runs as, so PadForge's own copy, which can run as an
+        /// administrator whose credentials were typed at a standard user's
+        /// prompt, is handed the desktop user's LocalAppData
+        /// (<see cref="PadForge.Common.ShellUser"/>). Null with neither.
+        /// </summary>
+        internal static string PathRegistryFile(string localAppData)
+        {
+            string reg = Environment.GetEnvironmentVariable("VR_PATHREG_OVERRIDE");
+            if (!string.IsNullOrEmpty(reg)) return reg;
+            return string.IsNullOrEmpty(localAppData) ? null
+                : System.IO.Path.Combine(localAppData, "openvr", "openvrpaths.vrpath");
+        }
+
         internal static string RuntimeDllPath(string runtimeRoot)
             => string.IsNullOrEmpty(runtimeRoot)
                 ? null
@@ -162,16 +182,14 @@ namespace PadForge.Common.Input
         /// at a removed install (observed on this bench) must read as
         /// absent, not as a load failure.</summary>
         private static string DiscoverRuntimeDll()
+            => DiscoverRuntimeDll(() => PadForge.Common.ShellUser.Folder(PadForge.Services.Install.UserFolder.LocalData));
+
+        internal static string DiscoverRuntimeDll(Func<string> localData)
         {
             try
             {
-                string reg = Environment.GetEnvironmentVariable("VR_PATHREG_OVERRIDE");
-                if (string.IsNullOrEmpty(reg))
-                {
-                    string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                    reg = System.IO.Path.Combine(local, "openvr", "openvrpaths.vrpath");
-                }
-                if (!System.IO.File.Exists(reg)) return null;
+                string reg = PathRegistryFile(localData());
+                if (reg == null || !System.IO.File.Exists(reg)) return null;
                 string dll = RuntimeDllPath(ParseRuntimePathFromVrPathJson(System.IO.File.ReadAllText(reg)));
                 return dll != null && System.IO.File.Exists(dll) ? dll : null;
             }
@@ -192,13 +210,8 @@ namespace PadForge.Common.Input
         {
             try
             {
-                string reg = Environment.GetEnvironmentVariable("VR_PATHREG_OVERRIDE");
-                if (string.IsNullOrEmpty(reg))
-                {
-                    string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                    reg = System.IO.Path.Combine(local, "openvr", "openvrpaths.vrpath");
-                }
-                if (!System.IO.File.Exists(reg)) return null;
+                string reg = PathRegistryFile(PadForge.Common.ShellUser.Folder(PadForge.Services.Install.UserFolder.LocalData));
+                if (reg == null || !System.IO.File.Exists(reg)) return null;
                 string root = ParseRuntimePathFromVrPathJson(System.IO.File.ReadAllText(reg));
                 return string.IsNullOrWhiteSpace(root) ? null : root;
             }
@@ -252,7 +265,7 @@ namespace PadForge.Common.Input
         /// <summary>Registers the resolver, in the library host
         /// (<see cref="PadForge.Services.NativeHost.OpenVrHostService"/>):
         /// SteamVR's library is never loaded in PadForge's own process
-        /// (#597).</summary>
+        /// (#600).</summary>
         internal static void EnsureResolver()
         {
             if (Interlocked.CompareExchange(ref _resolverRegistered, 1, 0) != 0) return;
@@ -428,7 +441,7 @@ namespace PadForge.Common.Input
         {
             _runtimeReleased = true;
             try { _live?.Stop(); } catch { }
-            // The client lives in the library host (#597): ending the host
+            // The client lives in the library host (#600): ending the host
             // frees openvr_api.dll and the vrclient it loaded.
             try { PadForge.Services.NativeHost.NativeHost.Shared.Stop(); } catch { }
         }

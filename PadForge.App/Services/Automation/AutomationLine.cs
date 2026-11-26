@@ -58,7 +58,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// Protocol 1 of the Automation pipe (#597): UTF-8 text, one message per
+    /// Protocol 1 of the Automation pipe (#600): UTF-8 text, one message per
     /// line. A line is a verb and its words. Text with spaces goes in double
     /// quotes, with <c>\"</c> and <c>\\</c> inside. A request may open with a
     /// tag such as <c>@7</c>, and every line of its answer carries the same
@@ -75,9 +75,11 @@ namespace PadForge.Services.Automation
         /// <summary>The longest line, in bytes, the newline left out.</summary>
         internal const int LongestLine = 8192;
 
-        /// <summary>The longest <c>declare</c> line, whose JSON names every
-        /// control of a device.</summary>
-        internal const int LongestDeclare = 65536;
+        /// <summary>The longest line of a verb whose JSON may run long: a
+        /// <c>declare</c>, whose JSON names every control of a device, a
+        /// <c>call</c>, which carries a tool's arguments, and a plugin's
+        /// <c>setting</c> with its choices.</summary>
+        internal const int LongestJsonLine = 65536;
 
         /// <summary>The longest tag, the <c>@</c> left out.</summary>
         internal const int LongestTag = 16;
@@ -85,8 +87,9 @@ namespace PadForge.Services.Automation
         /// <summary>
         /// Reads a line. Leading and trailing spaces and a carriage return
         /// are dropped. A line that opens a quote and never closes it, or a
-        /// tag that is not <c>@</c> and up to 16 letters and digits, comes
-        /// back with <see cref="AutomationRequest.Error"/> set.
+        /// tag that is not <c>@</c> and up to 16 letters, digits, <c>-</c>
+        /// and <c>_</c>, comes back with
+        /// <see cref="AutomationRequest.Error"/> set.
         /// </summary>
         internal static AutomationRequest Parse(string line)
         {
@@ -216,7 +219,7 @@ namespace PadForge.Services.Automation
         internal static string WordsFor(string code) => code switch
         {
             "empty" => "the line is empty",
-            "bad-tag" => "a tag is @ and up to 16 letters or digits",
+            "bad-tag" => "a tag is @ and up to 16 letters, digits, - or _",
             "bad-quote" => "a quote is not closed",
             "unknown-command" => "PadForge does not know this verb",
             "bad-argument" => "an argument is missing or not valid",
@@ -237,9 +240,10 @@ namespace PadForge.Services.Automation
             "bad-declaration" => "the device's description is not valid",
             "denied" => "the token is not one PadForge gave",
             "refused" => "PadForge does not take this program's connection",
+            "unnamed-program" => "PadForge makes no device for a program whose file Windows did not name, since it cannot tell it from another",
             "engine-stopped" => "the engine is stopped",
             "too-soon" => "this was asked too soon after the last time",
-            "limit-reached" => "PadForge takes no more of these until it starts again",
+            "limit-reached" => "too many of these that programs made wait for the user's review on Home",
             "waiting" => "PadForge asks the user on its question card first, and does it if they allow it",
             "too-many-questions" => "too many questions already wait for the user",
             _ => "the request failed",

@@ -8,7 +8,7 @@ Run it in the kit's folder, with the .NET SDK 10 installed:
 It builds PadForgePlugin.csproj in Release and copies the program to
 bin\PadForgePlugin.exe beside this script, with the files .NET runs it with.
 To add the plugin, open PadForge, go to Extras, Plugins, press
-Add a Plugin... and pick bin\PadForgePlugin.exe. A rebuilt file shows
+Add a Plugin… and pick bin\PadForgePlugin.exe. A rebuilt file shows
 Approve and Restart on its card.
 
 -Configuration Debug builds with the debugger's settings. -Output names

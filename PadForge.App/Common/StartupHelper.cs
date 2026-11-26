@@ -14,7 +14,7 @@ namespace PadForge.Common
     /// The app needs administrator rights. A start without them asks Windows
     /// for them (Program.Main, Services/StartWithRights.cs), so an entry in
     /// HKCU\Run would raise the UAC prompt at every logon. While the
-    /// manifest required the rights, before #597, Windows passed over that
+    /// manifest required the rights, before #600, Windows passed over that
     /// entry without a word and PadForge never started from it. A scheduled
     /// task is the documented Microsoft path that starts a trusted program
     /// at logon with its rights and no prompt.
@@ -22,7 +22,7 @@ namespace PadForge.Common
     /// <para>The task runs as SYSTEM at the logon of the user who turned the
     /// setting on, and starts PadForge in that user's session through
     /// <see cref="LogonStart"/>, which builds the app's variables itself
-    /// (#597). The task of the form before #597 ran PadForge as the user,
+    /// (#600). The task of the form before #600 ran PadForge as the user,
     /// with the variables of the user's profile, which every program of the
     /// user can set, and with schtasks' defaults: a 72-hour time limit
     /// (Microsoft, ExecutionTimeLimit, PT72H when not given), after which
@@ -45,7 +45,7 @@ namespace PadForge.Common
     ///
     /// <para>The task runs PadForge with rights at every logon, so it may only
     /// run an exe in a folder of PadForge's own that no other account can
-    /// change (#597, <see cref="ExeFolder"/>). Turning the setting on from a
+    /// change (#600, <see cref="ExeFolder"/>). Turning the setting on from a
     /// shared folder is refused, and a start with rights removes a task that
     /// runs an exe from one. schtasks is started by its full path in
     /// System32: started by name alone, Windows would look for it in
@@ -109,16 +109,17 @@ namespace PadForge.Common
         /// accounts may change is removed, since a shared folder keeps no
         /// task. An own folder is protected first (<see cref="ExeFolder.Check"/>),
         /// and its task stays, made again in the current form for the same
-        /// user when it is of the form before #597, or when its exe, its size
+        /// user when it is of the form before #600, or when its exe, its size
         /// or the unpack folder changed since it was made, as after an
         /// update. True when the task was removed.
         /// </summary>
-        internal static bool AuditTask()
+        internal static TaskRemoval AuditTask()
         {
-            if (OffLimitsForTest || !ScheduledTaskExists()) return false;
+            if (OffLimitsForTest || !ScheduledTaskExists()) return TaskRemoval.None;
             string definition = RunSchtasksOutput($"/Query /TN \"{TaskName}\" /XML");
             var task = ReadTask(definition);
-            if (task.Exe != null && ExeFolder.Check(task.Exe) == ExeFolder.Standing.Own)
+            var why = WhyRemove(definition, ExeFolder.Check);
+            if (why == TaskRemoval.None)
             {
                 string sid = task.Sid ?? CurrentUserSid();
                 // A task made before #600 item 44 has no run right for its
@@ -126,10 +127,54 @@ namespace PadForge.Common
                 if (!IsCurrent(definition, task.Exe, sid, FileLength(task.Exe), ProtectedFolder.Natives)
                     || !LetsRun(TaskDescriptor(), sid))
                     CreateScheduledTask(task.Exe, sid);
-                return false;
+                return TaskRemoval.None;
             }
             DeleteScheduledTask();
-            return !ScheduledTaskExists();
+            return ScheduledTaskExists() ? TaskRemoval.None : why;
+        }
+
+        /// <summary>Why a start removes the logon task.</summary>
+        internal enum TaskRemoval
+        {
+            /// <summary>It stays: its exe is in PadForge's own folder, which
+            /// no other account may change.</summary>
+            None,
+
+            /// <summary>Its exe's folder holds files that are not
+            /// PadForge's.</summary>
+            Shared,
+
+            /// <summary>Its exe is no longer there.</summary>
+            ExeGone,
+
+            /// <summary>Its exe's folder is PadForge's own, but could not be
+            /// protected.</summary>
+            Unprotected,
+
+            /// <summary>Its definition could not be read, or names no
+            /// PadForge.</summary>
+            Unreadable,
+
+            /// <summary>Its exe's folder could not be listed, so nothing in
+            /// it was read.</summary>
+            FolderUnread,
+        }
+
+        /// <summary>Why the task of <paramref name="definition"/> is removed,
+        /// its exe judged by <paramref name="check"/>, which protects an own
+        /// folder (<see cref="ExeFolder.Check"/>).</summary>
+        internal static TaskRemoval WhyRemove(string definition, Func<string, ExeFolder.Standing> check)
+        {
+            var task = ReadTask(definition);
+            if (task.Exe == null) return TaskRemoval.Unreadable;
+            if (!File.Exists(task.Exe)) return TaskRemoval.ExeGone;
+            return check(task.Exe) switch
+            {
+                ExeFolder.Standing.Own => TaskRemoval.None,
+                ExeFolder.Standing.Unprotected => TaskRemoval.Unprotected,
+                ExeFolder.Standing.Unread => TaskRemoval.FolderUnread,
+                _ => TaskRemoval.Shared,
+            };
         }
 
         /// <summary>Points the logon task at another exe, as the move does,
@@ -156,7 +201,7 @@ namespace PadForge.Common
 
         /// <summary>
         /// The PadForge a logon task starts and the user it is for. The
-        /// current form names both in its action. The form before #597 runs
+        /// current form names both in its action. The form before #600 runs
         /// the exe as its Command, for the user its principal names, by SID or
         /// by account name. Either is null when the definition does not say.
         /// </summary>

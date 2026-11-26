@@ -376,6 +376,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(KindChoices));
             OnPropertyChanged(nameof(KindLabel));
             OnPropertyChanged(nameof(RecordButtonText));
+            // The mouse pickers' words and the counts' unit, as the row's.
+            OnPropertyChanged(nameof(ParamTravelCenteringChoices));
+            OnPropertyChanged(nameof(ParamTravelSteerChoices));
+            OnPropertyChanged(nameof(TravelCountsUnit));
         }
 
         private MappingItem _parentMappingItem;
@@ -665,7 +669,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ParamDownDeviceLabel));
             OnPropertyChanged(nameof(ParamModifierDeviceLabel));
             // The Steer Input picker of a "Mouse Travel" source lists the
-            // slot's on/off inputs of the source's device (#597).
+            // slot's on/off inputs of the source's device (#600).
             RaiseTravelSteerInput();
         }
 
@@ -787,7 +791,7 @@ namespace PadForge.ViewModels
         /// slider would be a dead control there. Gyro Tilt's gain is its
         /// range card; Gyro Lean's is its Sensitivity dial. A "Mouse
         /// Travel" input is a position too, and its wheel takes no
-        /// acceleration (#597).</summary>
+        /// acceleration (#600).</summary>
         public bool IsParamAccelApplicable => IsHalfAxisApplicable
             && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(_descriptor)
             && !IsMouseTravelSource;
@@ -918,7 +922,7 @@ namespace PadForge.ViewModels
                     return true;
 
                 // A mouse's travel is a wheel's position on either side of
-                // center (#597): Half picks one side and Invert which.
+                // center (#600): Half picks one side and Invert which.
                 if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(d))
                     return true;
 

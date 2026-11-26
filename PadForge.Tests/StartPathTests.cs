@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
@@ -7,6 +8,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using PadForge.Common;
+using PadForge.Resources.Strings;
 using PadForge.Services;
 using Xunit;
 
@@ -367,22 +369,32 @@ namespace PadForge.Tests
             Assert.Equal(IntPtr.Zero, FindMessageWindow(names.Signal));
         });
 
-        /// <summary>The running copy lets the show and exit messages through
-        /// from a process without rights, and WM_COPYDATA, which it takes only
-        /// while it waits at its start for a start's switches, and nothing
-        /// else (#600 item 44).
+        /// <summary>The running copy's window lets no message through from a
+        /// process of lower integrity, as Windows has it by default: a posted
+        /// message carries no sender to check. What a second copy without
+        /// rights asks goes over the signal pipe of the window's name, which
+        /// stands from the window's making, reads its client's token and is
+        /// one of PadForge's own pipe names, so a client takes it only from
+        /// Administrators or the system (#600 item 44).
         /// The app makes its signal window as soon as it holds the
         /// single-instance lock, and a copy that lost the race for the lock
         /// asks the winner for its window.</summary>
         [Fact]
-        public void TheSignalWindow_LetsTheShowAndExitMessagesThroughAlone()
+        public void TheSignalWindow_LetsNoMessageThroughFromLowerIntegrity_AndItsPipeTakesTheAsks()
         {
             string source = RepoText("PadForge.App", "Services", "InstanceSignal.cs");
             string open = FenceSource.Body(source, "public bool Open()");
-            Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(source, @"ChangeWindowMessageFilterEx\(_").Count);
-            Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
-            Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, _showMessage, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
-            Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, _exitMessage, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
+            Assert.DoesNotContain("ChangeWindowMessageFilter", source, StringComparison.Ordinal);
+            Assert.DoesNotContain("MSGFLT_ALLOW", source, StringComparison.Ordinal);
+            Assert.DoesNotContain("WM_COPYDATA", source, StringComparison.Ordinal);
+            Assert.Contains("_pipe = new ExternalControlService(Answer, RunningCopy.SignalPipeName(_signalName));", open, StringComparison.Ordinal);
+            // The pipe stands before the window a start looks for.
+            Assert.True(open.IndexOf("_pipe.Start();", StringComparison.Ordinal)
+                < open.IndexOf("_signal = MessageOnlyWindow(_signalName);", StringComparison.Ordinal));
+            Assert.Contains("if (request.Refusal != null) return new ExternalControlService.Answer(ExternalControlService.Refused);",
+                FenceSource.Body(source, "private ExternalControlService.Answer Answer(ExternalControlService.Request request)"), StringComparison.Ordinal);
+            Assert.True(PadForge.Services.Automation.PipeOwner.IsOwnName(RunningCopy.SignalPipeName(RunningCopy.SignalWindowName)));
+            Assert.DoesNotContain("SendMessageTimeout", RepoText("PadForge.App", "Services", "RunningCopy.cs"), StringComparison.Ordinal);
             Assert.Equal("PadForge.Exit", RunningCopy.ExitMessageName);
 
             string app = RepoText("PadForge.App", "App.xaml.cs");
@@ -429,8 +441,9 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "show", "exit", "exit" }, order);
         });
 
-        /// <summary>A copy without rights asks the checked signal window to
-        /// close and waits for its process to end. The test host is the
+        /// <summary>A copy without rights asks the copy of the checked signal
+        /// window to close, over its signal pipe, and waits for its process
+        /// to end. The test host is the
         /// running copy here and does not end, so the wait runs out, and the
         /// message has arrived. With no window there is no copy.</summary>
         [Fact]
@@ -460,5 +473,386 @@ namespace PadForge.Tests
             // The app's own names reach nothing from the test host.
             Assert.Equal(RunningCopy.Closing.NotRunning, RunningCopy.Exit());
         });
+
+        private static System.Windows.Interop.HwndSource MessageWindow(string name)
+            => new System.Windows.Interop.HwndSource(new System.Windows.Interop.HwndSourceParameters(name)
+            {
+                ParentWindow = HWND_MESSAGE,
+                WindowStyle = 0,
+                Width = 0,
+                Height = 0,
+            });
+
+        /// <summary>Any program of the user can make message-only windows of
+        /// the signal window's name. However many one process makes, they cost
+        /// one integrity read, and the walk goes on to the running copy's
+        /// window wherever it stands among them.</summary>
+        [Fact]
+        public void DecoyWindowsOfTheName_NeverHideTheRunningCopy() => OnSta(() =>
+        {
+            var names = TestNames();
+            var windows = new System.Collections.Generic.List<System.Windows.Interop.HwndSource>();
+            try
+            {
+                for (int i = 0; i < 65; i++) windows.Add(MessageWindow(names.Signal));
+                // The window the walk reaches last stands for the copy's.
+                IntPtr last = IntPtr.Zero;
+                int count = 0;
+                for (IntPtr at = FindWindowExW(HWND_MESSAGE, IntPtr.Zero, null, names.Signal); at != IntPtr.Zero;
+                     at = FindWindowExW(HWND_MESSAGE, at, null, names.Signal))
+                {
+                    last = at;
+                    count++;
+                }
+                Assert.Equal(65, count);
+                var asked = new System.Collections.Generic.List<uint>();
+                RunningCopy.WindowOwnerSeam = hwnd => hwnd == last ? 2u : 1u;
+                RunningCopy.IntegritySeam = pid =>
+                {
+                    asked.Add(pid);
+                    return pid == 2 ? 0x3000 : 0x2000;
+                };
+                try
+                {
+                    Assert.Equal(last, RunningCopy.FindChecked(names.Signal));
+                    Assert.Equal(new uint[] { 1, 2 }, asked);
+                }
+                finally
+                {
+                    RunningCopy.WindowOwnerSeam = null;
+                    RunningCopy.IntegritySeam = null;
+                }
+            }
+            finally
+            {
+                foreach (var window in windows) window.Dispose();
+            }
+        });
+
+        /// <summary>A copy that shows its signal window and no ready window is
+        /// starting or closing, and a close may take as long as a close is
+        /// given. So the app's wait gives such a copy that long before it
+        /// takes it for one still starting. On 2026-11-26's evidence a close
+        /// past 15 s turned a plain start into a show the closing copy
+        /// dropped, and no PadForge was left running.</summary>
+        [Fact]
+        public void ACopyThatShowsNoReadyWindow_IsGivenTheTimeOfAClose()
+        {
+            var settle = typeof(RunningCopy).GetMethod(nameof(RunningCopy.WaitUntilSettled),
+                BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(int), typeof(int) });
+            Assert.NotNull(settle);
+            Assert.True((int)settle.GetParameters()[0].DefaultValue >= RunningCopy.CloseWaitMs,
+                "the app's wait gives a closing copy " + settle.GetParameters()[0].DefaultValue + " ms of a close's " + RunningCopy.CloseWaitMs);
+
+            // The wait itself: a copy whose signal window goes while the wait
+            // still runs is gone, and one that outlasts the wait is starting.
+            var names = TestNames();
+            RunningCopy.IntegritySeam = pid => pid == (uint)Environment.ProcessId ? 0x3000 : null;
+            try
+            {
+                Assert.Equal(RunningCopy.Settled.Gone, RunningCopy.WaitUntilSettled(names.Signal, names.Ready, 5000, 0));
+                foreach (var (standMs, waitMs, settled) in new[]
+                         {
+                             (800, 10000, RunningCopy.Settled.Gone),
+                             (3000, 300, RunningCopy.Settled.Starting),
+                         })
+                {
+                    using var up = new ManualResetEventSlim();
+                    using var done = new ManualResetEventSlim();
+                    var copy = new Thread(() =>
+                    {
+                        var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
+                        signal.Open();
+                        up.Set();
+                        Thread.Sleep(standMs);
+                        signal.Dispose();
+                        done.Set();
+                    });
+                    copy.SetApartmentState(ApartmentState.STA);
+                    copy.Start();
+                    Assert.True(up.Wait(10000));
+                    var clock = System.Diagnostics.Stopwatch.StartNew();
+                    Assert.Equal(settled, RunningCopy.WaitUntilSettled(names.Signal, names.Ready, waitMs, 0));
+                    if (settled == RunningCopy.Settled.Gone) Assert.True(clock.ElapsedMilliseconds >= standMs - 200);
+                    Assert.True(done.Wait(10000));
+                    copy.Join();
+                }
+            }
+            finally
+            {
+                RunningCopy.IntegritySeam = null;
+            }
+        }
+
+        /// <summary>The script libraries answer whether PadForge runs by the
+        /// same walk RunningCopy.FindChecked makes: to the last window named
+        /// PadForge.Instance, with each process's rights read once, so windows
+        /// another program makes under that name cannot hide the running copy.
+        /// Each library's own tests run it (ScriptAutoHotkeyTests,
+        /// ScriptPowerShellTests, ScriptPythonTests).</summary>
+        [Fact]
+        public void TheScriptLibraries_WalkEveryWindowOfTheName_AndReadEachProcessOnce()
+        {
+            foreach (var (file, start, walks, remembers) in new[]
+                     {
+                         ("PadForge.ahk", "static Runs() {", "while (after := DllCall(\"FindWindowEx\"", "seen.Has(pid)"),
+                         ("PadForge.psm1", "private static bool PadForgeRuns()", "while ((after = FindWindowExW(new IntPtr(-3), after, null, \"PadForge.Instance\")) != IntPtr.Zero)", "seen.TryGetValue(pid, out rights)"),
+                         ("padforge.py", "def _padforge_runs():", "while True:", "if pid.value not in seen:"),
+                     })
+            {
+                string source = RepoText("PadForge.App", "Resources", "Automation", file);
+                int at = source.IndexOf(start, StringComparison.Ordinal);
+                Assert.True(at >= 0, file);
+                string close = file == "padforge.py" ? "\ndef " : file == "PadForge.psm1" ? "\n        }" : "\n    }";
+                int end = source.IndexOf(close, at + start.Length, StringComparison.Ordinal);
+                string walk = source.Substring(at, (end < 0 ? source.Length : end) - at);
+                Assert.DoesNotContain("64", walk, StringComparison.Ordinal);
+                Assert.Contains(walks, walk, StringComparison.Ordinal);
+                Assert.Contains(remembers, walk, StringComparison.Ordinal);
+            }
+        }
+
+        /// <summary>A close may run as long as the engine's stop waits for a
+        /// virtual controller's create, plus the stop's other bounded waits
+        /// and the MIDI shutdown, so the time a close is given is at least
+        /// their sum, read from the bounds themselves, and Stop waits by those
+        /// bounds.</summary>
+        [Fact]
+        public void TheTimeACloseIsGiven_CoversTheStopsBoundedWaits()
+        {
+            int waits = PadForge.Common.Input.InputManager.LifecycleWaitMs + PadForge.Common.Input.InputManager.StopJoinsMs
+                + PadForge.Common.Input.MidiVirtualController.DisconnectTimeoutMs;
+            Assert.True(RunningCopy.CloseWaitMs >= waits, RunningCopy.CloseWaitMs + " ms of a close's " + waits);
+            Assert.Equal(TimeSpan.FromMilliseconds(PadForge.Common.Input.InputManager.LifecycleWaitMs), PadForge.Common.Input.InputManager.LifecycleWaitBound);
+            string stop = FenceSource.Body(RepoText("PadForge.App", "Common", "Input", "InputManager.cs"), "public void Stop()");
+            Assert.Contains("_pollingThread.Join(timeout: TimeSpan.FromMilliseconds(PollJoinMs))", stop, StringComparison.Ordinal);
+            Assert.Contains("_mouseInjectorThread.Join(timeout: TimeSpan.FromMilliseconds(InjectorJoinMs))", stop, StringComparison.Ordinal);
+            Assert.Contains("FlushPendingInput(lockWaitMs: FlushWaitMs);", stop, StringComparison.Ordinal);
+            Assert.Contains("AwaitPendingLifecycleTasks(LifecycleWaitBound);", stop, StringComparison.Ordinal);
+        }
+
+        /// <summary>The app runs with rights alone (Program.Main), and its lock
+        /// is the private namespace's. When that lock cannot be made, the start
+        /// takes no name any program could hold first: it is told no lock, and
+        /// stops with a word. The test host takes no lock of the app's.</summary>
+        [Fact]
+        public void ALockThatCannotBeMade_IsNoLock_AndTheStartStopsWithAWord()
+        {
+            using (var taken = App.TakeSingleInstanceLock(out bool newInstance))
+            {
+                Assert.Null(taken);
+                Assert.False(newInstance);
+            }
+            string app = RepoText("PadForge.App", "App.xaml.cs");
+            Assert.DoesNotContain("new Mutex(", app, StringComparison.Ordinal);
+            Assert.DoesNotContain("InstanceMutexName", RepoText("PadForge.App", "Services", "RunningCopy.cs"), StringComparison.Ordinal);
+            int take = app.IndexOf("_singleInstanceMutex = TakeSingleInstanceLock(out bool isNewInstance);", StringComparison.Ordinal);
+            int none = app.IndexOf("if (_singleInstanceMutex == null)", take, StringComparison.Ordinal);
+            int word = app.IndexOf("StopForNoLock();", none, StringComparison.Ordinal);
+            int signal = app.IndexOf("InstanceSignal = new Services.InstanceSignal();", StringComparison.Ordinal);
+            Assert.True(take > 0 && none > take && word > none && signal > word);
+            string stop = FenceSource.Body(app, "private void StopForNoLock()");
+            Assert.True(stop.IndexOf("Strings.Instance.Start_NoLock", StringComparison.Ordinal)
+                < stop.IndexOf("Shutdown(1);", StringComparison.Ordinal));
+            Assert.False(string.IsNullOrWhiteSpace(Strings.Instance.Start_NoLock));
+            Assert.NotEqual("Start_NoLock", Strings.Instance.Start_NoLock);
+        }
+
+        /// <summary>Two copies started with rights in the same moment: the one
+        /// that lost the race for the lock hands its command line to the one
+        /// that won, as a second start does, so its switches are run and its
+        /// starter reads their exit code. With no switch the winner shows its
+        /// window once it is ready. When the winner is gone before it took
+        /// the line, the losing copy takes the lock again and becomes the
+        /// app.</summary>
+        [Fact]
+        public void ACopyThatLostTheRaceForTheLock_HandsItsCommandLineToTheWinner()
+        {
+            var sent = new System.Collections.Generic.List<string>();
+            int shown = 0, settles = 0;
+            ClientRun.Seams Seams(bool copy) => new ClientRun.Seams
+            {
+                CopyRuns = () => copy,
+                Exchange = line => { sent.Add(line); return line == "engine on" ? "error busy" : "ok"; },
+                PipeStands = () => true,
+                Settle = () => { settles++; return RunningCopy.Settled.Ready; },
+                ShowWindow = () => { shown++; return true; },
+                LendForeground = () => { },
+                Watch = () => null,
+                ExitCopy = () => RunningCopy.Closing.NotRunning,
+                HoldForClose = () => null,
+                Say = _ => { },
+                SayError = _ => { },
+                Tell = _ => { },
+                TellError = _ => { },
+            };
+
+            Assert.True(App.HandToTheCopyThatWon(new[] { "--profile", "Racing" }, out int code, Seams(true)));
+            Assert.Equal(ClientRun.Done, code);
+            Assert.Equal(new[] { "activate Racing" }, sent);
+            Assert.Equal(0, shown);
+
+            // The winner's answer is the start's exit code.
+            sent.Clear();
+            Assert.True(App.HandToTheCopyThatWon(new[] { "--engine", "on" }, out code, Seams(true)));
+            Assert.Equal(ClientRun.AnsweredAnError, code);
+
+            sent.Clear();
+            Assert.True(App.HandToTheCopyThatWon(Array.Empty<string>(), out code, Seams(true)));
+            Assert.Equal((1, 1), (shown, settles));
+            Assert.Empty(sent);
+
+            Assert.False(App.HandToTheCopyThatWon(new[] { "--profile", "Racing" }, out _, Seams(false)));
+            Assert.Empty(sent);
+
+            // The start lets go of the lock it opened before it hands over,
+            // so the winner's end is seen, and takes the lock again when the
+            // winner is gone.
+            string start = FenceSource.Body(RepoText("PadForge.App", "App.xaml.cs"), "protected override void OnStartup(StartupEventArgs e)");
+            int release = start.IndexOf("_singleInstanceMutex.Dispose();", StringComparison.Ordinal);
+            int hand = start.IndexOf("HandToTheCopyThatWon(e.Args, out int handed)", StringComparison.Ordinal);
+            int again = start.IndexOf("_singleInstanceMutex = TakeSingleInstanceLock(out isNewInstance);", StringComparison.Ordinal);
+            Assert.True(release > 0 && hand > release && again > hand);
+        }
+
+        /// <summary>The error dialog says crash.log holds the details only
+        /// when the append went through. When it did not, the dialog says so,
+        /// and that its own text is the report.</summary>
+        [Fact]
+        public void TheErrorDialog_SaysCrashLogHoldsTheDetails_OnlyWhenTheyWereWritten()
+        {
+            // The sentence that says the file holds the details, without the
+            // report page's place that follows it.
+            string wrote = Strings.Instance.App_UnexpectedError_Format.Split('\n')
+                .First(line => line.Contains("crash.log", StringComparison.Ordinal)).Split(". ")[0];
+            Assert.DoesNotContain("{", wrote, StringComparison.Ordinal);
+            App.CrashLogAppendSeam = (path, text) => throw new System.IO.IOException("The disk is full.");
+            try
+            {
+                Assert.False(App.AppendCrashLog("x"));
+                string text = App.CrashText(App.AppendCrashLog("x"), "Boom", "at Somewhere()");
+                Assert.DoesNotContain(wrote.Trim(), text, StringComparison.Ordinal);
+                Assert.Contains("Boom", text, StringComparison.Ordinal);
+                Assert.Contains("at Somewhere()", text, StringComparison.Ordinal);
+
+                var appended = new System.Collections.Generic.List<string>();
+                App.CrashLogAppendSeam = (path, text2) => appended.Add(text2);
+                Assert.True(App.AppendCrashLog("y"));
+                Assert.Equal(new[] { "y" }, appended);
+                Assert.Contains(wrote.Trim(), App.CrashText(true, "Boom", "at Somewhere()"), StringComparison.Ordinal);
+            }
+            finally
+            {
+                App.CrashLogAppendSeam = null;
+            }
+            // Both handlers say what their own append came to.
+            string app = RepoText("PadForge.App", "App.xaml.cs");
+            Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(app, @"CrashText\(written, ").Count);
+            Assert.DoesNotContain("File.AppendAllText(logPath", app, StringComparison.Ordinal);
+        }
+
+        /// <summary>The signal pipe reads its client's token, as the control
+        /// pipe does: the user's own second copy at medium integrity is taken,
+        /// and a process at low integrity or in an app container cannot make
+        /// the running copy show its window or close. The token is the seam's
+        /// here, for the cases a test bench cannot make.</summary>
+        // A copy with rights posts the window's message, so the pipe's
+        // token check is read in a test host without them.
+        [UnelevatedFact]
+        public void TheSignalPipe_TakesTheUsersOwnCopy_AndRefusesALowIntegrityOrSandboxedOne() => OnSta(() =>
+        {
+            var desktop = PadForge.Services.Automation.AutomationClientIdentity.ThisDesktop();
+            RunningCopy.IntegritySeam = pid => pid == (uint)Environment.ProcessId ? 0x3000 : null;
+            try
+            {
+                foreach (var (integrity, container, taken) in new[] { (0x2000, false, true), (0x1000, false, false), (0x2000, true, false), (0x3000, false, true) })
+                {
+                    var names = TestNames();
+                    using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit)
+                    {
+                        ReadToken = _ => new PadForge.Services.Automation.AutomationClientToken(desktop.Server, desktop.Session, integrity, container),
+                    };
+                    Assert.True(signal.Open());
+                    Assert.True(signal.PipeServes);
+                    int shown = 0, exits = 0;
+                    signal.Attach(() => shown++, () => exits++);
+                    string token = integrity.ToString("X") + (container ? " in an app container" : string.Empty);
+                    Assert.True(taken == RunningCopy.Show(names.Signal, names.Show, 0), token);
+                    Pump();
+                    Assert.True((taken ? 1 : 0) == shown, token);
+                    Assert.Equal(RunningCopy.Closing.StillRunning, RunningCopy.Exit(names.Signal, names.Exit, 0, 100));
+                    Pump();
+                    Assert.True((taken ? 1 : 0) == exits, token);
+                }
+            }
+            finally
+            {
+                RunningCopy.IntegritySeam = null;
+            }
+        });
+
+        /// <summary>With rights, as PadForge runs: a program PadForge starts as
+        /// the user, at medium integrity, asks this copy over its signal pipe,
+        /// takes the pipe's server by its owner, and the window shows.</summary>
+        [ElevatedFact]
+        public void ACopyWithoutRights_AsksACopyWithRights_OverTheSignalPipe() => OnSta(() =>
+        {
+            var names = TestNames();
+            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
+            Assert.True(signal.Open());
+            int shown = 0;
+            signal.Attach(() => shown++, null);
+            string probe = PluginLauncherTests.ProbeExe;
+            Assert.True(System.IO.File.Exists(probe), "the helper was not built beside the tests: " + probe);
+            string dir = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForge.Tests.SignalPipe." + Guid.NewGuid().ToString("N"));
+            System.IO.Directory.CreateDirectory(dir);
+            string report = System.IO.Path.Combine(dir, "report.txt");
+            PadForge.Services.Plugins.IPluginProcess process = null;
+            try
+            {
+                var launch = new PadForge.Services.Plugins.PluginLauncher().Start(
+                    new PadForge.Services.Plugins.PluginCommand(probe,
+                        PadForge.Services.Plugins.PluginFile.Quote(probe) + " ask " + names.Signal + " show", System.IO.Path.GetDirectoryName(probe)),
+                    new System.Collections.Generic.Dictionary<string, string> { ["PADFORGE_PROBE_REPORT"] = report });
+                Assert.True(launch.Process != null, "not started: " + launch.Refusal + ", error " + launch.Error);
+                process = launch.Process;
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                while (!System.IO.File.Exists(report) && clock.ElapsedMilliseconds < 20000)
+                {
+                    Pump();
+                    Thread.Sleep(50);
+                }
+                string text = System.IO.File.ReadAllText(report);
+                Assert.Contains("owner=1", text, StringComparison.Ordinal);
+                Assert.Contains("reply=ok", text, StringComparison.Ordinal);
+                Pump();
+                Assert.Equal(1, shown);
+            }
+            finally
+            {
+                process?.Stop();
+                process?.Dispose();
+                try { System.IO.Directory.Delete(dir, true); } catch (System.IO.IOException) { }
+            }
+        });
+
+        /// <summary>The start-pending event lives in the session's namespace,
+        /// where any program of the user can make it first. One whose list
+        /// lets nobody open it is no pending start, and the question throws
+        /// nothing, so a plain start is never stopped by it.</summary>
+        [Fact]
+        public void AStartPendingEventNobodyMayOpen_IsNoPendingStart_AndThrowsNothing()
+        {
+            var names = TestNames();
+            // The control: an ordinary event of the name is a pending start.
+            using (var open = new EventWaitHandle(false, EventResetMode.ManualReset, RunningCopy.StartPendingName(names.Signal)))
+                Assert.True(RunningCopy.StartIsPending(names.Signal));
+
+            var closed = TestNames();
+            using var squatter = EventWaitHandleAcl.Create(false, EventResetMode.ManualReset, RunningCopy.StartPendingName(closed.Signal),
+                out bool created, new System.Security.AccessControl.EventWaitHandleSecurity());
+            Assert.True(created);
+            Assert.False(RunningCopy.StartIsPending(closed.Signal));
+        }
     }
 }

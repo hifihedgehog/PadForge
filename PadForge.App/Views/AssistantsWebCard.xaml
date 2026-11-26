@@ -23,7 +23,7 @@
             <!-- Tunnel -->
             <controls:SettingRow MinHeight="44">
                 <TextBlock Text="{Binding Web_Tunnel_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
-                <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding Tunnels}" SelectedItem="{Binding SelectedTunnel, Mode=TwoWay}"
+                <ComboBox x:Name="TunnelBox" controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding Tunnels}" SelectedItem="{Binding SelectedTunnel, Mode=TwoWay}"
                           DisplayMemberPath="Name"
                           AutomationProperties.AutomationId="Web_Tunnel"
                           AutomationProperties.Name="{Binding Web_Tunnel_Label, Source={x:Static strings:Strings.Instance}}"/>
@@ -185,7 +185,7 @@
                                         <!-- Its reach (#600 DESIGN-2 N3), as a network key's
                                              row gives it, before Revoke. The user's alone. -->
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                            <ComboBox Width="260" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
+                                            <ComboBox MinWidth="280" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
                                                       AutomationProperties.AutomationId="{Binding ReachId}"
                                                       AutomationProperties.Name="{Binding Reach_Label, Source={x:Static strings:Strings.Instance}}"
                                                       AutomationProperties.HelpText="{Binding Origin}"/>

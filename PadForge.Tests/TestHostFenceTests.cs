@@ -418,7 +418,7 @@ namespace PadForge.Tests
             // A problem recording's folder and the Downloads folder Save
             // offers first (#600): the signed-in user's, read through the
             // desktop shell.
-            new object[] { RecordingFolderFile, "internal static string Get()", "if (OffLimitsForTest && Seam == null) return null;" },
+            new object[] { RecordingFolderFile, "internal static string Get()", "if (OffLimitsForTest && Seam == null && UserSeam == null) return null;" },
             new object[] { RecordingFolderFile, "internal static string Downloads()", "if (OffLimitsForTest && DownloadsSeam == null) return null;" },
             // Windows' Application log, read at a start for a native crash.
             new object[] { NativeCrashFile, "internal static IReadOnlyList<NativeCrash> Records()", "if (OffLimitsForTest && RecordsSeam == null) return Array.Empty<NativeCrash>();" },
@@ -429,9 +429,12 @@ namespace PadForge.Tests
             // fetched from no host beyond this PC, and the helper's listener
             // binds loopback only.
             new object[] { WebTunnelsFile, "internal static Process Start(WebTunnelKind kind, string exe, int port, Action<string> address, Action<string> line, Action<int> exited)", "if (OffLimitsForTest && StartSeam == null) return null;" },
-            new object[] { UserInstallFile, "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)", "if (ToolSeam == null && OffLimitsForTest) return (-1, null);" },
-            new object[] { UserInstallFile, "internal static IReadOnlyList<string> Pythons()", "if (PythonsSeam == null && OffLimitsForTest) return Array.Empty<string>();" },
-            new object[] { UserInstallFile, "internal static string FindCommand(string name)", "if (FindSeam == null && OffLimitsForTest) return null;" },
+            // RunTool starts no program but the tests' own helper, in the
+            // test host's own folder.
+            new object[] { UserInstallFile, "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)", "if (ToolSeam == null && OffLimitsForTest && !InTestFolder(exe)) return (-1, null);" },
+            new object[] { UserInstallFile, "internal static IReadOnlyList<string> RegisteredPythons()", "if (PythonsSeam == null && OffLimitsForTest) return Array.Empty<string>();" },
+            new object[] { UserInstallFile, "internal static string FindCommand(string name, Func<string, bool> skipFolder)", "if (FindSeam == null && OffLimitsForTest) return null;" },
+            new object[] { UserInstallFile, "private static string UserVariable(string name)", "if (UserVariableSeam == null && OffLimitsForTest) return null;" },
             // The page's installs start no process, and the assistant
             // programs are looked for in no registry and no Program Files of
             // the bench.
@@ -587,9 +590,9 @@ namespace PadForge.Tests
             new object[] { InstanceLockFile, "internal static InstanceLock Take(out bool heldElsewhere, string namespaceName = NamespaceName, string lockName = LockName)", "if (RunningCopy.OffLimitsForTest && IsTheAppsOwn(namespaceName))" },
             new object[] { InstanceLockFile, "internal static bool IsHeld(string namespaceName = NamespaceName, string lockName = LockName)", "if (RunningCopy.OffLimitsForTest && IsTheAppsOwn(namespaceName)) return false;" },
             new object[] { RunningCopyFile, "internal static bool Exists()", "if (OffLimitsForTest) return false;" },
-            new object[] { RunningCopyFile, "internal static Settled WaitUntilSettled(int startingMs = 15000, int lockOnlyMs = 2000)", "if (OffLimitsForTest) return Settled.Gone;" },
+            new object[] { RunningCopyFile, "internal static Settled WaitUntilSettled(int startingMs = CloseWaitMs, int lockOnlyMs = 2000)", "if (OffLimitsForTest) return Settled.Gone;" },
             new object[] { RunningCopyFile, "internal static bool Show(int waitMs = 10000)", "if (OffLimitsForTest) return false;" },
-            new object[] { RunningCopyFile, "internal static Func<int?> Watch(int waitMs = 10000)", "if (OffLimitsForTest) return null;" },
+            new object[] { RunningCopyFile, "internal static Hold<int?> Watch(int waitMs = 10000)", "if (OffLimitsForTest) return null;" },
             new object[] { RunningCopyFile, "internal static Closing Exit(int waitMs = 10000)", "OffLimitsForTest ? Closing.NotRunning : Exit(SignalWindowName, ExitMessageName, waitMs, CloseWaitMs);" },
             new object[] { InstanceSignalFile, "public bool Open()", "if (RunningCopy.OffLimitsForTest && UsesTheAppsOwnNames) return false;" },
 
@@ -609,7 +612,7 @@ namespace PadForge.Tests
             new object[] { StartByTaskFile, "internal static bool TryRun(IReadOnlyList<string> args, out int exitCode)", "if (OffLimitsForTest)" },
             new object[] { Startup, "private static string WithTask(Func<object, string> use)", "if (OffLimitsForTest) return null;" },
             new object[] { RunningCopyFile, "internal static IDisposable MarkStartPending(string signalName = SignalWindowName)", "if (OffLimitsForTest && IsTheAppsOwn(signalName)) return null;" },
-            new object[] { RunningCopyFile, "internal static Func<bool> HoldForClose()", "if (OffLimitsForTest) return null;" },
+            new object[] { RunningCopyFile, "internal static Hold<bool> HoldForClose()", "if (OffLimitsForTest) return null;" },
 
             // A plugin's start under the desktop shell (#597): only the
             // tests' own helper, from the test host's folder.
@@ -657,8 +660,10 @@ namespace PadForge.Tests
             new object[] { Bluetooth, "public static bool TryDisconnect(string serial)", "if (OffLimitsForTest) return false;", "BluetoothFindFirstRadio(" },
             // The web door (#600 item 11): a client's metadata document is
             // fetched from no host beyond this PC in the test host, and the
-            // helper's listener binds loopback only.
-            new object[] { Services + "Automation/Web/WebClientDocuments.cs", "internal static async Task<string> FetchAsync(string address, CancellationToken cancel)", "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(uri.Host)) return null;", "await client.SendAsync(" },
+            // helper's listener binds loopback only. The overload that sends
+            // asks the fence before it sends.
+            new object[] { Services + "Automation/Web/WebClientDocuments.cs", "internal static async Task<string> FetchAsync(Uri uri, HttpMessageHandler handler, TimeSpan wait, CancellationToken cancel)", "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(uri.Host)) return null;", "await client.SendAsync(" },
+            new object[] { Services + "Automation/Web/WebClientDocuments.cs", "internal static async Task<string> FetchAsync(string address, CancellationToken cancel)", "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(uri.Host)) return null;", "return await FetchAsync(uri, handler, Wait, cancel)" },
             new object[] { Services + "Automation/Web/WebHelper.cs", "internal static HttpListener Listen(int wanted, out int port)", "PadForge.Engine.Common.NetworkListenerGate.EnterPrefix(prefix);", "listener.Start();" },
             new object[] { VirtualController, "public void Connect()", "if (seam == null && OffLimitsForTest)", "_ctx.CreateController(_profile, _identityKey)" },
             new object[] { Kbm, "private IKbmHidSink CreateSink(HMProfile profile, bool keyboard)", "if (HMaestroVirtualController.OffLimitsForTest)", "_ctx.CreateController(profile, key)" },
@@ -707,7 +712,8 @@ namespace PadForge.Tests
             // The port every DSX game mod sends to, and the files they read
             // it from (#529).
             new object[] { GameMods, "public bool Start(int port, bool standIn)", "if (OffLimitsForTest && port == DefaultPort)", "new Socket(" },
-            new object[] { GameModFiles, "internal static void Write(int port)", "if (OffLimitsForTest) return;", "WriteTo(" },
+            new object[] { GameModFiles, "internal static void Write(int port)", "if (OffLimitsForTest) return;", "Write(port, new Seams())" },
+            new object[] { GameModFiles, "internal static int RunForClient(int port)", "if (OffLimitsForTest) return 0;", "WriteTo(" },
             // The ports games send their telemetry to, and the memory
             // Assetto Corsa writes (#531).
             new object[] { Telemetry, "private void BindUdp()", "if (OffLimitsForTest && IsSharedPort(_port))", "new Socket(" },
@@ -861,7 +867,12 @@ namespace PadForge.Tests
             // host's own run, which no test starts, connects to them (#597).
             string host = OffLimitsSource.Read(Services + "NativeHost/NativeHost.cs");
             string open = FenceSource.Body(host, "internal HostConnection Open(string service, out string reason)");
-            Assert.True(open.IndexOf("if (OffLimitsForTest)", StringComparison.Ordinal) < open.IndexOf("EnsureRunning(", StringComparison.Ordinal));
+            // Only a test's own start passes the fence, and the shared host
+            // has none.
+            Assert.True(open.IndexOf("if (OffLimitsForTest && _testStart == null)", StringComparison.Ordinal) is >= 0 and var fence
+                        && fence < open.IndexOf("EnsureRunning(", StringComparison.Ordinal));
+            Assert.Contains("internal static NativeHost Shared { get; } = new(new PluginLauncher());", host, StringComparison.Ordinal);
+            Assert.Contains("if (_testStart != null)", FenceSource.Body(host, "private bool StartProcess(string exe, string pipeName, out string reason)"), StringComparison.Ordinal);
             Assert.Equal(2, OffLimitsSource.Calls(host, "MakePipe(name)").Count);
             string task = OffLimitsSource.Read(Services + "GiveBackTask.cs");
             Assert.StartsWith("if (RunSeam == null && OffLimitsForTest) return false;",
@@ -901,17 +912,23 @@ namespace PadForge.Tests
 
             // The Automation pipe (#597) keeps the same shape: its first
             // instance after the fence, the next two in the loop the start
-            // began, and its nudge only once it started.
+            // began, and its nudge only once it started. An instance that
+            // can be the first of its name is made through NewInstance,
+            // which asks whether a connection it handed out is still open.
             string automation = OffLimitsSource.Read(AutomationPipeFile);
             Assert.StartsWith("if (_cts == null)", FenceSource.FirstStatement(automation, "public void Stop()"), StringComparison.Ordinal);
             string automationStop = FenceSource.Body(automation, "public void Stop()");
             Assert.True(automationStop.IndexOf("return;", StringComparison.Ordinal) < automationStop.IndexOf("new NamedPipeClientStream(", StringComparison.Ordinal));
             string automationStart = FenceSource.Body(automation, "public ExternalControlService.PipeState Start()");
-            Assert.Equal(3, OffLimitsSource.Calls(automation, "CreateServer(_pipeName,").Count);
-            Assert.Single(OffLimitsSource.Calls(automationStart, "CreateServer(_pipeName,"));
+            Assert.Equal(2, OffLimitsSource.Calls(automation, "CreateServer(_pipeName,").Count);
+            Assert.Single(OffLimitsSource.Calls(FenceSource.Body(automation, "private NamedPipeServerStream NewInstance()"), "CreateServer(_pipeName,"));
+            Assert.Equal(3, OffLimitsSource.Calls(automation, "NewInstance()").Count);
+            Assert.Single(OffLimitsSource.Calls(automationStart, "NewInstance()"));
             FenceSource.AsksBefore(AutomationPipeFile, "public ExternalControlService.PipeState Start()",
-                "if (OffLimitsForTest && ServesTheAppsOwnPipe) return ExternalControlService.PipeState.Stopped;", "CreateServer(_pipeName,");
-            Assert.Equal(2, OffLimitsSource.Calls(FenceSource.Body(automation, "private async Task AcceptLoop(NamedPipeServerStream first, CancellationToken token)"), "CreateServer(_pipeName,").Count);
+                "if (OffLimitsForTest && ServesTheAppsOwnPipe) return ExternalControlService.PipeState.Stopped;", "NewInstance()");
+            string automationLoop = FenceSource.Body(automation, "private async Task AcceptLoop(NamedPipeServerStream first, CancellationToken token)");
+            Assert.Single(OffLimitsSource.Calls(automationLoop, "CreateServer(_pipeName,"));
+            Assert.Single(OffLimitsSource.Calls(automationLoop, "NewInstance()"));
             Assert.Contains("AcceptLoop(first, token)", automationStart, StringComparison.Ordinal);
         }
 
@@ -924,6 +941,9 @@ namespace PadForge.Tests
         {
             var expected = new[]
             {
+                // Deletes a folder another account may change by handles, and
+                // in the test host nothing outside the temp folder.
+                "PadForge.App/Common/HandleTree.cs",
                 "PadForge.App/Common/HidHideController.cs",
                 "PadForge.App/Common/Input/AudioPassthroughService.cs",
                 "PadForge.App/Common/Input/BluetoothLinkHelper.cs",
@@ -940,8 +960,16 @@ namespace PadForge.Tests
                 "PadForge.App/Common/Input/WiiSpeakerService.cs",
                 "PadForge.App/Common/Input/XboxGipGuideLedWriter.cs",
                 "PadForge.App/Common/Input/XboxImpulseHidWriter.cs",
+                // Opens the recordings folder it is handed, to read its final
+                // path, and each file of it the sweep or Delete deletes, to
+                // test and delete that one file through one handle. A test
+                // hands it a folder of its own.
+                "PadForge.App/Common/Recording/RecordingStore.cs",
                 "PadForge.App/Services/Ds3DriverInstaller.cs",
                 "PadForge.App/Services/Ds3PairingService.cs",
+                // Opens the exe that runs for reading alone, its hold for the
+                // move, which the test host never takes (ExeFolder.OffLimitsForTest).
+                "PadForge.App/Services/ExeFolder.cs",
                 // Opens the report an install as the user wrote, to read and
                 // delete that one file, and a folder to read its final path.
                 "PadForge.App/Services/Install/UserInstall.cs",

@@ -13,7 +13,7 @@ using PadForge.Services.Install;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// A question a program's call put to the user (#597), as the Automation
+    /// A question a program's call put to the user (#600), as the Automation
     /// page's Waiting for You card and the request card above other windows
     /// show it. Both show the same item, and an answer from either ends the
     /// question for both (AutomationApprovals.Answer).
@@ -32,6 +32,7 @@ namespace PadForge.ViewModels
             Id = pending.Id;
             Expires = pending.Expires;
             var request = pending.Request;
+            Kind = request.Kind;
             Title = ShownText.Clean(request.Title ?? string.Empty);
             From = request.From != null ? ShownText.Clean(request.From) : FromLine(request.Who);
             Code = request.Code == null ? null : PadForge.Services.Automation.Web.WebSecrets.Spaced(request.Code);
@@ -90,6 +91,21 @@ namespace PadForge.ViewModels
         /// <summary>How many lines the card leaves out, in words, or null
         /// when it shows them all.</summary>
         public string CardDetailRest { get; }
+
+        /// <summary>What the question is, which words its two answers.</summary>
+        internal ApprovalKind Kind { get; }
+
+        /// <summary>The page's two answers in the words the request card
+        /// gives them: Not Now and Show for a show, Don't Allow and Allow
+        /// for the rest.</summary>
+        public string DenyWords => DenyWordsFor(Kind);
+        public string AllowWords => AllowWordsFor(Kind);
+
+        internal static string DenyWordsFor(ApprovalKind kind) =>
+            kind == ApprovalKind.Show ? Strings.Instance.Automation_Request_NotNow : Strings.Instance.Automation_Request_Deny;
+
+        internal static string AllowWordsFor(ApprovalKind kind) =>
+            kind == ApprovalKind.Show ? Strings.Instance.Automation_Request_Show : Strings.Instance.Automation_Request_Allow;
 
         /// <summary>The ids of the page's two buttons for this question.</summary>
         public string AllowId => "Automation_Allow_" + Id.ToString(CultureInfo.InvariantCulture);
@@ -152,7 +168,7 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>
-    /// One line of the Activity card on the Automation page (#597, #600): a
+    /// One line of the Activity card on the Automation page (#600): a
     /// call a program made, or a run of one program's identical calls that
     /// did nothing, which shows once with its count and opens into the
     /// calls. Its time, the program, what it asked, what came of it, and
@@ -300,7 +316,7 @@ namespace PadForge.ViewModels
                 : !string.IsNullOrEmpty(imageName) ? imageName
                 : s.Automation_Program_Unknown;
             ProgramImage = AutomationRequestItem.ImageLine(who);
-            Asked = _calls.Count == 1 ? entry.Asked.Text : (entry.Asked with { Count = _asks, Mixed = false }).Text;
+            Asked = _calls.Count == 1 ? entry.Asked.Text : (entry.Asked with { Count = _asks }).Text;
             Result = entry.Succeeded ? s.Automation_Result_Done : RefusalWords(entry.Result);
             OnPropertyChanged(nameof(Time));
             OnPropertyChanged(nameof(Program));
@@ -347,10 +363,11 @@ namespace PadForge.ViewModels
                 ["unsupported-protocol"] = s => s.Automation_Result_UnsupportedProtocol,
                 ["denied"] = s => s.Automation_Result_Denied,
                 ["refused"] = s => s.Automation_Result_Refused,
+                ["unnamed-program"] = s => s.Automation_Result_UnnamedProgram,
                 ["too-soon"] = s => s.Automation_Result_TooSoon,
-                ["limit-reached"] = s => s.Automation_Result_LimitReached,
+                ["limit-reached"] = s => s.Automation_Result_TooManyWaiting,
                 // The codes an assistant's tools and a script's call lines
-                // answer (#597, AssistantCalls and AssistantTools).
+                // answer (#600, AssistantCalls and AssistantTools).
                 ["unknown-tool"] = s => s.Automation_Result_UnknownTool,
                 ["stale"] = s => s.Automation_Result_Stale,
                 ["unknown-setting"] = s => s.Automation_Result_UnknownSetting,
@@ -358,6 +375,9 @@ namespace PadForge.ViewModels
                 ["declined"] = s => s.Automation_Result_Declined,
                 ["timed-out"] = s => s.Automation_Result_TimedOut,
                 ["waiting"] = s => s.Automation_Result_Waiting,
+                // A first connection's call that ended while the question
+                // card still waited (AssistantCalls).
+                ["not-answered"] = s => s.Automation_Result_NotAnswered,
                 ["unknown-request"] = s => s.Automation_Result_UnknownRequest,
                 ["nothing-to-undo"] = s => s.Automation_Result_NothingToUndo,
                 ["users-own"] = s => s.Automation_Result_UsersOwn,
@@ -400,7 +420,7 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>What an assistant row's one button does.</summary>
-    public enum AssistantRowButton { Add, Remove, Update, None }
+    public enum AssistantRowButton { Add, Remove, Update }
 
     /// <summary>
     /// One assistant program on this PC, as the Assistants card on the
@@ -420,7 +440,7 @@ namespace PadForge.ViewModels
             Action<AssistantRowItem> saveZip, Action<AssistantRowItem> openSettings)
         {
             Host = host;
-            PressCommand = new RelayCommand(() => { if (!_busy && _button != AssistantRowButton.None) _ = press(this, _button); });
+            PressCommand = new RelayCommand(() => { if (!_busy) _ = press(this, _button); });
             RemoveCommand = new RelayCommand(() => { if (!_busy) _ = press(this, AssistantRowButton.Remove); });
             SaveZipCommand = new RelayCommand(() => saveZip?.Invoke(this));
             OpenSettingsCommand = new RelayCommand(() => openSettings?.Invoke(this));
@@ -435,8 +455,14 @@ namespace PadForge.ViewModels
         /// <summary>The program's name, its maker's own.</summary>
         public string Name => Host.Name;
 
-        /// <summary>The program's own file, whose icon the row shows.</summary>
+        /// <summary>The program's own file as PadForge found it, whose icon
+        /// the row shows and whose consent its Add gives, or null.</summary>
         internal string Program { get; set; }
+
+        /// <summary>The program the check copy's report named. Only Remove
+        /// reads it, when PadForge finds none now: taking a consent away is
+        /// safe whichever program the report names.</summary>
+        internal string ReportedProgram { get; set; }
 
         /// <summary>The program's settings file, which Open Its Settings File
         /// opens, or null.</summary>
@@ -471,7 +497,6 @@ namespace PadForge.ViewModels
             {
                 if (!SetProperty(ref _button, value)) return;
                 OnPropertyChanged(nameof(ButtonWords));
-                OnPropertyChanged(nameof(HasButton));
             }
         }
 
@@ -481,8 +506,6 @@ namespace PadForge.ViewModels
             AssistantRowButton.Update => Strings.Instance.Extras_Automation_Update,
             _ => Strings.Instance.Common_Add,
         };
-
-        public bool HasButton => _button != AssistantRowButton.None;
 
         /// <summary>Whether an install of the row runs now: the buttons rest
         /// until it ends.</summary>
@@ -494,9 +517,8 @@ namespace PadForge.ViewModels
 
         public bool IsIdle => !_busy;
 
-        /// <summary>Whether the menu holds Remove: the button says Update, or
-        /// the skill is from a newer PadForge, so Remove is not on the row's
-        /// face.</summary>
+        /// <summary>Whether the menu holds Remove: the button says Update, so
+        /// Remove is not on the row's face.</summary>
         public bool ShowMenuRemove
         {
             get => _showMenuRemove;
@@ -537,6 +559,24 @@ namespace PadForge.ViewModels
     /// </summary>
     public static class ReachWords
     {
+        /// <summary>The language a kept row last offered its choices in. A
+        /// row kept through a language change offers them again, and its
+        /// pick after them, since a new list leaves a box with none.</summary>
+        internal struct Language
+        {
+            private string _name;
+
+            /// <summary>Whether the language changed since the last call.</summary>
+            internal bool Follow()
+            {
+                string now = CultureInfo.CurrentUICulture.Name;
+                if (_name == null) { _name = now; return false; }
+                if (_name == now) return false;
+                _name = now;
+                return true;
+            }
+        }
+
         /// <summary>The choices, in the order the list shows them.</summary>
         public static IReadOnlyList<string> Choices => new[] { Strings.Instance.Reach_All, Strings.Instance.Reach_Own };
 
@@ -553,19 +593,35 @@ namespace PadForge.ViewModels
 
     /// <summary>One program the user allowed, as the Allowed Programs card
     /// lists it (#600 items 5 and 16), with its reach (#600 DESIGN-2 N3),
-    /// Pick Devices… while it is held to its own devices, and Remove.</summary>
-    public sealed class AllowedProgramItem
+    /// Pick Devices… while it is held to its own devices, and Remove. The
+    /// card keeps a program's row while the program stays on the list and
+    /// shows the store's change in it (<see cref="Show"/>), so a reach box
+    /// the user works in stays where it is.</summary>
+    public sealed class AllowedProgramItem : ObservableObject
     {
         private readonly Action<string, ProgramReach> _setReach;
-        private readonly ProgramReach _reach;
+        private ProgramReach _reach;
+        private string _name, _line;
+        private ReachWords.Language _language;
 
         internal AllowedProgramItem(AllowedProgramView program, Action<string> remove,
-            Action<string, ProgramReach> setReach = null, Func<string, ProgramReach, ProgramReach> pick = null)
+            Action<string, ProgramReach> setReach = null, Func<string, string, ProgramReach, ProgramReach> pick = null)
         {
             _setReach = setReach;
-            _reach = program.Reach;
             Key = program.Key;
-            Name = ShownText.Clean(program.Name ?? string.Empty);
+            Show(program);
+            RemoveCommand = new RelayCommand(() => remove?.Invoke(Key));
+            PickCommand = new RelayCommand(() =>
+            {
+                var picked = pick?.Invoke(Key, Name, _reach ?? ProgramReach.OwnDevices);
+                if (picked != null) _setReach?.Invoke(Key, picked);
+            });
+        }
+
+        /// <summary>Shows the program as the store lists it now: its name,
+        /// its line and its reach.</summary>
+        internal void Show(AllowedProgramView program)
+        {
             var s = Strings.Instance;
             string level = program.Level switch
             {
@@ -579,20 +635,25 @@ namespace PadForge.ViewModels
                     last.ToLocalTime().ToString("g", CultureInfo.CurrentUICulture))
                 : s.Automation_Allowed_NeverUsed;
             string who = ShownText.Clean(program.Who ?? string.Empty);
-            Line = string.Format(CultureInfo.CurrentCulture, s.Automation_Allowed_Line_Format, who, level, when).Trim();
+            string line = string.Format(CultureInfo.CurrentCulture, s.Automation_Allowed_Line_Format, who, level, when).Trim();
             // A local program can still send commands through the control
             // pipe, which asks no consent, so its row says so.
-            if (_reach != null) Line += " " + ReachWords.Line(_reach) + " " + s.Reach_LocalCommands;
+            if (program.Reach != null) line += " " + ReachWords.Line(program.Reach) + " " + s.Reach_LocalCommands;
             // With all of PadForge kept for it, a connection that asked for
             // its own devices is held to them by that ask, which the row
             // names while it lasts.
-            else if (program.AsksOwnNow) Line += " " + s.Automation_Consent_OwnDevices;
-            RemoveCommand = new RelayCommand(() => remove?.Invoke(Key));
-            PickCommand = new RelayCommand(() =>
+            else if (program.AsksOwnNow) line += " " + s.Automation_Consent_OwnDevices;
+            bool wasLimited = _reach != null;
+            _reach = program.Reach;
+            SetProperty(ref _name, ShownText.Clean(program.Name ?? string.Empty), nameof(Name));
+            SetProperty(ref _line, line, nameof(Line));
+            bool newWords = _language.Follow();
+            if (newWords) OnPropertyChanged(nameof(ReachChoices));
+            if (newWords || wasLimited != (_reach != null))
             {
-                var picked = pick?.Invoke(Name, _reach ?? ProgramReach.OwnDevices);
-                if (picked != null) _setReach?.Invoke(Key, picked);
-            });
+                OnPropertyChanged(nameof(SelectedReach));
+                OnPropertyChanged(nameof(IsLimited));
+            }
         }
 
         /// <summary>The reach list's choices.</summary>
@@ -605,7 +666,7 @@ namespace PadForge.ViewModels
             get => _reach == null ? 0 : 1;
             set
             {
-                if (value == SelectedReach) return;
+                if (value is not (0 or 1) || value == SelectedReach) return;
                 _setReach?.Invoke(Key, value == 0 ? null : _reach ?? ProgramReach.OwnDevices);
             }
         }
@@ -622,10 +683,10 @@ namespace PadForge.ViewModels
         internal string Key { get; }
 
         /// <summary>The program's name.</summary>
-        public string Name { get; }
+        public string Name => _name;
 
         /// <summary>Who it is, its level, and when it last connected.</summary>
-        public string Line { get; }
+        public string Line => _line;
 
         public string RemoveId => "Automation_AllowedRemove_" + LiveIdOf(Key);
 
@@ -636,5 +697,35 @@ namespace PadForge.ViewModels
 
         /// <summary>What a screen reader says for the row in a list.</summary>
         public override string ToString() => Name + ". " + Line;
+    }
+
+    /// <summary>
+    /// Brings a list the page binds in line with what its store lists now,
+    /// by each row's key: a row whose key is still listed is kept and shown
+    /// again, in the store's order, a row whose key left goes, and a new key
+    /// gets a new row. A control inside a kept row, a reach box the user has
+    /// just changed or a drop-down open on it, stays as it was.
+    /// </summary>
+    internal static class RowSync
+    {
+        internal static void Sync<TRow, TSource>(System.Collections.ObjectModel.ObservableCollection<TRow> rows, IReadOnlyList<TSource> now,
+            Func<TRow, string> keyOfRow, Func<TSource, string> keyOf, Func<TSource, int, TRow> make, Action<TRow, TSource, int> show)
+        {
+            var keys = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var source in now) keys.Add(keyOf(source));
+            for (int i = rows.Count - 1; i >= 0; i--)
+                if (!keys.Contains(keyOfRow(rows[i]))) rows.RemoveAt(i);
+            for (int i = 0; i < now.Count; i++)
+            {
+                string key = keyOf(now[i]);
+                int at = -1;
+                for (int j = i; j < rows.Count; j++)
+                    if (string.Equals(keyOfRow(rows[j]), key, StringComparison.Ordinal)) { at = j; break; }
+                if (at < 0) { rows.Insert(i, make(now[i], i)); continue; }
+                if (at != i) rows.Move(at, i);
+                show(rows[i], now[i], i);
+            }
+            while (rows.Count > now.Count) rows.RemoveAt(rows.Count - 1);
+        }
     }
 }

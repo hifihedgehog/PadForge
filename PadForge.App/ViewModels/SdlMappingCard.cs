@@ -149,6 +149,8 @@ namespace PadForge.ViewModels
             SdlReading.ReadRaw => Strings.Instance.SdlMapping_ReadRaw,
             SdlReading.PadForgeDevice => _facts.Mine != null ? Strings.Instance.SdlMapping_PadForgeDeviceMapped : Strings.Instance.SdlMapping_Joystick,
             SdlReading.Stopped => Strings.Instance.SdlMapping_Stopped,
+            SdlReading.Away => Strings.Instance.SdlMapping_Away,
+            SdlReading.NoAnswer => Strings.Instance.SdlMapping_NoAnswer,
             _ => string.Empty,
         };
 
@@ -194,12 +196,17 @@ namespace PadForge.ViewModels
                 if (value == null || value.Slot == _picked) return;
                 _picked = value.Slot;
                 FillPlaces();
+                // The last Copy's line was for the controller picked before.
+                Result = null;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ShowPlaces));
+                OnPropertyChanged(nameof(PlacesHeader));
                 OnPropertyChanged(nameof(MoreHint));
+                OnPropertyChanged(nameof(ShowMore));
             }
         }
 
+        /// <summary>The slot of the controller picked, for tests.</summary>
         internal int PickedSlot => _picked;
 
         public string PlacesHeader => string.Format(CultureInfo.CurrentCulture, Strings.Instance.SdlMapping_Col_Row_Format,
@@ -210,7 +217,11 @@ namespace PadForge.ViewModels
         public string MoreHint => PickedController == null ? Strings.Instance.SdlMapping_More_NoController
             : string.Format(CultureInfo.CurrentCulture, Strings.Instance.SdlMapping_More_Format, PickedController.Name);
 
-        public bool ShowMore => ShowRow || ShowPlaces;
+        /// <summary>The More row, which holds the row, the table and the
+        /// Controller picker: shown while any of them has something, so a
+        /// picked controller with no rows the table reads leaves the picker
+        /// there to pick another.</summary>
+        public bool ShowMore => ShowRow || ShowPlaces || ShowControllerPicker;
 
         public bool HasMine => _facts.Mine != null;
 
@@ -288,10 +299,10 @@ namespace PadForge.ViewModels
         private async Task CopyAsync()
         {
             if (_host == null) return;
-            var (text, leftOut) = await _host.CopyAsync(Instance, _picked);
+            var (text, leftOut, empty) = await _host.CopyAsync(Instance, _picked);
             if (text == null)
             {
-                Result = Strings.Instance.SdlMapping_CopyNothing;
+                Result = NothingWords(empty, PickedController?.Name, leftOut);
                 return;
             }
             try { SetClipboard(text); }
@@ -304,6 +315,22 @@ namespace PadForge.ViewModels
             Result = LeftOutWords(leftOut) is { } words
                 ? string.Format(CultureInfo.CurrentCulture, Strings.Instance.SdlMapping_CopiedLeftOut_Format, words)
                 : Strings.Instance.SdlMapping_Copied;
+        }
+
+        /// <summary>Why Copy had nothing to copy, in words: the picked
+        /// controller's rows and what they read the device for, when they
+        /// are the reason.</summary>
+        internal static string NothingWords(SdlCopyEmpty empty, string controller, SdlLeftOut rowsLeft)
+        {
+            var s = Strings.Instance;
+            if (empty == SdlCopyEmpty.Unreadable) return s.SdlMapping_CopyUnreadable;
+            if (empty == SdlCopyEmpty.NotRead)
+                return controller == null ? s.SdlMapping_CopyNotRead
+                    : string.Format(CultureInfo.CurrentCulture, s.SdlMapping_CopyNotReadInRows_Format, controller);
+            if (empty != SdlCopyEmpty.NothingInRows || controller == null) return s.SdlMapping_CopyNothing;
+            return LeftOutWords(rowsLeft) is { } words
+                ? string.Format(CultureInfo.CurrentCulture, s.SdlMapping_CopyOnlyLeftOut_Format, controller, words)
+                : string.Format(CultureInfo.CurrentCulture, s.SdlMapping_CopyNothingInRows_Format, controller);
         }
 
         /// <summary>What SDL's form cannot hold, in words, or null.</summary>

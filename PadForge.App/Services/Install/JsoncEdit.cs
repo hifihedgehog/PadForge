@@ -86,7 +86,12 @@ namespace PadForge.Services.Install
         private static string Insert(string text, List<Member> members, int open, int close, string member, string indent, string closeIndent, string nl)
         {
             if (members.Count == 0)
-                return text.Substring(0, open + 1) + nl + indent + member + nl + closeIndent + text.Substring(close);
+            {
+                // The user's comments between the braces stay, and the member
+                // goes on a line of its own after them.
+                string between = text.Substring(open + 1, close - open - 1).TrimEnd(' ', '\t', '\r', '\n');
+                return text.Substring(0, open + 1) + between + nl + indent + member + nl + closeIndent + text.Substring(close);
+            }
             var last = members[^1];
             string comma = last.Comma >= 0 ? string.Empty : ",";
             int at = last.Comma >= 0 ? last.Comma + 1 : last.ValueEnd;

@@ -232,7 +232,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>The Game Telemetry extra went on or off. A "Mouse
-        /// Travel" source shows Lock at Speed only while it is on (#597),
+        /// Travel" source shows Lock at Speed only while it is on (#600),
         /// so each source's line reads the switch again.</summary>
         internal void RaiseMouseTravelRoadChanged()
         {

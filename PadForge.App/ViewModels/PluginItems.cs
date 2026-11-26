@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// One plugin's fold card on the Plugins page (#597, #600 items 17 and
+    /// One plugin's fold card on the Plugins page (#600 items 17 and
     /// 18): the name it gave, or its file's name until it has run, its state
     /// with the devices it added and its signer, its switch, the buttons its
     /// state calls for (Start after five failures or a refused start,
@@ -135,6 +135,11 @@ namespace PadForge.ViewModels
 
         public string SwitchId => "Plugins_Switch_" + Number.ToString(CultureInfo.InvariantCulture);
         public string RemoveId => "Plugins_Remove_" + Number.ToString(CultureInfo.InvariantCulture);
+
+        /// <summary>The header's Remove, shown while the card is closed. It
+        /// has an id of its own: the open card's foot holds the other Remove,
+        /// and UI Automation lists a collapsed button too.</summary>
+        public string RemoveHeaderId => "Plugins_RemoveHeader_" + Number.ToString(CultureInfo.InvariantCulture);
         public string StartId => "Plugins_Start_" + Number.ToString(CultureInfo.InvariantCulture);
         public string ApproveId => "Plugins_Approve_" + Number.ToString(CultureInfo.InvariantCulture);
         public string TrustId => "Plugins_Trust_" + Number.ToString(CultureInfo.InvariantCulture);

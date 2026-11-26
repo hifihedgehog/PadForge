@@ -1027,14 +1027,9 @@ namespace PadForge.Views
             if (_selectedConfig == null) return;
             var url = "https://steamcommunity.com/sharedfiles/filedetails/?id=" +
                       _selectedConfig.FileId.ToString(CultureInfo.InvariantCulture);
-            try
-            {
-                PadForge.Common.ShellLaunch.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
-            }
-            catch (Exception)
-            {
-                // Browser launch is best-effort. The URL stays reachable from Steam.
-            }
+            // Through the desktop shell, which throws nothing. The page stays
+            // reachable from Steam when no browser takes it.
+            PadForge.Common.ShellLaunch.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
         }
 
         private void ClearManifest()

@@ -24,7 +24,7 @@ using PadForge.Services.Install;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// What the Automation extra's page shows beyond its switch (#597, #600):
+    /// What the Automation extra's page shows beyond its switch (#600):
     /// the level as a choice of four with one line on what it allows, a row
     /// for each assistant program on this PC with its state and one button,
     /// the copies for any other assistant, the questions that wait for the
@@ -214,7 +214,7 @@ namespace PadForge.ViewModels
             catch (Exception ex) when (ex is ExternalException or InvalidOperationException)
             {
                 // Another program holds the clipboard.
-                AutomationCopyNote = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_NotCopied_Format, ex.Message);
+                AutomationCopyNote = Strings.Instance.Extras_Automation_NotCopied;
             }
         }
 
@@ -250,6 +250,9 @@ namespace PadForge.ViewModels
         private readonly Dictionary<string, DateTimeOffset> _assistantAddedAt = new(StringComparer.Ordinal);
         private readonly Dictionary<string, DateTimeOffset> _assistantSeenAt = new(StringComparer.Ordinal);
         private readonly Dictionary<string, string> _assistantNotes = new(StringComparer.Ordinal);
+        // The rows the user pressed Remove on, until Add or Update: a file
+        // such a program shares with another no longer holds PadForge for it.
+        private readonly HashSet<string> _assistantsLetGo = new(StringComparer.Ordinal);
         private HashSet<string> _assistantsConnected = new(StringComparer.Ordinal);
         private readonly Dictionary<string, AssistantIdentity.Identity> _assistantIdentities = new(StringComparer.OrdinalIgnoreCase);
 
@@ -295,11 +298,13 @@ namespace PadForge.ViewModels
             if (run.Code != UserInstall.Done)
             {
                 _assistantsCheckFailed = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_CheckFailed_Format,
-                    run.Error ?? run.Code.ToString(CultureInfo.InvariantCulture));
+                    ScriptLibraryRows.ReasonText(run));
             }
             else
             {
                 _assistantsCheckFailed = null;
+                // Each program the report names is found again here: the
+                // report is the user's to rewrite.
                 ApplyAssistantChecks(UserInstall.ReadChecks(run.Said));
             }
             _assistantsChecked = true;
@@ -308,28 +313,45 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HasAssistantsCheckFailed));
         }
 
+        /// <summary>Test seam: the program PadForge finds for an assistant's
+        /// key. Null finds it as the desktop shell's user
+        /// (AssistantPrograms.FindForShellUser).</summary>
+        internal Func<string, string> AssistantFindSeam;
+
         /// <summary>Draws the rows from a check: one for each program found,
-        /// in AssistantHosts' order, each kept while its program is.</summary>
+        /// in AssistantHosts' order, each kept while its program is. A row's
+        /// program, which its icon, its connected mark and its Add's consent
+        /// read, is the one PadForge found itself (AssistantFindSeam, else
+        /// AssistantPrograms.FindForShellUser), never the report's: the check copy runs as the user, and a program
+        /// of the user can rewrite its report. A row PadForge found no
+        /// program for keeps none, and its Add allows none, so that program
+        /// asks on the card when it first connects.</summary>
         internal void ApplyAssistantChecks(IReadOnlyList<UserInstall.AssistantCheck> checks)
         {
-            var found = checks.Where(c => !string.IsNullOrEmpty(c.Program)).ToDictionary(c => c.Key, StringComparer.Ordinal);
+            var find = AssistantFindSeam ?? AssistantPrograms.FindForShellUser;
+            var programs = checks.Where(c => !string.IsNullOrEmpty(c.Program)).Select(c => c.Key).Distinct()
+                .ToDictionary(k => k, k => find(k), StringComparer.Ordinal);
+            var listed = checks.Where(c => !string.IsNullOrEmpty(c.Program)).GroupBy(c => c.Key, StringComparer.Ordinal)
+                .ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
             for (int i = AssistantRows.Count - 1; i >= 0; i--)
-                if (!found.ContainsKey(AssistantRows[i].Key)) AssistantRows.RemoveAt(i);
+                if (!listed.ContainsKey(AssistantRows[i].Key)) AssistantRows.RemoveAt(i);
             int at = 0;
             foreach (var host in AssistantHosts.All)
             {
-                if (!found.TryGetValue(host.Key, out var check)) continue;
+                if (!listed.TryGetValue(host.Key, out var check)) continue;
+                string program = programs.TryGetValue(host.Key, out string mine) ? mine : null;
                 var row = AssistantRows.FirstOrDefault(r => r.Key == host.Key);
                 if (row == null)
                 {
                     row = new AssistantRowItem(host, PressAssistantAsync, SaveAssistantZip, OpenAssistantSettings);
                     AssistantRows.Insert(at, row);
                 }
-                if (!string.Equals(row.Program, check.Program, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(row.Program, program, StringComparison.OrdinalIgnoreCase))
                 {
-                    row.Program = check.Program;
-                    row.Icon = IconOf(check.Program);
+                    row.Program = program;
+                    row.Icon = program == null ? null : IconOf(program);
                 }
+                row.ReportedProgram = check.Program;
                 row.Entry = check.Entry;
                 row.Skill = check.Skill;
                 row.SettingsFile = check.Settings;
@@ -404,7 +426,14 @@ namespace PadForge.ViewModels
                 string line;
                 var button = AssistantRowButton.Remove;
                 bool added = row.Entry is "current" or "older";
-                if (!added)
+                if (row.Entry == "unreadable")
+                {
+                    // The check could not read the settings file: neither
+                    // added nor not added was read.
+                    line = string.Format(CultureInfo.CurrentCulture, s.Extras_Automation_State_SettingsUnreadable_Format, row.SettingsFile ?? row.Name);
+                    button = AssistantRowButton.Add;
+                }
+                else if (!added)
                 {
                     line = s.Extras_Automation_State_NotAdded;
                     button = AssistantRowButton.Add;
@@ -412,6 +441,11 @@ namespace PadForge.ViewModels
                 else if (row.Entry == "older")
                 {
                     line = s.Extras_Automation_State_EntryOlder;
+                    button = AssistantRowButton.Update;
+                }
+                else if (row.Skill == "unreadable")
+                {
+                    line = s.Extras_Automation_State_SkillUnreadable;
                     button = AssistantRowButton.Update;
                 }
                 else if (row.Skill == "older")
@@ -462,25 +496,43 @@ namespace PadForge.ViewModels
         /// settings and the skill where the program reads skills, through
         /// <c>--install</c> as the user, and is the user's consent for that
         /// assistant. Update writes both again. Remove takes both out, and the
-        /// consent with them. A step that fails stops the rest, and the row
-        /// says why.
+        /// consent with them, except a skill folder or settings file another
+        /// program found here reads while PadForge stays added there, and
+        /// the row then names that program. A step that fails stops the
+        /// rest, and the row says why.
         /// </summary>
         internal async Task PressAssistantAsync(AssistantRowItem row, AssistantRowButton what)
         {
-            if (row == null || row.IsBusy || what == AssistantRowButton.None) return;
+            if (row == null || row.IsBusy) return;
             _assistantNotes.Remove(row.Key);
             row.Button = what;
             row.IsBusy = true;
             ShowAssistantLines();
             string failed = null;
+            string kept = null;
             try
             {
                 bool remove = what == AssistantRowButton.Remove;
                 var steps = new List<InstallRequest>();
                 if (remove)
                 {
-                    if (!row.TakesUploadOnly) steps.Add(new InstallRequest(InstallWhat.Skill, row.Key, Remove: true));
-                    steps.Add(new InstallRequest(InstallWhat.Assistant, row.Key, Remove: true));
+                    // A skill folder or a settings file another program found
+                    // here reads too stays while that program has PadForge
+                    // added and the user has not removed it there.
+                    var others = AssistantRows.Where(r => r != row && r.Entry is "current" or "older" && !_assistantsLetGo.Contains(r.Key)).ToList();
+                    var entryKeeper = others.FirstOrDefault(r => AssistantHosts.SharesEntry(r.Host, row.Host));
+                    var skillKeeper = row.TakesUploadOnly ? null
+                        : entryKeeper != null && AssistantHosts.SharesSkills(entryKeeper.Host, row.Host) ? entryKeeper
+                        : others.FirstOrDefault(r => AssistantHosts.SharesSkills(r.Host, row.Host));
+                    if (!row.TakesUploadOnly && skillKeeper == null) steps.Add(new InstallRequest(InstallWhat.Skill, row.Key, Remove: true));
+                    if (entryKeeper == null) steps.Add(new InstallRequest(InstallWhat.Assistant, row.Key, Remove: true));
+                    var s = Strings.Instance;
+                    if (entryKeeper != null && entryKeeper == skillKeeper)
+                        kept = string.Format(CultureInfo.CurrentCulture, s.Extras_Automation_State_KeptBoth_Format, entryKeeper.Name);
+                    else if (entryKeeper != null)
+                        kept = string.Format(CultureInfo.CurrentCulture, s.Extras_Automation_State_KeptEntry_Format, entryKeeper.Name);
+                    else if (skillKeeper != null)
+                        kept = string.Format(CultureInfo.CurrentCulture, s.Extras_Automation_State_KeptSkill_Format, skillKeeper.Name);
                 }
                 else
                 {
@@ -491,7 +543,7 @@ namespace PadForge.ViewModels
                 {
                     var run = await RunAssistantInstall(step);
                     if (run.Code == UserInstall.Done) continue;
-                    failed = run.Error ?? run.Code.ToString(CultureInfo.InvariantCulture);
+                    failed = ScriptLibraryRows.ReasonText(run);
                     break;
                 }
                 if (failed == null)
@@ -499,14 +551,17 @@ namespace PadForge.ViewModels
                     if (remove)
                     {
                         _assistantAddedAt.Remove(row.Key);
-                        _automationConsent?.ForgetAssistant(row.Key, row.Program);
+                        _assistantsLetGo.Add(row.Key);
+                        _automationConsent?.ForgetAssistant(row.Key, row.Program ?? row.ReportedProgram);
                     }
                     else
                     {
+                        _assistantsLetGo.Remove(row.Key);
                         // An assistant open now reads its settings when it
                         // starts: the row says so until it connects.
                         _assistantAddedAt[row.Key] = AutomationNow();
-                        _automationConsent?.AllowAssistant(row.Key, row.Name, row.Program);
+                        // The program PadForge found itself, or none.
+                        if (row.Program != null) _automationConsent?.AllowAssistant(row.Key, row.Name, row.Program);
                     }
                 }
             }
@@ -516,6 +571,8 @@ namespace PadForge.ViewModels
             }
             if (failed != null)
                 _assistantNotes[row.Key] = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_State_Failed_Format, failed);
+            else if (kept != null)
+                _assistantNotes[row.Key] = kept;
             await RecheckAssistantsAsync();
             ShowAssistantLines();
         }
@@ -530,20 +587,19 @@ namespace PadForge.ViewModels
         /// program that takes skills only as an upload asks for (Claude:
         /// "The ZIP must contain the skill directory itself as its top
         /// level").</summary>
-        private void SaveAssistantZip(AssistantRowItem row)
+        private void SaveAssistantZip(AssistantRowItem row) => _ = SaveAssistantZipAsync(row);
+
+        /// <summary>The ZIP is written as the user (UserSave): the Save dialog
+        /// ran with PadForge's rights, and the file is the user's to write
+        /// where the user may.</summary>
+        internal async Task SaveAssistantZipAsync(AssistantRowItem row)
         {
             string file = AssistantZipDialogSeam != null ? AssistantZipDialogSeam(row.Name) : AskZipFile(row.Name);
             if (string.IsNullOrEmpty(file)) return;
-            try
-            {
-                WriteSkillZip(file);
-                _assistantNotes[row.Key] = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_ZipSaved_Format,
-                    row.Name, Path.GetFileName(file), AssistantPrograms.UploadPlace.TryGetValue(row.Key, out string place) ? place : row.Name);
-            }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or NotSupportedException or ArgumentException)
-            {
-                _assistantNotes[row.Key] = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_NotSaved_Format, ex.Message);
-            }
+            _assistantNotes[row.Key] = await PadForge.Services.UserSave.FileAsync(WriteSkillZip, file)
+                ? string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_ZipSaved_Format,
+                    row.Name, Path.GetFileName(file), AssistantPrograms.UploadPlace.TryGetValue(row.Key, out string place) ? place : row.Name)
+                : Strings.Instance.Extras_Automation_NotSaved;
             ShowAssistantLines();
         }
 
@@ -561,11 +617,10 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Writes the skill as a ZIP whose top level is its own
-        /// folder, padforge, replacing a file of that name.</summary>
-        internal static void WriteSkillZip(string file)
+        /// folder, padforge.</summary>
+        internal static void WriteSkillZip(Stream stream)
         {
-            using var stream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.None);
-            using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
+            using var zip = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen: true);
             foreach (var f in AssistantSkill.Files)
             {
                 var entry = zip.CreateEntry(AssistantSkill.Name + "/" + f.Path.Replace('\\', '/'), CompressionLevel.Optimal);
@@ -708,20 +763,26 @@ namespace PadForge.ViewModels
         /// program.</summary>
         public bool HasAllowedPrograms => AllowedPrograms.Count > 0;
 
+        /// <summary>Shows the store's list. A program still on it keeps its
+        /// row: a reach picked in a row changes the store, which runs this
+        /// inside that row's own write, and a program connecting or leaving
+        /// runs it too, so a new row would take the keyboard's place or close
+        /// an open drop-down.</summary>
         private void ShowAllowedPrograms()
         {
-            AllowedPrograms.Clear();
-            foreach (var program in _automationConsent?.Allowed ?? Array.Empty<AllowedProgramView>())
-                AllowedPrograms.Add(new AllowedProgramItem(program, key => _automationConsent?.Remove(key),
-                    (key, reach) => _automationConsent?.SetReach(key, reach), PickReachDevices));
+            RowSync.Sync(AllowedPrograms, _automationConsent?.Allowed ?? Array.Empty<AllowedProgramView>(),
+                row => row.Key, program => program.Key,
+                (program, _) => new AllowedProgramItem(program, key => _automationConsent?.Remove(key),
+                    (key, reach) => _automationConsent?.SetReach(key, reach), (key, name, reach) => PickReachDevices?.Invoke(key, name, reach)),
+                (row, program, _) => row.Show(program));
             OnPropertyChanged(nameof(HasAllowedPrograms));
         }
 
         /// <summary>Pick Devices… on an Allowed row or a network key's row
-        /// (#600 DESIGN-2 N3): the program's name and its reach now in, the
-        /// reach picked out, or null when the user canceled. The window shows
-        /// its dialog.</summary>
-        internal Func<string, ProgramReach, ProgramReach> PickReachDevices { get; set; }
+        /// (#600 DESIGN-2 N3): the program's consent key, its name and its
+        /// reach now in, the reach picked out, or null when the user
+        /// canceled. The window shows its dialog.</summary>
+        internal Func<string, string, ProgramReach, ProgramReach> PickReachDevices { get; set; }
 
         // ─────────────────────────────────────────────
         //  Activity
@@ -852,7 +913,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Asks the host again which calls can be undone, from any
         /// thread: the undo journal says so when a run of changes starts or
-        /// is undone (#597).</summary>
+        /// is undone (#600).</summary>
         internal void RefreshAutomationUndoFromHost()
         {
             var dispatcher = _automationDispatcher;
@@ -897,6 +958,9 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(AutomationAssistantMessage));
             OnPropertyChanged(nameof(AutomationActivityDropped));
             OnPropertyChanged(nameof(PluginsStatus));
+            // A copy's note was said in the old language, about a copy made
+            // before the change.
+            AutomationCopyNote = null;
             foreach (var item in AutomationActivity) item.RefreshText();
             foreach (var row in AssistantRows) row.RefreshWords();
             ShowAssistantLines();

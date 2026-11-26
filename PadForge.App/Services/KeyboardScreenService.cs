@@ -190,7 +190,7 @@ namespace PadForge.Services
         internal const int PictureRetryMs = 5000;
 
         /// <summary>The S.T.R.I.K.E. 7 library PadForge downloads: Mad Catz's
-        /// SDK, kept in the protected folder's Work folder (#597). PadForge
+        /// SDK, kept in the protected folder's Work folder (#600). PadForge
         /// loads it with its rights, and in the temp folder, where it was, any
         /// program of the user could replace it between its hash check and the
         /// load.</summary>
@@ -579,8 +579,19 @@ namespace PadForge.Services
                 return IconPackageManager.ResolvePath(picked);
             }
             sha256 = Strike7LibrarySha256;
-            return DownloadedStrike7Library;
+            return _downloadedLibrary ??= DownloadedLibraryLookup();
         }
+
+        /// <summary>Where the download goes (<see cref="DownloadedStrike7Library"/>).
+        /// A test's own.</summary>
+        internal Func<string> DownloadedLibraryLookup { get; init; } = () => DownloadedStrike7Library;
+
+        /// <summary>The download's path, kept once the protected folder gave
+        /// one. Each look judges two folders' access lists, and the first one
+        /// makes Work\Strike7 (ProtectedWork.Folder), on the interface's thread
+        /// four times a second while the switch is on. A look that throws
+        /// keeps nothing, and the next pass looks again.</summary>
+        private string _downloadedLibrary;
 
         /// <summary>Download Strike7API.dll: runs the download through
         /// <paramref name="run"/>, which reports a failure itself and
@@ -917,7 +928,8 @@ namespace PadForge.Services
         }
 
         // One walk's readings and the copy of the device list they are made
-        // from, kept between passes so a pass allocates no list.
+        // from, kept between passes so a pass makes neither again. The names
+        // and the line a pass joins from them are new each pass.
         private readonly List<DeviceNoteReading> _offlineReadings = new();
         private Engine.Data.UserDevice[] _offlineRows;
 
@@ -1115,6 +1127,8 @@ namespace PadForge.Services
                 KeyboardScreenRoute.G19OtherDriver => string.Format(culture, s.KeyboardScreens_Status_G19OtherDriver_Format, status.Detail),
                 KeyboardScreenRoute.G19ForeignDriver => string.Format(culture, s.KeyboardScreens_Status_G19ForeignDriver_Format, status.Detail),
                 KeyboardScreenRoute.ArxNoLibrary => s.KeyboardScreens_Status_ArxNoLibrary,
+                KeyboardScreenRoute.ArxRefused => s.KeyboardScreens_Status_ArxRefused,
+                KeyboardScreenRoute.ArxLoadFailed => s.KeyboardScreens_Status_ArxLoadFailed,
                 KeyboardScreenRoute.ArxNotRunning => s.KeyboardScreens_Status_ArxNotRunning,
                 KeyboardScreenRoute.ArxWaiting => s.KeyboardScreens_Status_ArxWaiting,
                 KeyboardScreenRoute.ArxOnPhone => s.KeyboardScreens_Status_ArxOnPhone,

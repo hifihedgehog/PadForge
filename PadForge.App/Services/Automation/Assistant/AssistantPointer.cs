@@ -208,7 +208,8 @@ namespace PadForge.Services.Automation
             _generation++;
             _at++;
             // A click on the way that the user has made already is passed.
-            while (_at < _steps.Count && _steps[_at].Done?.Invoke() == true) _at++;
+            // A test that throws counts as not done, so its step shows.
+            while (_at < _steps.Count && IsDone(_steps[_at])) _at++;
             if (_at >= _steps.Count)
             {
                 Clear();
@@ -223,6 +224,12 @@ namespace PadForge.Services.Automation
             {
                 if (generation == _generation) Land(step, generation);
             }));
+        }
+
+        private static bool IsDone(Step step)
+        {
+            try { return step.Done?.Invoke() == true; }
+            catch (Exception) { return false; }
         }
 
         private Dispatcher Dispatcher() => _window()?.Dispatcher ?? System.Windows.Threading.Dispatcher.CurrentDispatcher;

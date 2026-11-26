@@ -175,6 +175,47 @@ namespace PadForge.Tests
             Assert.Empty(setup.Host.Approvals.Pending);
         }
 
+        /// <summary>Automation turned off takes a program's waiting question
+        /// back: nothing the user presses on the card afterward switches
+        /// the profile or starts the extra.</summary>
+        [Fact]
+        public void TurningAutomationOff_TakesTheQuestionBack()
+        {
+            using var setup = new Setup();
+            setup.Target.Starts = Starts("Racing", Strings.Instance.Dashboard_WebController);
+            Assert.Equal(AutomationCommands.Waiting, setup.Line("activate Racing", Launcher));
+            int id = Assert.Single(setup.Host.Approvals.Pending).Id;
+            setup.Host.Apply(false, AutomationLevel.Commands);
+            Assert.Empty(setup.Host.Approvals.Pending);
+            setup.Host.Approvals.Answer(id, allowed: true);
+            Thread.Sleep(300);
+            foreach (var work in setup.Ui.Posted.ToList()) work();
+            Assert.Empty(setup.Target.Calls);
+            setup.Outcome(AutomationCommands.NotAllowed);
+        }
+
+        /// <summary>An Allow that lands as Automation goes off switches
+        /// nothing: the switch asks again whether Automation allows it when
+        /// it runs on the interface's thread.</summary>
+        [Fact]
+        public void AnAllowedSwitch_ThatRunsAfterAutomationWentOff_SwitchesNothing()
+        {
+            using var setup = new Setup();
+            setup.Target.Starts = Starts("Racing", Strings.Instance.Dashboard_WebController);
+            Assert.Equal(AutomationCommands.Waiting, setup.Line("activate Racing", Launcher));
+            Assert.True(setup.Host.Approvals.Answer(Assert.Single(setup.Host.Approvals.Pending).Id, allowed: true));
+            var clock = Stopwatch.StartNew();
+            while (setup.Ui.Posted.Count == 0)
+            {
+                Assert.True(clock.ElapsedMilliseconds < 10000, "nothing was queued for the interface's thread");
+                Thread.Sleep(10);
+            }
+            setup.Host.Apply(false, AutomationLevel.Commands);
+            foreach (var work in setup.Ui.Posted.ToList()) work();
+            Assert.Empty(setup.Target.Calls);
+            setup.Outcome(AutomationCommands.NotAllowed);
+        }
+
         [Fact]
         public void ACardThatCannotBePut_IsSaidSo_AndNothingSwitches()
         {
@@ -211,7 +252,7 @@ namespace PadForge.Tests
             public EngineChange SetEngine(bool on) => throw new InvalidOperationException();
             public void SetAllControllers(bool on) => throw new InvalidOperationException();
             public bool SetController(int number, bool on) => throw new InvalidOperationException();
-            public string SaveSnapshot(bool scrubbed) => throw new InvalidOperationException();
+            public string SaveSnapshot() => throw new InvalidOperationException();
             public AutomationState ReadState() => throw new InvalidOperationException();
         }
 
@@ -306,7 +347,7 @@ namespace PadForge.Tests
             public EngineChange SetEngine(bool on) => throw new InvalidOperationException();
             public void SetAllControllers(bool on) => throw new InvalidOperationException();
             public bool SetController(int number, bool on) => throw new InvalidOperationException();
-            public string SaveSnapshot(bool scrubbed) => throw new InvalidOperationException();
+            public string SaveSnapshot() => throw new InvalidOperationException();
             public AutomationState ReadState() => throw new InvalidOperationException();
         }
 

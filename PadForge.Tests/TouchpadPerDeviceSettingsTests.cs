@@ -329,5 +329,83 @@ namespace PadForge.Tests
             vm.TouchpadEnableTaps = true;
             Assert.Equal(2, ps.TouchpadSettings.Count(e => e.TouchpadIndex is 0 or 1));
         }
+
+        private static TouchpadInputState LivePad() => new TouchpadInputState(2);
+
+        /// <summary>The Touchpad card's live view draws the pad its Touchpad
+        /// Number picks (discussion #596: on a Steam Controller, Touchpad
+        /// Number 2 kept drawing the first pad). A finger on the second pad
+        /// shows under 2 and not under 1, and going back to 1 clears the
+        /// second pad's last position, which the view keeps while a finger is
+        /// up so a landing is drawn where it landed.</summary>
+        [Fact]
+        public void TheCardsLiveView_DrawsThePadItsTouchpadNumberPicks()
+        {
+            Arrange(Array.Empty<TouchpadSettingsEntry>());
+            var vm = new PadViewModel(0);
+            var pads = new[] { LivePad(), LivePad() };
+            pads[1].FingerDown[0] = true;
+            pads[1].FingerX[0] = 0.25f;
+            pads[1].FingerY[0] = 0.75f;
+
+            vm.ShowDeviceTouchpad(Dev, pads, false);
+            Assert.False(vm.DeviceTouchDown0);
+
+            vm.SelectedTouchpadIndex = 1;
+            vm.ShowDeviceTouchpad(Dev, pads, false);
+            Assert.True(vm.DeviceTouchDown0);
+            Assert.Equal((0.25f, 0.75f), (vm.DeviceTouchX0, vm.DeviceTouchY0));
+
+            pads[1].FingerDown[0] = false;
+            vm.ShowDeviceTouchpad(Dev, pads, false);
+            Assert.False(vm.DeviceTouchDown0);
+            Assert.Equal((0.25f, 0.75f), (vm.DeviceTouchX0, vm.DeviceTouchY0));
+
+            vm.SelectedTouchpadIndex = 0;
+            vm.ShowDeviceTouchpad(Dev, pads, false);
+            Assert.False(vm.DeviceTouchDown0);
+            Assert.Equal((0f, 0f), (vm.DeviceTouchX0, vm.DeviceTouchY0));
+
+            pads[0].FingerDown[1] = true;
+            pads[0].FingerX[1] = 0.5f;
+            pads[0].FingerY[1] = 0.4f;
+            vm.ShowDeviceTouchpad(Dev, pads, false);
+            Assert.True(vm.DeviceTouchDown1);
+            Assert.Equal((0.5f, 0.4f), (vm.DeviceTouchX1, vm.DeviceTouchY1));
+        }
+
+        /// <summary>A change of the device picked under Driven by clears the
+        /// last device's position, a pick past the pads the device reads now
+        /// draws no finger, and no device draws no finger and no PlayStation
+        /// outline.</summary>
+        [Fact]
+        public void TheCardsLiveView_ClearsAnotherDevicesPosition_AndDrawsNoPadPastTheDevicesOwn()
+        {
+            Arrange(Array.Empty<TouchpadSettingsEntry>());
+            var vm = new PadViewModel(0);
+            var first = new[] { LivePad() };
+            first[0].FingerDown[0] = true;
+            first[0].FingerX[0] = 0.9f;
+            first[0].FingerY[0] = 0.1f;
+            vm.ShowDeviceTouchpad(Dev, first, false);
+            Assert.Equal((0.9f, 0.1f), (vm.DeviceTouchX0, vm.DeviceTouchY0));
+
+            var other = new Guid("12345678-0000-0000-0000-00000000abcd");
+            var second = new[] { LivePad() };
+            vm.ShowDeviceTouchpad(other, second, true);
+            Assert.False(vm.DeviceTouchDown0);
+            Assert.Equal((0f, 0f), (vm.DeviceTouchX0, vm.DeviceTouchY0));
+            Assert.True(vm.DeviceTouchTapered);
+
+            vm.SelectedTouchpadIndex = 1;
+            second[0].FingerDown[0] = true;
+            vm.ShowDeviceTouchpad(other, second, true);
+            Assert.False(vm.DeviceTouchDown0);
+
+            vm.ShowDeviceTouchpad(Guid.Empty, null, false);
+            Assert.False(vm.DeviceTouchDown0);
+            Assert.False(vm.DeviceTouchDown1);
+            Assert.False(vm.DeviceTouchTapered);
+        }
     }
 }

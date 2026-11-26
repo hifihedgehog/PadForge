@@ -78,6 +78,6 @@ PadForge asks the user on a card before a change that would run a program, open 
 
 ## From a command line
 
-`PadForge.exe --tools` lists the tools with their levels and arguments. `PadForge.exe --call <tool> "{...}"` calls one through the same gates, with exit codes 0 done, 1 an error, 2 an unknown tool or argument, 4 PadForge not running and 5 Automation off or its level too low. `--skill [name]` prints this skill or one of its files, and `--describe <folder>` writes `references/pages.md` and `references/pages.json`.
+`PadForge.exe --tools` lists the tools with their levels and arguments. `PadForge.exe --call <tool> "{...}"` calls one through the same gates, with exit codes 0 done, 1 an error, 2 an unknown tool or argument, 4 PadForge not running and 5 Automation off or its level too low. `--skill [name]` prints this skill or one of its files, and `--describe <folder>` writes `pages.md` and `pages.json` into that folder.
 
 More: `references/tools.md` lists the tools by level. `references/mapping.md` covers inputs, targets and rows. `references/pages.md` and `references/pages.json` describe every page. `references/docs.md` lists PadForge's documentation pages, and `references/docs/` holds each page's text.

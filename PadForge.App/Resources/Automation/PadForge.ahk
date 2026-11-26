@@ -107,7 +107,7 @@ class PadForge {
     }
 
     ; Makes the script's connection with a name and the level it asks for:
-    ; "read", "send-inputs" (the default) or "change-settings". With the
+    ; "commands", "read", "send-inputs" (the default) or "change-settings". With the
     ; reach "own" the script asks to drive and change only the devices it
     ; adds and the ones the user picks for it, and it still reads every
     ; device. Call it before anything else to choose them.
@@ -127,7 +127,8 @@ class PadForge {
 
     static Device(what) => PadForge.Default.Device(what)
     static Devices() => PadForge.Default.Devices()
-    static AddController(key, name, spec := "") => PadForge.Default.AddController(key, name, spec)
+    static AddController(key, name, spec := "", axes := "", sliders := "", hats := "", feedback := "")
+        => PadForge.Default.AddController(key, name, spec, axes, sliders, hats, feedback)
     static OnDevice(callback) => PadForge.Default.OnDevice(callback)
     static OnProfile(callback) => PadForge.Default.OnProfile(callback)
     static OnEngine(callback) => PadForge.Default.OnEngine(callback)
@@ -177,6 +178,8 @@ class PadForge {
         this.Callbacks := Map()
         this.Events := []
         this.Pending := ""
+        ; The bytes after the last whole line, decoded once their line ends.
+        this.Carry := Buffer(0)
         this.NextTag := 0
         this.Level := ""
         this.Version := ""
@@ -192,6 +195,10 @@ class PadForge {
         this.Restoring := false
         this.NextTry := 0
         this.Waiting := false
+        ; The hello said PadForge asks the user: the level the answer gives
+        ; is heard as one e level, and what the script asked for meanwhile
+        ; was held, not dropped.
+        this.ConsentPending := false
         this.WakeMessage := DllCall("RegisterWindowMessage", "Str", "PadForge.Wake", "UInt")
         ; Bound once, so a timer or a message can be turned off by the same
         ; function. AutoHotkey's names ignore case, so these must not share
@@ -224,6 +231,7 @@ class PadForge {
         this.Handle := h
         this.Closed := false
         this.Pending := ""
+        this.Carry := Buffer(0)
         kind := this.Token != "" ? "kind=plugin token=" PadForge.Quote(this.Token) : "kind=script"
         hello := "hello name=" PadForge.Quote(this.Name) " " kind " protocol=" PadForge.Protocol " units=plain hwnd=" A_ScriptHwnd
         if (this.Wanted != "")
@@ -235,46 +243,70 @@ class PadForge {
         try {
             answer := this.Request(hello)
         } catch as e {
-            this.Why := e.Message
             this._Closed()
+            this.Why := e.Message
             return false
         }
         this.Version := answer.Get("padforge", "")
         this.Level := answer.Get("level", "")
         this.Session := Integer(answer.Get("session", "0"))
         this.Waiting := answer.Get("consent", "") = "waiting"
+        this.ConsentPending := this.Waiting
         this.Why := this.Waiting ? "PadForge asks you whether this script may work with it." : ""
         if (this.Token = "")
             this._Restore()
         this.Waiting := false
-        this.Why := ""
-        return true
+        ; A pipe that closed during the restore keeps its line.
+        if !this.Closed
+            this.Why := ""
+        return this.Connected
     }
 
     ; Everything the script holds, claims and follows, put back on a new
     ; connection: its devices found again, its controllers declared again
     ; under the same keys, its values set again.
+    ; A step PadForge refuses goes to Errors, and the next one still runs.
     _Restore() {
         this.Restoring := true
         try {
             for kind in this.Follows
-                this.Request("sub " kind)
-            this.Request("sub devices")
-            try this._Relist()
-            catch as e
-                this.Errors.Push(e.Message)
+                this._Step(ObjBindMethod(this, "Request", "sub " kind))
+            this._Step(ObjBindMethod(this, "Request", "sub devices"))
+            this._Step(ObjBindMethod(this, "_Relist"))
             for key, ctl in this.Mine
-                ctl._Declare()
+                this._Step(ObjBindMethod(ctl, "_Declare"))
             for name, value in this.Values
                 this._Send("var " name "=" value)
             for _, pad in this.Wanting
-                pad._Find()
-        } catch as e {
-            this.Errors.Push(e.Message)
+                this._Step(ObjBindMethod(pad, "_Find"))
         } finally {
             this.Restoring := false
         }
     }
+
+    _Step(fn) {
+        try fn()
+        catch as e
+            this._Note(e.Message)
+    }
+
+    ; The level rose from below Read or Send Inputs, where PadForge let go
+    ; of what the script followed, held and claimed and took its controllers
+    ; offline: all of it is put back as a new connection puts it back, from
+    ; a clean slate.
+    _Rise() {
+        if this.Closed
+            return
+        this._Step(ObjBindMethod(this, "Request", "unsub all"))
+        for id, pad in this.ById
+            if !(pad is PadForgeController)
+                pad._followed := false
+        this._Restore()
+    }
+
+    ; Where a level stands among the four: Commands (and off) 0, Read 1, Send
+    ; Inputs 2, Change Settings 3.
+    static _Rank(word) => word = "read" ? 1 : word = "send-inputs" ? 2 : word = "change-settings" ? 3 : 0
 
     ; Every device the script listed takes its connection from PadForge's
     ; list again, on a new connection.
@@ -327,16 +359,18 @@ class PadForge {
 
     ; Whether PadForge runs: its window PadForge.Instance stands, made by a
     ; process with administrator rights, which a program that made one
-    ; without them does not have.
+    ; without them does not have. Every window of the name is looked at, so
+    ; windows another program makes cannot hide PadForge's, and each
+    ; process's rights are read once.
     static Runs() {
         after := 0
-        loop 64 {
-            after := DllCall("FindWindowEx", "Ptr", -3, "Ptr", after, "Ptr", 0, "Str", "PadForge.Instance", "Ptr")
-            if !after
-                return false
+        seen := Map()
+        while (after := DllCall("FindWindowEx", "Ptr", -3, "Ptr", after, "Ptr", 0, "Str", "PadForge.Instance", "Ptr")) {
             pid := 0
             DllCall("GetWindowThreadProcessId", "Ptr", after, "UInt*", &pid)
-            if (PadForge.Integrity(pid) >= 0x3000)
+            if !seen.Has(pid)
+                seen[pid] := PadForge.Integrity(pid) >= 0x3000
+            if seen[pid]
                 return true
         }
         return false
@@ -422,6 +456,13 @@ class PadForge {
         text := StrReplace(text, '"', '\"')
         text := StrReplace(StrReplace(text, "`r", " "), "`n", " ")
         return '"' text '"'
+    }
+
+    ; A word for the line: bare when it can be, quoted otherwise, so a key
+    ; or a name with a space reaches PadForge whole.
+    static Word(text) {
+        text := String(text)
+        return (text = "" || RegExMatch(text, '[ "\={`r`n]')) ? PadForge.Quote(text) : text
     }
 
     ; The words of a line: .Words holds the bare ones, .Pairs the key=value
@@ -515,12 +556,28 @@ class PadForge {
     ; A value as the pipe takes it for a control of a kind (b, a or h, or d
     ; for a hat's direction, which takes a button's), in plain units.
     static Wire(kind, value) {
-        if (kind = "b" || kind = "d")
-            return (value = true || value = 1 || value = "1" || value = "true") ? "1" : "0"
-        if (kind = "a")
-            return (value = "rest") ? "rest" : value "%"
-        if (value is Number)
-            return value < 0 ? "-1" : value "deg"
+        ; A button is pressed by any number but 0, and by the text 1 or true.
+        if (kind = "b" || kind = "d") {
+            if (value is String)
+                return (Trim(value) = "1" || Trim(value) = "true") ? "1" : "0"
+            return (value is Number && value != 0) ? "1" : "0"
+        }
+        ; An axis is a number, or text: rest, or a percent such as "50%".
+        if (kind = "a") {
+            if (value = "rest")
+                return "rest"
+            if (value is String && SubStr(Trim(value), -1) = "%")
+                return Trim(value)
+            return value "%"
+        }
+        ; A hat's rest is -1 on the pipe, and a number, or text that reads as
+        ; one, is degrees.
+        if (value = "rest")
+            return "-1"
+        if IsNumber(value) {
+            degrees := Number(value)
+            return degrees < 0 ? "-1" : degrees "deg"
+        }
         return value = "" ? "-1" : StrReplace(value, " ", "")
     }
 
@@ -564,12 +621,24 @@ class PadForge {
                 }
                 if (avail = 0)
                     break
-                buf := Buffer(avail)
-                if !DllCall("ReadFile", "Ptr", this.Handle, "Ptr", buf, "UInt", avail, "UInt*", &got := 0, "Ptr", 0) {
+                carried := this.Carry.Size
+                buf := Buffer(carried + avail)
+                if carried
+                    DllCall("RtlMoveMemory", "Ptr", buf, "Ptr", this.Carry, "UPtr", carried)
+                if !DllCall("ReadFile", "Ptr", this.Handle, "Ptr", buf.Ptr + carried, "UInt", avail, "UInt*", &got := 0, "Ptr", 0) {
                     this._Closed()
                     break
                 }
-                this.Pending .= StrGet(buf, got, "UTF-8")
+                ; Text is decoded up to the last line's end, so a character
+                ; that one read ends inside comes whole with the next.
+                total := carried + got, last := total
+                while (last > 0 && NumGet(buf, last - 1, "UChar") != 10)
+                    last--
+                this.Carry := Buffer(total - last)
+                if (total > last)
+                    DllCall("RtlMoveMemory", "Ptr", this.Carry, "Ptr", buf.Ptr + last, "UPtr", total - last)
+                if (last > 0)
+                    this.Pending .= StrGet(buf, last, "UTF-8")
                 while (at := InStr(this.Pending, "`n")) {
                     line := RTrim(SubStr(this.Pending, 1, at - 1), "`r")
                     this.Pending := SubStr(this.Pending, at + 1)
@@ -582,6 +651,10 @@ class PadForge {
     }
 
     _Line(line) {
+        ; The user answered PadForge's question card: a line no longer waits
+        ; for it, the restore's own next line included.
+        if (SubStr(line, 1, 8) = "e level ")
+            this.Waiting := false
         if (SubStr(line, 1, 2) = "e ") {
             ; The copy takes the event at once, and a change the copy holds
             ; already (a second subscription's copy of it) goes no further.
@@ -597,7 +670,7 @@ class PadForge {
         }
         if (tag = "" || !this.Answers.Has(tag)) {
             if (SubStr(line, 1, 4) = "err ")
-                this.Errors.Push(line)
+                this._Note(line)
             return
         }
         answer := this.Answers[tag]
@@ -683,14 +756,22 @@ class PadForge {
                 if this.ById.Has(w[3])
                     this.ById[w[3]]._online := online
                 this._Call("dev", w[3], online)
+                ; A wanted device not found, or found and not connected, is
+                ; looked for again: an unplugged pad follows a matching one
+                ; that connects.
                 if online
                     for _, pad in this.Wanting
-                        if (pad.Id = "" || !pad._followed)
+                        if (pad.Id = "" || !pad._followed || !pad.Connected)
                             pad._Find()
             case "profile": this._Call("profile", w.Length > 2 ? w[3] : "default")
             case "engine": this._Call("engine", w[3])
             case "level":
+                was := this.Level
                 this.Level := w[3]
+                if this.ConsentPending
+                    this.ConsentPending := false
+                else if (PadForge._Rank(this.Level) > PadForge._Rank(was) && PadForge._Rank(was) < 2)
+                    this._Rise()
                 this._Call("level", w[3])
             case "rumble", "trigrumble", "trigfx", "led", "player":
                 if this.ById.Has(w[3])
@@ -698,8 +779,9 @@ class PadForge {
             case "lease":
                 ; The lease ran out while the script did not beat: its own
                 ; controllers rest. What it set goes back at once.
-                for key, ctl in this.Mine
-                    ctl._Resend()
+                if (w.Length > 2 && w[3] = "lapsed")
+                    for key, ctl in this.Mine
+                        ctl._Resend()
             default: this._Call("event|" w[2], e.Pairs)
         }
     }
@@ -716,6 +798,14 @@ class PadForge {
             callback(args*)
     }
 
+    ; A line for Errors: the last 100 are kept, as the PowerShell library
+    ; keeps them.
+    _Note(text) {
+        this.Errors.Push(text)
+        if (this.Errors.Length > 100)
+            this.Errors.RemoveAt(1)
+    }
+
     _Add(key, callback) {
         if !this.Callbacks.Has(key)
             this.Callbacks[key] := []
@@ -730,7 +820,9 @@ class PadForge {
             DllCall("CloseHandle", "Ptr", this.Handle)
             this.Handle := 0
         }
-        this.Why := "PadForge closed the connection. The library tries again."
+        this.Why := this.Ended ? "The script closed the connection."
+            : this.Token != "" ? "PadForge closed the connection."
+            : "PadForge closed the connection. The library tries again."
         this.NextTry := A_TickCount + PadForge.RetryMs
         for _, pad in this.ById
             pad._Lost()
@@ -780,13 +872,28 @@ class PadForge {
 
     ; PadForge's refusal of a request, as an error in words, the request
     ; named by verb. frames is the stack frame the error names, counted
-    ; from the caller: -1 for the caller itself.
+    ; from the caller: -1 for the caller itself. A line past the program's
+    ; level carries PadForge's default words, and is told as the level the
+    ; program works at: the user's cap, or what the user allowed it on the
+    ; question card.
     _Refused(verb, final, frames) {
         parts := StrSplit(final, " ", , 3)
         code := parts.Length > 1 ? parts[2] : "internal"
-        if (code = "not-allowed")
-            return Error("PadForge refused " verb ": Automation's level is " this.Level ", too low for it. Raise it in Extras, Automation.", frames - 1)
-        return Error("PadForge refused " verb ": " (parts.Length > 2 ? parts[3] : "") " (" code ").", frames - 1)
+        words := parts.Length > 2 ? parts[3] : ""
+        level := PadForge.LevelName(this.Level)
+        if (code == "not-allowed" && (words = "" || words == PadForge.LevelRefusal) && level != "")
+            return Error("PadForge refused " verb ": this program works at the " level " level, which does not allow it.", frames - 1)
+        return Error("PadForge refused " verb ": " words " (" code ").", frames - 1)
+    }
+
+    ; The words PadForge's refusal carries when a line is past the
+    ; program's level (AutomationLine.WordsFor).
+    static LevelRefusal := "the Automation level does not allow this"
+
+    ; A level's word on the pipe by its name, or "".
+    static LevelName(word) {
+        static names := Map("commands", "Commands", "read", "Read", "send-inputs", "Send Inputs", "change-settings", "Change Settings")
+        return names.Get(word, "")
     }
 
     ; A Tap's or a Sequence's lines, written one after the other with no
@@ -846,12 +953,14 @@ class PadForge {
         if (this.ById.Has(key) && !(this.ById[key] is PadForgeController) && StrLower(this.ById[key]._what) = key) {
             pad := this.ById[key]
             this.Wanting[key] := pad
+            pad._wanted := true
             if (this.Connected && !pad._followed)
                 pad._Find()
             return pad
         }
         pad := PadForgeDevice(this, what)
         this.Wanting[key] := pad
+        pad._wanted := true
         if this.Connected
             pad._Find()
         return pad
@@ -953,7 +1062,10 @@ class PadForge {
 
     ; Runs an assistant tool, at the tool's own level: Tool("press",
     ; '{"id":"..."}') presses what the user could. Returns JSON text.
-    Tool(name, json := "{}") => this.Request("call " name " " json).Json
+    ; A tool that asks the user waits for the card's answer, up to 45
+    ; seconds in PadForge, so its line waits 60. JSON written over several
+    ; lines goes as one: a line break is a space between JSON's tokens.
+    Tool(name, json := "{}") => this.Request("call " PadForge.Word(name) " " StrReplace(StrReplace(json, "`r", " "), "`n", " "), this.Waiting ? 150000 : 60000).Json
 
     ; Closes the connection for good.
     Close() {
@@ -963,6 +1075,7 @@ class PadForge {
             this._Send("bye")
             this._Closed()
         }
+        this.Why := "The script closed the connection."
         OnMessage(this.WakeMessage, this.WakeFn, 0)
     }
 
@@ -986,6 +1099,7 @@ class PadForgeDevice {
         ; its own state, one it only listed from the list.
         this.DefineProp("_online", {Value: false})
         this.DefineProp("_followed", {Value: false})
+        this.DefineProp("_wanted", {Value: false})
         this.DefineProp("_holds", {Value: Map()})
         ; Sets made before the device was found, put once when it is.
         this.DefineProp("_sets", {Value: Map()})
@@ -1005,7 +1119,10 @@ class PadForgeDevice {
     Id => this._id
     Name => this._info["name"]
     Type => this._info["type"]
-    Connected => this._followed ? this._connected : this._online
+    ; A device the script asked for says it is connected from its own state,
+    ; while it is found and after PadForge comes back too. One the script
+    ; only listed says what the list said.
+    Connected => this._followed || this._wanted ? this._connected : this._online
 
     ; Its controls: a Map of each name to an object with Name, Kind
     ; ("button", "axis", "slider" or "hat") and Index. A device that
@@ -1015,7 +1132,7 @@ class PadForgeDevice {
             if (this._controls.Count = 0 && this._id != "" && this._pf.Connected && !(this is PadForgeController)) {
                 try this._Caps()
                 catch as e
-                    this._pf.Errors.Push(e.Message)
+                    this._pf._Note(e.Message)
             }
             out := Map()
             for name, c in this._controls
@@ -1074,7 +1191,20 @@ class PadForgeDevice {
             pick := spare
         if (pick = "")
             return
+        ; The device it follows on this connection already, connected or
+        ; not: its state subscription says when it comes back.
+        if (this._followed && pick["id"] = this._id)
+            return
+        old := this._followed ? this._id : ""
         this._Row(pick)
+        if (old != "" && old != this._id) {
+            ; It followed another device, which is not connected: what it
+            ; followed and held there goes, and comes to this one.
+            pf._Send("rel " old " all")
+            try pf.Request("unsub " old)
+            catch as e
+                pf._Note(e.Message)
+        }
         this._Attach()
     }
 
@@ -1106,18 +1236,39 @@ class PadForgeDevice {
         for item in items {
             try this.Hotkey(item.Name, item.Fn)
             catch as e
-                pf.Errors.Push(e.Message)
+                pf._Note(e.Message)
         }
+        ; Change callbacks made before the controls were known are filed
+        ; again under each control's own name.
+        changes := []
+        for name, list in this._changes
+            changes.Push([name, list])
+        this._changes.Clear()
+        for entry in changes {
+            c := this._Control(entry[1])
+            key := c = "" ? entry[1] : c.Name
+            if !this._changes.Has(key)
+                this._changes[key] := []
+            for callback in entry[2]
+                this._changes[key].Push(callback)
+        }
+        ; A hold whose name or value the device does not take goes to
+        ; Errors, and the rest are held.
         line := "", held := Map()
         held.CaseSense := false
         for name, value in this._holds {
             c := this._Target(name)
             if (c = "") {
-                pf.Errors.Push("No such control: " name)
+                pf._Note("No such control: " name)
+                continue
+            }
+            try wire := PadForge.Wire(c.Kind, value)
+            catch as e {
+                pf._Note(e.Message)
                 continue
             }
             held[c.Name] := value
-            line .= " " c.Name "=" PadForge.Wire(c.Kind, value)
+            line .= " " c.Name "=" wire
         }
         this._holds.Clear()
         for name, value in held
@@ -1129,7 +1280,7 @@ class PadForgeDevice {
         for name, value in this._sets {
             c := this._Target(name)
             if (c = "") {
-                pf.Errors.Push("No such control: " name)
+                pf._Note("No such control: " name)
                 continue
             }
             line .= " " c.Name "=" PadForge.Wire(c.Kind, value)
@@ -1153,11 +1304,12 @@ class PadForgeDevice {
         if pf.Wanting.Has(key)
             return
         pf.Wanting[key] := this
+        this._wanted := true
         if !pf.Connected
             return
         try this._Attach()
         catch as e
-            pf.Errors.Push(e.Message)
+            pf._Note(e.Message)
     }
 
     _Caps() {
@@ -1172,7 +1324,7 @@ class PadForgeDevice {
             p := row.Pairs
             k := SubStr(kind, 1, 1)
             index := Integer(p["index"])
-            name := p.Has("script") ? p["script"] : (k = "b" ? "Button" : k = "h" ? "Hat" : "Axis") index
+            name := p.Has("script") ? p["script"] : PadForgeDevice._Numbered(k, index)
             rest := p.Has("rest") ? Integer(p["rest"]) : (index < 24 ? 32768 : 0)
             c := {Name: name, Kind: k, Index: index, Stick: rest = 32768 || rest = 32767}
             this._controls[name] := c
@@ -1243,6 +1395,8 @@ class PadForgeDevice {
     }
 
     ; The control a name names: {Name, Kind, Index, Stick}, or "" for none.
+    ; A control answers to its name, its numbered name and the pipe's short
+    ; form (b3, a0, h0).
     _Control(name) {
         if this._controls.Has(name)
             return this._controls[name]
@@ -1253,8 +1407,18 @@ class PadForgeDevice {
                 return this._byIndex[k index]
             return {Name: m[1] m[2], Kind: k, Index: index, Stick: m[1] = "Axis"}
         }
+        if RegExMatch(name, "i)^([bah])(\d+)$", &m) {
+            k := StrLower(m[1]), index := Integer(m[2])
+            if this._byIndex.Has(k index)
+                return this._byIndex[k index]
+            return {Name: PadForgeDevice._Numbered(k, index), Kind: k, Index: index, Stick: k = "a" && index < 24}
+        }
         return ""
     }
+
+    ; A control's numbered name by its kind and its index on the pipe:
+    ; sliders from 24.
+    static _Numbered(k, index) => k = "b" ? "Button" index : k = "h" ? "Hat" index : index >= 24 ? "Slider" (index - 24) : "Axis" index
 
     ; What a setting names: a control as _Control gives it, or one direction
     ; of a hat as {Name, Kind: "d", Hat, Bit}, named by its hat's name, or
@@ -1353,6 +1517,8 @@ class PadForgeDevice {
     ; "" gives a control back, as setting it to "" does, and before the
     ; device is found each waits under the name given, as Set does.
     Hold(pairs*) {
+        if Mod(pairs.Length, 2)
+            throw ValueError("hold takes names and values in pairs.", -1)
         this._FollowSelf()
         line := "", back := ""
         loop pairs.Length // 2 {
@@ -1461,14 +1627,16 @@ class PadForgeDevice {
     }
 
     ; Taps controls one after the other, each held its ms: Sequence("A",
-    ; 50, "B", 50). Each starts as the one before lets go. Refused before
-    ; the device is found, and by PadForge while the device is not
-    ; connected.
+    ; 50, "B", 50). Each starts as the one before lets go, every step timed
+    ; from the call on PadForge's clock. Refused before the device is found,
+    ; and by PadForge while the device is not connected.
     Sequence(steps*) {
+        if Mod(steps.Length, 2)
+            throw ValueError("sequence takes names and times in pairs.", -1)
         if (this._id = "")
             throw this._Absent("sequence")
         this._FollowSelf()
-        lines := []
+        lines := [], at := 0
         loop steps.Length // 2 {
             c := this._Target(steps[A_Index * 2 - 1])
             if (c = "") {
@@ -1477,8 +1645,12 @@ class PadForgeDevice {
                 throw ValueError("No such control: " steps[A_Index * 2 - 1], -1)
             }
             on := c.Kind = "b" || c.Kind = "d" ? "1" : c.Kind = "h" ? "0deg" : "100%"
-            lines.Push("own " this._id " " c.Name "=" on (A_Index = 1 ? " in=0" : " after=0"))
-            lines.Push("rel " this._id " " c.Name " after=" Round(steps[A_Index * 2]))
+            ; Each step is timed from now (in=), so a Tap or Sequence before
+            ; it, which moves the end of the session's timed steps, does not
+            ; stretch a step.
+            lines.Push("own " this._id " " c.Name "=" on " in=" at)
+            at += Round(steps[A_Index * 2])
+            lines.Push("rel " this._id " " c.Name " in=" at)
         }
         if (lines.Length > 0)
             this._pf._Timed("sequence", lines*)
@@ -1511,16 +1683,31 @@ class PadForgeDevice {
         if !HasMethod(callback)
             throw ValueError("A hotkey needs a function or `"Off`": " keyName, -1)
         h.Fn := callback
-        if !this._keys.Has(id)
+        fresh := !this._keys.Has(id)
+        if fresh
             this._keys[id] := {Id: id, What: h.What, Kind: h.Kind, Line: h.Line, Wire: "", Number: 0, Claimed: -1, List: []}
         key := this._keys[id]
+        before := key.List.Clone()
         for i, item in key.List
             if (item.Name = h.Name) {
                 key.List.RemoveAt(i)
                 break
             }
         key.List.Push(h)
-        this._Claim(key)
+        try this._Claim(key)
+        catch as e {
+            ; PadForge refused the claim: the hotkeys on the control, and
+            ; what it follows, are as they were.
+            if fresh
+                this._keys.Delete(id)
+            else {
+                key.List := before
+                try this._Claim(key)
+                catch as again
+                    this._pf._Note(again.Message)
+            }
+            throw e
+        }
     }
 
     ; A hotkey's words as an object: its name, whether it leaves the
@@ -1601,6 +1788,9 @@ class PadForgeDevice {
         if (key.Kind = "l" && key.Number) {
             this._lines.Delete(key.Number)
             this._pf.Request("unsub " this._id " line=" key.Number)
+            ; The line is gone: a refused claim after it leaves no number
+            ; that names a line.
+            key.Number := 0
         }
         answer := this._pf.Request("sub " this._id " " key.What (key.Line != "" ? " " key.Line : "") (claim ? " claim" : ""))
         key.Claimed := claim ? 1 : 0
@@ -1670,7 +1860,7 @@ class PadForgeDevice {
                 }
             case "a":
                 c := this._byIndex.Get("a" w[4], "")
-                this._Changed(c = "" ? "Axis" w[4] : c.Name, Number(w[5]))
+                this._Changed(c = "" ? PadForgeDevice._Numbered("a", Integer(w[4])) : c.Name, Number(w[5]))
             case "x":
                 lineNo := w.Length > 5 ? Integer(w[6]) : 0
                 if !this._lines.Has(lineNo)
@@ -1718,6 +1908,11 @@ class PadForgeController extends PadForgeDevice {
         this.DefineProp("_spec", {Value: spec})
         this.DefineProp("_set", {Value: Map()})
         this.DefineProp("_fbs", {Value: Map()})
+        ; Battery, Charging, Gyro and Accel as the script set them.
+        this.DefineProp("_extras", {Value: Map()})
+        this._extras.CaseSense := false
+        ; Each declared axis's rest as a share of its travel, 0 to 100.
+        this.DefineProp("_rests", {Value: Map()})
         this._set.CaseSense := false
         this._connected := true
         this._Shape()
@@ -1728,37 +1923,128 @@ class PadForgeController extends PadForgeDevice {
     Type => "program"
     Connected => this._id != "" && this._pf.Connected
 
-    ; The controls named by the declaration, as PadForge names them.
+    ; The words of the pipe a declared name may not take, as PadForge keeps
+    ; them.
+    static Reserved := PadForgeController._Words("gyro accel bat charging rest after in claim above below hyst line all state buttons hats axes axis hz devices profile engine")
+
+    static _Words(text) {
+        words := Map()
+        words.CaseSense := false
+        for w in StrSplit(text, " ")
+            words[w] := true
+        return words
+    }
+
+    ; The controls named by the declaration, as PadForge names them
+    ; (ScriptNames.Declared): buttons, then axes and sliders, then every hat
+    ; up to the last one declared, each in the order of its index. The hats
+    ; are named first, and each hat's name with Up, Right, Down or Left is
+    ; taken with it, so a button or an axis declared so keeps its numbered
+    ; name: that word is the hat's direction. A name that is no word, a word
+    ; of the pipe, reads as another control or is taken keeps the control's
+    ; numbered name.
     _Shape() {
         spec := this._spec
-        Add(list, k, base, stickRest) {
-            for i, item in list {
-                index := IsObject(item) && item.HasOwnProp("index") ? item.index : (i - 1)
-                label := IsObject(item) ? (item.HasOwnProp("name") ? item.name : "") : item
-                rest := IsObject(item) && item.HasOwnProp("rest") ? item.rest : stickRest
-                c := {Name: PadForgeController._Word(label, k, index), Kind: k, Index: base + index, Stick: rest = 50}
-                this._controls[c.Name] := c
-                this._byIndex[k (base + index)] := c
-            }
+        taken := Map()
+        taken.CaseSense := false
+        Pick(label, numbered) {
+            word := PadForgeController._Word(label)
+            if (word = "" || taken.Has(word) || PadForgeController.Reserved.Has(word) || PadForgeController._LooksNumbered(word))
+                word := numbered
+            taken[word] := true
+            return word
         }
-        Add(PadForgeController._Get(spec, "Buttons"), "b", 0, 0)
-        Add(PadForgeController._Get(spec, "Axes"), "a", 0, 50)
-        Add(PadForgeController._Get(spec, "Sliders"), "a", 24, 0)
-        Add(PadForgeController._Get(spec, "Hats"), "h", 0, 0)
+        Add(name, k, index, stick) {
+            c := {Name: name, Kind: k, Index: index, Stick: stick}
+            this._controls[name] := c
+            this._byIndex[k index] := c
+        }
+        hats := Map(), last := -1
+        for d in PadForgeController._Declared(PadForgeController._Get(spec, "Hats"), 0, 0)
+            hats[d.Index] := d.Label, last := Max(last, d.Index)
+        hatNames := []
+        loop last + 1 {
+            name := Pick(hats.Get(A_Index - 1, ""), "Hat" (A_Index - 1))
+            for end in ["Up", "Right", "Down", "Left"]
+                taken[name end] := true
+            hatNames.Push(name)
+        }
+        for d in PadForgeController._Declared(PadForgeController._Get(spec, "Buttons"), 0, 0)
+            Add(Pick(d.Label, "Button" d.Index), "b", d.Index, false)
+        axes := PadForgeController._Declared(PadForgeController._Get(spec, "Axes"), 0, 50)
+        for d in PadForgeController._Declared(PadForgeController._Get(spec, "Sliders"), 24, 0)
+            axes.Push(d)
+        for d in PadForgeController._Sorted(axes) {
+            Add(Pick(d.Label, PadForgeDevice._Numbered("a", d.Index)), "a", d.Index, d.Rest = 50)
+            this._rests[d.Index] := d.Rest
+        }
+        for i, name in hatNames
+            Add(name, "h", i - 1, false)
+    }
+
+    ; A declaration's list as PadForge reads it: each item's index (its own,
+    ; or its place), label and rest, in the order of the index.
+    static _Declared(list, base, defaultRest) {
+        out := []
+        for i, item in list {
+            if IsObject(item) && !(item is Array) {
+                index := item.HasOwnProp("index") ? item.index : i - 1
+                label := item.HasOwnProp("name") ? item.name : ""
+                rest := item.HasOwnProp("rest") ? PadForgeController._Share(item.rest) : defaultRest
+            } else
+                index := i - 1, label := item, rest := defaultRest
+            out.Push({Index: base + index, Label: label, Rest: rest})
+        }
+        return PadForgeController._Sorted(out)
+    }
+
+    static _Sorted(list) {
+        out := []
+        for d in list {
+            at := out.Length + 1
+            while (at > 1 && out[at - 1].Index > d.Index)
+                at--
+            out.InsertAt(at, d)
+        }
+        return out
     }
 
     static _Get(spec, name) => IsObject(spec) && spec.HasOwnProp(name) ? spec.%name% : (IsObject(spec) && spec.HasOwnProp(StrLower(name)) ? spec.%StrLower(name)% : [])
 
+    ; A name as PadForge keeps it (ProgramDeviceDeclaration.Clean): control
+    ; and format characters out, and what XML cannot hold, a line or
+    ; paragraph separator a space, cut at 64 without splitting a pair, and
+    ; trimmed.
+    static _Clean(text) {
+        text := RegExReplace(String(text), "[\p{Cc}\p{Cf}\x{FFFE}\x{FFFF}]")
+        text := RegExReplace(text, "[\p{Zl}\p{Zp}]", " ")
+        if (StrLen(text) > 64)
+            text := SubStr(text, 1, (Ord(SubStr(text, 64, 1)) & 0xFC00) = 0xD800 ? 63 : 64)
+        return RegExReplace(text, "(*UCP)^\s+|\s+$")
+    }
+
     ; A declared name as scripts name it: its letters and digits, each
-    ; word's first letter upper case, as PadForge makes it.
-    static _Word(label, k, index) {
+    ; word's first letter upper case, as PadForge makes it from the name it
+    ; keeps. "" when nothing is left, it starts with a digit or it runs past
+    ; 32 letters.
+    static _Word(label) {
         word := ""
-        for part in StrSplit(RegExReplace(label, "[^A-Za-z0-9]+", " "), " ")
+        for part in StrSplit(RegExReplace(PadForgeController._Clean(label), "[^A-Za-z0-9]+", " "), " ")
             if (part != "")
                 word .= StrUpper(SubStr(part, 1, 1)) SubStr(part, 2)
-        if (word = "" || RegExMatch(word, "^\d") || RegExMatch(word, "i)^([bah]\d+|(Button|Axis|Slider|Hat)\d+)$"))
-            word := (k = "b" ? "Button" : k = "h" ? "Hat" : index >= 24 ? "Slider" : "Axis") (k = "a" && index >= 24 ? index - 24 : index)
-        return word
+        return (word = "" || RegExMatch(word, "^\d") || StrLen(word) > 32) ? "" : word
+    }
+
+    ; Whether a word reads as a numbered control (Button3), the pipe's short
+    ; form (b3), a touchpad's word (t0, tc0) or a hat's direction (HatUp).
+    static _LooksNumbered(word) {
+        if RegExMatch(word, "i)^([bah])(\d{1,4})$", &m) && Integer(m[2]) < (StrLower(m[1]) = "b" ? 256 : StrLower(m[1]) = "a" ? 32 : 4)
+            return true
+        if RegExMatch(word, "i)^(Button|Axis|Slider|Hat)\d+$")
+            return true
+        if RegExMatch(word, "i)^t(\d|c)")
+            return true
+        return RegExMatch(word, "i)^Hat.*(Up|Right|Down|Left)$") > 0
     }
 
     _Declare() {
@@ -1774,8 +2060,13 @@ class PadForgeController extends PadForgeDevice {
         if (touch is Array && touch.Length > 0)
             json .= ',"touchpads":' PadForgeController._Json(touch)
         json .= ',"feedback":' PadForgeController._Json(PadForgeController._Get(spec, "Feedback")) "}"
-        p := this._pf.Request("declare key=" this._key " name=" PadForge.Quote(this._label) " " json)
+        p := this._pf.Request("declare key=" PadForge.Word(this._key) " name=" PadForge.Quote(this._label) " " json)
         this._Row(Map("id", p["id"], "name", this._label, "type", "program"))
+        ; Back after a loss: OnConnect hears it, as it heard the loss.
+        if !this._connected {
+            this._connected := true
+            this._Changed("", true)
+        }
         ; What the script set before, put back after PadForge starts again.
         if (this._set.Count > 0) {
             line := ""
@@ -1792,12 +2083,28 @@ class PadForgeController extends PadForgeDevice {
             if IsObject(item) && !(item is Array) && item.HasOwnProp("rest") {
                 copy := {}
                 for k, v in item.OwnProps()
-                    copy.%k% := k = "rest" ? v "%" : v
+                    copy.%k% := k = "rest" ? PadForgeController._RestText(v) : v
                 out.Push(copy)
             } else
                 out.Push(item)
         }
         return out
+    }
+
+    ; A rest as a share of the travel: a number, or text such as "50%",
+    ; read as the number before its percent sign.
+    static _Share(v) {
+        if !(v is String)
+            return v
+        t := Trim(RTrim(Trim(v), "%"))
+        return IsNumber(t) ? Number(t) : v
+    }
+
+    ; A rest for the declaration: its share and a percent sign, or text
+    ; PadForge refuses in its own words.
+    static _RestText(v) {
+        share := PadForgeController._Share(v)
+        return share is Number ? share "%" : share
     }
 
     static _Json(value) {
@@ -1820,8 +2127,21 @@ class PadForgeController extends PadForgeDevice {
     }
 
     _Read(name) {
+        switch name, false {
+            case "Gyro", "Accel", "Battery", "Charging":
+                return this._extras.Get(name, "")
+        }
         c := this._Control(name)
         if (c = "") {
+            ; An axis's two halves, from the controller's own read of it.
+            if (SubStr(name, -4) = "Plus" && StrLen(name) > 4) || (SubStr(name, -5) = "Minus" && StrLen(name) > 5) {
+                minus := SubStr(name, -5) = "Minus"
+                axis := this._Control(SubStr(name, 1, StrLen(name) - (minus ? 5 : 4)))
+                if (axis != "" && axis.Kind = "a") {
+                    v := this._Read(axis.Name)
+                    return Max(0, axis.Stick ? (minus ? -v : v) : (minus ? (50 - v) * 2 : (v - 50) * 2))
+                }
+            }
             d := this._Direction(name)
             if (d = "")
                 return super._Read(name)
@@ -1832,21 +2152,32 @@ class PadForgeController extends PadForgeDevice {
         if (c.Kind = "b")
             return wire = "1"
         if (c.Kind = "h")
-            return wire = "" || wire = "-1" ? -1 : (InStr(wire, "deg") ? Number(StrReplace(wire, "deg")) : wire)
-        return wire = "" ? 0 : Number(StrReplace(wire, "%"))
+            return wire = "" || wire = "-1" ? -1 : (InStr(wire, "deg") ? Number(StrReplace(wire, "deg")) : PadForge.DirectionDegrees(PadForge.HatWords(wire)))
+        return wire = "" || wire = "rest" ? this._RestOf(c) : Number(StrReplace(wire, "%"))
     }
+
+    ; What an axis reads at its rest: 0 on a stick, its rest's share of the
+    ; travel on a trigger, a slider or a pedal.
+    _RestOf(c) => c.Stick ? 0 : this._rests.Get(c.Index, 0)
+
+    ; A control's rest as the s line takes it. An axis rests at the rest it
+    ; was declared with, which PadForge reads for the word rest.
+    static _RestWire(c) => c.Kind = "b" || c.Kind = "d" ? "0" : c.Kind = "h" ? "-1" : "rest"
 
     ; Sets a control of the script's own controller. "" puts it at rest.
     _Hold(name, value) {
         switch name, false {
-            case "Gyro", "Accel":
-                this._Part(StrLower(name), value[1] "," value[2] "," value[3])
-                return
-            case "Battery":
-                this._Part("bat", Round(value))
-                return
-            case "Charging":
-                this._Part("charging", value ? 1 : 0)
+            case "Gyro", "Accel", "Battery", "Charging":
+                part := StrLower(name) = "battery" ? "bat" : StrLower(name)
+                if (value = "") {
+                    ; Nothing more is sent, as for a hold given back.
+                    this._extras.Delete(name)
+                    this._set.Delete(part)
+                    return
+                }
+                wire := part = "bat" ? Round(value) : part = "charging" ? (value ? 1 : 0) : value[1] "," value[2] "," value[3]
+                this._extras[name] := value
+                this._Part(part, wire)
                 return
         }
         c := this._Control(name)
@@ -1857,9 +2188,7 @@ class PadForgeController extends PadForgeDevice {
             this._Send(this._Turn(d, value))
             return
         }
-        wire := value = "" ? (c.Kind = "b" ? "0" : c.Kind = "h" ? "-1" : "rest") : PadForge.Wire(c.Kind, value)
-        if (wire = "rest")
-            wire := "0%"
+        wire := value = "" ? PadForgeController._RestWire(c) : PadForge.Wire(c.Kind, value)
         this._set[c.Name] := wire
         this._Send(c.Name "=" wire)
     }
@@ -1906,6 +2235,8 @@ class PadForgeController extends PadForgeDevice {
 
     ; Several controls as one change: Hold("LeftX", 50, "LeftY", -20).
     Hold(pairs*) {
+        if Mod(pairs.Length, 2)
+            throw ValueError("hold takes names and values in pairs.", -1)
         line := ""
         loop pairs.Length // 2 {
             c := this._Control(pairs[A_Index * 2 - 1])
@@ -1918,9 +2249,7 @@ class PadForgeController extends PadForgeDevice {
             }
             ; "" puts the control at rest, as setting it to "" does.
             value := pairs[A_Index * 2]
-            wire := value = "" ? (c.Kind = "b" ? "0" : c.Kind = "h" ? "-1" : "0%") : PadForge.Wire(c.Kind, value)
-            if (wire = "rest")
-                wire := "0%"
+            wire := value = "" ? PadForgeController._RestWire(c) : PadForge.Wire(c.Kind, value)
             this._set[c.Name] := wire
             line .= " " c.Name "=" wire
         }
@@ -1952,24 +2281,26 @@ class PadForgeController extends PadForgeDevice {
             throw ValueError("No such control: " name, -1)
         if (value = "")
             value := c.Kind = "b" || c.Kind = "d" ? true : c.Kind = "h" ? 0 : 100
-        rest := c.Kind = "b" || c.Kind = "d" ? "0" : c.Kind = "h" ? "-1" : "0%"
         if !this._pf._Send("s " this._id " " c.Name "=" PadForge.Wire(c.Kind, value))
             throw this._Absent("tap")
-        this._Send(c.Name "=" rest " in=" Round(ms))
+        this._Send(c.Name "=" PadForgeController._RestWire(c) " in=" Round(ms))
     }
 
     Sequence(steps*) {
+        if Mod(steps.Length, 2)
+            throw ValueError("sequence takes names and times in pairs.", -1)
         if (this._id = "" || !this._pf.Connected)
             throw this._Absent("sequence")
-        lines := []
+        lines := [], at := 0
         loop steps.Length // 2 {
             c := this._Target(steps[A_Index * 2 - 1])
             if (c = "")
                 throw ValueError("No such control: " steps[A_Index * 2 - 1], -1)
             on := c.Kind = "b" || c.Kind = "d" ? "1" : c.Kind = "h" ? "0deg" : "100%"
-            off := c.Kind = "b" || c.Kind = "d" ? "0" : c.Kind = "h" ? "-1" : "0%"
-            lines.Push(c.Name "=" on (A_Index = 1 ? "" : " after=0"))
-            lines.Push(c.Name "=" off " after=" Round(steps[A_Index * 2]))
+            ; Each step is timed from now, as a device's Sequence is.
+            lines.Push(c.Name "=" on " in=" at)
+            at += Round(steps[A_Index * 2])
+            lines.Push(c.Name "=" PadForgeController._RestWire(c) " in=" at)
         }
         for line in lines
             if (!this._pf._Send("s " this._id " " line) && A_Index = 1)
@@ -1994,7 +2325,7 @@ class PadForgeController extends PadForgeDevice {
     OnTriggerEffects(callback) => this._On("trigfx", callback)
     ; callback("rrggbb").
     OnLight(callback) => this._On("led", callback)
-    ; callback(number), from 1.
+    ; callback(number), from 1, and 0 once no virtual controller holds it.
     OnPlayer(callback) => this._On("player", callback)
 
     _On(kind, callback) {
@@ -2006,18 +2337,29 @@ class PadForgeController extends PadForgeDevice {
     _Feedback(w) {
         if !this._fbs.Has(w[2])
             return
+        ; Motors and the player number are numbers. A light's rrggbb and a
+        ; trigger's effect stay their digits.
+        numbers := w[2] = "rumble" || w[2] = "trigrumble" || w[2] = "player"
         args := []
         loop w.Length - 3
-            args.Push(w[A_Index + 3] is Number ? Number(w[A_Index + 3]) : w[A_Index + 3])
+            args.Push(numbers && IsNumber(w[A_Index + 3]) ? Integer(w[A_Index + 3]) : w[A_Index + 3])
         for callback in this._fbs[w[2]]
             callback(args*)
     }
 
-    ; Takes the controller off PadForge's device list.
+    ; Takes the controller off PadForge's device list. It is not connected
+    ; from then on, OnConnect hears it go, and a set sends nothing.
     Remove() {
         if this._pf.Mine.Has(this._key)
             this._pf.Mine.Delete(this._key)
-        if (this._id != "")
-            this._pf.Request("gone " this._id)
+        gone := this._id
+        if (gone = "")
+            return
+        if (this._pf.ById.Has(gone) && this._pf.ById[gone] = this)
+            this._pf.ById.Delete(gone)
+        this._id := ""
+        this._Lost()
+        if this._pf.Connected
+            this._pf.Request("gone " gone)
     }
 }

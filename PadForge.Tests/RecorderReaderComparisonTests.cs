@@ -9,6 +9,7 @@ using System.Threading;
 using PadForge.Common.Recording;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Engine.Recording;
 using PadForge.Services;
 using PadForge.Services.Plugins;
 using Xunit;
@@ -118,8 +119,39 @@ namespace PadForge.Tests
                 var reader = RecorderTestKit.Events(path).Where(e => e.Layer == 'R' && e.Subject == "D1"
                     && e.Payload.StartsWith("XInput", StringComparison.Ordinal)).ToList();
                 var said = Assert.Single(reader);
-                Assert.Equal("XInput place 1 reads A up while PadForge's reader reads it down", said.Payload);
+                Assert.Equal("XInput number 1 reads A up while PadForge's reader reads it down", said.Payload);
                 Assert.True(said.Seconds >= 2.5, said.Seconds.ToString(CultureInfo.InvariantCulture));
+            }
+            finally { XInputReadBack.ReadSeam = before; }
+        }
+
+        [Fact]
+        public void TheReaders_AreCompared_WithOutputLeftOut()
+        {
+            var before = XInputReadBack.ReadSeam;
+            var read = new XInputRead(true, Gamepad.A, 0, 0, 0, 0, 0, 0);
+            XInputReadBack.ReadSeam = place => place == 0 ? read : default;
+            try
+            {
+                using var host = new RecorderTestHost();
+                var pad = RecorderTestKit.Pad("Wireless Controller");
+                pad.DevicePath = "XInput#0";
+                host.DeviceList.Add(pad);
+                var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp(), Parts = RecordingParts.Input };
+                Assert.True(recorder.Start().Ok);
+                var capture = recorder.CaptureForTest;
+                for (int i = 0; i < 3; i++)
+                {
+                    capture.Advance(0.1);
+                    capture.Input(pad, PadAtRest());
+                    capture.EndPass();
+                    recorder.WaitForFlush();
+                    recorder.WaitForFlush();
+                }
+                string path = recorder.Stop(wait: true).Path;
+                recorder.Parts = RecordingParts.All;
+                Assert.Contains(RecorderTestKit.Events(path), e => e.Layer == 'R' && e.Subject == "D1"
+                    && e.Payload == "XInput number 1 reads A down while PadForge's reader reads it up");
             }
             finally { XInputReadBack.ReadSeam = before; }
         }
@@ -254,9 +286,9 @@ namespace PadForge.Tests
                 var events = RecorderTestKit.Events(path);
                 int mark = events.FindIndex(e => e.Layer == 'M');
                 Assert.True(mark >= 0, "the control's mark is missing");
-                var disagree = events.Take(mark).Where(e => e.Layer == 'R' && e.Payload.StartsWith("XInput place 1 reads", StringComparison.Ordinal)).ToList();
+                var disagree = events.Take(mark).Where(e => e.Layer == 'R' && e.Payload.StartsWith("XInput number 1 reads", StringComparison.Ordinal)).ToList();
                 int again = events.Take(mark).Count(e => e.Layer == 'R' && e.Payload.StartsWith("XInput and PadForge's reader agree again", StringComparison.Ordinal));
-                var controlLines = events.Skip(mark).Where(e => e.Layer == 'R' && e.Payload.StartsWith("XInput place 1 reads", StringComparison.Ordinal)).ToList();
+                var controlLines = events.Skip(mark).Where(e => e.Layer == 'R' && e.Payload.StartsWith("XInput number 1 reads", StringComparison.Ordinal)).ToList();
                 var sb = new StringBuilder();
                 sb.Append(name).Append(": ").Append(disagree.Count).Append(" false lines, ").Append(again).Append(" agree-again lines, ")
                   .Append(reads).Append(" XInput reads, ").Append(passes).Append(" passes, longest gap between passes ")
@@ -487,6 +519,59 @@ namespace PadForge.Tests
             finally { RecorderReaders.Seam = before; }
         }
 
+        /// <summary>Readers whose layout is never made, counting each ask.</summary>
+        private sealed class UnmadeReaders : IReaderSource
+        {
+            public int Asked;
+            public ReaderLayout Layout(UserDevice device) { Asked++; return null; }
+            public bool Read(ReaderLayout layout, ReaderReading into) => false;
+            public void Watch(IReadOnlyList<ReaderLayout> layouts) { }
+            public void Release(ReaderLayout layout) { }
+            public void ReleaseAll() { }
+        }
+
+        /// <summary>While the engine is suspended, the watch asks for no
+        /// layout: one that waits on SDL's mapping would only be thrown away
+        /// and asked again at every look. Running again, it asks.</summary>
+        [Fact]
+        public void WhileTheEngineIsSuspended_NoLayoutIsAsked_AndRunningAgainItIs()
+        {
+            var unmade = new UnmadeReaders();
+            var before = RecorderReaders.Seam;
+            RecorderReaders.Seam = unmade;
+            try
+            {
+                using var host = new RecorderTestHost();
+                var stick = StickDevice();
+                host.DeviceList.Add(stick);
+                var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+                Assert.True(recorder.Start().Ok);
+                var capture = recorder.CaptureForTest;
+                capture.Input(stick, Centered());
+                capture.Rest(2);
+                capture.EndPass();
+                recorder.WaitForFlush();
+                recorder.WaitForFlush();
+                int asked = unmade.Asked;
+                for (int i = 0; i < 10; i++)
+                {
+                    capture.Advance(0.1);
+                    capture.EndPass();
+                    recorder.WaitForFlush();
+                    recorder.WaitForFlush();
+                }
+                Assert.Equal(asked, unmade.Asked);
+                // The positive control: the engine runs again and the layout
+                // is asked for.
+                capture.Rest(0);
+                Pass(recorder, capture, stick, Centered(), 0.1);
+                Pass(recorder, capture, stick, Centered(), 0.1);
+                Assert.True(unmade.Asked > asked, "no layout was asked once the engine ran");
+                recorder.Stop(wait: true);
+            }
+            finally { RecorderReaders.Seam = before; }
+        }
+
         [Fact]
         public void ReportsThatNameNoneOfItsControls_AreSaid_AndWhenTheyNameThemAgain()
         {
@@ -618,7 +703,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void NoReportWhilePadForgesReaderSeesItMove_IsSaid_AndAHiddenDeviceSaysOnlyThatItIsHidden()
+        public void NoReportWhilePadForgesReaderSeesItMove_IsSaid_AndAHiddenDeviceAddsThatItIsSetToBeHidden()
         {
             var fed = new FedReaders { Reads = false, Named = 0 };
             var before = RecorderReaders.Seam;
@@ -649,11 +734,21 @@ namespace PadForge.Tests
                 }
                 string path = recorder.Stop(wait: true).Path;
                 Assert.Single(ReaderLines(path, "D1"), l => l == "Raw Input hands PadForge no report of it while PadForge's reader sees it move");
+                // HidHide cannot block Raw Input (docs.nefarius.at,
+                // docs/projects/HidHide/FAQ.md:11), so a hidden device's
+                // silence is Raw Input's, with its hidden setting beside it.
                 var hiddenLines = ReaderLines(path, "D2");
-                Assert.Single(hiddenLines, l => l == "has no second reader: hidden by HidHide");
-                Assert.DoesNotContain(hiddenLines, l => l.StartsWith("Raw Input hands PadForge", StringComparison.Ordinal));
+                Assert.Single(hiddenLines, l => l == "Raw Input hands PadForge no report of it while PadForge's reader sees it move, and it is set to be hidden by HidHide");
+                Assert.DoesNotContain(hiddenLines, l => l.Contains("no second reader", StringComparison.Ordinal));
             }
             finally { RecorderReaders.Seam = before; }
+        }
+
+        [Fact]
+        public void AHiddenDeviceRawInputListsNoCollectionFor_IsSaidAsRawInputs()
+        {
+            Assert.Equal("Raw Input lists no game controller at its path", RecorderReaders.NoCollectionReason(false));
+            Assert.Equal("Raw Input lists no game controller at its path, and it is set to be hidden by HidHide", RecorderReaders.NoCollectionReason(true));
         }
 
         [Fact]
@@ -716,7 +811,7 @@ namespace PadForge.Tests
             Assert.Equal(" held=shared second=\"none, SDL reads it through GameInput\"", Facts(guitar));
             var bluetoothPad = RecorderTestKit.Pad("DualSense");
             bluetoothPad.SdlGuid = "050057564c050000e60c000000006800";
-            Assert.Equal(" held=shared second=\"none, SDL's driver numbers its controls its own way\"", Facts(bluetoothPad));
+            Assert.Equal(" held=shared second=\"none, the comparison is proven on its USB reports only\"", Facts(bluetoothPad));
             Assert.Equal(" held=shared second=\"none, Windows opens it for itself alone\"", Facts(RecorderTestKit.Keyboard()));
             // PadForge's own readers give no SDL GUID, a HID path or not.
             var falcon = RecorderTestKit.Pad("Own Reader");

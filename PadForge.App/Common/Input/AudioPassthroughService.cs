@@ -281,9 +281,6 @@ namespace PadForge.Common.Input
             /// 0x32 stream idles after 2 s of silence like the speaker lane,
             /// instead of interleaving zero-payload reports forever.</summary>
             public long Ds5HapticAudibleTicks;
-            /// <summary>BT mic session state for the persona feed: 0 closed,
-            /// 1 open-requested. The open/close toggle report rides this
-            /// sink's 0x32 stream (BT thread only).</summary>
             // Mirror underrun bookkeeping and the adaptive cushion
             // (#325). BT tick thread only, like every counter here: the
             // mirror read, the trim, and the heartbeat all run on it.
@@ -292,10 +289,11 @@ namespace PadForge.Common.Input
             public int MirrorLagTarget = BtTargetLag;
             public long MirrorCleanSinceTicks;   // silent-second decay timer (Read's silent branch)
 
-            public int Ds5MicOpen;
-            public long Ds5MicOpenSentTicks;
-            public int Ds5MicOpenTries;
-            public bool Ds5MicCloseScrubbed;
+            /// <summary>BT mic session state for the persona feed. The
+            /// open/close toggle report rides this sink's 0x32 stream (BT
+            /// thread only). A rebuilt transport starts a fresh one
+            /// (DetachTransport_NoLock).</summary>
+            public Ds5MicSession Ds5Mic = new();
 
             // ── DualShock 4 BT lane (SBC over report 0x17) — BT thread only.
             /// <summary>Clean-room SBC encoder (32 kHz JS/SNR/bitpool 48).</summary>
@@ -316,6 +314,14 @@ namespace PadForge.Common.Input
             /// <summary>Encoded 109-byte SBC frames awaiting a 4-frame 0x17
             /// report.</summary>
             public System.Collections.Generic.Queue<byte[]> Ds4Frames;
+            /// <summary>The frame arrays the lane reuses: a frame goes back
+            /// here once its report copied it, so the 250 frames a second a
+            /// DualShock 4 streams, silence included, allocate nothing.</summary>
+            public System.Collections.Generic.Stack<byte[]> Ds4FreeFrames;
+            /// <summary>One report buffer per size, reused for every report:
+            /// the write pool copies a report into its own buffer
+            /// (BtWritePool.TrySend).</summary>
+            public byte[] Ds4Report4, Ds4Report2;
             /// <summary>16-bit frame counter at report bytes [3..4]; advances
             /// by frames-per-report (DS4AudioStreamer HidAudioRouterWorker).</summary>
             public ushort Ds4FrameCounter;
@@ -844,9 +850,11 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Owning slot and device's configured AudioOutputPath as an int
-        /// (DeviceSlotConfig enum: 0 Automatic .. 4 SpeakerOnly).
-        /// Wired by InputService; null / throw resolves 0.</summary>
+        /// <summary>Owning slot and device's RESOLVED AudioOutputPath as an
+        /// int (DeviceSlotConfig enum: 0 Automatic .. 4 SpeakerOnly), with
+        /// Follow Headphone Jack already turned into 1, 4 or 0 by the jack
+        /// (InputService.ResolveDeviceAudioOutputPath). Wired by InputService.
+        /// A null provider or a throw resolves 0.</summary>
         internal static Func<int, Guid, int> DeviceAudioOutputPathProvider;
 
         /// <summary>Owning slot and device's configured DualSense BT audio buffer length.
@@ -1000,6 +1008,30 @@ namespace PadForge.Common.Input
         }
 
         private const long JackWatchRetryMs = 5000;
+
+        /// <summary>Whether a failed read says the device left or the handle
+        /// is no good any more, the errors the Ds3 and PS Move readers end on
+        /// (Ds3DirectService and PsMoveDirectService: ERROR_DEVICE_NOT_CONNECTED,
+        /// ERROR_FILE_NOT_FOUND, ERROR_INVALID_HANDLE, ERROR_OPERATION_ABORTED).
+        /// A reader ends on one, so the next reconcile opens the device again
+        /// at whatever node it came back on. Any other failure is waited
+        /// out.</summary>
+        internal static bool ReadEndsReader(int error)
+            => error is NativeMethods.ErrorDeviceNotConnected or NativeMethods.ErrorFileNotFound
+                     or NativeMethods.ErrorInvalidHandle or NativeMethods.ErrorOperationAborted;
+
+        /// <summary>A read error a test gives in place of the device's, by
+        /// pad: non-zero fails that read with that error.</summary>
+        internal static Func<Guid, int> ReadErrorForTest;
+
+        /// <summary>The read's outcome with a test's error laid over it.</summary>
+        private static bool ReadOrFault(Guid pad, bool read, ref int error)
+        {
+            int fault = ReadErrorForTest?.Invoke(pad) ?? 0;
+            if (fault == 0) return read;
+            error = fault;
+            return false;
+        }
         private static readonly object _jackLock = new();
         private static readonly Dictionary<Guid, JackWatch> _jackWatch = new();
         internal static Action<Guid, bool, byte[], int> JackWatchReadBoundary;
@@ -1128,11 +1160,19 @@ namespace PadForge.Common.Input
                 while (!w.Stop)
                 {
                     JackWatchReadBoundary?.Invoke(pad, true, report, 0);
-                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got);
+                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got, out int error);
+                    read = ReadOrFault(pad, read, ref error);
                     JackWatchReadBoundary?.Invoke(pad, false, report, got);
                     if (!read || got < need)
                     {
                         if (w.Stop) break;
+                        // The pad left this node: end, so the finally drops
+                        // the entry and the next pass opens the pad again.
+                        if (!read && ReadEndsReader(error))
+                        {
+                            Engine.SdlDiagLog.WriteLine("JACKWATCH read ended error=" + error + " bt=" + w.IsBt);
+                            break;
+                        }
                         System.Threading.Thread.Sleep(50);
                         continue;
                     }
@@ -1150,6 +1190,10 @@ namespace PadForge.Common.Input
                     else
                     {
                         if (report[0] != wantId) continue;
+                        // A Bluetooth 0x31 with the microphone flag carries
+                        // Opus in bytes 3 to 73, not the state struct, as
+                        // BtMicLoop and VoiceBtMicLoop read it.
+                        if (w.IsBt && (report[1] & 0x02) != 0) continue;
                         plugged = (report[bitByte] & 0x01) != 0;
                     }
                     bool changed;
@@ -1238,8 +1282,11 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>USB frame shaper per the DSY-v2 playback callbacks:
-        /// channel 0 = 0, channel 1 = mono program mix (the firmware's
-        /// speaker tap), channels 2+ (DualSense haptic actuators) = 0.
+        /// channels 0 and 1 carry the program mix as the resolved Output
+        /// Path routes it, read for each block (MapMirrorChannels),
+        /// channels 2 and 3 (the DualSense's haptic actuators) carry the
+        /// persona's haptics while a composite persona feeds the pad and are
+        /// 0 otherwise, and channels 4 and up are 0.
         /// IWaveProvider carrying the endpoint's own mix format: shared-mode
         /// WASAPI rejects a non-extensible format beyond stereo
         /// (E_INVALIDARG — the DS5 endpoint is extensible float 48k 4ch),
@@ -1660,15 +1707,20 @@ namespace PadForge.Common.Input
         //                 (SinkSource.Read), so it rides the existing BT
         //                 Opus / USB shared-mode transports beside macros
         //                 and system passthrough;
-        //   haptic ch   → DS5 BT: its own report 0x32 (packets 0x11+0x12,
-        //                 the SAxense/dualsense-bt-haptics proven shape,
-        //                 never combined into the 0x35 speaker report);
+        //   haptic ch   → DS5 BT: report 0x32 alone (packets 0x11+0x12,
+        //                 the SAxense/dualsense-bt-haptics proven shape) on
+        //                 a tick with haptics and no speaker audio, and one
+        //                 combined 0x35 with the speaker on a tick with both
+        //                 (SendDs5BtFrame, BuildDs5BtCombinedReport, #300);
         //                 DS5 USB: channels 2/3 of the real pad's UAC
         //                 endpoint (UsbFrameProvider), which the shaper
         //                 zeroed until now;
-        //   microphone  ← the physical pad's own capture endpoint
-        //                 (container-matched, USB pads only; BT pads have
-        //                 no Windows mic and HM feeds silence when dry);
+        //   microphone  ← the source PickPersonaMics names: a USB pad's
+        //                 own capture endpoint (container-matched), else a
+        //                 Bluetooth DualSense's Opus stream (BtMicLoop) or a
+        //                 Bluetooth DualShock 4's headset microphone
+        //                 (Ds4BtMicLoop). HM feeds silence when none is
+        //                 there;
         //   ControlChanged → per-feed speaker/mic gain. A UAC endpoint's
         //                 volume is hardware volume: Windows sends
         //                 SET_CUR and does NOT attenuate the stream, so
@@ -1677,8 +1729,33 @@ namespace PadForge.Common.Input
         // demand): a composite slot with passthrough off and no macros
         // still builds its pads' transports.
 
+        /// <summary>One persona feed's PADFORGE_DIAG counts: its pump's
+        /// windows and the authored-haptics sniffer (pacing thread), and its
+        /// Bluetooth microphone reader's (that reader's thread). Each feed
+        /// counts its own, so a line names one slot's sums. No audio
+        /// decision reads them.</summary>
+        internal sealed class PersonaDiag
+        {
+            public long CbCount, CbBytes, CbLastLog;
+            public int SniffHapPeak, SniffSpkPeak, SniffDistinct;
+            public bool SniffActive;
+            public long SniffLastSignalTicks, SniffSummaryTicks;
+            public int MicPeak;
+            /// <summary>Last audio-status byte seen on a plain state report
+            /// from the BT mic pad (duaLib input offset 53).</summary>
+            public volatile byte MicPadStatus;
+            public byte MicToc;
+            public int MicTocFirst = 0xFFFF, MicTocVary;
+            public long MicRmsAcc;
+            public int MicRmsCount;
+            public long SubRmsAcc;
+            public int SubRmsCount, SubPeak;
+            public long MicBlocksDropped;
+        }
+
         internal sealed class PersonaFeed
         {
+            public readonly PersonaDiag Diag = new();
             public HIDMaestro.HMUsbAudio Audio;
             public int Slot;   // #271 item 1: keys the actuator-sink submit
             public volatile Guid[] Targets = Array.Empty<Guid>();
@@ -1976,14 +2053,6 @@ namespace PadForge.Common.Input
             return fallback;
         }
 
-        /// <summary>HM pacing-thread callback: split one interleaved s16
-        /// window into the per-pad speaker and haptic rings. No
-        /// allocations in steady state.</summary>
-        private static long _personaCbCount, _personaCbBytes, _personaCbLastLog;
-        private static int _sniffHapPeak, _sniffSpkPeak, _sniffDistinct;
-        private static bool _sniffActive;
-        private static long _sniffLastSignalTicks, _sniffSummaryTicks;
-
         /// <summary>Linear interleaved resampler with cross-call
         /// continuity: <paramref name="carry"/> holds the previous call's
         /// last frame (one float per channel) and <paramref name="phase"/>
@@ -2024,6 +2093,9 @@ namespace PadForge.Common.Input
             return written;
         }
 
+        /// <summary>HM pacing-thread callback: split one interleaved s16
+        /// window into the per-pad speaker and haptic rings. No
+        /// allocations in steady state.</summary>
         private static void OnPersonaFrames(PersonaFeed feed, HIDMaestro.HMAudioOutput output, ReadOnlyMemory<byte> pcm)
         {
             lock (feed.CallbackGate)
@@ -2037,14 +2109,14 @@ namespace PadForge.Common.Input
         {
             // Reception-layer heartbeat: proves host PCM reaches us at all,
             // independent of any decode or routing beyond this point.
-            _personaCbCount++;
-            _personaCbBytes += pcm.Length;
+            feed.Diag.CbCount++;
+            feed.Diag.CbBytes += pcm.Length;
             long now = Environment.TickCount64;
-            if (now - _personaCbLastLog >= 2000)
+            if (now - feed.Diag.CbLastLog >= 2000)
             {
-                _personaCbLastLog = now;
+                feed.Diag.CbLastLog = now;
                 Engine.SdlDiagLog.WriteLine(
-                    $"PERSONA rx cb={_personaCbCount} bytes={_personaCbBytes} targets={feed.Targets.Length} streaming={output.IsStreaming} spkGain={(feed.SpeakerMuted ? 0f : feed.SpeakerGain):F4} spkSends={_personaSpkSends} audible={_personaLastAudible}");
+                    $"PERSONA rx slot={feed.Slot} cb={feed.Diag.CbCount} bytes={feed.Diag.CbBytes} targets={feed.Targets.Length} streaming={output.IsStreaming} spkGain={(feed.SpeakerMuted ? 0f : feed.SpeakerGain):F4} spkSends={_personaSpkSends} audible={_personaLastAudible}");
             }
             int ch = output.Channels;
             if (ch < 2) return;
@@ -2091,32 +2163,32 @@ namespace PadForge.Common.Input
                     int d = Math.Abs(hl - sl);
                     if (d > distinct) distinct = d;
                 }
-                if (hapPeak > _sniffHapPeak) _sniffHapPeak = hapPeak;
-                if (spkPeak > _sniffSpkPeak) _sniffSpkPeak = spkPeak;
-                if (distinct > _sniffDistinct) _sniffDistinct = distinct;
+                if (hapPeak > feed.Diag.SniffHapPeak) feed.Diag.SniffHapPeak = hapPeak;
+                if (spkPeak > feed.Diag.SniffSpkPeak) feed.Diag.SniffSpkPeak = spkPeak;
+                if (distinct > feed.Diag.SniffDistinct) feed.Diag.SniffDistinct = distinct;
 
                 long snow = Environment.TickCount64;
                 bool signal = hapPeak > 256;   // ~0.8% FS: above ambient dither
-                if (signal) _sniffLastSignalTicks = snow;
-                if (signal && !_sniffActive)
+                if (signal) feed.Diag.SniffLastSignalTicks = snow;
+                if (signal && !feed.Diag.SniffActive)
                 {
-                    _sniffActive = true;
+                    feed.Diag.SniffActive = true;
                     Engine.SdlDiagLog.WriteLine(
-                        $"PERSONA haptics ONSET hapPeak={hapPeak} spkPeak={spkPeak} distinct={distinct}");
+                        $"PERSONA haptics slot={feed.Slot} ONSET hapPeak={hapPeak} spkPeak={spkPeak} distinct={distinct}");
                 }
-                else if (_sniffActive && snow - _sniffLastSignalTicks > 2000)
+                else if (feed.Diag.SniffActive && snow - feed.Diag.SniffLastSignalTicks > 2000)
                 {
-                    _sniffActive = false;
+                    feed.Diag.SniffActive = false;
                     Engine.SdlDiagLog.WriteLine(
-                        $"PERSONA haptics OFFSET maxHapPeak={_sniffHapPeak} maxSpkPeak={_sniffSpkPeak} maxDistinct={_sniffDistinct}");
-                    _sniffHapPeak = _sniffSpkPeak = _sniffDistinct = 0;
+                        $"PERSONA haptics slot={feed.Slot} OFFSET maxHapPeak={feed.Diag.SniffHapPeak} maxSpkPeak={feed.Diag.SniffSpkPeak} maxDistinct={feed.Diag.SniffDistinct}");
+                    feed.Diag.SniffHapPeak = feed.Diag.SniffSpkPeak = feed.Diag.SniffDistinct = 0;
                 }
-                else if (_sniffActive && snow - _sniffSummaryTicks >= 5000)
+                else if (feed.Diag.SniffActive && snow - feed.Diag.SniffSummaryTicks >= 5000)
                 {
-                    _sniffSummaryTicks = snow;
+                    feed.Diag.SniffSummaryTicks = snow;
                     Engine.SdlDiagLog.WriteLine(
-                        $"PERSONA haptics LIVE maxHapPeak={_sniffHapPeak} maxSpkPeak={_sniffSpkPeak} maxDistinct={_sniffDistinct}");
-                    _sniffHapPeak = _sniffSpkPeak = _sniffDistinct = 0;
+                        $"PERSONA haptics slot={feed.Slot} LIVE maxHapPeak={feed.Diag.SniffHapPeak} maxSpkPeak={feed.Diag.SniffSpkPeak} maxDistinct={feed.Diag.SniffDistinct}");
+                    feed.Diag.SniffHapPeak = feed.Diag.SniffSpkPeak = feed.Diag.SniffDistinct = 0;
                 }
             }
 
@@ -2150,6 +2222,11 @@ namespace PadForge.Common.Input
 
             foreach (var guid in targets)
             {
+                // A pad on several slots' personas plays its owner slot's
+                // stream alone, the rule the effects writer keeps for a pad
+                // on several slots. Two pumps writing one ring would play
+                // both streams' windows in turn.
+                if (!WritesPersonaRings(feed, guid)) continue;
                 var sring = _personaSpeakerRings.GetOrAdd(guid, _ => new RemoteAudioRing());
                 if (rsFrames >= 0)
                     sring.WriteFloatPairs(feed.SpkFloatDst, rsFrames);
@@ -2179,6 +2256,15 @@ namespace PadForge.Common.Input
         /// time.</summary>
         internal static void FollowPersonaHaptics(PersonaFeed feed, ReadOnlySpan<byte> span, int stride, long nowMs)
         {
+            // A window after a gap longer than the stale rule's starts from
+            // silence: the host parked the stream, and what played before
+            // the park is no level now (PersonaHapticRumble.Fresh covers the
+            // gap itself, this the reopen).
+            if (nowMs - feed.HapticLevelMs > PersonaHapticRumble.StaleMs)
+            {
+                feed.HapticMeanSquareL = 0;
+                feed.HapticMeanSquareR = 0;
+            }
             long level = PersonaHapticRumble.Follow(
                 ref feed.HapticMeanSquareL, ref feed.HapticMeanSquareR,
                 span, stride, feed.HapL * 2, feed.HapR * 2, feed.SrcRate);
@@ -2317,7 +2403,13 @@ namespace PadForge.Common.Input
                 if (PersonaLaneRestarts(btMicPad, feed.BtMicPadGuid, feed.BtMicRetryPad,
                                       feed.BtMicRetryAfterTick, Environment.TickCount64))
                 {
-                    StopBtMic(feed);
+                    // A Bluetooth DualSense that stays in this pass keeps its
+                    // sink, whose next tick closes the session on the
+                    // stream's own counters (ManageDs5MicOpen: the feed no
+                    // longer names the pad). The stop path's close carries a
+                    // counter of 0, which would jump the session's counter
+                    // while that sink streams (#300).
+                    StopBtMic(feed, closeSession: !SinkClosesBtMicSession(feed.BtMicPadGuid, pads));
                     if (btMicPad != Guid.Empty) StartBtMic(feed, btMicPad, btMicPath, generation, btMicIsDs4);
                 }
             }
@@ -2375,6 +2467,12 @@ namespace PadForge.Common.Input
             }
         }
 
+        // A persona reader takes the lane's lock first and the callback gate
+        // inside it, at every site. The stop path writes its close under the
+        // lane's lock with a blocking write, and a reader that held the gate
+        // while it waited for the lane's lock held HIDMaestro's pump, whose
+        // FramesReceived handler takes the gate (OnPersonaFrames), for the
+        // whole write. No holder of the gate waits on the lane's lock.
         internal static Action<PersonaFeed, bool> PersonaReaderOpening;
         internal static Action<PersonaFeed, bool, bool, byte[], int> PersonaReadBoundary;
 
@@ -2410,6 +2508,32 @@ namespace PadForge.Common.Input
             }
             if (first) Engine.SdlDiagLog.WriteLine("PERSONA " + what + " bt-reader open FAILED, retrying every "
                                                    + JackWatchRetryMs / 1000 + " s");
+        }
+
+        /// <summary>A Bluetooth microphone reader whose pad left its node:
+        /// the lane gives the pad up with no retry deadline, so the next
+        /// reconcile starts a reader that opens the pad again (and takes the
+        /// open's deadline if the pad is still away).</summary>
+        private static void NoteBtMicLost(PersonaFeed feed, int gen, int generation, string what, int error)
+        {
+            lock (feed.HidLaneLock)
+            {
+                if (feed.Retired || feed.RouteGeneration != generation || feed.BtMicGen != gen) return;
+                feed.BtMicPadGuid = Guid.Empty;
+            }
+            Engine.SdlDiagLog.WriteLine("PERSONA " + what + " bt-reader read ended error=" + error + ", reopening at the next pass");
+        }
+
+        /// <summary>The USB jack reader's twin of
+        /// <see cref="NoteBtMicLost"/>.</summary>
+        private static void NoteUsbJackLost(PersonaFeed feed, int gen, int generation, int error)
+        {
+            lock (feed.HidLaneLock)
+            {
+                if (feed.Retired || feed.RouteGeneration != generation || feed.UsbJackGen != gen) return;
+                feed.UsbJackPadGuid = Guid.Empty;
+            }
+            Engine.SdlDiagLog.WriteLine("PERSONA jack usb-reader read ended error=" + error + ", reopening at the next pass");
         }
 
         /// <summary>The USB jack reader's twin of
@@ -2533,16 +2657,18 @@ namespace PadForge.Common.Input
                 while (!feed.Retired && feed.RouteGeneration == generation && !feed.UsbJackStop && feed.UsbJackGen == gen)
                 {
                     PersonaReadBoundary?.Invoke(feed, false, true, report, 0);
-                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got);
+                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got, out int error);
+                    read = ReadOrFault(padGuid, read, ref error);
                     PersonaReadBoundary?.Invoke(feed, false, false, report, got);
                     if (!read || got < 55)
                     {
                         if (feed.UsbJackStop || feed.UsbJackGen != gen) break;
+                        if (!read && ReadEndsReader(error)) { NoteUsbJackLost(feed, gen, generation, error); break; }
                         System.Threading.Thread.Sleep(50);
                         continue;
                     }
-                    lock (feed.CallbackGate)
                     lock (feed.HidLaneLock)
+                    lock (feed.CallbackGate)
                     {
                         if (feed.Retired || feed.RouteGeneration != generation || feed.UsbJackGen != gen) break;
                         if (report[0] != 0x01) continue;
@@ -2562,7 +2688,22 @@ namespace PadForge.Common.Input
             }
         }
 
-        private static void StopBtMic(PersonaFeed feed)
+        /// <summary>Whether a Bluetooth DualSense whose microphone lane stops
+        /// stays among the pads a persona feeds, so its sink stays and closes
+        /// the session through its own stream.</summary>
+        internal static bool SinkClosesBtMicSession(Guid pad, List<(Guid Guid, string Path, bool IsBt, bool IsDs4)> pads)
+        {
+            if (pad == Guid.Empty || pads == null) return false;
+            foreach (var p in pads)
+                if (p.Guid == pad && p.IsBt && !p.IsDs4) return true;
+            return false;
+        }
+
+        /// <summary>Stops a feed's Bluetooth microphone lane. The close goes
+        /// on the reader's handle unless <paramref name="closeSession"/> is
+        /// false: the lane-restart path passes false while the pad's sink
+        /// stays to close the session itself.</summary>
+        private static void StopBtMic(PersonaFeed feed, bool closeSession = true)
         {
           lock (feed.HidLaneLock)
           {
@@ -2584,15 +2725,17 @@ namespace PadForge.Common.Input
             // opened the handle is the one that closes it. A DualShock 4 has
             // no session to close: its reader withdraws its want on the way
             // out, and the effects writer's next report carries 0xA0.
-            if (h != IntPtr.Zero && !feed.BtMicIsDs4)
+            if (closeSession && h != IntPtr.Zero && !feed.BtMicIsDs4)
             {
                 try
                 {
                     // Through the single-source builder, resolved for the
                     // MIC pad (Targets[0] could be a different device's
-                    // configured buffer length). The session's rolling
-                    // counter died with the sink this path outlives, so the
-                    // close carries 0, the value the session ends on.
+                    // configured buffer length). This path runs at
+                    // retirement and at a route generation change, where the
+                    // session's rolling counter died with the sink this path
+                    // outlives, so the close carries 0, the value the session
+                    // ends on. A pad whose sink stays gets no close here.
                     var close = new byte[Ds5HapticBtReportSize];
                     FillDs5MicToggle(close, false, feed.Slot, feed.BtMicPadGuid, 0);
                     NativeMethods.WriteFileSyncBestEffort(h, close, Ds5HapticBtReportSize);
@@ -2646,18 +2789,21 @@ namespace PadForge.Common.Input
                 var outBuf = new byte[BtMicFrameSamples * 4];
                 var rateFix = new MicRateState();
                 long lastLog = 0;
+                int lastBuffered = 0;
                 // Local handle + generation, exactly as UsbJackLoop documents.
                 while (!feed.Retired && feed.RouteGeneration == generation && !feed.BtMicStop && feed.BtMicGen == gen)
                 {
                     PersonaReadBoundary?.Invoke(feed, true, true, report, 0);
-                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got);
+                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got, out int error);
+                    read = ReadOrFault(padGuid, read, ref error);
                     PersonaReadBoundary?.Invoke(feed, true, false, report, got);
-                    lock (feed.CallbackGate)
                     lock (feed.HidLaneLock)
+                    lock (feed.CallbackGate)
                         if (feed.Retired || feed.RouteGeneration != generation || feed.BtMicGen != gen) break;
                     if (!read || got < 78)
                     {
                         if (feed.BtMicStop || feed.BtMicGen != gen) break;
+                        if (!read && ReadEndsReader(error)) { NoteBtMicLost(feed, gen, generation, "mic", error); break; }
                         System.Threading.Thread.Sleep(50);
                         continue;
                     }
@@ -2672,49 +2818,49 @@ namespace PadForge.Common.Input
                         // on BT, so packet 53 is report[55].
                         if (got >= 56)
                         {
-                            lock (feed.CallbackGate)
                             lock (feed.HidLaneLock)
+                            lock (feed.CallbackGate)
                             {
                                 if (feed.Retired || feed.RouteGeneration != generation || feed.BtMicGen != gen) break;
-                                _btMicPadStatus = report[55];
+                                feed.Diag.MicPadStatus = report[55];
                                 NoteHeadphoneJack(padGuid, (report[55] & 0x01) != 0);
                             }
                         }
                         continue;
                     }
                     // Idle skip. With no consumer draining the capture
-                    // endpoint the HM ring saturates, and every frame we
-                    // decode is then thrown away by the whole-block guard
-                    // further down. Measured idling on hardware:
+                    // endpoint the HM ring fills, and every frame we decode
+                    // is then thrown away by the whole-block guard further
+                    // down. Measured idling on hardware:
                     // blocksDropped=13846 of ~15000 received, so ~92% of
                     // the decodes plus their gain, interleave and RMS
                     // passes were pure waste at 100 frames/s. That is free
                     // on a desktop and is not free on the Atom x5-Z8350
                     // floor this app supports.
                     //
-                    // Deliberately NOT gated on IsStreaming alone. If the
-                    // ring has room we decode, so a consumer that opens the
-                    // endpoint mid-stream is served immediately rather than
-                    // waiting for the next status poll. And if IsStreaming
-                    // were ever wrong, a real drain empties the ring and
-                    // MicRingFits goes true, so the skip self-corrects
-                    // instead of silencing the lane.
+                    // While no host stream is open the ring counts as full
+                    // once it holds one block (MicTakesBlock), so a consumer
+                    // that opens the endpoint finds one block at once and no
+                    // lead of older audio. While one is open the skip
+                    // follows the ring's own drain (MicSkipsDecode): a frame
+                    // is decoded whenever the ring has room or drained since
+                    // the last frame, so the skip never silences a host that
+                    // reads, whatever the stream's state says.
                     //
                     // The reader loop itself keeps running either way: the
                     // session stays open and the pad's audio status byte
                     // above stays fresh. Only the decode is skipped.
                     var mic = feed.Audio.Microphone;
                     int outCh = Math.Max(1, mic.Channels);
-                    if (!mic.IsStreaming
-                        && !_micGuardDisabled
-                        && !MicRingFits(mic, BtMicFrameSamples * outCh * 2)
+                    if (!_micGuardDisabled
+                        && MicSkipsDecode(MicRingBytes(mic), mic.BufferedBytes, MicBlockBytes(mic), mic.IsStreaming, ref lastBuffered)
                         && !PadForge.Services.VoiceMacroService.PadMicWanted(padGuid))
                     {
                         // Count the frame anyway. It arrived, we simply chose
                         // not to decode it, and rxFrames is how a reader tells
                         // a live lane from a dead one.
                         feed.BtMicRxFrames++;
-                        _micBlocksDropped++;
+                        feed.Diag.MicBlocksDropped++;
                         decoderStale = true;
                         // The periodic report below sits after the decode, so
                         // skipping it would take the whole mic lane dark in the
@@ -2724,11 +2870,11 @@ namespace PadForge.Common.Input
                         if (nowIdle - lastLog >= 2000)
                         {
                             lastLog = nowIdle;
-                            Engine.SdlDiagLog.WriteLine("PERSONA mic IDLE decode skipped (no consumer)"
+                            Engine.SdlDiagLog.WriteLine("PERSONA mic slot=" + feed.Slot + " IDLE decode skipped (no consumer)"
                                 + " rxFrames=" + feed.BtMicRxFrames
-                                + " blocksDropped=" + _micBlocksDropped
+                                + " blocksDropped=" + feed.Diag.MicBlocksDropped
                                 + " buffered=" + mic.BufferedBytes + "/" + MicRingBytes(mic)
-                                + " padMuted=" + ((_btMicPadStatus & 0x04) != 0));
+                                + " padMuted=" + ((feed.Diag.MicPadStatus & 0x04) != 0));
                         }
                         continue;
                     }
@@ -2755,7 +2901,7 @@ namespace PadForge.Common.Input
                     int samples = n * BtMicChannels;
                     int peak = 0; long sumSq = 0;
                     for (int i = 0; i < samples; i++) { int a = pcm[i]; if (a < 0) a = -a; if (a > peak) peak = a; sumSq += (long)pcm[i] * pcm[i]; }
-                    if (peak > _btMicPeak) _btMicPeak = peak;
+                    if (peak > feed.Diag.MicPeak) feed.Diag.MicPeak = peak;
                     // Decode-correctness probe: the codec TOC (first payload
                     // byte) encodes config/stereo/frame-count and is near
                     // constant for a fixed-format stream. A stable TOC means
@@ -2763,10 +2909,10 @@ namespace PadForge.Common.Input
                     // scattered TOC means we are feeding the decoder bytes
                     // that are not the start of an encoded packet, which decodes
                     // as noise while silence frames still decode to zeros.
-                    _btMicToc = report[3];
-                    if (report[3] != _btMicTocFirst) { if (_btMicTocFirst == 0xFFFF) _btMicTocFirst = report[3]; else _btMicTocVary++; }
-                    _btMicRmsAcc += sumSq / Math.Max(1, samples);
-                    _btMicRmsCount++;
+                    feed.Diag.MicToc = report[3];
+                    if (report[3] != feed.Diag.MicTocFirst) { if (feed.Diag.MicTocFirst == 0xFFFF) feed.Diag.MicTocFirst = report[3]; else feed.Diag.MicTocVary++; }
+                    feed.Diag.MicRmsAcc += sumSq / Math.Max(1, samples);
+                    feed.Diag.MicRmsCount++;
                     float gain = feed.MicMuted ? 0f : feed.MicGain;
                     // The composite's capture endpoint is 2 ch / 48 kHz, the
                     // same shape the pad encodes, so stereo passes straight
@@ -2831,9 +2977,9 @@ namespace PadForge.Common.Input
                         if (a > subPeak) subPeak = a;
                         subSq += (long)v * v;
                     }
-                    _subRmsAcc += subSq / Math.Max(1, subBytes / 2);
-                    _subRmsCount++;
-                    if (subPeak > _subPeak) _subPeak = subPeak;
+                    feed.Diag.SubRmsAcc += subSq / Math.Max(1, subBytes / 2);
+                    feed.Diag.SubRmsCount++;
+                    if (subPeak > feed.Diag.SubPeak) feed.Diag.SubPeak = subPeak;
                     // Submit WHOLE blocks only. HM's mic ring truncates a submit
                     // to its free byte count, and that count is computed as
                     // (capacity - 1 - buffered), so it can be ODD. A partial
@@ -2853,10 +2999,10 @@ namespace PadForge.Common.Input
                     // and it protects against an older SDK being dropped in.
                     // PADFORGE_MICNOGUARD=1 disables it, which is how HM's fix
                     // was verified here rather than merely assumed.
-                    if (_micGuardDisabled || MicRingFits(mic, subBytes))
+                    if (_micGuardDisabled || MicTakesBlock(mic, subBytes))
                     {
-                        lock (feed.CallbackGate)
                         lock (feed.HidLaneLock)
+                        lock (feed.CallbackGate)
                         {
                             if (feed.Retired || feed.RouteGeneration != generation || feed.BtMicGen != gen) break;
                             mic.Submit(outBuf.AsSpan(0, subBytes));
@@ -2864,35 +3010,35 @@ namespace PadForge.Common.Input
                     }
                     else
                     {
-                        _micBlocksDropped++;
+                        feed.Diag.MicBlocksDropped++;
                     }
                     long now2 = Environment.TickCount64;
                     if (now2 - lastLog >= 2000)
                     {
                         lastLog = now2;
-                        int subRms = _subRmsCount > 0 ? (int)Math.Sqrt(_subRmsAcc / _subRmsCount) : 0;
-                        Engine.SdlDiagLog.WriteLine("PERSONA mic blocksDropped=" + _micBlocksDropped
+                        int subRms = feed.Diag.SubRmsCount > 0 ? (int)Math.Sqrt(feed.Diag.SubRmsAcc / feed.Diag.SubRmsCount) : 0;
+                        Engine.SdlDiagLog.WriteLine("PERSONA mic slot=" + feed.Slot + " blocksDropped=" + feed.Diag.MicBlocksDropped
                             + " buffered=" + mic.BufferedBytes + "/" + MicRingBytes(mic));
-                        Engine.SdlDiagLog.WriteLine("PERSONA mic SUBMITTED rms=" + subRms
-                            + " peak=" + _subPeak + "  (normalized rms=" + (subRms / 32768.0).ToString("F4") + ")");
-                        _subRmsAcc = 0; _subRmsCount = 0; _subPeak = 0;
-                        int rms = _btMicRmsCount > 0 ? (int)Math.Sqrt(_btMicRmsAcc / _btMicRmsCount) : 0;
-                        _btMicRmsAcc = 0; _btMicRmsCount = 0;
-                        Engine.SdlDiagLog.WriteLine("PERSONA mic rms=" + rms + " peak=" + _btMicPeak
-                            + " toc=0x" + _btMicToc.ToString("X2")
-                            + " tocFirst=0x" + (_btMicTocFirst == 0xFFFF ? 0 : _btMicTocFirst).ToString("X2")
-                            + " tocVary=" + _btMicTocVary);
-                        byte st = _btMicPadStatus;
-                        Engine.SdlDiagLog.WriteLine("PERSONA mic padMuted=" + ((st & 0x04) != 0)
+                        Engine.SdlDiagLog.WriteLine("PERSONA mic slot=" + feed.Slot + " SUBMITTED rms=" + subRms
+                            + " peak=" + feed.Diag.SubPeak + "  (normalized rms=" + (subRms / 32768.0).ToString("F4") + ")");
+                        feed.Diag.SubRmsAcc = 0; feed.Diag.SubRmsCount = 0; feed.Diag.SubPeak = 0;
+                        int rms = feed.Diag.MicRmsCount > 0 ? (int)Math.Sqrt(feed.Diag.MicRmsAcc / feed.Diag.MicRmsCount) : 0;
+                        feed.Diag.MicRmsAcc = 0; feed.Diag.MicRmsCount = 0;
+                        Engine.SdlDiagLog.WriteLine("PERSONA mic slot=" + feed.Slot + " rms=" + rms + " peak=" + feed.Diag.MicPeak
+                            + " toc=0x" + feed.Diag.MicToc.ToString("X2")
+                            + " tocFirst=0x" + (feed.Diag.MicTocFirst == 0xFFFF ? 0 : feed.Diag.MicTocFirst).ToString("X2")
+                            + " tocVary=" + feed.Diag.MicTocVary);
+                        byte st = feed.Diag.MicPadStatus;
+                        Engine.SdlDiagLog.WriteLine("PERSONA mic slot=" + feed.Slot + " padMuted=" + ((st & 0x04) != 0)
                             + " padMicPlugged=" + ((st & 0x02) != 0)
                             + " padHeadphones=" + ((st & 0x01) != 0)
                             + " statusByte=0x" + st.ToString("X2"));
-                        Engine.SdlDiagLog.WriteLine("PERSONA mic rxFrames=" + feed.BtMicRxFrames
+                        Engine.SdlDiagLog.WriteLine("PERSONA mic slot=" + feed.Slot + " rxFrames=" + feed.BtMicRxFrames
                             + " buffered=" + mic.BufferedBytes
                             + " hostStreaming=" + mic.IsStreaming
-                            + " peak=" + _btMicPeak
+                            + " peak=" + feed.Diag.MicPeak
                             + " gain=" + (feed.MicMuted ? 0f : feed.MicGain).ToString("F2"));
-                        _btMicPeak = 0;
+                        feed.Diag.MicPeak = 0;
                     }
                 }
             }
@@ -2916,10 +3062,6 @@ namespace PadForge.Common.Input
         /// it).</summary>
         private const bool EnableBtMic = true;
 
-        private static int _btMicPeak;
-        /// <summary>Last audio-status byte seen on a plain state report
-        /// from the BT mic pad (duaLib input offset 53).</summary>
-        private static volatile byte _btMicPadStatus;
         /// <summary>DualSense BT mic frame shape: one 71-byte Opus packet
         /// per input report, CELT 10 ms.
         ///
@@ -2948,11 +3090,6 @@ namespace PadForge.Common.Input
         private static readonly int _micToneAmp =
             int.TryParse(Environment.GetEnvironmentVariable("PADFORGE_MICTONE"), out var a) && a > 1 ? a : 16000;
 
-        private static byte _btMicToc;
-        private static int _btMicTocFirst = 0xFFFF, _btMicTocVary;
-        private static long _btMicRmsAcc; private static int _btMicRmsCount;
-        private static long _subRmsAcc; private static int _subRmsCount, _subPeak;
-        private static long _micBlocksDropped;
         private static readonly bool _micGuardDisabled =
             Environment.GetEnvironmentVariable("PADFORGE_MICNOGUARD") == "1";
         /// <summary>Finds the feed whose Bluetooth mic source is this pad.
@@ -3077,7 +3214,10 @@ namespace PadForge.Common.Input
                     lock (feed.CallbackGate)
                     {
                         if (feed.Retired || feed.RouteGeneration != generation) return;
-                        mic.Submit(feed.MicScratch.AsSpan(0, need));
+                        // Whole blocks, and one block of lead while no host
+                        // stream is open (MicTakesBlock), as the Bluetooth
+                        // lanes submit.
+                        if (MicTakesBlock(mic, need)) mic.Submit(feed.MicScratch.AsSpan(0, need));
                     }
                 };
                 cap.StartRecording();
@@ -3547,8 +3687,12 @@ namespace PadForge.Common.Input
             s.Ds5OpusEncoder = null;   // rebuilt sinks start with a fresh encoder
             s.Ds4Sbc = null;
             s.Ds4Frames = null;
+            s.Ds4FreeFrames = null;
             s.Ds4PendingCount = 0;
             s.Ds4ResamplePhase = 0;
+            // The rebuilt transport opens the session again, or scrubs one
+            // latched on the pad, with a fresh count of tries.
+            s.Ds5Mic = new Ds5MicSession();
             return carrier;
         }
 
@@ -3572,10 +3716,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Worker-only: open the transport with no locks held, then
-        /// commit under the lock only if the sink is still the wanted one.
-        /// A losing build (device unassigned mid-open) is disposed as an
-        /// orphan.</summary>
         // ── #387: the dual-link drop's once-per-wired-path memory ──
         private static readonly object _dualDropLock = new();
         private static readonly Dictionary<Guid, string> _dualDropDoneForPath = new();
@@ -3621,6 +3761,10 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Worker-only: open the transport with no locks held, then
+        /// commit under the lock only if the sink is still the wanted one.
+        /// A losing build (device unassigned mid-open) is disposed as an
+        /// orphan.</summary>
         private static void BuildTransportOnWorker(Sink s, Thread worker)
         {
             Engine.SdlDiagLog.WriteLine("SINK build guid=" + s.DeviceGuid.ToString("N").Substring(0, 8)
@@ -3670,7 +3814,7 @@ namespace PadForge.Common.Input
                         {
                             s.Ds4Sbc ??= new Ds4SbcEncoder();
                             s.Ds4Pending ??= new short[Ds4SbcEncoder.PcmSamplesPerFrame * 4];
-                            s.Ds4Frames ??= new System.Collections.Generic.Queue<byte[]>();
+                            s.Ds4Frames ??= new System.Collections.Generic.Queue<byte[]>(Ds4FrameQueueCap);
                         }
                         else
                         {
@@ -4812,64 +4956,119 @@ namespace PadForge.Common.Input
             if (hapticOnly) hb.HapticOnly++;
         }
 
-        /// <summary>BT mic session state machine, one pass per tick. Sends
-        /// the mic OPEN toggle when this pad is the persona feed's BT mic
-        /// source, retries every 2 s (5 tries) until decoded frames arrive,
-        /// and sends CLOSE when the role goes away. Report layout from the
-        /// TechAntohere protocol dump: our 0x32 stream with the 0x11
-        /// packet's first payload byte 0xFF (open) / 0xFE (close), a zero
-        /// 0x12 haptic packet, CRC32. Hypothesis-under-test: whether the
-        /// steady-state 0xFE in the audio reports re-closes an opened mic
-        /// is unknown; the dump's own working stream carries 0xFE, which
-        /// suggests open is latched.</summary>
+        /// <summary>BT mic session state machine, one pass per tick
+        /// (<see cref="Ds5MicSession"/>). Sends the mic OPEN toggle when this
+        /// pad is the persona feed's BT mic source, and CLOSE when the role
+        /// goes away. Report layout from the TechAntohere protocol dump: our
+        /// 0x32 stream with the 0x11 packet's first payload byte 0xFF (open)
+        /// / 0xFE (close), a zero 0x12 haptic packet, CRC32. Mic-open is not
+        /// latched, so the session byte in every audio report must follow
+        /// the session (<see cref="Ds5MicSessionByte"/>, proven by
+        /// PersonaVerify on 2026-07-31): a tick whose audio report carries
+        /// the byte sends no toggle of its own.</summary>
         private static void ManageDs5MicOpen(Sink s, byte[] report, bool carriedByStream)
         {
             var feed = FindFeedForBtMicPad(s.DeviceGuid);
             bool want = EnableBtMic && feed != null;
-            long now = Environment.TickCount64;
             // carriedByStream: this tick ships an audio report whose own
             // packet 0x11 header carries the session byte, so a standalone
             // toggle would make TWO reports in one tick, the cadence the
             // firmware contract forbids. State flips ride the stream then.
-            // Scrub: mic-open is LATCHED on the pad across app restarts,
-            // and a latched mic corrupts SDL's input parsing (see
-            // EnableBtMic). One unconditional CLOSE per sink lifetime
-            // restores the pure-HID 0x31 stream; harmless when the mic
-            // was never opened.
-            if (!want && s.Ds5MicOpen == 0 && !s.Ds5MicCloseScrubbed)
+            // Scrub: a mic session outlives PadForge on the pad, across app
+            // restarts, and an open mic corrupts SDL's input parsing (see
+            // EnableBtMic). One unconditional CLOSE per transport restores
+            // the pure-HID 0x31 stream, harmless when the mic was never
+            // opened.
+            var (toggle, what) = s.Ds5Mic.Step(want, feed?.BtMicRxFrames ?? 0, carriedByStream, Environment.TickCount64);
+            if (toggle != Ds5MicSession.Toggle.None && !carriedByStream)
+                SendDs5BtMicToggle(s, report, open: toggle == Ds5MicSession.Toggle.Open);
+            if (what != null)
+                Engine.SdlDiagLog.WriteLine("PERSONA mic " + what
+                    + (toggle == Ds5MicSession.Toggle.None ? "" : carriedByStream ? " carried by stream" : " sent"));
+        }
+
+        /// <summary>
+        /// A DualSense's Bluetooth microphone session as its sink keeps it,
+        /// one step per BT tick (<see cref="ManageDs5MicOpen"/>): opened when
+        /// the pad is the persona feed's Bluetooth microphone, the open sent
+        /// again every 2 s while no frame came (5 tries), sent again when
+        /// frames that came stop for 3 s, and a fresh burst of tries 30 s
+        /// after one ran out, the voice lane's own recovery
+        /// (<see cref="VoiceBtMicLoop"/>). While the stream carries the
+        /// session byte, every report is the resend, and the toggles stand
+        /// down. Closed when the role goes, with one close per transport
+        /// that scrubs a session left open from before. Pure over its fields
+        /// and the clock it is given.
+        /// </summary>
+        internal sealed class Ds5MicSession
+        {
+            /// <summary>0 closed, 1 open-requested.</summary>
+            public int Open;
+            public long SentTicks;
+            public int Tries;
+            public bool CloseScrubbed;
+            /// <summary>The reader's frame count at the last change, and
+            /// when it changed.</summary>
+            public long SeenFrames, FrameTicks;
+
+            internal enum Toggle { None, Open, Close }
+
+            /// <summary>One tick: the toggle to send, and what happened in
+            /// words for the log, or null.</summary>
+            internal (Toggle Toggle, string What) Step(bool want, long rxFrames, bool carriedByStream, long now)
             {
-                if (!carriedByStream) SendDs5BtMicToggle(s, report, open: false);
-                s.Ds5MicCloseScrubbed = true;
-                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE scrub "
-                    + (carriedByStream ? "carried by stream" : "sent"));
-                return;
-            }
-            if (want && s.Ds5MicOpen == 0)
-            {
-                if (!carriedByStream) SendDs5BtMicToggle(s, report, open: true);
-                s.Ds5MicOpen = 1;
-                s.Ds5MicOpenSentTicks = now;
-                s.Ds5MicOpenTries = 1;
-                Engine.SdlDiagLog.WriteLine("PERSONA mic OPEN "
-                    + (carriedByStream ? "carried by stream" : "sent"));
-            }
-            else if (want && s.Ds5MicOpen == 1 && feed.BtMicRxFrames == 0 && !carriedByStream
-                     && now - s.Ds5MicOpenSentTicks >= 2000 && s.Ds5MicOpenTries < 5)
-            {
-                // Toggle-only path: frames are the ack and a lost toggle
-                // needs a resend. While the stream carries the byte, every
-                // report IS the resend, so the branch stands down.
-                SendDs5BtMicToggle(s, report, open: true);
-                s.Ds5MicOpenSentTicks = now;
-                s.Ds5MicOpenTries++;
-                Engine.SdlDiagLog.WriteLine("PERSONA mic OPEN retry " + s.Ds5MicOpenTries);
-            }
-            else if (!want && s.Ds5MicOpen == 1)
-            {
-                if (!carriedByStream) SendDs5BtMicToggle(s, report, open: false);
-                s.Ds5MicOpen = 0;
-                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE "
-                    + (carriedByStream ? "carried by stream" : "sent"));
+                if (!want && Open == 0 && !CloseScrubbed)
+                {
+                    CloseScrubbed = true;
+                    return (Toggle.Close, "CLOSE scrub");
+                }
+                if (want && Open == 0)
+                {
+                    Open = 1;
+                    SentTicks = now;
+                    Tries = 1;
+                    SeenFrames = rxFrames;
+                    FrameTicks = now;
+                    return (Toggle.Open, "OPEN");
+                }
+                if (want)
+                {
+                    if (rxFrames != SeenFrames)
+                    {
+                        SeenFrames = rxFrames;
+                        FrameTicks = now;
+                    }
+                    if (carriedByStream) return (Toggle.None, null);
+                    if (rxFrames == 0 && Tries < 5 && now - SentTicks >= 2000)
+                    {
+                        // Frames are the ack, and a lost toggle needs a resend.
+                        SentTicks = now;
+                        Tries++;
+                        return (Toggle.Open, "OPEN retry " + Tries);
+                    }
+                    if (rxFrames > 0 && now - FrameTicks > 3000)
+                    {
+                        // Frames flowed and then stopped while the session is
+                        // held: another writer closed it. Take it back.
+                        SentTicks = now;
+                        FrameTicks = now;
+                        return (Toggle.Open, "re-OPEN (frames stalled)");
+                    }
+                    if (rxFrames == 0 && Tries >= 5 && now - SentTicks >= 30_000)
+                    {
+                        // The burst ran out with no ack. The next tick starts
+                        // a fresh one, so a pad that recovers comes back.
+                        Open = 0;
+                        return (Toggle.None, "open burst re-armed");
+                    }
+                    return (Toggle.None, null);
+                }
+                if (Open == 1)
+                {
+                    Open = 0;
+                    return (Toggle.Close, "CLOSE");
+                }
+                return (Toggle.None, null);
             }
         }
 
@@ -4964,7 +5163,7 @@ namespace PadForge.Common.Input
         /// <summary>Sink-side mic byte: the persona's own session OR the
         /// voice lane's want, one answer for every audio report.</summary>
         private static bool MicOpenFor(Sink s)
-            => s.Ds5MicOpen == 1 || VoiceBtMicWantsOpen(s.DeviceGuid);
+            => s.Ds5Mic.Open == 1 || VoiceBtMicWantsOpen(s.DeviceGuid);
 
         internal static bool StartVoiceBtMic(Guid padGuid, string hidPath)
         {
@@ -4999,6 +5198,39 @@ namespace PadForge.Common.Input
             lane.Stop = true;
             var h = lane.Handle;
             if (h != IntPtr.Zero) NativeMethods.CancelIoEx(h, IntPtr.Zero);
+        }
+
+        /// <summary>How long a voice lane whose pad left waits between its
+        /// tries to open the pad again.</summary>
+        internal const int VoiceReopenMs = 1000;
+
+        /// <summary>A voice lane whose read said the pad left its node
+        /// (<see cref="ReadEndsReader"/>): its handle goes, and the lane opens
+        /// the pad's path again every <see cref="VoiceReopenMs"/> until it
+        /// opens or the lane stops. The voice session keeps its lane all the
+        /// while, as it would with no failure, and the lane's microphone comes
+        /// back with the pad. False when the lane stopped first.</summary>
+        private static bool ReopenVoiceLane(VoiceMicLane lane, ref IntPtr h, string what, int error)
+        {
+            Engine.SdlDiagLog.WriteLine("VOICE " + what + " read ended error=" + error + ", reopening pad=" + lane.Pad.ToString("N").Substring(0, 8));
+            lane.Handle = IntPtr.Zero;
+            NativeMethods.CloseHandle(h);
+            h = IntPtr.Zero;
+            while (!lane.Stop)
+            {
+                for (int waited = 0; waited < VoiceReopenMs && !lane.Stop; waited += 50) System.Threading.Thread.Sleep(50);
+                if (lane.Stop) break;
+                IntPtr again = NativeMethods.OpenHidSync(lane.Path);
+                if (again == IntPtr.Zero || again == new IntPtr(-1)) continue;
+                h = again;
+                lane.Handle = again;
+                // A stop that came during the open canceled nothing: it
+                // finds this handle next.
+                if (lane.Stop) NativeMethods.CancelIoEx(again, IntPtr.Zero);
+                Engine.SdlDiagLog.WriteLine("VOICE " + what + " reopened pad=" + lane.Pad.ToString("N").Substring(0, 8));
+                return true;
+            }
+            return false;
         }
 
         private static void VoiceBtMicLoop(VoiceMicLane lane)
@@ -5105,9 +5337,22 @@ namespace PadForge.Common.Input
                         Engine.SdlDiagLog.WriteLine("VOICE bt-mic CLOSE sent (gate)");
                     }
 
-                    if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got) || got < 78)
+                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got, out int error);
+                    read = ReadOrFault(lane.Pad, read, ref error);
+                    if (!read || got < 78)
                     {
                         if (lane.Stop) break;
+                        // The pad left its node: open it again in place, since
+                        // only a voice session's build starts a lane. The pad
+                        // that comes back holds no session, so the open goes
+                        // out again.
+                        if (!read && ReadEndsReader(error))
+                        {
+                            if (!ReopenVoiceLane(lane, ref h, "bt-mic", error)) break;
+                            sessionOpen = false;
+                            decoderStale = true;
+                            continue;
+                        }
                         System.Threading.Thread.Sleep(50);
                         continue;
                     }
@@ -5162,7 +5407,7 @@ namespace PadForge.Common.Input
                     Engine.SdlDiagLog.WriteLine("VOICE bt-mic handed off (no close): "
                         + (successor ? "successor voice lane" : "persona owns the session"));
                 }
-                NativeMethods.CloseHandle(h);
+                if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);
                 // Compare-remove: after a stop-then-start cycle the map
                 // holds the SUCCESSOR's entry, and a blind remove here
                 // deleted it, leaving a live lane unregistered and
@@ -5226,15 +5471,23 @@ namespace PadForge.Common.Input
 
             // Encode every complete 256-sample block (128 per channel = one
             // 4 ms SBC frame).
+            if (s.Ds4FreeFrames == null)
+            {
+                s.Ds4FreeFrames = new System.Collections.Generic.Stack<byte[]>(Ds4FrameQueueCap);
+                for (int i = 0; i < Ds4FrameQueueCap; i++) s.Ds4FreeFrames.Push(new byte[Ds4SbcEncoder.FrameBytes]);
+            }
             int consumed = 0;
             while (s.Ds4PendingCount - consumed >= Ds4SbcEncoder.PcmSamplesPerFrame)
             {
-                var frame = new byte[Ds4SbcEncoder.FrameBytes];
+                // A full queue drops its oldest frame to bound latency, and
+                // its array takes the new frame.
+                byte[] frame = s.Ds4Frames.Count >= Ds4FrameQueueCap ? s.Ds4Frames.Dequeue()
+                    : s.Ds4FreeFrames.Count > 0 ? s.Ds4FreeFrames.Pop()
+                    : new byte[Ds4SbcEncoder.FrameBytes];
+                Array.Clear(frame);
                 s.Ds4Sbc.Encode(
                     s.Ds4Pending.AsSpan(consumed, Ds4SbcEncoder.PcmSamplesPerFrame), frame);
                 consumed += Ds4SbcEncoder.PcmSamplesPerFrame;
-                if (s.Ds4Frames.Count >= Ds4FrameQueueCap)
-                    s.Ds4Frames.Dequeue();   // bound latency; drop oldest
                 s.Ds4Frames.Enqueue(frame);
             }
             if (consumed > 0)
@@ -5255,7 +5508,10 @@ namespace PadForge.Common.Input
             {
                 int frames = s.Ds4Frames.Count >= Ds4FramesPerReport ? Ds4FramesPerReport : 2;
                 int size = frames == Ds4FramesPerReport ? Ds4BtReportSize : Ds4SmallReportSize;
-                var report = new byte[size];
+                var report = frames == Ds4FramesPerReport
+                    ? (s.Ds4Report4 ??= new byte[Ds4BtReportSize])
+                    : (s.Ds4Report2 ??= new byte[Ds4SmallReportSize]);
+                Array.Clear(report);
                 // Byte 2 is 0xA0, or 0xA1 while the headset microphone is
                 // armed. 0xA2 stopped a genuine CUH-ZCT2's input after a few
                 // reports in the hbashton fork's hardware sweeps (#528).
@@ -5267,6 +5523,7 @@ namespace PadForge.Common.Input
                     var f = s.Ds4Frames.Dequeue();
                     Array.Copy(f, 0, report, o2, f.Length);
                     o2 += f.Length;
+                    s.Ds4FreeFrames.Push(f);
                 }
                 s.Ds4FrameCounter += (ushort)frames;
                 uint crc = Crc32(report, size - 4);
@@ -5483,12 +5740,25 @@ namespace PadForge.Common.Input
             /// <summary>Blocking read on a synchronous HID handle.
             /// CancelIoEx interrupts a pending read without closing the handle.</summary>
             public static bool ReadFileSync(IntPtr h, byte[] buf, int n, out int read)
+                => ReadFileSync(h, buf, n, out read, out _);
+
+            /// <summary>One synchronous read, and the error Windows gave
+            /// when it failed (0 when it did not).</summary>
+            public static bool ReadFileSync(IntPtr h, byte[] buf, int n, out int read, out int error)
             {
                 read = 0;
-                if (h == IntPtr.Zero) return false;
-                try { return ReadFile(h, buf, n, out read, IntPtr.Zero); }
+                error = 0;
+                if (h == IntPtr.Zero) { error = ErrorInvalidHandle; return false; }
+                try
+                {
+                    if (ReadFile(h, buf, n, out read, IntPtr.Zero)) return true;
+                    error = Marshal.GetLastPInvokeError();
+                    return false;
+                }
                 catch { return false; }
             }
+
+            internal const int ErrorFileNotFound = 2, ErrorInvalidHandle = 6, ErrorOperationAborted = 995, ErrorDeviceNotConnected = 1167;
 
             [DllImport("kernel32.dll", SetLastError = true)]
             private static extern bool WriteFile(IntPtr h, byte[] buf, int n, out int written, IntPtr overlapped);

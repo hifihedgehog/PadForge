@@ -715,7 +715,9 @@ namespace PadForge.Tests
     /// <summary>The tunnel programs (#600 item 11): their command lines and
     /// the address each one's own words give, from the lines their sources
     /// and documents print, and the fence that keeps the test host from
-    /// starting one.</summary>
+    /// starting one. It sets WebTunnels.ExistsSeam, as other tests do, so
+    /// it runs in their collection.</summary>
+    [Collection("SettingsManagerStatics")]
     public class WebTunnelTests
     {
         [Fact]

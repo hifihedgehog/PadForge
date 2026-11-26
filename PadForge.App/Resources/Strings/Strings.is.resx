@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Sýna eða fela PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Kveikja eða slökkva á sýndarstýringum</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Hvaða tengda tæki sem er</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (ekki tengt)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Tæki sem er ekki á síðunni Tæki</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Tekur upp…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>þegar</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Lesa</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Senda inntök</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Breyta stillingum</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Forrit geta skipt um snið og sleppt þeim, ræst og stöðvað vélina, kveikt og slökkt á sýndarstýringum, sýnt og falið gluggann, lokað PadForge, vistað greiningarskyndimynd og spurt hvað er í gangi.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Forrit geta skipt um snið og sleppt þeim, ræst og stöðvað vélina, kveikt og slökkt á sýndarstýringum, sýnt og falið gluggann, lokað PadForge, spurt hvað er í gangi, vistað greiningarskyndimynd og ræst, stöðvað og merkt vandamálsupptöku.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Allt sem Skipanir leyfa, og forrit geta séð tæki, sýndarstýringar, varpanir, snið og stillingar, fylgst með inntökum hvers tækis jafnóðum og sýnt þér stað í PadForge. Forrit á stiginu Lesa sér hvern takka sem er ýtt á hverju tæki, líka takka sem eru slegnir í glugga sem keyra sem kerfisstjóri.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Allt sem Lesa leyfir, og forrit geta bætt við eigin tækjum og stýrt þeim, haldið stjórntæki hvaða tækis sem er og gefið fjölvaræsum nefnd gildi.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Allt sem Senda inntök leyfir, og forrit geta breytt því sem þú getur breytt á síðunum. Sumar breytingar spyrja þig alltaf fyrst á spurningaspjaldi PadForge.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Bíður eftir þér</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Virkni</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Afturkalla</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge gat ekki vistað það: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge gat ekki vistað skrána.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge gat ekki vistað viðbótapakkann.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Virkni {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Hljóð{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Tákn{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Á meðan forrit á stiginu Lesa eða hærra er tengt sér það hvað er ýtt á hverju tæki, líka lyklaborðum.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Viðbætur</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Keyra viðbætur</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} af {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (endurspilun)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Vandamálsupptökur|*.zip;*.log|Allar skrár|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge getur ekki spilað {0}. Það er ekki vandamálsupptaka eða geymir ekki inntak neins tækis.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge getur ekki spilað {0}. Þetta er ekki vandamálsupptaka sem PadForge getur lesið.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge getur ekki spilað {0}. Skráin geymir fleiri en {1} tæki og Endurspilun spilar í mesta lagi {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge getur ekki spilað {0}. Skráin geymir ekkert inntak frá tækjum.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge gat ekki lesið {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Þínar viðbætur</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Bæta við viðbót…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Forrit og skriftur|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Allar skrár|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Stöðvuð eftir fimm bilanir í röð</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Ekki ræst: skráin er horfin</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Ekki ræst: Windows hefur ekkert forrit fyrir þessa tegund skráa</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ekki ræst: ekkert forrit opnar Python skrár fyrir þig og PadForge finnur ekkert py ræsiforrit</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ekki ræst: PadForge getur ekki lesið hvaða forrit opnar þessa tegund skráa fyrir þig</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ekki ræst: forritið sem opnar þessa tegund skráa fyrir þig er ekki á þessari tölvu</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ekki ræst: engin skjáborðsskel er í gangi til að ræsa hana undir</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ekki ræst: skjáborðsskelin hefur kerfisstjóraréttindi, svo viðbótin fengi þau líka</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ekki ræst: PadForge getur ekki lesið hvort viðbótin fengi kerfisstjóraréttindi</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ekki ræst: Windows gaf því kerfisstjóraréttindi, svo PadForge stöðvaði það áður en það keyrði</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ekki ræst: hún biður um kerfisstjóraréttindi</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ekki ræst: Windows hafnaði með villu {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ekki ræst</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Bætti við {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Undirritað af {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Óundirritað.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Stillingar hennar birtast hér meðan hún er í gangi.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Hún lýsir engum stillingum.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Stillingar hennar birtast hér þegar hún tengist PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Forritið talar útgáfu sem PadForge þekkir ekki</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge gaf ekki þennan viðbótarlykil</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge tók ekki við tengingu þessa forrits</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge bjó ekki til tæki því Windows gaf ekki upp nafn skrár forritsins</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Beðið aftur of fljótt</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ekki fleiri af þessu fyrr en PadForge ræsist aftur</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Of mörg af þessu sem forrit bjuggu til bíða yfirferðar þinnar á Heim</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge hefur ekkert slíkt tól</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Forritið las eldri stöðu</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ekkert hefur þetta auðkenni</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Þú leyfðir það ekki</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Enginn svaraði í tæka tíð</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Bíður eftir svari þínu</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Þú hafðir ekki svarað enn</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Engin slík beiðni</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ekkert til að afturkalla</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Aðeins þú getur breytt þessu</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Óundirritað.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Á stiginu Lesa og ofar sér það hvern takka sem er ýtt á öllum tækjum, líka á lyklaborðum.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Það spyr einu sinni. Þú getur fjarlægt það á síðunni Sjálfvirkni.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Ræst af forriti sem PadForge gat ekki greint.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge getur ekki greint þetta forrit frá öðru, svo það spyr aftur við næstu tengingu þess.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>skipanalínu PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Stillir {0} á {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Hlustar á netinu, svo önnur tæki geta náð í þessa tölvu.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Flytja snið yfir</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Flytja inn sniðskrá úr öðru forriti og sjá svo hvað skilaði sér.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} sinnum</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, síðasta af {1} slíkum</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 skriftur (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Ekkert Logitech G-key SDK er á þessari vél. Það fylgir uppsetningu Logitech Gaming Software 8.55 eða nýrra.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK er skráð en skrá þess er horfin. Settu Logitech Gaming Software upp aftur.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK fannst en ekki tókst að hlaða því.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK fannst en því var ekki hlaðið, þar sem PadForge gat ekki staðfest að aðeins kerfisstjórar geti breytt því og að Logitech hafi undirritað það.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Þetta safn er ekki það G-key SDK sem búist var við.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK neitaði að ræsa. Yfirleitt er það vegna þess að Logitech Gaming Software er ekki í gangi.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Tengt, enginn lykill hefur sést enn. Í Logitech Gaming Software skaltu draga skipunina „G-key“ á hvern lykil í PadForge-sniðinu og gera sniðið varanlegt. Einnig þarf að taka G600- eða G300-mús úr ham innbyggðs minnis.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ræsa PadForge sjálfkrafa þegar þú skráir þig inn í Windows. Meðan þetta er í gangi ræsist PadForge líka án fyrirspurnar Windows frá flýtileið, skriftu eða öðru forriti.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge keyrir úr {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Þetta krefst þess að PadForge sé í sinni eigin möppu. Mappa þess geymir aðrar skrár, svo PadForge getur ekki varnað öðrum forritum að breyta henni.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Þetta krefst þess að PadForge sé í möppu sem önnur forrit geta ekki breytt. PadForge gat ekki varnað því að þau breyti möppu þess.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Færa PadForge í eigin möppu</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Afritar PadForge og stillingar þess í Program Files, beinir verkum þess þangað og ræsir það þaðan. Afritið hér helst óbreytt.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge var ekki fært: {0} geymir skrár sem tilheyra ekki PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge var ekki fært: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, því það ræsti PadForge úr möppu sem geymir aðrar skrár.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge var ekki fært: Windows nefnir enga Program Files möppu.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki lesið PadForge sem er í gangi.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki búið til {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki lesið hvað {0} geymir.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki varnað því að önnur forrit breyti {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge var ekki fært: afrit þess í {0} passaði ekki við PadForge sem er í gangi.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge var ekki fært: eftir afritunina geymdi {0} skrár sem tilheyra ekki PadForge, eða önnur forrit gátu breytt henni.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge sem það ræsti er ekki lengur til staðar.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge gat ekki varnað því að önnur forrit breyti möppunni sem PadForge var ræst úr.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge gat ekki lesið hvaða PadForge það ræsti.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge gat ekki lesið möppu þess PadForge sem það ræsti.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge gat ekki búið til varða möppu sína, {0}. PadForge geymir þar söfnin sem það keyrir með kerfisstjóraréttindum og getur ekki ræst örugglega án hennar.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge gat ekki ræst sig aftur úr varðri möppu sinni, {0}. PadForge keyrir með kerfisstjóraréttindum aðeins þaðan, svo það ræstist ekki.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge gat ekki búið til læsinguna sem heldur því í einu keyrandi eintaki, svo það ræstist ekki.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge keyrir með kerfisstjóraréttindum úr {0}, möppu sem önnur forrit geta breytt. Þau geta breytt stillingum PadForge þar og PadForge framkvæmir þær með réttindum sínum.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge keyrir með kerfisstjóraréttindum úr {0}, möppu sem geymir aðrar skrár. PadForge getur ekki varnað öðrum forritum að breyta stillingum sínum þar og framkvæmir þær með réttindum sínum.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge keyrir með kerfisstjóraréttindum úr {0}, möppu sem það gat ekki lesið. PadForge getur ekki varnað öðrum forritum að breyta stillingum sínum þar og framkvæmir þær með réttindum sínum.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sýna alltaf í kerfisbakka</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Halda tákninu í kerfisbakkanum sýnilegu á meðan glugginn er opinn, svo „Hætta“ í valmynd þess sé alltaf aðeins einum smelli frá.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Uppfærslur</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Setja upp og endurræsa</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Útgáfulýsing</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Gagnagrunnur leikjastýringa</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Uppfæra núna sækir samfélagsgagnagrunn leikjastýringa (SDL_GameControllerDB) af GitHub, eða af vistfanginu sem stillt er undir Meira, og geymir í stillingaskránni þær varpanir sem þessa útgáfu PadForge vantar. Þær eru í notkun strax. Frá öðru vistfangi geymir það aðeins nýjar varpanir. Ný vörpun er aðeins notuð fyrir leikjastýringu sem ekkert annað les sem leikjastýringu, sem er ekki úthlutað og er ekki í stillingunni Þvinga hráan stýripinnaham (sniðganga endurvörpun leikjastýringar). Endurstillingin fjarlægir allar sóttar varpanir og sækir aftur af GitHub. Þínar eigin línur, undir Meira, haldast.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Uppfæra núna sækir samfélagsgagnagrunn leikjastýringa (SDL_GameControllerDB) af GitHub, eða af vistfanginu sem stillt er undir Meira, og geymir í stillingaskránni þær varpanir sem þessa útgáfu PadForge vantar. Þær eru í notkun strax. Frá öðru vistfangi geymir það aðeins nýjar varpanir. Ný vörpun er fyrst aðeins notuð fyrir leikjastýringu sem SDL tilkynnir sem leikjastýringu eða enga sérstaka gerð, sem ekkert annað les sem leikjastýringu, sem er ekki úthlutað og er ekki í stillingunni Þvinga hráan stýripinnaham (sniðganga endurvörpun leikjastýringar). Þegar vörpunin er komin í notkun helst hún í notkun eftir að stýringunni er úthlutað. Endurstillingin fjarlægir sóttu varpanirnar og stillir Sækja frá aftur á skrá samfélagsins, sem næsta Uppfæra núna sækir. Þínar eigin línur, undir Meira, haldast.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Uppfæra núna</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Uppfærir…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Leitar að uppfærslum…</value></data>
@@ -1126,9 +1160,12 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Innbyggt: {1} varpanir, samfélagsafrit frá {2}. Sótt {3} frá {4}: nýjar línur {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Innbyggt: {1} varpanir, samfélagsafrit frá {2}. Sótt {3} frá {4}: {0} ný lína.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Samfélagsgagnagrunnurinn hefur ekki breyst frá síðustu uppfærslu.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Skráin á {0} hefur ekki breyst frá síðustu uppfærslu.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ekki náðist samband við GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Ekki náðist samband við {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge hafnaði niðurhalinu því það er ekki sá gagnagrunnur leikjastýringa sem það býst við. Engu var breytt.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge hafnaði svari GitHub. Engu var breytt.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge hafnaði svarinu frá {0}. Engu var breytt.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Ræsa lágmarkað</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Ræsa við innskráningu</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Mappa</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Stilling þjónustu</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Fjarlægingarskref</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Þjónusta</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Skrá</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Efri sía</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Skráningargildi</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Vélbúnaðarauðkenni</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Tímasett verkefni</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Færsla í uppsettum forritum</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP tæki</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Leyfir PlayStation 3-leikjastýringum, PlayStation Move og Navigation-stýringunni að tengjast um Bluetooth. Innbyggður í PadForge og settur upp í fyrsta sinn sem ein þeirra er pöruð.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Tengir PlayStation 3 leikjastýringar yfir Bluetooth.</value></data>
@@ -1239,6 +1284,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Vistað {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Upptakan hófst ekki. Athugun fann einkagildi þessarar PC tölvu sem yrði ekki haldið utan skrárinnar.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Upptakan hófst ekki. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge fann enga tímabundna möppu innskráða notandans innan notandasniðsins, sem er ekki náð í gegnum tengil, til að skrifa upptökuna í.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Upptökumappan er tengill á annan stað, sem PadForge fylgir ekki.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Verið er að ljúka síðustu upptöku.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Slökkt er á Geyma síðustu 60 sekúndur, svo ekkert er til að vista.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Upptaka sem PadForge hafði ekki stöðvað bíður þess að þú lesir hana á síðunni Heim: {0}</value></data>
@@ -1252,7 +1299,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, tækin þín og stillingar eins og þau eru núna, í gegnum sömu yfirferð.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log við hlið PadForge.exe, sem þú getur lesið þar.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Hvað á að taka upp</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Allt kveikt. Hluti sem er slökkt á er skilinn eftir úr næstu upptöku og skráin segir hvaða hluta hún geymir.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Allir hlutar eru kveiktir sjálfgefið. Hluti sem er slökkt á er skilinn eftir úr næstu upptöku og skráin segir hvaða hluta hún geymir.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Fyrir vandamál sem kemur einu sinni á kvöldi.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Upptakan bíður þess að þú lesir hana á síðunni Heim.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Samantekt</value></data>
@@ -1303,6 +1350,17 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Vista upptökuna</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-skrár</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ekki vistað. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Hreinsunarprófun: athuga hlutana sem þú geymir…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Hreinsunarprófun: PadForge gat ekki lesið hlutana sem þú geymir, því Vista er óvirkt.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Vistunin með þínum réttindum hófst ekki.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Vistunin með þínum réttindum hófst ekki: engin skjáborðsskel er í gangi til að ræsa hana undir.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Vistunin með þínum réttindum hófst ekki: Windows hafnaði henni með villu {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Vistunin tók lengri tíma en {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows leyfði ekki að skrifa skrána þar.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge tók þessa skrá ekki sem eigin upptöku.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Vistuninni lauk með kóða {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Vistað undir þínum notanda, í möppuna Niðurhal í fyrsta skipti, síðan þar sem þú vistaðir síðast, og sýnt í Skráarkönnuði. Upptaka sem stöðvast á meðan enginn er á síðunni (mörk hennar, fjölvi, forrit, aðstoðartólið eða --record stop) bíður þessarar yfirferðar á síðunni Heim og er eytt eftir 7 daga nema hún sé vistuð. Forriti er sagt að hún bíði, aldrei hvar.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Vandamálsupptaka frá {0} bíður þess að þú lesir hana.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Yfirfara</value></data>
@@ -1653,6 +1711,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Ný leikjastýring</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Stillingar</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Allir ásar, hnappar og skynjarar</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Stýringar hennar með nöfnunum sem skriftur nota</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Ýtt á: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Auðkenni, slóð, eiginleikar, Þvinga hráan stýripinnaham</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Auðkenni, slóð, eiginleikar</value></data>
@@ -2154,9 +2213,18 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lestur mistókst: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro hafnaði þessari forstillingu við {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Í þessari forstillingu vantar HID-lýsi, svo ekki er hægt að búa til leikjastýringu úr henni.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge gat ekki athugað þessa forstillingu: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Athuga forstillinguna…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Engu var flutt inn. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Flytja inn</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ónefnt HID-tæki)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Mús</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Stýripinni</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Leikjastýring</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Lyklaborð</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Stýring með mörgum ásum</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Fann {0} HID-viðmót.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Fann 1 HID-viðmót.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Upptalning mistókst: {0}</value></data>
@@ -3288,7 +3356,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Á meðan haldið er og miðjað</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Víxla</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Stýrinntak</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Takkinn sem lætur músina stýra, á sama tæki og uppsprettan. Ef enginn er valinn stýrir músin alltaf.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Takkinn sem lætur músina stýra, á hvaða tæki þessarar raufar sem er. Ef enginn er valinn stýrir músin alltaf.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Sléttun</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Jafnar út mús sem tilkynnir ójafnt. Pinninn dregst aftur úr hendinni um þennan tíma. 0 er slökkt.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Endastopp á hraða</value></data>
@@ -3309,7 +3377,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Byrja þar sem stýring hófst</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Með Stýrinntaki mælist pinninn frá þeim stað sem bendillinn var á þegar stýring hófst, eins og pinni á skjá síma byrjar þar sem fingurinn lendir. Þegar slökkt er mælist hann frá miðju skjás bendilsins.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Þessi ás hreyfist afstætt</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Fyrir rekkúlu eða snúningstæki sem tilkynnir hve langt það snerist. Þegar kveikt er heldur ásinn stöðu eins og Færsla músar gerir og tekur við færslustillingunum. Windows segir ekki hvaða ásar hreyfast svona.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Fyrir rekkúlu eða snúningstæki sem tilkynnir hve langt það snerist. Þegar kveikt er heldur ásinn stöðu eins og Færsla músar gerir og tekur við færslustillingunum. SDL les almenna stýringu í gegnum DirectInput, sem les hvern ás sem stöðu, svo þessi rofi segir hvaða ásar hreyfast svona.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Forskoðun</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Sýnir hvernig þessi fjölskylda fylgir þinni eigin mús. Ekkert er varpað fyrr en þú velur hana.</value></data>
@@ -3502,6 +3570,13 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
 {0}
 
 PadForge skrifaði nánari upplýsingar í crash.log við hlið PadForge.exe. Til að tilkynna þetta skaltu hefja umræðu á {2} og sleppa crash.log á hana.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Óvænt villa kom upp:
+
+{0}
+
+PadForge gat ekki skrifað nánari upplýsingar í crash.log við hlið PadForge.exe. Til að tilkynna þetta skaltu hefja umræðu á {2}, ýta á Ctrl+C hér til að afrita þessi skilaboð og líma þau þar.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(viðbótarvillur faldar: {0})</value></data>
@@ -4430,7 +4505,7 @@ PadForge skrifaði nánari upplýsingar í crash.log við hlið PadForge.exe. Ti
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-afþjöppun sem SteamKit2 notar fyrir gagnabúta úr Steam-geymslum, C#-útgáfa af zstd-safninu eftir Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol þjónninn og biðlarinn á bak við tengingu aðstoðarforrita og PadForge.exe --mcp, frá Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol þjónninn og biðlarinn á bak við tengingu aðstoðarforrita og PadForge.exe --mcp, frá Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions og DependencyInjection.Abstractions, sem MCP C# SDK er byggt á, frá Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>tengi WinUSB við skjá G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>skjár G19 er á öðrum rekli ({0}), ræstu því Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>skjár G19 er á rekli annars forrits ({0}), sem PadForge lætur í friði</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Athuga PlayStation Bluetooth rekla PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Les Bluetooth útvarpið í þessari tölvu…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Opna leikjastýringuna á USB snúrunni…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Skrifa Bluetooth vistfang þessarar tölvu í leikjastýringuna…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Skrái leikjastýringuna í Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Endurræsi Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Pörun stöðvaðist: Windows hafnaði aðgangi PadForge að leikjastýringunni eða Bluetooth stillingunum. Greiningarannállinn hefur nánari upplýsingar.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Pörun stöðvaðist: ekki tókst að lesa eða skrifa á leikjastýringuna eða Bluetooth útvarpið. Greiningarannállinn hefur nánari upplýsingar.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Pörun stöðvaðist á villu sem PadForge bjóst ekki við. Greiningarannállinn hefur nánari upplýsingar.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>krefst Logitech Gaming Software 8.52 eða nýrra</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>fann bókasafn sitt og hlóð því ekki, þar sem PadForge gat ekki staðfest að aðeins kerfisstjórar geti breytt því og að Logitech hafi undirritað það</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>fann bókasafn sitt og gat ekki notað það, og greiningarannállinn segir hvers vegna</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>ræstu Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>bíður eftir síma með Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>á síma</value></data>
@@ -5938,6 +6024,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Velja dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Hleður þessu eintaki af safni Force Dimension í stað allra annarra. Falcon-tæki sem er opið á öðru eintaki lokast og opnast aftur á þessu. Eintökin sem SDK setur upp finnast án þess.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Söfn (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Niðurhalssíða Falcon SDK opnaðist ekki: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Niðurhalssíða Falcon SDK hefur ekki opnast enn: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Setja upp Falcon-rekil</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Setur upp rekil frá Force Dimension, úr SDK-möppunni, á Falcon-tæki sem hefur engan. Windows gæti fyrst spurt hvort treysta eigi Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Sækja SDK frá Force Dimension</value></data>
@@ -6604,12 +6692,17 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Fjarlægi…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Uppfæri…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Því lauk ekki: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Færsla PadForge og færni þess haldast, þar sem {0} les sömu stillingaskrá og færnimöppu.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Færsla PadForge helst, þar sem {0} les sömu stillingaskrá.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge er fjarlægt úr þessu forriti. Færni þess helst, þar sem {0} les færni úr sömu möppu.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge getur ekki lesið stillingarnar í {0}, svo það veit ekki hvort PadForge er bætt við.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Bætt við. PadForge gat ekki lesið færnimöppu sína.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Önnur aðstoðarforrit</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Fyrir aðstoðarforrit sem ekki er talið upp hér að ofan: Afrita stillingar gefur færsluna fyrir MCP-stillingar þess og Afrita skilaboð gefur stuttan texta fyrir hvaða spjall sem er sem segir hvernig á að tengjast og hverju á að spyrja um fyrst.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Afrita stillingar</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Afrita skilaboð</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Afritað.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ekki afritað: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Ekki afritað. Windows leyfði PadForge ekki að nota klippiborðið.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Tengstu við PadForge, stýringavarpann í tölvunni minni. Það er staðbundinn MCP-þjónn sem keyrir yfir stdio: skipunin er {0}, með röksemdinni --mcp. Sem JSON-stillingar: {1} Þegar tengt er skaltu kalla fyrst á status-tólið þess og spyrja mig svo hvað ég vilji setja upp, til dæmis: „Sýndu mér hvar ég varpa gikkjum stýringarinnar minnar.“</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Sjálfvirkni í PadForge er slökkt núna. Kveiktu fyrst á henni í PadForge undir Aukaeiginleikar, Sjálfvirkni.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Leyfð forrit</value></data>
@@ -6630,6 +6723,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Stýripinni. PadForge les hann hráan, svo vörpun SDL er ekki notuð.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Stýripinni, lagður út sem leikjastýring af línunni þinni.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL les tæki á meðan vélin er í gangi.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Tækið er ekki tengt. SDL les það þegar það er tengt.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL gaf PadForge engan lestur af þessu tæki.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Innbyggða samfélagsafritið, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Sótt {0}</value></data>
@@ -6667,6 +6762,11 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, víxl og aðrar aðgerðir</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} og {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Ekkert til að afrita: SDL hefur enga vörpun fyrir þetta tæki og það er á engri stýringu.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Ekkert til að afrita: PadForge getur ekki lesið vörpun SDL fyrir þetta tæki og engin lína stýringa þess gefur bindingu sem form SDL tekur við.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Ekkert til að afrita: SDL hefur enga vörpun fyrir þetta tæki og engin lína hjá {0} les hnapp, ás eða hattarofa þess á þann hátt sem form SDL tekur við.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Ekkert til að afrita: SDL hefur enga vörpun fyrir þetta tæki og línur hjá {0} lesa það aðeins fyrir {1}, sem form SDL getur ekki geymt.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Ekkert til að afrita: PadForge getur ekki lesið vörpun SDL fyrir þetta tæki núna og það er á engri stýringu.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Ekkert til að afrita: PadForge getur ekki lesið vörpun SDL fyrir þetta tæki núna og engin lína hjá {0} gefur bindingu sem form SDL tekur við.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Annað forrit notar klippiborðið. Ekkert var afritað.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Lína þín er fjarlægð. Tækið er lesið eins og áður en hún kom.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Varpað aftur út frá útliti SDL: {0}.</value></data>
@@ -6687,6 +6787,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Línur sem PadForge hefur</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Engin lína passar.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Valda línan er notuð á {0} undir eigin auðkenni, með sömu athugun og sama vali og Líma.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Vélin er stöðvuð, svo listinn sleppir línunum sem SDL geymir, sínum eigin og samfélagsafritinu sem er innbyggt. Þær birtast þegar vélin er í gangi.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL svaraði ekki í tæka tíð, svo listinn sleppir línunum sem það geymir, sínum eigin og samfélagsafritinu sem er innbyggt.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL-vörpunarlína</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Lína fyrir þetta tæki.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Útlit sem giskað var á.</value></data>
@@ -6699,14 +6801,17 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} reitur. Frá sama framleiðanda og vöru á annarri rútu eða útgáfu. Hún er geymd undir eigin auðkenni tækisins.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} reitur. Lína annars tækis. Hún er geymd undir eigin auðkenni tækisins.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} reitur. SDL les ekki þetta tæki, svo PadForge raðar inntökum þess eftir línunni.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge hefur engan venjulegan hnapp eða ás fyrir þessa reiti og sleppir þeim: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} reitur, út frá ásum, hnöppum og hattarofum tækisins. Athugaðu það í Prófa inntak og geymdu það eða breyttu því hér.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Þetta breytir því hvernig {0} er lesið. Línur þess á {1} eru varpaðar aftur út frá nýja útlitinu.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Þetta breytir því hvernig {0} er lesið. Það er á engri stýringu, svo engar línur breytast.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Flýtileiðir sniða sem lesa {0} halda inntökunum sem þær voru stilltar á.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Línan er geymd sem þín í PadForge.xml og ræður yfir öllum öðrum uppsprettum fyrir þetta tæki. Fjarlægja mína setur aftur gömlu línuna og gömlu línurnar.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Línurnar eru geymdar sem þínar í PadForge.xml og ráða fyrir tæki sín yfir öllum öðrum uppsprettum. Hreinsa, undir Meira í línunni Gagnagrunnur leikjastýringa, fjarlægir þær.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Línur fyrir Windows: {0}. Fyrir önnur kerfi sleppt: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} lína fyrir Windows. Fyrir önnur kerfi sleppt: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Línur fyrir Windows: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} lína fyrir Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Línum fyrir önnur kerfi er sleppt: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} línu fyrir annað kerfi er sleppt.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Bætt verður við: {0:N0}. PadForge geymir allt að {1:N0} línur frá þér.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Línunni verður bætt við. PadForge geymir allt að {1:N0} línur frá þér.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Geymdar nú frá þér: {0:N0}. Því verður bætt við {1:N0} af þessum en {2:N0} ekki.</value></data>
@@ -6716,7 +6821,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Textinn er ekki lína úr stýringagagnagrunni SDL: auðkenni með 32 sextándakerfisstöfum, nafn og svo reitir eins og a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Línurnar eru fyrir önnur kerfi. PadForge les línur fyrir Windows eða fyrir ekkert sérstakt kerfi.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Auðkenni línunnar er ekki tækis. Það þarf 32 sextándakerfisstafi.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Nafn línunnar er tómt, lengra en 128 stafir eða geymir staf sem SDL les sem reit.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Nafn línunnar er tómt, yfir 128 stafir, geymir reitamerki sem SDL les, eins og „type:“, eða geymir staf sem er ekki bókstafur, tölustafur, greinarmerki, tákn eða venjulegt bil.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Línan er með ábendingu eða Android-reit, sem PadForge tekur ekki við.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Línan er með reit sem SDL þekkir ekki.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Binding er ekki á formi SDL, eins og b3, a2, +a2, a2~ eða h0.4.</value></data>
@@ -6727,8 +6832,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Þínar línur</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Línur sem þú bætir við hér eða límir á spjaldinu SDL-vörpun á tæki ráða fyrir tæki sín yfir öllum öðrum uppsprettum og haldast eftir endurstillinguna.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Bæta við línum úr skrá eða af klippiborði…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Línur og tæki: {0}, þínar yfir öllum öðrum uppsprettum.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} lína fyrir eitt tæki, þín yfir öllum öðrum uppsprettum.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Línur: {0:N0}, þínar ganga fyrir öllum öðrum uppsprettum.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} lína, þín gengur fyrir öllum öðrum uppsprettum.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Engar enn.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Umhverfisbreytan SDL_GAMECONTROLLERCONFIG hjá þér geymir línur sem PadForge geymir ekki: {0}. Bæta við línum úr skrá eða af klippiborði opnast með þeim.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Umhverfisbreytan SDL_GAMECONTROLLERCONFIG hjá þér geymir {0} línu sem PadForge geymir ekki. Bæta við línum úr skrá eða af klippiborði opnast með henni.</value></data>
@@ -6738,7 +6843,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Breyta…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Nota skrá samfélagsins</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Vistfang</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge tekur vistfang sem byrjar á https:// og nefnir vél, á sjálfgefnu tengi, án notandanafns eða lykilorðs.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge tekur við vistfangi sem er allt að 2.048 stafir að lengd, byrjar á https:// og nefnir hýsil, á sjálfgefnu tengi, án notandanafns, lykilorðs eða hluta á eftir #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Ná í PadForge af vefnum</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Aðstoðarforrit sem keyrir á vefsíðu nær í PadForge í gegnum göngaforrit á þessari tölvu. Þegar þú kveikir á þessu er fyrst spurt.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Ná í PadForge af vefnum?</value></data>
@@ -6755,7 +6860,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Stöðvað. Síðustu orð þess: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ekki tókst að ræsa það.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Það er ekki lengur á þessari tölvu.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ekkert göngaforrit fannst á þessari tölvu. PadForge vinnur með cloudflared, devtunnel, ngrok og Tailscale Funnel, eða með vistfangi þinna eigin ganga.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge fann hvorki cloudflared, devtunnel, ngrok né Tailscale Funnel á þessari tölvu. Veldu ChatGPT Secure MCP Tunnel, sem PadForge sækir, eða gefðu upp vistfang eigin ganga.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Veldu göng til að gefa PadForge opinbert vistfang.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Líka á þessari tölvu: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, sem heldur vistfangi sínu</value></data>
@@ -6763,7 +6868,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Keyrðu þín eigin göng á http://127.0.0.1:{0} og límdu https-vistfang þeirra. Nefnd Cloudflare-göng, varanleg þróunargöng, Tailscale Funnel og eigið lén ngrok halda vistfangi sínu.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Límdu https-vistfang án slóðar nema /mcp, eins og göngin þín gefa það.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Ræsi vefhjálparforrit PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Vefhjálparforrit PadForge stöðvaðist ({0}). Slökktu á Ná í PadForge af vefnum og kveiktu aftur til að ræsa það á ný.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Vefhjálparforrit PadForge stöðvaðist ({0}). PadForge reynir áfram að ræsa það.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Vistfang</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Ekkert opinbert vistfang enn.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Bæta við í Claude</value></data>
@@ -6802,11 +6907,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>því lauk með kóða {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Sjálfvirkni er slökkt, svo ekkert vefaðstoðarforrit nær í PadForge. Vefhjálparforritið ræsist þegar kveikt er á Sjálfvirkni.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Athuga…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Ekki uppsett.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Uppsett og núverandi. Skrifta byrjar á {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Uppsett fyrir {0} og núverandi. Skrifta byrjar á {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Uppsett. Þetta PadForge hefur nýrra eintak.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Uppsett fyrir {0}. Þetta PadForge hefur nýrra eintak.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Set upp…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge gat ekki athugað það: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Uppsetning kemur safni PadForge þangað sem málið finnur það. Skrifta sem hleður því les tæki og stýrir varpunum á stiginu hér að ofan.</value></data>
@@ -6814,8 +6914,27 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Uppsett eintök</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Fjarlægja allt</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Fjarlægt.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Bókasafn PadForge er uppsett fyrir {0} og uppfært. Skrifta byrjar á {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Bókasafn PadForge fyrir {0} er frábrugðið afriti þessa PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Bókasafn PadForge er ekki uppsett fyrir {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>Bókasafn PadForge er uppfært fyrir {0}. Afritið fyrir {1} er frábrugðið afriti þessa PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>Bókasafn PadForge er uppfært fyrir {0} og ekki uppsett fyrir {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>Bókasafn PadForge fyrir {0} er frábrugðið afriti þessa PadForge og það er ekki uppsett fyrir {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>Bókasafn PadForge er uppfært fyrir {0}. Afritið fyrir {1} er frábrugðið afriti þessa PadForge og það er ekki uppsett fyrir {2}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ræsti það ekki með þínum eigin réttindum.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Því lauk ekki á {0} sekúndum.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Því lauk með kóða {0} og gaf enga ástæðu.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge getur ekki lesið stillingarnar í {0}, svo það skildi skrána eftir eins og hún er.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge skrifaði ekki {0}, svo það breytti henni ekki.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows nefnir enga möppu Skjöl fyrir þig.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge finnur enga möppu þína fyrir {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Eigin skipun {0} lauk með kóða {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Skipun {0} er ekki á þessari tölvu.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows leyfði PadForge ekki að lesa eða skrifa skrá sem það þarf.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge finnur ekkert Python: ekkert er skráð, sett upp úr Microsoft Store, talið upp af py ræsiforriti eða á PATH þínu.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ekkert Python sem PadForge fann svaraði innan {0} sekúndna.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Keyrslan gaf enga ástæðu sem PadForge þekkir.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Auðkenni skriftu</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Auðkenni þess í skriftum</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skriftur nefna stjórntæki þess {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skriftur nefna takka þess KeyA, KeySpace, KeyLeftShift og þess háttar, og alla takka eftir kóða þeirra, Vk0 til Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} á þessu neti frá {1}</value></data>
@@ -6827,11 +6946,11 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Hjálparforrit PadForge, sem keyrir án stjórnandaréttinda, hlustar á netföngum þessarar tölvu og PadForge hleypir tengi þess inn á einkanetum eingöngu. Aðstoðarforrit á annarri tölvu kemst aðeins inn með lykli sem þú býrð til hér. Köll og lykill þeirra fara yfir netið ódulkóðuð.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Tengi</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Breyta…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Köll og lykill þeirra fara yfir þetta net ódulkóðuð. Windows hleypir þeim inn á einkanetum eingöngu.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Köll og lykill þeirra fara ódulkóðuð yfir þetta net. Reglan í Windows-eldveggnum sem PadForge býr til fyrir þetta tengi nær aðeins til einkaneta.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Annað forrit notar tengi {0}. Breyttu því til að ná í PadForge af þessu neti.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows leyfði hjálparforriti PadForge ekki að hlusta á tengi {0}. PadForge leyfir það með stjórnandaréttindum, svo ræstu PadForge með þeim og slökktu og kveiktu á þessu.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows geymir enga frátekningu fyrir hjálparforrit PadForge á tengi {0}. Slökktu og kveiktu á þessu og PadForge býr hana til aftur.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Hjálparforrit PadForge gat ekki hlustað á tengi {0}. Breyttu tenginu, eða slökktu og kveiktu á þessu.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Hjálparforrit PadForge stöðvaðist ({0}). Slökktu á Ná í PadForge af þessu neti og kveiktu aftur til að ræsa það á ný.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Hjálparforrit PadForge stöðvaðist ({0}). PadForge reynir áfram að ræsa það.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Sjálfvirkni er slökkt, svo ekkert aðstoðarforrit á þessu neti nær í PadForge. Hjálparforritið ræsist þegar kveikt er á Sjálfvirkni.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Þessi tölva hefur ekkert vistfang á einkaneti núna.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Aðstoðarforrit á þessu neti</value></data>
@@ -6875,11 +6994,12 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Velja tæki</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} má stýra eigin tækjum sínum og þeim sem þú merkir. Það les samt öll tæki.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Engin tæki eru á síðunni Tæki.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Í gangi, með þínum réttindum, og tilbúið. ChatGPT nær í PadForge gegnum þessi göng án eigin innskráningar og aðeins úr OpenAI fyrirtækinu þínu. Það ræsist aftur með PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Í gangi, með þínum réttindum. Það bíður þess að OpenAI segi göngin tilbúin.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Í gangi, með þínum réttindum, og tunnel-client tilkynnir að allt sé tilbúið. Það ræsist aftur með PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Í gangi, með þínum réttindum. tunnel-client tilkynnir ekki núna að allt sé tilbúið.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Sæki tunnel-client frá OpenAI og ber það saman við SHA-256 summur útgáfunnar.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>Ekki tókst að sækja tunnel-client: {0}. Veldu göngin aftur til að reyna á ný.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Límdu keyrslulykil og auðkenni ganga hér fyrir neðan og göngin ræsast.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>tunnel-client frá OpenAI er ekki á þessari tölvu enn. Veldu göngin aftur til að sækja forritið.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Keyrslulykill</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Takmarkaður, með Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Búa til</value></data>
@@ -6888,6 +7008,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Opna ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge geymir lykilinn dulkóðaðan fyrir þig einan. Tómur reitur gleymir honum. ChatGPT vinnur á stiginu hér að ofan.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Lykillinn var ekki geymdur: vefhjálparforrit PadForge er ekki í gangi og aðeins það getur dulkóðað lykilinn fyrir þig.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Lykillinn var ekki geymdur: vefhjálparforrit PadForge lauk sér af áður en það dulkóðaði lykilinn. Límdu hann inn aftur.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Lykillinn var ekki geymdur: Windows gat ekki dulkóðað hann fyrir þig. Límdu hann inn aftur.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Svara úr öðru tæki</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Svaraðu spurningum PadForge úr síma eða annarri tölvu meðan þú ert fjarri þessari.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Virkar aðeins á þessu neti, í gegnum vistfang vefstýringarinnar.</value></data>
@@ -6905,9 +7027,10 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Kóðinn virkar einu sinni, til klukkan {0}. Fimm röng skipti loka honum og QR kóðinn virkar áfram.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Ræsi vistfang vefstýringarinnar…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Síðan getur ekki opnast: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Þessi tölva hefur ekkert vistfang á einkaneti.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows vildi ekki fela þennan glugga fyrir skjáupptöku, svo hann sýnir engan kóða.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Innslegna kóðanum er lokað eftir fimm röng skipti. QR kóðinn virkar áfram til klukkan {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Kóðinn rann út. Para tæki… býr til nýjan.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Kóðinn rann út. Para tæki býr til nýjan.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge geymir mest {0} netlykil. Afturkallaðu hann fyrst.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Litir fara beint til {0}. Breytilegir litir, eins og litahringrás eða litir sem fylgja hljóði, berast ekki til þess. Litur sem helst óbreyttur gerir það.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Allar skrár (*.*)|*.*</value></data>

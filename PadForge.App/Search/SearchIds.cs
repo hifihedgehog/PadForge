@@ -6,7 +6,7 @@ using System.Text;
 namespace PadForge.Search
 {
     /// <summary>
-    /// A stable ID for every entry of Search's index (#597), the one an
+    /// A stable ID for every entry of Search's index (#600), the one an
     /// assistant reads and sets a setting by. It is made from what the markup
     /// says and never from the words shown, so it is the same in every
     /// interface language: the page, the extra's key, the scope's name, the

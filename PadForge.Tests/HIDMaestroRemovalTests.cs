@@ -210,9 +210,9 @@ namespace PadForge.Tests
         {
             string removal = OffLimitsSource.Read("PadForge.App/Services/HIDMaestroRemoval.cs");
             Assert.DoesNotContain("new HMContext(", removal, StringComparison.Ordinal);
-            Assert.Contains("Directory.EnumerateDirectories(repository, \"hidmaestro.inf_*\")", removal, StringComparison.Ordinal);
+            Assert.Contains("Directory.EnumerateDirectories(repository, \"hidmaestro*.inf_*\")", removal, StringComparison.Ordinal);
             string main = OffLimitsSource.Read("PadForge.App/MainWindow.xaml.cs");
-            Assert.Contains("=> _viewModel.Settings.IsHIDMaestroInstalled = HIDMaestroRemoval.IsDriverInstalled();", main, StringComparison.Ordinal);
+            Assert.Contains("bool installed = HIDMaestroRemoval.IsDriverInstalled(out string version);", main, StringComparison.Ordinal);
 
             // Whatever this PC holds, the read answers and never throws.
             bool installed = HIDMaestroRemoval.IsDriverInstalled();
@@ -243,7 +243,8 @@ namespace PadForge.Tests
                     Environment.GetFolderPath(Environment.SpecialFolder.System),
                     "DriverStore", "FileRepository");
                 bool inStore = System.IO.Directory.Exists(repository)
-                    && System.IO.Directory.EnumerateDirectories(repository, "hidmaestro.inf_*").Any();
+                    && System.IO.Directory.EnumerateDirectories(repository, "hidmaestro.inf_*").Any()
+                    && System.IO.Directory.EnumerateDirectories(repository, "hidmaestro_xusb.inf_*").Any();
                 HIDMaestroRemoval.MachineBackendSeam = () => HMBackend.Umdf2;
                 HIDMaestroRemoval.UsbipAvailableSeam = () => !inStore;
                 Assert.Equal(inStore, HIDMaestroRemoval.IsDriverInstalled());
@@ -252,6 +253,92 @@ namespace PadForge.Tests
             {
                 HIDMaestroRemoval.MachineBackendSeam = backend;
                 HIDMaestroRemoval.UsbipAvailableSeam = usbip;
+            }
+        }
+
+        /// <summary>On UMDF2 the driver is installed only while both of its
+        /// packages are in the driver store, the test HIDMaestro's own check
+        /// makes (PnputilHelper.IsHidMaestroDriverInstalled at v2.4.0: the
+        /// fast path needs hasMain and hasXusb, and InstalledFrom every entry
+        /// of HidMaestroInfNames). A removal that took hidmaestro_xusb.inf
+        /// and left hidmaestro.inf read as installed here, and HIDMaestro
+        /// installs again at the next create.</summary>
+        [Theory]
+        [InlineData(false, false, false)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, false)]
+        [InlineData(true, true, true)]
+        public void OnUmdf2_TheDriverIsInstalled_OnlyWithBothPackages(bool main, bool xusb, bool installed)
+        {
+            string repository = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForge_HmRepo_" + Guid.NewGuid().ToString("N"));
+            var backend = HIDMaestroRemoval.MachineBackendSeam;
+            var seam = HIDMaestroRemoval.RepositorySeam;
+            try
+            {
+                System.IO.Directory.CreateDirectory(repository);
+                if (main) System.IO.Directory.CreateDirectory(System.IO.Path.Combine(repository, "hidmaestro.inf_amd64_0123456789abcdef"));
+                if (xusb) System.IO.Directory.CreateDirectory(System.IO.Path.Combine(repository, "hidmaestro_xusb.inf_amd64_0123456789abcdef"));
+                System.IO.Directory.CreateDirectory(System.IO.Path.Combine(repository, "other.inf_amd64_0123456789abcdef"));
+                HIDMaestroRemoval.MachineBackendSeam = () => HMBackend.Umdf2;
+                HIDMaestroRemoval.RepositorySeam = () => repository;
+                Assert.Equal(installed, HIDMaestroRemoval.IsDriverInstalled());
+            }
+            finally
+            {
+                HIDMaestroRemoval.MachineBackendSeam = backend;
+                HIDMaestroRemoval.RepositorySeam = seam;
+                try { System.IO.Directory.Delete(repository, true); } catch { }
+            }
+        }
+
+        /// <summary>The row's number is the installed driver's: the newest
+        /// hidmaestro.inf package's DriverVer, as HIDMaestro's own deploy
+        /// reads the installed driver (DriverDeploy.InstalledDriver at
+        /// v2.4.0), and no number while the driver is not installed. The
+        /// SDK's version stood there, beside a driver that could still be an
+        /// older package.</summary>
+        [Fact]
+        public void TheRowsVersion_IsTheNewestInstalledPackages()
+        {
+            string repository = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForge_HmRepo_" + Guid.NewGuid().ToString("N"));
+            var backend = HIDMaestroRemoval.MachineBackendSeam;
+            var seam = HIDMaestroRemoval.RepositorySeam;
+            try
+            {
+                void Package(string folder, string inf, string driverVer)
+                {
+                    string dir = System.IO.Path.Combine(repository, folder);
+                    System.IO.Directory.CreateDirectory(dir);
+                    System.IO.File.WriteAllText(System.IO.Path.Combine(dir, inf),
+                        string.Join(System.Environment.NewLine, "[Version]", "Signature=$Windows NT$", "DriverVer = " + driverVer, ""));
+                }
+                Package("hidmaestro.inf_amd64_aaaaaaaaaaaaaaaa", "hidmaestro.inf", "05/01/2026,2.1.0.5");
+                Package("hidmaestro.inf_amd64_bbbbbbbbbbbbbbbb", "hidmaestro.inf", "11/20/2026,2.4.0.7");
+                HIDMaestroRemoval.MachineBackendSeam = () => HMBackend.Umdf2;
+                HIDMaestroRemoval.RepositorySeam = () => repository;
+
+                Assert.False(HIDMaestroRemoval.IsDriverInstalled(out string none));
+                Assert.Null(none);
+
+                Package("hidmaestro_xusb.inf_amd64_cccccccccccccccc", "hidmaestro_xusb.inf", "11/20/2026,2.4.0.7");
+                Assert.True(HIDMaestroRemoval.IsDriverInstalled(out string version));
+                Assert.Equal("2.4.0", version);
+
+                HIDMaestroRemoval.MachineBackendSeam = () => HMBackend.Usbip;
+                var usbip = HIDMaestroRemoval.UsbipAvailableSeam;
+                try
+                {
+                    HIDMaestroRemoval.UsbipAvailableSeam = () => true;
+                    Assert.True(HIDMaestroRemoval.IsDriverInstalled(out string onUsbip));
+                    Assert.Null(onUsbip);
+                }
+                finally { HIDMaestroRemoval.UsbipAvailableSeam = usbip; }
+            }
+            finally
+            {
+                HIDMaestroRemoval.MachineBackendSeam = backend;
+                HIDMaestroRemoval.RepositorySeam = seam;
+                try { System.IO.Directory.Delete(repository, true); } catch { }
             }
         }
 

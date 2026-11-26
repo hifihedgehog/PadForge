@@ -60,7 +60,8 @@ namespace PadForge.Tests
             {
                 sb.Append("\n## ").Append(LevelName(group.Key)).Append("\n\n| Tool | What it does | Arguments |\n|---|---|---|\n");
                 foreach (var tool in group)
-                    sb.Append("| `").Append(tool.Name).Append("` | ").Append(tool.Title).Append(" | ")
+                    sb.Append("| `").Append(tool.Name).Append("` | ").Append(tool.Title)
+                      .Append(AssistantCommandLine.LevelNote(tool) is { } note ? ". " + note : string.Empty).Append(" | ")
                       .Append(string.Join(", ", AssistantJson.ArgumentNames(tool.Arguments).Select(a => "`" + a + "`"))).Append(" |\n");
             }
             sb.Append("\n## Only the user\n\nNo tool turns Automation on or off, changes its level, allows a program, approves a plugin or reads another program's Activity. A place whose reach is `yours-alone` is refused by `set` and `press` and its value is not read.\n");
@@ -381,6 +382,8 @@ namespace PadForge.Tests
                 Assert.True(File.Exists(file), path + " is missing. Run this class with " + WriteVariable + "=1.");
                 Assert.True(Lf(File.ReadAllText(file)) == Lf(text), path + " is not what PadForge makes now. Run this class with " + WriteVariable + "=1 and commit the diff.");
             }
+            // A tool whose call can need more than its level says so.
+            Assert.Contains("| `record_problem` | Record a Problem. A recording needs Read. With seconds 0 it saves a snapshot at Commands. |", want["references/tools.md"]);
             // The page description holds the places of every page.
             Assert.Contains("## Settings", pages);
             Assert.Contains("## Dialogs", pages);

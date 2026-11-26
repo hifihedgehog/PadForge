@@ -4,7 +4,7 @@ namespace PadForge.Engine.Recording
 {
     /// <summary>
     /// What one virtual controller was handed, as a problem recording holds
-    /// it (#597): every lane a controller of any type takes, since a slot's
+    /// it (#600): every lane a controller of any type takes, since a slot's
     /// type can change while a recording runs. A lane the slot's type does
     /// not use stays at rest.
     ///

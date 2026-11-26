@@ -58,7 +58,7 @@ namespace PadForge.Common.Input
             private readonly long[] _bytes = new long[s_names.Length];
             private readonly StringBuilder _line = new(512);
 
-            // The same sums kept apart for a problem recording (#597), which
+            // The same sums kept apart for a problem recording (#600), which
             // takes and clears them once a second.
             private readonly long[] _recordedTicks = new long[s_names.Length];
             private long _recordedPasses, _recordedSleeps, _recordedWork, _recordedLongest, _recordedLate, _recordedLatest;

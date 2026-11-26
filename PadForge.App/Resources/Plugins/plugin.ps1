@@ -2,7 +2,7 @@
 A PadForge plugin in PowerShell, from the PadForge Plugin Kit.
 
 To run it, keep this file beside PadForge.psm1, which the kit carries too,
-and add it in PadForge: Extras, Plugins, Add a Plugin..., then pick this file,
+and add it in PadForge: Extras, Plugins, Add a Plugin…, then pick this file,
 or drop it on that page. PadForge shows the file, its signer and its SHA-256,
 and runs it with your ordinary rights whenever the engine runs, in Windows
 PowerShell. An edited file shows Approve and Restart on its card.

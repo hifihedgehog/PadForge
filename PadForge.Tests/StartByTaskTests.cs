@@ -77,7 +77,7 @@ namespace PadForge.Tests
                 System.Text.RegularExpressions.RegexOptions.Multiline);
             Assert.True(setLine.Success, "the task is made without its run right");
             Assert.True(create.IndexOf("/RU SYSTEM /F\") != 0) return false;", StringComparison.Ordinal) < setLine.Index);
-            string audit = FenceSource.Body(source, "internal static bool AuditTask()");
+            string audit = FenceSource.Body(source, "internal static TaskRemoval AuditTask()");
             Assert.Contains("|| !LetsRun(TaskDescriptor(), sid))", audit, StringComparison.Ordinal);
             Assert.Contains("CreateScheduledTask(task.Exe, sid);", audit, StringComparison.Ordinal);
             string set = FenceSource.Body(source, "private static bool SetTaskDescriptor(string sddl)");
@@ -86,7 +86,7 @@ namespace PadForge.Tests
 
             Assert.False(StartupHelper.RunTask());
             Assert.False(StartupHelper.TaskStartsThisExe());
-            Assert.False(StartupHelper.AuditTask());
+            Assert.Equal(StartupHelper.TaskRemoval.None, StartupHelper.AuditTask());
             string starts = FenceSource.Body(source, "internal static bool TaskStartsThisExe()");
             Assert.Contains("IsCurrent(RunSchtasksOutput($\"/Query /TN \\\"{TaskName}\\\" /XML\"), exe, CurrentUserSid(), FileLength(exe), ProtectedFolder.Natives)", starts, StringComparison.Ordinal);
         }
@@ -159,7 +159,7 @@ namespace PadForge.Tests
                     RunTask = () => { Order.Add(Held ? "run task while pending" : "run task"); return TaskRuns; },
                     WaitForCopy = () => { Order.Add("wait for copy"); return CopyComes; },
                     Hand = words => { Order.Add(Held ? "hand while pending" : "hand"); Handed = words; return Takes; },
-                    Watch = () => { Order.Add("watch"); return Wait; },
+                    Watch = () => { Order.Add("watch"); return Wait == null ? null : new RunningCopy.Hold<int?>(Wait, null); },
                     SayError = Errors.Add,
                 };
             }
@@ -290,7 +290,8 @@ namespace PadForge.Tests
 
         /// <summary>
         /// The started copy waits only while a start says its switches are
-        /// coming, takes them over its checked signal window, keeps the start
+        /// coming, takes them over the signal pipe of its checked signal
+        /// window, keeps the start
         /// set's alone, and takes nothing once its start is past. The hand
         /// comes from another thread, as from another process.
         /// </summary>
@@ -330,28 +331,13 @@ namespace PadForge.Tests
                 // Past the wait nothing is taken, the start still pending.
                 Assert.False(RunningCopy.HandStartSwitches(new[] { "--profile", "Other" }, 500, names.Signal));
 
-                // Another tag is never a start's switches.
-                byte[] bytes = System.Text.Encoding.Unicode.GetBytes("--minimized");
-                var pin = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-                try
-                {
-                    var other = new RunningCopy.CopyData { Tag = new IntPtr(7), Bytes = bytes.Length, Data = pin.AddrOfPinnedObject() };
-                    Assert.Null(RunningCopy.ReadStartSwitches(PointerTo(ref other, out var held)));
-                    held.Free();
-                    var right = new RunningCopy.CopyData { Tag = new IntPtr(RunningCopy.StartSwitchesTag), Bytes = bytes.Length, Data = pin.AddrOfPinnedObject() };
-                    Assert.Equal(new[] { "--minimized" }, RunningCopy.ReadStartSwitches(PointerTo(ref right, out held)));
-                    held.Free();
-                    var odd = new RunningCopy.CopyData { Tag = new IntPtr(RunningCopy.StartSwitchesTag), Bytes = 3, Data = pin.AddrOfPinnedObject() };
-                    Assert.Null(RunningCopy.ReadStartSwitches(PointerTo(ref odd, out held)));
-                    held.Free();
-                    var huge = new RunningCopy.CopyData { Tag = new IntPtr(RunningCopy.StartSwitchesTag), Bytes = RunningCopy.MostStartSwitchBytes + 2, Data = pin.AddrOfPinnedObject() };
-                    Assert.Null(RunningCopy.ReadStartSwitches(PointerTo(ref huge, out held)));
-                    held.Free();
-                }
-                finally
-                {
-                    pin.Free();
-                }
+                // A line that is not an array of words is never a start's
+                // switches, and a line past the pipe's length is not handed.
+                Assert.Equal(new[] { "--minimized" }, RunningCopy.ReadStartSwitches("[\"--minimized\"]"));
+                Assert.Empty(RunningCopy.ReadStartSwitches("[]"));
+                foreach (string other in new[] { "--minimized", "[1]", "[null]", "{}", "", "[\"a\"" })
+                    Assert.Null(RunningCopy.ReadStartSwitches(other));
+                Assert.False(RunningCopy.HandStartSwitches(new[] { new string('x', RunningCopy.MostStartSwitchBytes) }, 500, names.Signal));
             }
             finally
             {
@@ -362,10 +348,5 @@ namespace PadForge.Tests
             Assert.Null(RunningCopy.MarkStartPending());
         });
 
-        private static IntPtr PointerTo(ref RunningCopy.CopyData data, out GCHandle held)
-        {
-            held = GCHandle.Alloc(data, GCHandleType.Pinned);
-            return held.AddrOfPinnedObject();
-        }
     }
 }

@@ -2,7 +2,7 @@ namespace PadForge.Engine.Common
 {
     /// <summary>
     /// The one rule for whether an account other than Administrators, SYSTEM
-    /// and TrustedInstaller may change a file or folder (#597), read from its
+    /// and TrustedInstaller may change a file or folder (#600), read from its
     /// security descriptor in the self-relative form Windows gives
     /// (GetSecurityInfo). PadForge's protected folders and the parent that
     /// holds them (PadForge.Common.ProtectedFolder), the folder PadForge.exe
@@ -193,10 +193,12 @@ namespace PadForge.Engine.Common
             mask = 0;
             sidAt = -1;
             int type = d[at];
-            // The mask, then the SID.
-            bool plain = type is 0x00 or 0x01 or 0x02 or 0x03 or 0x09 or 0x0A or 0x0D;
+            // The mask, then the SID. The callback forms 0x09, 0x0A, 0x0D and
+            // 0x0E are laid out as the plain ones are (winnt.h,
+            // SYSTEM_ALARM_CALLBACK_ACE: Header, Mask, SidStart).
+            bool plain = type is 0x00 or 0x01 or 0x02 or 0x03 or 0x09 or 0x0A or 0x0D or 0x0E;
             // The mask, the flags, the GUIDs the flags name, then the SID.
-            bool forObject = type is 0x05 or 0x06 or 0x07 or 0x08 or 0x0B or 0x0C or 0x0E or 0x0F or 0x10;
+            bool forObject = type is 0x05 or 0x06 or 0x07 or 0x08 or 0x0B or 0x0C or 0x0F or 0x10;
             if (!plain && !forObject) return Kind.Unknown;
             if (length >= 8) mask = I32(d, at + 4);
             if (plain) sidAt = at + 8;

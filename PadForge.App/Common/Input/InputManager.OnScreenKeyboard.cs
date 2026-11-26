@@ -288,7 +288,9 @@ namespace PadForge.Common.Input
         {
             if (s.Touchpads == null) return;
             foreach (var tp in s.Touchpads) tp?.ResetForReuse();
-            if (s.Buttons.Length > 16) s.Buttons[16] = false;
+            // The first pad's click rides button 16, apart from a program's
+            // device whose button 16 is its own and stays its own.
+            if (!s.OwnButtonSixteen && s.Buttons.Length > 16) s.Buttons[16] = false;
         }
 
         private static bool TouchActive(CustomInputState s)

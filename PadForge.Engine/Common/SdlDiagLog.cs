@@ -35,7 +35,7 @@ namespace PadForge.Engine
         private const int StampLength = 13;
 
         /// <summary>The taker of every line while a problem recording, or
-        /// its memory of the last minute, runs (#597), or null. It gets each
+        /// its memory of the last minute, runs (#600), or null. It gets each
         /// line without its stamp, with the line's own time, and has to hand
         /// it to a queue and return: it is called under the ring's lock on
         /// whichever thread wrote the line, the poll thread among them.</summary>
@@ -161,13 +161,18 @@ namespace PadForge.Engine
             catch { return null; }
         }
 
+        /// <summary>The one file PADFORGE_DIAG may name in a process with
+        /// administrator rights, beside PadForge.exe.</summary>
+        internal const string BenchLogName = "diag.log";
+
         /// <summary>
-        /// PADFORGE_DIAG in a process with administrator rights (#597): taken
-        /// only when it names a file directly in the exe's own folder, as the
-        /// diagnostics' diag.log beside PadForge.exe. Every program of the
-        /// user can set the variable (HKCU\Environment), and a log written
-        /// with rights to a path it chose would let it write into folders
-        /// only administrators may change. Null otherwise.
+        /// PADFORGE_DIAG in a process with administrator rights (#600): taken
+        /// only when it names <see cref="BenchLogName"/> directly in the exe's
+        /// own folder. Every program of the user can set the variable
+        /// (HKCU\Environment), and a log written with rights to a path it
+        /// chose would let it write into folders only administrators may
+        /// change, or append to, rotate and move away a file PadForge keeps
+        /// there, PadForge.xml and crash.log among them. Null otherwise.
         /// </summary>
         internal static string MirrorPathWithRights(string path, string exe)
         {
@@ -177,7 +182,8 @@ namespace PadForge.Engine
                 string full = System.IO.Path.GetFullPath(path);
                 string folder = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(exe));
                 string parent = System.IO.Path.GetDirectoryName(full);
-                if (folder == null || parent == null || System.IO.Path.GetFileName(full).Length == 0) return null;
+                if (folder == null || parent == null) return null;
+                if (!string.Equals(System.IO.Path.GetFileName(full), BenchLogName, StringComparison.OrdinalIgnoreCase)) return null;
                 return string.Equals(parent.TrimEnd('\\'), folder.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase) ? full : null;
             }
             catch
@@ -213,7 +219,9 @@ namespace PadForge.Engine
         }
 
         /// <summary>Appends one timestamped line to the ring, evicting the
-        /// oldest when full. Never touches disk and never throws.</summary>
+        /// oldest when full, hands it to the taker when one is attached, and
+        /// appends it to the mirror file while one is armed, rotating that
+        /// file past <see cref="RotateAtBytes"/>. Never throws.</summary>
         public static void WriteLine(string line)
         {
             try

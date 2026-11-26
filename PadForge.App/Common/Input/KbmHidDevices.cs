@@ -129,6 +129,11 @@ namespace PadForge.Common.Input
         // Each key index's cause while it is down.
         private readonly OutputCause[] _causeAs = new OutputCause[256];
         private ulong _k0, _k1, _k2, _k3;
+        // The held keys proven own, and the cause of the others, as the
+        // last Submit gave them. HeldAllOwn while every held key is own.
+        private ulong _o0, _o1, _o2, _o3;
+        private int _otherRaw = HeldAllOwn;
+        private const int HeldAllOwn = int.MinValue;
         private readonly List<int> _wantOrder = new();
         private readonly Dictionary<int, int> _wantCount = new();
         private Entry[] _lastKeyboard = Array.Empty<Entry>();
@@ -212,12 +217,37 @@ namespace PadForge.Common.Input
         /// KbmRawState words carry them.</summary>
         public void Submit(ulong k0, ulong k1, ulong k2, ulong k3, KbmCause cause)
         {
-            if (k0 == _k0 && k1 == _k1 && k2 == _k2 && k3 == _k3) return;
+            // A held key's cause can change while it stays down: a key the
+            // person holds loses its proof once a program feeds it too
+            // (InputManager.OutputCauses), and the frame has to say so for
+            // the gate to hold it back.
+            ulong o0 = k0 & cause.OwnKeys0, o1 = k1 & cause.OwnKeys1, o2 = k2 & cause.OwnKeys2, o3 = k3 & cause.OwnKeys3;
+            int other = o0 == k0 && o1 == k1 && o2 == k2 && o3 == k3 ? HeldAllOwn : cause.Other.Raw;
+            bool recause = o0 != _o0 || o1 != _o1 || o2 != _o2 || o3 != _o3 || other != _otherRaw;
+            if (!recause && k0 == _k0 && k1 == _k1 && k2 == _k2 && k3 == _k3) return;
+            _o0 = o0; _o1 = o1; _o2 = o2; _o3 = o3; _otherRaw = other;
             bool changed = Apply(ref _k0, k0, 0, cause);
             changed |= Apply(ref _k1, k1, 64, cause);
             changed |= Apply(ref _k2, k2, 128, cause);
             changed |= Apply(ref _k3, k3, 192, cause);
+            if (recause) changed |= Recause(cause);
             if (changed) Publish();
+        }
+
+        /// <summary>Gives each held key the cause it has now. True when
+        /// one the device can send changed.</summary>
+        private bool Recause(KbmCause cause)
+        {
+            bool any = false;
+            for (int index = 0; index < 256; index++)
+            {
+                if (_pressedAs[index].IsNone) continue;
+                var now = cause.Key(index);
+                if (now.Raw == _causeAs[index].Raw) continue;
+                _causeAs[index] = now;
+                any = true;
+            }
+            return any;
         }
 
         /// <summary>Poll thread: lets go of every key.</summary>
@@ -335,13 +365,17 @@ namespace PadForge.Common.Input
             if (queued) _wake.Set();
         }
 
+        /// <summary>Whether two states hold the same usages, each with the
+        /// same cause. A cause that changed is a new frame: the sender's
+        /// gate reads it, and the device's report stays as it is unless the
+        /// gate then holds the key back (Holds).</summary>
         private static bool SameUsages(List<Entry> a, Entry[] b)
         {
             if (a.Count != b.Length) return false;
             foreach (var x in a)
             {
                 bool found = false;
-                foreach (var y in b) if (y.Key == x.Key) { found = true; break; }
+                foreach (var y in b) if (y.Key == x.Key) { found = y.Cause.Raw == x.Cause.Raw; break; }
                 if (!found) return false;
             }
             return true;
@@ -454,7 +488,7 @@ namespace PadForge.Common.Input
             if (Holds(f)) return;
             // The hooks learn each press and release before the report
             // that carries it can reach them.
-            NoteChanges(f);
+            var noted = NoteChanges(f);
             try
             {
                 if (f.Consumer)
@@ -475,13 +509,24 @@ namespace PadForge.Common.Input
                     }
                     _sink.SubmitKeyboard((HMKeyModifiers)modifiers, keys.ToArray());
                 }
+                _refusing = false;
             }
             catch (ObjectDisposedException) { _stop = true; }
             catch (Exception ex)
             {
-                PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID keyboard {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
+                // The report never reached the device. The sender and the
+                // hooks hold what they held, so the next check sends it
+                // again and no press is counted that Windows never sees.
+                UndoChanges(noted);
+                if (!_refusing)
+                    PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID keyboard {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
+                _refusing = true;
             }
         }
+
+        // Sender-thread state: the last submit threw, so the next failure
+        // in the row goes unlogged.
+        private bool _refusing;
 
         /// <summary>Whether the device holds exactly the usages of
         /// <paramref name="f"/> for its kind already.</summary>
@@ -499,12 +544,46 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Sender thread: tells the hooks which usages of the frame's
-        /// kind go up and down against what the device last held.</summary>
-        private void NoteChanges(Frame f)
+        /// <summary>What <see cref="NoteChanges"/> told the hooks: each
+        /// usage let go with its entry and whether the hooks took the
+        /// release, and each usage pressed.</summary>
+        private readonly struct Noted
+        {
+            public readonly List<(Entry Entry, bool Taken)> Gone;
+            public readonly List<Entry> Pressed;
+            public Noted(List<(Entry, bool)> gone, List<Entry> pressed) { Gone = gone; Pressed = pressed; }
+        }
+
+        /// <summary>Sender thread: takes back what <see cref="NoteChanges"/>
+        /// told the hooks and the sender, for a report that never reached
+        /// the device.</summary>
+        private void UndoChanges(Noted noted)
         {
             lock (_sent)
             {
+                if (noted.Pressed != null)
+                    foreach (var e in noted.Pressed)
+                    {
+                        OwnHidOutput.ForgetKeyDown(e.Index, ScanKeyOf(e.Key));
+                        _sent.Remove(e.Key);
+                    }
+                if (noted.Gone != null)
+                    foreach (var (e, taken) in noted.Gone)
+                    {
+                        if (taken) OwnHidOutput.ForgetKeyUp(e.Index, ScanKeyOf(e.Key));
+                        _sent[e.Key] = e;
+                    }
+            }
+        }
+
+        /// <summary>Sender thread: tells the hooks which usages of the frame's
+        /// kind go up and down against what the device last held.</summary>
+        private Noted NoteChanges(Frame f)
+        {
+            lock (_sent)
+            {
+                List<(Entry, bool)> released = null;
+                List<Entry> pressed = null;
                 List<int> gone = null;
                 foreach (var kv in _sent)
                 {
@@ -517,7 +596,9 @@ namespace PadForge.Common.Input
                 {
                     foreach (int key in gone)
                     {
-                        OwnHidOutput.NoteKeyUp(_sent[key].Index, ScanKeyOf(key));
+                        var was = _sent[key];
+                        bool taken = OwnHidOutput.NoteKeyUp(was.Index, ScanKeyOf(key));
+                        (released ??= new()).Add((was, taken));
                         _sent.Remove(key);
                     }
                 }
@@ -525,8 +606,10 @@ namespace PadForge.Common.Input
                 {
                     if (_sent.ContainsKey(e.Key)) continue;
                     OwnHidOutput.NoteKeyDown(e.Index, ScanKeyOf(e.Key));
+                    (pressed ??= new()).Add(e);
                     _sent[e.Key] = e;
                 }
+                return new Noted(released, pressed);
             }
         }
 
@@ -753,12 +836,15 @@ namespace PadForge.Common.Input
             if (held) ProgramInputGate.NoteHeld(OutputCause.FromRaw(Volatile.Read(ref _markedCause)));
             int dx = own.Dx + marked.Dx, dy = own.Dy + marked.Dy, wheel = own.Wheel + marked.Wheel, pan = own.Pan + marked.Pan;
             if (buttons == _sentButtons && dx == 0 && dy == 0 && wheel == 0 && pan == 0) return;
+            byte before, taken = 0;
             lock (_buttonLock)
             {
+                before = _sentButtons;
                 byte changed = (byte)(buttons ^ _sentButtons);
                 for (int bit = 0; bit < KbmDeviceCaps.WindowsMouseButtons; bit++)
-                    if ((changed & (1 << bit)) != 0)
-                        OwnHidOutput.NoteButton(HookIdOfBit[bit], (buttons & (1 << bit)) != 0);
+                    if ((changed & (1 << bit)) != 0
+                        && OwnHidOutput.NoteButton(HookIdOfBit[bit], (buttons & (1 << bit)) != 0))
+                        taken |= (byte)(1 << bit);
                 _sentButtons = buttons;
             }
             try
@@ -771,13 +857,30 @@ namespace PadForge.Common.Input
                     Wheel = wheel,
                     Pan = pan,
                 });
+                _refusing = false;
             }
             catch (ObjectDisposedException) { _stop = true; }
             catch (Exception ex)
             {
-                PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID mouse {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
+                // The report never reached the device. The buttons the
+                // sender and the hooks hold go back to what they were, so
+                // the next check sends them again. Its movement is lost.
+                lock (_buttonLock)
+                {
+                    for (int bit = 0; bit < KbmDeviceCaps.WindowsMouseButtons; bit++)
+                        if ((taken & (1 << bit)) != 0)
+                            OwnHidOutput.ForgetButton(HookIdOfBit[bit], (buttons & (1 << bit)) != 0);
+                    _sentButtons = before;
+                }
+                if (!_refusing)
+                    PadForge.Engine.SdlDiagLog.WriteLine($"KBMHID mouse {ProfileId} submit failed: {ex.GetType().Name}: {ex.Message}");
+                _refusing = true;
             }
         }
+
+        // Sender-thread state: the last submit threw, so the next failure
+        // in the row goes unlogged.
+        private bool _refusing;
 
         public void Dispose()
         {

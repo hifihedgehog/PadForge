@@ -1,7 +1,7 @@
 namespace PadForge.Engine.Recording
 {
     /// <summary>
-    /// One kind of change a problem recording holds (#597). The capture
+    /// One kind of change a problem recording holds (#600). The capture
     /// hands each change over as a field, an index and up to three numbers,
     /// and <see cref="RecordingCodec"/> turns that into a token of a line and
     /// back. A field belongs to one layer of the file.

@@ -19,14 +19,33 @@ namespace PadForge.Services.Plugins
         None,
         /// <summary>The file is not where it was approved.</summary>
         Missing,
-        /// <summary>Windows has no program that runs this kind of file.</summary>
+        /// <summary>No command opens this kind of file for the desktop's
+        /// user.</summary>
         NoProgram,
+        /// <summary>No command opens Python files for the desktop's user,
+        /// and no py launcher is in the places it installs to.</summary>
+        NoPython,
+        /// <summary>The command that opens this kind of file for the
+        /// desktop's user names a program that is not there.</summary>
+        ProgramMissing,
+        /// <summary>The desktop's user's part of the registry could not be
+        /// read for the command that opens this kind of file.</summary>
+        ProgramUnreadable,
         /// <summary>No desktop shell runs to start it under, so nothing
         /// would give it the user's own rights.</summary>
         NoShell,
-        /// <summary>The desktop shell has administrator rights (UAC is
-        /// off), so a plugin started under it would have them too.</summary>
+        /// <summary>The desktop shell's token was read with administrator
+        /// rights (UAC is off), so a plugin started under it would have them
+        /// too.</summary>
         ShellElevated,
+        /// <summary>The token of the desktop shell, or of the process made
+        /// under it, could not be read, so whether the plugin would have
+        /// administrator rights is not known. Nothing was let run.</summary>
+        RightsUnknown,
+        /// <summary>The process made under a shell read without
+        /// administrator rights was read with them all the same, and was
+        /// ended before it ran.</summary>
+        StartedElevated,
         /// <summary>The program asks for administrator rights in its
         /// manifest (error 740).</summary>
         NeedsAdministrator,
@@ -39,8 +58,15 @@ namespace PadForge.Services.Plugins
     }
 
     /// <summary>What a plugin is started as: the program, its whole
-    /// command line and the folder it starts in.</summary>
-    internal sealed record PluginCommand(string Program, string CommandLine, string Folder);
+    /// command line and the folder it starts in. One with no program says
+    /// why in <see cref="Refusal"/>.</summary>
+    internal sealed record PluginCommand(string Program, string CommandLine, string Folder)
+    {
+        public PluginRefusal Refusal { get; init; }
+
+        /// <summary>No program, for <paramref name="why"/>.</summary>
+        internal static PluginCommand Without(PluginRefusal why) => new(null, null, null) { Refusal = why };
+    }
 
     /// <summary>A start's outcome: the process, or why there is none.</summary>
     internal sealed class PluginLaunch
@@ -89,7 +115,7 @@ namespace PadForge.Services.Plugins
     }
 
     /// <summary>
-    /// Starts a plugin (#597) with the user's ordinary rights, whatever
+    /// Starts a plugin (#600) with the user's ordinary rights, whatever
     /// rights PadForge has, by the route PowerToys' run_non_elevated takes
     /// (src/common/utils/elevation.h): the desktop shell's process is named
     /// the new process's parent through
@@ -125,13 +151,21 @@ namespace PadForge.Services.Plugins
         internal delegate string[] VariablesReader(SafeProcessHandle process, out int error);
 
         private readonly VariablesReader _variablesOf;
+        private readonly Func<SafeProcessHandle, bool, bool?> _rightsOf;
 
         public PluginLauncher() : this(null) { }
 
         /// <summary>A launcher that reads the shell's variables with
         /// <paramref name="variablesOf"/>, a test's stand-in, or
-        /// <see cref="ShellVariables"/> when null.</summary>
-        internal PluginLauncher(VariablesReader variablesOf) => _variablesOf = variablesOf ?? ShellVariables;
+        /// <see cref="ShellVariables"/> when null, and a process's rights
+        /// with <paramref name="rightsOf"/> (the process, and true for the
+        /// shell, false for the process made under it), or
+        /// <see cref="HasAdministratorRights"/> when null.</summary>
+        internal PluginLauncher(VariablesReader variablesOf, Func<SafeProcessHandle, bool, bool?> rightsOf = null)
+        {
+            _variablesOf = variablesOf ?? ShellVariables;
+            _rightsOf = rightsOf ?? ((process, _) => HasAdministratorRights(process));
+        }
 
         /// <summary>Set for the test host's whole life: only a program in the
         /// test host's own folder, the helper the tests build, is
@@ -152,11 +186,15 @@ namespace PadForge.Services.Plugins
         public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)
         {
             if (Refuses(command?.Program)) return PluginLaunch.Refused(PluginRefusal.OffLimits);
-            if (command == null) return PluginLaunch.Refused(PluginRefusal.NoProgram);
+            if (command?.Program == null) return PluginLaunch.Refused(command?.Refusal is { } why and not PluginRefusal.None ? why : PluginRefusal.NoProgram);
 
             using var shellProcess = OpenShell();
             if (shellProcess == null) return PluginLaunch.Refused(PluginRefusal.NoShell);
-            if (HasAdministratorRights(shellProcess) != false) return PluginLaunch.Refused(PluginRefusal.ShellElevated);
+            switch (_rightsOf(shellProcess, true))
+            {
+                case true: return PluginLaunch.Refused(PluginRefusal.ShellElevated);
+                case null: return PluginLaunch.Refused(PluginRefusal.RightsUnknown);
+            }
             string block = UserVariables.Block(_variablesOf(shellProcess, out int variablesError), variables);
             if (block == null) return PluginLaunch.Refused(PluginRefusal.Failed, variablesError);
 
@@ -199,8 +237,16 @@ namespace PadForge.Services.Plugins
                     refusal = "job";
                 }
                 // The shell's token is the user's own. A process that has
-                // administrator rights all the same is never let run.
-                else if (HasAdministratorRights(process) != false) refusal = "rights";
+                // administrator rights all the same, or whose rights cannot
+                // be read, is never let run.
+                else
+                {
+                    switch (_rightsOf(process, false))
+                    {
+                        case true: refusal = "rights"; break;
+                        case null: refusal = "unknown"; break;
+                    }
+                }
 
                 if (refusal != null)
                 {
@@ -208,9 +254,12 @@ namespace PadForge.Services.Plugins
                     CloseHandle(thread);
                     process.Dispose();
                     job.Dispose();
-                    return refusal == "rights"
-                        ? PluginLaunch.Refused(PluginRefusal.ShellElevated)
-                        : PluginLaunch.Refused(PluginRefusal.Failed, code);
+                    return refusal switch
+                    {
+                        "rights" => PluginLaunch.Refused(PluginRefusal.StartedElevated),
+                        "unknown" => PluginLaunch.Refused(PluginRefusal.RightsUnknown),
+                        _ => PluginLaunch.Refused(PluginRefusal.Failed, code),
+                    };
                 }
 
                 ResumeThread(thread);
@@ -275,6 +324,36 @@ namespace PadForge.Services.Plugins
         /// 2026-11-26.</summary>
         internal static bool? ThisProcessHasAdministratorRights()
             => OpenProcessToken(GetCurrentProcess(), TokenQuery, out var token) ? RightsOf(token) : null;
+
+        /// <summary>
+        /// Whether the desktop shell's user has no lower right than full
+        /// administrator rights, so a program started with PadForge's own
+        /// rights in place of the user's gives nothing away: UAC is off
+        /// (EnableLUA 0), or the shell's token has administrator rights and
+        /// no linked token (TokenElevationTypeDefault, "The token does not
+        /// have a linked token", Microsoft, TOKEN_ELEVATION_TYPE). The second
+        /// is the built-in Administrator's token while Admin Approval Mode is
+        /// off for that account, its default (Microsoft, "User Account
+        /// Control: Admin Approval Mode for the Built-in Administrator
+        /// account", FilterAdministratorToken). An administrator whose token
+        /// UAC splits reads Limited, or Full for an Explorer started
+        /// elevated, and a standard user reads Default without rights. A
+        /// token that cannot be read counts as one with a lower right.
+        /// </summary>
+        internal static bool ShellUserHasNoLowerRight()
+        {
+            if (NativeHost.NativeHost.UacIsOff()) return true;
+            using var shell = OpenShell();
+            if (shell == null || !OpenProcessToken(shell, TokenQuery, out var token)) return false;
+            using (token)
+            {
+                int? type = AutomationClientIdentity.ReadInt(token, TokenElevationTypeClass);
+                int? elevated = AutomationClientIdentity.ReadInt(token, TokenElevation);
+                int? integrity = AutomationClientIdentity.ReadIntegrity(token);
+                return type == LogonStart.TokenElevationTypeDefault && elevated != null && integrity != null
+                       && (elevated.Value != 0 || integrity.Value >= HighIntegrity);
+            }
+        }
 
         private static bool? RightsOf(SafeAccessTokenHandle token)
         {
@@ -428,6 +507,7 @@ namespace PadForge.Services.Plugins
         private const uint ProcessQueryLimitedInformation = 0x1000;
         private const uint TokenQuery = 0x0008;
         private const int TokenElevation = 20;
+        private const int TokenElevationTypeClass = 18;
         private const int HighIntegrity = 0x3000;
         private const uint ExtendedStartupInfoPresent = 0x00080000;
         private const uint CreateUnicodeEnvironment = 0x00000400;

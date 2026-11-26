@@ -27,7 +27,7 @@ PadForge puts two variables in the plugin's environment: `PADFORGE_PLUGIN_TOKEN`
 
 The key works once, and only from the process PadForge started or one it started in turn. Until the hello, PadForge holds the plugin's file open so nothing can change it. After the hello the file is free to rebuild.
 
-A plugin sends a line at least every 2 seconds, `beat` when it has nothing else to say. When it falls silent, its devices rest at once and go offline after 5 seconds, and after 60 seconds PadForge ends it and starts it again with the growing pause, unless a debugger is attached to it. Five failures in a row stop it until you press Start.
+A plugin sends a line at least every 2 seconds, `beat` when it has nothing else to say. When it falls silent, its devices rest at once and go offline after 5 seconds until its next line, and after 60 seconds PadForge ends it and starts it again with the growing pause, unless a debugger is attached to it. Five failures in a row stop it until you press Start.
 
 ## The wire
 
@@ -41,17 +41,18 @@ A value sent is PadForge's raw number (axes 0 to 65535, a stick at rest on 32768
 |---|---|
 | `hello name="..." kind=plugin token=... protocol=1 [units=plain] [lease=<ms>]` | Opens the session. The answer gives PadForge's version, the protocol and the level. |
 | `declare key=<key> name="..." {json}` | Adds a device, or gives the one of that key a new shape. A plugin may add 16. The answer carries its `id`. |
-| `s <id> b0=1 a0=-50% h0=90deg ...` | Sets controls of its device as one change: by the names its declaration gave (`Fire=1`), or `b<i>` buttons, `a<i>` axes, `h<i>` hats. A control changes once a pass, so a press and its release sent together land on two passes. |
+| `s <id> b0=1 a0=-50% h0=90deg ...` | Sets controls of its device as one change: by the names its declaration gave (`Fire=1`), or `b<i>` buttons, `a<i>` axes, `h<i>` hats. A hat's name with `Up`, `Right`, `Down` or `Left` presses or lets go of that direction alone (`HatUp=1` for the first hat). A bare `rest` puts every control at rest before the rest of the line applies. A device that declares them also takes `gyro=x,y,z` in radians a second, `accel=x,y,z` in meters a second squared, `bat=` 0 to 100 and `charging=0` or `1`, a touchpad's finger as `t<pad>.<finger>=x,y,down` or `x,y,down,pressure` (x, y and pressure 0 to 1, down 0 or 1) and its click as `tc<pad>=0` or `1`, pads 0 to 3 and fingers 0 to 9. Motion, a battery, a pad or a finger the device did not declare is dropped. A control changes once a pass, so a press and its release sent together land on two passes. |
 | `rest <id>` | Puts every control of its device at rest. |
 | `gone <id>` | Takes its device offline. |
 | `setting key=<key> kind=<kind> name="..." [...] [{json}]` | Declares a setting or control. The answer gives `key=` and the `value=` in force. |
 | `setting key=<key> value=<value> [device=<key>]` | Sets a status line, or a value the plugin changed itself. |
-| `setting key=<key> [device=<key>] {"choices":[...]}` | Replaces a choice's list, to keep it current. |
-| `setting clear` | Takes back every declaration of this run. |
+| `setting key=<key> [device=<key>] {"choices":[...]}` | Replaces a choice's list, to keep it current. A kept value the new list no longer holds goes back to the default, which `e setting` sends. |
+| `setting clear` | Takes back every declaration of this run. The values stay. |
+| `setting clear device=<key>` | That device is gone for good: its declarations and its values go. |
 | `log "text"` | A line for the plugin's log on the Plugins page, up to 500 characters. |
 | `beat` | Keeps the lease. Answered only with a tag. |
 | `bye` | Closes the session. |
-| `state`, `activate`, `deactivate`, `query`, `engine on`, `controllers off`, `slot 2 on`, `show`, `hide`, `minimize`, `snapshot`, `record start`, `version`, `exit` | PadForge's commands, in the words `PadForge.Control` takes. |
+| `state`, `activate`, `deactivate`, `query`, `engine on`, `controllers off`, `slot 2 on`, `show`, `hide`, `minimize`, `maximize`, `snapshot`, `record start`, `version`, `exit` | PadForge's commands, in the words `PadForge.Control` takes. |
 | `devices`, `caps <id>`, `read <id>`, `outputs <n>` | Lists, a device's named controls, its state, what a virtual controller sends. |
 | `sub <id> state`, `sub <id> A`, `sub <id> A claim`, `sub <id> HatUp claim`, `sub <id> LeftX above=80%`, `sub <id> LeftX below=-80% claim`, `sub devices`, `unsub <id> A`, `unsub <id> line=<n>` | Events, starting with the whole state. `claim` takes the control from the game while the subscription lives: a button reads up, a hat's direction is left out, an axis past its line reads at its rest. A line's answer gives its number, `ok line=<n>`. |
 | `own <id> A=1`, `set <id> LeftX=40%`, `rel <id> A`, `var name=value` | Holds a control of any device, puts a value once until the device's own input moves it, lets go, sets a named value for Custom Expression triggers. |
@@ -65,9 +66,9 @@ A value sent is PadForge's raw number (axes 0 to 65535, a stick at rest on 32768
 | `e rumble <id> <low> <high>` | A game's rumble for its device, 0 to 65535 each. |
 | `e trigrumble <id> <left> <right>` | Trigger rumble. |
 | `e trigfx <id> <left> <right>` | Adaptive trigger effects, for a device that declares `trigfx`: each trigger's 11-byte effect program as 22 hex digits, its mode first, as the game wrote it to the controller's DualSense. |
-| `e led <id> <rrggbb>` | The light's color. |
-| `e player <id> <n>` | The player number, from 1. |
-| `e setting key=<key> value=<value> [device=<key>]` | The user, or an assistant, changed a setting. It arrives before anything PadForge sends after it. A reset sends the default. |
+| `e led <id> <rrggbb>` | The light's color, and `000000` once no virtual controller holds a device that was lit. |
+| `e player <id> <n>` | The player number, from 1, and 0 once no virtual controller holds the device. |
+| `e setting key=<key> value=<value> [device=<key>]` | The user, or an assistant, changed a setting, or a new list of choices no longer held its value. It arrives before anything PadForge sends after it. A reset sends the default. |
 | `e press key=<key> [device=<key>]` | The user pressed a button the plugin declared. |
 | `e choices key=<key> [device=<key>]` | A choice's list opened: send its list as it is now. |
 | `e state <id> b=... a=... h=...`, `e state <id> offline` | A followed device's whole state, when following starts and each time it comes back, and its going. |
@@ -96,9 +97,9 @@ Limits: 64 settings a plugin, 1 KB a value, 16 KB of values a plugin. Words are 
 | `group` | every kind | A heading the setting sits under, in the order groups first appear. |
 | `device` | every kind | A device's key: the setting belongs to that device's panel. |
 | `default` | values | The value a new plugin or device starts with. |
-| `min`, `max`, `step` | number | The range and the step. A value outside the range is refused with the range in words. |
+| `min`, `max`, `step` | number | The range and the step, which is from 0.0000000001 to max minus min. A value outside the range is refused with the range in words. |
 | `unit` | number | Shown after the value: `s`, `ms`, `%`. |
-| `choices` | choice | In the JSON: `["A","B"]`, or `[{"value":"a","name":"A"}]`. Or a word: `choices="A,B"`. |
+| `choices` | choice | In the JSON: `["A","B"]`, or `[{"value":"a","name":"A"}]`. Or a word: `choices="A,B"`. A value given twice is refused. |
 | `stay` | pad | `1`: the pad stays where it is let go. Otherwise it goes back to its center. |
 | `when` | every kind | The key of a switch: shown only while that switch is on. |
 | `look` | pad, number, switch | `compact`: drawn beside the group's other compact ones in one row, a switch as a toggle. |
@@ -133,4 +134,4 @@ Example:
 
 ## Exit codes and signing
 
-A plugin's exit code shows in its log. Sign it with your certificate and its card names you as its signer, and a rebuilt, signed file still asks for approval, since approval is for the bytes.
+A plugin's exit code shows in its log. Sign it with your certificate and its card names you as its signer. A rebuilt, signed file asks for approval again, since approval is for the bytes, unless the user turns on Trust New Versions From This Signer on its card: PadForge then takes a new version signed with the same certificate key without asking.

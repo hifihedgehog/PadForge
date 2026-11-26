@@ -322,12 +322,16 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheSensaRowOpensOnlyWithSynapseAndTheEngine()
+        public void TheSensaRowOpensOnlyWithTheSensaRuntimeAndTheEngine()
         {
-            var both = new PeripheralPresence(false, false, true, false, true);
+            // The row stands on the runtime the Interhaptics provider loads,
+            // RzInterHaptics.dll, and not on Synapse's Chroma runtime.
+            var both = new PeripheralPresence(false, false, false, false, true) { RazerSensaRuntime = true };
             Assert.True(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa, both));
-            Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa, both with { RazerSynapse = false }));
+            Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa, both with { RazerSensaRuntime = false }));
             Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa, both with { SensaPlatform = false }));
+            Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa,
+                both with { RazerSensaRuntime = false, RazerSynapse = true }));
         }
 
         [Fact]
@@ -3121,8 +3125,17 @@ namespace PadForge.Tests
         [Fact]
         public void AnImportedProfileFileMigratesItsSwitch()
         {
-            string import = MethodBody(Text("PadForge.App", "Common", "ProfileTransfer.cs"),
-                "public static ProfileData Import(string srcPath, out List<string> registeredPackages)");
+            // Both forms of Import, the file's and the bytes an assistant's
+            // import read, land the profile through ImportFrom (#600).
+            string transfer = Text("PadForge.App", "Common", "ProfileTransfer.cs");
+            foreach (string signature in new[]
+                     {
+                         "public static ProfileData Import(string srcPath, out List<string> registeredPackages)",
+                         "public static ProfileData Import(byte[] bytes, out List<string> registeredPackages)",
+                     })
+                Assert.Contains("return ImportFrom(zip, registeredPackages);", MethodBody(transfer, signature));
+            string import = MethodBody(transfer,
+                "private static ProfileData ImportFrom(ZipArchive zip, List<string> registeredPackages)");
             Assert.Contains("PeripheralSwitchMigration.MigrateImported(profile);", import);
         }
 

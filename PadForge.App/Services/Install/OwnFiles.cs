@@ -36,9 +36,10 @@ namespace PadForge.Services.Install
         /// </summary>
         internal static (int Written, int Removed) Mirror(string folder, IReadOnlyList<(string Path, byte[] Bytes)> files)
         {
-            if (!IsOwnFolder(folder)) throw new InvalidOperationException("PadForge writes only a folder of its own, and " + folder + " is not.");
+            if (!IsOwnFolder(folder))
+                throw new InstallProblem(InstallReason.NotOurs, "PadForge writes only a folder of its own, and " + folder + " is not.", detail: folder);
             if (files.Count == 0 || !IsPriorInstall(folder, files[0].Path))
-                throw new InvalidOperationException(folder + " holds files PadForge did not write, so PadForge leaves it as it is.");
+                throw new InstallProblem(InstallReason.NotOurs, folder + " holds files PadForge did not write, so PadForge leaves it as it is.", detail: folder);
             string root = Path.GetFullPath(folder);
             Directory.CreateDirectory(root);
             var kept = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -102,10 +103,11 @@ namespace PadForge.Services.Install
         /// there was one.</summary>
         internal static bool RemoveFolder(string folder, string marker)
         {
-            if (!IsOwnFolder(folder)) throw new InvalidOperationException("PadForge removes only a folder of its own, and " + folder + " is not.");
+            if (!IsOwnFolder(folder))
+                throw new InstallProblem(InstallReason.NotOurs, "PadForge removes only a folder of its own, and " + folder + " is not.", detail: folder);
             if (!Directory.Exists(folder)) return false;
             if (!IsPriorInstall(folder, marker))
-                throw new InvalidOperationException(folder + " holds files PadForge did not write, so PadForge leaves it as it is.");
+                throw new InstallProblem(InstallReason.NotOurs, folder + " holds files PadForge did not write, so PadForge leaves it as it is.", detail: folder);
             DeleteFolder(folder, recursive: true);
             return true;
         }
@@ -218,9 +220,11 @@ namespace PadForge.Services.Install
             }
             catch (JsonException ex)
             {
-                throw new InvalidOperationException(path + " is not JSON PadForge can read, so PadForge leaves it as it is: " + ex.Message, ex);
+                throw new InstallProblem(InstallReason.SettingsUnreadable, path + " is not JSON PadForge can read, so PadForge leaves it as it is: " + ex.Message,
+                    detail: path, inner: ex);
             }
-            return node as JsonObject ?? throw new InvalidOperationException(path + " does not hold a JSON object, so PadForge leaves it as it is.");
+            return node as JsonObject ?? throw new InstallProblem(InstallReason.SettingsUnreadable,
+                path + " does not hold a JSON object, so PadForge leaves it as it is.", detail: path);
         }
 
         /// <summary>Sets <paramref name="name"/> under
@@ -231,9 +235,9 @@ namespace PadForge.Services.Install
         {
             var root = ReadJson(path);
             if (root[container] != null && root[container] is not JsonObject)
-                throw new InvalidOperationException(path + " has a " + container + " that is not an object, so PadForge leaves it as it is.");
+                throw new InstallProblem(InstallReason.SettingsUnreadable, path + " has a " + container + " that is not an object, so PadForge leaves it as it is.", detail: path);
             var (text, bom) = ReadText(path);
-            WriteText(path, JsoncEdit.Set(text, container, name, entry.ToJsonString(Indented)), bom);
+            WriteText(path, Edited(path, () => JsoncEdit.Set(text, container, name, entry.ToJsonString(Indented))), bom);
         }
 
         /// <summary>Takes <paramref name="name"/> out from under
@@ -244,20 +248,28 @@ namespace PadForge.Services.Install
             if (!File.Exists(path)) return false;
             if (ReadJson(path)[container]?[name] == null) return false;
             var (text, bom) = ReadText(path);
-            string edited = JsoncEdit.Remove(text, container, name);
+            string edited = Edited(path, () => JsoncEdit.Remove(text, container, name));
             if (edited == null) return false;
             WriteText(path, edited, bom);
             return true;
         }
 
-        /// <summary>The entry under <paramref name="container"/>, or null.
-        /// Null too for a file PadForge cannot read.</summary>
+        /// <summary>The entry under <paramref name="container"/>, or null
+        /// when the file holds none. Throws for a file PadForge cannot read,
+        /// which says neither that the entry is there nor that it is
+        /// not.</summary>
         internal static JsonObject JsonEntry(string path, string container, string name)
+            => ReadJson(path)[container]?[name] as JsonObject;
+
+        /// <summary>An edit of the file's own text (JsoncEdit), whose refusal
+        /// of a shape it cannot edit names the file.</summary>
+        private static string Edited(string path, Func<string> edit)
         {
-            try { return ReadJson(path)[container]?[name] as JsonObject; }
-            catch (InvalidOperationException) { return null; }
-            catch (IOException) { return null; }
-            catch (UnauthorizedAccessException) { return null; }
+            try { return edit(); }
+            catch (InvalidOperationException ex) when (ex is not InstallProblem)
+            {
+                throw new InstallProblem(InstallReason.SettingsUnreadable, path + ": " + ex.Message, detail: path, inner: ex);
+            }
         }
 
         private static (string Text, bool Bom) ReadText(string path)

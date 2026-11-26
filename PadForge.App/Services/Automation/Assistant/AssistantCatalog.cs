@@ -98,8 +98,6 @@ namespace PadForge.Services.Automation
             MouseSteeringCatalog.DrawnOn = () => pageOf?.Invoke(SearchPage.Pad);
         }
 
-        internal AssistantCatalogParts Parts => _parts;
-
         // ─────────────────────────────────────────────
         //  The places
         // ─────────────────────────────────────────────
@@ -210,8 +208,33 @@ namespace PadForge.Services.Automation
             return null;
         }
 
-        private string DeviceOf(SearchEntry entry)
-            => entry.Page == SearchPage.Devices && _vm.Devices?.SelectedDevice is { } row ? AutomationDevices.IdOf(row.InstanceGuid) : null;
+        /// <summary>The device an entry's place is shown for, in its ID
+        /// after <c>@d</c>: the Devices page's device, and for a setting of
+        /// a controller's page the device its Driven by picks, whose
+        /// settings the page shows (a PadSetting is a controller's and a
+        /// device's). The controller page's buttons, cards and menus act on
+        /// the controller and carry none.</summary>
+        private string DeviceOf(SearchEntry entry, PadViewModel pad)
+        {
+            if (entry.Page == SearchPage.Devices)
+                return _vm.Devices?.SelectedDevice is { } row ? AutomationDevices.IdOf(row.InstanceGuid) : null;
+            if (CarriesDrivenBy(entry) && pad?.SelectedMappedDevice is { } picked && picked.InstanceGuid != Guid.Empty)
+                return AutomationDevices.IdOf(picked.InstanceGuid);
+            return null;
+        }
+
+        /// <summary>Whether an entry's place carries the controller page's
+        /// Driven by device: a setting of that page.</summary>
+        private static bool CarriesDrivenBy(SearchEntry entry) => entry.Page == SearchPage.Pad && entry.Kind == SearchKind.Setting;
+
+        /// <summary>Whether an ID is a setting of a controller's page, by
+        /// its page word and kind (SearchIds: "pad/" names a setting).</summary>
+        private static bool IsControllerSettingId(string bare) => bare.StartsWith("pad/", StringComparison.Ordinal);
+
+        /// <summary>Whether an ID is the Devices page's, by its page word
+        /// (SearchIds.PageWord).</summary>
+        private static bool IsDevicesId(string bare)
+            => bare.StartsWith("devices/", StringComparison.Ordinal) || bare.StartsWith("devices.", StringComparison.Ordinal);
 
         /// <summary>Every place of the catalog, the five pages as they show
         /// now first. A five-page entry that shows on no controller and no
@@ -229,7 +252,7 @@ namespace PadForge.Services.Automation
                 {
                     Entry = s.Entry, Item = s.Item, Label = s.Label, Pad = s.Pad, Section = s.Section, ReadValue = s.Value, Showing = true,
                     Id = SearchIds.With(_service.IdOf(s.Entry), s.Entry.Page == SearchPage.Pad ? NumberOf(s.Pad) : null,
-                        ItemIndexOf(s.Entry, s.Item, s.Pad), DeviceOf(s.Entry)),
+                        ItemIndexOf(s.Entry, s.Item, s.Pad), DeviceOf(s.Entry, s.Pad)),
                 };
                 if (s.Entry.Kind == SearchKind.MenuItem && s.Entry.ItemsList != null) list.AddRange(EachItemsMenu(place));
                 else list.Add(place);
@@ -237,8 +260,10 @@ namespace PadForge.Services.Automation
             foreach (var entry in _service.Index)
                 if (!shown.Contains(entry)) list.Add(new Place { Entry = entry, Id = _service.IdOf(entry), Showing = false });
             AddCatalogMarkup(list);
+            // The tray's items as its menu shows them now: Mark the Recording
+            // while a recording is captured.
             foreach (var entry in _tray)
-                list.Add(new Place { Entry = entry, Id = _trayIds[entry], Showing = true });
+                list.Add(new Place { Entry = entry, Id = _trayIds[entry], Showing = TrayMenu.Shows(TrayKey(entry)) });
             foreach (var live in LiveCatalog.Entries(_vm))
                 list.Add(new Place { Live = live, Id = live.Id, Showing = true });
             return list;
@@ -255,11 +280,8 @@ namespace PadForge.Services.Automation
                 if (!locators.TryGetValue(root, out var locator)) locators[root] = locator = new SearchLocator(_ => root);
                 return locator;
             }
-            foreach (var entry in _service.Dialogs)
+            void Add(SearchEntry entry, FrameworkElement root, string id)
             {
-                FrameworkElement root = entry.Page == SearchPage.Dialog
-                    ? open.FirstOrDefault(d => d.Name == entry.Dialog)?.Element
-                    : _parts.CatalogPageOf?.Invoke(entry.Page);
                 DependencyObject label = null;
                 if (root != null && entry.Kind != SearchKind.Dialog && entry.Kind != SearchKind.MenuItem)
                 {
@@ -269,14 +291,57 @@ namespace PadForge.Services.Automation
                 bool showing = entry.Kind == SearchKind.Dialog
                     ? root != null
                     : label != null && SearchLocator.Shows(label, root);
-                list.Add(new Place { Entry = entry, Id = _service.IdOf(entry), Label = label, Root = root, Showing = showing });
+                list.Add(new Place { Entry = entry, Id = id, Label = label, Root = root, Showing = showing });
+            }
+            foreach (var entry in _service.Dialogs)
+            {
+                if (entry.Page != SearchPage.Dialog)
+                {
+                    Add(entry, _parts.CatalogPageOf?.Invoke(entry.Page), _service.IdOf(entry));
+                    continue;
+                }
+                // Each open window of the dialog's class has its places,
+                // under its own ID.
+                var windows = open.Where(d => d.Name == entry.Dialog).ToList();
+                if (windows.Count == 0) Add(entry, null, _service.IdOf(entry));
+                foreach (var d in windows) Add(entry, d.Element, WindowId(_service.IdOf(entry), d));
             }
             // A window PadForge shows that no markup of the catalog
             // describes is read as it shows: its title, text and buttons.
             foreach (var d in open)
                 if (!_service.Dialogs.Any(e => e.Kind == SearchKind.Dialog && e.Dialog == d.Name))
-                    list.Add(new Place { Id = "open/" + d.Name, Root = d.Element, Showing = true });
+                    list.Add(new Place { Id = WindowId("open/" + d.Name, d), Root = d.Element, Showing = true });
         }
+
+        /// <summary>Each open window's place among the open windows of its
+        /// class, counted from 1 in the order they opened and kept for the
+        /// window's life (#600): two Delete confirms open at once are two
+        /// dialogs, each with an ID of its own.</summary>
+        private readonly System.Runtime.CompilerServices.ConditionalWeakTable<FrameworkElement, object> _windowOrdinals = new();
+
+        /// <summary>Gives each window of <paramref name="open"/> its place,
+        /// the first free one of its class, in the order they opened.</summary>
+        private void NumberWindows(List<OpenDialog> open)
+        {
+            foreach (var d in open)
+            {
+                if (_windowOrdinals.TryGetValue(d.Element, out _)) continue;
+                var taken = new HashSet<int>();
+                foreach (var o in open)
+                    if (o.Name == d.Name && !ReferenceEquals(o.Element, d.Element) && _windowOrdinals.TryGetValue(o.Element, out object n))
+                        taken.Add((int)n);
+                int ordinal = 1;
+                while (taken.Contains(ordinal)) ordinal++;
+                _windowOrdinals.AddOrUpdate(d.Element, ordinal);
+            }
+        }
+
+        /// <summary>An open window's ID: its class's, and after the first
+        /// window of its class its place, as <c>open/Window~2</c>.</summary>
+        private string WindowId(string classId, OpenDialog d)
+            => _windowOrdinals.TryGetValue(d.Element, out object n) && (int)n > 1
+                ? classId + "~" + ((int)n).ToString(CultureInfo.InvariantCulture)
+                : classId;
 
         /// <summary>The place an ID names, read now. Refuses an ID no place
         /// has.</summary>
@@ -287,6 +352,16 @@ namespace PadForge.Services.Automation
             all ??= Places();
             var found = all.FirstOrDefault(p => string.Equals(p.Id, want, StringComparison.Ordinal));
             if (found != null) return found;
+            // A controller page's setting named with no device: the device
+            // its Driven by picks now, as before a device was picked.
+            if (SearchIds.TryRead(want, out string own, out int? atController, out int? atItem, out string atDevice)
+                && atDevice == null && atController != null && IsControllerSettingId(own))
+            {
+                found = all.FirstOrDefault(p => p.Entry != null && CarriesDrivenBy(p.Entry)
+                    && SearchIds.TryRead(p.Id, out string b, out int? c, out int? i, out string d) && d != null
+                    && b == own && c == atController && i == atItem);
+                if (found != null) return found;
+            }
             // An entry's own ID with nothing it is shown for: the first place
             // it shows, on the first controller, item or device that has it.
             found = all.Where(p => p.Entry != null && _service.IdOf(p.Entry) == want && !(p.Entry.ItemsList != null && p.Item != null))
@@ -311,9 +386,11 @@ namespace PadForge.Services.Automation
         /// after, before anything is drawn.</summary>
         private T WithDevice<T>(string id, Func<T> work)
         {
-            SearchIds.TryRead(id?.Trim(), out _, out _, out _, out string device);
+            SearchIds.TryRead(id?.Trim(), out string bare, out int? controller, out _, out string device);
+            if (device != null && controller != null && IsControllerSettingId(bare))
+                return WithDrivenBy(controller.Value, device, work);
             var devices = _vm.Devices;
-            if (device == null || devices == null) return work();
+            if (device == null || devices == null || !IsDevicesId(bare)) return work();
             var row = devices.Devices?.FirstOrDefault(r => AutomationDevices.IdOf(r.InstanceGuid) == device)
                 ?? throw new AssistantRefusal("unknown-device", "No device has the ID " + device + ". list_devices gives them.");
             var before = devices.SelectedDevice;
@@ -321,6 +398,28 @@ namespace PadForge.Services.Automation
             devices.SelectedDevice = row;
             try { return work(); }
             finally { devices.SelectedDevice = before; }
+        }
+
+        /// <summary>Picks a controller's device under Driven by for the
+        /// length of <paramref name="work"/>, and the one it showed back
+        /// after, as the user's pick does (PadViewModel.SelectedMappedDevice,
+        /// which loads that device's settings into the page): a read and a
+        /// set of a controller page's setting are of the device its ID
+        /// names.</summary>
+        private T WithDrivenBy<T>(int controller, string device, Func<T> work)
+        {
+            PadViewModel pad = null;
+            for (int i = 0; i < _vm.Pads.Count; i++)
+                if (NumberOf(_vm.Pads[i]) == controller) { pad = _vm.Pads[i]; break; }
+            if (pad == null) return work();
+            var picked = pad.MappedDevices.FirstOrDefault(m => AutomationDevices.IdOf(m.InstanceGuid) == device)
+                ?? throw new AssistantRefusal("unknown-device", "Controller " + controller.ToString(CultureInfo.InvariantCulture)
+                    + " has no device with the ID " + device + ". read of controller/" + controller.ToString(CultureInfo.InvariantCulture) + " gives its settings' IDs.");
+            var before = pad.SelectedMappedDevice;
+            if (ReferenceEquals(before, picked)) return work();
+            pad.SelectedMappedDevice = picked;
+            try { return work(); }
+            finally { pad.SelectedMappedDevice = before; }
         }
 
         // ─────────────────────────────────────────────
@@ -402,6 +501,14 @@ namespace PadForge.Services.Automation
             ReachReason why;
             if (p.Entry != null) { cls = ReachOf(p.Entry); why = p.Entry.Why; }
             else if (p.LiveItem is { } item) { cls = item.Reach; why = item.Why; }
+            // A window no markup describes takes its own class, as where
+            // reads it (Dialogs, Reach.Effective): one with none is the
+            // user's alone.
+            else if (p.Live == null && p.Root != null)
+            {
+                (cls, why) = Reach.Of(p.Root);
+                if (cls == ReachClass.Unset) { cls = ReachClass.UsersOwn; why = ReachReason.None; }
+            }
             else { cls = ReachClass.Free; why = ReachReason.None; }
             element ??= Target(p);
             if (element != null)
@@ -597,12 +704,16 @@ namespace PadForge.Services.Automation
             if (entry.Value != null)
             {
                 place.ValueText = AutomationReadScrub.ForReach(cls, _service.ValueFor(new SearchService.Shown(entry, p.Item, p.Label, p.Pad, p.Section, p.ReadValue)));
+                // An item's setting reads its range and its control from its
+                // own card, as a write goes through them.
+                var itemParts = entry.ItemsPath != null && entry.Value.Path != null && p.Showing
+                    ? ItemParts(entry, p.Item, LocatorOf(p)) : null;
                 switch (entry.Value.Kind)
                 {
                     case SearchValueKind.Number:
                     {
                         place.Takes = "number";
-                        var (min, max) = RangeOf(row, entry);
+                        var (min, max) = itemParts != null ? RangeIn(itemParts, entry.Value.Path) : RangeOf(row, entry);
                         place.Minimum = min;
                         place.Maximum = max;
                         place.Unit = entry.Value.UnitKey != null ? PadForge.Resources.Strings.Strings.Get(entry.Value.UnitKey) : entry.Value.UnitText;
@@ -622,7 +733,7 @@ namespace PadForge.Services.Automation
                         break;
                     }
                 }
-                var input = InputOf(row, entry);
+                var input = itemParts != null ? BoundInput(itemParts, entry.Value.Path) : InputOf(row, entry);
                 if (input != null) place.Enabled = input.IsEnabled;
                 return;
             }
@@ -702,6 +813,12 @@ namespace PadForge.Services.Automation
             if (p.Entry?.Page != SearchPage.Pad) return true;
             return ReferenceEquals(_pageOf(SearchPage.Pad)?.DataContext, p.Pad);
         }
+
+        /// <summary>The locator of a place's page: Search's for its five
+        /// pages, else one in the place's own window.</summary>
+        private SearchLocator LocatorOf(Place p)
+            => p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles
+                ? _service.Locator : new SearchLocator(_ => p.Root);
 
         private object ReadRaw(Place p)
         {
@@ -859,13 +976,26 @@ namespace PadForge.Services.Automation
             return new AssistantFound { Places = picked, LeftOut = Math.Max(0, scored.Count - picked.Count) };
         }
 
+        /// <summary>How well a place's words match a program's query, read
+        /// through the scrubber as its result is: a match or a miss on each
+        /// fragment of a name the user gave a device would spell the name out
+        /// although the result carries its stand-in. A Devices-page entry's
+        /// place names the device the page shows (SearchService.WhereFor), so
+        /// its match must hold on the scrubbed words as well.</summary>
         private int Score(Place p, string q)
         {
             if (p.Entry != null && p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles)
-                return _service.ScoreFor(new SearchService.Shown(p.Entry, p.Item, p.Label, p.Pad, p.Section, p.ReadValue), q);
+            {
+                int score = _service.ScoreFor(new SearchService.Shown(p.Entry, p.Item, p.Label, p.Pad, p.Section, p.ReadValue), q);
+                if (score > 0 && p.Entry.Page == SearchPage.Devices
+                    && SearchMatcher.Score(q, AutomationReadScrub.Text(WordsOf(p)), AutomationReadScrub.Text(WhereOf(p)), SearchLocator.EnglishText(p.Entry.Label)) == 0)
+                    return 0;
+                return score;
+            }
             string words = WordsOf(p);
             if (string.IsNullOrEmpty(words)) return 0;
             string english = p.Entry == null ? null : SearchLocator.EnglishText(p.Entry.Label);
+            if (p.Live != null) return SearchMatcher.Score(q, AutomationReadScrub.Text(words), AutomationReadScrub.Text(WhereOf(p)), english);
             return SearchMatcher.Score(q, words, WhereOf(p), english);
         }
 
@@ -924,7 +1054,8 @@ namespace PadForge.Services.Automation
                         // Its markup's entries, and the items the dialog
                         // gives the catalog while it is open, such as Find a
                         // Mapping's list.
-                        children = all.Where(c => (c.Entry != null && c.Entry.Page == SearchPage.Dialog && c.Entry.Dialog == e.Dialog && c.Entry.Kind != SearchKind.Dialog)
+                        children = all.Where(c => (c.Entry != null && c.Entry.Page == SearchPage.Dialog && c.Entry.Dialog == e.Dialog && c.Entry.Kind != SearchKind.Dialog
+                                                   && ReferenceEquals(c.Root, p.Root))
                                                   || (c.LiveItem is { } li && li.Id.StartsWith("dialog/" + e.Dialog + "/", StringComparison.Ordinal))).ToList();
                         element = p.Root;
                         ReadDialog(read, p);
@@ -963,17 +1094,29 @@ namespace PadForge.Services.Automation
                         var row = p.Live.Payload as DeviceRowViewModel;
                         var devices = _vm.Devices;
                         var before = devices?.SelectedDevice;
+                        List<string> paragraphs;
                         if (devices != null && row != null && !ReferenceEquals(before, row))
                         {
+                            // Every child is described while the device shows:
+                            // its value, whether its control takes a change,
+                            // its range and choices are read from the page's
+                            // controls and data as they show it.
                             devices.SelectedDevice = row;
-                            try { all = Places(otherControllers: false); }
+                            try
+                            {
+                                all = Places(otherControllers: false);
+                                read.Children = DeviceChildren(all, row, prefix);
+                                paragraphs = Paragraphs(all, prefix);
+                            }
                             finally { devices.SelectedDevice = before; }
-                            // The values were read while the device showed.
                         }
-                        read.Children = DeviceChildren(all, row, prefix);
+                        else
+                        {
+                            read.Children = DeviceChildren(all, row, prefix);
+                            paragraphs = Paragraphs(all, prefix);
+                        }
                         // The help its plugin gives it reads with it, as its
                         // panel shows it (#600 item 18).
-                        var paragraphs = Paragraphs(all, prefix);
                         read.Lines.AddRange(paragraphs);
                         if (paragraphs.Count > 0) read.Place.Help = string.Join(" ", paragraphs);
                         return Finish(read, null);
@@ -1120,12 +1263,20 @@ namespace PadForge.Services.Automation
                 throw new AssistantRefusal("users-own", "Only the user can change this, in PadForge. show takes the user to it.");
         }
 
+        /// <summary>The device an entry belongs to, for a program held to
+        /// its own devices (#600 DESIGN-2 N3): a Devices-page entry's, the
+        /// device its ID names after <c>@d</c> as DeviceOf writes it, and a
+        /// declaration's under a device. Null for every other place, and for
+        /// an ID no place has, an open dialog's button among them, so the
+        /// reach refuses it in its own words. A <c>@d</c> a program wrote on
+        /// any other ID gives it no device.</summary>
         public Guid? DeviceHolding(string id)
         {
-            SearchIds.TryRead(id?.Trim(), out _, out _, out _, out string device);
-            if (device != null)
-                return _vm.Devices?.Devices?.FirstOrDefault(r => AutomationDevices.IdOf(r.InstanceGuid) == device)?.InstanceGuid;
-            return HolderOf(Resolve(id))?.Live?.Payload is DeviceRowViewModel row ? row.InstanceGuid : null;
+            Place p;
+            try { p = Resolve(id); }
+            catch (AssistantRefusal) { return null; }
+            if (p.Entry?.Page == SearchPage.Devices) return DeviceRowOf(p.Id)?.InstanceGuid;
+            return HolderOf(p)?.Live?.Payload is DeviceRowViewModel row ? row.InstanceGuid : null;
         }
 
         public AssistantAsk AskFor(string id, JsonElement value) => WithDevice(id, () =>
@@ -1167,6 +1318,10 @@ namespace PadForge.Services.Automation
             var p = Resolve(id);
             var (cls, _) = ClassOf(p);
             RefuseUsersOwn(cls);
+            // A mapping row's option is the row's own: its ID names no row,
+            // so a write could not say which row's it is.
+            if (p.Entry?.RowOptions == true)
+                throw new AssistantRefusal("not-available", RowOptionWords);
             if (!p.Showing)
                 throw new AssistantRefusal("not-available", "The page does not show this now, for that controller or device, so it cannot be set. read says so with showing false.");
             if (p.LiveItem is { } item)
@@ -1178,6 +1333,9 @@ namespace PadForge.Services.Automation
                 // words, such as a plugin setting's range.
                 try { item.Write(TextOf(value)); }
                 catch (ArgumentException refused) { throw new AssistantRefusal("out-of-range", refused.Message); }
+                // An item its row no longer shows, such as a mapping row's
+                // mouse setting once its source changed (MouseSteeringCatalog).
+                catch (InvalidOperationException gone) { throw new AssistantRefusal("not-available", gone.Message); }
                 return Describe(Resolve(id));
             }
             if (p.Entry == null)
@@ -1193,12 +1351,19 @@ namespace PadForge.Services.Automation
                     return Describe(Resolve(id));
                 case SearchKind.Setting:
                     break;
+                case SearchKind.Card:
+                    throw new AssistantRefusal("not-available", "This is a card, which holds settings and is not set itself. read lists its settings, and show takes the user to it.");
+                case SearchKind.Dialog:
+                    throw new AssistantRefusal("not-available", "This is a dialog, which a button opens and which is not set itself. read lists what it holds and its buttons, and press presses one of them.");
                 default:
                     throw new AssistantRefusal("not-available", "This is pressed, not set. press presses it.");
             }
             WriteSetting(p, value);
             return Describe(Resolve(id));
         });
+
+        /// <summary>The words set refuses a mapping row's option with.</summary>
+        internal const string RowOptionWords = "This option belongs to one mapping row, and its ID names no row, so PadForge cannot set it for a program. The user sets it on the row.";
 
         private static string TextOf(JsonElement value) => value.ValueKind switch
         {
@@ -1227,18 +1392,45 @@ namespace PadForge.Services.Automation
                 var label = entry.ItemsPath == null && !entry.RowOptions
                     ? (ReferenceEquals(locator, _service.Locator) ? locator.Find(entry, _service.Index) : p.Label)
                     : p.Label;
+                // An item's setting is written through its own card's control,
+                // as a person's change is: the item's container in its list,
+                // and the control in it bound to the setting.
+                if (entry.ItemsPath != null && entry.Value?.Path != null)
+                {
+                    var parts = ItemParts(entry, p.Item, locator);
+                    // A list bound to another controller just now draws its
+                    // cards at the next layout.
+                    if (parts == null && rebind && page != null)
+                    {
+                        page.UpdateLayout();
+                        parts = ItemParts(entry, p.Item, locator);
+                    }
+                    if (parts == null)
+                        throw new AssistantRefusal("not-available", "The page does not draw this card now, so it cannot be set. show takes the user to it.");
+                    var input = BoundInput(parts, entry.Value.Path);
+                    if (input != null && !input.IsEnabled)
+                        throw new AssistantRefusal("not-available", "The page has this turned off for now. show takes the user to it, where the reason shows.");
+                    switch (entry.Value.Kind)
+                    {
+                        case SearchValueKind.Number: WriteNumber(entry, parts, RangeIn(parts, entry.Value.Path), null, value); break;
+                        case SearchValueKind.Switch: WriteSwitch(entry, parts, null, value); break;
+                        default: WriteChoice(parts.OfType<ComboBox>().FirstOrDefault(c => BoundTo(c, entry.Value.Path)), value); break;
+                    }
+                    return;
+                }
                 var row = label == null ? null : SearchLocator.Up(label) as FrameworkElement;
-                var data = entry.ItemsPath != null ? p.Item : row?.DataContext ?? DataOf(p);
+                var data = row?.DataContext ?? DataOf(p);
                 if (entry.Value?.Path != null)
                 {
                     var input = InputOf(row, entry);
                     if (input != null && !input.IsEnabled)
                         throw new AssistantRefusal("not-available", "The page has this turned off for now. show takes the user to it, where the reason shows.");
+                    var rowParts = row == null ? new List<DependencyObject>() : SearchLocator.LogicalDescendants(row).ToList();
                     switch (entry.Value.Kind)
                     {
-                        case SearchValueKind.Number: WriteNumber(entry, row, data, value); break;
-                        case SearchValueKind.Switch: WriteSwitch(entry, row, data, value); break;
-                        default: WriteChoice(row, value); break;
+                        case SearchValueKind.Number: WriteNumber(entry, rowParts, RangeOf(row, entry), data, value); break;
+                        case SearchValueKind.Switch: WriteSwitch(entry, rowParts, data, value); break;
+                        default: WriteChoice(row == null ? null : SearchLocator.LogicalDescendants(row).OfType<ComboBox>().FirstOrDefault(), value); break;
                     }
                     return;
                 }
@@ -1274,7 +1466,7 @@ namespace PadForge.Services.Automation
             }
             if (parts.OfType<ComboBox>().FirstOrDefault() is { } combo)
             {
-                WriteChoice(row, value);
+                WriteChoice(combo, value);
                 return;
             }
             if (parts.OfType<ListBox>().FirstOrDefault() is { } list)
@@ -1314,19 +1506,26 @@ namespace PadForge.Services.Automation
             return at;
         }
 
-        private void WriteNumber(SearchEntry entry, FrameworkElement row, object data, JsonElement value)
+        /// <param name="parts">The controls the setting may be written
+        /// through: its row's, or its card's for an item's setting.</param>
+        /// <param name="data">What it is written into when no control is
+        /// bound to it, or null to refuse.</param>
+        private void WriteNumber(SearchEntry entry, IReadOnlyList<DependencyObject> parts, (double? Min, double? Max) range,
+            object data, JsonElement value)
         {
             double number;
             if (value.ValueKind == JsonValueKind.Number) number = value.GetDouble();
             else if (value.ValueKind == JsonValueKind.String && double.TryParse(value.GetString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double parsed)) number = parsed;
             else throw new AssistantRefusal("bad-argument", "This setting takes a number.");
-            var (min, max) = RangeOf(row, entry);
+            // NaN passes both range tests, and a setter's clamp keeps it.
+            if (!double.IsFinite(number)) throw new AssistantRefusal("bad-argument", "This setting takes a number.");
+            var (min, max) = range;
             if ((min != null && number < min.Value) || (max != null && number > max.Value))
                 throw new AssistantRefusal("out-of-range", "This setting takes " + Num(min) + " to " + Num(max)
                     + (entry.Value.UnitKey != null ? " " + PadForge.Resources.Strings.Strings.Get(entry.Value.UnitKey) : entry.Value.UnitText != null ? " " + entry.Value.UnitText : string.Empty)
                     + ". " + Num(number) + " is outside it.");
 
-            var numberBox = row == null ? null : SearchLocator.LogicalDescendants(row).OfType<Wpf.Ui.Controls.NumberBox>()
+            var numberBox = parts.OfType<Wpf.Ui.Controls.NumberBox>()
                 .FirstOrDefault(n => BindingOperations.GetBinding(n, Wpf.Ui.Controls.NumberBox.ValueProperty)?.Path?.Path == entry.Value.Path);
             if (numberBox != null)
             {
@@ -1334,7 +1533,7 @@ namespace PadForge.Services.Automation
                 numberBox.GetBindingExpression(Wpf.Ui.Controls.NumberBox.ValueProperty)?.UpdateSource();
                 return;
             }
-            var box = row == null ? null : SearchLocator.LogicalDescendants(row).OfType<TextBox>()
+            var box = parts.OfType<TextBox>()
                 .FirstOrDefault(t => BindingOperations.GetBinding(t, TextBox.TextProperty)?.Path?.Path == entry.Value.Path);
             if (box != null)
             {
@@ -1343,7 +1542,7 @@ namespace PadForge.Services.Automation
                 box.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
                 return;
             }
-            var slider = row == null ? null : SearchLocator.LogicalDescendants(row).OfType<RangeBase>()
+            var slider = parts.OfType<RangeBase>()
                 .FirstOrDefault(r => BindingOperations.GetBinding(r, RangeBase.ValueProperty)?.Path?.Path == entry.Value.Path);
             if (slider != null)
             {
@@ -1351,17 +1550,28 @@ namespace PadForge.Services.Automation
                 slider.GetBindingExpression(RangeBase.ValueProperty)?.UpdateSource();
                 return;
             }
+            // One end of a range's two-thumbed slider, as a trigger's Range.
+            foreach (var ends in parts.OfType<PadForge.Controls.RangeSlider>())
+            {
+                foreach (var end in new[] { PadForge.Controls.RangeSlider.LowerValueProperty, PadForge.Controls.RangeSlider.UpperValueProperty })
+                {
+                    if (BindingOperations.GetBinding(ends, end)?.Path?.Path != entry.Value.Path) continue;
+                    ends.SetCurrentValue(end, number);
+                    ends.GetBindingExpression(end)?.UpdateSource();
+                    return;
+                }
+            }
             Through(entry, data, number.ToString("R", CultureInfo.InvariantCulture));
         }
 
         private static string Num(double? n) => n == null ? "?" : n.Value.ToString("0.###", CultureInfo.InvariantCulture);
 
-        private void WriteSwitch(SearchEntry entry, FrameworkElement row, object data, JsonElement value)
+        private void WriteSwitch(SearchEntry entry, IReadOnlyList<DependencyObject> parts, object data, JsonElement value)
         {
             if (value.ValueKind is not (JsonValueKind.True or JsonValueKind.False))
                 throw new AssistantRefusal("bad-argument", "This setting is a switch: it takes true or false.");
             bool on = value.ValueKind == JsonValueKind.True;
-            var toggle = row == null ? null : SearchLocator.LogicalDescendants(row).OfType<ToggleButton>()
+            var toggle = parts.OfType<ToggleButton>()
                 .FirstOrDefault(t => BindingOperations.GetBinding(t, ToggleButton.IsCheckedProperty)?.Path?.Path == entry.Value.Path);
             if (toggle != null)
             {
@@ -1372,9 +1582,8 @@ namespace PadForge.Services.Automation
             Through(entry, data, on);
         }
 
-        private static void WriteChoice(FrameworkElement row, JsonElement value)
+        private static void WriteChoice(ComboBox combo, JsonElement value)
         {
-            var combo = row == null ? null : SearchLocator.LogicalDescendants(row).OfType<ComboBox>().FirstOrDefault();
             if (combo == null) throw new AssistantRefusal("not-available", "The page does not show this picker now, so it cannot be set.");
             int at = PickOf(Choices(combo), value);
             if (!combo.IsEnabled)
@@ -1382,6 +1591,67 @@ namespace PadForge.Services.Automation
             combo.SelectedIndex = at;
             foreach (var property in new[] { Selector.SelectedItemProperty, Selector.SelectedValueProperty, Selector.SelectedIndexProperty })
                 combo.GetBindingExpression(property)?.UpdateSource();
+        }
+
+        /// <summary>The parts an item's card draws, read from the item's
+        /// container in its list, or null while the list draws none for
+        /// it.</summary>
+        private IReadOnlyList<DependencyObject> ItemParts(SearchEntry entry, object item, SearchLocator locator)
+        {
+            if (item == null || locator.ListOf(entry) is not { } list) return null;
+            if (list.ItemContainerGenerator.ContainerFromItem(item) is not DependencyObject container) return null;
+            return SearchLocator.VisualDescendants(container).ToList();
+        }
+
+        private static bool BoundTo(DependencyObject d, DependencyProperty property, string path)
+            => BindingOperations.GetBinding(d, property)?.Path?.Path == path;
+
+        private static bool BoundTo(ComboBox combo, string path)
+            => BoundTo(combo, Selector.SelectedItemProperty, path) || BoundTo(combo, Selector.SelectedValueProperty, path)
+               || BoundTo(combo, Selector.SelectedIndexProperty, path);
+
+        /// <summary>The control among <paramref name="parts"/> bound to a
+        /// setting's path, or null.</summary>
+        private static Control BoundInput(IReadOnlyList<DependencyObject> parts, string path)
+        {
+            foreach (var c in parts.OfType<Control>())
+            {
+                bool bound = c switch
+                {
+                    Wpf.Ui.Controls.NumberBox => BoundTo(c, Wpf.Ui.Controls.NumberBox.ValueProperty, path),
+                    ToggleButton => BoundTo(c, ToggleButton.IsCheckedProperty, path),
+                    TextBox => BoundTo(c, TextBox.TextProperty, path),
+                    RangeBase => BoundTo(c, RangeBase.ValueProperty, path),
+                    ComboBox combo => BoundTo(combo, path),
+                    PadForge.Controls.RangeSlider => BoundTo(c, PadForge.Controls.RangeSlider.LowerValueProperty, path)
+                                                     || BoundTo(c, PadForge.Controls.RangeSlider.UpperValueProperty, path),
+                    _ => false,
+                };
+                if (bound) return c;
+            }
+            return null;
+        }
+
+        /// <summary>The range of the controls among <paramref name="parts"/>
+        /// bound to a setting's path: a number box's, a slider's, or a
+        /// range slider's whose end it is. A box that types the value has
+        /// none of its own, and its card's slider bounds it.</summary>
+        private static (double? Min, double? Max) RangeIn(IReadOnlyList<DependencyObject> parts, string path)
+        {
+            foreach (var part in parts)
+            {
+                switch (part)
+                {
+                    case Wpf.Ui.Controls.NumberBox box when BoundTo(box, Wpf.Ui.Controls.NumberBox.ValueProperty, path):
+                        return (box.Minimum, box.Maximum);
+                    case RangeBase range when range is not ScrollBar && BoundTo(range, RangeBase.ValueProperty, path):
+                        return (range.Minimum, range.Maximum);
+                    case PadForge.Controls.RangeSlider ends when BoundTo(ends, PadForge.Controls.RangeSlider.LowerValueProperty, path)
+                                                                || BoundTo(ends, PadForge.Controls.RangeSlider.UpperValueProperty, path):
+                        return (ends.Minimum, ends.Maximum);
+                }
+            }
+            return (null, null);
         }
 
         private void Through(SearchEntry entry, object data, object value)
@@ -1421,7 +1691,7 @@ namespace PadForge.Services.Automation
             var target = Target(p);
             if (target is not UIElement element)
                 throw new AssistantRefusal("not-available", "The page does not show this button now, so it cannot be pressed.");
-            return Plan(p, ClassOf(p, target), () => Invoke(element), target);
+            return Plan(p, ClassOf(p, target), () => Invoke(element), target, check: () => CheckInvokable(element));
         }
 
         /// <summary>Whether an ID is a dialog's: a dialog's catalog entry, or
@@ -1432,29 +1702,48 @@ namespace PadForge.Services.Automation
         /// <param name="does">What the press would make PadForge do, one line
         /// each: a press with lines asks first, whatever its class, and the
         /// card lists them after its reason, each once.</param>
+        /// <param name="check">What refuses the press besides its control
+        /// turned off, read now and again when the user's answer comes,
+        /// before the press is posted (AssistantTools.Press): a refusal of a
+        /// posted press reaches no one.</param>
         private AssistantPressPlan Plan(Place p, (ReachClass Class, ReachReason Why) reach, Action press, FrameworkElement target,
-            IReadOnlyList<string> does = null)
+            IReadOnlyList<string> does = null, Action check = null)
         {
             RefuseUsersOwn(reach.Class);
-            if (target != null && !target.IsEnabled)
-                throw new AssistantRefusal("not-available", "The page has this turned off for now. show takes the user to it, where the reason shows.");
+            void CheckNow()
+            {
+                if (target != null && !target.IsEnabled)
+                    throw new AssistantRefusal("not-available", "The page has this turned off for now. show takes the user to it, where the reason shows.");
+                check?.Invoke();
+            }
+            CheckNow();
             var place = Describe(p);
             var detail = new List<string>();
             if (reach.Class == ReachClass.Asks) detail.Add(AssistantToolWords.Reason(reach.Why));
             foreach (string line in does ?? Array.Empty<string>())
                 if (!detail.Contains(line)) detail.Add(line);
             AssistantAsk ask = detail.Count > 0 ? new AssistantAsk(AssistantToolWords.AskPress(place.Name), detail) : null;
-            return new AssistantPressPlan { Place = place, Ask = ask, Press = press };
+            return new AssistantPressPlan { Place = place, Ask = ask, Press = press, Check = CheckNow };
         }
+
+        /// <summary>A tray entry's key, from its AutomationId Tray_key.</summary>
+        private static string TrayKey(SearchEntry entry)
+            => entry.AutomationId?.StartsWith("Tray_", StringComparison.Ordinal) == true ? entry.AutomationId.Substring(5) : null;
 
         private AssistantPressPlan PlanTray(Place p)
         {
-            string key = p.Entry.AutomationId?.StartsWith("Tray_", StringComparison.Ordinal) == true ? p.Entry.AutomationId.Substring(5) : null;
+            string key = TrayKey(p.Entry);
             // A program never brings PadForge's window forward (#438).
             if (key == "Show")
                 throw new AssistantRefusal("users-own", "Only the user brings PadForge's window forward. show asks the user, with Show on PadForge's question card.");
             if (key == null || _parts.PressTray == null)
                 throw new AssistantRefusal("not-available", "PadForge cannot press this tray item here.");
+            // An item the tray menu does not show now, as Mark the
+            // Recording while nothing records, or an ID that names the
+            // item for something it is not shown for, as a device's suffix
+            // a program wrote on it.
+            if (!p.Showing)
+                throw new AssistantRefusal("not-available", "The tray menu does not show this item now, so it cannot be pressed.");
             return Plan(p, ClassOf(p), () => _parts.PressTray(key), null);
         }
 
@@ -1465,6 +1754,10 @@ namespace PadForge.Services.Automation
             FrameworkElement root = p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles
                 ? _pageOf(p.Entry.Page) : p.Root ?? _parts.CatalogPageOf?.Invoke(p.Entry.Page);
             if (NamesNoItem(p)) throw new AssistantRefusal("not-available", EachOwnWords);
+            // A five pages' item named for a controller, item or device the
+            // page does not show it for, a suffix a program wrote among them.
+            if (!p.Showing && p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles)
+                throw new AssistantRefusal("not-available", "The page does not show this button now, so it cannot be pressed.");
             var (owner, found) = MenuOf(p, root);
             if (found == null) throw new AssistantRefusal("not-available", "The page does not show the button whose menu holds this now.");
             // A controller page's menu acts on the controller the page
@@ -1495,7 +1788,7 @@ namespace PadForge.Services.Automation
                 var rows = PadPage.LayerClipboard
                     ?? throw new AssistantRefusal("not-available", "No layer's rows are copied. A layer tab's Copy keeps them first.");
                 var keys = layerPad.OutputType == PadForge.Engine.VirtualControllerType.KeyboardMouse ? RowKeyLines(rows, layerPad) : null;
-                return Plan(p, reach, () => PadPage.PasteLayer(layerPad, mask, rows), owner, keys);
+                return Plan(p, reach, () => PadPage.PasteLayer(layerPad, mask, rows), owner, keys, () => MenuItemTakes(item));
             }
             // A Paste lands the text its card read: another program can
             // change the clipboard while the card waits, so the press hands
@@ -1505,19 +1798,45 @@ namespace PadForge.Services.Automation
             {
                 string scanned = ClipboardText();
                 bool settings = p.Entry.Handler == "PasteSettingsCommand";
-                return Plan(p, reach, () =>
+                void CanPaste()
                 {
+                    MenuItemTakes(item);
                     var command = settings ? pad.PasteSettingsCommand : pad.PasteMacroCommand;
                     if (!command.CanExecute(null)) throw new AssistantRefusal("not-available", "The menu has this item turned off for now.");
+                }
+                return Plan(p, reach, () =>
+                {
+                    CanPaste();
                     if (settings) pad.PasteSettingsText(scanned);
                     else pad.PasteMacroText(scanned);
-                }, owner, PasteLines(p.Entry.Handler, scanned, pad));
+                }, owner, PasteLines(p.Entry.Handler, scanned, pad), CanPaste);
             }
             return Plan(p, reach, () =>
             {
                 if (data != null) HandOver(owner, data);
                 Invoke(item);
-            }, owner);
+            }, owner, check: () =>
+            {
+                MenuItemTakes(item);
+                CheckInvokable(item);
+            });
+        }
+
+        /// <summary>Refuses a menu item its menu has turned off.</summary>
+        private static void MenuItemTakes(MenuItem item)
+        {
+            if (!item.IsEnabled) throw new AssistantRefusal("not-available", "The menu has this item turned off for now.");
+        }
+
+        /// <summary>Refuses an element <see cref="Invoke"/> cannot press, so
+        /// the refusal comes before the press is posted.</summary>
+        internal static void CheckInvokable(UIElement element)
+        {
+            var peer = UIElementAutomationPeer.CreatePeerForElement(element);
+            if (peer?.GetPattern(PatternInterface.Invoke) is IInvokeProvider || peer?.GetPattern(PatternInterface.Toggle) is IToggleProvider
+                || element is ButtonBase)
+                return;
+            throw new AssistantRefusal("not-available", "This cannot be pressed by a program.");
         }
 
         /// <summary>
@@ -1636,7 +1955,7 @@ namespace PadForge.Services.Automation
             var dialogPlace = all.FirstOrDefault(c => c.Id == dialogId && c.Entry?.Kind == SearchKind.Dialog);
             var dialog = dialogPlace?.Root != null
                 ? open.FirstOrDefault(d => ReferenceEquals(d.Element, dialogPlace.Root))
-                : open.FirstOrDefault(d => "open/" + d.Name == dialogId);
+                : open.FirstOrDefault(d => WindowId("open/" + d.Name, d) == dialogId);
             if (dialog == null) throw new AssistantRefusal("not-available", "That dialog is not open. where lists the dialogs open now.");
             int i = 0;
             foreach (var button in dialog.Buttons)
@@ -1663,9 +1982,15 @@ namespace PadForge.Services.Automation
                 if (cls == ReachClass.Asks && !network) detail.Add(AssistantToolWords.Reason(button.Why));
                 detail.AddRange(named);
                 if (named.Count > 0 || (network && starts == null)) detail.Add(AssistantToolWords.ListensOnNetwork());
-                Action check = starts == null ? null : () =>
+                // Read again when the user's answer comes, before the press
+                // is posted (AssistantTools.Press): the button turned off or
+                // gone by then, or turning on more than the card named.
+                Action check = () =>
                 {
-                    if (Starting(starts).Any(line => !named.Contains(line)))
+                    if (element == null || !element.IsEnabled)
+                        throw new AssistantRefusal("not-available", "The dialog has this button turned off for now.");
+                    CheckInvokable(element);
+                    if (starts != null && Starting(starts).Any(line => !named.Contains(line)))
                         throw new AssistantRefusal("not-available", "By now the press would turn on more than PadForge asked about. Press again to ask about what it would turn on now.");
                 };
                 return new AssistantPressPlan
@@ -1674,7 +1999,7 @@ namespace PadForge.Services.Automation
                     Ask = detail.Count > 0 ? new AssistantAsk(AssistantToolWords.AskPress(place.Name), detail) : null,
                     Press = () =>
                     {
-                        check?.Invoke();
+                        check();
                         Invoke(element);
                     },
                     Check = check,
@@ -1734,6 +2059,7 @@ namespace PadForge.Services.Automation
                 var described = DialogRegistry.Describe(element);
                 if (described != null) list.Add(described);
             }
+            NumberWindows(list);
             return list;
         }
 
@@ -1746,7 +2072,7 @@ namespace PadForge.Services.Automation
                 var entry = _service.Dialogs.FirstOrDefault(e => e.Kind == SearchKind.Dialog && e.Dialog == d.Name);
                 result.Open.Add(new AssistantOpenDialog
                 {
-                    Id = entry != null ? _service.IdOf(entry) : "open/" + d.Name,
+                    Id = WindowId(entry != null ? _service.IdOf(entry) : "open/" + d.Name, d),
                     Title = AutomationReadScrub.Text(d.Title),
                     Modal = d.IsModal,
                     Reach = AutomationReadScrub.ReachWord(d.Reach == ReachClass.Unset ? ReachClass.UsersOwn : d.Reach),
@@ -1774,6 +2100,8 @@ namespace PadForge.Services.Automation
                 int index = one - 1;
                 var pad = index >= 0 && index < _vm.Pads.Count ? _vm.Pads[index] : null;
                 where.Controller = NumberOf(pad);
+                if (pad?.SelectedMappedDevice is { } picked && picked.InstanceGuid != Guid.Empty)
+                    where.ControllerDevice = AutomationDevices.IdOf(picked.InstanceGuid);
                 where.Page = "controller/" + where.Controller?.ToString(CultureInfo.InvariantCulture);
                 where.PageName = SearchService.SlotName(pad);
                 if (_pageOf(SearchPage.Pad) is PadPage padPage && pad != null)
@@ -1823,10 +2151,11 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>Whether a Devices-page ID names a device other than the
-        /// one the page shows now.</summary>
+        /// one the page shows now. A controller page's setting names the
+        /// device Driven by picks, which is no Devices-page pick.</summary>
         private bool NamesAnotherDevice(string id)
         {
-            if (!SearchIds.TryRead(id?.Trim(), out _, out _, out _, out string device) || device == null) return false;
+            if (!SearchIds.TryRead(id?.Trim(), out string bare, out _, out _, out string device) || device == null || !IsDevicesId(bare)) return false;
             return _vm.Devices?.SelectedDevice is not { } row || AutomationDevices.IdOf(row.InstanceGuid) != device;
         }
 
@@ -1847,7 +2176,7 @@ namespace PadForge.Services.Automation
         /// <c>@d</c>, or null.</summary>
         private DeviceRowViewModel DeviceRowOf(string id)
         {
-            if (!SearchIds.TryRead(id?.Trim(), out _, out _, out _, out string device) || device == null) return null;
+            if (!SearchIds.TryRead(id?.Trim(), out string bare, out _, out _, out string device) || device == null || !IsDevicesId(bare)) return null;
             return _vm.Devices?.Devices?.FirstOrDefault(r => AutomationDevices.IdOf(r.InstanceGuid) == device);
         }
 

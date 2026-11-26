@@ -72,6 +72,11 @@ namespace PadForge.Engine.Common.OpenXr
         /// read off the last instance-loss event.</summary>
         long InstanceLossWaitMs { get; }
 
+        /// <summary>True once the library host this link reads through
+        /// ended, or its channel broke. Its lost instance is the host's, not
+        /// the runtime's. A link in this process has no host.</summary>
+        bool HostEnded => false;
+
         /// <summary>Asks the runtime for its headset and creates a session on
         /// it. With <see cref="OpenXrSessionCreate.Failed"/> the state says
         /// why. <paramref name="read"/> is what the runtime answered when

@@ -90,7 +90,7 @@ namespace PadForge.Tests
                 Assert.Equal(new[] { "7C down" }, Sent(F13, F14));
                 vc.SubmitKbmState(default, KbmCause.AllOwn);
                 Assert.Equal(new[] { "7C down", "7C up", "7D up" }, Sent(F13, F14));
-                Assert.True(ProgramInputGate.HeldCount > 0);
+                Assert.Equal((uint)High, ProgramInputGate.LastHeldProcess);
 
                 // The same key a program fed goes out to a window at medium.
                 _front = Medium;
@@ -174,6 +174,28 @@ namespace PadForge.Tests
             Assert.Equal(9, im.CombinedKbmCauses[0].Key(F14).Session);
             NextPass(im, State(3), set);
             Assert.True(im.CombinedKbmCauses[0].Key(F14).IsOwn);
+        }
+
+        /// <summary>A device a program feeds costs the poll thread no
+        /// allocation per pass: the devices of a slot come as a list, and
+        /// "(Any Device)" rows read every one of them.</summary>
+        [Fact]
+        public void WorkingOutASlotsCauses_AllocatesNothing_WhileAProgramFeedsADevice()
+        {
+            var im = new InputManager();
+            var set = new MappingSet();
+            for (int i = 0; i < 4; i++) set.Rows.Add(Row(Key((ushort)(F13 + i)), "", "Button 0"));
+            var devices = new List<Guid> { Pad, Script };
+            im.NoteProgramMarks(OwnPad(), State());
+            im.NoteProgramMarks(ProgramPad(8), State(0));
+            for (int i = 0; i < 2000; i++) im.WorkOutSlotCauses(0, set, devices);
+            Thread.Sleep(300);
+            for (int i = 0; i < 2000; i++) im.WorkOutSlotCauses(0, set, devices);
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            for (int i = 0; i < 1000; i++) im.WorkOutSlotCauses(0, set, devices);
+            long allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+            Assert.Equal(8, im.CombinedKbmCauses[0].Key(F13).Session);
+            Assert.Equal(0, allocated);
         }
 
         private static void NextPass(InputManager im, CustomInputState own, MappingSet set)
@@ -418,8 +440,11 @@ namespace PadForge.Tests
             im.WorkOutSlotCauses(0, set, new[] { Script });
             Assert.Equal(4, im.SlotMacroCauses[0].Session);
 
-            // At rest, the stick centered and the trigger let go, the mark comes off.
+            // At rest on a later pass, the stick centered and the trigger let
+            // go, the mark comes off. The pass the device left on keeps it
+            // (AReleaseTheProgramsGoneMade_StartsTheMacro_AsTheProgramsRun).
             im.CombinedRawHidStates[0].Axes[0] = 0;
+            BeginMarks.Invoke(im, null);
             im.WorkOutSlotCauses(0, set, new[] { Script });
             Assert.True(im.SlotMacroCauses[0].IsOwn);
 
@@ -492,8 +517,357 @@ namespace PadForge.Tests
             }
         }
 
+        // ── A device read the slot does not own ──
+
+        private const uint MouseMove = 0x0001, LeftDown = 0x0002;
+
+        private int MovesSent()
+        {
+            InputManager.FlushPendingInput();
+            lock (_sent) return _sent.Count(e => !e.Keyboard && (e.Flags & MouseMove) != 0);
+        }
+
+        private int LeftDownsSent()
+        {
+            InputManager.FlushPendingInput();
+            lock (_sent) return _sent.Count(e => !e.Keyboard && (e.Flags & LeftDown) != 0);
+        }
+
+        /// <summary>A Mouse Move whose axis source is a device on no slot of
+        /// the macro's reads it wherever it is, so a program that drives the
+        /// device drives the move: it is held from a window with rights as a
+        /// program's.</summary>
+        [Fact]
+        public void AMouseMove_ThatReadsAProgramsDeviceOffTheSlot_IsHeldAsTheProgramsOutput()
+        {
+            var row = ProgramPad(7);
+            row.IsOnline = true;
+            row.InputState = new CustomInputState();
+            row.InputState.Axis[0] = 65535;                               // pushed all the way
+            SettingsManager.UserDevices.Items.Add(row);
+            try
+            {
+                var im = new InputManager();
+                im.NoteProgramMarks(row, row.InputState);
+                var macros = new[]
+                {
+                    Macro(MacroTriggerMode.Always, new MacroAction
+                    {
+                        Type = MacroActionType.MouseMove, AxisSource = MacroAxisSource.InputDevice,
+                        SourceDeviceGuid = Script, SourceDeviceAxisIndex = 0, MouseSensitivity = 20, DurationMs = 1000,
+                    }),
+                };
+                ClearSent();
+                Pass(im, macros, pressed: false, OutputCause.Own);
+                Pass(im, macros, pressed: false, OutputCause.Own);
+                Assert.Equal(0, MovesSent());
+
+                // The same move goes out to a window at medium.
+                _front = Medium;
+                Pass(im, macros, pressed: false, OutputCause.Own);
+                Assert.True(MovesSent() > 0);
+            }
+            finally
+            {
+                SettingsManager.UserDevices.Items.Remove(row);
+            }
+        }
+
+        // ── Latches the gate held ──
+
+        private static readonly MethodInfo DesireMouse = typeof(InputManager)
+            .GetMethod("DesireLatchedMouseButton", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly MethodInfo ReconcileMouse = typeof(InputManager)
+            .GetMethod("ReconcileLatchedMouseButtons", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        /// <summary>A latched key and mouse button a program drives, wanted
+        /// while a window with rights is in front, are pressed once that
+        /// window leaves, and the reconcile never believes a press the gate
+        /// held went out.</summary>
+        [Fact]
+        public void ALatchAProgramDrives_IsPressed_OnceTheWindowWithRightsLeaves()
+        {
+            var im = new InputManager();
+            void Reconcile(bool wanted)
+            {
+                im.BeginLatchWants();
+                if (wanted)
+                {
+                    im.DesireLatchedKey(F13, OutputCause.Program(5));
+                    DesireMouse.Invoke(im, new object[] { MacroMouseButton.Left, OutputCause.Program(5) });
+                }
+                im.ReconcileLatchedKeys();
+                ReconcileMouse.Invoke(im, null);
+            }
+            ClearSent();
+            Reconcile(true);
+            Assert.Empty(Sent(F13));
+            Assert.Equal(0, LeftDownsSent());
+
+            _front = Medium;
+            Reconcile(true);
+            Reconcile(true);
+            Assert.Equal(new[] { "7C down" }, Sent(F13));
+            Assert.Equal(1, LeftDownsSent());
+            Reconcile(false);
+            Assert.Equal(new[] { "7C down", "7C up" }, Sent(F13));
+        }
+
+        private static readonly FieldInfo LastAbsCursorX = typeof(KeyboardMouseVirtualController)
+            .GetField("_lastAbsCursorX", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        /// <summary>An aim point a program drives is not taken as placed while
+        /// the gate holds the cursor, so the cursor goes there once the
+        /// window with rights leaves, though the aim point stays.</summary>
+        [Fact]
+        public void AnAimPointTheGateHeld_IsPlaced_OnceTheGateLetsIt()
+        {
+            Assert.True(PadForge.Services.CursorControlService.TryGetPrimarySize(out _, out _));
+            var vc = new KeyboardMouseVirtualController(0);
+            vc.Connect();
+            try
+            {
+                var raw = new KbmRawState { MouseAbsValid = true, MouseAbsX = 0.25f, MouseAbsY = -0.5f };
+                vc.SubmitKbmState(raw, KbmCause.All(OutputCause.Program(5)));
+                Assert.Equal(int.MinValue, (int)LastAbsCursorX.GetValue(vc));
+                _front = Medium;
+                vc.SubmitKbmState(raw, KbmCause.All(OutputCause.Program(5)));
+                Assert.NotEqual(int.MinValue, (int)LastAbsCursorX.GetValue(vc));
+            }
+            finally
+            {
+                vc.Dispose();
+            }
+        }
+
+        // ── A program's device that goes ──
+
+        /// <summary>A program presses its device's button and sends gone:
+        /// the device is taken offline at once, so the pass after reads the
+        /// release with no device of the slot marked. The release-edge macro
+        /// it starts is the program's.</summary>
+        [Fact]
+        public void AReleaseTheProgramsGoneMade_StartsTheMacro_AsTheProgramsRun()
+        {
+            var im = new InputManager();
+            var set = new MappingSet();
+            var macros = new[]
+            {
+                Macro(MacroTriggerMode.OnRelease,
+                    new MacroAction { Type = MacroActionType.KeyPress, KeyCode = F17, DurationMs = 0 }),
+            };
+            void Evaluate(bool pressed)
+            {
+                im.BeginLatchWants();
+                var gp = new Gamepad { Buttons = pressed ? Gamepad.A : (ushort)0 };
+                im.CombinedOutputStates[0] = gp;
+                im.WorkOutSlotCauses(0, set, new[] { Script });
+                im.EvaluateSlotMacros(ref gp, macros);
+                im.ReconcileLatchedKeys();
+            }
+
+            // The program holds A.
+            BeginMarks.Invoke(im, null);
+            im.NoteProgramMarks(ProgramPad(8), State(0));
+            Evaluate(pressed: true);
+            Assert.Equal(8, im.SlotMacroCauses[0].Session);
+
+            // Gone: Step 2 reads the device no more, and the slot is at rest.
+            BeginMarks.Invoke(im, null);
+            Evaluate(pressed: false);
+            Assert.Equal(8, macros[0].RunCause.Session);
+
+            // The pass after, the slot at rest and nothing marked, is the
+            // person's own.
+            BeginMarks.Invoke(im, null);
+            Evaluate(pressed: false);
+            Assert.True(im.SlotMacroCauses[0].IsOwn);
+        }
+
+        /// <summary>The device that left marks the pass it left on alone: the
+        /// idle pass, which works the causes out again with no Step 2, finds
+        /// the slot the person's own.</summary>
+        [Fact]
+        public void ADeviceThatLeft_MarksNoIdlePass()
+        {
+            var setting = new UserSetting { InstanceGuid = Script, MapTo = 0 };
+            SettingsManager.UserSettings.Items.Add(setting);
+            try
+            {
+                var im = new InputManager();
+                BeginMarks.Invoke(im, null);
+                im.NoteProgramMarks(ProgramPad(8), State(0));
+                im.CombinedOutputStates[0] = new Gamepad { Buttons = Gamepad.A };
+                im.WorkOutOutputCauses();
+                Assert.Equal(8, im.SlotMacroCauses[0].Session);
+
+                BeginMarks.Invoke(im, null);                                // gone
+                im.CombinedOutputStates[0] = new Gamepad();
+                im.WorkOutOutputCauses();
+                Assert.Equal(8, im.SlotMacroCauses[0].Session);
+
+                im.WorkOutOutputCauses();                                   // the idle pass
+                Assert.True(im.SlotMacroCauses[0].IsOwn);
+            }
+            finally
+            {
+                SettingsManager.UserSettings.Items.Remove(setting);
+            }
+        }
+
+        /// <summary>A program declares a device no slot uses and sends gone:
+        /// its row goes at once, so the pass that reads the connection as 0
+        /// finds no row. The <c>!a</c> macro that pass starts is the
+        /// program's.</summary>
+        [Fact]
+        public void AConnectionMacro_StaysTheProgramsOnThePass_TheDevicesRowGoes()
+        {
+            var row = ProgramPad(21);
+            row.IsOnline = true;
+            SettingsManager.UserDevices.Items.Add(row);
+            var im = new InputManager();
+            var running = typeof(InputManager).GetField("_running", BindingFlags.Instance | BindingFlags.NonPublic);
+            try
+            {
+                int run = im.StampRun();
+                running.SetValue(im, true);
+                im.NoteEnumerationBegan(run, 1000);
+                im.NoteDevicesEnumerated(run);
+                var macro = Macro(MacroTriggerMode.CustomExpression,
+                    new MacroAction { Type = MacroActionType.KeyPress, KeyCode = F17, DurationMs = 0 });
+                macro.TriggerExpression = "!a";
+                macro.TriggerExpressionVariables.Add(new MacroExpressionVariable { Source = MacroTriggerSource.DeviceConnection, DeviceGuid = Script });
+                var macros = new[] { macro };
+                Pass(im, macros, pressed: false, OutputCause.Own);
+                Assert.False(macro.IsExecuting);
+
+                SettingsManager.UserDevices.Items.Remove(row);           // ForgetRow
+                Pass(im, macros, pressed: false, OutputCause.Own);
+                Assert.Equal(21, macro.RunCause.Session);
+            }
+            finally
+            {
+                running.SetValue(im, false);
+                SettingsManager.UserDevices.Items.Remove(row);
+            }
+        }
+
+        // ── The volume flyout's keys ──
+
+        private static readonly FieldInfo RestrictedField = typeof(InputManager)
+            .GetField("_currentMacroSlotRestricted", BindingFlags.NonPublic | BindingFlags.Static);
+
+        private const ushort VolumeUp = 0xAF, VolumeDown = 0xAE;
+
+        /// <summary>The volume worker sends the flyout's four keys whatever
+        /// slot the poll thread is on at that moment, here a slot fed by a
+        /// gamepad-only peer (#138).</summary>
+        [Fact]
+        public void TheVolumeFlyoutKeys_GoOut_WhileThePollThreadIsOnARestrictedSlot()
+        {
+            _front = Medium;
+            var im = new InputManager { SystemVolumeApply = (_, _) => { } };
+            try
+            {
+                im.PostSystemVolume(0.5f, showOsd: true);
+                ClearSent();
+                RestrictedField.SetValue(null, true);
+                im.SendVolumeOsdKeys();
+                RestrictedField.SetValue(null, false);
+                Assert.Equal(new[] { "AF down", "AF up", "AE down", "AE up" }, Sent(VolumeUp, VolumeDown));
+            }
+            finally
+            {
+                RestrictedField.SetValue(null, false);
+            }
+        }
+
+        /// <summary>A restricted slot that posts its volume with the flyout
+        /// gets no keystroke out, whatever slot the poll thread is on when
+        /// the worker sends.</summary>
+        [Fact]
+        public void TheVolumeFlyoutKeys_OfARestrictedSlot_NeverGoOut()
+        {
+            _front = Medium;
+            var im = new InputManager { SystemVolumeApply = (_, _) => { } };
+            try
+            {
+                RestrictedField.SetValue(null, true);
+                im.PostSystemVolume(0.5f, showOsd: true);
+                RestrictedField.SetValue(null, false);
+                ClearSent();
+                im.SendVolumeOsdKeys();
+                Assert.Empty(Sent(VolumeUp, VolumeDown));
+            }
+            finally
+            {
+                RestrictedField.SetValue(null, false);
+            }
+        }
+
         private static readonly MethodInfo TriggerCause = typeof(InputManager)
             .GetMethod("MacroTriggerCause", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        /// <summary>The question card's buttons refuse PadForge's own click
+        /// or key while output still carries a program's mark, which can
+        /// outlast every hold, device and value, as the status line reads
+        /// it (#600).</summary>
+        [Fact]
+        public void TheCardsButtons_RefuseOwnOutput_WhileAProgramsMarkIsKept()
+        {
+            ProgramInputGate.InForceSeam = () => false;
+            ProgramInputGate.ExtraInfoSeam = () => PadForge.Engine.Common.InputHookManager.OutputTag;
+            try
+            {
+                ProgramInputGate.MarksKept = true;
+                Assert.True(ProgramInputGate.RefusesOwnOutputNow());
+                ProgramInputGate.MarksKept = false;
+                Assert.False(ProgramInputGate.RefusesOwnOutputNow());
+                ProgramInputGate.InForceSeam = () => true;
+                Assert.True(ProgramInputGate.RefusesOwnOutputNow());
+                ProgramInputGate.ExtraInfoSeam = () => IntPtr.Zero;
+                Assert.False(ProgramInputGate.RefusesOwnOutputNow());
+            }
+            finally
+            {
+                ProgramInputGate.MarksKept = false;
+                ProgramInputGate.ExtraInfoSeam = null;
+            }
+        }
+
+        /// <summary>A session that ended leaves the gate's record of the
+        /// sessions told once that their output was held, so the record
+        /// does not grow with every script that ran: a later hold of that
+        /// number is told again, which only an entry gone allows.</summary>
+        [Fact]
+        public void AnEndedSession_LeavesTheGatesRecordOfHeldSessions()
+        {
+            using var rig = new PadForge.Tests.AutomationPipeRig(PadForge.Services.Automation.AutomationLevel.SendInputs);
+            using var client = rig.Open();
+            int number = Assert.Single(rig.Host.Sessions.Snapshot()).Number;
+            int told = 0;
+            Action<int, uint> onFirst = (session, process) => { if (session == number) Interlocked.Increment(ref told); };
+            ProgramInputGate.FirstHeld += onFirst;
+            try
+            {
+                ProgramInputGate.NoteHeld(OutputCause.Program(number));
+                ProgramInputGate.NoteHeld(OutputCause.Program(number));
+                Assert.Equal(1, Volatile.Read(ref told));
+                client.Dispose();
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                while (rig.Host.Sessions.Snapshot().Count > 0)
+                {
+                    Assert.True(clock.ElapsedMilliseconds < 5000, "the session did not end");
+                    Thread.Sleep(10);
+                }
+                ProgramInputGate.NoteHeld(OutputCause.Program(number));
+                Assert.Equal(2, Volatile.Read(ref told));
+            }
+            finally
+            {
+                ProgramInputGate.FirstHeld -= onFirst;
+            }
+        }
 
         [Fact]
         public void Status_StillSaysTheGateHolds_WhileOutputKeepsAProgramsMark()
@@ -540,6 +914,108 @@ namespace PadForge.Tests
             OutputCauseTests.Pass(im, macros, pressed: false, OutputCause.Own);
             OutputCauseTests.Pass(im, macros, pressed: false, OutputCause.Own);
             Assert.Equal(6, macro.RunCause.Session);
+        }
+
+        /// <summary>A program sets x and ends. Its value reads 0 again, and
+        /// the <c>!a</c> macro whose trigger that fall raises runs as the
+        /// program's, as it would for <c>var x=0</c>.</summary>
+        [Fact]
+        public void AValueAProgramLeaves_StartsTheMacroOnItsFall_AsTheProgramsRun()
+        {
+            var im = new InputManager();
+            var macro = OutputCauseTests.Macro(MacroTriggerMode.CustomExpression,
+                new MacroAction { Type = MacroActionType.KeyPress, KeyCode = 0x80, DurationMs = 0 });
+            macro.TriggerExpression = "!a";
+            macro.TriggerExpressionVariables.Add(new MacroExpressionVariable { Source = MacroTriggerSource.ScriptValue, ScriptValue = "x" });
+            var macros = new[] { macro };
+            Assert.True(ScriptValues.Set("x", 1, 5));
+            OutputCauseTests.Pass(im, macros, pressed: false, OutputCause.Own);
+            Assert.False(macro.IsExecuting);
+            ScriptValues.ReleaseOwner(5);
+            OutputCauseTests.Pass(im, macros, pressed: false, OutputCause.Own);
+            Assert.Equal(5, macro.RunCause.Session);
+        }
+
+        /// <summary>A name session 2 sets while session 1 lets go of it alone
+        /// (Release): the picker's names end as ScriptValues.Names, with
+        /// the name, whichever thread tells its change first.</summary>
+        [Fact]
+        public void AName_ASessionSetsAsAnotherLetsGoOfIt_StaysOffered()
+        {
+            var names = new List<string>();
+            Action<string> added = n => { lock (names) if (!names.Contains(n)) names.Add(n); };
+            Action<string> removed = n => { lock (names) names.Remove(n); };
+            ScriptValues.NameAdded += added;
+            ScriptValues.NameRemoved += removed;
+            using var decided = new ManualResetEventSlim();
+            using var go = new ManualResetEventSlim();
+            int first = 1;
+            try
+            {
+                Assert.True(ScriptValues.Set("x", 1, 1));
+                ScriptValues.AfterReleaseForTest = () =>
+                {
+                    if (Interlocked.Exchange(ref first, 0) != 1) return;
+                    decided.Set();
+                    go.Wait(5000);
+                };
+                var letting = new Thread(() => ScriptValues.Release("x", 1)) { IsBackground = true };
+                letting.Start();
+                Assert.True(decided.Wait(5000));
+                Assert.True(ScriptValues.Set("x", 2, 2));
+                go.Set();
+                Assert.True(letting.Join(5000));
+                Assert.Equal(new[] { "x" }, ScriptValues.Names());
+                lock (names) Assert.Equal(new[] { "x" }, names);
+            }
+            finally
+            {
+                go.Set();
+                ScriptValues.AfterReleaseForTest = null;
+                ScriptValues.NameAdded -= added;
+                ScriptValues.NameRemoved -= removed;
+            }
+        }
+
+        /// <summary>A name session 2 sets while session 1, which set it too,
+        /// ends: the picker's names end as ScriptValues.Names, with the
+        /// name, whichever thread tells its change first.</summary>
+        [Fact]
+        public void AName_ASessionSetsAsAnotherEnds_StaysOffered()
+        {
+            var names = new List<string>();
+            Action<string> added = n => { lock (names) if (!names.Contains(n)) names.Add(n); };
+            Action<string> removed = n => { lock (names) names.Remove(n); };
+            ScriptValues.NameAdded += added;
+            ScriptValues.NameRemoved += removed;
+            using var decided = new ManualResetEventSlim();
+            using var go = new ManualResetEventSlim();
+            int first = 1;
+            try
+            {
+                Assert.True(ScriptValues.Set("x", 1, 1));
+                ScriptValues.AfterReleaseForTest = () =>
+                {
+                    if (Interlocked.Exchange(ref first, 0) != 1) return;
+                    decided.Set();
+                    go.Wait(5000);
+                };
+                var ending = new Thread(() => ScriptValues.ReleaseOwner(1)) { IsBackground = true };
+                ending.Start();
+                Assert.True(decided.Wait(5000));
+                Assert.True(ScriptValues.Set("x", 2, 2));
+                go.Set();
+                Assert.True(ending.Join(5000));
+                Assert.Equal(new[] { "x" }, ScriptValues.Names());
+                lock (names) Assert.Equal(new[] { "x" }, names);
+            }
+            finally
+            {
+                go.Set();
+                ScriptValues.AfterReleaseForTest = null;
+                ScriptValues.NameAdded -= added;
+                ScriptValues.NameRemoved -= removed;
+            }
         }
     }
 }

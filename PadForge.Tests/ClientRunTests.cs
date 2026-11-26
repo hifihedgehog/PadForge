@@ -35,6 +35,7 @@ namespace PadForge.Tests
             public int Served;
             public int Settles;
             public int Exits;
+            public int Released;
             public bool? Closes = true;
             public RunningCopy.Closing Closing = RunningCopy.Closing.Closed;
             public RunningCopy.Settled Settled = RunningCopy.Settled.Ready;
@@ -58,9 +59,9 @@ namespace PadForge.Tests
                     Settle = () => { Settles++; return Settled; },
                     ShowWindow = () => { Shown++; Order.Add("show"); return WindowShows; },
                     LendForeground = () => { Lent++; Order.Add("lend"); },
-                    Watch = () => { Order.Add("watch"); return Wait; },
+                    Watch = () => { Order.Add("watch"); return Wait == null ? null : new RunningCopy.Hold<int?>(Wait, () => Released++); },
                     ExitCopy = () => { Exits++; Order.Add("exit"); return Closing; },
-                    HoldForClose = () => { Order.Add("hold"); return Closes is { } ends ? () => { Order.Add("wait for the end"); return ends; } : null; },
+                    HoldForClose = () => { Order.Add("hold"); return Closes is { } ends ? new RunningCopy.Hold<bool>(() => { Order.Add("wait for the end"); return ends; }, () => Released++) : null; },
                     Say = Said.Add,
                     SayError = Errors.Add,
                     Tell = Told.Add,
@@ -238,11 +239,11 @@ namespace PadForge.Tests
 
         /// <summary><c>--exit</c> needs no Automation (#600 item 44). With
         /// the pipe gone, refusing the line, or held by another program, it
-        /// goes over the signal window and waits for the copy to end. With
+        /// goes over the signal and waits for the copy to end. With
         /// Automation on the pipe takes it, so Activity names the
         /// program.</summary>
         [Fact]
-        public void WithAutomationOff_ExitGoesOverTheSignalWindow()
+        public void WithAutomationOff_ExitGoesOverTheSignal()
         {
             var off = new Run { Pipe = false };
             Assert.Equal((true, 0), off.Go("--exit"));
@@ -301,7 +302,7 @@ namespace PadForge.Tests
         /// 1, and one that is gone before the ask gives 4. With
         /// <c>--wait</c> the code is the copy's own.</summary>
         [Fact]
-        public void AnExitOverTheSignalWindow_SaysHowItEnded()
+        public void AnExitOverTheSignal_SaysHowItEnded()
         {
             var stays = new Run { Pipe = false, Closing = RunningCopy.Closing.StillRunning };
             Assert.Equal((true, 1), stays.Go("--exit"));
@@ -392,12 +393,72 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "activate Racing" }, midway.Sent);
         }
 
+        /// <summary>A copy that is still starting or closing at the end of the
+        /// wait serves no pipe, and that says nothing about Automation: the
+        /// line was not answered. Only a ready copy with no pipe has
+        /// Automation off.</summary>
         [Fact]
-        public void ACopyThatNeverSettles_IsAnsweredByItsPipe()
+        public void ACopyThatNeverSettles_DidNotAnswer_AndSaysNothingOfAutomation()
         {
             var run = new Run { Pipe = false, Settled = RunningCopy.Settled.Starting };
-            Assert.Equal((true, 5), run.Go("--engine", "on"));
-            Assert.Equal(new[] { ClientRun.AutomationOffText }, run.Errors);
+            Assert.Equal((true, ClientRun.AnsweredAnError), run.Go("--engine", "on"));
+            Assert.Equal(new[] { ClientRun.NoAnswerText }, run.Errors);
+
+            var ready = new Run { Pipe = false, Settled = RunningCopy.Settled.Ready };
+            Assert.Equal((true, ClientRun.NotAllowed), ready.Go("--engine", "on"));
+            Assert.Equal(new[] { ClientRun.AutomationOffText }, ready.Errors);
+
+            // Showing and closing need no pipe, settled or not.
+            var show = new Run { Pipe = false, Settled = RunningCopy.Settled.Starting };
+            Assert.Equal((true, ClientRun.Done), show.Go("--show"));
+            Assert.Equal(1, show.Shown);
+            var exit = new Run { Pipe = false, Settled = RunningCopy.Settled.Starting };
+            Assert.Equal((true, ClientRun.Done), exit.Go("--exit"));
+            Assert.Equal(1, exit.Exits);
+        }
+
+        /// <summary><c>--json</c> only shapes answers, so alone it is a
+        /// plain start, with a copy running or without one.</summary>
+        [Fact]
+        public void JsonAlone_IsAPlainStart_WithACopyOrWithout()
+        {
+            var run = new Run();
+            Assert.Equal((true, ClientRun.Done), run.Go("--json"));
+            Assert.Equal(1, run.Shown);
+            Assert.Empty(run.Sent);
+
+            var none = new Run { Copy = false };
+            Assert.Equal((false, ClientRun.Done), none.Go("--json"));
+            Assert.Empty(none.Order);
+        }
+
+        /// <summary>A hold on the running copy is let go on every way out of
+        /// the run, waited for or not, so no handle outlives the run, and none
+        /// is carried into the app a start goes on to become.</summary>
+        [Fact]
+        public void EveryHoldOnTheCopy_IsLetGo_OnEveryWayOut()
+        {
+            // The copy closed before the first line, and the start goes on
+            // to become the app in this same process.
+            var gone = new Run { Pipe = false, Settled = RunningCopy.Settled.Gone, Wait = () => 0 };
+            Assert.Equal((false, ClientRun.Done), gone.Go("--wait", "--profile", "Racing"));
+            Assert.Equal(1, gone.Released);
+
+            // A line that fails after the hold was taken.
+            var fails = new Run { Answer = _ => "error busy", Wait = () => 0 };
+            Assert.Equal((true, ClientRun.AnsweredAnError), fails.Go("--wait", "--engine", "on"));
+            Assert.Equal(1, fails.Released);
+
+            // --exit over a pipe another program holds goes over the window,
+            // and the hold taken for the pipe is let go.
+            var held = new Run { Answer = _ => ControlPipeClient.NotPadForge };
+            Assert.Equal((true, ClientRun.Done), held.Go("--exit"));
+            Assert.Equal(1, held.Released);
+
+            // The control: a hold that was waited for is let go once.
+            var waits = new Run { Wait = () => 42 };
+            Assert.Equal((true, 42), waits.Go("--wait"));
+            Assert.Equal(1, waits.Released);
         }
 
         [Fact]

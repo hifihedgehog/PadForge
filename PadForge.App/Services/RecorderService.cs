@@ -985,7 +985,9 @@ namespace PadForge.Services
                     continue;
                 }
 
-                // ── Touchpad click rides Buttons[16]. Record it with the
+                // ── Touchpad click rides Buttons[16] (FirstPadClicked: a
+                //     program's device whose button 16 is its own keeps it on
+                //     the pad alone). Record it with the
                 //     canonical "Touchpad 0 Click" descriptor so the user
                 //     sees the touchpad-friendly name instead of "Button 16".
                 //     Checked before the generic Buttons[] sweep so the
@@ -997,9 +999,7 @@ namespace PadForge.Services
                 // A pressure row skips every button-class capture below
                 // (see _analogOnly), so its press records the analog read.
                 bool digital = !_analogOnly;
-                if (digital && hasTouchpad
-                    && current.Buttons.Length > 16 && current.Buttons[16]
-                    && baseline.Buttons.Length > 16 && !baseline.Buttons[16])
+                if (digital && hasTouchpad && current.FirstPadClicked && !baseline.FirstPadClicked)
                 {
                     CompleteRecordingWithDescriptor("Touchpad 0 Click", dg);
                     return;
@@ -1396,7 +1396,7 @@ namespace PadForge.Services
             UserDevice winningUserDevice = FindUserDevice(winningDevice);
 
             // A mouse moved sideways onto a virtual wheel's steering axis is
-            // mouse steering (#597): the row takes the mouse's travel, held
+            // mouse steering (#600): the row takes the mouse's travel, held
             // as the wheel's position, where the mouse's speed would let the
             // wheel spring back the moment the hand stops. Every other row,
             // and every other axis of the mouse, records as it did. A key of
@@ -1647,7 +1647,7 @@ namespace PadForge.Services
         /// Finishes the active recording with a literal descriptor string,
         /// bypassing <see cref="BuildDescriptor"/>. Used for inputs whose
         /// canonical descriptor differs from the raw (MapType, index) — the
-        /// touchpad click rides Buttons[16] but records as "Touchpad 0 Click"
+        /// touchpad click rides Buttons[16] (CustomInputState.FirstPadClicked) but records as "Touchpad 0 Click"
         /// so the user sees the touchpad-friendly name in the picker.
         /// </summary>
         private void CompleteRecordingWithDescriptor(string descriptor, Guid winningDevice = default)

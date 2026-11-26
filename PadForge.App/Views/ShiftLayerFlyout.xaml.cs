@@ -53,6 +53,10 @@ namespace PadForge.Views
         private readonly DispatcherTimer _autoDismissTimer;
         private bool _isSlidingOut;
 
+        // Each ShowLayer counts one, so a slide out that ends after a show
+        // hides nothing.
+        private int _shows;
+
         // The monitor the flyout was last put on, for a window WPF sizes
         // again on a monitor of another scale.
         private FlyoutPlacement.WorkArea? _placedOn;
@@ -169,6 +173,7 @@ namespace PadForge.Views
         /// longer resolves falls back to ⇧ rather than showing its path.</summary>
         public void ShowLayer(string layerName, string colorHex, string icon)
         {
+            _shows++;
             ApplyTheme();
             var image = Common.MenuIconResolver.ResolveLayerIcon(icon, out string glyph);
             StatusImage.Source = image;
@@ -178,10 +183,12 @@ namespace PadForge.Views
             LayerNameText.Text = string.IsNullOrEmpty(layerName) ? "" : layerName;
             ColorDot.Fill = ParseColor(colorHex) ?? new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
 
-            // Mid-slide-out (e.g. user re-engaged a layer right as the
-            // dismiss timer fired) — cancel the outbound animation and
-            // slide back in cleanly instead of leaving the flyout half-
-            // off-screen.
+            // A layer shown mid-slide-out, as when the user engages one
+            // right as the dismiss timer fires: the outbound animation is
+            // taken off and the flyout stands in place, not half off the
+            // screen. The animation taken off its property still reports
+            // its end, and the show count keeps that end from hiding this
+            // show (HideFlyout).
             if (_isSlidingOut)
             {
                 _isSlidingOut = false;
@@ -218,16 +225,22 @@ namespace PadForge.Views
             return true;
         }
 
-        /// <summary>Slides the flyout out and hides it. Safe to call when
-        /// already hidden. Cancels any pending auto-dismiss.</summary>
+        /// <summary>Slides the flyout out and hides it, unless a layer was
+        /// shown while it slid. Safe to call when already hidden. Cancels any
+        /// pending auto-dismiss. A slide that is taken off its property can
+        /// still report its end, as ProfileSwitchOverlay's SlideAway
+        /// measured: WPF's BeginAnimation with no animation detaches the
+        /// clock and leaves it running.</summary>
         public void HideFlyout()
         {
             _autoDismissTimer.Stop();
             if (Visibility != Visibility.Visible || _isSlidingOut)
                 return;
             _isSlidingOut = true;
+            int shows = _shows;
             SlideOut(() =>
             {
+                if (shows != _shows) return;
                 _isSlidingOut = false;
                 Hide();
             });

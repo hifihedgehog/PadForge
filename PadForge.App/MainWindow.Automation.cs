@@ -14,7 +14,7 @@ using PadForge.Engine.Common;
 namespace PadForge
 {
     /// <summary>
-    /// The main window's part in Automation (#597): it makes the host once
+    /// The main window's part in Automation (#600): it makes the host once
     /// the settings are loaded, keeps it in step with the Automation switch,
     /// runs the steps of this copy's own command line, and is what the
     /// command set acts on. Each command goes through the method the
@@ -84,11 +84,11 @@ namespace PadForge
             // finds it at the tail of the engine's start.
             ConnectProblemRecorderToAutomation();
             // The Automation pipe's programs follow the profile by its name
-            // and reach the engine while it runs (#597).
+            // and reach the engine while it runs (#600).
             _automation.ProfileName = () => _inputService?.ActiveProfileForState().Name;
             _inputService?.AttachAutomation(_automation);
             // The assistants' server, the call line of scripts, Save the
-            // Skill and the Activity card's Undo (#597).
+            // Skill and the Activity card's Undo (#600).
             StartAssistants();
             // Reach PadForge From the Web (#600 item 11).
             StartWebDoor();
@@ -276,9 +276,11 @@ namespace PadForge
         /// that was only behind another comes forward too. A show within two
         /// seconds of the last is ignored, the front is taken with the right
         /// the caller lent, and where none was lent the taskbar button
-        /// flashes (CallerShow).</summary>
+        /// flashes (CallerShow). A window in its shutdown is never brought
+        /// back (RestoreFromTray), and takes the front for nobody.</summary>
         internal void ShowForACaller()
         {
+            if (_shutdownStarted) return;
             if (!_callerShow.Take()) return;
             RestoreFromTray(forceForward: false);
             CallerShow.ComeForward(new System.Windows.Interop.WindowInteropHelper(this).Handle);
@@ -287,9 +289,11 @@ namespace PadForge
         /// <summary><c>maximize</c> (#600 item 44): the same show, with the
         /// same gap and the same lent right, and the window maximized. A
         /// show that does not go ahead maximizes nothing, so the window
-        /// never comes forward by another way.</summary>
+        /// never comes forward by another way, and a window in its shutdown
+        /// is neither maximized nor brought forward.</summary>
         internal void MaximizeForACaller()
         {
+            if (_shutdownStarted) return;
             if (!_callerShow.Take()) return;
             RestoreFromTray(forceForward: false);
             WindowState = WindowState.Maximized;
@@ -310,11 +314,12 @@ namespace PadForge
             Hide();
         }
 
-        /// <summary>The signal window's exit (#600 item 44): a copy of the
-        /// exe started with <c>--exit</c> asks for the tray icon's Exit with
-        /// no Automation. Activity keeps it with its program unknown, since
-        /// a posted message names no sender. The close runs after the
-        /// message's own handling has returned.</summary>
+        /// <summary>The signal's exit (#600 item 44): a copy of the exe
+        /// started with <c>--exit</c> asks for the tray icon's Exit with no
+        /// Automation, over the signal pipe or, with rights, the signal
+        /// window. Activity keeps it with its program unknown, since the ask
+        /// names none. The close runs after the ask's own handling has
+        /// returned.</summary>
         internal void ExitForACaller()
         {
             _automation?.NoteExitBySignal();
@@ -322,8 +327,7 @@ namespace PadForge
         }
 
         /// <summary>Closes PadForge past Close to System Tray: the tray
-        /// icon's Exit, the exit command and the signal window's
-        /// exit.</summary>
+        /// icon's Exit, the exit command and the signal's exit.</summary>
         private void ExitFromTray()
         {
             PrepareForExit();
@@ -478,8 +482,7 @@ namespace PadForge
                 return true;
             }
 
-            public string SaveSnapshot(bool scrubbed)
-                => System.IO.Path.GetFileName(DiagnosticsLogControl.SaveSnapshot(scrubbed ? AutomationReadScrub.FileScrub() : null));
+            public string SaveSnapshot() => DiagnosticsLogControl.SaveSnapshot();
 
             public AutomationState ReadState()
             {

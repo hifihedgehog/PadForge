@@ -121,6 +121,8 @@ namespace PadForge.ViewModels
         protected override void OnCultureChanged()
         {
             Title = Strings.Instance.Settings_Title;
+            if (_problemRecordingStatusText != null)
+                SetProperty(ref _problemRecordingStatus, _problemRecordingStatusText() ?? string.Empty, nameof(ProblemRecordingStatus));
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(HIDMaestroStatusText));
             OnPropertyChanged(nameof(BthPS3StatusText));
@@ -139,7 +141,7 @@ namespace PadForge.ViewModels
             // Built from Strings.Instance on every read (#457).
             OnPropertyChanged(nameof(UpdateStatusText));
             OnPropertyChanged(nameof(AboutSubLine));
-            // And the Controller Database row's two lines (#597).
+            // And the Controller Database row's two lines (#600).
             OnPropertyChanged(nameof(ControllerDatabaseStatus));
             OnPropertyChanged(nameof(ControllerDatabaseResult));
             // And the Your Rows lines under its More (#600).
@@ -259,12 +261,9 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>HidHide status display text. HidHide installs on x64 and
-        /// on ARM64 Windows. On any other machine there is nothing to install,
-        /// so "Not Installed" beside a dead Install button would read as
-        /// something the user could fix.</summary>
+        /// on ARM64 Windows, the two machines PadForge builds for.</summary>
         public string HidHideStatusText =>
             _isHidHideInstalled ? Strings.Instance.Common_Installed
-            : !PadForge.Engine.PlatformSupport.HidHideAvailable ? Strings.Instance.Common_NotAvailableOnArm64
             : Strings.Instance.Common_NotInstalled;
 
         private string _hidHideVersion = string.Empty;
@@ -276,26 +275,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _hidHideVersion, value);
         }
 
-        private string _hidMaestroVersion = GetEmbeddedHidMaestroVersion();
+        private string _hidMaestroVersion = string.Empty;
 
-        /// <summary>HIDMaestro SDK version string, read from the embedded
-        /// HIDMaestro.Core assembly at startup. Bare, with no "v" before
-        /// it, as every version the Settings page shows.</summary>
+        /// <summary>The version of the HIDMaestro driver installed on this
+        /// PC, read from the driver store
+        /// (Services.HIDMaestroRemoval.IsDriverInstalled). Bare, with no "v"
+        /// before it, as every version the Settings page shows. Empty while
+        /// no driver is installed, so the row shows no number.</summary>
         public string HIDMaestroVersion
         {
-            get => _hidMaestroVersion;
-            set => SetProperty(ref _hidMaestroVersion, value);
-        }
-
-        private static string GetEmbeddedHidMaestroVersion()
-        {
-            try
-            {
-                var asm = typeof(HIDMaestro.HMContext).Assembly;
-                var v = asm.GetName().Version;
-                return v != null ? $"{v.Major}.{v.Minor}.{v.Build}" : string.Empty;
-            }
-            catch { return string.Empty; }
+            get => _isHIDMaestroInstalled ? _hidMaestroVersion : string.Empty;
+            set => SetProperty(ref _hidMaestroVersion, value ?? string.Empty);
         }
 
         private bool _isHIDMaestroInstalled;
@@ -309,7 +299,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isHIDMaestroInstalled, value))
+                {
                     OnPropertyChanged(nameof(HIDMaestroStatusText));
+                    OnPropertyChanged(nameof(HIDMaestroVersion));
+                }
             }
         }
 
@@ -329,18 +322,16 @@ namespace PadForge.ViewModels
         /// <summary>Raised when the user asks to remove HIDMaestro.</summary>
         public event EventHandler UninstallHIDMaestroRequested;
 
-        /// <summary>The BthPS3 version PadForge carries and installs, from
-        /// the DriverVer of its embedded BthPS3.inf.</summary>
-        public string BthPS3Version { get; } = GetBundledBthPs3Version();
+        private string _bthPs3Version = string.Empty;
 
-        private static string GetBundledBthPs3Version()
+        /// <summary>The version of the BthPS3 profile driver installed on
+        /// this PC: the file version of the BthPS3.sys its service names
+        /// (Services.Ds3DriverInstaller.InstalledBthPs3Version). Bare. Empty
+        /// while BthPS3 is not installed, so the row shows no number.</summary>
+        public string BthPS3Version
         {
-            try
-            {
-                var v = Services.Ds3DriverInstaller.BundledBthPs3Version();
-                return v != null ? $"{v.Major}.{v.Minor}.{v.Build}" : string.Empty;
-            }
-            catch { return string.Empty; }
+            get => _isBthPS3Installed ? _bthPs3Version : string.Empty;
+            set => SetProperty(ref _bthPs3Version, value ?? string.Empty);
         }
 
         private bool _isBthPS3Installed;
@@ -355,7 +346,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isBthPS3Installed, value))
+                {
                     OnPropertyChanged(nameof(BthPS3StatusText));
+                    OnPropertyChanged(nameof(BthPS3Version));
+                }
             }
         }
 
@@ -381,7 +375,7 @@ namespace PadForge.ViewModels
         public RelayCommand InstallHidHideCommand =>
             _installHidHideCommand ??= new RelayCommand(
                 () => InstallHidHideRequested?.Invoke(this, EventArgs.Empty),
-                () => !_isHidHideInstalled && PadForge.Engine.PlatformSupport.HidHideAvailable);
+                () => !_isHidHideInstalled);
 
         private RelayCommand _uninstallHidHideCommand;
 
@@ -1269,7 +1263,7 @@ namespace PadForge.ViewModels
         public event EventHandler InstallUpdateRequested;
         public event EventHandler OpenReleaseNotesRequested;
 
-        // ── Controller database (#597) ──
+        // ── Controller database (#600) ──
 
         private Func<string> _controllerDatabaseStatus;
         /// <summary>The Controller Database row's status line: what PadForge
@@ -1561,7 +1555,7 @@ namespace PadForge.ViewModels
         /// the Diagnostics card.</summary>
         public string DiagnosticsFolderPath => Common.DiagnosticsLogControl.Folder;
 
-        // ── Record a Problem (#597) ──
+        // ── Record a Problem (#600) ──
 
         private bool _problemRecordingKeepLastMinute;
 
@@ -1672,7 +1666,23 @@ namespace PadForge.ViewModels
         public string ProblemRecordingStatus
         {
             get => _problemRecordingStatus;
-            set => SetProperty(ref _problemRecordingStatus, value ?? string.Empty);
+            set
+            {
+                _problemRecordingStatusText = null;
+                SetProperty(ref _problemRecordingStatus, value ?? string.Empty);
+            }
+        }
+
+        private Func<string> _problemRecordingStatusText;
+
+        /// <summary>Shows the line <paramref name="text"/> builds, and builds
+        /// it again in the new language when the language changes. A line
+        /// set through <see cref="ProblemRecordingStatus"/> stays as it
+        /// is.</summary>
+        public void ShowProblemRecordingStatus(Func<string> text)
+        {
+            ProblemRecordingStatus = text?.Invoke();
+            _problemRecordingStatusText = text;
         }
 
         private bool _startAtLogin;

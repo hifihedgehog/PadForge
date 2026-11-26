@@ -141,7 +141,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ARead_IsMadeOnlyForAProductAskedFor_AndAMissStaysAMiss()
+        public void ARead_IsMadeOnlyForAProductAskedFor_AndAMissHoldsUntilItsDeviceArrives()
         {
             const uint wheel = 0xC24F046D, pad = 0x0CE6054C, later = 0x0B050E10;
             int reads = 0;
@@ -160,7 +160,7 @@ namespace PadForge.Tests
             Assert.Equal(1, reads);
             Assert.Equal(new[] { "X Axis" }, cache.Kept(wheel));
             Assert.Null(cache.Kept(pad));
-            Assert.True(cache.Missed(pad));
+            Assert.True(cache.Held(pad));
             // Nothing new asked: no read, however often the watch asks.
             cache.ReadSoon(now);
             Assert.Equal(1, reads);
@@ -169,13 +169,102 @@ namespace PadForge.Tests
             Assert.Null(cache.Kept(0x00010001));
             cache.ReadSoon(now);
             Assert.Equal(2, reads);
-            Assert.True(cache.Missed(0x00010001));
+            Assert.True(cache.Held(0x00010001));
+        }
 
-            // A read that fails leaves what it was asked for a miss.
-            var broken = new ForceActuators.Cache(() => throw new InvalidOperationException("no DirectInput"));
-            Assert.Null(broken.Kept(wheel));
-            broken.ReadSoon(now);
-            Assert.True(broken.Missed(wheel));
+        /// <summary>A read that fails holds what it was asked for, so a
+        /// DirectInput that keeps failing is not asked at every look, and a
+        /// device of the product arriving asks again: a good read then gives
+        /// its names. The other order in the same process: a product a good
+        /// read did not list is held, and its device arriving asks again,
+        /// which finds it.</summary>
+        [Fact]
+        public void AFailedReadOrAMiss_HoldsTheProduct_UntilADeviceOfItArrives()
+        {
+            const uint wheel = 0xC24F046D, pad = 0x0CE6054C;
+            Func<Action, Task> now = run => { run(); return Task.CompletedTask; };
+
+            int reads = 0;
+            bool fails = true;
+            var cache = new ForceActuators.Cache(() =>
+            {
+                reads++;
+                if (fails) throw new InvalidOperationException("no DirectInput");
+                return new Dictionary<uint, string[]> { [wheel] = new[] { "X Axis" } };
+            });
+            Assert.Null(cache.Kept(wheel));
+            cache.ReadSoon(now);
+            Assert.Equal(1, reads);
+            Assert.True(cache.Held(wheel));
+            for (int look = 0; look < 10; look++)
+            {
+                Assert.Null(cache.Kept(wheel));
+                cache.ReadSoon(now);
+            }
+            Assert.Equal(1, reads);
+            fails = false;
+            cache.Arrived(wheel);
+            Assert.False(cache.Held(wheel));
+            Assert.Null(cache.Kept(wheel));
+            cache.ReadSoon(now);
+            Assert.Equal(2, reads);
+            Assert.Equal(new[] { "X Axis" }, cache.Kept(wheel));
+
+            int padReads = 0;
+            bool listed = false;
+            var missed = new ForceActuators.Cache(() =>
+            {
+                padReads++;
+                var known = new Dictionary<uint, string[]> { [wheel] = new[] { "X Axis" } };
+                if (listed) known[pad] = new[] { "X Axis", "Y Axis" };
+                return known;
+            });
+            Assert.Null(missed.Kept(pad));
+            missed.ReadSoon(now);
+            Assert.True(missed.Held(pad));
+            Assert.Null(missed.Kept(pad));
+            missed.ReadSoon(now);
+            Assert.Equal(1, padReads);
+            listed = true;
+            missed.Arrived(pad);
+            Assert.Null(missed.Kept(pad));
+            missed.ReadSoon(now);
+            Assert.Equal(2, padReads);
+            Assert.Equal(new[] { "X Axis", "Y Axis" }, missed.Kept(pad));
+        }
+
+        /// <summary>A device that arrives while a read runs may come after
+        /// DirectInput listed its devices, so that read's miss does not hold
+        /// its product.</summary>
+        [Fact]
+        public void ADeviceThatArrivesWhileAReadRuns_IsAskedForAgain()
+        {
+            const uint pad = 0x0CE6054C;
+            Action pending = null;
+            int reads = 0;
+            var cache = new ForceActuators.Cache(() => { reads++; return new Dictionary<uint, string[]>(); });
+            Assert.Null(cache.Kept(pad));
+            cache.ReadSoon(run => { pending = run; return Task.CompletedTask; });
+            cache.Arrived(pad);
+            pending();
+            Assert.False(cache.Held(pad));
+            Assert.Null(cache.Kept(pad));
+            cache.ReadSoon(run => { run(); return Task.CompletedTask; });
+            Assert.Equal(2, reads);
+            Assert.True(cache.Held(pad));
+        }
+
+        /// <summary>Every DirectInput product GUID without the PIDVID mark is
+        /// filed under product 0, so product 0 names no one device: a device
+        /// that reads vendor 0 and product 0 gets no names from it.</summary>
+        [Fact]
+        public void ProductZero_GetsNoOtherDevicesNames()
+        {
+            var cache = new ForceActuators.Cache(() => new Dictionary<uint, string[]> { [0] = new[] { "X Axis" } });
+            Func<Action, Task> now = run => { run(); return Task.CompletedTask; };
+            Assert.Null(cache.Kept(0x00010001));
+            cache.ReadSoon(now);
+            Assert.Null(cache.Kept(0));
         }
 
         [Fact]
@@ -199,7 +288,7 @@ namespace PadForge.Tests
             // The test host asks DirectInput nothing.
             Assert.True(ForceActuators.OffLimitsForTest);
             Assert.Null(ForceActuators.Kept(0x046D, 0xC24F));
-            Assert.False(ForceActuators.Missed(0x046D, 0xC24F));
+            Assert.False(ForceActuators.Held(0x046D, 0xC24F));
         }
 
         /// <summary>DirectInput asked on this PC, by hand: set

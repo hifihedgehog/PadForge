@@ -160,7 +160,7 @@ namespace PadForge.Tests
             Assert.Empty(door.Store.Grants);
 
             door.WebDoor.Arm();
-            await AssistantRig.Until(() => door.WebDoor.HelperArmed);
+            await WebSignInWait.UntilTaking(door.Port);
             await using var client = await door.ConnectAsync();
             // The helper hands the new hashes on as it answers the token
             // request, and the file holds them a moment later.
@@ -222,13 +222,13 @@ namespace PadForge.Tests
             }.ToJsonString();
 
             door.WebDoor.Arm();
-            await AssistantRig.Until(() => door.WebDoor.HelperArmed);
+            await WebSignInWait.UntilTaking(door.Port);
             door.AnswerAllow = false;
             await Assert.ThrowsAnyAsync<Exception>(() => door.ConnectAsync("2025-11-25", address));
             Assert.Empty(door.Store.Grants);
 
             door.WebDoor.Arm();
-            await AssistantRig.Until(() => door.WebDoor.HelperArmed);
+            await WebSignInWait.UntilTaking(door.Port);
             door.AnswerAllow = true;
             await using var client = await door.ConnectAsync("2025-11-25", address);
             var grant = door.Store.Grants.Single();
@@ -244,7 +244,7 @@ namespace PadForge.Tests
             await using var door = new Door();
             await door.StartAsync();
             door.WebDoor.Arm();
-            await AssistantRig.Until(() => door.WebDoor.HelperArmed);
+            await WebSignInWait.UntilTaking(door.Port);
             var cache = new KeptTokens();
             await using (var client = await door.ConnectAsync(cache: cache))
                 await client.ListToolsAsync();

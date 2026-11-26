@@ -359,6 +359,141 @@ namespace PadForge.Tests
             Assert.Contains(nameof(SettingsViewModel.ControllerDatabaseStatus), raised);
         }
 
+        /// <summary>Reset to Defaults is a fresh install's state, and a
+        /// fresh install has allowed no program, no web assistant and no
+        /// device to answer: none comes back with Automation turned on
+        /// again, and the autosave writes none.</summary>
+        [Fact]
+        public void ResetToDefaults_EmptiesAllowedPrograms_TheWebGrants_AndTheAnswerDevices()
+        {
+            var consent = PadForge.Services.Automation.AutomationConsent.Shared;
+            var web = PadForge.Services.Automation.Web.WebAccessStore.Shared;
+            var answers = WebAnswer.Shared;
+            var savedPrograms = consent.Save();
+            var savedWeb = web.Save();
+            var savedAnswers = answers.Save();
+            try
+            {
+                consent.Load(new[]
+                {
+                    new PadForge.Services.Automation.AllowedProgramData
+                    {
+                        Key = "exe|C:\\TOOLS\\SCRIPT.EXE", Name = "Script", Kind = "exe", Path = @"C:\Tools\Script.exe",
+                        Level = (int)PadForge.Services.Automation.AutomationLevel.ChangeSettings, Allowed = Fetched,
+                    },
+                });
+                web.Load(new PadForge.Services.Automation.Web.WebAccessData
+                {
+                    On = true,
+                    Assistants = new[]
+                    {
+                        new PadForge.Services.Automation.Web.WebAssistantData
+                        {
+                            Id = "a1", Origin = "https://assistant.example", AccessHash = new string('a', 64), AccessUntil = Fetched,
+                            RefreshHash = new string('b', 64), RefreshUntil = Fetched, Allowed = Fetched,
+                        },
+                    },
+                });
+                answers.Load(new[] { new AnswerDeviceData { Id = "d1", Name = "Phone", KeyHash = new string('c', 64), Paired = Fetched } });
+                // The positive control: each store holds its record.
+                Assert.NotEmpty(consent.Programs);
+                Assert.NotEmpty(web.Grants);
+                Assert.NotEmpty(answers.Devices);
+
+                var (_, settings) = Arrange();
+                // The doors go off as their switches turn them off, while the
+                // store still names the port whose rule goes with them.
+                bool doorsOffFirst = false;
+                settings.TurnWebDoorsOff = () => doorsOffFirst = web.On && web.Grants.Count > 0;
+                settings.ResetToDefaults();
+                Assert.True(doorsOffFirst);
+                string window = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.Web.cs");
+                Assert.Contains("_settingsService.TurnWebDoorsOff = () =>", window);
+                Assert.Contains("if (WebAccessStore.Shared.NetworkOn) _webDoor?.TurnNetworkOff();", window);
+
+                Assert.Empty(consent.Programs);
+                Assert.Empty(web.Grants);
+                Assert.False(web.On);
+                Assert.Empty(answers.Devices);
+                var saved = settings.BuildAppSettings();
+                Assert.Null(saved.AllowedPrograms);
+                Assert.Null(saved.AnswerDevices);
+                Assert.Null(saved.WebAccess?.Assistants);
+            }
+            finally
+            {
+                consent.Load(savedPrograms);
+                web.Load(savedWeb);
+                answers.Load(savedAnswers);
+            }
+        }
+
+        /// <summary>A Reload whose file no longer holds a row of the user's
+        /// gives the row's device back what it had, as Remove Mine does: a
+        /// row with no mapping of SDL's before it leaves its devices read raw
+        /// until SDL starts again.</summary>
+        [Fact]
+        public void AReloadWhoseFileDropsARowOfTheUsers_GivesItsDeviceBack()
+        {
+            const string id = "050057564c050000e60c000000006800";
+            var savedMine = ControllerDatabaseMine.Current;
+            ControllerDatabaseEngine.SdlStarting();
+            try
+            {
+                ControllerDatabaseMine.Current = ControllerDatabaseMine.FromData(new[]
+                {
+                    new ControllerDatabaseMineData { Added = "2030-01-02T03:04:05Z", Old = string.Empty, Mapped = Guid.Empty.ToString(),
+                        Text = id + ",Mine,a:b1,platform:Windows," },
+                }, null, out _);
+                Assert.Single(ControllerDatabaseMine.Current.Rows);
+                Assert.False(ControllerDatabaseEngine.ReadsRaw(id));
+
+                string path = TempFile();
+                var (_, settings) = Arrange();
+                WriteFile(path, null);
+                PathField.SetValue(settings, path);
+                settings.Reload();
+
+                Assert.Empty(ControllerDatabaseMine.Current.Rows);
+                Assert.True(ControllerDatabaseEngine.ReadsRaw(id));
+            }
+            finally
+            {
+                ControllerDatabaseMine.Current = savedMine;
+                ControllerDatabaseEngine.SdlStarting();
+            }
+        }
+
+        /// <summary>What a Reload gives SDL of the user's rows: each row the
+        /// file holds now that it did not hold before, or holds with other
+        /// text, and nothing for a row it holds as it was.</summary>
+        [Fact]
+        public void AReload_GivesSdlTheRowsThatCame_AndTheRowsThatChanged()
+        {
+            const string id = "050057564c050000e60c000000006800";
+            const string other = "03000000de2800000512000000000000";
+            var savedMine = ControllerDatabaseMine.Current;
+            ControllerDatabaseEngine.SdlStarting();
+            try
+            {
+                ControllerDatabaseMine Mine(params (string Id, string Map)[] rows) => ControllerDatabaseMine.FromData(rows.Select(r =>
+                    new ControllerDatabaseMineData { Added = "2030-01-02T03:04:05Z", Old = string.Empty, Mapped = Guid.Empty.ToString(),
+                        Text = r.Id + ",Mine," + r.Map + ",platform:Windows," }).ToArray(), null, out _);
+                var before = Mine((id, "a:b1"));
+
+                ControllerDatabaseMine.Current = Mine((id, "a:b1"));
+                Assert.Empty(ControllerDatabaseController.FollowReloadedRows(before));
+
+                ControllerDatabaseMine.Current = Mine((id, "a:b2"), (other, "a:b0"));
+                Assert.Equal(ControllerDatabaseMine.Current.Rows.Select(r => r.Text), ControllerDatabaseController.FollowReloadedRows(before));
+            }
+            finally
+            {
+                ControllerDatabaseMine.Current = savedMine;
+                ControllerDatabaseEngine.SdlStarting();
+            }
+        }
+
         /// <summary>The section is the app's, not a profile's: no profile
         /// carries it, and a profile switch leaves it alone.</summary>
         [Fact]

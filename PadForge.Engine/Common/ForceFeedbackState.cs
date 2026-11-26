@@ -329,7 +329,7 @@ namespace PadForge.Engine
 
             // Impulse triggers stop in parallel, through the gamepad handle
             // rather than the joystick's, or through the device itself when
-            // it relays its feedback (#597).
+            // it relays its feedback (#600).
             if (device.HasRumbleTriggers
                 && (device.GamepadHandle != IntPtr.Zero || device is IRelayedFeedbackDevice))
             {
@@ -622,7 +622,7 @@ namespace PadForge.Engine
 
             // Impulse triggers, gated on the device's capability. They go
             // through SDL3's gamepad-level trigger rumble (Xbox One+ family),
-            // or the device's own pass-on when it relays its feedback (#597).
+            // or the device's own pass-on when it relays its feedback (#600).
             // Already scaled and swapped by ApplyForceFeedback /
             // ScaleTriggerRumble before the Vibration lands here.
             ushort finalLT = v.LeftTriggerMotorSpeed;

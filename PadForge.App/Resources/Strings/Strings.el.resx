@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Εμφάνιση ή απόκρυψη του PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Ενεργοποίηση ή απενεργοποίηση εικονικών χειριστηρίων</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Οποιαδήποτε συνδεδεμένη συσκευή</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (δεν είναι συνδεδεμένη)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Συσκευή που δεν υπάρχει στη σελίδα «Συσκευές»</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Καταγραφή…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} δλ)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>όταν</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Ανάγνωση</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Αποστολή εισόδων</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Αλλαγή ρυθμίσεων</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Τα προγράμματα μπορούν να αλλάζουν προφίλ και να τα αποδεσμεύουν, να ξεκινούν και να σταματούν τη μηχανή, να ενεργοποιούν και να απενεργοποιούν εικονικά χειριστήρια, να εμφανίζουν και να κρύβουν το παράθυρο, να κλείνουν το PadForge, να αποθηκεύουν στιγμιότυπο διαγνωστικών και να ρωτούν τι εκτελείται.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Τα προγράμματα μπορούν να αλλάζουν προφίλ και να τα αποδεσμεύουν, να ξεκινούν και να σταματούν τη μηχανή, να ενεργοποιούν και να απενεργοποιούν εικονικά χειριστήρια, να εμφανίζουν και να κρύβουν το παράθυρο, να κλείνουν το PadForge, να ρωτούν τι εκτελείται, να αποθηκεύουν στιγμιότυπο διαγνωστικών και να ξεκινούν, να σταματούν και να σημειώνουν μια εγγραφή προβλήματος.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Όλα όσα ισχύουν στο επίπεδο Εντολές, και τα προγράμματα μπορούν να βλέπουν συσκευές, εικονικά χειριστήρια, αντιστοιχίσεις, προφίλ και ρυθμίσεις, να παρακολουθούν τις εισόδους κάθε συσκευής καθώς συμβαίνουν και να σας δείχνουν ένα σημείο στο PadForge. Ένα πρόγραμμα στο επίπεδο Ανάγνωση βλέπει κάθε πλήκτρο που πατιέται σε κάθε συσκευή, ακόμη και πλήκτρα που πληκτρολογούνται σε παράθυρα που εκτελούνται ως διαχειριστής.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Όλα όσα ισχύουν στο επίπεδο Ανάγνωση, και τα προγράμματα μπορούν να προσθέτουν δικές τους συσκευές και να τις οδηγούν, να κρατούν ένα χειριστήριο οποιασδήποτε συσκευής και να δίνουν ονομασμένες τιμές σε σκανδάλες μακροεντολών.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Όλα όσα ισχύουν στο επίπεδο «Αποστολή εισόδων», και τα προγράμματα μπορούν να αλλάζουν ό,τι μπορείτε να αλλάξετε εσείς στις σελίδες. Ορισμένες αλλαγές ρωτούν πάντα πρώτα στην κάρτα ερωτήσεων του PadForge.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Περιμένουν την απάντησή σας</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Δραστηριότητα</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Αναίρεση</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να το αποθηκεύσει: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να αποθηκεύσει το αρχείο.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να αποθηκεύσει το κιτ προσθέτων.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Δραστηριότητα {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Ήχοι{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Εικονίδια{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Όσο είναι συνδεδεμένο ένα πρόγραμμα στο επίπεδο Ανάγνωση ή υψηλότερα, βλέπει τι πατιέται σε κάθε συσκευή, και στα πληκτρολόγια.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Πρόσθετα</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Εκτέλεση προσθέτων</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} από {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Επανάληψη εγγραφής)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Εγγραφές προβλημάτων|*.zip;*.log|Όλα τα αρχεία|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να αναπαραγάγει το {0}. Δεν είναι εγγραφή προβλήματος ή δεν περιέχει είσοδο καμίας συσκευής.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να αναπαραγάγει το {0}. Δεν είναι εγγραφή προβλήματος που μπορεί να διαβάσει το PadForge.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να αναπαραγάγει το {0}. Περιέχει περισσότερες από {1} συσκευές και η «Επανάληψη εγγραφής» αναπαράγει το πολύ {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να αναπαραγάγει το {0}. Δεν περιέχει είσοδο καμίας συσκευής.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να διαβάσει το {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Τα πρόσθετά σας</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Προσθήκη προσθέτου…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Προγράμματα και σενάρια|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Όλα τα αρχεία|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Σταμάτησε μετά από πέντε συνεχόμενες αποτυχίες</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Δεν ξεκίνησε: το αρχείο λείπει</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Δεν ξεκίνησε: τα Windows δεν έχουν πρόγραμμα για αυτό το είδος αρχείου</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Δεν ξεκίνησε: κανένα πρόγραμμα δεν ανοίγει αρχεία Python για εσάς και το PadForge δεν βρίσκει πρόγραμμα εκκίνησης py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Δεν ξεκίνησε: το PadForge δεν μπορεί να διαβάσει ποιο πρόγραμμα ανοίγει αυτό το είδος αρχείου για εσάς</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Δεν ξεκίνησε: το πρόγραμμα που ανοίγει αυτό το είδος αρχείου για εσάς δεν υπάρχει σε αυτόν τον υπολογιστή</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Δεν ξεκίνησε: δεν εκτελείται κέλυφος επιφάνειας εργασίας για να το ξεκινήσει</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Δεν ξεκίνησε: το κέλυφος της επιφάνειας εργασίας έχει δικαιώματα διαχειριστή, άρα θα τα είχε και το πρόσθετο</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Δεν ξεκίνησε: το PadForge δεν μπορεί να διαβάσει αν θα είχε δικαιώματα διαχειριστή</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Δεν ξεκίνησε: τα Windows του έδωσαν δικαιώματα διαχειριστή, γι αυτό το PadForge το τερμάτισε πριν εκτελεστεί</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Δεν ξεκίνησε: ζητά δικαιώματα διαχειριστή</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Δεν ξεκίνησε: τα Windows αρνήθηκαν με σφάλμα {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Δεν ξεκίνησε</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Προστέθηκε: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Υπογραφή από: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Χωρίς υπογραφή.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Οι ρυθμίσεις του εμφανίζονται εδώ όσο εκτελείται.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Δεν δηλώνει ρυθμίσεις.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Οι ρυθμίσεις του εμφανίζονται εδώ μόλις συνδεθεί στο PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Το πρόγραμμα μιλά μια έκδοση που το PadForge δεν γνωρίζει</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Το PadForge δεν έδωσε αυτό το κλειδί προσθέτου</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Το PadForge δεν δέχτηκε τη σύνδεση αυτού του προγράμματος</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Το PadForge δεν έφτιαξε συσκευή, επειδή τα Windows δεν έδωσαν το όνομα του αρχείου του προγράμματος</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ζητήθηκε ξανά πολύ νωρίς</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Όχι άλλα τέτοια μέχρι να ξεκινήσει ξανά το PadForge</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Πάρα πολλά από αυτά που έφτιαξαν προγράμματα περιμένουν τον έλεγχό σας στην «Αρχική»</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Το PadForge δεν έχει τέτοιο εργαλείο</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Το πρόγραμμα διάβασε παλαιότερη κατάσταση</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Κανένα σημείο δεν έχει αυτό το αναγνωριστικό</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Δεν το επιτρέψατε</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Κανείς δεν απάντησε εγκαίρως</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Αναμονή για την απάντησή σας</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Δεν είχατε απαντήσει ακόμη</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Δεν υπάρχει τέτοιο αίτημα</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αναίρεση</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Μόνο εσείς μπορείτε να το αλλάξετε</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Χωρίς υπογραφή.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Στο επίπεδο «Ανάγνωση» και πάνω βλέπει κάθε πλήκτρο που πατιέται σε κάθε συσκευή, και τα πληκτρολόγια.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Ρωτά μία φορά. Μπορείτε να το αφαιρέσετε στη σελίδα «Αυτοματισμός».</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Ξεκίνησε από πρόγραμμα που το PadForge δεν μπόρεσε να αναγνωρίσει.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>Το PadForge δεν μπορεί να ξεχωρίσει αυτό το πρόγραμμα από άλλο, γι αυτό ρωτά ξανά στην επόμενη σύνδεσή του.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>η γραμμή εντολών του PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ορίζει το {0} σε {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ακούει στο δίκτυο, ώστε άλλες συσκευές να φτάνουν σε αυτόν τον υπολογιστή.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Μεταφορά ενός προφίλ</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Εισαγάγετε ένα αρχείο προφίλ από άλλο πρόγραμμα και δείτε τι μεταφέρθηκε.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} φορές</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, το τελευταίο από {1} παρόμοια αιτήματα</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Σενάρια AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Το Logitech G-key SDK δεν υπάρχει σε αυτόν τον υπολογιστή. Εγκαθίσταται μαζί με το Logitech Gaming Software 8.55 ή νεότερο.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>Το G-key SDK είναι καταχωρισμένο, αλλά το αρχείο του λείπει. Εγκαταστήστε ξανά το Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Το G-key SDK βρέθηκε, αλλά δεν ήταν δυνατή η φόρτωσή του.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Το G-key SDK βρέθηκε, αλλά δεν φορτώθηκε, επειδή το PadForge δεν μπόρεσε να επιβεβαιώσει ότι μόνο οι διαχειριστές μπορούν να το αλλάξουν και ότι το έχει υπογράψει η Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Αυτή η βιβλιοθήκη δεν είναι το G-key SDK που αναμένεται.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Το G-key SDK αρνήθηκε να ξεκινήσει. Συνήθως αυτό σημαίνει ότι το Logitech Gaming Software δεν εκτελείται.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Συνδέθηκε, δεν έχει εντοπιστεί ακόμη κανένα πλήκτρο. Στο Logitech Gaming Software, σύρετε την εντολή «G-key» σε κάθε πλήκτρο του προφίλ PadForge και ορίστε αυτό το προφίλ ως μόνιμο. Ένα ποντίκι G600 ή G300 πρέπει επίσης να μην είναι σε λειτουργία ενσωματωμένης μνήμης.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Αυτόματη εκκίνηση του PadForge όταν συνδέεστε στα Windows. Όσο αυτό είναι ενεργό, το PadForge ξεκινά και χωρίς την προτροπή των Windows από συντόμευση, σενάριο ή άλλο πρόγραμμα.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Το PadForge εκτελείται από {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Αυτό απαιτεί το PadForge σε δικό του φάκελο. Ο φάκελός του περιέχει άλλα αρχεία, επομένως το PadForge δεν μπορεί να εμποδίσει άλλα προγράμματα να τον αλλάξουν.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Αυτό απαιτεί το PadForge σε φάκελο που δεν μπορούν να αλλάξουν άλλα προγράμματα. Το PadForge δεν μπόρεσε να εμποδίσει άλλα προγράμματα να αλλάξουν τον φάκελό του.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Μεταφορά του PadForge στον δικό του φάκελο</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Αντιγράφει το PadForge και τις ρυθμίσεις του στο Program Files, κατευθύνει εκεί τις εργασίες του και το ξεκινά από εκεί. Το αντίγραφο εδώ παραμένει ως έχει.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: ο φάκελος {0} περιέχει αρχεία που δεν ανήκουν στο PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Η Εκκίνηση κατά τη σύνδεση απενεργοποιήθηκε, επειδή εκτελούσε το PadForge από φάκελο που περιέχει άλλα αρχεία.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: τα Windows δεν ορίζουν φάκελο «Program Files».</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να διαβάσει το PadForge που εκτελείται.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να δημιουργήσει το {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να διαβάσει τι περιέχει ο φάκελος {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να εμποδίσει άλλα προγράμματα να αλλάξουν τον φάκελο {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: το αντίγραφό του στον φάκελο {0} δεν ταίριαζε με το PadForge που εκτελείται.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: μετά την αντιγραφή, ο φάκελος {0} περιείχε αρχεία που δεν ανήκουν στο PadForge ή άλλα προγράμματα μπορούσαν να τον αλλάξουν.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge που εκτελέστηκε δεν υπάρχει πια.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge δεν μπόρεσε να εμποδίσει άλλα προγράμματα να αλλάξουν τον φάκελο από τον οποίο εκτέλεσε το PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge δεν μπόρεσε να διαβάσει ποιο PadForge εκτέλεσε.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge δεν μπόρεσε να διαβάσει τον φάκελο του PadForge που εκτέλεσε.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να δημιουργήσει τον προστατευμένο φάκελό του, {0}. Το PadForge φυλάσσει εκεί τις βιβλιοθήκες που εκτελεί με δικαιώματα διαχειριστή και δεν μπορεί να ξεκινήσει με ασφάλεια χωρίς αυτόν.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να ξεκινήσει ξανά τον εαυτό του από τον προστατευμένο φάκελό του, {0}. Το PadForge εκτελείται με δικαιώματα διαχειριστή μόνο από εκεί, επομένως δεν ξεκίνησε.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να δημιουργήσει το κλείδωμα που επιτρέπει μόνο ένα αντίγραφο σε εκτέλεση, γι αυτό δεν ξεκίνησε.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Το PadForge εκτελείται με δικαιώματα διαχειριστή από τον φάκελο {0}, τον οποίο μπορούν να αλλάξουν άλλα προγράμματα. Μπορούν να αλλάξουν εκεί τις ρυθμίσεις του PadForge και το PadForge ενεργεί σύμφωνα με αυτές με τα δικαιώματά του.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Το PadForge εκτελείται με δικαιώματα διαχειριστή από τον φάκελο {0}, που περιέχει άλλα αρχεία. Το PadForge δεν μπορεί να εμποδίσει άλλα προγράμματα να αλλάξουν εκεί τις ρυθμίσεις του και ενεργεί σύμφωνα με αυτές με τα δικαιώματά του.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Το PadForge εκτελείται με δικαιώματα διαχειριστή από τον φάκελο {0}, τον οποίο δεν μπόρεσε να διαβάσει. Το PadForge δεν μπορεί να εμποδίσει άλλα προγράμματα να αλλάξουν εκεί τις ρυθμίσεις του και ενεργεί σύμφωνα με αυτές με τα δικαιώματά του.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Εμφάνιση πάντα στην περιοχή ειδοποιήσεων</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Το εικονίδιο της περιοχής ειδοποιήσεων παραμένει ορατό όσο το παράθυρο είναι ανοιχτό, ώστε η «Έξοδος» στο μενού του να απέχει πάντα ένα κλικ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ενημερώσεις</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Εγκατάσταση και επανεκκίνηση</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Σημειώσεις έκδοσης</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Βάση δεδομένων χειριστηρίων</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Το κουμπί «Ενημέρωση τώρα» κατεβάζει την κοινοτική βάση δεδομένων χειριστηρίων (SDL_GameControllerDB) από το GitHub, ή από τη διεύθυνση που ορίζεται κάτω από το «Περισσότερα», και κρατά στο αρχείο ρυθμίσεων τις αντιστοιχίσεις που λείπουν από αυτή την έκδοση του PadForge. Χρησιμοποιούνται αμέσως. Από άλλη διεύθυνση κρατά μόνο νέες αντιστοιχίσεις. Μια νέα αντιστοίχιση χρησιμοποιείται μόνο για χειριστήριο που τίποτε άλλο δεν διαβάζει ως χειριστήριο παιχνιδιών, που δεν είναι ανατεθειμένο και που δεν βρίσκεται στη ρύθμιση «Επιβολή λειτουργίας ακατέργαστου joystick». Η επαναφορά αφαιρεί κάθε αντιστοίχιση που κατέβηκε και κατεβάζει ξανά από το GitHub. Οι δικές σας γραμμές, κάτω από το «Περισσότερα», παραμένουν.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Το κουμπί «Ενημέρωση τώρα» κατεβάζει την κοινοτική βάση δεδομένων χειριστηρίων (SDL_GameControllerDB) από το GitHub, ή από τη διεύθυνση που ορίζεται κάτω από το «Περισσότερα», και κρατά στο αρχείο ρυθμίσεων τις αντιστοιχίσεις που λείπουν από αυτή την έκδοση του PadForge. Χρησιμοποιούνται αμέσως. Από άλλη διεύθυνση κρατά μόνο νέες αντιστοιχίσεις. Μια νέα αντιστοίχιση χρησιμοποιείται πρώτα μόνο για χειριστήριο που το SDL αναφέρει ως χειριστήριο παιχνιδιών ή χωρίς συγκεκριμένο τύπο, που τίποτε άλλο δεν διαβάζει ως χειριστήριο παιχνιδιών, που δεν είναι ανατεθειμένο και που δεν βρίσκεται στη ρύθμιση «Επιβολή λειτουργίας ακατέργαστου joystick». Μόλις χρησιμοποιηθεί, εξακολουθεί να χρησιμοποιείται και μετά την ανάθεση του χειριστηρίου. Η επαναφορά αφαιρεί τις αντιστοιχίσεις που κατέβηκαν και ορίζει ξανά το «Λήψη από» στο αρχείο της κοινότητας, το οποίο κατεβάζει η επόμενη «Ενημέρωση τώρα». Οι δικές σας γραμμές, κάτω από το «Περισσότερα», παραμένουν.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Ενημέρωση τώρα</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ενημέρωση…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Έλεγχος για ενημερώσεις…</value></data>
@@ -1126,9 +1160,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Ενσωματωμένα: {1} αντιστοιχίσεις, κοινοτικό αντίγραφο ημερομηνίας {2}. Λήψη {3} από {4}: {0} νέες γραμμές.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Ενσωματωμένα: {1} αντιστοιχίσεις, κοινοτικό αντίγραφο ημερομηνίας {2}. Λήψη {3} από {4}: {0} νέα γραμμή.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Η κοινοτική βάση δεδομένων δεν έχει αλλάξει από την τελευταία ενημέρωση.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Το αρχείο στο {0} δεν έχει αλλάξει από την τελευταία ενημέρωση.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η επικοινωνία με το GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η επικοινωνία με το {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Το PadForge απέρριψε τη λήψη επειδή δεν είναι η βάση δεδομένων χειριστηρίων που περιμένει. Τίποτα δεν άλλαξε.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>Το PadForge απέρριψε την απάντηση του GitHub. Δεν άλλαξε τίποτα.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>Το PadForge απέρριψε την απάντηση από το {0}. Δεν άλλαξε τίποτα.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Εκκίνηση σε ελαχιστοποίηση</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Εκκίνηση κατά τη σύνδεση</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Φάκελος</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Ρύθμιση υπηρεσίας</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Βήμα αφαίρεσης</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Υπηρεσία</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Αρχείο</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Άνω φίλτρο</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Τιμή μητρώου</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Αναγνωριστικό υλικού</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Χρονοπρογραμματισμένη εργασία</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Καταχώρηση εγκατεστημένης εφαρμογής</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Συσκευή USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Επιτρέπει σε χειριστήρια PlayStation 3, στο PlayStation Move και στο χειριστήριο Navigation να συνδέονται μέσω Bluetooth. Είναι ενσωματωμένο στο PadForge και εγκαθίσταται την πρώτη φορά που γίνεται σύζευξη ενός από αυτά.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Συνδέει χειριστήρια PlayStation 3 μέσω Bluetooth.</value></data>
@@ -1239,6 +1284,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Αποθηκεύτηκε το {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Η εγγραφή δεν ξεκίνησε. Ένας έλεγχος βρήκε μια ιδιωτική τιμή αυτού του PC που δεν θα έμενε εκτός του αρχείου.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Η εγγραφή δεν ξεκίνησε. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>Το PadForge δεν βρήκε προσωρινό φάκελο του χρήστη που είναι συνδεδεμένος μέσα στο προφίλ του χρήστη, χωρίς σύνδεσμο στη διαδρομή, για να γράψει την εγγραφή.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Ο φάκελος των εγγραφών είναι σύνδεσμος προς άλλο μέρος, τον οποίο το PadForge δεν ακολουθεί.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Η προηγούμενη εγγραφή ολοκληρώνεται ακόμη.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Η επιλογή «Διατήρηση των τελευταίων 60 δευτερολέπτων» είναι απενεργοποιημένη, επομένως δεν υπάρχει τίποτα για αποθήκευση.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Μια εγγραφή που το PadForge δεν είχε σταματήσει περιμένει να τη διαβάσετε στην «Αρχική»: {0}</value></data>
@@ -1252,7 +1299,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>Το PadForge, τα Windows, οι συσκευές και οι ρυθμίσεις σας όπως είναι τώρα, με την ίδια ανασκόπηση.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log δίπλα στο PadForge.exe, όπου μπορείτε να το διαβάσετε.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Τι θα εγγραφεί</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Όλα ενεργά. Ένα μέρος που απενεργοποιείται μένει έξω από την επόμενη εγγραφή και το αρχείο λέει ποια μέρη περιέχει.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Κάθε μέρος είναι ενεργό από προεπιλογή. Ένα μέρος που απενεργοποιείται μένει έξω από την επόμενη εγγραφή και το αρχείο λέει ποια μέρη περιέχει.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Για πρόβλημα που εμφανίζεται μία φορά το βράδυ.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Η εγγραφή περιμένει να τη διαβάσετε στην «Αρχική».</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Σύνοψη</value></data>
@@ -1303,6 +1350,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>Αποθήκευση της εγγραφής</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Αρχεία zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Δεν αποθηκεύτηκε. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Έλεγχος εκκαθάρισης: έλεγχος των μερών που κρατάτε…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Έλεγχος εκκαθάρισης: το PadForge δεν μπόρεσε να διαβάσει τα μέρη που κρατάτε, γι' αυτό η αποθήκευση μένει ανενεργή.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Η αποθήκευση με τα δικαιώματά σας δεν ξεκίνησε.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Η αποθήκευση με τα δικαιώματά σας δεν ξεκίνησε: δεν εκτελείται κέλυφος επιφάνειας εργασίας για να την ξεκινήσει.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Η αποθήκευση με τα δικαιώματά σας δεν ξεκίνησε: τα Windows αρνήθηκαν με σφάλμα {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Η αποθήκευση δεν ολοκληρώθηκε σε {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Τα Windows δεν επέτρεψαν την εγγραφή του αρχείου εκεί.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>Το PadForge δεν αποδέχτηκε αυτό το αρχείο ως δική του εγγραφή.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Η αποθήκευση τερματίστηκε με κωδικό {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Αποθηκεύεται ως εσείς, στον φάκελο Λήψεις την πρώτη φορά, έπειτα εκεί όπου αποθηκεύσατε τελευταία, και εμφανίζεται στην Εξερεύνηση αρχείων. Μια εγγραφή που σταματά ενώ κανείς δεν βρίσκεται στη σελίδα (το όριό της, μια μακροεντολή, ένα πρόγραμμα, το εργαλείο του βοηθού ή το --record stop) περιμένει αυτή την ανασκόπηση στην «Αρχική» και διαγράφεται μετά από 7 ημέρες αν δεν αποθηκευτεί. Ένα πρόγραμμα μαθαίνει ότι περιμένει, ποτέ πού.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Μια εγγραφή προβλήματος από {0} περιμένει να τη διαβάσετε.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Ανασκόπηση</value></data>
@@ -1653,6 +1711,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Νέο χειριστήριο</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Ρυθμίσεις</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Κάθε άξονας, κουμπί και αισθητήρας</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Τα χειριστήριά της με τα ονόματα που χρησιμοποιούν τα σενάρια</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Πατημένα: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Αναγνωριστικά, διαδρομή, δυνατότητες, Επιβολή λειτουργίας ακατέργαστου joystick</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Αναγνωριστικά, διαδρομή, δυνατότητες</value></data>
@@ -2154,9 +2213,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Η ανάγνωση απέτυχε: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Το HIDMaestro απέρριψε αυτή την προεπιλογή στο {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Αυτή η προεπιλογή δεν έχει περιγραφέα HID, επομένως δεν μπορεί να δημιουργηθεί χειριστήριο από αυτήν.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να ελέγξει αυτή την προεπιλογή: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Έλεγχος της προεπιλογής…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Δεν εισήχθη τίποτα. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Εισαγωγή</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(συσκευή HID χωρίς όνομα)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Ποντίκι</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Χειριστήριο παιχνιδιών</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Πληκτρολόγιο</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Χειριστήριο πολλών αξόνων</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Βρέθηκαν {0} διεπαφές HID.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Βρέθηκε 1 διεπαφή HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Η απαρίθμηση απέτυχε: {0}</value></data>
@@ -3288,7 +3356,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Όσο κρατιέται και κέντρο</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Εναλλαγή</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Είσοδος τιμονιού</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Το κουμπί που αφήνει το ποντίκι να στρίβει, στην ίδια συσκευή με την πηγή. Αν δεν επιλεγεί κανένα, το ποντίκι στρίβει πάντα.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Το κουμπί που αφήνει το ποντίκι να στρίβει, σε οποιαδήποτε συσκευή αυτής της υποδοχής. Αν δεν επιλεγεί κανένα, το ποντίκι στρίβει πάντα.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Εξομάλυνση</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Εξομαλύνει ένα ποντίκι που αναφέρει άνισα. Ο μοχλός καθυστερεί σε σχέση με το χέρι κατά περίπου τόσο χρόνο. Το 0 την απενεργοποιεί.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Τέρμα στην ταχύτητα</value></data>
@@ -3309,7 +3377,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Έναρξη από εκεί που άρχισε το στρίψιμο</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Με Είσοδο τιμονιού, ο μοχλός μετρά από το σημείο όπου βρισκόταν ο δείκτης όταν άρχισε το στρίψιμο, όπως ένας μοχλός στην οθόνη ενός τηλεφώνου ξεκινά εκεί που προσγειώνεται το δάχτυλο. Όταν είναι ανενεργό, μετρά από το κέντρο της οθόνης του δείκτη.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Αυτός ο άξονας κινείται σχετικά</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Για ένα trackball ή έναν περιστρεφόμενο δίσκο που αναφέρει πόσο στράφηκε. Όταν είναι ενεργό, ο άξονας κρατά μια θέση όπως η Διαδρομή ποντικιού και παίρνει τις ρυθμίσεις διαδρομής. Τα Windows δεν λένε ποιοι άξονες κινούνται έτσι.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Για ένα trackball ή έναν περιστρεφόμενο δίσκο που αναφέρει πόσο στράφηκε. Όταν είναι ενεργό, ο άξονας κρατά μια θέση όπως η Διαδρομή ποντικιού και παίρνει τις ρυθμίσεις διαδρομής. Το SDL διαβάζει ένα γενικό χειριστήριο μέσω DirectInput, που διαβάζει κάθε άξονα ως θέση, γι αυτό αυτός ο διακόπτης λέει ποιοι άξονες κινούνται έτσι.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Προεπισκόπηση</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Δείχνει πώς αυτή η οικογένεια ακολουθεί το δικό σας ποντίκι. Τίποτα δεν αντιστοιχίζεται μέχρι να την επιλέξετε.</value></data>
@@ -3502,6 +3570,13 @@
 {0}
 
 Το PadForge έγραψε τις λεπτομέρειες στο crash.log δίπλα στο PadForge.exe. Για να το αναφέρετε, ξεκινήστε μια συζήτηση στο {2} και σύρετε το crash.log πάνω της.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Παρουσιάστηκε μη αναμενόμενο σφάλμα:
+
+{0}
+
+Το PadForge δεν μπόρεσε να γράψει τις λεπτομέρειες στο crash.log δίπλα στο PadForge.exe. Για να το αναφέρετε, ξεκινήστε μια συζήτηση στο {2}, πατήστε Ctrl+C εδώ για να αντιγράψετε αυτό το μήνυμα και επικολλήστε το εκεί.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(αποκρύφτηκαν {0} επιπλέον σφάλματα)</value></data>
@@ -4430,7 +4505,7 @@
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Αποσυμπίεση Zstandard που χρησιμοποιεί το SteamKit2 για τα τμήματα των depot του Steam, μια μεταφορά της βιβλιοθήκης zstd σε C# από τον Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ο διακομιστής και ο πελάτης Model Context Protocol πίσω από τη σύνδεση βοηθών και το PadForge.exe --mcp, από το Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ο διακομιστής και ο πελάτης Model Context Protocol πίσω από τη σύνδεση βοηθών και το PadForge.exe --mcp, από το Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Τα Microsoft.Extensions.AI.Abstractions, Logging.Abstractions και DependencyInjection.Abstractions, πάνω στα οποία βασίζεται το MCP C# SDK, από τη Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>σύνδεση του WinUSB στην οθόνη του G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>η οθόνη του G19 χρησιμοποιεί άλλο πρόγραμμα οδήγησης ({0}), οπότε ξεκινήστε το Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>η οθόνη του G19 χρησιμοποιεί το πρόγραμμα οδήγησης ενός άλλου προγράμματος ({0}), το οποίο το PadForge αφήνει ως έχει</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Έλεγχος των προγραμμάτων οδήγησης Bluetooth PlayStation του PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Ανάγνωση του ραδιοφώνου Bluetooth αυτού του υπολογιστή…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Άνοιγμα του χειριστηρίου στο καλώδιο USB…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Εγγραφή της διεύθυνσης Bluetooth αυτού του υπολογιστή στο χειριστήριο…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Καταχώριση του χειριστηρίου στο Bluetooth των Windows…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Επανεκκίνηση του Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Η σύζευξη σταμάτησε: τα Windows αρνήθηκαν στο PadForge την πρόσβαση στο χειριστήριο ή στις ρυθμίσεις Bluetooth. Το αρχείο καταγραφής διαγνωστικών έχει τις λεπτομέρειες.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Η σύζευξη σταμάτησε: η ανάγνωση ή η εγγραφή στο χειριστήριο ή στο ραδιόφωνο Bluetooth απέτυχε. Το αρχείο καταγραφής διαγνωστικών έχει τις λεπτομέρειες.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Η σύζευξη σταμάτησε σε σφάλμα που το PadForge δεν περίμενε. Το αρχείο καταγραφής διαγνωστικών έχει τις λεπτομέρειες.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>απαιτεί Logitech Gaming Software 8.52 ή νεότερο</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>βρέθηκε η βιβλιοθήκη του, αλλά δεν φορτώθηκε, επειδή το PadForge δεν μπόρεσε να επιβεβαιώσει ότι μόνο οι διαχειριστές μπορούν να την αλλάξουν και ότι την έχει υπογράψει η Logitech</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>βρέθηκε η βιβλιοθήκη του, αλλά δεν ήταν δυνατή η χρήση της, και το αρχείο καταγραφής διαγνωστικών λέει γιατί</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>ξεκινήστε το Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>αναμονή για τηλέφωνο με Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>σε τηλέφωνο</value></data>
@@ -5938,6 +6024,8 @@
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Επιλογή dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Φορτώνει αυτό το αντίγραφο της βιβλιοθήκης της Force Dimension αντί για οποιοδήποτε άλλο. Ένα Falcon που είναι ανοιχτό σε άλλο αντίγραφο κλείνει και ανοίγει ξανά σε αυτό. Τα αντίγραφα που εγκαθιστά το SDK βρίσκονται και χωρίς αυτό.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Βιβλιοθήκες (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Η σελίδα λήψης του Falcon SDK δεν άνοιξε: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Η σελίδα λήψης του Falcon SDK δεν έχει ανοίξει ακόμη: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Εγκατάσταση προγράμματος οδήγησης Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Εγκαθιστά το πρόγραμμα οδήγησης της Force Dimension, από τον φάκελο του SDK, σε ένα Falcon που δεν έχει κανένα. Τα Windows ίσως ρωτήσουν πρώτα αν εμπιστεύεστε τη Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Λήψη του SDK της Force Dimension</value></data>
@@ -6604,12 +6692,17 @@
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Αφαίρεση…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ενημέρωση…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Δεν ολοκληρώθηκε: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Η καταχώριση και η δεξιότητα του PadForge παραμένουν, επειδή το {0} διαβάζει το ίδιο αρχείο ρυθμίσεων και τον ίδιο φάκελο δεξιοτήτων.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Η καταχώριση του PadForge παραμένει, επειδή το {0} διαβάζει το ίδιο αρχείο ρυθμίσεων.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>Το PadForge αφαιρέθηκε από αυτό το πρόγραμμα. Η δεξιότητά του παραμένει, επειδή το {0} διαβάζει δεξιότητες από τον ίδιο φάκελο.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να διαβάσει τις ρυθμίσεις στο {0}, γι αυτό δεν ξέρει αν το PadForge έχει προστεθεί.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Προστέθηκε. Το PadForge δεν μπόρεσε να διαβάσει τον φάκελο δεξιοτήτων του.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Άλλοι βοηθοί</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Για βοηθό που δεν αναφέρεται παραπάνω: το «Αντιγραφή ρυθμίσεων» δίνει την καταχώριση για τις ρυθμίσεις MCP του και το «Αντιγραφή μηνύματος» δίνει ένα σύντομο κείμενο για κάθε συνομιλία, που λέει πώς να συνδεθεί και τι να ζητηθεί πρώτο.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Αντιγραφή ρυθμίσεων</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Αντιγραφή μηνύματος</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Αντιγράφηκε.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Δεν αντιγράφηκε: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Δεν αντιγράφηκε. Τα Windows δεν επέτρεψαν στο PadForge να χρησιμοποιήσει το πρόχειρο.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Συνδεθείτε με το PadForge, τον χαρτογράφο χειριστηρίων στον υπολογιστή μου. Είναι τοπικός διακομιστής MCP που εκτελείται μέσω stdio: η εντολή είναι {0}, με το όρισμα --mcp. Ως ρυθμίσεις JSON: {1} Μόλις συνδεθείτε, καλέστε πρώτα το εργαλείο του status και μετά ρωτήστε με τι θέλω να ρυθμίσω, για παράδειγμα: «Δείξε μου πού να αντιστοιχίσω τις σκανδάλες του χειριστηρίου μου.»</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Ο «Αυτοματισμός» του PadForge είναι τώρα ανενεργός: ενεργοποιήστε τον πρώτα στο PadForge, στα «Επιπλέον», «Αυτοματισμός».</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Επιτρεπόμενα προγράμματα</value></data>
@@ -6630,6 +6723,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Ένα joystick. Το PadForge το διαβάζει ακατέργαστο, οπότε η αντιστοίχιση του SDL δεν χρησιμοποιείται.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Ένα joystick, διαταγμένο ως gamepad από τη γραμμή σας.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>Το SDL διαβάζει συσκευές όσο εκτελείται η μηχανή.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Η συσκευή δεν είναι συνδεδεμένη. Το SDL τη διαβάζει μόλις συνδεθεί.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Το SDL δεν έδωσε στο PadForge καμία ανάγνωση αυτής της συσκευής.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Το κοινοτικό αντίγραφο που είναι ενσωματωμένο, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Λήψη {0}</value></data>
@@ -6667,6 +6762,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, εναλλαγές και άλλες ενέργειες</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} και {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αντιγραφή: το SDL δεν έχει αντιστοίχιση για αυτή τη συσκευή και δεν βρίσκεται σε κανένα χειριστήριο.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αντιγραφή: το PadForge δεν μπορεί να διαβάσει την αντιστοίχιση του SDL για αυτή τη συσκευή και καμία γραμμή των χειριστηρίων του δεν δίνει σύνδεση που δέχεται η μορφή του SDL.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αντιγραφή: το SDL δεν έχει αντιστοίχιση για αυτή τη συσκευή και καμία γραμμή του {0} δεν διαβάζει κουμπί, άξονα ή hat της με τρόπο που δέχεται η μορφή του SDL.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αντιγραφή: το SDL δεν έχει αντιστοίχιση για αυτή τη συσκευή και οι γραμμές του {0} τη διαβάζουν μόνο για {1}, που η μορφή του SDL δεν μπορεί να περιέχει.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αντιγραφή: το PadForge δεν μπορεί να διαβάσει την αντιστοίχιση του SDL για αυτή τη συσκευή τώρα και δεν βρίσκεται σε κανένα χειριστήριο.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αντιγραφή: το PadForge δεν μπορεί να διαβάσει την αντιστοίχιση του SDL για αυτή τη συσκευή τώρα και καμία γραμμή του {0} δεν δίνει σύνδεση που δέχεται η μορφή του SDL.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Άλλο πρόγραμμα χρησιμοποιεί το πρόχειρο. Δεν αντιγράφηκε τίποτα.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Η γραμμή σας αφαιρέθηκε. Η συσκευή διαβάζεται όπως πριν από αυτήν.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Αντιστοιχίστηκε ξανά από τη διάταξη του SDL: {0}.</value></data>
@@ -6687,6 +6787,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Γραμμές που έχει το PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Καμία γραμμή δεν ταιριάζει.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Η γραμμή που διαλέξατε εφαρμόζεται στο {0} με το δικό του αναγνωριστικό, με τον ίδιο έλεγχο και την ίδια επιλογή όπως στην «Επικόλληση».</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Η μηχανή είναι σταματημένη, γι αυτό η λίστα παραλείπει τις γραμμές που κρατά το SDL, τις δικές του και το ενσωματωμένο κοινοτικό αντίγραφο. Θα εμφανιστούν όταν εκτελεστεί.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>Το SDL δεν απάντησε εγκαίρως, γι αυτό η λίστα παραλείπει τις γραμμές που κρατά, τις δικές του και το ενσωματωμένο κοινοτικό αντίγραφο.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Γραμμή αντιστοίχισης SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Μια γραμμή για αυτή τη συσκευή.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Μια διάταξη που εικάστηκε.</value></data>
@@ -6699,14 +6801,17 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} πεδίο, από τον ίδιο κατασκευαστή και προϊόν σε άλλο δίαυλο ή έκδοση. Κρατιέται με το δικό αναγνωριστικό αυτής της συσκευής.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} πεδίο, γραμμή άλλης συσκευής. Κρατιέται με το δικό αναγνωριστικό αυτής της συσκευής.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} πεδίο. Το SDL δεν διαβάζει αυτή τη συσκευή, οπότε το PadForge διατάσσει τις εισόδους της σύμφωνα με τη γραμμή.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>Το PadForge δεν έχει απλό κουμπί ή άξονα για αυτά τα πεδία και τα παραλείπει: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} πεδίο, από τους άξονες, τα κουμπιά και τα hats της συσκευής. Ελέγξτε την στη «Δοκιμή εισόδων» και μετά κρατήστε την ή αλλάξτε την εδώ.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Αυτό αλλάζει τον τρόπο που διαβάζεται το {0}. Οι γραμμές του στα {1} αντιστοιχίζονται ξανά από τη νέα διάταξη.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Αυτό αλλάζει τον τρόπο που διαβάζεται το {0}. Δεν βρίσκεται σε κανένα χειριστήριο, οπότε καμία γραμμή δεν αλλάζει.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Οι συντομεύσεις προφίλ που διαβάζουν το {0} κρατούν τις εισόδους που είχαν οριστεί.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Η γραμμή κρατιέται ως δική σας στο PadForge.xml και υπερισχύει κάθε άλλης πηγής για αυτή τη συσκευή. Η «Αφαίρεση δικής μου» επαναφέρει την παλιά γραμμή και τις παλιές γραμμές.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Οι γραμμές κρατιούνται ως δικές σας στο PadForge.xml και υπερισχύουν για τις συσκευές τους κάθε άλλης πηγής. Το «Εκκαθάριση», κάτω από το «Περισσότερα» της γραμμής «Βάση δεδομένων χειριστηρίων», τις αφαιρεί.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} γραμμές για Windows. {1} για άλλα συστήματα παραλείπονται.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} γραμμή για Windows. {1} για άλλα συστήματα παραλείπονται.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} γραμμές για Windows.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} γραμμή για Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} γραμμές για άλλα συστήματα παραλείπονται.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} γραμμή για άλλο σύστημα παραλείπεται.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Και οι {0:N0} θα προστεθούν. Το PadForge κρατά έως {1:N0} γραμμές δικές σας.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Θα προστεθεί. Το PadForge κρατά έως {1:N0} γραμμές δικές σας.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Κρατούνται τώρα {0:N0} δικές σας, οπότε θα προστεθούν {1:N0} από αυτές και {2:N0} δεν θα προστεθούν.</value></data>
@@ -6716,7 +6821,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Το κείμενο δεν είναι γραμμή της βάσης δεδομένων χειριστηρίων του SDL: ένα αναγνωριστικό 32 δεκαεξαδικών ψηφίων, ένα όνομα και μετά πεδία όπως a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Οι γραμμές είναι για άλλα συστήματα. Το PadForge διαβάζει γραμμές για Windows ή για κανένα συγκεκριμένο σύστημα.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Το αναγνωριστικό της γραμμής δεν είναι συσκευής. Χρειάζεται 32 δεκαεξαδικά ψηφία.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Το όνομα της γραμμής είναι κενό, ξεπερνά τους 128 χαρακτήρες ή περιέχει χαρακτήρα που το SDL διαβάζει ως πεδίο.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Το όνομα της γραμμής είναι κενό, ξεπερνά τους 128 χαρακτήρες, περιέχει δείκτη πεδίου που διαβάζει το SDL, όπως «type:», ή περιέχει χαρακτήρα εκτός από γράμματα, ψηφία, σημεία στίξης, σύμβολα και το απλό κενό.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Η γραμμή έχει πεδίο hint ή Android, που το PadForge δεν δέχεται.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Η γραμμή έχει πεδίο που το SDL δεν γνωρίζει.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Μια σύνδεση δεν έχει τη μορφή του SDL, όπως b3, a2, +a2, a2~ ή h0.4.</value></data>
@@ -6727,8 +6832,8 @@
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Οι γραμμές σας</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Οι γραμμές που προσθέτετε εδώ ή επικολλάτε στην κάρτα «Αντιστοίχιση SDL» μιας συσκευής υπερισχύουν για τις συσκευές τους κάθε άλλης πηγής και μένουν μετά την επαναφορά.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Προσθήκη γραμμών από αρχείο ή από το πρόχειρο…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} γραμμές, καθεμία για μία συσκευή, δικές σας πάνω από κάθε άλλη πηγή.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} γραμμή για μία συσκευή, δική σας πάνω από κάθε άλλη πηγή.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} γραμμές, οι δικές σας πάνω από κάθε άλλη πηγή.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} γραμμή, η δική σας πάνω από κάθε άλλη πηγή.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Καμία ακόμη.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Η μεταβλητή σας SDL_GAMECONTROLLERCONFIG περιέχει {0} γραμμές που το PadForge δεν κρατά. Το «Προσθήκη γραμμών από αρχείο ή από το πρόχειρο» ανοίγει με αυτές.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Η μεταβλητή σας SDL_GAMECONTROLLERCONFIG περιέχει {0} γραμμή που το PadForge δεν κρατά. Το «Προσθήκη γραμμών από αρχείο ή από το πρόχειρο» ανοίγει με αυτήν.</value></data>
@@ -6738,7 +6843,7 @@
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Αλλαγή…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Χρήση του αρχείου της κοινότητας</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Διεύθυνση</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>Το PadForge δέχεται διεύθυνση που αρχίζει με https:// και ονομάζει έναν διακομιστή, στην προεπιλεγμένη θύρα, χωρίς όνομα χρήστη ή κωδικό πρόσβασης.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>Το PadForge δέχεται διεύθυνση έως 2.048 χαρακτήρων που ξεκινά με https:// και ονομάζει κεντρικό υπολογιστή, στην προεπιλεγμένη θύρα, χωρίς όνομα χρήστη, κωδικό ή τμήμα μετά το #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Πρόσβαση στο PadForge από τον ιστό</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Ένας βοηθός που εκτελείται σε ιστότοπο φτάνει το PadForge μέσω ενός προγράμματος σήραγγας σε αυτόν τον υπολογιστή. Η ενεργοποίηση σας ρωτά πρώτα.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Πρόσβαση στο PadForge από τον ιστό?</value></data>
@@ -6755,7 +6860,7 @@
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Σταμάτησε. Τα τελευταία της λόγια: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Δεν μπόρεσε να ξεκινήσει.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Δεν υπάρχει πια σε αυτόν τον υπολογιστή.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Δεν βρέθηκε πρόγραμμα σήραγγας σε αυτόν τον υπολογιστή. Το PadForge λειτουργεί με cloudflared, devtunnel, ngrok και Tailscale Funnel ή με τη διεύθυνση της δικής σας σήραγγας.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>Το PadForge δεν βρήκε κανένα από τα cloudflared, devtunnel, ngrok ή Tailscale Funnel σε αυτόν τον υπολογιστή. Διαλέξτε το ChatGPT Secure MCP Tunnel, που το PadForge κατεβάζει, ή δώστε τη διεύθυνση της δικής σας σήραγγας.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Διαλέξτε μια σήραγγα για να δώσετε δημόσια διεύθυνση στο PadForge.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Επίσης σε αυτόν τον υπολογιστή: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, η διεύθυνση του οποίου μένει ίδια</value></data>
@@ -6763,7 +6868,7 @@
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Εκτελέστε τη δική σας σήραγγα προς http://127.0.0.1:{0} και επικολλήστε τη διεύθυνση https. Μια ονομασμένη σήραγγα Cloudflare, μια μόνιμη σήραγγα ανάπτυξης, το Tailscale Funnel και το δικό domain του ngrok κρατούν τη διεύθυνσή τους.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Επικολλήστε διεύθυνση https χωρίς διαδρομή εκτός από /mcp, όπως τη δίνει η σήραγγά σας.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Εκκίνηση του βοηθητικού ιστού του PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Ο βοηθητικός ιστού του PadForge σταμάτησε ({0}). Απενεργοποιήστε και ενεργοποιήστε ξανά την Πρόσβαση στο PadForge από τον ιστό για να ξεκινήσει πάλι.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Ο βοηθητικός ιστού του PadForge σταμάτησε ({0}). Το PadForge συνεχίζει να προσπαθεί να τον ξεκινήσει.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Διεύθυνση</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Δεν υπάρχει ακόμη δημόσια διεύθυνση.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Add to Claude</value></data>
@@ -6802,11 +6907,6 @@
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>έληξε με κωδικό {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Ο «Αυτοματισμός» είναι ανενεργός, οπότε κανένας βοηθός ιστού δεν φτάνει το PadForge. Ο βοηθητικός ιστού ξεκινά όταν ο «Αυτοματισμός» γίνει ενεργός.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Έλεγχος…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Δεν έχει εγκατασταθεί.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Εγκατεστημένη και ενημερωμένη. Ένα σενάριο ξεκινά με {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Εγκατεστημένη για {0} και ενημερωμένη. Ένα σενάριο ξεκινά με {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Εγκατεστημένη. Αυτό το PadForge έχει νεότερο αντίγραφο.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Εγκατεστημένη για {0}. Αυτό το PadForge έχει νεότερο αντίγραφο.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Εγκατάσταση…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να την ελέγξει: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Η Εγκατάσταση βάζει τη βιβλιοθήκη του PadForge εκεί που τη βρίσκει η γλώσσα. Ένα σενάριο που τη φορτώνει διαβάζει συσκευές και οδηγεί αντιστοιχίσεις στο παραπάνω επίπεδο.</value></data>
@@ -6814,8 +6914,27 @@
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Εγκατεστημένα αντίγραφα</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Αφαίρεση όλων</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Αφαιρέθηκε.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Η βιβλιοθήκη του PadForge είναι εγκατεστημένη για {0} και ενημερωμένη. Ένα σενάριο ξεκινά με {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Η βιβλιοθήκη του PadForge για {0} διαφέρει από το αντίγραφο αυτού του PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Η βιβλιοθήκη του PadForge δεν είναι εγκατεστημένη για {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>Η βιβλιοθήκη του PadForge είναι ενημερωμένη για {0}. Το αντίγραφο για {1} διαφέρει από αυτό του PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>Η βιβλιοθήκη του PadForge είναι ενημερωμένη για {0} και δεν είναι εγκατεστημένη για {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>Η βιβλιοθήκη του PadForge για {0} διαφέρει από το αντίγραφο αυτού του PadForge και δεν είναι εγκατεστημένη για {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>Η βιβλιοθήκη του PadForge είναι ενημερωμένη για {0}. Το αντίγραφο για {1} διαφέρει από αυτό του PadForge και δεν είναι εγκατεστημένη για {2}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Τα Windows δεν το ξεκίνησαν με τα δικά σας δικαιώματα.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Δεν ολοκληρώθηκε σε {0} δευτερόλεπτα.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Τερματίστηκε με κωδικό {0} και δεν έδωσε αιτία.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>Το PadForge δεν μπορεί να διαβάσει τις ρυθμίσεις στο {0}, γι αυτό άφησε το αρχείο όπως είναι.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>Το PadForge δεν έγραψε το {0}, γι αυτό το άφησε όπως είναι.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Τα Windows δεν ορίζουν φάκελο «Έγγραφα» για εσάς.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>Το PadForge δεν βρίσκει δικό σας φάκελο για το {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Η δική της εντολή του {0} τερματίστηκε με κωδικό {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Η εντολή του {0} δεν υπάρχει σε αυτόν τον υπολογιστή.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Τα Windows δεν επέτρεψαν στο PadForge να διαβάσει ή να γράψει αρχείο που χρειάζεται.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>Το PadForge δεν βρίσκει Python: κανένα δεν είναι καταχωρισμένο, εγκατεστημένο από το Microsoft Store, καταγεγραμμένο από πρόγραμμα εκκίνησης py ή στο PATH σας.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Κανένα Python που βρήκε το PadForge δεν απάντησε μέσα σε {0} δευτερόλεπτα.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Η εκτέλεση δεν έδωσε αιτία που να γνωρίζει το PadForge.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Αναγνωριστικό σεναρίου</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Το αναγνωριστικό σεναρίου του</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Τα σενάρια ονομάζουν τα χειριστήριά του {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Τα σενάρια ονομάζουν τα πλήκτρα του KeyA, KeySpace, KeyLeftShift και τα παρόμοια, και κάθε πλήκτρο με τον κωδικό του, από Vk0 έως Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} σε αυτό το δίκτυο από {1}</value></data>
@@ -6827,11 +6946,11 @@
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Ο βοηθητικός του PadForge, που εκτελείται χωρίς δικαιώματα διαχειριστή, ακούει στις διευθύνσεις δικτύου αυτού του υπολογιστή, και το PadForge αφήνει τη θύρα του να περνά μόνο σε ιδιωτικά δίκτυα. Ένας βοηθός σε άλλον υπολογιστή μπαίνει μόνο με κλειδί που φτιάχνετε εδώ. Οι κλήσεις και το κλειδί τους διασχίζουν το δίκτυο χωρίς κρυπτογράφηση.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Θύρα</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Αλλαγή…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Οι κλήσεις και το κλειδί τους διασχίζουν αυτό το δίκτυο χωρίς κρυπτογράφηση. Τα Windows τις αφήνουν να περνούν μόνο σε ιδιωτικά δίκτυα.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Οι κλήσεις και το κλειδί τους διασχίζουν αυτό το δίκτυο χωρίς κρυπτογράφηση. Ο κανόνας του Τείχους προστασίας των Windows που φτιάχνει το PadForge για αυτή τη θύρα αφορά μόνο ιδιωτικά δίκτυα.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Η θύρα {0} χρησιμοποιείται από άλλο πρόγραμμα. Αλλάξτε την για να φτάσετε στο PadForge από αυτό το δίκτυο.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Τα Windows δεν άφησαν τον βοηθητικό του PadForge να ακούει στη θύρα {0}. Το PadForge την επιτρέπει με δικαιώματα διαχειριστή, οπότε ξεκινήστε το PadForge με αυτά και απενεργοποιήστε και ενεργοποιήστε ξανά αυτή τη ρύθμιση.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Τα Windows δεν κρατούν δέσμευση για τον βοηθητικό του PadForge στη θύρα {0}. Απενεργοποιήστε και ενεργοποιήστε ξανά αυτή τη ρύθμιση και το PadForge τη δημιουργεί ξανά.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Ο βοηθητικός του PadForge δεν μπόρεσε να ακούσει στη θύρα {0}. Αλλάξτε τη θύρα ή απενεργοποιήστε και ενεργοποιήστε ξανά αυτή τη ρύθμιση.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ο βοηθητικός του PadForge σταμάτησε ({0}). Απενεργοποιήστε και ενεργοποιήστε ξανά την Πρόσβαση στο PadForge από αυτό το δίκτυο για να ξεκινήσει πάλι.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Ο βοηθητικός του PadForge σταμάτησε ({0}). Το PadForge συνεχίζει να προσπαθεί να τον ξεκινήσει.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Ο «Αυτοματισμός» είναι ανενεργός, οπότε κανένας βοηθός σε αυτό το δίκτυο δεν φτάνει το PadForge. Ο βοηθητικός ξεκινά όταν ο «Αυτοματισμός» γίνει ενεργός.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Αυτός ο υπολογιστής δεν έχει τώρα διεύθυνση σε ιδιωτικό δίκτυο.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Βοηθοί σε αυτό το δίκτυο</value></data>
@@ -6875,11 +6994,12 @@
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Επιλογή συσκευών</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>Το {0} μπορεί να χειρίζεται τις δικές του συσκευές και όσες επιλέξετε. Εξακολουθεί να διαβάζει κάθε συσκευή.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Δεν υπάρχουν συσκευές στη σελίδα Συσκευές.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Εκτελείται, με τα δικαιώματά σας, και είναι έτοιμο. Το ChatGPT φτάνει το PadForge μέσω αυτής της σήραγγας χωρίς δική του σύνδεση, και μόνο από τον οργανισμό σας στο OpenAI. Ξεκινά ξανά μαζί με το PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Εκτελείται, με τα δικαιώματά σας. Περιμένει το OpenAI να πει ότι η σήραγγα είναι έτοιμη.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Εκτελείται, με τα δικαιώματά σας, και το tunnel-client αναφέρει ότι είναι έτοιμο. Ξεκινά ξανά μαζί με το PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Εκτελείται, με τα δικαιώματά σας. Το tunnel-client δεν αναφέρει τώρα ότι είναι έτοιμο.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Λήψη του tunnel-client του OpenAI και έλεγχός του με τα αθροίσματα SHA-256 της έκδοσής του.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η λήψη του tunnel-client: {0}. Επιλέξτε ξανά τη σήραγγα για να δοκιμάσετε πάλι.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Επικολλήστε παρακάτω ένα κλειδί εκτέλεσης και ένα αναγνωριστικό σήραγγας, και η σήραγγα ξεκινά.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>Το tunnel-client του OpenAI δεν υπάρχει ακόμη σε αυτόν τον υπολογιστή. Διαλέξτε ξανά τη σήραγγα για να το κατεβάσετε.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Κλειδί εκτέλεσης</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Περιορισμένο, με Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Δημιουργία</value></data>
@@ -6888,6 +7008,8 @@
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Άνοιγμα του ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Το PadForge κρατά το κλειδί κρυπτογραφημένο μόνο για εσάς. Ένα κενό πλαίσιο το ξεχνά. Το ChatGPT λειτουργεί στο παραπάνω επίπεδο.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Το κλειδί δεν κρατήθηκε: ο βοηθητικός ιστού του PadForge δεν εκτελείται, και μόνο αυτός μπορεί να κρυπτογραφήσει το κλειδί για εσάς.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Το κλειδί δεν κρατήθηκε: ο βοηθητικός ιστού του PadForge τερμάτισε πριν κρυπτογραφήσει το κλειδί. Επικολλήστε το ξανά.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Το κλειδί δεν κρατήθηκε: τα Windows δεν μπόρεσαν να το κρυπτογραφήσουν για εσάς. Επικολλήστε το ξανά.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Απάντηση από άλλη συσκευή</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Απαντήστε στις ερωτήσεις του PadForge από τηλέφωνο ή άλλον υπολογιστή όσο λείπετε από αυτόν.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Λειτουργεί μόνο σε αυτό το δίκτυο, μέσω της διεύθυνσης του χειριστηρίου ιστού.</value></data>
@@ -6905,9 +7027,10 @@
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Ο κωδικός λειτουργεί μία φορά, έως τις {0}. Πέντε λάθος προσπάθειες τον κλείνουν, και ο κωδικός QR εξακολουθεί να λειτουργεί.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Εκκίνηση της διεύθυνσης του χειριστηρίου ιστού…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Η σελίδα δεν μπορεί να ανοίξει: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Αυτός ο υπολογιστής δεν έχει διεύθυνση σε ιδιωτικό δίκτυο.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Τα Windows δεν θέλησαν να κρύψουν αυτό το παράθυρο από τη λήψη οθόνης, γι αυτό δεν εμφανίζει κωδικό.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Ο πληκτρολογημένος κωδικός κλείνει μετά από πέντε λάθος προσπάθειες. Ο κωδικός QR εξακολουθεί να λειτουργεί έως τις {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Ο κωδικός έληξε. Η «Αντιστοίχιση συσκευής…» φτιάχνει νέον.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Ο κωδικός έληξε. Η «Αντιστοίχιση συσκευής» φτιάχνει νέον.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>Το PadForge κρατά έως {0} κλειδί δικτύου. Κάντε πρώτα «Ανάκληση» σε αυτό.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Τα χρώματα στέλνονται απευθείας στη συσκευή {0}. Τα χρώματα που αλλάζουν, όπως η κυκλική εναλλαγή χρωμάτων ή τα χρώματα που ακολουθούν τον ήχο, δεν φτάνουν σε αυτήν. Ένα χρώμα που μένει σταθερό φτάνει.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Όλα τα αρχεία (*.*)|*.*</value></data>

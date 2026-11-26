@@ -125,7 +125,7 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
-                    // A mouse's travel (#597) has the picker's two names.
+                    // A mouse's travel (#600) has the picker's two names.
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(t)
                     // #241: route NFC to the friendly resolver. The numeric
                     // token-2 path below would leave the raw descriptor on the
@@ -261,7 +261,7 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
-                    // A mouse's travel (#597) has the picker's two names.
+                    // A mouse's travel (#600) has the picker's two names.
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(t)
                     // #241: route NFC to the friendly resolver. The numeric
                     // token-2 path below would leave the raw descriptor on the
@@ -671,7 +671,7 @@ namespace PadForge.Common
                 return prefix + string.Format(si.Mapping_MouseGesture_Format, mgNames[mgBtn], word);
             }
 
-            // A mouse's travel held as a wheel (#597): the picker's own two
+            // A mouse's travel held as a wheel (#600): the picker's own two
             // names, with no device objects to read them from.
             if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(s))
             {
@@ -2299,7 +2299,7 @@ namespace PadForge.Common
             {
                 list.Add(new InputChoice { Descriptor = "Mouse Position X", DisplayName = si.Mapping_MousePositionX });
                 list.Add(new InputChoice { Descriptor = "Mouse Position Y", DisplayName = si.Mapping_MousePositionY });
-                // Mouse steering (#597): this mouse's own raw travel, added
+                // Mouse steering (#600): this mouse's own raw travel, added
                 // up and held as a wheel's position. Every kind of mouse row
                 // carries the counts (CustomInputState.MouseRawDX and
                 // MouseRawDY): a single mouse, All Mice (Merged), a mouse
@@ -2308,10 +2308,16 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelXDescriptor, DisplayName = si.Mapping_MouseTravelX });
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelYDescriptor, DisplayName = si.Mapping_MouseTravelY });
                 // The scroll wheels held as a position (#600), in the wheels'
-                // own units, which every mouse reader carries beside the
-                // counts (CustomInputState.MouseRawWheel and MouseRawWheelH).
+                // own units. Every mouse reader carries the wheel's
+                // (CustomInputState.MouseRawWheel). The sideways wheel's
+                // (MouseRawWheelH) comes from the Raw Input mouse, All Mice
+                // (Merged), a mouse bound to WinUSB and a Remote Link peer's,
+                // and not from a touchpad's mouse or a TouchSense mouse, whose
+                // readers hand one wheel (ISdlInputDevice.ReadsSidewaysWheel).
+                // A mouse that is away is offered both.
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelDescriptor, DisplayName = si.Mapping_WheelTravel });
-                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelSidewaysDescriptor, DisplayName = si.Mapping_WheelTravelSideways });
+                if (ud.Device?.ReadsSidewaysWheel ?? true)
+                    list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelSidewaysDescriptor, DisplayName = si.Mapping_WheelTravelSideways });
                 DescribeMouseFamilies(list);
             }
 
@@ -2551,7 +2557,7 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.GameTelemetry &&
              // Chat commands are named for their words (!jump, #555).
              ud.CapType != InputDeviceType.TwitchChat &&
-             // A program names every control it declares (#597).
+             // A program names every control it declares (#600).
              ud.CapType != InputDeviceType.Program &&
              // Analog keys are named for their legends (#468).
              ud.CapType != InputDeviceType.AnalogKeyboard &&

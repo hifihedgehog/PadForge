@@ -38,7 +38,22 @@ namespace PadForge.Services.Install
         Current,
         /// <summary>There, and different: written by another PadForge.</summary>
         Older,
+        /// <summary>A library current in some of its places and missing in
+        /// the others, such as a Python added after the install.</summary>
+        Partial,
     }
+
+    /// <summary>One place a library goes, and what it is for:
+    /// <c>python:&lt;version&gt;</c> for a Python's user site, the version
+    /// as that Python names itself (sys.winver: 3.14, 3.14t, 3.14-32,
+    /// 3.14-arm64), <c>pwsh</c> for PowerShell 7, <c>powershell</c> for
+    /// Windows PowerShell, <c>autohotkey</c> for AutoHotkey v2, or
+    /// <c>-</c> for a folder or file the command line named.</summary>
+    internal readonly record struct LibraryPlace(string File, string For);
+
+    /// <summary>A Python that answered: its program, its version as it
+    /// names itself (sys.winver) and its user site, from one run.</summary>
+    internal readonly record struct PythonSite(string Python, string Version, string Site);
 
     /// <summary>An <c>--install</c> command line: what, for which program or
     /// into which folder or file, and whether it takes the install out or
@@ -62,10 +77,78 @@ namespace PadForge.Services.Install
         }
     }
 
+    /// <summary>Why an install or a check did not finish, as the page
+    /// words it in the user's language (<see cref="InstallRun.Reason"/>).</summary>
+    internal enum InstallReason
+    {
+        None,
+        /// <summary>Windows did not start the run with the user's rights.</summary>
+        NotStarted,
+        /// <summary>It did not end within its bound, in Number seconds.</summary>
+        TimedOut,
+        /// <summary>It ended with code Number and named no reason.</summary>
+        ExitCode,
+        /// <summary>The settings file Detail is not JSON PadForge can read.</summary>
+        SettingsUnreadable,
+        /// <summary>Detail is a file or folder PadForge did not write.</summary>
+        NotOurs,
+        /// <summary>Windows names no Documents folder.</summary>
+        NoDocuments,
+        /// <summary>No folder of the user's for the program Detail names.</summary>
+        NoUserFolder,
+        /// <summary>The program Detail's own command ended with code Number.</summary>
+        HostCommandFailed,
+        /// <summary>The program Detail's command is not on this PC.</summary>
+        HostCommandMissing,
+        /// <summary>Windows refused a file the run reads or writes.</summary>
+        FileRefused,
+        /// <summary>No Python is registered, named by the py launcher or on
+        /// the PATH.</summary>
+        NoPython,
+        /// <summary>No Python found answered within Number seconds.</summary>
+        NoPythonAnswered,
+        /// <summary>Any other reason.</summary>
+        Other,
+    }
+
+    /// <summary>A failure of an install that carries its reason, the number
+    /// and the file or program the reason names. Its message is the English
+    /// one the command line prints.</summary>
+    internal sealed class InstallProblem : InvalidOperationException
+    {
+        internal InstallProblem(InstallReason reason, string message, int number = 0, string detail = null, Exception inner = null)
+            : base(message, inner)
+        {
+            Reason = reason;
+            Number = number;
+            Detail = detail;
+        }
+
+        internal InstallReason Reason { get; }
+
+        internal int Number { get; }
+
+        internal string Detail { get; }
+    }
+
     /// <summary>What an install started from the page came to: its exit
-    /// code, why it failed in words, or null, and what the run said, read
-    /// back from its report (null when it said nothing).</summary>
-    internal sealed record InstallRun(int Code, string Error, string Said);
+    /// code, why it failed in English words for the command line, or null,
+    /// and what the run said, read back from its report (null when it said
+    /// nothing). A failure also carries its reason, the number and the file
+    /// or program the reason names, which the page words in the user's
+    /// language (ScriptLibraryRows.ReasonText).</summary>
+    internal sealed record InstallRun(int Code, string Error, string Said)
+    {
+        public InstallReason Reason { get; init; }
+
+        /// <summary>An exit code or a count of seconds, as the reason
+        /// says.</summary>
+        public int Number { get; init; }
+
+        /// <summary>A file's path or an assistant program's key, as the
+        /// reason says, or null.</summary>
+        public string Detail { get; init; }
+    }
 
     /// <summary>
     /// <c>PadForge.Exe --install &lt;what&gt;</c> (#600): the one way PadForge
@@ -86,14 +169,16 @@ namespace PadForge.Services.Install
     ///
     /// <para>Exit codes: 0 done (or, with <c>--check</c>, current), 1 it
     /// failed, 2 the command line is wrong, and with <c>--check</c> 6 an
-    /// older copy is in place and 7 none is.</para>
+    /// older copy is in place, 7 none is, 8 a library is current in some of
+    /// its places and missing in the others, 9 PadForge finds no Python, and
+    /// 10 no Python it found answered.</para>
     ///
     /// <para>Uses no part of WPF: it runs in the client run before the app
     /// would load.</para>
     /// </summary>
     internal static class UserInstall
     {
-        internal const int Done = 0, Failed = 1, WrongCommandLine = 2, IsOlder = 6, IsMissing = 7;
+        internal const int Done = 0, Failed = 1, WrongCommandLine = 2, IsOlder = 6, IsMissing = 7, IsPartial = 8, NoPython = 9, NoPythonAnswered = 10;
 
         /// <summary>Set by the test assembly for the life of its process,
         /// never by the app: no program is started, neither an assistant's
@@ -114,6 +199,12 @@ namespace PadForge.Services.Install
 
         /// <summary>The exe an assistant starts: this PadForge.</summary>
         internal static Func<string> Exe = () => Environment.ProcessPath;
+
+        /// <summary>The codes <see cref="RunTool"/> gives in place of an exit
+        /// code: the program did not end within its bound, or Windows did
+        /// not start it. -1 is a run the test host's fence or cmd.exe's
+        /// rules refused.</summary>
+        internal const int ToolTimedOut = -2, ToolNotStarted = -3;
 
         internal static string Word(InstallWhat what) => what switch
         {
@@ -191,12 +282,13 @@ namespace PadForge.Services.Install
         /// <summary>
         /// The client run's <c>--install</c>: with rights, it starts itself
         /// again through the desktop shell, so the install is the user's.
-        /// When the shell runs with rights too (UAC is off), every program of
-        /// the user does, and the install runs here.
+        /// When the shell's user has no lower right (UAC is off, or the
+        /// built-in Administrator's token is not split), every program of the
+        /// user runs with full rights, and the install runs here.
         /// </summary>
         internal static int RunAsTheUser(InstallRequest request, Action<string> say, Action<string> sayError)
         {
-            if (HasRights() && !ShellHasRights())
+            if (HasRights() && !NoLowerRight())
             {
                 // The run as the user writes what it says into a report,
                 // which this run reads back and says, so a person at a
@@ -224,32 +316,35 @@ namespace PadForge.Services.Install
             return PluginLauncher.ThisProcessHasAdministratorRights() == true;
         }
 
-        /// <summary>Test seam: whether the desktop shell has administrator
-        /// rights. Null reads the shell's own token.</summary>
-        internal static Func<bool> ShellHasRightsSeam;
+        /// <summary>Test seam: whether the desktop shell's user has no lower
+        /// right than full rights. Null reads the shell's token
+        /// (<see cref="PluginLauncher.ShellUserHasNoLowerRight"/>).</summary>
+        internal static Func<bool> NoLowerRightSeam;
 
-        private static bool ShellHasRights()
+        private static bool NoLowerRight()
         {
-            var seam = ShellHasRightsSeam;
-            if (seam != null) return seam();
-            using var shell = PluginLauncher.OpenShell();
-            return shell != null && PluginLauncher.HasAdministratorRights(shell) != false;
+            var seam = NoLowerRightSeam;
+            return seam != null ? seam() : PluginLauncher.ShellUserHasNoLowerRight();
         }
 
         /// <summary>Runs an install here, in this process, with its rights.
         /// Gives the exit code.</summary>
         internal static int Run(InstallRequest request, Action<string> say, Action<string> sayError)
         {
-            if (string.IsNullOrEmpty(request.Report)) return RunHere(request, say, sayError, out _);
+            if (string.IsNullOrEmpty(request.Report)) return RunHere(request, say, sayError, out _, out _);
             var told = new StringBuilder();
-            int code = RunHere(request, t => { told.Append(t).Append("\r\n"); say(t); }, t => { told.Append(t).Append("\r\n"); sayError(t); }, out string report);
-            WriteReport(request.Report, report ?? told.ToString());
+            int code = RunHere(request, t => { told.Append(t).Append("\r\n"); say(t); }, t => { told.Append(t).Append("\r\n"); sayError(t); },
+                out string report, out string reason);
+            // A failed run's last line names its reason for the page, which
+            // words it in the user's language (ReadReason).
+            WriteReport(request.Report, (report ?? told.ToString()) + (reason != null ? reason + "\r\n" : string.Empty));
             return code;
         }
 
-        private static int RunHere(InstallRequest request, Action<string> say, Action<string> sayError, out string report)
+        private static int RunHere(InstallRequest request, Action<string> say, Action<string> sayError, out string report, out string reason)
         {
             report = null;
+            reason = null;
             try
             {
                 if (request.What == InstallWhat.Assistant && request.Check && string.IsNullOrEmpty(request.Target))
@@ -259,18 +354,26 @@ namespace PadForge.Services.Install
                 }
                 if (request.Check)
                 {
-                    var state = Check(request);
-                    say(state switch { InstallState.Current => "current", InstallState.Older => "older", _ => "not installed" });
-                    // A library's check names each place it goes and the
-                    // state there, which the Scripts card reads (#600 item
-                    // 26): "place current C:\...\PadForge.ahk".
                     if (request.What is InstallWhat.AutoHotkey or InstallWhat.PowerShell or InstallWhat.Python)
                     {
+                        // A library's check names each place it goes, what
+                        // the place is for and the state there, which the
+                        // Scripts card reads (#600 item 26):
+                        // "place current python:3.14 C:\...\padforge.py".
+                        // The places are found once, so every Python starts
+                        // once and the state and the places agree.
                         byte[] bytes = AutomationLibraries.Read(KindOf(request.What));
-                        foreach (string file in LibraryFiles(request.What, request.Target))
-                            say("place " + (!File.Exists(file) ? "missing" : File.ReadAllBytes(file).AsSpan().SequenceEqual(bytes) ? "current" : "older") + " " + file);
+                        var places = LibraryPlaces(request.What, request.Target);
+                        var states = places.Select(p => StateOf(p.File, bytes)).ToList();
+                        var rolled = Rollup(states);
+                        say(Said(rolled));
+                        for (int i = 0; i < places.Count; i++)
+                            say("place " + Word(states[i]) + " " + places[i].For + " " + places[i].File);
+                        return CodeOf(rolled);
                     }
-                    return state switch { InstallState.Current => Done, InstallState.Older => IsOlder, _ => IsMissing };
+                    var state = Check(request);
+                    say(Said(state));
+                    return CodeOf(state);
                 }
                 string done = request.What switch
                 {
@@ -281,13 +384,108 @@ namespace PadForge.Services.Install
                 say(done);
                 return Done;
             }
+            catch (InstallProblem problem) when (request.Check && problem.Reason is InstallReason.NoPython or InstallReason.NoPythonAnswered)
+            {
+                // No Python is an answer of the check, not its failure.
+                say(problem.Message);
+                return problem.Reason == InstallReason.NoPython ? NoPython : NoPythonAnswered;
+            }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException
                 or ArgumentException or NotSupportedException or System.Security.SecurityException)
             {
                 sayError(ex.Message);
+                reason = ReasonLine(ex);
                 return Failed;
             }
         }
+
+        private static InstallProblem Problem(InstallReason reason, string message, int number = 0, string detail = null)
+            => new(reason, message, number, detail);
+
+        /// <summary>The report's reason line, <c>reason &lt;Reason&gt;
+        /// &lt;number&gt; &lt;detail&gt;</c>: the problem's own reason, a
+        /// file Windows refused, or another.</summary>
+        private static string ReasonLine(Exception ex)
+        {
+            var (reason, number, detail) = ex switch
+            {
+                InstallProblem p => (p.Reason, p.Number, p.Detail),
+                IOException or UnauthorizedAccessException or System.Security.SecurityException => (InstallReason.FileRefused, 0, (string)null),
+                _ => (InstallReason.Other, 0, (string)null),
+            };
+            return "reason " + reason + " " + number.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                   + (string.IsNullOrEmpty(detail) ? string.Empty : " " + detail.Replace("\r", " ").Replace("\n", " "));
+        }
+
+        /// <summary>The longest detail a reason line carries back.</summary>
+        private const int LongestDetail = 1024;
+
+        /// <summary>
+        /// Splits a report into what the run said and its reason line. The
+        /// report lies in a folder the user's programs can write, so only a
+        /// reason this PadForge names is taken (any other reads as Other),
+        /// its number only as digits and its detail cleaned and capped. It is
+        /// only ever shown as text.
+        /// </summary>
+        internal static (string Said, InstallReason Reason, int Number, string Detail) ReadReason(string report)
+        {
+            if (string.IsNullOrEmpty(report)) return (report, InstallReason.None, 0, null);
+            var kept = new List<string>();
+            InstallReason reason = InstallReason.None;
+            int number = 0;
+            string detail = null;
+            foreach (string line in report.Replace("\r\n", "\n").Split('\n'))
+            {
+                if (!line.StartsWith("reason ", StringComparison.Ordinal))
+                {
+                    kept.Add(line);
+                    continue;
+                }
+                string[] words = line.Split(' ', 4);
+                reason = words.Length > 1 && words[1].Length > 0 && words[1].All(char.IsAsciiLetter)
+                         && Enum.TryParse(words[1], ignoreCase: false, out InstallReason named) && named != InstallReason.None
+                    ? named : InstallReason.Other;
+                number = words.Length > 2 && words[2].Length is > 0 and <= 9 && words[2].All(char.IsAsciiDigit)
+                    ? int.Parse(words[2], System.Globalization.CultureInfo.InvariantCulture) : 0;
+                detail = words.Length > 3 ? PadForge.Engine.Common.ShownText.Clean(words[3]).Trim() : null;
+                if (detail?.Length > LongestDetail) detail = detail.Substring(0, LongestDetail);
+                if (string.IsNullOrEmpty(detail)) detail = null;
+            }
+            string said = string.Join("\r\n", kept).Trim();
+            return (said.Length == 0 ? null : said, reason, number, detail);
+        }
+
+        /// <summary>The first line a check says for a state.</summary>
+        private static string Said(InstallState state) => state switch
+        {
+            InstallState.Current => "current",
+            InstallState.Older => "older",
+            InstallState.Partial => "partial",
+            _ => "not installed",
+        };
+
+        private static int CodeOf(InstallState state) => state switch
+        {
+            InstallState.Current => Done,
+            InstallState.Older => IsOlder,
+            InstallState.Partial => IsPartial,
+            _ => IsMissing,
+        };
+
+        /// <summary>A library's state from the state of each of its places:
+        /// current everywhere, older where any copy differs, partial when
+        /// current in some places and missing in the others, else not
+        /// installed.</summary>
+        internal static InstallState Rollup(IReadOnlyList<InstallState> states)
+        {
+            if (states.Count > 0 && states.All(s => s == InstallState.Current)) return InstallState.Current;
+            if (states.Any(s => s == InstallState.Older)) return InstallState.Older;
+            return states.Any(s => s == InstallState.Current) ? InstallState.Partial : InstallState.NotInstalled;
+        }
+
+        private static InstallState StateOf(string file, byte[] bytes)
+            => !File.Exists(file) ? InstallState.NotInstalled
+                : File.ReadAllBytes(file).AsSpan().SequenceEqual(bytes) ? InstallState.Current : InstallState.Older;
 
         // ── The skill ──
 
@@ -301,7 +499,7 @@ namespace PadForge.Services.Install
             if (AssistantHosts.Find(target) is { } host)
             {
                 string skills = host.SkillsFolder?.Invoke()
-                    ?? throw new InvalidOperationException("PadForge finds no folder of the user's for " + host.Name + "'s skills.");
+                    ?? throw Problem(InstallReason.NoUserFolder, "PadForge finds no folder of the user's for " + host.Name + "'s skills.", detail: host.Key);
                 return Path.Combine(skills, AssistantSkill.Name);
             }
             if (string.IsNullOrWhiteSpace(target) || !Path.IsPathFullyQualified(target))
@@ -323,15 +521,15 @@ namespace PadForge.Services.Install
         // ── The libraries ──
 
         /// <summary>Where a library goes: the folder or file given, or each
-        /// place its language finds it.</summary>
-        internal static IReadOnlyList<string> LibraryFiles(InstallWhat what, string target)
+        /// place its language finds it, with what each place is for.</summary>
+        internal static IReadOnlyList<LibraryPlace> LibraryPlaces(InstallWhat what, string target)
         {
             var library = AutomationLibraries.Of(KindOf(what));
             if (!string.IsNullOrWhiteSpace(target))
             {
                 if (!Path.IsPathFullyQualified(target)) throw new ArgumentException("A folder or file for the library is a full path.");
                 bool file = string.Equals(Path.GetExtension(target), Path.GetExtension(library.FileName), StringComparison.OrdinalIgnoreCase);
-                return new[] { file ? target : Path.Combine(target, library.FileName) };
+                return new[] { new LibraryPlace(file ? target : Path.Combine(target, library.FileName), "-") };
             }
             switch (what)
             {
@@ -339,27 +537,87 @@ namespace PadForge.Services.Install
                 {
                     // AutoHotkey v2 reads #Include <Name> from the user
                     // library, A_MyDocuments\AutoHotkey\Lib.
-                    string documents = UserFolders.Of(UserFolder.Documents) ?? throw new InvalidOperationException("Windows names no Documents folder.");
-                    return new[] { Path.Combine(documents, "AutoHotkey", "Lib", library.FileName) };
+                    string documents = UserFolders.Of(UserFolder.Documents) ?? throw Problem(InstallReason.NoDocuments, "Windows names no Documents folder.");
+                    return new[] { new LibraryPlace(Path.Combine(documents, "AutoHotkey", "Lib", library.FileName), "autohotkey") };
                 }
                 case InstallWhat.PowerShell:
                 {
-                    // PowerShell 7 reads Documents\PowerShell\Modules, Windows
-                    // PowerShell Documents\WindowsPowerShell\Modules. A module
-                    // is a folder of its own name.
-                    string documents = UserFolders.Of(UserFolder.Documents) ?? throw new InvalidOperationException("Windows names no Documents folder.");
+                    // PowerShell 7 reads the user's modules from the
+                    // PSModulePath of its CurrentUser powershell.config.json
+                    // when that names one, and from Documents\PowerShell\Modules
+                    // otherwise (PowerShell's ModuleIntrinsics.SetModulePath
+                    // and GetModulePath, PSConfiguration.GetModulePath).
+                    // Windows PowerShell adds Documents\WindowsPowerShell\Modules
+                    // only while the user scope has no PSModulePath variable,
+                    // and reads that variable's folders when it has one
+                    // (about_PSModulePath). A module is a folder of its own
+                    // name.
+                    string documents = UserFolders.Of(UserFolder.Documents) ?? throw Problem(InstallReason.NoDocuments, "Windows names no Documents folder.");
+                    string pwsh = PowerShellConfigModules(documents) ?? Path.Combine(documents, "PowerShell", "Modules");
+                    string windows = FirstFolder(UserVariable("PSModulePath")) ?? Path.Combine(documents, "WindowsPowerShell", "Modules");
                     return new[]
                     {
-                        Path.Combine(documents, "PowerShell", "Modules", "PadForge", library.FileName),
-                        Path.Combine(documents, "WindowsPowerShell", "Modules", "PadForge", library.FileName),
+                        new LibraryPlace(Path.Combine(pwsh, "PadForge", library.FileName), "pwsh"),
+                        new LibraryPlace(Path.Combine(windows, "PadForge", library.FileName), "powershell"),
                     };
                 }
                 default:
                 {
-                    var sites = UserSites();
-                    if (sites.Count == 0) throw new InvalidOperationException("PadForge finds no Python on this PC.");
-                    return sites.Select(site => Path.Combine(site, library.FileName)).ToList();
+                    var sites = UserSites(out int asked);
+                    if (sites.Count == 0)
+                        throw asked == 0
+                            ? new InstallProblem(InstallReason.NoPython, "PadForge finds no Python on this PC.")
+                            : new InstallProblem(InstallReason.NoPythonAnswered, "No Python PadForge found answered within " + PythonMs / 1000 + " seconds.", PythonMs / 1000);
+                    return sites.Select(site => new LibraryPlace(Path.Combine(site.Site, library.FileName), "python:" + site.Version)).ToList();
                 }
+            }
+        }
+
+        /// <summary>Test seam: a variable of the user's own scope, as
+        /// HKEY_CURRENT_USER\Environment holds it. Null reads it.</summary>
+        internal static Func<string, string> UserVariableSeam;
+
+        private static string UserVariable(string name)
+        {
+            if (UserVariableSeam == null && OffLimitsForTest) return null;
+            var seam = UserVariableSeam;
+            if (seam != null) return seam(name);
+            try { return Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.User); }
+            catch (System.Security.SecurityException) { return null; }
+        }
+
+        /// <summary>The first full path of a list of folders apart by
+        /// semicolons, its variables expanded, or null.</summary>
+        private static string FirstFolder(string list)
+        {
+            if (string.IsNullOrWhiteSpace(list)) return null;
+            foreach (string part in Environment.ExpandEnvironmentVariables(list).Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                if (Path.IsPathFullyQualified(part)) return part;
+            return null;
+        }
+
+        /// <summary>The user module folder PowerShell 7's CurrentUser
+        /// configuration names: PSModulePath in
+        /// Documents\PowerShell\powershell.config.json, expanded as
+        /// PSConfiguration.GetModulePath expands it, or null when the file
+        /// names none or cannot be read.</summary>
+        private static string PowerShellConfigModules(string documents)
+        {
+            string file = Path.Combine(documents, "PowerShell", "powershell.config.json");
+            try
+            {
+                if (!File.Exists(file)) return null;
+                using var json = System.Text.Json.JsonDocument.Parse(File.ReadAllText(file), new System.Text.Json.JsonDocumentOptions
+                    { CommentHandling = System.Text.Json.JsonCommentHandling.Skip, AllowTrailingCommas = true });
+                return json.RootElement.ValueKind == System.Text.Json.JsonValueKind.Object
+                       && json.RootElement.TryGetProperty("PSModulePath", out var value)
+                       && value.ValueKind == System.Text.Json.JsonValueKind.String
+                    ? FirstFolder(value.GetString())
+                    : null;
+            }
+            catch (Exception ex) when (ex is System.Text.Json.JsonException or IOException or UnauthorizedAccessException)
+            {
+                return null;
             }
         }
 
@@ -373,7 +631,7 @@ namespace PadForge.Services.Install
         private static string Library(InstallRequest request)
         {
             byte[] bytes = AutomationLibraries.Read(KindOf(request.What));
-            var files = LibraryFiles(request.What, request.Target);
+            var files = LibraryPlaces(request.What, request.Target).Select(p => p.File).ToList();
             var said = new StringBuilder();
             foreach (string file in files)
             {
@@ -402,33 +660,137 @@ namespace PadForge.Services.Install
             string first = File.ReadLines(file).FirstOrDefault() ?? string.Empty;
             string ours = new StreamReader(new MemoryStream(library)).ReadLine() ?? string.Empty;
             if (!string.Equals(first.Trim(), ours.Trim(), StringComparison.Ordinal))
-                throw new InvalidOperationException(file + " is not a library PadForge wrote, so PadForge leaves it as it is.");
+                throw Problem(InstallReason.NotOurs, file + " is not a library PadForge wrote, so PadForge leaves it as it is.", detail: file);
             OwnFiles.DeleteFile(file);
             return true;
         }
 
-        /// <summary>The user site of each Python PEP 514 registers, as that
-        /// Python names it (site.getusersitepackages), so a Store Python's
-        /// own folder and a PYTHONUSERBASE the user set are both followed.
-        /// A Python that does not answer is left out.</summary>
-        internal static IReadOnlyList<string> UserSites()
+        /// <summary>How long a Python may take to answer.</summary>
+        internal const int PythonMs = 10000;
+
+        /// <summary>What each Python is asked, in one run: its version as it
+        /// names itself, sys.winver (CPython's PCbuild/python.props: 3.14,
+        /// with t for a free-threaded build and -32, -arm32 or -arm64 for
+        /// another platform), and its user site, site.getusersitepackages,
+        /// which is {userbase}\{implementation}{winver without its dots}\site-packages
+        /// (Lib/site.py, _get_path), so a Store Python's own folder and a
+        /// PYTHONUSERBASE the user set are both followed. A Python without
+        /// sys.winver gives its major and minor version. Its last line ends,
+        /// so text the Python writes to stderr, which RunTool gives after
+        /// stdout, never joins the site. The words hold no
+        /// character cmd.exe would read, for a Python that is a batch
+        /// file.</summary>
+        internal const string SiteScript = "import site, sys; sys.stdout.write(getattr(sys, 'winver', '{0}.{1}'.format(*sys.version_info)) + '\\n' + site.getusersitepackages() + '\\n')";
+
+        private static readonly System.Text.RegularExpressions.Regex VersionWord =
+            new(@"^\d+\.\d+[A-Za-z0-9.\-]{0,16}$", System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+        /// <summary>The version and user site of each Python
+        /// <see cref="Pythons"/> finds, each site once, and in
+        /// <paramref name="asked"/> how many Pythons were asked. A Python
+        /// that does not answer within <see cref="PythonMs"/>, or answers
+        /// something else, is left out.</summary>
+        internal static IReadOnlyList<PythonSite> UserSites(out int asked)
         {
-            var sites = new List<string>();
-            foreach (string python in Pythons())
+            var sites = new List<PythonSite>();
+            var pythons = Pythons();
+            asked = pythons.Count;
+            foreach (string python in pythons)
             {
-                var (code, output) = RunTool(python, new[] { "-c", "import site, sys; sys.stdout.write(site.getusersitepackages())" }, 10000);
-                string site = output?.Trim();
-                if (code == 0 && !string.IsNullOrEmpty(site) && Path.IsPathFullyQualified(site)
-                    && !sites.Contains(site, StringComparer.OrdinalIgnoreCase))
-                    sites.Add(site);
+                var (code, output) = RunTool(python, new[] { "-c", SiteScript }, PythonMs);
+                if (code != 0 || output == null) continue;
+                string[] lines = output.Replace("\r\n", "\n").Split('\n');
+                if (lines.Length < 2) continue;
+                string version = lines[0].Trim(), site = lines[1].Trim();
+                if (!VersionWord.IsMatch(version) || site.Length == 0 || !Path.IsPathFullyQualified(site)
+                    || sites.Any(s => string.Equals(s.Site, site, StringComparison.OrdinalIgnoreCase)))
+                    continue;
+                sites.Add(new PythonSite(python, version, site));
             }
             return sites;
         }
 
+        /// <summary>
+        /// The user's Pythons, each once by the file Windows runs for it:
+        /// every Python PEP 514 registers (<see cref="RegisteredPythons"/>:
+        /// the python.org installers, the Python install manager, uv, and a
+        /// Store package through its declared keys), every one the py
+        /// launcher lists (<c>py --list-paths</c>, CPython's PC/launcher2.c,
+        /// which searches the registry and then the Store's packages), and
+        /// the Microsoft Store's Pythons (<see cref="StorePythons"/>), and
+        /// the python on the user's PATH, where pyenv-win's shims and a
+        /// Python registered nowhere are found. A python.exe in the PATH's
+        /// WindowsApps folder is an App Execution Alias of a packaged app,
+        /// which the Store read finds by its package when it is a Python,
+        /// so that folder is left out of the PATH search.
+        /// </summary>
+        internal static IReadOnlyList<string> Pythons()
+        {
+            var found = new List<string>();
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            // A registered Python's file was seen by RegisteredPythons. A
+            // path the launcher or the PATH gives is taken only when it is
+            // a file.
+            void Add(string exe, bool seenFile)
+            {
+                if (string.IsNullOrEmpty(exe) || !Path.IsPathFullyQualified(exe) || (!seenFile && !File.Exists(exe))) return;
+                if (seen.Add(FinalPathOf(exe, directory: false) ?? Path.GetFullPath(exe))) found.Add(exe);
+            }
+            foreach (string exe in RegisteredPythons()) Add(exe, seenFile: true);
+            if (FindCommand("py") is { } py && py.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                var (code, output) = RunTool(py, new[] { "--list-paths" }, PythonMs);
+                if (code == 0 && output != null)
+                    foreach (System.Text.RegularExpressions.Match m in LauncherPath.Matches(output)) Add(m.Groups[1].Value, seenFile: false);
+            }
+            foreach (string exe in StorePythons()) Add(exe, seenFile: false);
+            Add(FindCommand("python", IsAliasFolder), seenFile: false);
+            return found;
+        }
+
+        /// <summary>The python.exe alias of each Python the Microsoft Store
+        /// installed for this user: %LOCALAPPDATA%\Microsoft\WindowsApps\&lt;package
+        /// family&gt;\python.exe, the read the py launcher makes for each
+        /// PythonSoftwareFoundation.Python package it knows (CPython's
+        /// PC/launcher2.c, appxSearch and APPX_SEARCH), here for every
+        /// version of that name.</summary>
+        internal static IReadOnlyList<string> StorePythons()
+        {
+            string local = UserFolders.Of(UserFolder.LocalData);
+            if (string.IsNullOrEmpty(local)) return Array.Empty<string>();
+            string aliases = Path.Combine(local, "Microsoft", "WindowsApps");
+            var found = new List<string>();
+            try
+            {
+                if (!Directory.Exists(aliases)) return found;
+                foreach (string package in Directory.EnumerateDirectories(aliases, "PythonSoftwareFoundation.Python.*"))
+                {
+                    string exe = Path.Combine(package, "python.exe");
+                    if (File.Exists(exe)) found.Add(exe);
+                }
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Security.SecurityException)
+            {
+                // A folder that cannot be read lists no Python.
+            }
+            return found;
+        }
+
+        /// <summary>A path on a line of <c>py --list-paths</c>, which writes
+        /// " -V:&lt;tag&gt; [*] &lt;path&gt; [args]" for each Python
+        /// (launcher2.c, _printEnvironment).</summary>
+        private static readonly System.Text.RegularExpressions.Regex LauncherPath =
+            new(@"(?m)([A-Za-z]:\\[^\r\n]*?\.exe)(?=\s|$)", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+        /// <summary>Whether a PATH folder is the user's WindowsApps folder of
+        /// App Execution Aliases.</summary>
+        private static bool IsAliasFolder(string folder)
+            => string.Equals(Path.GetFileName((folder ?? string.Empty).TrimEnd('\\', '/')), "WindowsApps", StringComparison.OrdinalIgnoreCase);
+
         /// <summary>The python.exe of each Python registered under
         /// HKEY_CURRENT_USER and HKEY_LOCAL_MACHINE\Software\Python (PEP 514),
         /// the launcher's own key left out, each once.</summary>
-        internal static IReadOnlyList<string> Pythons()
+        internal static IReadOnlyList<string> RegisteredPythons()
         {
             if (PythonsSeam == null && OffLimitsForTest) return Array.Empty<string>();
             var seam = PythonsSeam;
@@ -466,6 +828,10 @@ namespace PadForge.Services.Install
 
         // ── An assistant's entry ──
 
+        /// <summary>How long one of an assistant maker's own commands may
+        /// take. An Update runs two, the remove and the add.</summary>
+        internal const int HostCommandMs = 60000;
+
         private static string Assistant(InstallRequest request)
         {
             var host = AssistantHosts.Find(request.Target);
@@ -480,17 +846,21 @@ namespace PadForge.Services.Install
                 // taken out first, so Update adds over it whether or not the
                 // host's add command replaces an entry of the same name.
                 if (!request.Remove && AssistantState(host) != InstallState.NotInstalled)
-                    RunTool(command, host.RemoveWords, 60000);
+                    RunTool(command, host.RemoveWords, HostCommandMs);
                 var words = request.Remove ? host.RemoveWords : host.AddWords(exe);
-                var (code, output) = RunTool(command, words, 60000);
+                var (code, output) = RunTool(command, words, HostCommandMs);
+                if (code == ToolTimedOut)
+                    throw Problem(InstallReason.TimedOut, host.Name + "'s own command did not end in " + HostCommandMs / 1000 + " seconds.", HostCommandMs / 1000);
+                if (code == ToolNotStarted || code == -1)
+                    throw Problem(InstallReason.Other, host.Name + "'s own command did not start: " + (output ?? string.Empty).Trim());
                 if (code != 0)
-                    throw new InvalidOperationException(host.Name + "'s own command did not " + (request.Remove ? "take PadForge out" : "add PadForge")
-                                                        + " (exit code " + code + "): " + (output ?? string.Empty).Trim());
+                    throw Problem(InstallReason.HostCommandFailed, host.Name + "'s own command did not " + (request.Remove ? "take PadForge out" : "add PadForge")
+                                                        + " (exit code " + code + "): " + (output ?? string.Empty).Trim(), code, host.Key);
                 return (request.Remove ? "Took PadForge out of " : "Added PadForge to ") + host.Name + " through its own command.";
             }
             if (host.Command != null && !host.FileWhenNoCommand)
-                throw new InvalidOperationException(host.Name + "'s command " + host.Command + " is not on this PC.");
-            string file = host.SettingsFile?.Invoke() ?? throw new InvalidOperationException("PadForge finds no folder of the user's for " + host.Name + "'s settings.");
+                throw Problem(InstallReason.HostCommandMissing, host.Name + "'s command " + host.Command + " is not on this PC.", detail: host.Key);
+            string file = host.SettingsFile?.Invoke() ?? throw Problem(InstallReason.NoUserFolder, "PadForge finds no folder of the user's for " + host.Name + "'s settings.", detail: host.Key);
             if (request.Remove)
                 return OwnFiles.RemoveJsonEntry(file, host.Container, AssistantHosts.EntryName)
                     ? "Took PadForge out of " + file + "." : "PadForge was not in " + file + ".";
@@ -514,11 +884,7 @@ namespace PadForge.Services.Install
                 default:
                 {
                     byte[] bytes = AutomationLibraries.Read(KindOf(request.What));
-                    var states = LibraryFiles(request.What, request.Target)
-                        .Select(f => File.Exists(f) ? (File.ReadAllBytes(f).AsSpan().SequenceEqual(bytes) ? InstallState.Current : InstallState.Older) : InstallState.NotInstalled)
-                        .ToList();
-                    if (states.All(s => s == InstallState.Current)) return InstallState.Current;
-                    return states.Any(s => s != InstallState.NotInstalled) ? InstallState.Older : InstallState.NotInstalled;
+                    return Rollup(LibraryPlaces(request.What, request.Target).Select(p => StateOf(p.File, bytes)).ToList());
                 }
             }
         }
@@ -527,7 +893,8 @@ namespace PadForge.Services.Install
             => matches == null ? InstallState.NotInstalled : matches.Value ? InstallState.Current : InstallState.Older;
 
         /// <summary>Whether a host's settings name PadForge, and this
-        /// PadForge's exe with --mcp.</summary>
+        /// PadForge's exe with --mcp. Throws for a settings file PadForge
+        /// cannot read, which says neither.</summary>
         internal static InstallState AssistantState(AssistantHost host)
         {
             string file = host?.SettingsFile?.Invoke();
@@ -535,10 +902,14 @@ namespace PadForge.Services.Install
             string exe = Exe();
             if (host.Container == null)
             {
-                // A TOML file: PadForge's own table and its command line.
+                // A TOML file: PadForge's own table and its command line. A
+                // file that cannot be read is no answer of either kind.
                 string text;
                 try { text = File.ReadAllText(file); }
-                catch (IOException) { return InstallState.NotInstalled; }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                {
+                    throw new InstallProblem(InstallReason.SettingsUnreadable, file + " could not be read: " + ex.Message, detail: file, inner: ex);
+                }
                 int at = text.IndexOf("[mcp_servers." + AssistantHosts.EntryName + "]", StringComparison.Ordinal);
                 if (at < 0) return InstallState.NotInstalled;
                 int end = text.IndexOf("\n[", at + 1, StringComparison.Ordinal);
@@ -560,34 +931,35 @@ namespace PadForge.Services.Install
         /// <summary>What <c>--install assistant --check</c> with no program
         /// reports of each: its key, the program's own file when it is on
         /// this PC (null when not), PadForge's entry in its settings
-        /// (current, older, missing), its skill (current, older, newer,
-        /// missing, or upload when it takes skills only as an upload) and
+        /// (current, older, missing, or unreadable when the settings file
+        /// cannot be read), its skill (current, older, newer, missing,
+        /// unreadable, or upload when it takes skills only as an upload) and
         /// its settings file.</summary>
         internal sealed record AssistantCheck(string Key, string Program, string Entry, string Skill, string Settings);
 
         /// <summary>Checks every assistant program, says one line for each and
         /// gives the report the page reads: a JSON array of
-        /// <see cref="AssistantCheck"/>. A program whose check fails is
-        /// reported as not found, so one bad settings file costs one
-        /// row.</summary>
+        /// <see cref="AssistantCheck"/>. Each part is read on its own: a
+        /// program that is found keeps its row when its settings file or its
+        /// skill folder cannot be read, which reads as unreadable, never as
+        /// missing.</summary>
         internal static string CheckAll(Action<string> say)
         {
             var all = new System.Text.Json.Nodes.JsonArray();
             foreach (var host in AssistantHosts.All)
             {
                 string program = null, entry = "missing", skill = "missing", settings = null;
+                try { program = AssistantPrograms.Find(host.Key); }
+                catch (Exception ex) when (IsReadFailure(ex)) { program = null; }
                 try
                 {
-                    program = AssistantPrograms.Find(host.Key);
                     settings = host.SettingsFile?.Invoke();
                     entry = Word(AssistantState(host));
-                    skill = host.SkillsFolder == null ? "upload" : SkillWord(host);
                 }
-                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException
-                    or ArgumentException or NotSupportedException or System.Security.SecurityException)
-                {
-                    program = null;
-                }
+                catch (Exception ex) when (IsReadFailure(ex)) { entry = "unreadable"; }
+                try { skill = host.SkillsFolder == null ? "upload" : SkillWord(host); }
+                catch (InstallProblem problem) when (problem.Reason == InstallReason.NoUserFolder) { skill = "missing"; }
+                catch (Exception ex) when (IsReadFailure(ex)) { skill = "unreadable"; }
                 say(host.Key + ": " + (program == null ? "not on this PC" : program) + ", entry " + entry + ", skill " + skill + ".");
                 all.Add(new System.Text.Json.Nodes.JsonObject
                 {
@@ -600,6 +972,10 @@ namespace PadForge.Services.Install
             }
             return all.ToJsonString();
         }
+
+        private static bool IsReadFailure(Exception ex)
+            => ex is IOException or UnauthorizedAccessException or InvalidOperationException
+                or ArgumentException or NotSupportedException or System.Security.SecurityException;
 
         /// <summary>Reads <see cref="CheckAll"/>'s report back. Entries it
         /// cannot read are left out, and a report that is no JSON array gives
@@ -627,6 +1003,8 @@ namespace PadForge.Services.Install
             return list;
         }
 
+        /// <summary>A place's or an entry's state in a check's words:
+        /// current, older or missing.</summary>
         private static string Word(InstallState state) => state switch
         {
             InstallState.Current => "current",
@@ -818,17 +1196,31 @@ namespace PadForge.Services.Install
         /// <summary>The full path of a command on the PATH, with the
         /// extensions PATHEXT lists, or null. A command is never looked for
         /// in the current folder.</summary>
-        internal static string FindCommand(string name)
+        internal static string FindCommand(string name) => FindCommand(name, null);
+
+        /// <summary><see cref="FindCommand(string)"/>, leaving out each PATH
+        /// folder <paramref name="skipFolder"/> names.</summary>
+        internal static string FindCommand(string name, Func<string, bool> skipFolder)
         {
             if (FindSeam == null && OffLimitsForTest) return null;
             var seam = FindSeam;
             if (seam != null) return seam(name);
-            string path = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
-            var extensions = (Environment.GetEnvironmentVariable("PATHEXT") ?? ".COM;.EXE;.BAT;.CMD").Split(';', StringSplitOptions.RemoveEmptyEntries);
-            foreach (string folder in path.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            return FindCommandOn(name, Environment.GetEnvironmentVariable("PATH"), Environment.GetEnvironmentVariable("PATHEXT"), skipFolder);
+        }
+
+        /// <summary><see cref="FindCommand"/> on a PATH and PATHEXT of
+        /// another process's variables, such as the desktop shell user's. The
+        /// PATH is searched with this process's rights, so only a folder on a
+        /// drive of this PC is looked in: a share or a device path on the
+        /// user's PATH would be reached with PadForge's rights
+        /// (AssistantPrograms.IsOnADrive).</summary>
+        internal static string FindCommandOn(string name, string path, string pathExt, Func<string, bool> skipFolder = null)
+        {
+            var extensions = (string.IsNullOrEmpty(pathExt) ? ".COM;.EXE;.BAT;.CMD" : pathExt).Split(';', StringSplitOptions.RemoveEmptyEntries);
+            foreach (string folder in (path ?? string.Empty).Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
             {
-                if (!Path.IsPathFullyQualified(folder)) continue;
-                if (IsStandIn(folder)) continue;
+                if (!AssistantPrograms.IsOnADrive(folder)) continue;
+                if (IsStandIn(folder) || skipFolder?.Invoke(folder) == true) continue;
                 foreach (string extension in new[] { ".exe", ".cmd", ".bat" })
                 {
                     if (!extensions.Contains(extension, StringComparer.OrdinalIgnoreCase)) continue;
@@ -847,17 +1239,28 @@ namespace PadForge.Services.Install
         internal static bool IsStandIn(string folder)
             => string.Equals(Path.GetFileName((folder ?? string.Empty).TrimEnd('\\', '/')), "copilot-shim", StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>Whether a program lies in the folder the test host runs
+        /// from, the one folder its fence lets <see cref="RunTool"/> start a
+        /// program from (the tests' own helper), as PluginLauncher's fence
+        /// does.</summary>
+        private static bool InTestFolder(string exe)
+        {
+            if (string.IsNullOrEmpty(exe) || !Path.IsPathFullyQualified(exe)) return false;
+            return Path.GetFullPath(exe).StartsWith(Path.GetFullPath(AppContext.BaseDirectory), StringComparison.OrdinalIgnoreCase);
+        }
+
         /// <summary>
         /// Runs one of the user's own programs (an assistant's add command or
         /// a Python) with this process's rights and variables, which in an
         /// install are the user's, and gives its exit code and what it
         /// wrote. A batch file runs through cmd.exe, and a path cmd.exe would
-        /// read as more than a path is refused. -1 with no output when the
-        /// program could not run or did not end in <paramref name="timeoutMs"/>.
+        /// read as more than a path is refused (-1). <see cref="ToolTimedOut"/>
+        /// when the program did not end in <paramref name="timeoutMs"/>, and
+        /// <see cref="ToolNotStarted"/> when Windows did not start it.
         /// </summary>
         internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)
         {
-            if (ToolSeam == null && OffLimitsForTest) return (-1, null);
+            if (ToolSeam == null && OffLimitsForTest && !InTestFolder(exe)) return (-1, null);
             if (ToolSeam != null) return ToolSeam(exe, words);
             var psi = new ProcessStartInfo
             {
@@ -871,7 +1274,7 @@ namespace PadForge.Services.Install
             if (variables != null)
             {
                 // The desktop shell's own variables, for a run started for
-                // the user from PadForge with UAC off.
+                // the user from PadForge when the user has no lower right.
                 psi.Environment.Clear();
                 foreach (string line in variables)
                 {
@@ -896,19 +1299,44 @@ namespace PadForge.Services.Install
             try
             {
                 using var process = Process.Start(psi);
+                var watch = Stopwatch.StartNew();
                 var output = process.StandardOutput.ReadToEndAsync();
                 var errors = process.StandardError.ReadToEndAsync();
-                if (!process.WaitForExit(timeoutMs))
+                // The bound covers the output too: a reader sees its end only
+                // when every holder of the pipe closes it, and a child the
+                // tool left behind holds it as long as it runs.
+                if (!process.WaitForExit(timeoutMs)
+                    || !Ended(new Task[] { output, errors }, (int)Math.Max(0, timeoutMs - watch.ElapsedMilliseconds)))
                 {
-                    try { process.Kill(entireProcessTree: true); } catch (InvalidOperationException) { }
-                    return (-1, "It did not end in " + timeoutMs / 1000 + " seconds.");
+                    End(process);
+                    return (ToolTimedOut, "It did not end in " + timeoutMs / 1000 + " seconds.");
                 }
-                return (process.ExitCode, output.GetAwaiter().GetResult() + errors.GetAwaiter().GetResult());
+                return (process.ExitCode, TextOf(output) + TextOf(errors));
             }
             catch (System.ComponentModel.Win32Exception ex)
             {
-                return (-1, ex.Message);
+                return (ToolNotStarted, ex.Message);
             }
+        }
+
+        /// <summary>Whether every read ended within the time left, a read
+        /// that failed included.</summary>
+        private static bool Ended(Task[] reads, int ms)
+        {
+            try { return Task.WaitAll(reads, ms); }
+            catch (AggregateException) { return true; }
+        }
+
+        private static string TextOf(Task<string> read) => read.IsCompletedSuccessfully ? read.Result : string.Empty;
+
+        /// <summary>Ends a tool and the children it started. Kill of a whole
+        /// tree throws AggregateException when a part of it would not end
+        /// (Process.NonUap.cs, Kill(bool)), and InvalidOperationException
+        /// when the tool already ended.</summary>
+        private static void End(Process process)
+        {
+            try { process.Kill(entireProcessTree: true); }
+            catch (Exception ex) when (ex is InvalidOperationException or AggregateException or System.ComponentModel.Win32Exception or NotSupportedException) { }
         }
 
         // ── From the app ──
@@ -917,16 +1345,21 @@ namespace PadForge.Services.Install
         /// Null uses the plugins' launcher.</summary>
         internal static IPluginLauncher Launcher;
 
-        /// <summary>How long an install started from the page may take.</summary>
-        internal const int AsUserMs = 120000;
+        /// <summary>How long an install started from the page may take: an
+        /// Update's two maker's commands at their own bound
+        /// (<see cref="HostCommandMs"/>) and half a minute for the copy's own
+        /// start and its look for the command, so the copy's own bound ends a
+        /// slow command and its own line names it.</summary>
+        internal const int AsUserMs = 2 * HostCommandMs + 30000;
 
         /// <summary>
         /// Starts <c>PadForge.exe --install</c> with the user's own rights,
         /// through the desktop shell as a plugin starts (PluginLauncher), and
-        /// waits for its exit code. When the shell itself runs with rights
-        /// (UAC is off), the user's every program does, and the install runs
-        /// in this process instead. Error is null when the code is the
-        /// install's own.
+        /// waits for its exit code. When the shell's user has no lower right
+        /// than full rights (UAC is off, or the built-in Administrator's token
+        /// is not split), the user's every program runs with them, and the
+        /// install runs as a PadForge.exe this process starts. Error is null
+        /// when the code is the install's own.
         /// </summary>
         internal static async Task<(int Code, string Error)> AsUserAsync(InstallRequest request)
         {
@@ -953,21 +1386,31 @@ namespace PadForge.Services.Install
                 var launcher = Launcher ?? new PluginLauncher();
                 string line = "\"" + exe + "\" " + string.Join(" ", request.Words().Select(Quote));
                 var launch = launcher.Start(new PluginCommand(exe, line, Path.GetDirectoryName(exe)), new Dictionary<string, string>());
-                if (launch.Refusal == PluginRefusal.ShellElevated)
+                if (launch.Refusal == PluginRefusal.ShellElevated && NoLowerRight())
                 {
-                    // UAC is off: every program of the user has full rights,
-                    // the shell included. The install runs as its own
-                    // PadForge.exe with the shell's variables, so the user's
-                    // PATH finds the assistants' commands, which PadForge's
-                    // own allow list of variables would not.
+                    // The shell's user has no lower right: every program of
+                    // the user has full rights, the shell included. The
+                    // install runs as its own PadForge.exe with the shell's
+                    // variables, so the user's PATH finds the assistants'
+                    // commands, which PadForge's own allow list of variables
+                    // would not. A shell with rights whose user also has a
+                    // lower right (an Explorer started elevated, a token that
+                    // could not be read) gets the refusal below.
                     var (code, output) = await Task.Run(() => RunTool(exe, request.Words(), AsUserMs, ShellEnvironment())).ConfigureAwait(false);
+                    // Its bound and a start Windows refused are worded as
+                    // the launcher's route words them.
+                    if (code == ToolTimedOut)
+                        return new InstallRun(Failed, "The install did not end in " + AsUserMs / 1000 + " seconds.", null)
+                            { Reason = InstallReason.TimedOut, Number = AsUserMs / 1000 };
+                    if (code == ToolNotStarted)
+                        return new InstallRun(Failed, "Windows did not start the install: " + output, null) { Reason = InstallReason.NotStarted };
                     string said = report != null ? TakeReport(report) : null;
                     said ??= string.IsNullOrWhiteSpace(output) ? null : PadForge.Engine.Common.ShownText.Clean(output.Trim());
-                    return new InstallRun(code, IsAnswer(code) ? null : said ?? "The install ended with code " + code + ".", said);
+                    return Ran(code, said);
                 }
                 if (launch.Process == null)
                     return new InstallRun(Failed, "Windows did not start the install with the user's rights (" + launch.Refusal
-                        + (launch.Error != 0 ? ", error " + launch.Error : string.Empty) + ").", null);
+                        + (launch.Error != 0 ? ", error " + launch.Error : string.Empty) + ").", null) { Reason = InstallReason.NotStarted };
                 using var process = launch.Process;
                 var exited = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
                 process.Exited += c => exited.TrySetResult(c);
@@ -975,11 +1418,11 @@ namespace PadForge.Services.Install
                 if (done != exited.Task)
                 {
                     process.Stop();
-                    return new InstallRun(Failed, "The install did not end in " + AsUserMs / 1000 + " seconds.", null);
+                    return new InstallRun(Failed, "The install did not end in " + AsUserMs / 1000 + " seconds.", null)
+                        { Reason = InstallReason.TimedOut, Number = AsUserMs / 1000 };
                 }
                 int exit = exited.Task.Result;
-                string told = report != null ? TakeReport(report) : null;
-                return new InstallRun(exit, IsAnswer(exit) ? null : told ?? "The install ended with code " + exit + ".", told);
+                return Ran(exit, report != null ? TakeReport(report) : null);
             }
             finally
             {
@@ -988,8 +1431,19 @@ namespace PadForge.Services.Install
             }
         }
 
+        /// <summary>A run that ended with <paramref name="code"/> and wrote
+        /// <paramref name="report"/>: what it said, and for a failure its
+        /// reason, or its code when it named none.</summary>
+        private static InstallRun Ran(int code, string report)
+        {
+            var (said, reason, number, detail) = ReadReason(report);
+            if (IsAnswer(code)) return new InstallRun(code, null, said);
+            if (reason == InstallReason.None) (reason, number, detail) = (InstallReason.ExitCode, code, (string)null);
+            return new InstallRun(code, said ?? "The install ended with code " + code + ".", said) { Reason = reason, Number = number, Detail = detail };
+        }
+
         /// <summary>An exit code that is an answer, not a failure.</summary>
-        private static bool IsAnswer(int code) => code is Done or IsOlder or IsMissing;
+        internal static bool IsAnswer(int code) => code is Done or IsOlder or IsMissing or IsPartial or NoPython or NoPythonAnswered;
 
         /// <summary>Test seam: the desktop shell's variables. Null reads them
         /// through the shell's token.</summary>

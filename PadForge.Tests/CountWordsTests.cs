@@ -52,6 +52,9 @@ namespace PadForge.Tests
             "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches", "keeps", "wants", "asks",
             // "{0} of yours": a pronoun, not a plural noun (#600).
             "yours",
+            // "{0} differs": the Pythons and programs a Scripts card line
+            // names (ScriptLibraryRows.Names), then the verb.
+            "differs",
         };
 
         // Strings whose value before a plural is never one, with the reason.
@@ -85,6 +88,13 @@ namespace PadForge.Tests
             ["Main_DeviceKeepsDisconnecting_Format"] = "{1} is three or more: the count begins at the third drop in a minute (DeviceNoteDirector.Decide)",
             ["ExeFolder_TargetTaken_Format"] = "{0} is a folder's path, and holds is the verb",
             ["Plugins_Device_Settings_Format"] = "{0} is a plugin's name, and Settings is the dialog's title",
+            ["Plugins_Replay_TooManyDevices_Format"] = "{0} is the file's name, and {1} is ReplayFile.MostDevices",
+            ["ExeFolder_Unreadable_Format"] = "{0} is a folder's path, and holds is the verb",
+            ["ExeFolder_NotSound_Format"] = "{0} is a folder's path, and held is the verb",
+            ["Extras_Automation_State_KeptSkill_Format"] = "{0} is a program's name, and reads is the verb",
+            ["SdlMapping_CopyNotReadInRows_Format"] = "{0} is a controller's name, and gives is the verb",
+            ["Extras_Automation_Reason_TimedOut_Format"] = "{0} is UserInstall.HostCommandMs or UserInstall.AsUserMs in seconds",
+            ["Extras_Automation_Reason_NoPythonAnswered_Format"] = "{0} is UserInstall.PythonMs in seconds",
         };
 
         /// <summary>Every English string that puts a count before a plural
@@ -123,6 +133,10 @@ namespace PadForge.Tests
             {
                 PadForge.Common.Input.InputManager.MaxPads,
                 PadForge.Common.Input.ControllerDatabaseMine.MaxRows,
+                PadForge.Services.Plugins.ReplayFile.MostDevices,
+                PadForge.Services.Install.UserInstall.HostCommandMs / 1000,
+                PadForge.Services.Install.UserInstall.AsUserMs / 1000,
+                PadForge.Services.Install.UserInstall.PythonMs / 1000,
                 PadForge.MainWindow.KeepDriverSeconds,
                 PadForge.Common.Input.Twitch.ChatCommandRegistry.MaxWordLength,
                 PadForge.Common.Input.Twitch.ChatCommandRegistry.MaxWords,

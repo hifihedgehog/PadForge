@@ -332,7 +332,7 @@ namespace PadForge.Tests
             h.Answers(new ControllerDatabaseFetch(ControllerDatabaseFetchOutcome.Refused, Reason: "an address off raw.githubusercontent.com"));
             await h.Controller.UpdateAsync();
             Assert.Same(stored, SettingsManager.ControllerDatabase);
-            Assert.Equal(Strings.Instance.ControllerDatabase_Refused, h.Settings.ControllerDatabaseResult);
+            Assert.Equal(Strings.Instance.ControllerDatabase_AnswerRefused, h.Settings.ControllerDatabaseResult);
             Assert.Contains(h.Log, l => l.Contains("an address off raw.githubusercontent.com", StringComparison.Ordinal));
             Assert.Equal(1, h.Dirty);
             Assert.False(h.Settings.IsControllerDatabaseUpdating);
@@ -520,7 +520,7 @@ namespace PadForge.Tests
             Assert.Equal(1, section.NewRows);
             Assert.Equal(0, section.ChangedRows);
             Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.ControllerDatabase_BuiltInUpdatedFrom_Format), 1),
-                1, 316, "2026-09-24", "2026-11-22", "mirror.example.net"), h.Settings.ControllerDatabaseStatus);
+                1, 316, "2026-09-24", "2026-11-23", "mirror.example.net"), h.Settings.ControllerDatabaseStatus);
             Assert.Contains("mirror.example.net", h.Settings.ControllerDatabaseStatus, StringComparison.Ordinal);
         }
 
@@ -608,6 +608,204 @@ namespace PadForge.Tests
             await h.Controller.UpdateAsync();
             Assert.Equal(string.Format(Strings.Instance.ControllerDatabase_NoNetworkAt_Format, "mirror.example.net", "No such host is known."),
                 h.Settings.ControllerDatabaseResult);
+        }
+
+        /// <summary>An answer the request refused, a redirect off the host
+        /// or a size or encoding PadForge does not take, is no file the
+        /// checks read: its line says the answer was refused, with GitHub
+        /// or the host the user set, and never that the file is not the
+        /// database.</summary>
+        [Fact]
+        public async Task ARefusedAnswer_IsNotCalledARefusedFile()
+        {
+            using var h = new Harness();
+            h.Answers(new ControllerDatabaseFetch(ControllerDatabaseFetchOutcome.Refused, Reason: "an address off raw.githubusercontent.com"));
+            await h.Controller.UpdateAsync();
+            Assert.NotEqual(Strings.Instance.ControllerDatabase_Refused, h.Settings.ControllerDatabaseResult);
+            Assert.Equal(Strings.Instance.ControllerDatabase_AnswerRefused, h.Settings.ControllerDatabaseResult);
+            Assert.True(h.Settings.ControllerDatabaseResultIsWarning);
+
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            h.Answers(new ControllerDatabaseFetch(ControllerDatabaseFetchOutcome.Refused, Reason: "the encoding br"));
+            await h.Controller.UpdateAsync();
+            Assert.Equal(string.Format(Strings.Instance.ControllerDatabase_AnswerRefusedAt_Format, "mirror.example.net"),
+                h.Settings.ControllerDatabaseResult);
+            Assert.Contains(h.Log, l => l.Contains("refused: the encoding br", StringComparison.Ordinal));
+        }
+
+        /// <summary>A 304 from the address the user set names that host, not
+        /// the community's database.</summary>
+        [Fact]
+        public async Task NothingChangedAtTheChosenAddress_NamesItsHost()
+        {
+            using var h = new Harness();
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            h.Answers(new ControllerDatabaseFetch(ControllerDatabaseFetchOutcome.NotModified));
+            await h.Controller.UpdateAsync();
+            Assert.Equal(string.Format(Strings.Instance.ControllerDatabase_NothingChangedAt_Format, "mirror.example.net"),
+                h.Settings.ControllerDatabaseResult);
+            Assert.NotEqual(Strings.Instance.ControllerDatabase_NothingChanged, h.Settings.ControllerDatabaseResult);
+        }
+
+        /// <summary>The day of a download from the user's address is the
+        /// PC's: that host's Date header is its own word.</summary>
+        [Fact]
+        public async Task TheChosenAddressesDate_IsNotTheDownloadsDay()
+        {
+            using var h = new Harness();
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            h.Answers(Fetched(FileWith(NewOne), serverTime: new DateTime(2035, 1, 1, 0, 0, 0, DateTimeKind.Utc)));
+            await h.Controller.UpdateAsync();
+            Assert.Equal(h.Now, SettingsManager.ControllerDatabase.FetchedUtc);
+        }
+
+        /// <summary>The row's reset gives SDL back the mapping it held under
+        /// each changed row's ID before the downloaded row replaced it.</summary>
+        [Fact]
+        public async Task TheReset_GivesSdlBackWhatTheDownloadedRowsReplaced()
+        {
+            var savedMine = ControllerDatabaseMine.Current;
+            ControllerDatabaseMine.Current = ControllerDatabaseMine.Empty;
+            try
+            {
+                using var h = new Harness();
+                var given = new List<IReadOnlyList<string>>();
+                h.Controller.HeldOnPollThread = id => string.Equals(id, Id(0x1000, 0x0001), StringComparison.Ordinal) ? KeptRow : string.Empty;
+                h.Controller.GiveSdl = (rows, _) =>
+                {
+                    given.Add(new List<string>(rows()));
+                    return Task.FromResult(new ControllerDatabaseApplied(true, 0, 0, Array.Empty<Guid>()));
+                };
+                h.Answers(Fetched(FileWith(ChangedKept, NewOne)));
+                await h.Controller.UpdateAsync();
+                Assert.Contains(given, g => g.Contains(ChangedKept));
+
+                h.Controller.Reset();
+                Assert.Contains(ControllerDatabaseUse.Under(Id(0x1000, 0x0001), KeptRow), given[^1]);
+            }
+            finally
+            {
+                ControllerDatabaseMine.Current = savedMine;
+                ControllerDatabaseEngine.SdlStarting();
+            }
+        }
+
+        /// <summary>The reset reads raw a new row's ID SDL held nothing under,
+        /// and the next download lifts that, so its new rows are offered
+        /// again. Reset to Defaults gives SDL back what the rows replaced, as
+        /// the row's reset does.</summary>
+        [Fact]
+        public async Task AfterTheReset_TheNextDownloadOffersItsRowsAgain_AndResetToDefaultsGivesBackToo()
+        {
+            var savedMine = ControllerDatabaseMine.Current;
+            ControllerDatabaseMine.Current = ControllerDatabaseMine.Empty;
+            try
+            {
+                using var h = new Harness();
+                var given = new List<IReadOnlyList<string>>();
+                h.Controller.HeldOnPollThread = _ => string.Empty;
+                h.Controller.GiveSdl = (rows, _) =>
+                {
+                    given.Add(new List<string>(rows()));
+                    return Task.FromResult(new ControllerDatabaseApplied(true, 0, 0, Array.Empty<Guid>()));
+                };
+                h.Answers(Fetched(FileWith(NewOne)));
+                await h.Controller.UpdateAsync();
+                // Step 1 offered the new row to a joystick of its ID.
+                ControllerDatabaseEngine.NoteDownloaded(Id(0x2000, 0x0001), string.Empty, NewOne);
+                h.Controller.Reset();
+                Assert.True(ControllerDatabaseEngine.ReadsRaw(Id(0x2000, 0x0001)));
+
+                h.Answers(Fetched(FileWith(NewOne), "W/\"tag-2\""));
+                await h.Controller.UpdateAsync();
+                Assert.False(ControllerDatabaseEngine.ReadsRaw(Id(0x2000, 0x0001)));
+
+                // SDL still holds the new row it was given, and offers it no
+                // more: a second reset takes it back again.
+                h.Controller.Reset();
+                Assert.True(ControllerDatabaseEngine.ReadsRaw(Id(0x2000, 0x0001)));
+                h.Answers(Fetched(FileWith(NewOne), "W/\"tag-2b\""));
+                await h.Controller.UpdateAsync();
+                Assert.False(ControllerDatabaseEngine.ReadsRaw(Id(0x2000, 0x0001)));
+
+                // Reset to Defaults: the changed row's ID gets SDL's own back.
+                h.Controller.HeldOnPollThread = id => string.Equals(id, Id(0x1000, 0x0001), StringComparison.Ordinal) ? KeptRow : string.Empty;
+                h.Answers(Fetched(FileWith(ChangedKept), "W/\"tag-3\""));
+                await h.Controller.UpdateAsync();
+                SettingsManager.ControllerDatabase = null;
+                ControllerDatabaseController.SettingsReplaced(toDefaults: true);
+                Assert.Contains(ControllerDatabaseUse.Under(Id(0x1000, 0x0001), KeptRow), given[^1]);
+            }
+            finally
+            {
+                ControllerDatabaseMine.Current = savedMine;
+                ControllerDatabaseEngine.SdlStarting();
+            }
+        }
+
+        /// <summary>As SDL starts, PadForge's own rows go after the changed
+        /// rows and stand where they meet (StartupRows), so the reset's record
+        /// leaves out a changed row whose ID PadForge's own rows map: SDL ends
+        /// the start holding PadForge's row there, not the community copy.</summary>
+        [Fact]
+        public void TheStartupNote_LeavesOutAChangedRowPadForgesOwnRowsMap()
+        {
+            string other = Row(0x1000, 0x0002, "Other Pad").Replace("a:b0", "a:b5");
+            var ownIds = ControllerDatabaseUse.OwnIds(new[] { KeptRow.Replace("Kept Pad", "PadForge's Own") });
+            Assert.Equal(new[] { other }, ControllerDatabaseUse.StartupNoted(new[] { ChangedKept, other }, ownIds));
+
+            string start = OffLimitsSource.Read("PadForge.App/Common/Input/InputManager.cs");
+            Assert.Contains("ControllerDatabaseEngine.NoteDownloaded(ControllerDatabaseUse.StartupNoted(rows.GetRange(0, fromDatabase), OwnMappingIds.Value),",
+                FenceSource.Body(start, "private static void LoadEmbeddedGamepadMappings()"), StringComparison.Ordinal);
+        }
+
+        /// <summary>A row of the user's pasted while a downloaded row read the
+        /// device keeps, once the downloaded rows are taken back, what SDL
+        /// held before the download: Remove Mine gives that back.</summary>
+        [Fact]
+        public void TheReset_GivesTheUsersRowsWhatSdlHeldBeforeTheDownload()
+        {
+            const string device = "0300d823001000000100000000000000";
+            Assert.True(SdlMappingRow.TryParse(device + ",Pasted,a:b3,platform:Windows,", out var pasted, out _));
+            var row = new ControllerDatabaseMineRow(device, pasted, DateTime.UnixEpoch, ChangedKept, Guid.Empty, Array.Empty<ControllerDatabaseBefore>());
+            var mine = ControllerDatabaseMine.Empty.With(row);
+            var after = mine.WithOldRowsBefore(new[] { (Id(0x1000, 0x0001), ChangedKept, KeptRow) });
+            Assert.Equal(KeptRow, after.Rows.Single().OldRow);
+            // A mapping from before of other bindings is left as it is.
+            Assert.Same(mine, mine.WithOldRowsBefore(new[] { (Id(0x1000, 0x0001), NewOne, KeptRow) }));
+        }
+
+        /// <summary>A Reload or Reset to Defaults while a download runs ends
+        /// it: what it brings is not stored over the settings read again.</summary>
+        [Fact]
+        public async Task AReloadDuringADownload_EndsIt_AndNothingIsStored()
+        {
+            using var h = new Harness();
+            var gate = new TaskCompletionSource<ControllerDatabaseFetch>(TaskCreationOptions.RunContinuationsAsynchronously);
+            CancellationToken seen = default;
+            h.Answer = (_, ct) =>
+            {
+                seen = ct;
+                return gate.Task;
+            };
+            var running = h.Controller.UpdateAsync();
+            // What SettingsService.LoadControllerDatabase does on Reload.
+            SettingsManager.ControllerDatabase = null;
+            SettingsManager.ControllerDatabaseFrom = Mirror;
+            ControllerDatabaseController.SettingsReplaced(toDefaults: false);
+            Assert.True(seen.IsCancellationRequested);
+            gate.SetResult(Fetched(FileWith(NewOne)));
+            await running;
+            Assert.Null(SettingsManager.ControllerDatabase);
+            Assert.False(h.Settings.IsControllerDatabaseUpdating);
+            Assert.Equal(0, h.Dirty);
+
+            // Both of SettingsService's paths say so.
+            string service = OffLimitsSource.Read("PadForge.App/Services/SettingsService.cs");
+            Assert.Contains("ControllerDatabaseController.SettingsReplaced(toDefaults: false);",
+                FenceSource.Body(service, "private void LoadControllerDatabase(ControllerDatabaseData stored"), StringComparison.Ordinal);
+            Assert.Contains("ControllerDatabaseController.SettingsReplaced(toDefaults: true);", FenceSource.Body(service, "public void ResetToDefaults()"),
+                StringComparison.Ordinal);
         }
     }
 

@@ -108,37 +108,41 @@ namespace PadForge.Services.Catalog
             if (line.TravelShown)
             {
                 mine.Add(Number(prefix + "lock", s.Mapping_MouseTravelCounts, where, () => line.TravelShown,
-                    () => line.Counts, v => line.Counts = v, "0"));
+                    () => line.Counts, v => line.Counts = v, "0", MappingSource.MinTravelCounts, MappingSource.MaxTravelCounts));
                 mine.Add(Choice(prefix + "centering", s.Mapping_MouseTravelCentering, where, () => line.TravelShown,
                     MouseTravelLine.CenteringChoices, () => line.Centering, v => line.Centering = v));
             }
             if (line.ReturnTimeShown)
                 mine.Add(Number(prefix + "return", s.Mapping_MouseTravelReturnTime, where, () => line.ReturnTimeShown,
-                    () => line.ReturnTime, v => line.ReturnTime = v, "0.00"));
+                    () => line.ReturnTime, v => line.ReturnTime = v, "0.00", MappingSource.MinTravelReturnTime, MappingSource.MaxTravelReturnTime));
             if (line.SpeedShown)
             {
                 mine.Add(Number(prefix + "sensitivity", s.Mapping_MouseSpeedSensitivity, where, () => line.SpeedShown,
-                    () => line.SpeedSensitivity, v => line.SpeedSensitivity = v, "0.00"));
+                    () => line.SpeedSensitivity, v => line.SpeedSensitivity = v, "0.00", MappingSource.MinMouseSpeedSensitivity, MappingSource.MaxMouseSpeedSensitivity));
                 mine.Add(Number(prefix + "back", s.Mapping_MouseBackToCenter, where, () => line.SpeedShown,
-                    () => line.BackToCenter, v => line.BackToCenter = v, "0.00"));
+                    () => line.BackToCenter, v => line.BackToCenter = v, "0.00", 0, MappingSource.MaxMouseBackToCenter));
             }
             if (line.SteerShown)
             {
                 mine.Add(Choice(prefix + "steer", s.Mapping_MouseTravelSteer, where, () => line.SteerShown,
                     MouseTravelLine.SteerChoices, () => line.Steer, v => line.Steer = v));
                 mine.Add(Number(prefix + "smoothing", s.Mapping_MouseTravelSmoothing, where, () => line.SteerShown,
-                    () => line.SmoothingMs, v => line.SmoothingMs = v, "0"));
+                    () => line.SmoothingMs, v => line.SmoothingMs = v, "0", 0, MappingSource.MaxTravelSmoothingMs));
             }
             if (line.SteerInputShown)
                 mine.Add(new LiveItem(prefix + "steerinput", LiveKind.Setting, s.Mapping_MouseTravelSteerInput, PadForge.Common.ReachClass.Free)
                 {
                     Where = where,
-                    Read = () => line.SteerInput?.DisplayName ?? string.Empty,
+                    Takes = "choice",
+                    // The choices in the words Read gives and Write takes: a Steer input on
+                    // another device of the slot carries that device's name.
+                    Choices = () => (line.SteerInputs ?? Array.Empty<InputChoice>()).Select(c => SteerInputWords(c, line.Device)).ToList(),
+                    Read = () => SteerInputWords(line.SteerInput, line.Device),
                     Write = text =>
                     {
                         if (!line.SteerInputShown) throw new InvalidOperationException("This setting is not shown on the row now.");
-                        line.SteerInput = FindInput(line.SteerInputs, text)
-                            ?? throw new ArgumentException("No such input on the source's device: " + text);
+                        line.SteerInput = FindSteerInput(line.SteerInputs, line.Device, text)
+                            ?? throw new ArgumentException("No such on/off input on this slot: " + text);
                     },
                 });
             if (line.AnchorShown)
@@ -146,7 +150,7 @@ namespace PadForge.Services.Catalog
                     () => line.AnchorShown, () => line.Anchor, v => line.Anchor = v));
             if (line.LockAtSpeedShown)
                 mine.Add(Number(prefix + "lockatspeed", s.Mapping_MouseTravelLockAtSpeed, where, () => line.LockAtSpeedShown,
-                    () => line.LockAtSpeed, v => line.LockAtSpeed = v, "0"));
+                    () => line.LockAtSpeed, v => line.LockAtSpeed = v, "0", MappingSource.MinTravelLockAtSpeed, MappingSource.MaxTravelLockAtSpeed));
             foreach (var item in mine)
             {
                 string key = item.Id.Substring(prefix.Length);
@@ -233,11 +237,18 @@ namespace PadForge.Services.Catalog
             if (page.FindName("PickedLines") is DependencyObject bar) yield return bar;
         }
 
+        /// <summary>A number of a row's line, which takes
+        /// <paramref name="min"/> to <paramref name="max"/>, the bounds its
+        /// setter keeps it in: a value past them is refused with them, as a
+        /// setting of the page is.</summary>
         private static LiveItem Number(string id, string words, string where, Func<bool> shown,
-            Func<double> get, Action<double> set, string format)
+            Func<double> get, Action<double> set, string format, double min, double max)
             => new(id, LiveKind.Setting, words, PadForge.Common.ReachClass.Free)
             {
                 Where = where,
+                Takes = "number",
+                Minimum = min,
+                Maximum = max,
                 Read = () => get().ToString(format, CultureInfo.InvariantCulture),
                 Write = text =>
                 {
@@ -245,6 +256,9 @@ namespace PadForge.Services.Catalog
                     if (!double.TryParse((text ?? string.Empty).Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out double v)
                         || !double.IsFinite(v))
                         throw new ArgumentException("Not a number: " + text);
+                    if (v < min || v > max)
+                        throw new ArgumentException("This setting takes " + min.ToString("0.###", CultureInfo.InvariantCulture) + " to "
+                            + max.ToString("0.###", CultureInfo.InvariantCulture) + ". " + v.ToString("0.###", CultureInfo.InvariantCulture) + " is outside it.");
                     set(v);
                 },
             };
@@ -254,6 +268,7 @@ namespace PadForge.Services.Catalog
             => new(id, LiveKind.Setting, words, PadForge.Common.ReachClass.Free)
             {
                 Where = where,
+                Takes = "switch",
                 Read = () => get() ? "true" : "false",
                 Write = text =>
                 {
@@ -272,6 +287,8 @@ namespace PadForge.Services.Catalog
             => new(id, LiveKind.Setting, words, PadForge.Common.ReachClass.Free)
             {
                 Where = where,
+                Takes = "choice",
+                Choices = () => choices().Select(c => c.Display).ToList(),
                 Read = () =>
                 {
                     string value = get();
@@ -292,6 +309,33 @@ namespace PadForge.Services.Catalog
                     throw new ArgumentException("Not one of the choices: " + text);
                 },
             };
+
+        /// <summary>The Steer input in words: its name on the source's own
+        /// device, and "device: name" on another, since the picker lists
+        /// every device of the slot.</summary>
+        private static string SteerInputWords(InputChoice choice, string sourceDevice)
+        {
+            if (choice == null) return string.Empty;
+            return string.Equals(choice.DeviceGuid ?? string.Empty, sourceDevice ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+                   || string.IsNullOrEmpty(choice.DeviceLabel)
+                ? choice.DisplayName ?? string.Empty
+                : choice.DeviceLabel + ": " + choice.DisplayName;
+        }
+
+        /// <summary>The Steer Input entry a program names: "device: name" as
+        /// <see cref="SteerInputWords"/> reads it, or a descriptor or a name,
+        /// the source's own device's first.</summary>
+        private static InputChoice FindSteerInput(IReadOnlyList<InputChoice> inputs, string sourceDevice, string text)
+        {
+            string t = (text ?? string.Empty).Trim();
+            if (inputs == null || t.Length == 0) return null;
+            foreach (var c in inputs)
+                if (string.Equals(SteerInputWords(c, sourceDevice), t, StringComparison.CurrentCultureIgnoreCase)) return c;
+            var own = new List<InputChoice>();
+            foreach (var c in inputs)
+                if (string.Equals(c.DeviceGuid ?? string.Empty, sourceDevice ?? string.Empty, StringComparison.OrdinalIgnoreCase)) own.Add(c);
+            return FindInput(own, t) ?? FindInput(inputs, t);
+        }
 
         private static InputChoice FindInput(IReadOnlyList<InputChoice> inputs, string text)
         {
@@ -328,6 +372,7 @@ namespace PadForge.Services.Catalog
             bool Anchor { get; set; }
             IReadOnlyList<InputChoice> SteerInputs { get; }
             InputChoice SteerInput { get; set; }
+            string Device { get; }
         }
 
         private sealed class RowLine : ILine
@@ -354,6 +399,7 @@ namespace PadForge.Services.Catalog
             public bool Anchor { get => _m.ParamMousePositionAnchor; set => _m.ParamMousePositionAnchor = value; }
             public IReadOnlyList<InputChoice> SteerInputs => _m.TravelSteerInputs;
             public InputChoice SteerInput { get => _m.TravelSteerInputChoice; set => _m.TravelSteerInputChoice = value; }
+            public string Device => _m.PrimarySourceDeviceGuid;
         }
 
         private sealed class SourceLine : ILine
@@ -380,6 +426,7 @@ namespace PadForge.Services.Catalog
             public bool Anchor { get => _m.ParamMousePositionAnchor; set => _m.ParamMousePositionAnchor = value; }
             public IReadOnlyList<InputChoice> SteerInputs => _m.TravelSteerInputs;
             public InputChoice SteerInput { get => _m.TravelSteerInputChoice; set => _m.TravelSteerInputChoice = value; }
+            public string Device => _m.DeviceGuid;
         }
     }
 }

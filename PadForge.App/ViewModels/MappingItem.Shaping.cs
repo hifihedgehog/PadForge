@@ -143,7 +143,10 @@ namespace PadForge.ViewModels
 
         private string _gateDescriptor = string.Empty;
         /// <summary>The input this source waits on: it counts only while this
-        /// also reads as pressed on the same controller. Empty for none.</summary>
+        /// also reads as pressed on the same controller, or on a mouse source,
+        /// where it is the Steer input, on the device the line names for it
+        /// (<see cref="TravelSteerDeviceGuid"/>). Empty for none, which takes
+        /// that device away too.</summary>
         public string GateDescriptor
         {
             get => _gateDescriptor;
@@ -151,6 +154,11 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _gateDescriptor, value ?? string.Empty))
                 {
+                    if (_gateDescriptor.Length == 0 && _travelSteerDeviceGuid != null)
+                    {
+                        _travelSteerDeviceGuid = null;
+                        OnPropertyChanged(nameof(TravelSteerDeviceGuid));
+                    }
                     OnPropertyChanged(nameof(GateText));
                     OnPropertyChanged(nameof(HasGate));
                     RaiseTravelSteerInput();

@@ -57,6 +57,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// with no Resolution Multiplier and on a keyboard's channel.</summary>
         int WheelMultiplier => 1;
 
+        /// <summary>The same for the horizontal wheel, AC Pan.</summary>
+        int PanMultiplier => 1;
+
         /// <summary>Waits for one input report, for at most the pipe's
         /// timeout. True with a length above zero for a report, true with
         /// zero when none came in time, false when the keyboard left or the
@@ -197,9 +200,11 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         private int _readFaults;
 
         private WinUsbKeyboardChannel(string path, IKeyboardUsb usb, byte interfaceNumber, byte inPipe, int readLength,
-            HidKeyboardReports reports, HidMouseReports pointer, int wheelMultiplier, int maxReadFaults, int readFaultPauseMs)
+            HidKeyboardReports reports, HidMouseReports pointer, int wheelMultiplier, int panMultiplier,
+            int maxReadFaults, int readFaultPauseMs)
         {
             WheelMultiplier = wheelMultiplier;
+            PanMultiplier = panMultiplier;
             Path = path;
             _usb = usb;
             InterfaceNumber = interfaceNumber;
@@ -235,6 +240,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary>The wheel counts a mouse's notch takes, as its Resolution
         /// Multiplier read at the open.</summary>
         public int WheelMultiplier { get; }
+
+        /// <summary>The horizontal wheel's, read the same way.</summary>
+        public int PanMultiplier { get; }
 
         /// <summary>Opens the bound keyboard at a WinUSB interface path, or
         /// with <paramref name="mouse"/> the bound mouse, or null when it
@@ -303,7 +311,8 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 int longest = reports?.LongestInputReport ?? pointer.LongestInputReport;
                 int readLength = Math.Max(packet, Math.Min(longest, MaxReportLength));
                 opened = new WinUsbKeyboardChannel(path, usb, number, inPipe, readLength, reports, pointer,
-                    ReadWheelMultiplier(usb, number, pointer), maxReadFaults, readFaultPauseMs);
+                    ReadMultiplier(usb, number, pointer, pointer?.WheelMultiplierFeature),
+                    ReadMultiplier(usb, number, pointer, pointer?.PanMultiplierFeature), maxReadFaults, readFaultPauseMs);
                 return opened;
             }
             catch
@@ -323,13 +332,13 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// wheel with none and for a mouse that does not answer. Windows'
         /// mouse driver can leave the feature set when the mouse moves to
         /// WinUSB, and nothing here writes it.</summary>
-        private static int ReadWheelMultiplier(IKeyboardUsb usb, byte number, HidMouseReports pointer)
+        private static int ReadMultiplier(IKeyboardUsb usb, byte number, HidMouseReports pointer,
+            HidKeyboardReports.Multiplier feature)
         {
-            var feature = pointer?.WheelMultiplierFeature;
             if (feature == null) return 1;
             var report = new byte[feature.ReportLength];
             return usb.ControlIn(WinUsbKeyboardProtocol.GetFeatureSetup(number, feature.ReportId, report.Length), report, out int got)
-                ? pointer.EffectiveMultiplier(report.AsSpan(0, got))
+                ? pointer.EffectiveMultiplier(feature, report.AsSpan(0, got))
                 : 1;
         }
 

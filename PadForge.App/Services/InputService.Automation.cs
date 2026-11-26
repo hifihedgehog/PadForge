@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using PadForge.Common;
@@ -9,7 +10,7 @@ using PadForge.Services.Automation;
 namespace PadForge.Services
 {
     /// <summary>
-    /// The engine's side of the Automation pipe (#597): the devices programs
+    /// The engine's side of the Automation pipe (#600): the devices programs
     /// add join the engine's device list while it runs, and a program reads
     /// what a virtual controller sends.
     /// </summary>
@@ -45,6 +46,46 @@ namespace PadForge.Services
 
         private void DetachAutomationFromEngine() => _automationHost?.DetachEngine();
 
+        /// <summary>
+        /// A device whose light and player number PadForge relays, a
+        /// program's (#600) or a web pad (#296), shows no player and no light
+        /// of PadForge's while no virtual controller holds it: it is told
+        /// player 0 and the light off, once, when it showed either. The
+        /// identity passes reach only the devices a slot holds
+        /// (ReseedPlayerIdentities, ApplyGuideLeds), as the direct Sony
+        /// services are told 0 when no slot holds their pad
+        /// (InputManager.UpdateDs3PlayerNumber). A web pad's page shows no
+        /// pips for 0 (controller_client.js refreshPips).
+        /// </summary>
+        /// <param name="held">The devices a virtual controller holds.</param>
+        internal static void LetGoOfUnheldRelayedDevices(DeviceCollection devices, ICollection<Guid> held)
+        {
+            if (devices == null || held == null) return;
+            List<PadForge.Engine.IRelayedFeedbackDevice> loose = null;
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                    if (ud != null && ud.IsOnline && ud.Device is ProgramDevice or WebControllerDevice && !held.Contains(ud.InstanceGuid))
+                        (loose ??= new List<PadForge.Engine.IRelayedFeedbackDevice>()).Add((PadForge.Engine.IRelayedFeedbackDevice)ud.Device);
+            }
+            if (loose == null) return;
+            // Outside the list's lock: each event is a line queued to the
+            // program's session or the page's socket.
+            foreach (var device in loose)
+            {
+                if (device is ProgramDevice program)
+                {
+                    program.SetPlayerNumber(0);
+                    if (program.LastLed is { } led && (led.R | led.G | led.B) != 0) program.SetLed(0, 0, 0);
+                }
+                else if (device is WebControllerDevice web)
+                {
+                    if (web.ShownPlayer > 0) web.SetPlayerNumber(0);
+                    if (web.ShowsLight) web.SetLed(0, 0, 0);
+                }
+            }
+        }
+
         /// <summary>The engine as one run of it: a link made at a start
         /// speaks to that start's input manager only.</summary>
         private sealed class AutomationEngineLink : IAutomationEngine
@@ -65,13 +106,6 @@ namespace PadForge.Services
             public string Outputs(int number) => _service.AutomationOutputs(_manager, number);
         }
 
-        /// <summary>
-        /// What virtual controller <paramref name="number"/> sends to the
-        /// game now, read off the poll thread from the combined output the
-        /// poll thread writes (DisplayFrameFor's rule: struct copies and
-        /// whole-written fields). Null when no created controller has that
-        /// number.
-        /// </summary>
         /// <summary>The rate the engine runs at now, or 0 while it is
         /// stopped, for an assistant's status (#600).</summary>
         internal double EngineFrequency => _inputManager?.CurrentFrequency ?? 0;
@@ -79,13 +113,20 @@ namespace PadForge.Services
         /// <summary>What virtual controller <paramref name="number"/> sends to
         /// the game now, as the outputs line words it, or null while the
         /// engine is stopped or no controller has that number. For an
-        /// assistant's list_controllers (#597).</summary>
+        /// assistant's list_controllers (#600).</summary>
         internal string AutomationOutputsNow(int number)
         {
             var manager = _inputManager;
             return manager == null || !manager.IsRunning ? null : AutomationOutputs(manager, number);
         }
 
+        /// <summary>
+        /// What virtual controller <paramref name="number"/> sends to the
+        /// game now, read off the poll thread from the combined output the
+        /// poll thread writes (DisplayFrameFor's rule: struct copies and
+        /// whole-written fields). Null when no created controller has that
+        /// number.
+        /// </summary>
         internal string AutomationOutputs(InputManager manager, int number)
         {
             int slot = SettingsManager.SlotOrders.PadIndexForGlobalSlotNumber(number);

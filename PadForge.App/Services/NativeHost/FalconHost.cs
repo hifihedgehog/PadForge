@@ -7,7 +7,7 @@ using PadForge.Engine.Common;
 
 namespace PadForge.Services.NativeHost
 {
-    /// <summary>The Falcon's calls over the host's channel (#597): one
+    /// <summary>The Falcon's calls over the host's channel (#600): one
     /// operation per <see cref="IFalconLink"/> call, after a load that names
     /// the library.</summary>
     internal static class FalconOps
@@ -202,7 +202,7 @@ namespace PadForge.Services.NativeHost
 
         private readonly NativeHost _host;
         private readonly string _picked;
-        private readonly ThreadLocal<Channel> _channels = new(trackAllValues: true);
+        private readonly ThreadLocal<Channel> _channels = new();
 
         public string Path { get; }
         public string Version { get; }

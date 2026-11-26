@@ -61,6 +61,9 @@ namespace PadForge.Tests
         private static InputManager Engine(MacroItem[] macros)
         {
             var im = new InputManager();
+            // The pad is the person's own: a fresh engine's causes prove
+            // nothing, and the gate holds a latch of unproven cause.
+            im.WorkOutOutputCauses();
             im.MacroSnapshots[0] = macros;
             return im;
         }

@@ -28,7 +28,7 @@ namespace PadForge.Tests
             var view = new WebAccessViewModel(door, store)
             {
                 AskToTurnOn = () => true,
-                PickReachDevices = (name, reach) => { asked.Add((name, reach)); return picked; },
+                PickReachDevices = (key, name, reach) => { Assert.Equal("web:g1", key); asked.Add((name, reach)); return picked; },
             };
             view.IsOn = true;
             store.Add(new WebGrant { Id = "g1", Origin = "claude.ai", Name = "Claude", Allowed = DateTimeOffset.UtcNow });

@@ -270,8 +270,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program i toktok wan vesen we PadForge i no save</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge i no givim ki blong plagin ia</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge i no tekem konek blong program ia</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge i no mekem divaes, from Windows i no talem nem blong fael blong program ia</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>I askem bakegen kwiktaem tumas</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>I no moa blong kaen ia kasem we PadForge i stat bakegen</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Tumas long ol samting ia we ol program oli mekem i wet blong yu lukluk long Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge i no gat tul olsem</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program i ridim wan olfala state</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>I no gat samting we i gat ID ia</value></data>
@@ -279,6 +280,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Yu no letem</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>I no gat wan i ansa long taem</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>I stap wet long ansa blong yu</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Yu no bin ansa yet</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>I no gat rikwes olsem</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>I no gat samting blong tekemaot</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Yu nomo yu save jenisim samting ia</value></data>
@@ -401,7 +403,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Karem Wan Profael I Kam</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Impotem wan fael blong profael we i kam long narafala program, afta luk wanem i kam.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, namba blong taem: {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, laswan blong {1} olsem</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>I no faenem wan analog kiboad we PadForge i save ridim.</value></data>
   <data name="AnalogKeyboard_Synapse_Format" xml:space="preserve"><value>Statem Razer Synapse blong ridim {0}.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>I no faenem wan pot blong Bliss-Box.</value></data>
@@ -460,6 +461,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folda</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Seting blong sevis</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Step blong rimuvum</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Seves</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Fael</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Filta antap</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Valiu blong rejistri</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hadwea ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Wok blong skejul</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Lae long lis blong ol ap we i instol</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Divaes blong USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Hem i letem ol PlayStation 3 kontrola, PlayStation Move mo Navigation kontrola oli konek long Bluetooth. Hem i stap insaed long PadForge, mo PadForge i instolem hem fastaem we yu joenem wan long olgeta.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>I konektem ol PlayStation 3 kontrola long Bluetooth.</value></data>
@@ -1692,7 +1701,18 @@
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>tru long Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_Direct_Format" xml:space="preserve"><value>stret long {0}</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>skrin blong G19 i stap long draeva blong narafala program ({0}), mo PadForge i livim hem nomo</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>I stap jekem ol PlayStation Bluetooth draeva blong PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>I stap ridim Bluetooth redio blong PC ia…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>I stap openem kontrola long USB kebol blong hem…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>I stap raetem Bluetooth adres blong PC ia i go insaed long kontrola…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>I stap rejistarem kontrola wetem Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>I stap statem Bluetooth bakegen…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Joenem i stop: Windows i no letem PadForge i kasem kontrola o ol seting blong Bluetooth. Log blong daeagnostik i gat ol ditel.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Joenem i stop: ridim o raetem kontrola o Bluetooth redio i no wok. Log blong daeagnostik i gat ol ditel.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Joenem i stop long wan rong we PadForge i no bin ting se bae i kam. Log blong daeagnostik i gat ol ditel.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>i nidim Logitech Gaming Software 8.52 o wan we i niu moa</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>i faenem laebri blong hem mo i no lodem, from PadForge i no save mekem sua se ol administreta nomo oli save jenisim mo se Logitech i bin saenem</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>i faenem laebri blong hem mo i no save yusum, mo log blong daeagnostik i talem from wanem</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>statem Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>i stap wet long wan fon we i gat Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>long wan fon</value></data>
@@ -1895,6 +1915,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Niu Kontrola</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Seting</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Evri aksis, baton mo senso</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Ol kontrol blong hem long ol nem we ol skript oli yusum</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Presem: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopi ol Detel</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Wanem i save mekem</value></data>
@@ -2098,7 +2119,7 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>mo {0} moa</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} long {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sapos i no gat ansa insaed long {0}, hem i olsem no.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdetem Naoia i daonlodem database blong kontrola blong komuniti (SDL_GameControllerDB) long GitHub, o long adres we i stap aninit long Moa, mo i kipim, long fael blong seting, ol mapping we vesen ia blong PadForge i no gat. Oli stap yusum stret naoia. Long wan narafala adres i kipim ol niu mapping nomo. PadForge i yusum wan niu mapping nomo blong wan kontrola we i no gat narafala samting i ridim olsem gempad, we i no asaen mo we i no stap long Force Raw Joystick Mode. Putum bak i tekemaot evri mapping we i daonlod mo i daonlod bakegen long GitHub. Ol lae blong yu, aninit long Moa, oli stap nomo.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdetem Naoia i daonlodem database blong kontrola blong komuniti (SDL_GameControllerDB) long GitHub, o long adres we i stap aninit long Moa, mo i kipim, long fael blong seting, ol mapping we vesen ia blong PadForge i no gat. Oli stap yusum stret naoia. Long wan narafala adres i kipim ol niu mapping nomo. Fastaem, PadForge i yusum wan niu mapping nomo blong wan kontrola we SDL i talem se hem i wan gempad o i no gat wan spesel kaen, we i no gat narafala samting i ridim olsem gempad, we i no asaen mo we i no stap long Force Raw Joystick Mode. Taem PadForge i stat yusum, i gohed yusum afta we kontrola i asaen. Putum bak i tekemaot ol mapping we i daonlod mo i putum Daonlod Long i go bak long fael blong komuniti, we nekis Apdetem Naoia i daonlodem. Ol lae blong yu, aninit long Moa, oli stap nomo.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Apdetem Naoia</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>I stap apdet…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>I stap insaed: {0} mapping, kopi blong komuniti blong {1}.</value></data>
@@ -2106,15 +2127,16 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>I stap insaed: {1} mapping, kopi blong komuniti blong {2}. I daonlod {3} long {4}: niu lae {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>I stap insaed: {1} mapping, kopi blong komuniti blong {2}. I daonlod {3} long {4}: {0} niu lae.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Database blong komuniti i no jenis stat long laswan apdet.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Fael long {0} i no jenis stat long laswan apdet.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>I no save kasem GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>I no save kasem {0}: {1}</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kaon</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Oltaem</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Taem yu holem mo i kam bak long medel</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>On/of</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Baten we i letem maos i stia, long sem divaes olsem sos. Sapos yu no jusum wan, maos i stia oltaem.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Baten we i letem maos i stia, long eni divaes blong slot ia. Sapos yu no jusum wan, maos i stia oltaem.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seva mo klaen blong Model Context Protocol we i stap biaen long konek blong asistan mo PadForge.exe --mcp, blong Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seva mo klaen blong Model Context Protocol we i stap biaen long konek blong asistan mo PadForge.exe --mcp, blong Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions mo DependencyInjection.Abstractions, we MCP C# SDK i bildim antap long olgeta, blong Microsoft.</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Value blong Skript</value></data>
@@ -2172,8 +2194,13 @@
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>I stap tekemaot…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>I stap apdetem…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Hem i no finis: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Lae mo skil blong PadForge oli stap, from {0} i ridim sem fael blong seting mo sem folda blong skil.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Lae blong PadForge i stap, from {0} i ridim sem fael blong seting.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge i aot long program ia. Skil blong hem i stap, from {0} i ridim ol skil long sem folda.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge i no save ridim ol seting long {0}, ale i no save se PadForge i stap putum o no.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>I putum. PadForge i no save ridim folda blong skil blong hem.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>I kopi.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>I no kopi: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>I no kopi. Windows i no letem PadForge i yusum klipbod.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Ol Program we Yu Letem</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Wan program we i wantem Read o moa i askem wan taem nomo, faswan taem we i konekt, mo i kasem level we i askem, kasem level we i stap antap. Wan asistan we yu putum antap i gat raet from samting ia.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -2186,6 +2213,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Wan joistik. PadForge i ridim hem raw, ale mapping blong SDL i no yusum.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Wan joistik, we lae blong yu i setem olsem wan gempad.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL i ridim ol divaes taem enjin i stap ron.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Divaes i no konek. SDL i ridim hem taem i konek.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL i no givim wan riding blong divaes ia long PadForge.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi blong komuniti we i stap insaed, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>I daonlod {0}</value></data>
@@ -2223,6 +2252,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, on/of mo ol narafala aksen</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} mo {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>I no gat samting blong kopi: SDL i no gat mapping blong divaes ia, mo hem i no stap long wan kontrola.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>I no gat samting blong kopi: PadForge i no save ridim mapping blong SDL blong divaes ia, mo i no gat wan lae blong ol kontrola blong hem we i givim wan baending we fom blong SDL i tekem.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>I no gat samting blong kopi: SDL i no gat mapping blong divaes ia, mo i no gat wan lae blong {0} we i ridim wan baton, aksis o hat blong hem long wan fasin we fom blong SDL i tekem.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>I no gat samting blong kopi: SDL i no gat mapping blong divaes ia, mo ol lae blong {0} oli ridim hem blong {1} nomo, we fom blong SDL i no save holem.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>I no gat samting blong kopi: PadForge i no save ridim mapping blong SDL blong divaes ia naoia, mo hem i no stap long wan kontrola.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>I no gat samting blong kopi: PadForge i no save ridim mapping blong SDL blong divaes ia naoia, mo i no gat wan lae blong {0} we i givim wan baending we fom blong SDL i tekem.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Wan narafala program i stap yusum klipbod. I no kopi wan samting.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Lae blong yu i aot. Divaes i ridim olsem bifo.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>I mapim bakegen long leaot blong SDL: {0}.</value></data>
@@ -2243,6 +2277,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Ol lae we PadForge i karem</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>I no gat lae i stret.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Lae we yu jusum i go long {0} aninit long ID blong hem, tru long sem jek mo sem jus olsem Pestem.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Enjin i stop, ale lis i lego ol lae we SDL i holem, ol lae blong hem wan mo kopi blong komuniti we i stap insaed. Oli kamaot long lis taem enjin i ron.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL i no ansa long taem, ale lis i lego ol lae we hem i holem, ol lae blong hem wan mo kopi blong komuniti we i stap insaed.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Lae blong SDL mapping</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Wan lae blong divaes ia.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Wan leaot we i gesem.</value></data>
@@ -2255,14 +2291,14 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} fil, i kam long sem kampani mo sem prodak long narafala bas o vesen. I kipim aninit long ID blong divaes ia.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} fil, lae blong narafala divaes. I kipim aninit long ID blong divaes ia.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} fil. SDL i no ridim divaes ia, ale PadForge i setem ol input blong hem folem lae ia.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge i no gat wan stret baton o aksis blong ol fil ia mo i lego olgeta: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} fil, i kam long ol aksis, baton mo hat blong divaes. Jekem long Test Inputs, afta kipim o jenisim long ples ia.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Samting ia i jenisim fasin we {0} i ridim. Ol lae blong hem long {1} oli mapim bakegen long niu leaot.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Samting ia i jenisim fasin we {0} i ridim. Hem i no stap long wan kontrola, ale i no gat lae i jenis.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Ol sotkat blong profael we oli ridim {0} oli kipim ol input we oli set long hem.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Lae ia i stap olsem blong yu long PadForge.xml mo i winim evri narafala sos blong divaes ia. Tekemaot Blong Mi i putum bak olfala lae mo ol olfala lae.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ol lae oli stap olsem blong yu long PadForge.xml mo oli winim evri narafala sos blong ol divaes blong olgeta. Klinim, aninit long Moa blong lae Controller Database, i tekemaot olgeta.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Lae blong Windows: {0}. Lae blong ol narafala sistem we oli lego: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} lae blong Windows. Lae blong ol narafala sistem we oli lego: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} lae blong Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Bambae oli adem evri {0:N0}. PadForge i kipim kasem {1:N0} lae blong yu.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Bambae oli adem hem. PadForge i kipim kasem {1:N0} lae blong yu.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} lae blong yu oli stap naoia, ale bambae oli adem {1:N0} long ol lae ia mo oli no adem {2:N0}.</value></data>
@@ -2272,7 +2308,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Raeting ia i no wan lae blong database blong kontrola blong SDL: wan ID blong 32 hex namba, wan nem, afta ol fil olsem a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ol lae ia oli blong ol narafala sistem. PadForge i ridim ol lae blong Windows, o blong no wan sistem stret.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID blong lae i no blong wan divaes. Hem i nidim 32 hex namba.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Nem blong lae i emti, i longfala moa long 128 leta, o i holem wan leta we SDL i ridim olsem wan fil.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Nem blong lae i emti, i bitim 128 saen, i holem wan maka blong fil we SDL i ridim, olsem “type:”, o i holem wan saen we i no leta, namba, panktuesen, simbol o plen spes.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Lae i karem wan hint o wan fil blong Android, we PadForge i no tekem.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Lae i gat wan fil we SDL i no save.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Wan binding i no stap long fom blong SDL, olsem b3, a2, +a2, a2~ o h0.4.</value></data>
@@ -2298,7 +2334,7 @@
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>I stop. Laswan toktok blong hem: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>I no save stat.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Hem i no stap long PC ia bakegen.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>I no faenem wan program blong tanel long PC ia. PadForge i wok wetem cloudflared, devtunnel, ngrok mo Tailscale Funnel, o wetem adres blong tanel blong yu.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge i no faenem cloudflared, devtunnel, ngrok o Tailscale Funnel long PC ia. Jusum ChatGPT Secure MCP Tunnel, we PadForge i daonlodem, o givim adres blong tanel blong yu.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Jusum wan tanel blong givim wan pablik adres long PadForge.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>I stap long PC ia tu: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, we adres blong hem i stap sem</value></data>
@@ -2306,7 +2342,7 @@
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Ronem tanel blong yu i go long http://127.0.0.1:{0} mo pestem adres https blong hem. Wan Cloudflare tanel we i gat nem, wan dev tanel we i stap oltaem, Tailscale Funnel mo domen blong ngrok nomo oli kipim adres blong olgeta.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Pestem wan adres https we i no gat paf be /mcp nomo, olsem tanel blong yu i givim.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>I stap statem web helpa blong PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Web helpa blong PadForge i stop ({0}). Tanem Reach PadForge From the Web i of mo i on bakegen blong statem hem bakegen.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Web helpa blong PadForge i stop ({0}). PadForge i stap traem statem hem bakegen.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adres</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>I no gat pablik adres yet.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Putum long Claude</value></data>
@@ -2344,11 +2380,6 @@
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>i finis wetem kod {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation i of, ale i no gat asistan long web i save kasem PadForge. Web helpa i stat taem Automation i on.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>I stap jek…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>I no instol.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>I instol mo i niu. Wan skript i stat wetem {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>I instol blong {0} mo i niu. Wan skript i stat wetem {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>I instol. PadForge ia i gat wan kopi we i niu moa.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>I instol blong {0}. PadForge ia i gat wan kopi we i niu moa.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>I stap instol…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge i no save jekem: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instolem i putum laebri blong PadForge long ples we lanwis ia i faenem. Wan skript we i lodem hem i ridim ol divaes mo i jenisim ol mapping long level we i stap antap.</value></data>
@@ -2356,22 +2387,24 @@
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Ol Kopi we i Instol</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Tekemaot Olgeta</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>I aot.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Laebri blong PadForge i instol blong {0} mo i niu. Wan skript i stat wetem {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Laebri blong PadForge blong {0} i no sem olsem kopi blong PadForge ia.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Laebri blong PadForge i no instol blong {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID blong Skript</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID blong skript blong hem</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Ol skript oli singaot ol kontrol blong hem se {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Ol skript oli singaot ol ki blong hem se KeyA, KeySpace, KeyLeftShift mo olsem, mo evri ki long kod blong hem, Vk0 kasem Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} long netwok ia, i kam long {1}</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Soem long Folda</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} i stat be i neva konekt long PadForge.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adres</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge i tekem wan adres we i stat wetem https:// mo i nemem wan host, long pot we i stap olsem standa, mo i no gat nem blong yusa o paswod.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge i tekem wan adres blong 2,048 saen o smol moa we i stat wetem https:// mo i nemem wan host, long pot we i stap finis, mo i no gat nem blong yusa, paswod o pat afta #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Pot</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Jenisim…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Ol kol mo ki blong olgeta oli pas long netwok ia we i no gat enkripsen. Windows i letem olgeta oli kam insaed long ol praevet netwok nomo.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Ol kol mo ki blong olgeta oli krosem netwok ia we i no gat enkripsen. Rul blong Windows Firewall we PadForge i mekem blong pot ia i nemem ol praevet netwok nomo.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Wan narafala program i stap yusum pot {0}. Jenisim blong kasem PadForge long netwok ia.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows i no letem helpa blong PadForge i lesin long pot {0}. PadForge i letem samting ia wetem ol raet blong administreta, ale statem PadForge wetem olgeta mo tanem samting ia i of mo i on.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows i no holem wan risevesen blong helpa blong PadForge long pot {0}. Tanem samting ia i of mo i on, mo PadForge i mekem bakegen.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Helpa blong PadForge i no save lesin long pot {0}. Jenisim pot, o tanem samting ia i of mo i on.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Helpa blong PadForge i stop ({0}). Tanem Reach PadForge From This Network i of mo i on bakegen blong statem hem bakegen.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Helpa blong PadForge i stop ({0}). PadForge i stap traem statem hem bakegen.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation i of, ale i no gat asistan long netwok ia i save kasem PadForge. Helpa i stat taem Automation i on.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>PC ia i no gat adres long wan praevet netwok naoia.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Ol Asistan long Netwok Ia</value></data>
@@ -2386,7 +2419,26 @@
   <data name="Reach_Line_Format" xml:space="preserve"><value>I draevem ol divaes blong hem mo {0}. I stap ridim evri divaes yet.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>I draevem ol divaes blong hem nomo. I stap ridim evri divaes yet.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Ol komand long komand lae oli stap kasem PadForge yet, olsem oli mekem long evri program.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>I stap ron, wetem ol raet blong yu, mo i redi. ChatGPT i kasem PadForge tru long tanel ia we i no gat saen in blong hem wan, mo long OpenAI oganaesesen blong yu nomo. I stat bakegen wetem PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>I stap ron, wetem ol raet blong yu. I stap wet long OpenAI blong talem se tanel i redi.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge i kipim ki we i gat enkripsen blong yu nomo. Wan bokis we i emti i fogetem ki. ChatGPT i wok long level we i stap antap.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge i no save seivem kit blong plagin.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Wok {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge i no tekem ansa blong GitHub. I no gat samting i jenis.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge i no tekem ansa we i kam long {0}. I no gat samting i jenis.</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Pej blong daonlod blong Falcon SDK i no open: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Pej blong daonlod blong Falcon SDK i no open yet: {0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>I lego {0:N0} lae blong ol narafala sistem.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows i no statem hem wetem ol raet blong yu.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>I no stop insaed long {0} sekon.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>I finis wetem kod {0} mo i no givim risen.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge i no save ridim ol seting long {0}, ale i lego fael olsem we i stap.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge i no bin raetem {0}, ale i lego olsem we i stap.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows i no nemem wan folda Documents blong yu.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge i no faenem wan folda blong yu blong {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Komand blong {0} i finis wetem kod {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Komand blong {0} i no stap long PC ia.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows i no letem PadForge i ridim o raetem wan fael we hem i nidim.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge i no faenem Python: i no gat wan we i rejista, we i instol long Microsoft Store, we wan py launja i lisim o we i stap long PATH blong yu.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>I no gat wan Python we PadForge i faenem i ansa insaed long {0} sekon.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Ron ia i no givim wan risen we PadForge i save.</value></data>
 </root>

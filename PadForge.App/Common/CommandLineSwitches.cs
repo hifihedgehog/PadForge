@@ -169,6 +169,12 @@ namespace PadForge.Common
             /// A client run of its own, never a line for the running copy.</summary>
             public (string Source, string Target)? RecordSave { get; set; }
 
+            /// <summary><c>--port-files &lt;port&gt;</c>: the DSX port files
+            /// written as the user, for the copy with rights that started
+            /// this one (GameModPortFiles.Write), or null. A client run of
+            /// its own.</summary>
+            public int? PortFiles { get; set; }
+
             /// <summary><c>--plugin-kit &lt;folder&gt;</c> (#600 item 20): the
             /// folder to write the plugin kit into, or null. A client run of
             /// its own, which never starts the app.</summary>
@@ -183,9 +189,12 @@ namespace PadForge.Common
             /// of its own, in the order given (#600 item 44).</summary>
             internal List<string> Alone { get; } = new List<string>();
 
-            /// <summary>Whether anything but the update marker was given.</summary>
-            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Web && !Wait && Install == null && !AssistantRun && !Json
-                && Summarize == null && RecordSave == null && PluginKit == null && !SettingsFolder;
+            /// <summary>Whether nothing but the update marker or
+            /// <c>--json</c> was given: a plain start. <c>--json</c> only
+            /// shapes answers, so alone it starts PadForge or shows the running
+            /// copy, as no switch does.</summary>
+            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Web && !Wait && Install == null && !AssistantRun
+                && Summarize == null && RecordSave == null && PortFiles == null && PluginKit == null && !SettingsFolder;
 
             /// <summary>Whether a copy that finds none running can start
             /// PadForge with this command line. A switch that only makes sense
@@ -274,10 +283,30 @@ namespace PadForge.Common
                     {
                         // The words after it are its own (#600):
                         // what, the program, folder or file, and --remove
-                        // or --check.
-                        if (inline != null) return Fail(r, "--install takes its words after a space: --install skill claude-code.");
+                        // or --check. --install=what is --install what: the
+                        // inline value is read as the first of those words.
                         if (r.Install != null) return Fail(r, "--install is given once.");
-                        string mistake = Services.Install.UserInstall.Parse(args, ref i, out var install);
+                        string mistake;
+                        Services.Install.InstallRequest install;
+                        if (inline == null)
+                        {
+                            mistake = Services.Install.UserInstall.Parse(args, ref i, out install);
+                        }
+                        else
+                        {
+                            var words = new List<string>(args.Count + 1);
+                            for (int k = 0; k < args.Count; k++)
+                            {
+                                words.Add(k == i ? name : args[k]);
+                                if (k == i) words.Add(inline);
+                            }
+                            // The inline value is one word more in this list
+                            // than on the command line, so the last word read
+                            // is one less there.
+                            int at = i;
+                            mistake = Services.Install.UserInstall.Parse(words, ref at, out install);
+                            i = at - 1;
+                        }
                         if (mistake != null) return Fail(r, mistake);
                         r.Install = install;
                         r.Alone.Add(name);
@@ -327,6 +356,19 @@ namespace PadForge.Common
                         if (string.IsNullOrWhiteSpace(folder) || LooksLikeSwitch(folder))
                             return Fail(r, "--describe needs the folder to write the page description to.");
                         r.Describe = folder.Trim();
+                        r.Alone.Add(name);
+                        break;
+                    }
+
+                    case PadForge.Services.GameModPortFiles.Switch:
+                    {
+                        // The DSX port files, written by the copy PadForge
+                        // starts as the user (GameModPortFiles.Write).
+                        string value = inline ?? Next(args, ref i);
+                        if (!int.TryParse(value, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int port)
+                            || port < 1 || port > 65535)
+                            return Fail(r, name + " needs a port from 1 to 65535.");
+                        r.PortFiles = port;
                         r.Alone.Add(name);
                         break;
                     }
@@ -605,7 +647,7 @@ namespace PadForge.Common
 
         /// <summary>What an update's restart repeats: how PadForge was
         /// started, never what it was told to do once. The restarted copy
-        /// would start a second recording (#597).</summary>
+        /// would start a second recording (#600).</summary>
         internal static List<string> StartOptionsOnly(IReadOnlyList<string> args)
         {
             var kept = new List<string>();
@@ -696,7 +738,9 @@ namespace PadForge.Common
             "  --install <what> [where]  Install for the user: skill <program or folder>,\r\n" +
             "                            autohotkey, powershell, python [folder or file]\r\n" +
             "                            or assistant <program>. --remove takes it out,\r\n" +
-            "                            --check says current (0), older (6) or none (7)\r\n" +
+            "                            --check says current (0), older (6), none (7),\r\n" +
+            "                            current in some places only (8), and for python\r\n" +
+            "                            no Python found (9) or none that answered (10)\r\n" +
             "  --settings-folder         Open the folder of PadForge.xml in Explorer\r\n" +
             "  --plugin-kit <folder>     Write the plugin kit: a guide to every verb and\r\n" +
             "                            setting, and a plugin in C#, Python, PowerShell\r\n" +

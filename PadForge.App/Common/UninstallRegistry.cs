@@ -25,9 +25,12 @@ namespace PadForge.Common
     internal sealed class UninstallRegistry
     {
         /// <summary>One registration: its subkey's name and the values the
-        /// driver rows read.</summary>
+        /// driver rows read. <c>BundleUpgradeCode</c> is the UpgradeCode a
+        /// WiX Burn bundle writes to its own entry, the first of the
+        /// multi-string's codes, or null.</summary>
         internal readonly record struct Entry(string SubKeyName, string DisplayName,
-            string DisplayVersion, string UninstallString, object WindowsInstaller);
+            string DisplayVersion, string UninstallString, object WindowsInstaller,
+            string BundleUpgradeCode = null);
 
         internal const string UninstallPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
@@ -143,6 +146,16 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>The first code of a REG_MULTI_SZ, as Burn writes
+        /// BundleUpgradeCode, or the value itself where it is one
+        /// string.</summary>
+        private static string FirstCode(object value) => value switch
+        {
+            string[] codes when codes.Length > 0 => codes[0],
+            string code => code,
+            _ => null,
+        };
+
         private IReadOnlyList<Entry> Walk()
         {
             Walks++;
@@ -163,7 +176,8 @@ namespace PadForge.Common
                             sub.GetValue("DisplayName") as string,
                             sub.GetValue("DisplayVersion") as string,
                             sub.GetValue("UninstallString") as string,
-                            sub.GetValue("WindowsInstaller")));
+                            sub.GetValue("WindowsInstaller"),
+                            FirstCode(sub.GetValue("BundleUpgradeCode"))));
                     }
                 }
                 catch { }

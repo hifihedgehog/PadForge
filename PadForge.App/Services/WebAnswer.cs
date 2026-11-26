@@ -113,7 +113,7 @@ namespace PadForge.Services
         private AnswerPairing _pairing;
         private int _wrong;
         private AutomationApprovals _approvals;
-        private string _address, _addressProblem;
+        private string _base, _baseProblem;
 
         internal WebAnswer(Func<DateTimeOffset> now = null)
         {
@@ -172,25 +172,61 @@ namespace PadForge.Services
         }
 
         /// <summary>The page's address while the listener serves it over
-        /// HTTPS, such as https://192.168.1.24:8080/answer, or null.</summary>
-        internal string Address { get { lock (_sync) return _address; } }
+        /// HTTPS, such as https://192.168.1.24:8080/answer, or null. This PC's
+        /// addresses are read each time, so a network joined or left since
+        /// the listener's last status shows.</summary>
+        internal string Address
+        {
+            get
+            {
+                string near = NearbyBase(Base);
+                return near == null ? null : near + RoutePath;
+            }
+        }
 
         /// <summary>Why the page cannot open while the listener runs or
         /// failed to, or null.</summary>
-        internal string AddressProblem { get { lock (_sync) return _addressProblem; } }
+        internal string AddressProblem
+        {
+            get
+            {
+                string base_, problem;
+                lock (_sync) { base_ = _base; problem = _baseProblem; }
+                if (base_ == null) return problem;
+                return NearbyBase(base_) == null ? Strings.Instance.Answer_NoPrivateAddress : null;
+            }
+        }
+
+        private string Base { get { lock (_sync) return _base; } }
 
         /// <summary>Called by the listener's owner: the web controller's
         /// base address while it serves HTTPS, and why not otherwise.</summary>
         internal void SetAddress(string httpsBase, string problem)
         {
-            string address = string.IsNullOrEmpty(httpsBase) ? null : httpsBase.TrimEnd('/') + RoutePath;
+            string base_ = string.IsNullOrEmpty(httpsBase) ? null : httpsBase.TrimEnd('/');
             lock (_sync)
             {
-                if (_address == address && _addressProblem == problem) return;
-                _address = address;
-                _addressProblem = address == null ? problem : null;
+                problem = base_ == null ? problem : null;
+                if (_base == base_ && _baseProblem == problem) return;
+                _base = base_;
+                _baseProblem = problem;
             }
             StateChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>The web controller's base address with a host the page
+        /// takes from a phone: its own when it is a private IPv4 address,
+        /// else this PC's first private address. The controller names the
+        /// address its route to the internet leaves from, which can be a
+        /// VPN's or Tailscale's, or localhost, and the page refuses a peer
+        /// and a Host outside this PC's networks (IsNearby, NamesThisPc).
+        /// Null when this PC has no private address.</summary>
+        internal static string NearbyBase(string httpsBase)
+        {
+            if (string.IsNullOrEmpty(httpsBase) || !Uri.TryCreate(httpsBase, UriKind.Absolute, out var uri)) return null;
+            if (IPAddress.TryParse(uri.Host, out var ip) && PadForge.Services.Automation.Web.NetworkDoor.IsPrivate(ip)) return httpsBase.TrimEnd('/');
+            string first = PadForge.Services.Automation.Web.NetworkDoor.PrivateAddresses().FirstOrDefault();
+            return first == null ? null : uri.Scheme + "://" + first + ":" + uri.Port.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
         // ─────────────────────────────────────────────

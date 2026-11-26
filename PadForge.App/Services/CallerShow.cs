@@ -5,7 +5,7 @@ using System.Threading;
 namespace PadForge.Services
 {
     /// <summary>
-    /// How PadForge shows its window for a caller (#597): a second start of
+    /// How PadForge shows its window for a caller (#600): a second start of
     /// the exe, the <c>show</c> command and the posted show message.
     ///
     /// <para>A show that comes within <see cref="GapMs"/> of the last one is

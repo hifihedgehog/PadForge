@@ -6,14 +6,16 @@ namespace PadForge.Engine.Common
 {
     /// <summary>
     /// Text a program supplied, or a file's name, made fit to show the user
-    /// (#597). Every format character goes: the bidirectional overrides,
+    /// (#600). Every format character goes: the bidirectional overrides,
     /// embeddings and isolates (U+202A to U+202E, U+2066 to U+2069) that turn
     /// "gpj.exe" into what reads as "exe.jpg", the marks LRM, RLM and ALM, the
     /// zero-width space, joiners and word joiner, the soft hyphen and the byte
     /// order mark, all of Unicode's category Cf. Control characters go too,
     /// and a line or paragraph separator becomes a space, so a name holds one
-    /// line. A program then cannot make a name read as another program's,
-    /// nor hide part of one.
+    /// line and cannot read backward. Every other character stays: a letter
+    /// of another script drawn like a Latin one (U+0430 for a), and a letter
+    /// drawn blank (U+3164 HANGUL FILLER), so a name can still look like
+    /// another program's.
     ///
     /// <para>The one helper every name a program supplies and every file
     /// name shown goes through: hello names, device and control names,

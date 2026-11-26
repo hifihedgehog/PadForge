@@ -35,13 +35,11 @@ namespace PadForge
             = Thread.CurrentThread.CurrentUICulture;
 
         // The single-instance lock: a mutex in the private namespace only a
-        // copy with administrator rights can make or open (InstanceLock), or
-        // the session's plain one where this copy runs without them, which
-        // Program.Main never lets the app do.
+        // copy with administrator rights can make or open (InstanceLock).
         private IDisposable _singleInstanceMutex;
 
         /// <summary>The copy Move PadForge to Its Own Folder made, started once
-        /// this one has closed (#597). Null otherwise.</summary>
+        /// this one has closed (#600). Null otherwise.</summary>
         internal static string StartWhenClosed;
 
         /// <summary>Starts the moved copy as this one's last act: its signal
@@ -59,9 +57,8 @@ namespace PadForge
             }
             catch { }
             try { InstanceSignal?.Dispose(); } catch { }
-            // The plain mutex is let go before its handle closes. The private
-            // namespace's lock lets go of its own (InstanceLock.Dispose).
-            try { (_singleInstanceMutex as Mutex)?.ReleaseMutex(); } catch { }
+            // The lock lets go of its mutex before its handle closes
+            // (InstanceLock.Dispose).
             try { _singleInstanceMutex?.Dispose(); } catch { }
             _singleInstanceMutex = null;
             try
@@ -238,7 +235,7 @@ namespace PadForge
         /// once is left out (CommandLineSwitches.StartOptionsOnly).</summary>
         internal static string[] StartupArgs { get; private set; } = Array.Empty<string>();
 
-        /// <summary>The same arguments, read (#597): whether the engine
+        /// <summary>The same arguments, read (#600): whether the engine
         /// starts, where the window first is, and the steps a start runs
         /// before and after the engine. Never null. A copy that reaches
         /// OnStartup carries no line that could not be read: that one ended
@@ -251,20 +248,40 @@ namespace PadForge
         /// single-instance lock.</summary>
         internal static Services.InstanceSignal InstanceSignal { get; private set; }
 
-        /// <summary>Takes the single-instance lock. With administrator
-        /// rights, which the app has (Program.Main), it is the private
-        /// namespace's, which no program without rights can take first. A
-        /// copy without them, which only a developer's run can be, takes the
-        /// session's plain mutex as before.</summary>
-        private static IDisposable TakeSingleInstanceLock(out bool newInstance)
+        /// <summary>Takes the single-instance lock: the private namespace's,
+        /// which no program without rights can take first. Every copy that
+        /// reaches the app has administrator rights (Program.Main). Null when
+        /// the namespace or the lock could not be made (InstanceLock.Take),
+        /// and then this copy takes no lock under a name any program could
+        /// hold first: it does not start.</summary>
+        internal static IDisposable TakeSingleInstanceLock(out bool newInstance)
         {
             var held = Services.InstanceLock.Take(out bool heldElsewhere);
-            if (held != null)
+            newInstance = held != null && !heldElsewhere;
+            return held;
+        }
+
+        /// <summary>A copy that lost the race for the lock hands its command
+        /// line to the copy that won, as a second start does
+        /// (<see cref="ClientRun.TryRun"/>): it waits for that copy's ready
+        /// window, sends each switch as its line, or asks for the window when
+        /// there is none, and its exit code is the run's. True when it is
+        /// done. False when the winner is gone before it took the line, and
+        /// this copy is to take the lock again.</summary>
+        internal static bool HandToTheCopyThatWon(IReadOnlyList<string> args, out int exitCode, ClientRun.Seams seams = null)
+            => ClientRun.TryRun(args ?? Array.Empty<string>(), out exitCode, seams);
+
+        /// <summary>The lock could not be made: says so, and the start
+        /// ends.</summary>
+        private void StopForNoLock()
+        {
+            try
             {
-                newInstance = !heldElsewhere;
-                return held;
+                MessageBox.Show(Strings.Instance.Start_NoLock, Strings.Instance.Common_PadForge,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            return new Mutex(true, Services.RunningCopy.InstanceMutexName, out newInstance);
+            catch { }
+            Shutdown(1);
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -333,34 +350,55 @@ namespace PadForge
             }
 
             _singleInstanceMutex = TakeSingleInstanceLock(out bool isNewInstance);
+            if (_singleInstanceMutex == null)
+            {
+                StopForNoLock();
+                return;
+            }
             Exit += StartMovedCopy;
-            if (!isNewInstance)
+            for (int attempt = 0; !isNewInstance; attempt++)
             {
                 // Another copy holds the lock. A second start hands its
                 // switches to that copy before it ever gets here
                 // (Program.Main, ClientRun), so this is two copies started in
-                // the same moment, and this one lost. It asks the other to
-                // show its window, as a second start with no switch does, and
-                // leaves.
-                Services.RunningCopy.Show();
-                Shutdown();
-                return;
+                // the same moment, and this one lost. It lets go of the lock
+                // it opened, so the winner's end can be seen, and hands its
+                // command line to the winner as a second start does. Its
+                // start reads the run's exit code.
+                _singleInstanceMutex.Dispose();
+                _singleInstanceMutex = null;
+                bool done = HandToTheCopyThatWon(e.Args, out int handed);
+                if (done || attempt >= 2)
+                {
+                    Shutdown(done ? handed : ClientRun.NotRunning);
+                    return;
+                }
+                // The winner was gone before it took the line, so this copy
+                // takes its place.
+                _singleInstanceMutex = TakeSingleInstanceLock(out isNewInstance);
+                if (_singleInstanceMutex == null)
+                {
+                    StopForNoLock();
+                    return;
+                }
             }
 
             // From here a second copy finds this one, and its request to show
-            // the window is kept until there is a window to show (#597).
+            // the window is kept until there is a window to show (#600).
             InstanceSignal = new Services.InstanceSignal();
             InstanceSignal.Open();
             // This copy is the app now, so a start with rights that restarted
-            // it from the protected folder leaves (#597). An update's helper,
-            // a copy that lost the race and one that only hands over to an
-            // update leave above, and their start waits for their exit code.
+            // it from the protected folder leaves (#600). An update's helper
+            // and a copy that lost the race leave above, and their start
+            // waits for their exit code. A copy that hands over to a pending
+            // install leaves below, after this: its start, and a --wait on
+            // it, end when this copy exits, not when the installed app does.
             Services.ProtectedStart.HandOver();
 
             StartupArgs = e.Args ?? Array.Empty<string>();
             // The logon task starts this copy with no switch. A start without
             // rights that ran it hands its start switches over the signal
-            // window, and this copy waits for them only when that start says
+            // pipe, and this copy waits for them only when that start says
             // they are coming (#600 item 44).
             if (StartupArgs.Length == 0)
                 StartupArgs = System.Linq.Enumerable.ToArray(InstanceSignal.TakeStartSwitches(Services.InstanceSignal.StartSwitchesWaitMs));
@@ -412,7 +450,7 @@ namespace PadForge
             // (Microsoft, LOAD_LIBRARY_SEARCH_USER_DIRS).
             //
             // The folder is the one this process's own libraries were
-            // unpacked into, and nothing else (#597): the protected folder
+            // unpacked into, and nothing else (#600): the protected folder
             // for a start with rights (Services/ProtectedStart.cs). The
             // fallback that took the newest folder in the user's temp folder
             // with an xinput1_4.dll in it is gone, since any program of the
@@ -424,11 +462,14 @@ namespace PadForge
                 {
                     NativeMethods.SetDllDirectory(extractionDir);
                     // The protected folder's other builds and set-aside
-                    // folders go, off the start's path.
+                    // folders go, off the start's path, and so do the
+                    // copies older builds left in the user's temp folder,
+                    // deleted as the user.
                     System.Threading.Tasks.Task.Run(() =>
                     {
                         Services.UnpackFolder.CleanUp(extractionDir);
                         Services.ProtectedWork.RemoveOld(TimeSpan.FromDays(1));
+                        Services.TempLeftovers.RetireInTheApp();
                     });
                 }
             }
@@ -548,7 +589,7 @@ namespace PadForge
             // the migrated reality.
             // The exe's folder is judged, and protected when it is PadForge's
             // own, before anything trusts it, and the tasks that run PadForge
-            // are looked at (#597, Services/ExeFolder.cs).
+            // are looked at (#600, Services/ExeFolder.cs).
             Services.ExeFolderState.Instance.Start(Environment.ProcessPath);
             PadForge.Common.StartupHelper.MigrateLegacyEntryIfNeeded();
 
@@ -602,7 +643,7 @@ namespace PadForge
             // There is a window now. A second copy that asked for it, or for
             // a close, while this one was starting gets it, and from here a
             // copy that finds no control pipe knows that is Automation's
-            // doing and not a start still under way (#597).
+            // doing and not a start still under way (#600).
             InstanceSignal.Attach(window.ShowForACaller, window.ExitForACaller);
             InstanceSignal.MarkReady();
         }
@@ -698,15 +739,45 @@ namespace PadForge
             return sb.ToString();
         }
 
+        /// <summary>Test seam: the append to crash.log, given its path and
+        /// text. Null in the app.</summary>
+        internal static Action<string, string> CrashLogAppendSeam;
+
+        /// <summary>Appends <paramref name="text"/> to crash.log beside the
+        /// exe. False when nothing was written: the drive is full, or another
+        /// program holds the file.</summary>
+        internal static bool AppendCrashLog(string text)
+        {
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log");
+                var seam = CrashLogAppendSeam;
+                if (seam != null) seam(path, text);
+                else System.IO.File.AppendAllText(path, text);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>The error dialog's text: the messages, the report page and
+        /// the stacks. It says crash.log holds the details only when
+        /// <paramref name="written"/>, and otherwise that the dialog's own
+        /// text is the report.</summary>
+        internal static string CrashText(bool written, string messages, string stacks)
+            => string.Format(written ? Strings.Instance.App_UnexpectedError_Format : Strings.Instance.App_UnexpectedErrorNotWritten_Format,
+                messages, stacks, UpdateService.ReportPage);
+
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
+            bool written = AppendCrashLog(
                 $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ExceptionMessageChain(ex2)}\n{ExceptionStackChain(ex2)}" : e.ExceptionObject?.ToString())}\n\n"
                 // The in-memory diagnostics ring (SDL narration, stall
                 // watchdog, binding errors) is this crash's recent context;
                 // a fatal crash is the one place it reaches disk.
-                + "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"); }
-            catch { }
+                + "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n");
 
             // Stop any live rumble / sustained haptic tone BEFORE the
             // fatal dialog blocks, and BEFORE the GPU-loss early return:
@@ -723,8 +794,7 @@ namespace PadForge
             if (e.ExceptionObject is Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(Strings.Instance.App_UnexpectedError_Format,
-                        ExceptionMessageChain(ex), ExceptionStackChain(ex), UpdateService.ReportPage),
+                    CrashText(written, ExceptionMessageChain(ex), ExceptionStackChain(ex)),
                     Strings.Instance.App_FatalError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -753,29 +823,25 @@ namespace PadForge
             // signature, then a one-line counter every 500th, nothing in
             // between. A layout-retry storm otherwise appends the same
             // multi-kilobyte stack thousands of times.
-            try
+            bool written = false;
+            if (hits <= 3)
             {
-                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log");
-                if (hits <= 3)
-                {
-                    System.IO.File.AppendAllText(logPath,
-                        $"[{DateTime.Now:HH:mm:ss}] DISPATCHER{(hits > 1 ? $" (hit {hits})" : string.Empty)}: {signature}\n{ExceptionStackChain(e.Exception)}\n\n"
-                        // Before startup completes, a dispatcher exception is a
-                        // failed launch (OnStartup aborted): flush the diagnostics
-                        // ring like the fatal DOMAIN path does. Steady-state
-                        // dispatcher errors skip the appendix so an exception storm
-                        // doesn't snowball crash.log.
-                        + (!_startupUiReady
-                            ? "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"
-                            : string.Empty));
-                }
-                else if (hits == 4 || hits % 500 == 0)
-                {
-                    System.IO.File.AppendAllText(logPath,
-                        $"[{DateTime.Now:HH:mm:ss}] DISPATCHER (hit {hits}, further identical entries suppressed): {signature.Split('\n')[0]}\n\n");
-                }
+                written = AppendCrashLog(
+                    $"[{DateTime.Now:HH:mm:ss}] DISPATCHER{(hits > 1 ? $" (hit {hits})" : string.Empty)}: {signature}\n{ExceptionStackChain(e.Exception)}\n\n"
+                    // Before startup completes, a dispatcher exception is a
+                    // failed launch (OnStartup aborted): flush the diagnostics
+                    // ring like the fatal DOMAIN path does. Steady-state
+                    // dispatcher errors skip the appendix so an exception storm
+                    // doesn't snowball crash.log.
+                    + (!_startupUiReady
+                        ? "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"
+                        : string.Empty));
             }
-            catch { }
+            else if (hits == 4 || hits % 500 == 0)
+            {
+                AppendCrashLog(
+                    $"[{DateTime.Now:HH:mm:ss}] DISPATCHER (hit {hits}, further identical entries suppressed): {signature.Split('\n')[0]}\n\n");
+            }
 
             // Once the render thread is zombied, suppress ALL cascading exceptions
             // silently: they're all downstream failures from the same GPU device loss.
@@ -821,8 +887,7 @@ namespace PadForge
             _suppressedErrorCount = 0;
 
             MessageBox.Show(
-                string.Format(Strings.Instance.App_UnexpectedError_Format,
-                    signature, ExceptionStackChain(e.Exception), UpdateService.ReportPage) + suppressed,
+                CrashText(written, signature, ExceptionStackChain(e.Exception)) + suppressed,
                 Strings.Instance.App_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);

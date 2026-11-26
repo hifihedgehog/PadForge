@@ -370,7 +370,7 @@ namespace PadForge.Tests
             rig.Vm.ReplayOn = true;
             Assert.False(rig.Vm.HasReplayFile);
             Assert.False(rig.Vm.ReplayPlayCommand.CanExecute(null));
-            Assert.Null(rig.Vm.PluginActions.OpenRecording(PluginBuiltInTests.KeptRecording));
+            Assert.Null(rig.Vm.PluginActions.OpenRecording(rig.Vm.PluginActions.ReadRecording(PluginBuiltInTests.KeptRecording)));
             Assert.Equal(string.Format(s.Plugins_Replay_File_Format, "two-pads.zip", "0:00"), rig.Vm.ReplayFileLine);
             Assert.Equal(string.Format(s.Plugins_Replay_Position_Format, "0:00", "0:00"), rig.Vm.ReplayPositionLine);
             Assert.True(rig.Vm.ReplayPlayCommand.CanExecute(null));
@@ -430,6 +430,8 @@ namespace PadForge.Tests
             var s = Strings.Instance;
             Assert.Equal(s.Plugins_Refused_NoShell, PluginsController.RefusalText(PluginRefusal.NoShell, 0));
             Assert.Equal(s.Plugins_Refused_ShellElevated, PluginsController.RefusalText(PluginRefusal.ShellElevated, 0));
+            Assert.Equal(s.Plugins_Refused_RightsUnknown, PluginsController.RefusalText(PluginRefusal.RightsUnknown, 0));
+            Assert.Equal(s.Plugins_Refused_StartedElevated, PluginsController.RefusalText(PluginRefusal.StartedElevated, 0));
             Assert.Equal(s.Plugins_Refused_NeedsAdministrator, PluginsController.RefusalText(PluginRefusal.NeedsAdministrator, 740));
             Assert.Equal(s.Plugins_Refused_Missing, PluginsController.RefusalText(PluginRefusal.Missing, 0));
             Assert.Equal(s.Plugins_Refused_NoProgram, PluginsController.RefusalText(PluginRefusal.NoProgram, 0));
@@ -449,13 +451,15 @@ namespace PadForge.Tests
                 string.Format(s.Plugins_Confirm_Signer_Format, "Contoso Ltd"),
                 string.Format(s.Plugins_Confirm_Sha_Format, "AB12")), detail);
             Assert.Contains(s.Plugins_Confirm_Unsigned, ExtrasPage.ApprovalDetail(new PluginApproval(@"C:\p.exe", null, "CD")));
-            // The approval reads the signer through the one reader the request
-            // card and Activity use, which finds a catalog's signer too:
-            // notepad.exe is signed by a Windows catalog.
+            // The approval reads the signer with the one reader the request
+            // card and Activity use, which finds a catalog's signer too
+            // (notepad.exe is signed by a Windows catalog), on the handle
+            // that was hashed.
             string notepad = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "notepad.exe");
             Assert.Equal("Microsoft Windows", AuthenticodeSigner.Of(notepad));
             string controller = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginsController.cs");
-            Assert.Contains("new PluginApproval(full, AuthenticodeSigner.Of(full), sha, key)", controller);
+            Assert.Contains("signer = held == null ? null : AuthenticodeSigner.OfHeld(full, held.SafeFileHandle);", controller);
+            Assert.Contains("new PluginApproval(full, signer, sha, key)", controller);
             // The key is read on the handle that was hashed, with revocation
             // checked, and the test host asks no server: even a file that
             // carries a valid signature gives none here.
@@ -518,6 +522,72 @@ namespace PadForge.Tests
             Assert.Contains("return Signature(result, signer, key, revocation, chainError);", engine);
         }
 
+        /// <summary>The confirmation's signer is read on the handle that was
+        /// hashed: other bytes of the same length and write time at a path
+        /// read before carry no signer they do not have.</summary>
+        [Fact]
+        public void TheConfirmationsSigner_IsTheHashedBytesSigner()
+        {
+            using var rig = new Rig();
+            string host = Path.Combine(AppContext.BaseDirectory, "testhost.exe");
+            string path = Path.Combine(rig.Dir, "bridge.exe");
+            File.Copy(host, path);
+            var written = File.GetLastWriteTimeUtc(path);
+            var signed = rig.Controller.Describe(path);
+            Assert.Equal("Microsoft Corporation", signed.Signer);
+            // Other bytes, the same length and the same write time.
+            byte[] bytes = File.ReadAllBytes(path);
+            bytes[bytes.Length / 2] ^= 0xFF;
+            File.WriteAllBytes(path, bytes);
+            File.SetLastWriteTimeUtc(path, written);
+            var changed = rig.Controller.Describe(path);
+            Assert.NotEqual(signed.Sha256, changed.Sha256);
+            Assert.Null(changed.Signer);
+        }
+
+        /// <summary>The card's line ends each state as its language does: a
+        /// state that is whole sentences in its own string gets no period
+        /// after it, and one that is a few words takes the row's own sentence
+        /// end.</summary>
+        [Fact]
+        public void TheCardsLine_EndsEachStateAsItsLanguageDoes()
+        {
+            using var rig = new Rig();
+            var s = Strings.Instance;
+            var run = rig.Controller.Manager.Add(rig.File("pedals.exe"), PluginFile.Sha256(Path.Combine(rig.Dir, "pedals.exe")));
+            rig.Controller.Manager.SetPluginsOn(true);
+            Assert.Equal(PluginStatus.Waiting, run.Status);
+            Assert.StartsWith(string.Format(Strings.Get("Plugins_Row_State_Format"), s.Plugins_State_Waiting) + " ", rig.Controller.StateLine(run));
+            rig.Controller.Manager.SetEngine(true);
+            rig.Launcher.Last.Exit(3);
+            Assert.Equal(PluginStatus.Restarting, run.Status);
+            var before = System.Globalization.CultureInfo.CurrentUICulture;
+            try
+            {
+                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ja");
+                string line = rig.Controller.StateLine(run);
+                Assert.DoesNotContain("。.", line);
+                Assert.StartsWith(string.Format(s.Plugins_State_Exited_Format, 3, 1) + " ", line);
+            }
+            finally { System.Globalization.CultureInfo.CurrentUICulture = before; }
+        }
+
+        /// <summary>Open a Recording… reads the recording off the interface's
+        /// thread, as the confirmation reads a plugin's file, and puts it in
+        /// place on the page's own.</summary>
+        [Fact]
+        public async System.Threading.Tasks.Task TheRecording_IsReadOffTheInterfaceThread()
+        {
+            string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
+            Assert.Contains("var read = await ReadRecordingAsync(actions, dialog.FileName);", code);
+            Assert.DoesNotContain("actions.OpenRecording(dialog.FileName)", code);
+            Assert.Contains("if (_readingRecording) return;", code);
+            var actions = new DescribeOnly();
+            var read = await ExtrasPage.ReadRecordingOffTheInterfaceThread(actions, @"C:\Recordings\pads.zip");
+            Assert.Equal("unreadable", read.Error);
+            Assert.NotEqual(Environment.CurrentManagedThreadId, actions.Thread);
+        }
+
         /// <summary>Add a Plugin… and Approve… read the file for their
         /// confirmation off the interface's thread, so a large file's hash
         /// holds no page, and a second press while it is read does
@@ -553,10 +623,15 @@ namespace PadForge.Tests
             public void Approve(PluginRowItem row, PluginApproval approved) { }
             public void StartAgain(PluginRowItem row) { }
             public void SetTrust(PluginRowItem row, bool on) { }
-            public string OpenRecording(string path) => null;
+            public RecordingRead ReadRecording(string path)
+            {
+                Thread = Environment.CurrentManagedThreadId;
+                return new RecordingRead(null, "unreadable");
+            }
+            public string OpenRecording(RecordingRead read) => read?.Error;
             public void Play() { }
             public void Stop() { }
-            public string SaveKit(string parent) => null;
+            public System.Threading.Tasks.Task<string> SaveKitAsync(string parent) => System.Threading.Tasks.Task.FromResult<string>(null);
         }
     }
 }

@@ -306,7 +306,8 @@ namespace PadForge.Tests
         [Fact]
         public void PadForgesOwnNames_AreThePipesItServes()
         {
-            Assert.Equal(new[] { ExternalControlService.PipeName, AutomationPipe.PipeName }, PipeOwner.OwnNames);
+            Assert.Equal(new[] { ExternalControlService.PipeName, AutomationPipe.PipeName, RunningCopy.SignalPipeName(RunningCopy.SignalWindowName) },
+                PipeOwner.OwnNames);
             Assert.True(PipeOwner.IsOwnName("PADFORGE.CONTROL"));
             Assert.False(PipeOwner.IsOwnName("PadForge.Tests.Owner"));
             Assert.False(PipeOwner.IsOwnName(null));
@@ -471,8 +472,8 @@ namespace PadForge.Tests
             string source = OffLimitsSource.Read("PadForge.App/Services/RunningCopy.cs");
             Assert.DoesNotContain("Mutex.TryOpenExisting", source);
             Assert.Contains("private static bool LockIsHeld() => InstanceLock.IsHeld();", source);
-            string show = FenceSource.Body(source, "internal static bool Show(int waitMs = 10000)");
-            Assert.Contains("WaitForSignalWindow(waitMs)", show);
+            string show = FenceSource.Body(source, "internal static bool Show(string signalName, string showMessageName, int waitMs)");
+            Assert.Contains("WaitForSignalWindow(waitMs, signalName)", show);
             Assert.Contains("FindChecked(windowName)", FenceSource.Body(source, "private static IntPtr Find(string windowName)"));
         }
 
@@ -523,16 +524,16 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void FourSessions_AreKeptForPlugins()
+        public void TwelveSessions_AreOtherPrograms_AndSixteenArePlugins()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.Read);
             rig.EachConnectionItsOwnProcess();
             rig.Host.AcceptPluginToken = (token, pid) => new AutomationPluginGrant("Bridge " + pid);
-            for (int i = 0; i < AutomationSessions.MostSessions - AutomationSessions.KeptForPlugins; i++) rig.Open("Script " + i);
+            for (int i = 0; i < AutomationSessions.MostProgramSessions; i++) rig.Open("Script " + i);
             using var script = rig.Connect();
             Assert.StartsWith("err too-many ", script.Final("hello name=more"));
             var plugins = new List<AutomationTestClient>();
-            for (int i = 0; i < AutomationSessions.KeptForPlugins; i++)
+            for (int i = 0; i < AutomationSessions.MostPluginSessions; i++)
             {
                 var plugin = rig.Connect();
                 plugins.Add(plugin);
@@ -540,6 +541,26 @@ namespace PadForge.Tests
             }
             using var last = rig.Connect();
             Assert.StartsWith("err too-many ", last.Final("hello name=p kind=plugin token=t"));
+            foreach (var plugin in plugins) plugin.Dispose();
+        }
+
+        /// <summary>Sixteen plugins running, as many as PadForge runs, leave
+        /// a script room to connect.</summary>
+        [Fact]
+        public void SixteenPlugins_LeaveRoomForAScript()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Read);
+            rig.EachConnectionItsOwnProcess();
+            rig.Host.AcceptPluginToken = (token, pid) => new AutomationPluginGrant("Bridge " + pid);
+            var plugins = new List<AutomationTestClient>();
+            for (int i = 0; i < PadForge.Services.Plugins.PluginManager.MostPlugins; i++)
+            {
+                var plugin = rig.Connect();
+                plugins.Add(plugin);
+                Assert.StartsWith("ok padforge=", plugin.Final("hello name=p kind=plugin token=t"));
+            }
+            using var script = rig.Connect();
+            Assert.StartsWith("ok padforge=", script.Final("hello name=script"));
             foreach (var plugin in plugins) plugin.Dispose();
         }
 
@@ -661,7 +682,7 @@ namespace PadForge.Tests
         public void AProgramsDevicesMadeInOneRun_AreLimited_AndOneDeclaredAgainCountsOnce()
         {
             using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
-            rig.EachConnectionItsOwnProcess();
+            rig.EachConnectionItsOwnProgram();
             using var a = rig.Open("Maker A");
             for (int i = 0; i < ProgramDevices.MostMadePerProgram; i++)
             {
@@ -922,35 +943,113 @@ namespace PadForge.Tests
 
         // ── 13. Snapshots and recordings for programs ──
 
+        /// <summary>A program's snapshots are one a minute, and none while
+        /// twenty that programs took wait for the user's review. One the user
+        /// reviews or deletes frees its place in the same run: the limit
+        /// follows what waits, and PadForge never has to start again for it
+        /// (#600).</summary>
         [Fact]
-        public void AProgramsSnapshots_AreOneAMinute_TwentyARun_AndScrubbed()
+        public void AProgramsSnapshots_AreOneAMinute_TwentyWaiting_AndAReviewFreesOne()
         {
             var target = new RecordingAutomationTarget();
             using var host = TestConsent.AllowAll(new AutomationHost(target, new InlineAutomationUi(), "PadForge.Tests.Snap." + Guid.NewGuid().ToString("N")));
             host.Apply(true, AutomationLevel.Commands);
+            var reviewed = new HashSet<string>();
+            host.Commands.StillWaits = file => file.Length > 0 && !reviewed.Contains(file);
             long now = 1_000_000;
             host.Commands.NowMs = () => now;
             var stop = CancellationToken.None;
-            Assert.StartsWith("ok ", host.Commands.Answer("snapshot", stop).Line);
-            Assert.True(target.SnapshotScrubbed);
+            Assert.Equal("ok waiting-for-review", host.Commands.Answer("snapshot", stop).Line);
             Assert.Equal("error too-soon", host.Commands.Answer("snapshot", stop).Line);
-            for (int i = 1; i < AutomationCommands.MostFromProgramsPerRun; i++)
+            for (int i = 1; i < AutomationCommands.MostWaitingFromPrograms; i++)
             {
                 now += AutomationCommands.SnapshotEveryMs;
-                Assert.StartsWith("ok ", host.Commands.Answer("snapshot", stop).Line);
+                Assert.Equal("ok waiting-for-review", host.Commands.Answer("snapshot", stop).Line);
             }
             now += AutomationCommands.SnapshotEveryMs;
             Assert.Equal("error limit-reached", host.Commands.Answer("snapshot", stop).Line);
+            // The user deletes one from Home: the next is taken.
+            reviewed.Add(RecordingAutomationTarget.SnapshotFile(3));
+            Assert.Equal("ok waiting-for-review", host.Commands.Answer("snapshot", stop).Line);
+            now += AutomationCommands.SnapshotEveryMs;
+            Assert.Equal("error limit-reached", host.Commands.Answer("snapshot", stop).Line);
+            Assert.Equal(AutomationCommands.MostWaitingFromPrograms + 1, target.Snapshots);
             // The user's own start is not a program, and its file is the
             // Settings button's.
-            Assert.StartsWith("ok ", host.Commands.RunOwn("snapshot"));
-            Assert.False(target.SnapshotScrubbed);
+            Assert.Equal("ok waiting-for-review", host.Commands.RunOwn("snapshot"));
             Assert.Equal(Strings.Instance.Automation_Result_TooSoon, AutomationActivityItem.RefusalWords("error too-soon"));
-            Assert.Equal(Strings.Instance.Automation_Result_LimitReached, AutomationActivityItem.RefusalWords("err limit-reached x"));
+            Assert.Equal(Strings.Instance.Automation_Result_TooManyWaiting, AutomationActivityItem.RefusalWords("err limit-reached x"));
+            Assert.DoesNotContain("starts again", AutomationLine.WordsFor("limit-reached"), StringComparison.Ordinal);
         }
 
+        /// <summary>A recording waits while its zip, or the text it is
+        /// written as until then, is in the folder.</summary>
         [Fact]
-        public void AProgramsRecordingStarts_AreOneInTenSeconds_TwentyARun()
+        public void ARecordingWaits_WhileItsZipOrItsTextIsThere()
+        {
+            string dir = Path.Combine(Path.GetTempPath(), "PadForge.WaitsTests", Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                string stem = Path.Combine(dir, PadForge.Services.ProblemRecorder.FilePrefix + "20261126-101010");
+                string partial = stem + PadForge.Services.ProblemRecorder.PartialSuffix, zip = stem + PadForge.Services.ProblemRecorder.ZipSuffix;
+                Assert.False(AutomationCommands.RecordingWaits(partial));
+                File.WriteAllText(partial, "x");
+                Assert.True(AutomationCommands.RecordingWaits(partial));
+                Assert.True(AutomationCommands.RecordingWaits(zip));
+                File.Move(partial, zip);
+                Assert.True(AutomationCommands.RecordingWaits(partial));
+                File.Delete(zip);
+                Assert.False(AutomationCommands.RecordingWaits(zip));
+                Assert.False(AutomationCommands.RecordingWaits(null));
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+        }
+
+        /// <summary>A show or a maximize a caller asks for once the window's
+        /// shutdown has begun does nothing: RestoreFromTray brings no such
+        /// window back, and the caller's show neither maximizes it nor takes
+        /// the front for it. The window cannot be opened in a test, so its
+        /// two methods are read.</summary>
+        [Fact]
+        public void ACallersShowAndMaximize_DoNothingOnceTheShutdownBegan()
+        {
+            string window = OffLimitsSource.Read("PadForge.App/MainWindow.Automation.cs");
+            foreach (string method in new[] { "internal void ShowForACaller()", "internal void MaximizeForACaller()" })
+            {
+                int at = window.IndexOf(method, StringComparison.Ordinal);
+                Assert.True(at > 0, method);
+                string body = window.Substring(at, window.IndexOf('}', at) - at);
+                int guard = body.IndexOf("if (_shutdownStarted) return;", StringComparison.Ordinal);
+                int take = body.IndexOf("_callerShow.Take()", StringComparison.Ordinal);
+                Assert.True(guard > 0 && take > guard, method + " acts in the shutdown");
+            }
+        }
+
+        /// <summary>A snapshot the recorder refused, as it does while it
+        /// finishes a file, counts for nothing: the program's next try at
+        /// once is taken, as a refused record start is.</summary>
+        [Fact]
+        public void ASnapshotTheRecorderRefused_CountsForNothing()
+        {
+            var target = new RecordingAutomationTarget { SnapshotFails = 1 };
+            using var host = TestConsent.AllowAll(new AutomationHost(target, new InlineAutomationUi(), "PadForge.Tests.SnapFail." + Guid.NewGuid().ToString("N")));
+            host.Apply(true, AutomationLevel.Commands);
+            host.Commands.NowMs = () => 1_000_000;
+            var stop = CancellationToken.None;
+            Assert.Equal(AutomationCommands.Internal, host.Commands.Answer("snapshot", stop).Line);
+            Assert.StartsWith("ok ", host.Commands.Answer("snapshot", stop).Line);
+            Assert.Equal("error too-soon", host.Commands.Answer("snapshot", stop).Line);
+        }
+
+        /// <summary>A program's recording starts are one in ten seconds, and
+        /// none while twenty that programs started wait for the user's
+        /// review. One reviewed frees its place in the same run.</summary>
+        [Fact]
+        public void AProgramsRecordingStarts_AreOneInTenSeconds_TwentyWaiting_AndAReviewFreesOne()
         {
             var target = new RecordingAutomationTarget();
             using var host = TestConsent.AllowAll(new AutomationHost(target, new InlineAutomationUi(), "PadForge.Tests.Rec." + Guid.NewGuid().ToString("N")));
@@ -961,47 +1060,53 @@ namespace PadForge.Tests
             {
                 if (recording) return AutomationRecordAnswer.Busy;
                 recording = true;
-                return AutomationRecordAnswer.Done("r" + ++made + ".zip");
+                return AutomationRecordAnswer.Done("recording", "r" + ++made + ".log.partial");
             };
             host.Recording = () => recording;
+            var reviewed = new HashSet<string>();
+            host.Commands.StillWaits = file => file.Length > 0 && !reviewed.Contains(file);
             long now = 1_000_000;
             host.Commands.NowMs = () => now;
             var stop = CancellationToken.None;
-            Assert.Equal("ok r1.zip", host.Commands.Answer("record start", stop).Line);
+            Assert.Equal("ok recording", host.Commands.Answer("record start", stop).Line);
             // A start while it records is the recorder's busy.
             Assert.Equal("error busy", host.Commands.Answer("record start", stop).Line);
             recording = false;
             Assert.Equal("error too-soon", host.Commands.Answer("record start", stop).Line);
-            for (int i = 1; i < AutomationCommands.MostFromProgramsPerRun; i++)
+            for (int i = 1; i < AutomationCommands.MostWaitingFromPrograms; i++)
             {
                 now += AutomationCommands.RecordStartEveryMs;
                 recording = false;
-                Assert.StartsWith("ok r", host.Commands.Answer("record start", stop).Line);
+                Assert.Equal("ok recording", host.Commands.Answer("record start", stop).Line);
             }
             now += AutomationCommands.RecordStartEveryMs;
             recording = false;
             Assert.Equal("error limit-reached", host.Commands.Answer("record start", stop).Line);
-            Assert.Equal(AutomationCommands.MostFromProgramsPerRun, made);
+            Assert.Equal(AutomationCommands.MostWaitingFromPrograms, made);
+            reviewed.Add("r7.log.partial");
+            Assert.Equal("ok recording", host.Commands.Answer("record start", stop).Line);
+            Assert.Equal(AutomationCommands.MostWaitingFromPrograms + 1, made);
         }
 
+        /// <summary>A program's snapshot is the Settings button's: a problem
+        /// recording, which the recorder's own scrubber carries to its zip
+        /// (RecordingReviewTests.ASnapshot_IsARecordingWithNoEventsOfItsOwn_ThroughTheSameReview
+        /// reads one back). Nothing scrubs it a second time on the way.</summary>
         [Fact]
-        public void ASnapshotForAProgram_GoesThroughTheScrubber()
+        public void ASnapshotForAProgram_IsARecording_TheRecordersScrubCarriesIt()
         {
-            var scrubber = new PrivacyScrubber(new PrivacyEnvironment { UserName = "plantuser", PcName = "PLANTPC" });
-            scrubber.Know(PrivateKind.SerialNumber, "SN-PLANTED-0042");
-            AutomationReadScrub.Seam = () => scrubber;
-            try
-            {
-                var scrub = AutomationReadScrub.FileScrub();
-                string text = scrub("open pad SN-PLANTED-0042 for plantuser\r\nPC PLANTPC ready");
-                Assert.DoesNotContain("SN-PLANTED-0042", text);
-                Assert.DoesNotContain("plantuser", text);
-                Assert.DoesNotContain("PLANTPC", text);
-                Assert.Contains("ready", text);
-            }
-            finally { AutomationReadScrub.Seam = null; }
-            Assert.Contains("SaveSnapshot(scrubbed ? AutomationReadScrub.FileScrub() : null)",
+            Assert.Contains("public string SaveSnapshot() => DiagnosticsLogControl.SaveSnapshot();",
                 OffLimitsSource.Read("PadForge.App/MainWindow.Automation.cs"));
+            string control = OffLimitsSource.Read("PadForge.App/Common/DiagnosticsLogControl.cs");
+            Assert.Contains("var result = Services.ProblemRecorder.Instance.Snapshot();", control);
+            // The recording's file goes back to the command set, which counts
+            // it while it waits and tells a program only that it waits.
+            Assert.Contains("return result.Path;", control);
+            string recorder = OffLimitsSource.Read("PadForge.App/Services/ProblemRecorder.cs");
+            Assert.Contains("FinishFile(sink, HowSnapshot);", recorder);
+            // The file's own scrubber, the one every line of the snapshot went
+            // through, is the one the finish searches with.
+            Assert.Contains("Finish(sink.Path, sink.ZipPath, sink.Scrubber, liveNow, Capitalize(how), sink.Tested);", recorder);
         }
 
         // ── Device names in reads ──

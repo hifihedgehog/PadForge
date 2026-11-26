@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Zobraziť alebo skryť PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Zapnúť alebo vypnúť virtuálne ovládače</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Ľubovoľné pripojené zariadenie</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (nepripojené)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Zariadenie, ktoré nie je na stránke Zariadenia</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Nahráva sa…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>keď</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Čítanie</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Odosielanie vstupov</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Zmena nastavení</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programy môžu prepínať profily a uvoľňovať ich, spúšťať a zastavovať jadro, zapínať a vypínať virtuálne ovládače, zobrazovať a skrývať okno, zatvoriť PadForge, uložiť diagnostickú snímku a pýtať sa, čo beží.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programy môžu prepínať profily a uvoľňovať ich, spúšťať a zastavovať jadro, zapínať a vypínať virtuálne ovládače, zobrazovať a skrývať okno, zatvoriť PadForge, pýtať sa, čo beží, uložiť diagnostickú snímku a spustiť, zastaviť a označiť nahrávku problému.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Všetko z úrovne Príkazy a programy môžu vidieť zariadenia, virtuálne ovládače, mapovania, profily a nastavenia, sledovať vstupy každého zariadenia v reálnom čase a ukázať vám miesto v programe PadForge. Program na úrovni Čítanie vidí každý stlačený kláves na každom zariadení, vrátane klávesov písaných do okien spustených ako správca.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Všetko z úrovne Čítanie a programy môžu pridávať vlastné zariadenia a ovládať ich, držať ovládací prvok ľubovoľného zariadenia a odovzdávať pomenované hodnoty spúšťačom makier.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Všetko z úrovne Odosielanie vstupov a programy môžu meniť to, čo môžete meniť vy na jednotlivých stránkach. Niektoré zmeny sa vás vždy najprv opýtajú na otázkovej karte programu PadForge.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Čaká na vás</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivita</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Vrátiť späť</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge to nemohol uložiť: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge nemohol súbor uložiť.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge nemohol uložiť súpravu pre pluginy.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Aktivita {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Zvuky{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Ikony{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Kým je pripojený program na úrovni Čítanie alebo vyššej, vidí, čo sa stláča na každom zariadení, vrátane klávesníc.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pluginy</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Spúšťať pluginy</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} z {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (prehrávanie)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Nahrávky problémov|*.zip;*.log|Všetky súbory|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nemôže prehrať {0}. Nie je to nahrávka problému alebo neobsahuje vstup žiadneho zariadenia.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge nemôže prehrať {0}. Nie je to nahrávka problému, ktorú PadForge vie čítať.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge nemôže prehrať {0}. Obsahuje viac než {1} zariadení a Prehrávanie prehráva najviac {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge nemôže prehrať {0}. Neobsahuje vstup žiadneho zariadenia.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge nemohol prečítať {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Vaše pluginy</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Pridať plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programy a skripty|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Všetky súbory|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Zastavený po piatich neúspechoch za sebou</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nespustený: súbor chýba</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nespustený: Windows nemá program pre tento druh súboru</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nespustený: žiadny program neotvára súbory Python za vás a PadForge nenašiel spúšťač py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nespustený: PadForge nevie zistiť, ktorý program otvára tento druh súboru za vás</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nespustený: program, ktorý otvára tento druh súboru za vás, nie je na tomto počítači</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nespustený: nebeží plocha, pod ktorou by sa dal spustiť</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nespustený: plocha má práva správcu, takže by ich mal aj plugin</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nespustený: PadForge nevie zistiť, či by mal práva správcu</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nespustený: Windows mu dal práva správcu, preto ho PadForge ukončil skôr, než sa spustil</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nespustený: žiada práva správcu</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nespustený: Windows odmietol s chybou {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nespustený</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Pridané zariadenia: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Podpísal: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nepodpísaný.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Jeho nastavenia sa tu zobrazia, kým beží.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Nedeklaruje žiadne nastavenia.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Jeho nastavenia sa tu zobrazia, hneď ako sa pripojí k PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program používa verziu, ktorú PadForge nepozná</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nedal tento kľúč pluginu</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge neprijal pripojenie tohto programu</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge nevytvoril zariadenie, pretože Windows neuviedol názov súboru programu</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Opätovná žiadosť prišla príliš skoro</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Žiadne ďalšie, kým sa PadForge znova nespustí</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Príliš veľa týchto vecí, ktoré programy vytvorili, čaká na vašu kontrolu na stránke Domov</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge takýto nástroj nemá</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program čítal starší stav</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nič nemá toto ID</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Nepovolili ste to</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nikto neodpovedal včas</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Čaká sa na vašu odpoveď</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Ešte ste neodpovedali</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Taká žiadosť neexistuje</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nie je čo vrátiť späť</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Toto môžete zmeniť iba vy</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Nepodpísaný.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Na úrovni Čítanie a vyššej vidí každý stlačený kláves na každom zariadení, vrátane klávesníc.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Pýta sa raz. Môžete ho odobrať na stránke Automatizácia.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Spustil ho program, ktorý PadForge nedokázal určiť.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge nevie tento program rozlíšiť od iného, preto sa opýta znova pri jeho ďalšom pripojení.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>príkazový riadok programu PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nastaví {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Počúva v sieti, takže tento počítač môžu zastihnúť iné zariadenia.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Preniesť profil</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importujte súbor profilu z iného programu a potom si pozrite, čo sa prenieslo.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, počet: {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, posledná z {1} podobných</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Skripty AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Na tomto počítači nie je Logitech G-key SDK. Inštaluje sa spolu s Logitech Gaming Software 8.55 alebo novším.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK je zaregistrovaný, ale jeho súbor chýba. Preinštalujte Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK sa našiel, ale nedal sa načítať.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK sa našiel, ale nenačítal sa, pretože PadForge nemohol potvrdiť, že ho môžu meniť iba správcovia a že ho podpísal Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Táto knižnica nie je očakávaný G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK sa odmietol spustiť. Zvyčajne to znamená, že Logitech Gaming Software nie je spustený.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Pripojené, zatiaľ nebol zachytený žiadny kláves. V Logitech Gaming Software presuňte príkaz G-key na každý kláves v profile PadForge a nastavte tento profil ako trvalý. Myš G600 alebo G300 tiež nesmie byť v režime vstavanej pamäte.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automaticky spustí PadForge, keď sa prihlásite do systému Windows. Kým je to zapnuté, PadForge sa spustí aj bez výzvy systému Windows zo skratky, skriptu alebo iného programu.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge beží z {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Vyžaduje to program PadForge vo vlastnom priečinku. Jeho priečinok obsahuje iné súbory, takže PadForge nemôže zabrániť iným programom, aby ho menili.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Vyžaduje to program PadForge v priečinku, ktorý iné programy nemôžu meniť. PadForge im nedokázal zabrániť, aby jeho priečinok menili.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Presunúť PadForge do vlastného priečinka</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Skopíruje PadForge a jeho nastavenia do Program Files, nasmeruje tam jeho úlohy a spustí ho odtiaľ. Kópia tu zostane nezmenená.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge sa nepresunul: {0} obsahuje súbory, ktoré nepatria programu PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge sa nepresunul: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Spúšťanie po prihlásení bolo vypnuté, pretože spúšťalo PadForge z priečinka, ktorý obsahuje iné súbory.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge sa nepresunul: Windows nemá priečinok Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge sa nepresunul: nedokázal prečítať spustený PadForge.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge sa nepresunul: nedokázal vytvoriť {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge sa nepresunul: nedokázal prečítať, čo obsahuje {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge sa nepresunul: nedokázal iným programom zabrániť, aby menili {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge sa nepresunul: jeho kópia v {0} sa nezhodovala so spusteným PadForge.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge sa nepresunul: po skopírovaní {0} obsahoval súbory, ktoré nepatria programu PadForge, alebo ho mohli meniť iné programy.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Spúšťať po prihlásení sa vypol, pretože PadForge, ktorý sa spúšťal, už nie je na svojom mieste.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Spúšťať po prihlásení sa vypol, pretože PadForge nedokázal iným programom zabrániť, aby menili priečinok, z ktorého PadForge spustil.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Spúšťať po prihlásení sa vypol, pretože PadForge nedokázal prečítať, ktorý PadForge spustil.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Spúšťať po prihlásení sa vypol, pretože PadForge nedokázal prečítať priečinok programu PadForge, ktorý spustil.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nemohol vytvoriť svoj chránený priečinok {0}. PadForge v ňom uchováva knižnice, ktoré spúšťa s právami správcu, a bez neho sa nemôže bezpečne spustiť.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge sa nemohol znova spustiť zo svojho chráneného priečinka {0}. PadForge beží s právami správcu iba odtiaľ, preto sa nespustil.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge nedokázal vytvoriť zámok, ktorý drží spustenú iba jednu kópiu, preto sa nespustil.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge beží s právami správcu z priečinka {0}, ktorý môžu meniť iné programy. Môžu tam meniť nastavenia programu PadForge a PadForge ich vykonáva so svojimi právami.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge beží s právami správcu z priečinka {0}, ktorý obsahuje iné súbory. PadForge nedokáže iným programom zabrániť, aby tam menili jeho nastavenia, a vykonáva ich so svojimi právami.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge beží s právami správcu z priečinka {0}, ktorý nedokázal prečítať. PadForge nedokáže iným programom zabrániť, aby tam menili jeho nastavenia, a vykonáva ich so svojimi právami.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vždy zobrazovať v oblasti oznámení</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v oblasti oznámení zostane viditeľná aj pri otvorenom okne, takže Ukončiť v jej ponuke je vždy na jedno kliknutie.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualizácie</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Nainštalovať a reštartovať</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Poznámky k vydaniu</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Databáza ovládačov</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aktualizovať teraz stiahne komunitnú databázu ovládačov (SDL_GameControllerDB) z GitHub alebo z adresy nastavenej pod Viac a uchová v súbore nastavení mapovania, ktoré táto verzia programu PadForge nemá. Používajú sa hneď. Z inej adresy uchová iba nové mapovania. Nové mapovanie sa použije iba pre ovládač, ktorý nič iné nečíta ako gamepad, ktorý nie je priradený a ktorý nie je v režime Vynútiť surový režim joysticku (obísť premapovanie gamepadu). Reset odstráni každé stiahnuté mapovanie a stiahne ich znova z GitHub. Vaše vlastné riadky, pod Viac, zostanú.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aktualizovať teraz stiahne komunitnú databázu ovládačov (SDL_GameControllerDB) z GitHub alebo z adresy nastavenej pod Viac a uchová v súbore nastavení mapovania, ktoré táto verzia programu PadForge nemá. Používajú sa hneď. Z inej adresy uchová iba nové mapovania. Nové mapovanie sa najprv použije iba pre ovládač, ktorý SDL hlási ako gamepad alebo bez určitého typu, ktorý nič iné nečíta ako gamepad, ktorý nie je priradený a ktorý nie je v režime Vynútiť surový režim joysticku (obísť premapovanie gamepadu). Keď sa raz používa, používa sa aj po priradení ovládača. Reset odstráni stiahnuté mapovania a nastaví Stiahnuť z späť na komunitný súbor, ktorý stiahne nasledujúce Aktualizovať teraz. Vaše vlastné riadky, pod Viac, zostanú.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Aktualizovať teraz</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Aktualizuje sa…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Hľadajú sa aktualizácie…</value></data>
@@ -1126,9 +1160,12 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Vstavané: mapovania: {1}, komunitná kópia z {2}. Stiahnuté {3} z {4}: nové riadky: {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Vstavané: mapovania: {1}, komunitná kópia z {2}. Stiahnuté {3} z {4}: {0} nový riadok.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Komunitná databáza sa od poslednej aktualizácie nezmenila.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Súbor na {0} sa od poslednej aktualizácie nezmenil.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub sa nepodarilo zastihnúť: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} sa nepodarilo zastihnúť: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge odmietol stiahnutie, pretože to nie je databáza ovládačov, ktorú očakáva. Nič sa nezmenilo.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge odmietol odpoveď z GitHub. Nič sa nezmenilo.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge odmietol odpoveď z {0}. Nič sa nezmenilo.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Spúšťať minimalizované</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Spúšťať po prihlásení</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Priečinok</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Nastavenie služby</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Krok odstránenia</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Služba</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Súbor</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Horný filter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Hodnota registra</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID hardvéru</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Naplánovaná úloha</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Položka nainštalovaných aplikácií</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Zariadenie USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Umožňuje pripojiť cez Bluetooth ovládače PlayStation 3, PlayStation Move a ovládač Navigation. Je vstavaný v PadForge a nainštaluje sa pri prvom spárovaní niektorého z nich.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Pripája ovládače PlayStation 3 cez Bluetooth.</value></data>
@@ -1239,6 +1284,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Uložené: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Nahrávanie sa nespustilo. Kontrola zistila súkromnú hodnotu tohto PC, ktorá by sa do súboru nenahradila.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Nahrávanie sa nespustilo. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge nenašiel dočasný priečinok prihláseného používateľa v profile používateľa, ku ktorému vedie cesta bez odkazu, do ktorého by mohol zapísať nahrávku.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Priečinok nahrávok je odkaz na iné miesto, ktorý PadForge nenásleduje.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Posledná nahrávka sa ešte dokončuje.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Možnosť Uchovať posledných 60 sekúnd je vypnutá, takže nie je čo uložiť.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Nahrávka, ktorú PadForge nezastavil, čaká, kým si ju prečítate na stránke Domov: {0}</value></data>
@@ -1252,7 +1299,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, vaše zariadenia a nastavenia, ako sú teraz, cez rovnakú kontrolu.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>Súbor diagnostics.log vedľa PadForge.exe, ktorý si tam môžete prečítať.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Čo nahrávať</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Všetko zapnuté. Vypnutá časť sa z ďalšej nahrávky vynechá a súbor uvádza, ktoré časti obsahuje.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Každá časť je predvolene zapnutá. Vypnutá časť sa z ďalšej nahrávky vynechá a súbor uvádza, ktoré časti obsahuje.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Pre problém, ktorý sa objaví raz za večer.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Nahrávka čaká, kým si ju prečítate na stránke Domov.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Zhrnutie</value></data>
@@ -1303,6 +1350,17 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Uložiť nahrávku</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Súbory zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Neuložené. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} kB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Kontrola vyčistenia: kontrolujú sa časti, ktoré ponechávate…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Kontrola vyčistenia: PadForge nedokázal prečítať časti, ktoré ponechávate, takže Uložiť zostane vypnuté.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Uloženie s vašimi právami sa nespustilo.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Uloženie s vašimi právami sa nespustilo: nebeží žiadna plocha, pod ktorou by sa mohlo spustiť.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Uloženie s vašimi právami sa nespustilo: Windows odmietol s chybou {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Uloženie sa neskončilo do {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows nedovolil zapísať súbor na toto miesto.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge nepovažoval tento súbor za vlastnú nahrávku.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Uloženie skončilo s kódom {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Uložené s vašimi právami, prvýkrát do priečinka Stiahnuté súbory, potom tam, kam ste naposledy ukladali, a zobrazené v Prieskumníkovi. Nahrávka, ktorá sa zastaví, kým nikto nie je na stránke (limit, makro, program, nástroj asistenta alebo --record stop), čaká na túto kontrolu na stránke Domov a po 7 dňoch sa odstráni, ak sa neuloží. Program sa dozvie, že čaká, nikdy nie kde.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Nahrávka problému z {0} čaká, kým si ju prečítate.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Skontrolovať</value></data>
@@ -1653,6 +1711,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Nový ovládač</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Nastavenia</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Každá os, tlačidlo a senzor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Jeho ovládacie prvky s názvami, ktoré používajú skripty</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Stlačené: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, cesta, schopnosti, Vynútiť surový režim joysticku</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, cesta, schopnosti</value></data>
@@ -2154,9 +2213,18 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Čítanie zlyhalo: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro odmietol túto predvoľbu na pozícii {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Táto predvoľba nemá deskriptor HID, preto sa z nej nedá vytvoriť ovládač.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge nemohol skontrolovať túto predvoľbu: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Kontroluje sa predvoľba…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nič sa neimportovalo. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importovať</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(nepomenované zariadenie HID)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Myš</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Klávesnica</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Viacosový ovládač</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Počet nájdených rozhraní HID: {0}.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Počet nájdených rozhraní HID: 1.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumerácia zlyhala: {0}</value></data>
@@ -3288,7 +3356,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Počas podržania a vycentrovať</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Prepínanie</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Vstup riadenia</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Tlačidlo, ktoré myši dovolí riadiť, na rovnakom zariadení ako zdroj. Ak nie je vybrané žiadne, myš riadi vždy.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Tlačidlo, ktoré myši dovolí riadiť, na ktoromkoľvek zariadení tohto slotu. Ak nie je vybrané žiadne, myš riadi vždy.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Vyhladzovanie</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Vyrovnáva myš, ktorá hlási nerovnomerne. Páčka zaostáva za rukou približne o túto dobu. 0 je vypnuté.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Doraz pri rýchlosti</value></data>
@@ -3309,7 +3377,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Začať tam, kde sa riadenie začalo</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Pri Vstupe riadenia sa páčka meria od miesta, kde bol ukazovateľ na začiatku riadenia, tak ako páčka na obrazovke telefónu začína tam, kde pristane prst. Vypnuté, meria sa od stredu monitora ukazovateľa.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Táto os sa pohybuje relatívne</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pre trackball alebo spinner, ktorý hlási, ako ďaleko sa otočil. Zapnuté, os drží polohu tak, ako to robí Dráha myši, a preberá nastavenia dráhy. Windows nehovorí, ktoré osi sa takto pohybujú.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pre trackball alebo spinner, ktorý hlási, ako ďaleko sa otočil. Zapnuté, os drží polohu tak, ako to robí Dráha myši, a preberá nastavenia dráhy. SDL číta všeobecný ovládač cez DirectInput, ktorý číta každú os ako polohu, preto toto nastavenie určuje, ktoré osi sa takto pohybujú.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Ukážka</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ukáže, ako táto rodina sleduje vašu myš. Nič sa nenamapuje, kým ju nevyberiete.</value></data>
@@ -3502,6 +3570,13 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
 {0}
 
 PadForge zapísal podrobnosti do súboru crash.log vedľa súboru PadForge.exe. Ak to chcete nahlásiť, založte diskusiu na {2} a pustite naň crash.log.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Vyskytla sa neočakávaná chyba:
+
+{0}
+
+PadForge nemohol zapísať podrobnosti do súboru crash.log vedľa súboru PadForge.exe. Ak to chcete nahlásiť, založte diskusiu na {2}, stlačením Ctrl+C tu skopírujte túto správu a vložte ju tam.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(potlačené ďalšie chyby: {0})</value></data>
@@ -4430,7 +4505,7 @@ PadForge zapísal podrobnosti do súboru crash.log vedľa súboru PadForge.exe. 
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Dekompresia Zstandard, ktorú SteamKit2 používa pre časti depotov Steamu, port knižnice zstd do C# od autora Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Server a klient Model Context Protocol za pripojením asistenta a PadForge.exe --mcp, od Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Server a klient Model Context Protocol za pripojením asistenta a PadForge.exe --mcp, od Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions a DependencyInjection.Abstractions, na ktorých je postavený MCP C# SDK, od Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>priraďuje sa WinUSB k obrazovke G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>obrazovka G19 používa iný ovládač ({0}), preto spustite Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>obrazovka G19 používa ovládač iného programu ({0}), ktorý PadForge nechá bez zmeny</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Kontrolujú sa ovládače PlayStation Bluetooth programu PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Číta sa rádio Bluetooth tohto počítača…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Otvára sa ovládač na kábli USB…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Zapisuje sa adresa Bluetooth tohto počítača do ovládača…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Ovládač sa registruje v Bluetooth systému Windows…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Reštartuje sa Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Párovanie sa zastavilo: Windows odmietol programu PadForge prístup k ovládaču alebo k nastaveniam Bluetooth. Podrobnosti má denník diagnostiky.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Párovanie sa zastavilo: čítanie alebo zápis do ovládača alebo rádia Bluetooth zlyhal. Podrobnosti má denník diagnostiky.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Párovanie sa zastavilo na chybe, ktorú PadForge nečakal. Podrobnosti má denník diagnostiky.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>vyžaduje Logitech Gaming Software 8.52 alebo novší</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>našiel svoju knižnicu a nenačítal ju, pretože PadForge nemohol potvrdiť, že ju môžu meniť iba správcovia a že ju podpísal Logitech</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>našiel svoju knižnicu a nemohol ju použiť, dôvod uvádza denník diagnostiky</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>spustite Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>čaká sa na telefón s Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>na telefóne</value></data>
@@ -5938,6 +6024,8 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Vybrať dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Namiesto všetkých ostatných načíta túto kópiu knižnice Force Dimension. Falcon otvorený na inej kópii sa zatvorí a znova otvorí na tejto. Kópie, ktoré nainštaluje SDK, sa nájdu aj bez toho.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Knižnice (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Stránka na stiahnutie Falcon SDK sa neotvorila: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Stránka na stiahnutie Falcon SDK sa ešte neotvorila: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Nainštalovať ovládač Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Nainštaluje ovládač Force Dimension z priečinka SDK na zariadenie Falcon, ktoré žiadny nemá. Windows sa môže najprv opýtať, či dôverujete Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Získať Force Dimension SDK</value></data>
@@ -6604,12 +6692,17 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Odoberá sa…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Aktualizuje sa…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nedokončilo sa: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Položka a skill programu PadForge zostávajú, pretože {0} číta rovnaký súbor nastavení a priečinok skillov.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Položka programu PadForge zostáva, pretože {0} číta rovnaký súbor nastavení.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge je z tohto programu odstránený. Jeho skill zostáva, pretože {0} číta skilly z rovnakého priečinka.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nedokáže prečítať nastavenia v {0}, preto nevie, či je PadForge pridaný.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Pridané. PadForge nedokázal prečítať svoj priečinok skillov.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Iní asistenti</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Pre asistenta, ktorý nie je uvedený vyššie: Kopírovať nastavenia dá záznam pre jeho nastavenia MCP a Kopírovať správu dá krátky text pre akýkoľvek chat, ktorý povie, ako sa pripojiť a na čo sa opýtať ako prvé.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Kopírovať nastavenia</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Kopírovať správu</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Skopírované.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Neskopírované: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Neskopírované. Windows nedovolil programu PadForge použiť schránku.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Pripojte sa k programu PadForge, mapovaču ovládačov na mojom počítači. Je to lokálny server MCP, ktorý beží cez stdio: príkaz je {0} s argumentom --mcp. Ako nastavenia JSON: {1} Po pripojení najprv zavolajte jeho nástroj status, potom sa ma opýtajte, čo chcem nastaviť, napríklad: „Ukáž mi, kde namapovať spúšte môjho ovládača.“</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Automatizácia programu PadForge je teraz vypnutá: najprv ju zapnite v programe PadForge v časti Doplnky, Automatizácia.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Povolené programy</value></data>
@@ -6630,6 +6723,8 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge ho číta surovo, takže mapovanie SDL sa nepoužíva.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, rozložený ako gamepad vaším riadkom.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL číta zariadenia, kým beží jadro.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Zariadenie nie je pripojené. SDL ho prečíta, hneď ako bude.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nedal programu PadForge žiadne údaje o tomto zariadení.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Vstavaná komunitná kópia, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Stiahnuté {0}</value></data>
@@ -6667,6 +6762,11 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, prepínače a ďalšie akcie</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} a {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nie je čo kopírovať: SDL nemá pre toto zariadenie mapovanie a zariadenie nie je na žiadnom ovládači.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Nie je čo kopírovať: PadForge nevie prečítať mapovanie SDL pre toto zariadenie a žiadny riadok jeho ovládačov nedáva väzbu, ktorú forma SDL prijíma.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Nie je čo kopírovať: SDL nemá pre toto zariadenie mapovanie a žiadny riadok ovládača {0} nečíta jeho tlačidlá, osi ani hlavice spôsobom, ktorý forma SDL prijíma.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Nie je čo kopírovať: SDL nemá pre toto zariadenie mapovanie a riadky ovládača {0} ho čítajú iba pre {1}, čo forma SDL nedokáže uložiť.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Nie je čo kopírovať: PadForge teraz nevie prečítať mapovanie SDL pre toto zariadenie a zariadenie nie je na žiadnom ovládači.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Nie je čo kopírovať: PadForge teraz nevie prečítať mapovanie SDL pre toto zariadenie a žiadny riadok ovládača {0} nedáva väzbu, ktorú forma SDL prijíma.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Schránku používa iný program. Nič sa neskopírovalo.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Váš riadok je odstránený. Zariadenie sa číta tak, ako pred ním.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Namapované znova z rozloženia SDL: {0}.</value></data>
@@ -6687,6 +6787,8 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Riadky, ktoré PadForge obsahuje</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Nezodpovedá žiadny riadok.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Vybraný riadok sa použije pre {0} pod jeho vlastným ID, cez tú istú kontrolu a rovnakú voľbu ako pri Vložiť.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Jadro je zastavené, preto zoznam vynecháva riadky, ktoré drží SDL, jeho vlastné aj vstavanú komunitnú kópiu. Zobrazia sa, keď jadro beží.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL neodpovedal včas, preto zoznam vynecháva riadky, ktoré drží, jeho vlastné aj vstavanú komunitnú kópiu.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Riadok mapovania SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Riadok pre toto zariadenie.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Odhadnuté rozloženie.</value></data>
@@ -6699,14 +6801,17 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} pole, od rovnakého výrobcu a produktu na inej zbernici alebo vo verzii. Ponechá sa pod vlastným ID tohto zariadenia.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} pole, riadok iného zariadenia. Ponechá sa pod vlastným ID tohto zariadenia.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} pole. SDL toto zariadenie nečíta, preto PadForge rozloží jeho vstupy podľa riadku.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge nemá pre tieto polia obyčajné tlačidlo ani os a vynecháva ich: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} pole, z osí, tlačidiel a hatov zariadenia. Skontrolujte ho v Test vstupov a potom ho ponechajte alebo tu zmeňte.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Toto mení spôsob čítania zariadenia {0}. Jeho riadky v {1} sa namapujú znova z nového rozloženia.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Toto mení spôsob čítania zariadenia {0}. Nie je na žiadnom ovládači, takže sa žiadne riadky nemenia.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Skratky profilu, ktoré čítajú {0}, ponechajú vstupy, na ktoré boli nastavené.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Riadok sa ponechá ako váš v PadForge.xml a pre toto zariadenie má prednosť pred každým iným zdrojom. Odstrániť moje vráti starý riadok a staré riadky.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Riadky sa ponechajú ako vaše v PadForge.xml a pre svoje zariadenia majú prednosť pred každým iným zdrojom. Vymazať, pod Viac na riadku Databáza ovládačov, ich odstráni.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Riadky pre Windows: {0}. Riadky pre iné systémy, ktoré sa vynechajú: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} riadok pre Windows. Riadky pre iné systémy, ktoré sa vynechajú: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Riadky pre Windows: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} riadok pre Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Riadky pre iné systémy, ktoré sa vynechali: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} riadok pre iný systém sa vynechal.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Pridajú sa všetky ({0:N0}). PadForge uchováva najviac vašich riadkov: {1:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Pridá sa. PadForge uchováva najviac vašich riadkov: {1:N0}.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Vašich riadkov je teraz uložených: {0:N0}, preto sa pridá z týchto riadkov: {1:N0} a nepridá sa: {2:N0}.</value></data>
@@ -6716,7 +6821,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Text nie je riadok databázy ovládačov SDL: ID s 32 hexadecimálnymi číslicami, názov a potom polia ako a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Riadky sú pre iné systémy. PadForge číta riadky pre Windows alebo pre žiadny konkrétny systém.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID riadka nie je ID zariadenia. Potrebuje 32 hexadecimálnych číslic.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Názov riadka je prázdny, má viac ako 128 znakov alebo obsahuje znak, ktorý SDL číta ako pole.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Názov riadku je prázdny, dlhší než 128 znakov, obsahuje značku poľa, ktorú SDL číta, napríklad „type:“, alebo obsahuje iný znak než písmená, číslice, interpunkciu, symboly a obyčajnú medzeru.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Riadok obsahuje nápovedu alebo pole Android, ktoré PadForge neberie.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Riadok má pole, ktoré SDL nepozná.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Väzba nie je vo formáte SDL, napríklad b3, a2, +a2, a2~ alebo h0.4.</value></data>
@@ -6727,8 +6832,8 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Vaše riadky</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Riadky, ktoré tu pridáte alebo vložíte na karte Mapovanie SDL zariadenia, majú pre svoje zariadenia prednosť pred každým iným zdrojom a pretrvajú aj po resete.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Pridať riadky zo súboru alebo schránky…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Riadky: {0}, zariadenia: {0}, vaše pred každým iným zdrojom.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} riadok pre {0} zariadenie, váš pred každým iným zdrojom.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Riadky: {0:N0}, vaše majú prednosť pred každým iným zdrojom.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} riadok, váš má prednosť pred každým iným zdrojom.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Zatiaľ žiadne.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Vaša premenná SDL_GAMECONTROLLERCONFIG obsahuje riadky, ktoré PadForge neuchováva: {0}. Pridať riadky zo súboru alebo schránky sa otvorí s nimi.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Vaša premenná SDL_GAMECONTROLLERCONFIG obsahuje {0} riadok, ktorý PadForge neuchováva. Pridať riadky zo súboru alebo schránky sa otvorí s ním.</value></data>
@@ -6738,7 +6843,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Zmeniť…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Použiť komunitný súbor</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adresa</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge prijme adresu, ktorá začína https:// a obsahuje názov hostiteľa, na predvolenom porte, bez používateľského mena a hesla.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge prijme adresu s najviac 2 048 znakmi, ktorá začína https:// a uvádza hostiteľa, na predvolenom porte, bez používateľského mena, hesla alebo časti za #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Prístup k PadForge z webu</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Asistent, ktorý beží na webovej stránke, sa dostane k PadForge cez tunelovací program na tomto počítači. Zapnutie sa vás najprv opýta.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Sprístupniť PadForge z webu?</value></data>
@@ -6755,7 +6860,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Zastavený. Jeho posledné slová: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nepodarilo sa ho spustiť.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Už nie je v tomto počítači.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>V tomto počítači sa nenašiel žiadny tunelovací program. PadForge funguje s cloudflared, devtunnel, ngrok a Tailscale Funnel alebo s adresou vášho vlastného tunela.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge nenašiel na tomto počítači žiadny z programov cloudflared, devtunnel, ngrok ani Tailscale Funnel. Vyberte ChatGPT Secure MCP Tunnel, ktorý PadForge stiahne, alebo zadajte adresu vlastného tunela.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Vyberte tunel, aby PadForge dostal verejnú adresu.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Ďalšie v tomto počítači: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ktorého adresa zostáva rovnaká</value></data>
@@ -6763,7 +6868,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Spustite vlastný tunel na http://127.0.0.1:{0} a vložte jeho adresu https. Pomenovaný tunel Cloudflare, trvalý vývojový tunel, Tailscale Funnel a vlastná doména ngrok si adresu ponechajú.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Vložte adresu https bez cesty okrem /mcp, tak ako ju dáva váš tunel.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Spúšťa sa webový pomocník programu PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Webový pomocník programu PadForge sa zastavil ({0}). Vypnutím a zapnutím Prístupu k PadForge z webu ho spustíte znova.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Webový pomocník programu PadForge sa zastavil ({0}). PadForge sa ho stále snaží spustiť.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adresa</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Zatiaľ žiadna verejná adresa.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Pridať do Claude</value></data>
@@ -6802,11 +6907,6 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>skončil s kódom {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatizácia je vypnutá, takže žiadny webový asistent sa nedostane k programu PadForge. Webový pomocník sa spustí, keď je Automatizácia zapnutá.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Kontroluje sa…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Nenainštalované.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Nainštalované a aktuálne. Skript začína {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Nainštalované pre {0} a aktuálne. Skript začína {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Nainštalované. Tento PadForge má novšiu kópiu.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Nainštalované pre {0}. Tento PadForge má novšiu kópiu.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Inštaluje sa…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge to nemohol skontrolovať: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Nainštalovať dá knižnicu programu PadForge tam, kde ju daný jazyk nájde. Skript, ktorý ju načíta, číta zariadenia a ovláda mapovania na úrovni uvedenej vyššie.</value></data>
@@ -6814,8 +6914,27 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Nainštalované kópie</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Odobrať všetko</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Odobrané.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Knižnica programu PadForge je nainštalovaná pre {0} a aktuálna. Skript začína riadkom {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Knižnica programu PadForge pre {0} sa líši od kópie v tomto PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Knižnica programu PadForge nie je nainštalovaná pre {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>Knižnica programu PadForge je aktuálna pre {0}. Kópia pre {1} sa líši od kópie v tomto PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>Knižnica programu PadForge je aktuálna pre {0} a nie je nainštalovaná pre {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>Knižnica programu PadForge pre {0} sa líši od kópie v tomto PadForge a pre {1} nie je nainštalovaná.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>Knižnica programu PadForge je aktuálna pre {0}. Kópia pre {1} sa líši od kópie v tomto PadForge a pre {2} nie je nainštalovaná.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ho nespustil s vašimi právami.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Neskončilo sa do {0} s.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Skončilo s kódom {0} a nedalo dôvod.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nedokáže prečítať nastavenia v {0}, preto súbor nechal tak, ako je.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge nezapísal {0}, preto to nechal tak, ako je.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows pre vás nemá priečinok Dokumenty.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge nenašiel váš priečinok pre {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Vlastný príkaz programu {0} skončil s kódom {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Príkaz programu {0} nie je na tomto počítači.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows nedovolil programu PadForge čítať alebo zapisovať súbor, ktorý potrebuje.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge nenašiel Python: žiadny nie je zaregistrovaný, nainštalovaný z Microsoft Store, uvedený spúšťačom py ani v PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Žiadny Python, ktorý PadForge našiel, neodpovedal do {0} s.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Spustenie nedalo dôvod, ktorý PadForge pozná.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID skriptu</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Jeho ID skriptu</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skripty pomenúvajú jeho ovládacie prvky {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skripty pomenúvajú jeho klávesy KeyA, KeySpace, KeyLeftShift a podobne a každý kláves jeho kódom, Vk0 až Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} v tejto sieti z adresy {1}</value></data>
@@ -6827,11 +6946,11 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Pomocník programu PadForge, ktorý beží bez práv správcu, počúva na sieťových adresách tohto počítača a PadForge pustí jeho port dnu iba v súkromných sieťach. Asistent na inom počítači sa dostane dnu iba s kľúčom, ktorý tu vytvoríte. Volania a ich kľúč prechádzajú sieťou nešifrované.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Zmeniť…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Volania a ich kľúč prechádzajú touto sieťou nešifrované. Windows ich pustí dnu iba v súkromných sieťach.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Volania a ich kľúč prechádzajú touto sieťou nešifrované. Pravidlo Brány firewall systému Windows, ktoré PadForge pre tento port vytvára, uvádza iba súkromné siete.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} používa iný program. Zmeňte ho, aby ste sa k PadForge dostali z tejto siete.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows nedovolil pomocníkovi programu PadForge počúvať na porte {0}. PadForge to povolí s právami správcu, preto ho spustite s nimi a vypnite a zapnite toto nastavenie.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows nedrží pre pomocníka programu PadForge žiadnu rezerváciu na porte {0}. Vypnite toto nastavenie a zapnite ho a PadForge ju vytvorí znova.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Pomocník programu PadForge nemohol počúvať na porte {0}. Zmeňte port alebo toto nastavenie vypnite a zapnite.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Pomocník programu PadForge sa zastavil ({0}). Vypnutím a zapnutím Prístupu k PadForge z tejto siete ho spustíte znova.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Pomocník programu PadForge sa zastavil ({0}). PadForge sa ho stále snaží spustiť.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatizácia je vypnutá, takže žiadny asistent v tejto sieti sa nedostane k PadForge. Pomocník sa spustí, keď je Automatizácia zapnutá.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Tento počítač teraz nemá adresu v súkromnej sieti.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Asistenti v tejto sieti</value></data>
@@ -6875,11 +6994,12 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Vybrať zariadenia</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} smie ovládať vlastné zariadenia a tie, ktoré zaškrtnete. Stále číta každé zariadenie.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Na stránke Zariadenia nie sú žiadne zariadenia.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Beží, s vašimi právami, a je pripravený. ChatGPT sa dostane k PadForge cez tento tunel bez vlastného prihlásenia a iba z vašej organizácie OpenAI. Spustí sa znova spolu s PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Beží, s vašimi právami. Čaká, kým OpenAI oznámi, že tunel je pripravený.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Beží s vašimi právami a tunnel-client hlási, že je pripravený. Spustí sa znova spolu s programom PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Beží s vašimi právami. tunnel-client teraz nehlási, že je pripravený.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Sťahuje sa tunnel-client od OpenAI a kontroluje sa podľa súm SHA-256 jeho vydania.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client sa nepodarilo stiahnuť: {0}. Vyberte tunel znova a skúste to ešte raz.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Nižšie vložte runtime kľúč a ID tunela a tunel sa spustí.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>Program tunnel-client od OpenAI ešte nie je na tomto počítači. Vyberte tunel znova a stiahne sa.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Runtime kľúč</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Obmedzený, s oprávneniami Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Vytvoriť</value></data>
@@ -6888,6 +7008,8 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Otvoriť ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge uchováva kľúč zašifrovaný iba pre vás. Prázdne pole ho zabudne. ChatGPT pracuje na úrovni uvedenej vyššie.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Kľúč sa neuchoval: webový pomocník programu PadForge nebeží a iba on dokáže kľúč pre vás zašifrovať.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Kľúč sa neuchoval: webový pomocník programu PadForge skončil skôr, než kľúč zašifroval. Vložte ho znova.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Kľúč sa neuchoval: Windows ho pre vás nedokázal zašifrovať. Vložte ho znova.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Odpovedať z iného zariadenia</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Odpovedajte na otázky programu PadForge z telefónu alebo iného počítača, keď nie ste pri tomto.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Funguje iba v tejto sieti, cez adresu webového ovládača.</value></data>
@@ -6905,9 +7027,10 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Kód funguje raz, do {0}. Päť nesprávnych pokusov ho zatvorí a kód QR stále funguje.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Spúšťa sa adresa webového ovládača…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Stránka sa nedá otvoriť: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Tento počítač nemá adresu v súkromnej sieti.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows nechcel toto okno skryť pred snímaním obrazovky, preto sa nezobrazí žiadny kód.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Zadaný kód je po piatich nesprávnych pokusoch zatvorený. Kód QR stále funguje do {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Platnosť kódu vypršala. Spárovať zariadenie… vytvorí nový.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Platnosť kódu vypršala. Spárovať zariadenie vytvorí nový.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge uchováva najviac {0} sieťový kľúč. Najprv ho odvolajte.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Farby sa posielajú priamo do zariadenia {0}. Meniace sa farby, napríklad cyklus farieb alebo farby reagujúce na zvuk, sa k nemu nedostanú. Farba, ktorá sa nemení, áno.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Všetky súbory (*.*)|*.*</value></data>

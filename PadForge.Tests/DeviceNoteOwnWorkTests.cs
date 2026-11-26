@@ -69,6 +69,8 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("PadForge.App/Common/Input/InputManager.Step5.VirtualDevices.cs", "private IVirtualController CreateVirtualController(",
             "if (hid) PadForge.Engine.OwnDrops.Begin();", "vc.Connect();")]
+        [InlineData("PadForge.App/Common/Input/InputManager.OnScreenKeyboard.Output.cs", "private void CreateMenuKeyboard(OskMenuKeyboard rec)",
+            "if (hid) PadForge.Engine.OwnDrops.Begin();", "vc.Connect();")]
         [InlineData("PadForge.App/Common/Input/InputManager.cs", "public void RescanWiiControllers()",
             "PadForge.Engine.OwnDrops.Every();", "SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, \"0\");")]
         [InlineData("PadForge.App/Common/Input/InputManager.cs", "private static bool WriteFlydigiHintUnderJoystickLock(string value)",
@@ -98,9 +100,9 @@ namespace PadForge.Tests
         [InlineData("PadForge.App/Services/Ds3DriverInstaller.cs", "internal static void RestartOffRadio(Action<string> log)",
             "PadForge.Engine.OwnDrops.Settle();", "radio.ToUsbPnPDevice().CyclePort();")]
         [InlineData("PadForge.App/Services/VendorUsbDriverInstaller.cs", "internal static bool Bind(BindPlan plan,",
-            "PadForge.Engine.OwnDrops.Settle();", "bool xusb = plan.Driver == BindDriver.Xusb22;")]
+            "PadForge.Engine.OwnDrops.Settle();", "string dir = StagingDirectory(")]
         [InlineData("PadForge.App/Services/VendorUsbDriverInstaller.cs", "internal static bool Restore(string instanceId,",
-            "PadForge.Engine.OwnDrops.Settle();", "bool present = ServiceOf(instanceId) != null;")]
+            "PadForge.Engine.OwnDrops.Settle();", "using var letGo = LetGoOf(instanceId);")]
         public void EachOwnCause_StampsBeforeItsDrop(string file, string from, string stamp, string drop)
         {
             string source = ExtrasPageTests.RepoText(file.Split('/')).Replace("\r", "");
@@ -111,9 +113,10 @@ namespace PadForge.Tests
             int stampAt = source.IndexOf(stamp, at, StringComparison.Ordinal);
             Assert.True(stampAt > at && stampAt < dropAt, stamp + " does not come before " + drop + " in " + file);
             // Work that lasts is stamped again when it ends: an HIDMaestro
-            // bring-up takes seconds, and a collection comes back at its
-            // enable.
-            bool lasts = file.EndsWith("VirtualDevices.cs", StringComparison.Ordinal);
+            // bring-up, a slot's or a keyboard menu's, takes seconds, and a
+            // collection comes back at its enable.
+            bool lasts = file.EndsWith("VirtualDevices.cs", StringComparison.Ordinal)
+                || file.EndsWith("OnScreenKeyboard.Output.cs", StringComparison.Ordinal);
             string ends = lasts ? drop
                 : file.EndsWith("TabletNative.cs", StringComparison.Ordinal) ? "CM_Enable_DevNode(node, 0);" : null;
             if (ends != null)
@@ -129,6 +132,30 @@ namespace PadForge.Tests
                 int asked = source.IndexOf(fence, at, StringComparison.Ordinal);
                 if (asked > 0 && asked < dropAt) Assert.True(asked < stampAt, "the stamp comes before the fence in " + from);
             }
+        }
+
+        /// <summary>A create stamps every row only when its controller
+        /// brings up a HID device, whose arrival runs xinputhid's slot pass:
+        /// a HIDMaestro controller, or a Keyboard + Mouse slot on a virtual
+        /// keyboard or mouse. A VR controller registers SteamVR's driver and
+        /// a Keyboard + Mouse slot on Windows input makes no device, so a
+        /// real controller that drops beside either one gets its note.</summary>
+        [Fact]
+        public void OnlyACreateThatBringsUpAHidDevice_CountsAsOwnWork()
+        {
+            const System.Reflection.BindingFlags Private = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+            T Bare<T>() => (T)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(T));
+            var hm = Bare<HMaestroVirtualController>();
+            typeof(HMaestroVirtualController).GetField("_type", Private)!.SetValue(hm, VirtualControllerType.Extended);
+            var kbmDevice = Bare<KeyboardMouseVirtualController>();
+            typeof(KeyboardMouseVirtualController).GetField("_keyboardProfile", Private)!.SetValue(kbmDevice,
+                new HIDMaestro.HMProfileBuilder().Id("own-work-keyboard").Vid(0xCAFE).Pid(2).Build());
+
+            Assert.True(InputManager.BringsUpHidDevice(hm));
+            Assert.True(InputManager.BringsUpHidDevice(kbmDevice));
+            Assert.False(InputManager.BringsUpHidDevice(Bare<HMaestroVRController>()));
+            Assert.False(InputManager.BringsUpHidDevice(Bare<KeyboardMouseVirtualController>()));
+            Assert.False(InputManager.BringsUpHidDevice(Bare<MidiVirtualController>()));
         }
 
         // ── the census ─────────────────────────────────────────────────

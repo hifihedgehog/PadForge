@@ -1,7 +1,7 @@
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// How much outside programs may do while Automation is on (#597). Each
+    /// How much outside programs may do while Automation is on (#600). Each
     /// level allows what the ones before it allow.
     ///
     /// <para>Saved by its number in PadForge.xml. A member keeps its number

@@ -39,7 +39,7 @@ Every row is 64 pixels tall, a keyboard's and a mouse's as a controller's, with 
 | Part | Description |
 |------|-------------|
 | **Kind tile** | The device's kind on a square tile, lit while the device is sending input. |
-| **Name and type** | The name the hardware reports (such as "Xbox Wireless Controller"), and under it the type: Gamepad, Joystick, Wheel, Flight Stick, First Person, Supplemental, Mouse, Keyboard, Touchpad, Drawing Tablet, NFC Reader, Consumer Control, MIDI Controller, Microphone, Headset Tracker, Handheld Buttons, System Motion, Head Tracker, VR Controller, Logitech G-Keys, Keyboard Screen, Novint Falcon, Analog Keyboard, Web Menus, Game Telemetry, Twitch Chat, Haptics, Lighting, or Device for anything unclassified. Merged rows read "All Keyboards (Merged)", "All Mice (Merged)", "All Touchpads (Merged)" or "All Consumer Controls (Merged)". |
+| **Name and type** | The name the hardware reports (such as "Xbox Wireless Controller"), and under it the type: Gamepad, Joystick, Wheel, Flight Stick, First Person, Supplemental, Mouse, Keyboard, Touchpad, Drawing Tablet, NFC Reader, Consumer Control, MIDI Controller, Microphone, Headset Tracker, Handheld Buttons, System Motion, Head Tracker, VR Controller, Logitech G-Keys, Keyboard Screen, Novint Falcon, Analog Keyboard, Web Menus, Game Telemetry, Twitch Chat, Haptics, Lighting, Program, or Device for anything unclassified. Merged rows read "All Keyboards (Merged)", "All Mice (Merged)", "All Touchpads (Merged)" or "All Consumer Controls (Merged)". |
 | **Link** | Bluetooth, USB, PS/2 or I2C, where PadForge knows it. A wireless receiver reads USB. A virtual device has none. |
 | **Battery** | A meter and the percentage for a connected device that reports a battery level, in gold with the word **Low** at or under the low level set in [Settings](settings.md). The meter shows a charging mark while the device charges. |
 | **Used By** | A pill for each virtual controller that uses the device, with the type's mark and its number within the type, such as `Xbox #1`. Ember means the device is in use now. On a device that is not connected the pill is steel. A connected game controller that nothing uses shows **Use It** in its place while a controller can still be added. It opens Add a Controller, and the controller made there takes the device. |
@@ -65,7 +65,7 @@ If the device is still plugged in, it comes back on the next scan as a fresh dev
 
 The panel opens with the device's picture on a stage, its name as a large heading and its type under it. **Test Rumble** rumbles the device so you can tell which one it is. Tiles for **Link** and **Battery** follow where the device has one to show, and the battery's tile has a gold edge while the charge is low.
 
-Lines about the device stand under the name when they apply: a Bliss-Box port's player number, controller and firmware, what draws a keyboard screen, how a Novint Falcon runs, a Razer analog keyboard waiting for Razer Synapse, a handheld's own tool still reacting to its buttons, the Flydigi Space Station service, the Head Tracker's, Game Telemetry's and Twitch Chat's status, and what a game mod sets on the controller.
+Lines about the device stand under the name when they apply: a Bliss-Box port's player number, controller and firmware, **Added by** and the plugin's name on a device a plugin added, what draws a keyboard screen, how a Novint Falcon runs, a Razer analog keyboard waiting for Razer Synapse, a handheld's own tool still reacting to its buttons, the Flydigi Space Station service, the Head Tracker's, Game Telemetry's and Twitch Chat's status, and what a game mod sets on the controller.
 
 ### Used By
 
@@ -130,7 +130,7 @@ PadForge reads the version again every five seconds, so one the pad reports afte
 
 ### Submit Device Mapping button
 
-Shows in the **Details** card for any device PadForge does not already recognize. It is hidden for known gamepads, keyboards, mice, touchpads, drawing tablets, MIDI devices, NFC readers, headset motion trackers, Consumer Control devices, microphones, analog keyboards, Web Menus phones, Novint Falcons, and the Hidden Buttons, System Motion, Head Tracker, VR Controller, Logitech G-Keys, keyboard screen, Game Telemetry, Twitch Chat, Lighting and Haptics rows. Everything else gets the button, so joysticks, wheels, flight sticks and unclassified HID devices all qualify.
+Shows in the **Details** card for any device PadForge does not already recognize. It is hidden for known gamepads, keyboards, mice, touchpads, drawing tablets, MIDI devices, NFC readers, headset motion trackers, Consumer Control devices, microphones, analog keyboards, Web Menus phones, Novint Falcons, and the Hidden Buttons, System Motion, Head Tracker, VR Controller, Logitech G-Keys, keyboard screen, Game Telemetry, Twitch Chat, Lighting and Haptics rows, and every device a script, an assistant, a plugin, the Test Controller or a replay adds. Everything else gets the button, so joysticks, wheels, flight sticks and unclassified HID devices all qualify.
 
 Click it. Your browser opens a GitHub issue pre-filled with every field PadForge can read from the device:
 
@@ -400,7 +400,7 @@ A phone that opens the web controller's [Web Menus](../guides/web-controller.md#
 
 ## Machine and tracker rows
 
-Seven rows on this page come from the PC itself or from a program on it, not from a plugged-in device. Each has no HID path, so the hiding rows and Force Raw Joystick Mode are left out of its panel, and none of them offers **Submit Device Mapping**.
+Eight rows on this page come from the PC itself or from a program on it, not from a plugged-in device. Each has no HID path, so the hiding rows and Force Raw Joystick Mode are left out of its panel, and none of them offers **Submit Device Mapping**.
 
 | Row | Type | Where it is turned on | What it carries |
 |-----|------|----------------------|-----------------|
@@ -411,6 +411,7 @@ Seven rows on this page come from the PC itself or from a program on it, not fro
 | **Logitech G-Keys** | Logitech G-Keys | **Read Logitech G-Keys** in [Settings](settings.md) | The G-keys and extra mouse buttons on Logitech gaming gear, read through the vendor SDK. See [Logitech G-Keys](https://padforge.org/docs/features/logitech-g-keys/). |
 | **Logitech G15 Screen**, **Logitech G19 Screen**, **Logitech Arx Control**, **Mad Catz S.T.R.I.K.E. 7 Screen** and the like | Keyboard Screen | **Drive Keyboard Screens** in [Settings](settings.md) | One row per screen: the keys beside it, five on a monochrome screen and eight on a G19, none on Arx Control or the S.T.R.I.K.E. 7, and the button that sets what it shows. See [Keyboard Screens](https://padforge.org/docs/features/keyboard-screens/). |
 | **Novint Falcon** | Novint Falcon | **Drive Novint Falcon** in [Settings](settings.md) | The handle's Left/Right, Up/Down and In/Out and the grip's four buttons, one row per Falcon, opened through Force Dimension's library, with its line and **Calibrate Reach** in its panel. See [Novint Falcon](https://padforge.org/docs/features/novint-falcon/). |
+| The name the program gives it | Program. The **Test Controller** reads as Gamepad, and a replay's device as the type its recording names | A [script](scripts.md), an [assistant](assistants.md) or a [plugin](plugins.md) declares it, or the Test Controller or Replay under **Built In** on the [Plugins](plugins.md) page makes it | The buttons, axes, hats, motion, touchpads and light the program declares, as the program sends them |
 
 The machine name in the first two rows is the product name the firmware reports, or the family name when the product name is a bare model code. See [Handheld PC Buttons](https://padforge.org/docs/features/handheld-buttons/) and [Head Tracking](head-tracking.md) for setup.
 

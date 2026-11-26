@@ -62,7 +62,15 @@ namespace PadForgePluginKit
             // the plugin's user.
             using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous,
                 TokenImpersonationLevel.Identification);
-            pipe.Connect(5000);
+            try
+            {
+                pipe.Connect(5000);
+            }
+            catch (TimeoutException)
+            {
+                Console.Error.WriteLine("PadForge did not answer on the pipe " + pipeName + " in 5 seconds.");
+                return 4;
+            }
             // The key goes only to a pipe PadForge made: PipeOwner.cs holds
             // the rule, the same file PadForge builds.
             if (!OperatingSystem.IsWindows() || !PadForge.Services.Automation.PipeOwner.IsServer(pipe.SafePipeHandle, pipeName))
@@ -117,7 +125,10 @@ namespace PadForgePluginKit
                         throw new InvalidOperationException("PadForge refused " + line.Split(' ')[0] + ": " + rest);
                     return rest;
                 }
-                throw new IOException("PadForge did not answer.");
+                // The thread that reads PadForge's lines ends when PadForge
+                // closes the connection.
+                if (answers.IsAddingCompleted) throw new IOException("PadForge closed the connection.");
+                throw new TimeoutException("PadForge did not answer " + line.Split(' ')[0] + " in 10 seconds.");
             }
 
             try
@@ -170,6 +181,11 @@ namespace PadForgePluginKit
             {
                 Console.Error.WriteLine(e.Message);
                 return 1;
+            }
+            catch (TimeoutException e)
+            {
+                Console.Error.WriteLine(e.Message);
+                return 4;
             }
         }
 

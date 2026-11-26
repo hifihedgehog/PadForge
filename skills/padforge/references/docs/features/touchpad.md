@@ -5,7 +5,7 @@
 
 ![The Touchpad card in the Motion & Touch section](https://padforge.org/docs/images/pad-touchpad.png)
 
-The **Touchpad** card sits in the **Motion & Touch** section of the controller page. It appears when the device picked under **Driven by** exposes a touchpad surface: DualSense, DualSense Edge, DualShock 4, Steam Controller (2015 and 2026), Steam Deck, an SInput pad with a touchpad, a [Web Controller](../guides/web-controller.md) client whose layout has a touchpad or that runs in touchpad-only mode, the on-screen [Touchpad Overlay](dashboard.md#touchpad-overlay), a Windows Precision Touchpad enumerated through the [Devices](devices.md) page, or a drawing tablet (below).
+The **Touchpad** card sits in the **Motion & Touch** section of the controller page. It appears when the device picked under **Driven by** exposes a touchpad surface: DualSense, DualSense Edge, DualShock 4, Steam Controller (2015 and 2026), Steam Deck, an SInput pad with a touchpad, a [Web Controller](../guides/web-controller.md) client whose layout has a touchpad or that runs in touchpad-only mode, the on-screen [Touchpad Overlay](dashboard.md#touchpad-overlay), a Windows Precision Touchpad enumerated through the [Devices](devices.md) page, a device a script, an assistant or a plugin adds that declares touchpads, or a drawing tablet (below).
 
 ---
 

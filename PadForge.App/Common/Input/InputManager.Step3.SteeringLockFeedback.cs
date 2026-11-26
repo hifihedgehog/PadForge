@@ -119,7 +119,7 @@ namespace PadForge.Common.Input
                     // lock state lives in the same SourceKindRuntime machine.
                     // A row modifier keeps the descriptor its source had and
                     // steers nothing, so its stale lock state is no feedback.
-                    // A "Mouse Travel" input (#597) keeps its lock state there
+                    // A "Mouse Travel" input (#600) keeps its lock state there
                     // too, and on any row: its wheel has locks of its own
                     // whatever it drives, a virtual wheel's steering axis
                     // first of all, which is no gamepad stick.
@@ -131,13 +131,16 @@ namespace PadForge.Common.Input
                                  || SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor))))
                         continue;
 
+                    // A travel source's wheel, and its lock, are kept by the
+                    // row's layer. The steering kinds keep no layer.
+                    string lockLayer = SourceEvaluator.IsMouseTravel(src) ? row.LayerMask : null;
                     if (atRes)
                     {
-                        float a = (float)runtime.GetLockApproach(slotIndex, row.Target, si);
+                        float a = (float)runtime.GetLockApproach(slotIndex, row.Target, si, lockLayer);
                         if (a > maxApproach) maxApproach = a;
                     }
 
-                    var edge = runtime.TryGetLockEdgeTransition(slotIndex, row.Target, si, out _);
+                    var edge = runtime.TryGetLockEdgeTransition(slotIndex, row.Target, si, out _, lockLayer);
                     if (edge == SourceKindRuntime.LockEdge.Enter)
                     {
                         // Channel 1: grip-motor rumble pulse.
@@ -196,11 +199,6 @@ namespace PadForge.Common.Input
                 psCfg.MacroOverrideExpiresAtUtc = expires;
             }
         }
-
-        // Channel 5 (controller speaker tone on lock entry) waits on the speaker
-        // output pipeline (#83). Hook left in place so the dispatch shape is ready;
-        // do not block v3.4.0 on it.
-        private void FireSteeringSpeakerTone(int slotIndex) { /* #83 */ }
 
         private static int ParsePositiveInt(string s, int dflt)
         {

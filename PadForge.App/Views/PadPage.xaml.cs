@@ -1040,7 +1040,10 @@ namespace PadForge.Views
                             || ud.CapType == InputDeviceType.Driving
                             || ud.CapType == InputDeviceType.Flight
                             || ud.CapType == InputDeviceType.FirstPerson
-                            || ud.CapType == InputDeviceType.NovintFalcon;
+                            || ud.CapType == InputDeviceType.NovintFalcon
+                            // A program's device that declares rumble (#600):
+                            // the slot's gains, swap and test reach it.
+                            || PadForge.Services.InputService.RelaysRumble(ud);
                         if (ud.CapType == InputDeviceType.NovintFalcon) falconRow = ud;
 
                         // #392: the Grip card, the Gyro Tilt card, and Motion
@@ -1085,8 +1088,9 @@ namespace PadForge.Views
                         hasWheel = wheelFacts.NativeWheel;
                         hasGenericWheel = !hasWheel && wheelFacts.HasCard;
                         // Pad count drives the Touchpad group's per-pad
-                        // pivot. Most devices = 1; Steam Controller 2026
-                        // = 2 (Triton); original Steam Controller = 3.
+                        // pivot. Most devices have 1. The Steam Controller
+                        // 2015, the Steam Controller 2026 (Triton) and the
+                        // Steam Deck have 2.
                         if (hasTouchpad)
                         {
                             // Published snapshot, never Device.GetCurrentState:
@@ -1120,7 +1124,7 @@ namespace PadForge.Views
                         else if (ud.Device is PadForge.Engine.IRelayedFeedbackDevice web)
                         {
                             // A phone drawing a DualShock 4 or a DualSense, or a
-                            // program's device that takes a light (#597), gets
+                            // program's device that takes a light (#600), gets
                             // the same Lighting group the physical pad gets. The
                             // color already reaches it (ResolveWebLightbar
                             // reads this very config), so without the tab the
@@ -1488,11 +1492,11 @@ namespace PadForge.Views
             _ => null,
         };
 
-        /// <summary>The header button of a section.</summary>
         /// <summary>A section's header button, which the guided pointer
         /// rings on the way to a place in it (#600).</summary>
         internal RadioButton SectionButton(int section) => ButtonOfSection(section);
 
+        /// <summary>The header button of a section.</summary>
         private RadioButton ButtonOfSection(int section) => section switch
         {
             PadViewModel.ButtonsSection => SectionButtons,
@@ -2956,7 +2960,7 @@ namespace PadForge.Views
             var save = new Microsoft.Win32.SaveFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_Create,
-                FileName = "Sounds" + ext,
+                FileName = string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Pad_Audio_Packages_DefaultFileName_Format, ext),
                 Filter = string.Format(PadForge.Resources.Strings.Strings.Instance.FileDialog_SoundPackageFilter_Format, ext),
             };
             if (save.ShowDialog() != true) return;
@@ -3020,7 +3024,7 @@ namespace PadForge.Views
             var save = new Microsoft.Win32.SaveFileDialog
             {
                 Title = PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_Create,
-                FileName = "Icons" + ext,
+                FileName = string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_DefaultFileName_Format, ext),
                 Filter = string.Format(PadForge.Resources.Strings.Strings.Instance.FileDialog_IconPackageFilter_Format, ext),
             };
             if (save.ShowDialog() != true) return;
@@ -5500,6 +5504,28 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>A Preview in the Source picker's mouse group (#600): pins
+        /// the entry's family, with the line the picker belongs to and the
+        /// page's slot, so the preview runs that line's own settings where it
+        /// reads the same input. The picker is the one that holds the entry's
+        /// row.</summary>
+        private void MousePreview_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement button || button.DataContext is not InputChoice choice) return;
+            DependencyObject at = button;
+            while (at != null && at is not ComboBoxItem) at = VisualTreeHelper.GetParent(at);
+            var picker = at is ComboBoxItem item ? ItemsControl.ItemsControlFromItemContainer(item) : null;
+            MouseFamilyPreview.Instance.PinCommand.Execute(new object[]
+            {
+                choice, picker?.DataContext, (DataContext as PadViewModel)?.PadIndex ?? -1,
+            });
+            e.Handled = true;
+        }
+
+        /// <summary>The Source picker closed: a pick, Escape or a click away
+        /// ends a Preview (#600).</summary>
+        private void SourcePicker_DropDownClosed(object sender, EventArgs e) => MouseFamilyPreview.Instance.Stop();
+
         /// <summary>
         /// Same defensive measure as <see cref="ProfileCombo_PreviewKeyDown"/>,
         /// but for the mapping list pickers (the Combine-mode dropdown and the
@@ -5526,24 +5552,6 @@ namespace PadForge.Views
         /// number-row digits, and the numpad digits) — is handled here so it
         /// never reaches the ComboBox.</para>
         /// </summary>
-        /// <summary>A Preview in the Source picker's mouse group (#600): pins
-        /// the entry's family, with the line the picker belongs to, so the
-        /// preview runs that line's own settings where it reads the same
-        /// input. The picker is the one that holds the entry's row.</summary>
-        private void MousePreview_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is not FrameworkElement button || button.DataContext is not InputChoice choice) return;
-            DependencyObject at = button;
-            while (at != null && at is not ComboBoxItem) at = VisualTreeHelper.GetParent(at);
-            var picker = at is ComboBoxItem item ? ItemsControl.ItemsControlFromItemContainer(item) : null;
-            MouseFamilyPreview.Instance.PinCommand.Execute(new object[] { choice, picker?.DataContext });
-            e.Handled = true;
-        }
-
-        /// <summary>The Source picker closed: a pick, Escape or a click away
-        /// ends a Preview (#600).</summary>
-        private void SourcePicker_DropDownClosed(object sender, EventArgs e) => MouseFamilyPreview.Instance.Stop();
-
         private void MappingComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (sender is not ComboBox cb || cb.IsDropDownOpen) return;
@@ -5646,7 +5654,7 @@ namespace PadForge.Views
             if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.ImportedProfileId))
             {
                 // Auto-select a newly-imported profile on the current slot.
-                // Catalog.Reload already ran inside AddUserProfile so the
+                // The import published the catalog with it (SettingsService.StorePreparedUserProfile) so the
                 // Extended dropdown has the new id before this assignment
                 // hits the binding. Dialog returns false on plain close
                 // (no import); in that path we don't touch the slot.
@@ -5824,114 +5832,7 @@ namespace PadForge.Views
                     continue;
                 }
 
-                // Covered target. Capture a primary another device owned here so
-                // it can ride on as an extra source after the identity row takes
-                // the primary slot (additive multi-device semantics). Same
-                // construction as PromoteNegDescriptorToExtraSource, without the
-                // Neg-pair invert flip: a demoted primary keeps its own flags.
-                string oldDesc = mi.SourceDescriptor;
-                string oldGuid = mi.PrimarySourceDeviceGuid ?? "";
-                string oldLabel = mi.PrimarySourceDeviceLabel ?? "";
-                int oldDeadZone = mi.MappingDeadZone;
-                // Everything else that primary carried. Rebuilding it from the
-                // descriptor and a couple of flags silently dropped the rest,
-                // so a displaced primary came back stripped: its output
-                // inversion gone, its bidirectional flag gone, its sensitivity
-                // and curve parameters back at their defaults. The neg-leg
-                // promotion this was modeled on really is nothing but a
-                // descriptor plus two flags; a whole primary is not.
-                bool oldInvertOutput = mi.InvertOutput;
-                bool oldBidirectional = mi.IsBidirectional;
-                double oldSensitivity = mi.Sensitivity;
-                double oldGyroSensitivity = mi.GyroSensitivity;
-                double oldMouseCursorSensitivity = mi.MouseCursorSensitivity;
-                double oldIrPointerSensitivity = mi.IrPointerSensitivity;
-                // What a "Mouse Travel" primary is tuned by (#597), and its
-                // Steer input, which is the row's gate. Both belong to that
-                // input, so they move with it, and the row that takes the
-                // cloned input starts with neither.
-                var oldTravel = new PadForge.Engine.Data.MappingSource();
-                mi.StoreMouseTravel(oldTravel);
-                string oldSteerInput = mi.IsMouseTravelSource ? mi.GateDescriptor : string.Empty;
-                // A Toggle (#461) or Rapid Trigger (#482) primary reads the
-                // same descriptor, so it moves over with its kind rather than
-                // as a plain Direct read, and Rapid Trigger with its distance.
-                string oldKind = mi.PrimaryKindSource?.DescriptorKind ?? "Direct";
-                int oldRapidTriggerDistance = mi.PrimaryKindSource?.ParamRapidTriggerDistance
-                    ?? PadForge.Engine.Data.MappingSource.DefaultRapidTriggerDistance;
-                bool demote = !primaryIsCloneDevice && !string.IsNullOrEmpty(oldDesc)
-                    && !string.IsNullOrEmpty(oldGuid);
-
-                // Full primary reset: descriptor, Neg pair, Invert/Half/
-                // Bidirectional, per-row deadzone, device stamp, and a
-                // non-Direct primary kind (whose persist path would otherwise
-                // ignore the cloned descriptor entirely).
-                mi.ClearCommand.Execute(null);
-                mi.GyroSensitivity = 1.0;
-                mi.MouseCursorSensitivity = 1.0;
-                mi.IrPointerSensitivity = 1.0;
-                mi.Sensitivity = 1.0;
-                mi.LoadMouseTravel(null);
-                if (oldSteerInput.Length > 0) mi.GateDescriptor = string.Empty;
-
-                if (demote)
-                {
-                    bool inv = false, half = false;
-                    string clean = oldDesc;
-                    if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
-                    { inv = true; half = true; clean = clean.Substring(2); }
-                    else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1])
-                             && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(clean))
-                    { inv = true; clean = clean.Substring(1); }
-                    else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
-                    { half = true; clean = clean.Substring(1); }
-
-                    bool duplicate = false;
-                    foreach (var existing in mi.ExtraSources)
-                    {
-                        if (existing == null) continue;
-                        if (string.Equals(existing.Descriptor ?? "", clean, StringComparison.OrdinalIgnoreCase)
-                            && string.Equals(existing.DeviceGuid ?? "", oldGuid, StringComparison.OrdinalIgnoreCase))
-                        { duplicate = true; break; }
-                    }
-                    if (!duplicate)
-                    {
-                        var moved = new MappingSourceItem
-                        {
-                            Kind = oldKind,
-                            DeviceGuid = oldGuid,
-                            DeviceLabel = oldLabel,
-                            Descriptor = clean,
-                            Invert = inv,
-                            HalfAxis = half,
-                            DeadZone = oldDeadZone,
-                            // The rest of what that primary carried. Without
-                            // these it came back stripped and behaved
-                            // differently from the source the user authored.
-                            InvertOutput = oldInvertOutput,
-                            Bidirectional = oldBidirectional,
-                            Sensitivity = oldSensitivity,
-                            GyroSensitivity = oldGyroSensitivity,
-                            MouseCursorSensitivity = oldMouseCursorSensitivity,
-                            IrPointerSensitivity = oldIrPointerSensitivity,
-                            ParamRapidTriggerDistance = oldRapidTriggerDistance,
-                        };
-                        // The Steer input first, as a load reads a gate
-                        // before the settings that go with it.
-                        if (oldSteerInput.Length > 0) moved.GateDescriptor = oldSteerInput;
-                        moved.LoadMouseTravel(oldTravel);
-                        mi.ExtraSources.Add(moved);
-                    }
-                }
-
-                // With no extras left the row is a plain identity mapping; a
-                // stale combine mode or custom expression from the previous
-                // occupant would misdescribe it.
-                if (mi.ExtraSources.Count == 0)
-                {
-                    mi.CombineMode = "";
-                    mi.CombineExpression = "";
-                }
+                ClearPrimaryForClone(mi, primaryIsCloneDevice);
 
                 mi.PrimarySourceDeviceGuid = guidStr;
                 mi.PrimarySourceDeviceLabel = deviceLabel;
@@ -5949,6 +5850,128 @@ namespace PadForge.Views
             mw?.SettingsService?.PushUiExtraSourcesIntoSlotMappingSets();
             PadForge.Services.InputService.RefreshMappingsToViewModel(vm);
             mw?.SettingsService?.MarkDirty();
+        }
+
+        /// <summary>One covered row of a passthrough clone, before the
+        /// identity mapping lands on it: the primary goes, and one another
+        /// device owned rides on as an extra source with everything it
+        /// carried, its mouse settings and Steer input included.</summary>
+        internal static void ClearPrimaryForClone(MappingItem mi, bool primaryIsCloneDevice)
+        {
+        // Covered target. Capture a primary another device owned here so
+        // it can ride on as an extra source after the identity row takes
+        // the primary slot (additive multi-device semantics). Same
+        // construction as PromoteNegDescriptorToExtraSource, without the
+        // Neg-pair invert flip: a demoted primary keeps its own flags.
+        string oldDesc = mi.SourceDescriptor;
+        string oldGuid = mi.PrimarySourceDeviceGuid ?? "";
+        string oldLabel = mi.PrimarySourceDeviceLabel ?? "";
+        int oldDeadZone = mi.MappingDeadZone;
+        // Everything else that primary carried. Rebuilding it from the
+        // descriptor and a couple of flags silently dropped the rest,
+        // so a displaced primary came back stripped: its output
+        // inversion gone, its bidirectional flag gone, its sensitivity
+        // and curve parameters back at their defaults. The neg-leg
+        // promotion this was modeled on really is nothing but a
+        // descriptor plus two flags; a whole primary is not.
+        bool oldInvertOutput = mi.InvertOutput;
+        bool oldBidirectional = mi.IsBidirectional;
+        double oldSensitivity = mi.Sensitivity;
+        double oldGyroSensitivity = mi.GyroSensitivity;
+        double oldMouseCursorSensitivity = mi.MouseCursorSensitivity;
+        double oldIrPointerSensitivity = mi.IrPointerSensitivity;
+        // What a mouse primary is tuned by (#600), and its
+        // Steer input, which is the row's gate: the travel family's,
+        // Mouse Speed's and Mouse Position's alike. Both belong to
+        // that input, so they move with it, both gates and the device
+        // the input is read on, and the row that takes the cloned
+        // input starts with none of them.
+        bool steers = mi.IsMouseSteerSource;
+        string oldSteerInput = steers ? mi.GateDescriptor ?? string.Empty : string.Empty;
+        string oldSteerInput2 = steers ? mi.Gate2Descriptor ?? string.Empty : string.Empty;
+        var oldTravel = new PadForge.Engine.Data.MappingSource { GateDescriptor = oldSteerInput };
+        mi.StoreMouseTravel(oldTravel);
+        // A Toggle (#461) or Rapid Trigger (#482) primary reads the
+        // same descriptor, so it moves over with its kind rather than
+        // as a plain Direct read, and Rapid Trigger with its distance.
+        string oldKind = mi.PrimaryKindSource?.DescriptorKind ?? "Direct";
+        int oldRapidTriggerDistance = mi.PrimaryKindSource?.ParamRapidTriggerDistance
+            ?? PadForge.Engine.Data.MappingSource.DefaultRapidTriggerDistance;
+        bool demote = !primaryIsCloneDevice && !string.IsNullOrEmpty(oldDesc)
+            && !string.IsNullOrEmpty(oldGuid);
+
+        // Full primary reset: descriptor, Neg pair, Invert/Half/
+        // Bidirectional, per-row deadzone, device stamp, and a
+        // non-Direct primary kind (whose persist path would otherwise
+        // ignore the cloned descriptor entirely).
+        mi.ClearCommand.Execute(null);
+        mi.GyroSensitivity = 1.0;
+        mi.MouseCursorSensitivity = 1.0;
+        mi.IrPointerSensitivity = 1.0;
+        mi.Sensitivity = 1.0;
+        mi.LoadMouseTravel(null);
+        if (oldSteerInput.Length > 0) mi.GateDescriptor = string.Empty;
+        if (oldSteerInput2.Length > 0) mi.Gate2Descriptor = string.Empty;
+
+        if (demote)
+        {
+            bool inv = false, half = false;
+            string clean = oldDesc;
+            if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+            { inv = true; half = true; clean = clean.Substring(2); }
+            else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1])
+                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(clean))
+            { inv = true; clean = clean.Substring(1); }
+            else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+            { half = true; clean = clean.Substring(1); }
+
+            bool duplicate = false;
+            foreach (var existing in mi.ExtraSources)
+            {
+                if (existing == null) continue;
+                if (string.Equals(existing.Descriptor ?? "", clean, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(existing.DeviceGuid ?? "", oldGuid, StringComparison.OrdinalIgnoreCase))
+                { duplicate = true; break; }
+            }
+            if (!duplicate)
+            {
+                var moved = new MappingSourceItem
+                {
+                    Kind = oldKind,
+                    DeviceGuid = oldGuid,
+                    DeviceLabel = oldLabel,
+                    Descriptor = clean,
+                    Invert = inv,
+                    HalfAxis = half,
+                    DeadZone = oldDeadZone,
+                    // The rest of what that primary carried. Without
+                    // these it came back stripped and behaved
+                    // differently from the source the user authored.
+                    InvertOutput = oldInvertOutput,
+                    Bidirectional = oldBidirectional,
+                    Sensitivity = oldSensitivity,
+                    GyroSensitivity = oldGyroSensitivity,
+                    MouseCursorSensitivity = oldMouseCursorSensitivity,
+                    IrPointerSensitivity = oldIrPointerSensitivity,
+                    ParamRapidTriggerDistance = oldRapidTriggerDistance,
+                };
+                // The Steer input first, as a load reads a gate
+                // before the settings that go with it.
+                if (oldSteerInput.Length > 0) moved.GateDescriptor = oldSteerInput;
+                if (oldSteerInput2.Length > 0) moved.Gate2Descriptor = oldSteerInput2;
+                moved.LoadMouseTravel(oldTravel);
+                mi.ExtraSources.Add(moved);
+            }
+        }
+
+        // With no extras left the row is a plain identity mapping; a
+        // stale combine mode or custom expression from the previous
+        // occupant would misdescribe it.
+        if (mi.ExtraSources.Count == 0)
+        {
+            mi.CombineMode = "";
+            mi.CombineExpression = "";
+        }
         }
 
         // ─────────────────────────────────────────────

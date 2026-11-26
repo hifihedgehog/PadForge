@@ -69,7 +69,7 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <!-- A start with rights must not run code a program without them chose
-         (#597). DOTNET_STARTUP_HOOKS comes from the user's environment, which
+         (#600). DOTNET_STARTUP_HOOKS comes from the user's environment, which
          the user's programs can write, and a startup hook is an assembly the
          runtime loads before Main. Nothing in PadForge uses one. -->
     <StartupHookSupport>false</StartupHookSupport>
@@ -224,15 +224,15 @@
     </Content>
     <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />
     <!-- What the bundled SDL3.dll carries of the community controller
-         database (#597), written by tools\gen_controller_database_baseline.py
+         database (#600), written by tools\gen_controller_database_baseline.py
          at each SDL take. The Controller Database row in Settings, Updates
          keeps only the rows that are new or changed against it. -->
     <EmbeddedResource Include="gamecontrollerdb_baseline.txt" />
-    <!-- The script libraries Save a Library writes (#597). -->
+    <!-- The script libraries Save a Library writes (#600). -->
     <EmbeddedResource Include="Resources\Automation\PadForge.ahk" LogicalName="PadForge.Automation.PadForge.ahk" />
     <EmbeddedResource Include="Resources\Automation\padforge.py" LogicalName="PadForge.Automation.padforge.py" />
     <EmbeddedResource Include="Resources\Automation\PadForge.psm1" LogicalName="PadForge.Automation.PadForge.psm1" />
-    <!-- The plugin kit Save the Plugin Kit writes (#597): a small plugin in
+    <!-- The plugin kit Save the Plugin Kit writes (#600): a small plugin in
          C# and one for each library's language. The C# file is the kit's
          and never part of PadForge's own build. PadForge.PluginProbe, which
          the tests build, compiles it, so a kit that would not build fails
@@ -249,7 +249,7 @@
     <EmbeddedResource Include="Resources\Plugins\README.md" LogicalName="PadForge.Plugins.README.md" />
     <EmbeddedResource Include="Resources\Plugins\PadForgePlugin.csproj" LogicalName="PadForge.Plugins.PadForgePlugin.csproj" />
     <EmbeddedResource Include="Resources\Plugins\build.ps1" LogicalName="PadForge.Plugins.build.ps1" />
-    <!-- PadForge's own skill for assistants (#597), kept at skills/padforge
+    <!-- PadForge's own skill for assistants (#600), kept at skills/padforge
          where skill installers look (#600): served over the Skills
          extension and written by Save the Skill, so it matches the version
          in use. The path under the folder stays in the name. -->
@@ -287,8 +287,9 @@
          a Page and an EmbeddedResource at once. -->
     <EmbeddedResource Include="Views\PadPage.xaml;Views\SettingsPage.xaml;Views\ExtrasPage.xaml;Views\DevicesPage.xaml;Views\ProfilesPage.xaml"
                       LogicalName="PadForge.SearchSources.%(Filename)%(Extension)" WithCulture="false" />
-    <!-- The dialogs' markup, which the catalog reads (#600). -->
-    <EmbeddedResource Include="Views\*Dialog.xaml;Views\AutomationRequestCard.xaml;Views\AddControllerView.xaml;Views\SearchPanel.xaml;Views\HomePage.xaml;Views\AboutPage.xaml;MainWindow.xaml"
+    <!-- The dialogs' markup, which the catalog reads (#600), the three the
+         window shows inside itself included. -->
+    <EmbeddedResource Include="Views\*Dialog.xaml;Views\AutomationRequestCard.xaml;Views\AddControllerView.xaml;Views\SearchPanel.xaml;Views\RecordingReviewView.xaml;Views\HomePage.xaml;Views\AboutPage.xaml;MainWindow.xaml"
                       LogicalName="PadForge.CatalogSources.%(Filename)%(Extension)" WithCulture="false" />
     <!-- Offline voice recognition (#317). The model ships INSIDE the exe.
          It used to download on first use, which made voice macros unusable
@@ -324,7 +325,7 @@
     <PackageReference Include="Nefarius.Utilities.DeviceManagement" Version="6.1.0" />
     <!-- The Model Context Protocol's C# SDK (Apache-2.0), core package only:
          the server inside PadForge that assistants reach over the Automation
-         pipe, and the copy PadForge.exe starts for an assistant (#597). It brings
+         pipe, and the copy PadForge.exe starts for an assistant (#600). It brings
          Microsoft.Extensions.AI.Abstractions, Logging.Abstractions and
          DependencyInjection.Abstractions (MIT). No hosting package and no
          ASP.NET Core. -->
@@ -402,9 +403,10 @@
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
          release there. Current: v2.4.0, whose UMDF2 driver is 2.4.0, so
-         the first start with rights after the upgrade installs it. A raw
-         or extended report may run to 1,024 bytes, where 80 was the most,
-         and on an older driver one past 80 is refused with
+         the first HIDMaestro controller created after the upgrade installs
+         it. An extended report may run to 1,024 bytes, where 80 was the
+         most, and a raw report still stops at 256. On an older driver an
+         extended report past 80 is refused with
          NotSupportedException. PadForge's largest frame is 78 bytes. Touch
          and pen devices are new (SubmitTouch, SubmitPen), and nothing
          public of 2.3.0 changed. On ARM64, and for the composite personas

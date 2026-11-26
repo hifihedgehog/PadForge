@@ -268,9 +268,19 @@ namespace PadForge.Tests
             private readonly object _gate = new();
             private readonly List<string> _log = new();
             public int Disposes;
+            // How many submits of each kind throw before one goes through,
+            // as a sink that refuses a report would.
+            public int KeyboardThrows, MouseThrows;
+
+            private static void MaybeThrow(ref int throws)
+            {
+                if (Interlocked.Decrement(ref throws) >= 0) throw new InvalidOperationException("the sink refused the report");
+                Interlocked.Exchange(ref throws, 0);
+            }
 
             public void SubmitKeyboard(HMKeyModifiers modifiers, HMKey[] keys)
             {
+                MaybeThrow(ref KeyboardThrows);
                 lock (_gate) _log.Add($"K {(byte)modifiers:X2}:" + string.Join(",", keys.Select(k => ((byte)k).ToString("X2"))));
             }
 
@@ -281,6 +291,7 @@ namespace PadForge.Tests
 
             public void SubmitMouse(in HMMouseState s)
             {
+                MaybeThrow(ref MouseThrows);
                 lock (_gate) _log.Add($"M {(uint)s.Buttons:X} {s.X} {s.Y} {s.Wheel} {s.Pan}");
             }
 
@@ -388,6 +399,96 @@ namespace PadForge.Tests
                 ProgramInputGate.ProcessOfSeam = null;
                 ProgramInputGate.IntegritySeam = null;
                 ProgramInputGate.ForgetForTest();
+                OwnHidOutput.ResetForTests();
+            }
+        }
+
+        /// <summary>A key the person holds that a program then feeds too
+        /// loses its proof while it stays down (InputManager.OutputCauses),
+        /// and the device's frame carries that: while a window with rights is
+        /// in front, the key goes up, as a key a program fed alone does.</summary>
+        [Fact]
+        public void Keyboard_AKeyThatLosesItsProofWhileHeld_IsHeldBackByTheGate()
+        {
+            OwnHidOutput.ResetForTests();
+            var sink = new FakeSink();
+            ProgramInputGate.InForceSeam = () => true;
+            ProgramInputGate.ForegroundSeam = () => (IntPtr)2;
+            ProgramInputGate.ProcessOfSeam = w => (uint)w;
+            ProgramInputGate.IntegritySeam = pid => pid == 2 ? 0x3000 : 0x2000;
+            ProgramInputGate.ForgetForTest();
+            var kb = new KbmHidKeyboard(sink, KbmDeviceCaps.For(Profile("corsair-k55-rgb-pro-xt")), "k55", 0,
+                KbmHidKeyMap.Nominal);
+            try
+            {
+                Press(kb, 0x41);                 // the person's own A, to a window with rights
+                Assert.Equal("K 00:04", sink.WaitFor(1)[0]);
+                var marked = KbmCause.AllOwn;
+                marked.MarkKey(0x41, OutputCause.Program(7));
+                Press(kb, marked, 0x41);         // a program feeds A while it is down
+                Assert.Equal("K 00:", sink.WaitFor(2)[1]);
+            }
+            finally
+            {
+                kb.Dispose();
+                ProgramInputGate.InForceSeam = null;
+                ProgramInputGate.ForegroundSeam = null;
+                ProgramInputGate.ProcessOfSeam = null;
+                ProgramInputGate.IntegritySeam = null;
+                ProgramInputGate.ForgetForTest();
+                OwnHidOutput.ResetForTests();
+            }
+        }
+
+        /// <summary>A report the sink refused never reached the device, so the
+        /// sender still holds what it held before: it sends the report again,
+        /// and the hooks are told of one press, which the one release
+        /// ends.</summary>
+        [Fact]
+        public void Keyboard_ARefusedReport_IsSentAgain_AndTheHooksCountOnePress()
+        {
+            OwnHidOutput.ResetForTests();
+            var sink = new FakeSink { KeyboardThrows = 1 };
+            var kb = new KbmHidKeyboard(sink, KbmDeviceCaps.For(Profile("corsair-k55-rgb-pro-xt")), "k55", 0,
+                KbmHidKeyMap.Nominal);
+            try
+            {
+                Press(kb, 0x41);
+                Assert.Equal("K 00:04", sink.WaitFor(1)[0]);
+                Assert.True(OwnHidOutput.IsOwnKey(0x41, 0x1E, false, true));
+                Press(kb);
+                Assert.Equal("K 00:", sink.WaitFor(2)[1]);
+                Assert.True(OwnHidOutput.IsOwnKey(0x41, 0x1E, false, false));
+                Assert.False(OwnHidOutput.IsOwnKey(0x41, 0x1E, false, true));
+            }
+            finally
+            {
+                kb.Dispose();
+                OwnHidOutput.ResetForTests();
+            }
+        }
+
+        /// <summary>The mouse twin: a refused report is sent again, and the
+        /// hooks are told of one press of the button.</summary>
+        [Fact]
+        public void Mouse_ARefusedReport_IsSentAgain_AndTheHooksCountOnePress()
+        {
+            OwnHidOutput.ResetForTests();
+            var sink = new FakeSink { MouseThrows = 1 };
+            var mouse = new KbmHidMouse(sink, KbmDeviceCaps.For(Profile("logitech-g502-hero")), "g502", 0);
+            try
+            {
+                mouse.SetButtons(1, KbmCause.AllOwn);
+                Assert.Equal("M 1 0 0 0 0", sink.WaitFor(1)[0]);
+                Assert.True(OwnHidOutput.IsOwnButton(0, true));
+                mouse.SetButtons(0, KbmCause.AllOwn);
+                Assert.Equal("M 0 0 0 0 0", sink.WaitFor(2)[1]);
+                Assert.True(OwnHidOutput.IsOwnButton(0, false));
+                Assert.False(OwnHidOutput.IsOwnButton(0, true));
+            }
+            finally
+            {
+                mouse.Dispose();
                 OwnHidOutput.ResetForTests();
             }
         }

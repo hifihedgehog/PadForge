@@ -24,8 +24,15 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// <summary>The G19's screen interface is on another program's
         /// driver, named in the detail, which PadForge leaves alone.</summary>
         G19ForeignDriver,
-        /// <summary>LGS's Arx Control library is not installed.</summary>
+        /// <summary>LGS's Arx Control library is not registered.</summary>
         ArxNoLibrary,
+        /// <summary>The library is registered and PadForge's checks refused
+        /// it (TrustedLibrary): others may change it or where it sits, or
+        /// Logitech did not sign it.</summary>
+        ArxRefused,
+        /// <summary>The library is registered and would not load, or is not
+        /// the Arx Control library.</summary>
+        ArxLoadFailed,
         /// <summary>The library is there and LGS did not take the applet,
         /// which means LGS is not running.</summary>
         ArxNotRunning,
@@ -484,12 +491,28 @@ namespace PadForge.Common.Input.KeyboardScreens
             return lgs && lgsSeesColor ? new(KeyboardScreenRoute.Lgs) : new(KeyboardScreenRoute.NotFound);
         }
 
-        private KeyboardScreenStatus ArxStatusNow()
+        /// <summary>The Arx line for a reason the library gave
+        /// (LogitechArxLibrary.TryLoad): a refusal and a load failure each
+        /// their own, every other reason as no library.</summary>
+        internal static KeyboardScreenRoute ArxRouteFor(string reason) => reason switch
         {
-            if (RuntimeInformation.ProcessArchitecture != Architecture.X64) return new(KeyboardScreenRoute.NotOnArm64);
-            if (ArxScreen.LoadReason.Length > 0) return new(KeyboardScreenRoute.ArxNoLibrary);
-            if (!_arx.Active) return new(KeyboardScreenRoute.ArxNotRunning);
-            return _arx.OnPhone ? new(KeyboardScreenRoute.ArxOnPhone) : new(KeyboardScreenRoute.ArxWaiting);
+            "refused" => KeyboardScreenRoute.ArxRefused,
+            "load" or "exports" => KeyboardScreenRoute.ArxLoadFailed,
+            _ => KeyboardScreenRoute.ArxNoLibrary,
+        };
+
+        private KeyboardScreenStatus ArxStatusNow()
+            => ArxStatusFrom(RuntimeInformation.ProcessArchitecture, ArxScreen.LoadReason, _arx.Active, _arx.OnPhone);
+
+        /// <summary>The Arx line from what was read: the process's
+        /// architecture, why the library did not load (empty when it did),
+        /// and whether LGS answers and a phone shows the screen.</summary>
+        internal static KeyboardScreenStatus ArxStatusFrom(Architecture process, string loadReason, bool active, bool onPhone)
+        {
+            if (process != Architecture.X64) return new(KeyboardScreenRoute.NotOnArm64);
+            if (loadReason.Length > 0) return new(ArxRouteFor(loadReason));
+            if (!active) return new(KeyboardScreenRoute.ArxNotRunning);
+            return onPhone ? new(KeyboardScreenRoute.ArxOnPhone) : new(KeyboardScreenRoute.ArxWaiting);
         }
 
         private KeyboardScreenStatus Strike7StatusNow(string path)

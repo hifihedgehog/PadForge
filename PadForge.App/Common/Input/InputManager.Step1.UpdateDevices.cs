@@ -80,6 +80,87 @@ namespace PadForge.Common.Input
         private RawInputListener.DeviceInfo[] _cachedConsumerControls;
         private readonly object _rawInputCacheLock = new object();
 
+        // Whether the cached keyboards and mice came from a list Raw Input
+        // handed over whole.
+        private bool _keyboardsListed, _miceListed;
+
+        /// <summary>One enumeration of the Raw Input keyboards, mice and
+        /// Consumer Control collections into the cache, which Step 1 takes
+        /// on its next cycle. A worker's. A list call that failed (a device
+        /// arriving between the count and the fill fails the fill) leaves
+        /// that kind's last list in place: the aggregate alone would take
+        /// every device of the kind as unplugged.</summary>
+        internal void ListRawInput()
+        {
+            var kb = RawInputListener.EnumerateKeyboards(out bool kbListed);
+            var ms = RawInputListener.EnumerateMice(out bool msListed);
+            var cc = RawInputListener.EnumerateConsumerControls(out bool ccListed);
+            if (!kbListed && !msListed && !ccListed) return;
+            lock (_rawInputCacheLock)
+            {
+                if (kbListed) { _cachedKeyboards = kb; _keyboardsListed = true; }
+                if (msListed) { _cachedMice = ms; _miceListed = true; }
+                if (ccListed) _cachedConsumerControls = cc;
+                _rawInputEnumPending = true;
+            }
+        }
+
+        /// <summary>The keyboards and mice of the engine's last Raw Input
+        /// list, read every two seconds, or null before a list of both was
+        /// read whole.</summary>
+        internal (RawInputListener.DeviceInfo[] Keyboards, RawInputListener.DeviceInfo[] Mice)? RawInputLists
+        {
+            get
+            {
+                lock (_rawInputCacheLock)
+                    return _keyboardsListed && _miceListed && _cachedKeyboards != null && _cachedMice != null
+                        ? (_cachedKeyboards, _cachedMice) : null;
+            }
+        }
+
+        /// <summary>Test seam: the lists as a read of Raw Input left them.</summary>
+        internal void SetRawInputListsForTest(RawInputListener.DeviceInfo[] keyboards, RawInputListener.DeviceInfo[] mice)
+        {
+            lock (_rawInputCacheLock)
+            {
+                _cachedKeyboards = keyboards;
+                _cachedMice = mice;
+                _cachedConsumerControls = Array.Empty<RawInputListener.DeviceInfo>();
+                _keyboardsListed = _miceListed = true;
+            }
+        }
+
+        /// <summary>Reads again the objects of each open joystick whose
+        /// relative values Raw Input's pump had not read when it opened
+        /// (SdlDeviceWrapper.RelativeAxesUnread), once the pump has. True
+        /// when one changed.</summary>
+        private bool ReadRelativeAxesAgain()
+        {
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return false;
+            List<UserDevice> ready = null;
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                    if (ud != null && ud.IsOnline && ud.Device is SdlDeviceWrapper wrapper && wrapper.RelativeAxesUnread
+                        && PadForge.Engine.Common.RelativeHidAxes.IsKnown(wrapper.SdlDevicePath))
+                        (ready ??= new List<UserDevice>()).Add(ud);
+            }
+            if (ready == null) return false;
+            foreach (var ud in ready)
+            {
+                try
+                {
+                    if (ud.Device is SdlDeviceWrapper wrapper) ud.LoadFromSdlDevice(wrapper);
+                }
+                catch (Exception ex)
+                {
+                    RaiseDeviceError("Error reading a controller's relative axes again", ex);
+                }
+            }
+            return true;
+        }
+
         /// <summary>
         /// Step 1: Enumerate all connected SDL joystick devices.
         ///
@@ -152,7 +233,7 @@ namespace PadForge.Common.Input
 
                     // A controller database row for a controller nothing
                     // else reads as a gamepad goes to SDL before the open,
-                    // which asks SDL whether the joystick is one (#597).
+                    // which asks SDL whether the joystick is one (#600).
                     // A row used for the first time is marked once the
                     // device is kept, below.
                     string databaseRowFirstUsed = OfferControllerDatabaseRow(instanceId);
@@ -258,6 +339,12 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // A joystick opened before Raw Input's pump had read it lists no
+            // relative value DirectInput left out (#600). Once the pump has
+            // read it, its objects are read again, here on the sweep, which
+            // lists no device to do it.
+            changed |= ReadRelativeAxesAgain();
+
             // --- Phase 1b/1c: Consume cached keyboard/mouse results ---
             // Raw Input enumeration runs on a background thread to avoid
             // blocking the polling loop with expensive CreateFile/HID I/O.
@@ -266,9 +353,14 @@ namespace PadForge.Common.Input
             if (_cachedKeyboards == null)
             {
                 // First call runs synchronous so devices are ready before Step 2.
-                _cachedKeyboards = RawInputListener.EnumerateKeyboards();
-                _cachedMice = RawInputListener.EnumerateMice();
-                _cachedConsumerControls = RawInputListener.EnumerateConsumerControls();
+                // A list that failed here holds only the aggregates, which
+                // takes no device as unplugged: none is open yet.
+                lock (_rawInputCacheLock)
+                {
+                    _cachedKeyboards = RawInputListener.EnumerateKeyboards(out _keyboardsListed);
+                    _cachedMice = RawInputListener.EnumerateMice(out _miceListed);
+                    _cachedConsumerControls = RawInputListener.EnumerateConsumerControls(out _);
+                }
                 _rawInputEnumPending = true;
             }
 
@@ -298,19 +390,7 @@ namespace PadForge.Common.Input
                 _rawInputEnumRunning = true;
                 Task.Run(() =>
                 {
-                    try
-                    {
-                        var kb = RawInputListener.EnumerateKeyboards();
-                        var ms = RawInputListener.EnumerateMice();
-                        var cc = RawInputListener.EnumerateConsumerControls();
-                        lock (_rawInputCacheLock)
-                        {
-                            _cachedKeyboards = kb;
-                            _cachedMice = ms;
-                            _cachedConsumerControls = cc;
-                            _rawInputEnumPending = true;
-                        }
-                    }
+                    try { ListRawInput(); }
                     catch { /* best effort: the next cycle retries */ }
                     finally { _rawInputEnumRunning = false; }
                 });
@@ -4329,23 +4409,6 @@ namespace PadForge.Common.Input
         /// overload: any single slot's settings are a subset of all records,
         /// so a buffer this size can never truncate a per-slot query.</summary>
         public int Count { get { lock (SyncRoot) return Items.Count; } }
-
-        /// <summary>
-        /// Finds the UserSetting that links a device (by InstanceGuid) to a pad slot.
-        /// Uses a manual loop to avoid LINQ closure allocations.
-        /// </summary>
-        public UserSetting FindByInstanceGuid(Guid instanceGuid)
-        {
-            lock (SyncRoot)
-            {
-                for (int i = 0; i < Items.Count; i++)
-                {
-                    if (Items[i].InstanceGuid == instanceGuid)
-                        return Items[i];
-                }
-                return null;
-            }
-        }
 
         /// <summary>
         /// Returns all UserSettings assigned to a specific pad slot (0–15).

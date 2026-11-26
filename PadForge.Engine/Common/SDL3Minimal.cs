@@ -224,9 +224,6 @@ namespace SDL3
         public static extern ushort SDL_GetJoystickProductForID(uint instance_id);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern ushort SDL_GetJoystickProductVersionForID(uint instance_id);
-
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern SDL_JoystickType SDL_GetJoystickTypeForID(uint instance_id);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetJoystickNameForID")]
@@ -360,11 +357,7 @@ namespace SDL3
         public const int SDL_GAMEPAD_BUTTON_LABEL_A = 1;
         public const int SDL_GAMEPAD_BUTTON_LABEL_B = 2;
         public const int SDL_GAMEPAD_BUTTON_LABEL_X = 3;
-        public const int SDL_GAMEPAD_BUTTON_LABEL_Y = 4;
         public const int SDL_GAMEPAD_BUTTON_LABEL_CROSS = 5;
-        public const int SDL_GAMEPAD_BUTTON_LABEL_CIRCLE = 6;
-        public const int SDL_GAMEPAD_BUTTON_LABEL_SQUARE = 7;
-        public const int SDL_GAMEPAD_BUTTON_LABEL_TRIANGLE = 8;
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasButton")]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -387,7 +380,6 @@ namespace SDL3
         public const int SDL_GAMEPAD_AXIS_RIGHTY = 3;
         public const int SDL_GAMEPAD_AXIS_LEFT_TRIGGER = 4;
         public const int SDL_GAMEPAD_AXIS_RIGHT_TRIGGER = 5;
-        public const int SDL_GAMEPAD_AXIS_COUNT = 6;
 
         // Gamepad button indices (SDL_GamepadButton enum).
         public const int SDL_GAMEPAD_BUTTON_SOUTH = 0;   // A
@@ -416,7 +408,6 @@ namespace SDL3
         public const int SDL_GAMEPAD_BUTTON_MISC4 = 23;
         public const int SDL_GAMEPAD_BUTTON_MISC5 = 24;
         public const int SDL_GAMEPAD_BUTTON_MISC6 = 25;
-        public const int SDL_GAMEPAD_BUTTON_COUNT = 26;
 
         // ─────────────────────────────────────────────
         //  Joystick state polling
@@ -588,10 +579,6 @@ namespace SDL3
         // ─────────────────────────────────────────────
 
         // SDL_PowerState
-        public const int SDL_POWERSTATE_ERROR    = -1;
-        public const int SDL_POWERSTATE_UNKNOWN  =  0;
-        public const int SDL_POWERSTATE_ON_BATTERY = 1;
-        public const int SDL_POWERSTATE_NO_BATTERY = 2;
         public const int SDL_POWERSTATE_CHARGING  = 3;
         public const int SDL_POWERSTATE_CHARGED   = 4;
 
@@ -612,8 +599,6 @@ namespace SDL3
         public const int SDL_SENSOR_GYRO = 2;
         public const int SDL_SENSOR_ACCEL_L = 3;
         public const int SDL_SENSOR_GYRO_L = 4;
-        public const int SDL_SENSOR_ACCEL_R = 5;
-        public const int SDL_SENSOR_GYRO_R = 6;
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasSensor")]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -685,8 +670,6 @@ namespace SDL3
 
         // SDL_GamepadCapSenseType enum values (fork, SDL_gamepad.h since 3.6.0)
         public const int SDL_GAMEPAD_CAPSENSE_LEFT_STICK = 0;
-        public const int SDL_GAMEPAD_CAPSENSE_RIGHT_STICK = 1;
-        public const int SDL_GAMEPAD_CAPSENSE_LEFT_GRIP = 2;
         public const int SDL_GAMEPAD_CAPSENSE_RIGHT_GRIP = 3;
         public const int SDL_GAMEPAD_CAPSENSE_COUNT = 4;
 
@@ -953,16 +936,13 @@ namespace SDL3
         public const uint SDL_HAPTIC_INERTIA      = 1u << 9;
         public const uint SDL_HAPTIC_FRICTION     = 1u << 10;
         public const uint SDL_HAPTIC_LEFTRIGHT    = 1u << 11;
-        public const uint SDL_HAPTIC_CUSTOM       = 1u << 15;
         public const uint SDL_HAPTIC_GAIN         = 1u << 16;
-        public const uint SDL_HAPTIC_AUTOCENTER   = 1u << 17;
 
         public const uint SDL_HAPTIC_INFINITY = 0xFFFFFFFFu;
 
         // Direction types (SDL_HapticDirectionType = Uint8)
         public const byte SDL_HAPTIC_POLAR         = 0;
         public const byte SDL_HAPTIC_CARTESIAN     = 1;
-        public const byte SDL_HAPTIC_SPHERICAL     = 2;
         public const byte SDL_HAPTIC_STEERING_AXIS = 3;
 
         // ─────────────────────────────────────────────
@@ -1145,7 +1125,7 @@ namespace SDL3
         public static extern int SDL_GetNumHapticAxes(IntPtr haptic);
 
         // ─────────────────────────────────────────────
-        //  Keyboard enumeration and state
+        //  Keyboard enumeration
         // ─────────────────────────────────────────────
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyboards")]
@@ -1182,15 +1162,8 @@ namespace SDL3
             return Marshal.PtrToStringUTF8(_SDL_GetKeyboardNameForID(instance_id)) ?? "Keyboard";
         }
 
-        /// <summary>
-        /// Returns a pointer to an array of booleans (one per SDL_Scancode) representing key states.
-        /// The pointer is owned by SDL and valid until the next SDL_PumpEvents/SDL_PollEvent.
-        /// </summary>
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr SDL_GetKeyboardState(out int numkeys);
-
         // ─────────────────────────────────────────────
-        //  Mouse enumeration and state
+        //  Mouse enumeration
         // ─────────────────────────────────────────────
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetMice")]
@@ -1226,26 +1199,6 @@ namespace SDL3
         {
             return Marshal.PtrToStringUTF8(_SDL_GetMouseNameForID(instance_id)) ?? "Mouse";
         }
-
-        /// <summary>
-        /// Returns the current mouse button state and absolute position.
-        /// Button mask: bit 0 = left, bit 1 = middle, bit 2 = right, bit 3 = X1, bit 4 = X2.
-        /// </summary>
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint SDL_GetMouseState(out float x, out float y);
-
-        /// <summary>
-        /// Returns mouse relative motion since the last call.
-        /// </summary>
-        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint SDL_GetRelativeMouseState(out float x, out float y);
-
-        // SDL mouse button masks
-        public const uint SDL_BUTTON_LMASK = 1u << 0;
-        public const uint SDL_BUTTON_MMASK = 1u << 1;
-        public const uint SDL_BUTTON_RMASK = 1u << 2;
-        public const uint SDL_BUTTON_X1MASK = 1u << 3;
-        public const uint SDL_BUTTON_X2MASK = 1u << 4;
 
         // ─────────────────────────────────────────────
         //  SDL Scancode constants (common keys)
@@ -1391,14 +1344,10 @@ namespace SDL3
         // Callback delegate types (Cdecl). Keep the managed delegates alive for the
         // lifetime of the attached joystick or the marshaled pointers dangle.
         // SDL uses C `bool` (1 byte); marshal returns/params as I1, not the default 4-byte BOOL.
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] public delegate void VJUpdate(IntPtr userdata);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)] public delegate void VJSetPlayerIndex(IntPtr userdata, int playerIndex);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJRumble(IntPtr userdata, ushort lowFreq, ushort highFreq);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJRumbleTriggers(IntPtr userdata, ushort left, ushort right);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJSetLED(IntPtr userdata, byte r, byte g, byte b);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJSendEffect(IntPtr userdata, IntPtr data, int size);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJSetSensorsEnabled(IntPtr userdata, [MarshalAs(UnmanagedType.I1)] bool enabled);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] public delegate void VJCleanup(IntPtr userdata);
 
         /// <summary>
         /// Mirror of SDL_VirtualJoystickDesc. Natural alignment yields the required

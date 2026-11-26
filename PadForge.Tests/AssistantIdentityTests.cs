@@ -40,6 +40,8 @@ namespace PadForge.Tests
         public void Dispose()
         {
             UserInstall.FindSeam = null;
+            AssistantIdentity.ShimOpenSeam = null;
+            AssistantIdentity.ShellVariablesSeam = null;
             AutomationConsent.CommandLineSeam = null;
             AutomationConsent.ParentSeam = null;
             AutomationConsent.ParentPathSeam = null;
@@ -201,7 +203,7 @@ namespace PadForge.Tests
         {
             var checks = new Checks();
             checks.List.Add(new UserInstall.AssistantCheck(key, program, "current", "current", null));
-            var vm = new DashboardViewModel { AssistantInstallSeam = checks.Run, AssistantIconSeam = _ => null };
+            var vm = new DashboardViewModel { AssistantInstallSeam = checks.Run, AssistantIconSeam = _ => null, AssistantFindSeam = _ => program };
             vm.AttachAutomation(host, Dispatcher.CurrentDispatcher);
             vm.EnableAutomation = true;
             await vm.RefreshAssistantRowsAsync();
@@ -289,6 +291,44 @@ namespace PadForge.Tests
             string other = Plant(Path.Combine(_root, "Zed", "Zed.exe"));
             var zed = await RowFor(rig.Host, "zed", other);
             Assert.Equal(Strings.Instance.Extras_Automation_State_Added, zed.Line);
+        }
+
+        /// <summary>A shim that grows past the cap after its size was read is
+        /// read through one stream and no further than the cap: the folder
+        /// is the user's, and the copy that reads it has rights.</summary>
+        [Fact]
+        public void AShimThatGrowsAfterItsSizeIsRead_IsReadNoFurtherThanTheCap()
+        {
+            string shim = NodeShim("grows", @"node_modules\grows\cli.js");
+            byte[] small = File.ReadAllBytes(shim);
+            Assert.NotNull(AssistantIdentity.ReadShim(shim));
+            byte[] Padded(int length)
+            {
+                var bytes = new byte[length];
+                Array.Fill(bytes, (byte)' ');
+                small.CopyTo(bytes, 0);
+                return bytes;
+            }
+            AssistantIdentity.ShimOpenSeam = _ => new MemoryStream(Padded(AssistantIdentity.MostShimBytes));
+            Assert.NotNull(AssistantIdentity.ReadShim(shim));
+            AssistantIdentity.ShimOpenSeam = _ => new MemoryStream(Padded(AssistantIdentity.MostShimBytes + 1));
+            Assert.Null(AssistantIdentity.ReadShim(shim));
+        }
+
+        /// <summary>A shim that names bare node runs the node on the PATH of
+        /// the user who starts the assistant. The copy with rights has the
+        /// machine's Path alone, so the node is looked for on the desktop
+        /// shell user's PATH.</summary>
+        [Fact]
+        public void AShimNamingBareNode_FindsTheNodeOnTheShellUsersPath()
+        {
+            string folder = Path.Combine(_root, "fnm", "node-v22");
+            string node = Plant(Path.Combine(folder, "node.exe"));
+            string shim = NodeShim("claude", @"node_modules\@anthropic-ai\claude-code\cli.js");
+            AssistantIdentity.ShellVariablesSeam = () => new[] { @"Path=C:\Nowhere;" + folder, "PATHEXT=.COM;.EXE;.BAT;.CMD" };
+            var identity = AssistantIdentity.Of(shim);
+            Assert.Equal(Final(node), identity.Path, StringComparer.OrdinalIgnoreCase);
+            Assert.Equal(Path.Combine(_npm, "node_modules", "@anthropic-ai", "claude-code", "cli.js"), identity.Script, StringComparer.OrdinalIgnoreCase);
         }
     }
 }

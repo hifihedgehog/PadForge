@@ -56,16 +56,32 @@ namespace PadForge.Common
         /// bundled package names.</summary>
         public static List<string> Export(ProfileData profile, string destPath)
         {
-            var bundled = new List<string>();
-
             // Build in a temp file and move into place, so a mid-export
             // failure (e.g. a locked package file) never leaves a truncated
             // .pfprofile at the destination.
             string tmpPath = destPath + ".tmp";
             try
             {
+                List<string> bundled;
                 using (var fs = File.Create(tmpPath))
-                using (var zip = new ZipArchive(fs, ZipArchiveMode.Create))
+                    bundled = Export(profile, fs);
+                File.Move(tmpPath, destPath, overwrite: true);
+                return bundled;
+            }
+            catch
+            {
+                try { File.Delete(tmpPath); } catch { }
+                throw;
+            }
+        }
+
+        /// <summary>Writes the same .pfprofile into <paramref name="destination"/>,
+        /// which stays open. Returns the bundled package names.</summary>
+        public static List<string> Export(ProfileData profile, Stream destination)
+        {
+            var bundled = new List<string>();
+            {
+                using (var zip = new ZipArchive(destination, ZipArchiveMode.Create, leaveOpen: true))
                 {
                     var entry = zip.CreateEntry(ProfileEntry);
                     using (var s = entry.Open())
@@ -114,12 +130,6 @@ namespace PadForge.Common
                         foreach (var line in iconAliasMap) ms.WriteLine(line);
                     }
                 }
-                File.Move(tmpPath, destPath, overwrite: true);
-            }
-            catch
-            {
-                try { File.Delete(tmpPath); } catch { }
-                throw;
             }
             return bundled;
         }
@@ -127,18 +137,13 @@ namespace PadForge.Common
         /// <summary>Reads the profile a .pfprofile file holds and lands
         /// nothing: what an import would add, for the question an
         /// assistant's import puts to the user before anything comes in
-        /// (#597). Null when the file isn't a readable profile.</summary>
+        /// (#600). Null when the file isn't a readable profile.</summary>
         public static ProfileData Peek(string srcPath)
         {
             try
             {
                 using var zip = ZipFile.OpenRead(srcPath);
-                var pe = zip.GetEntry(ProfileEntry);
-                if (pe == null) return null;
-                using var s = pe.Open();
-                var profile = (ProfileData)Serializer.Deserialize(s);
-                profile?.MigrateLegacySchema();
-                return profile;
+                return PeekIn(zip);
             }
             catch (Exception ex) when (ex is IOException or InvalidDataException or InvalidOperationException or UnauthorizedAccessException)
             {
@@ -146,9 +151,34 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary><see cref="Peek(string)"/> of a file's bytes held in
+        /// memory, which an assistant's import reads once (#600).</summary>
+        public static ProfileData Peek(byte[] bytes)
+        {
+            try
+            {
+                using var zip = new ZipArchive(new MemoryStream(bytes ?? Array.Empty<byte>(), writable: false), ZipArchiveMode.Read);
+                return PeekIn(zip);
+            }
+            catch (Exception ex) when (ex is IOException or InvalidDataException or InvalidOperationException or UnauthorizedAccessException)
+            {
+                return null;
+            }
+        }
+
+        private static ProfileData PeekIn(ZipArchive zip)
+        {
+            var pe = zip.GetEntry(ProfileEntry);
+            if (pe == null) return null;
+            using var s = pe.Open();
+            var profile = (ProfileData)Serializer.Deserialize(s);
+            profile?.MigrateLegacySchema();
+            return profile;
+        }
+
         /// <summary>A copy of a profile that shares nothing with it, made the
         /// way the file holds it: for a copy of a stored profile and for the
-        /// state an assistant's changes are undone to (#597).</summary>
+        /// state an assistant's changes are undone to (#600).</summary>
         public static ProfileData Clone(ProfileData profile)
         {
             if (profile == null) return null;
@@ -168,121 +198,143 @@ namespace PadForge.Common
             try
             {
                 using var zip = ZipFile.OpenRead(srcPath);
-                var pe = zip.GetEntry(ProfileEntry);
-                if (pe == null) return null;
-
-                ProfileData profile;
-                using (var s = pe.Open())
-                    profile = (ProfileData)Serializer.Deserialize(s);
-                if (profile == null) return null;
-                // Profiles exported before the v4.x schema rename carry the
-                // per-(slot, device) configs under the legacy element name.
-                profile.MigrateLegacySchema();
-                // One exported while the engine still read the gyro stamps
-                // carries them beside the devices its entries assign.
-                profile.FoldCarriedGyroStamps();
-                // A profile exported before #494 may carry the Razer Chroma,
-                // Logitech LIGHTSYNC and Razer Sensa switches, each of which
-                // becomes an assignment of its row.
-                PeripheralSwitchMigration.MigrateImported(profile);
-                profile.Id = Guid.NewGuid().ToString("N");
-
-                // alias -> bundled file, written by Export. Absent on older
-                // archives, which then keep the probed-name-only behavior.
-                var aliasesByFile = ReadAliasMap(zip);
-
-                // Actions already rewritten by THIS import. RewritePackageRefs
-                // matches on a ref's CURRENT value, and the loop below rewrites
-                // in place once per bundled entry, so an alias belonging to a
-                // LATER entry could re-match refs an earlier entry had already
-                // pointed at its final name. Registration dedups by appending
-                // " (n)", which is exactly the shape that collides. Marking each
-                // action stops the cascade without reordering the loop.
-                var rewrittenActions = new HashSet<object>(
-                    System.Collections.Generic.ReferenceEqualityComparer.Instance);
-
-                string appDir = AppDomain.CurrentDomain.BaseDirectory;
-                foreach (var e in zip.Entries.Where(x =>
-                             x.FullName.StartsWith(PackagesPrefix, StringComparison.OrdinalIgnoreCase)
-                             && x.Name.EndsWith(SoundPackageManager.FileExtension, StringComparison.OrdinalIgnoreCase)))
-                {
-                    // Entry names come from the archive: strip every path
-                    // component (both separator styles); the shared landing
-                    // helper bounds and copies (ZipSlip, byte-identical
-                    // reuse, dedup rename, capped copy).
-                    string slashed = e.Name.Replace('\\', '/');
-                    string fileName = slashed.Substring(slashed.LastIndexOf('/') + 1);
-                    if (string.IsNullOrWhiteSpace(fileName)) continue;
-                    string target = TryLandEntry(e, appDir, fileName, SoundPackageManager.FileExtension);
-                    if (target == null) continue; // skip this package, keep importing the profile
-
-                    string name = SoundPackageManager.Register(target, out string probedName);
-                    if (name == null) continue;
-                    registeredPackages.Add(name);
-
-                    // Rewrite the profile's refs onto whatever name this
-                    // machine registered the file under.
-                    //
-                    // The alias map is authoritative when present: it says
-                    // exactly which ref the EXPORTING machine used for THIS
-                    // file, including a dedup-suffixed alias ("SFX (2)") that
-                    // the probed name alone can never reconstruct. That case
-                    // used to leave the macro pointing at a package name no
-                    // machine had, and the sound silently never played.
-                    bool rewrote = false;
-                    if (aliasesByFile.TryGetValue(fileName, out var aliases))
-                    {
-                        foreach (var alias in aliases)
-                        {
-                            if (string.Equals(alias, name, StringComparison.OrdinalIgnoreCase)) { rewrote = true; continue; }
-                            RewritePackageRefs(profile, alias, name, rewrittenActions);
-                            rewrote = true;
-                        }
-                    }
-                    // Older archives carry no map: fall back to the probed
-                    // name, which is what those refs were written against.
-                    if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
-                        RewritePackageRefs(profile, probedName, name, rewrittenActions);
-                }
-
-                // #390: icon packs, the identical landing and rewrite
-                // discipline against the menus' pficon:// references.
-                var iconAliasesByFile = ReadAliasMap(zip, IconAliasMapEntry);
-                var rewrittenItems = new HashSet<object>(
-                    System.Collections.Generic.ReferenceEqualityComparer.Instance);
-                foreach (var e in zip.Entries.Where(x =>
-                             x.FullName.StartsWith(IconsPrefix, StringComparison.OrdinalIgnoreCase)
-                             && x.Name.EndsWith(IconPackageManager.FileExtension, StringComparison.OrdinalIgnoreCase)))
-                {
-                    string slashed = e.Name.Replace('\\', '/');
-                    string fileName = slashed.Substring(slashed.LastIndexOf('/') + 1);
-                    if (string.IsNullOrWhiteSpace(fileName)) continue;
-                    string target = TryLandEntry(e, appDir, fileName, IconPackageManager.FileExtension);
-                    if (target == null) continue;
-
-                    string name = IconPackageManager.Register(target, out string probedName);
-                    if (name == null) continue;
-                    registeredPackages.Add(name);
-
-                    bool rewrote = false;
-                    if (iconAliasesByFile.TryGetValue(fileName, out var aliases))
-                    {
-                        foreach (var alias in aliases)
-                        {
-                            if (string.Equals(alias, name, StringComparison.OrdinalIgnoreCase)) { rewrote = true; continue; }
-                            RewriteIconPackageRefs(profile, alias, name, rewrittenItems);
-                            rewrote = true;
-                        }
-                    }
-                    if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
-                        RewriteIconPackageRefs(profile, probedName, name, rewrittenItems);
-                }
-                return profile;
+                return ImportFrom(zip, registeredPackages);
             }
             catch
             {
                 return null;
             }
+        }
+
+        /// <summary><see cref="Import(string, out List{string})"/> of a
+        /// file's bytes held in memory, the ones an assistant's import showed
+        /// the user (#600).</summary>
+        public static ProfileData Import(byte[] bytes, out List<string> registeredPackages)
+        {
+            registeredPackages = new List<string>();
+            try
+            {
+                using var zip = new ZipArchive(new MemoryStream(bytes ?? Array.Empty<byte>(), writable: false), ZipArchiveMode.Read);
+                return ImportFrom(zip, registeredPackages);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static ProfileData ImportFrom(ZipArchive zip, List<string> registeredPackages)
+        {
+            var pe = zip.GetEntry(ProfileEntry);
+            if (pe == null) return null;
+
+            ProfileData profile;
+            using (var s = pe.Open())
+                profile = (ProfileData)Serializer.Deserialize(s);
+            if (profile == null) return null;
+            // Profiles exported before the v4.x schema rename carry the
+            // per-(slot, device) configs under the legacy element name.
+            profile.MigrateLegacySchema();
+            // One exported while the engine still read the gyro stamps
+            // carries them beside the devices its entries assign.
+            profile.FoldCarriedGyroStamps();
+            // A profile exported before #494 may carry the Razer Chroma,
+            // Logitech LIGHTSYNC and Razer Sensa switches, each of which
+            // becomes an assignment of its row.
+            PeripheralSwitchMigration.MigrateImported(profile);
+            profile.Id = Guid.NewGuid().ToString("N");
+
+            // alias -> bundled file, written by Export. Absent on older
+            // archives, which then keep the probed-name-only behavior.
+            var aliasesByFile = ReadAliasMap(zip);
+
+            // Actions already rewritten by THIS import. RewritePackageRefs
+            // matches on a ref's CURRENT value, and the loop below rewrites
+            // in place once per bundled entry, so an alias belonging to a
+            // LATER entry could re-match refs an earlier entry had already
+            // pointed at its final name. Registration dedups by appending
+            // " (n)", which is exactly the shape that collides. Marking each
+            // action stops the cascade without reordering the loop.
+            var rewrittenActions = new HashSet<object>(
+                System.Collections.Generic.ReferenceEqualityComparer.Instance);
+
+            string appDir = AppDomain.CurrentDomain.BaseDirectory;
+            foreach (var e in zip.Entries.Where(x =>
+                         x.FullName.StartsWith(PackagesPrefix, StringComparison.OrdinalIgnoreCase)
+                         && x.Name.EndsWith(SoundPackageManager.FileExtension, StringComparison.OrdinalIgnoreCase)))
+            {
+                // Entry names come from the archive: strip every path
+                // component (both separator styles); the shared landing
+                // helper bounds and copies (ZipSlip, byte-identical
+                // reuse, dedup rename, capped copy).
+                string slashed = e.Name.Replace('\\', '/');
+                string fileName = slashed.Substring(slashed.LastIndexOf('/') + 1);
+                if (string.IsNullOrWhiteSpace(fileName)) continue;
+                string target = TryLandEntry(e, appDir, fileName, SoundPackageManager.FileExtension);
+                if (target == null) continue; // skip this package, keep importing the profile
+
+                string name = SoundPackageManager.Register(target, out string probedName);
+                if (name == null) continue;
+                registeredPackages.Add(name);
+
+                // Rewrite the profile's refs onto whatever name this
+                // machine registered the file under.
+                //
+                // The alias map is authoritative when present: it says
+                // exactly which ref the EXPORTING machine used for THIS
+                // file, including a dedup-suffixed alias ("SFX (2)") that
+                // the probed name alone can never reconstruct. That case
+                // used to leave the macro pointing at a package name no
+                // machine had, and the sound silently never played.
+                bool rewrote = false;
+                if (aliasesByFile.TryGetValue(fileName, out var aliases))
+                {
+                    foreach (var alias in aliases)
+                    {
+                        if (string.Equals(alias, name, StringComparison.OrdinalIgnoreCase)) { rewrote = true; continue; }
+                        RewritePackageRefs(profile, alias, name, rewrittenActions);
+                        rewrote = true;
+                    }
+                }
+                // Older archives carry no map: fall back to the probed
+                // name, which is what those refs were written against.
+                if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
+                    RewritePackageRefs(profile, probedName, name, rewrittenActions);
+            }
+
+            // #390: icon packs, the identical landing and rewrite
+            // discipline against the menus' pficon:// references.
+            var iconAliasesByFile = ReadAliasMap(zip, IconAliasMapEntry);
+            var rewrittenItems = new HashSet<object>(
+                System.Collections.Generic.ReferenceEqualityComparer.Instance);
+            foreach (var e in zip.Entries.Where(x =>
+                         x.FullName.StartsWith(IconsPrefix, StringComparison.OrdinalIgnoreCase)
+                         && x.Name.EndsWith(IconPackageManager.FileExtension, StringComparison.OrdinalIgnoreCase)))
+            {
+                string slashed = e.Name.Replace('\\', '/');
+                string fileName = slashed.Substring(slashed.LastIndexOf('/') + 1);
+                if (string.IsNullOrWhiteSpace(fileName)) continue;
+                string target = TryLandEntry(e, appDir, fileName, IconPackageManager.FileExtension);
+                if (target == null) continue;
+
+                string name = IconPackageManager.Register(target, out string probedName);
+                if (name == null) continue;
+                registeredPackages.Add(name);
+
+                bool rewrote = false;
+                if (iconAliasesByFile.TryGetValue(fileName, out var aliases))
+                {
+                    foreach (var alias in aliases)
+                    {
+                        if (string.Equals(alias, name, StringComparison.OrdinalIgnoreCase)) { rewrote = true; continue; }
+                        RewriteIconPackageRefs(profile, alias, name, rewrittenItems);
+                        rewrote = true;
+                    }
+                }
+                if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
+                    RewriteIconPackageRefs(profile, probedName, name, rewrittenItems);
+            }
+            return profile;
         }
 
         /// <summary>Reads the alias map written by Export, keyed by bundled

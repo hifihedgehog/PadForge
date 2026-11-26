@@ -33,7 +33,7 @@ namespace PadForge.Tests
                 using var host = new RecorderTestHost();
                 var scrubber = new PrivacyScrubber(host.Environment());
                 // As a recording learns them: every profile's name.
-                host.KnowTypedNames(scrubber);
+                host.LearnTypedNames(scrubber);
                 var lines = new List<string>();
                 host.MoreSettingsLines(scrubber, lines);
 

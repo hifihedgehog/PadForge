@@ -127,7 +127,7 @@ namespace PadForge.Tests
             Assert.Contains("_mouseStatesValues", src);
 
             var body = Regex.Match(src,
-                @"public static DeviceInfo\[\] EnumerateMice\(\)\s*\r?\n\s*\{(.*?)\r?\n        \}",
+                @"public static DeviceInfo\[\] EnumerateMice\(out bool listed\)\s*\r?\n\s*\{(.*?)\r?\n        \}",
                 RegexOptions.Singleline);
             Assert.True(body.Success, "EnumerateMice moved; update this test with it.");
 
@@ -138,13 +138,12 @@ namespace PadForge.Tests
             // enumerates, so clearing it would break PadForge's own injection.
             Assert.Contains("IntPtr.Zero", b);
 
-            // And the sweep must NOT run on an empty enumeration. This was a
-            // regression the fix itself introduced: EnumerateDevicesByType
-            // returns an empty array on a failed GetRawInputDeviceList as well
-            // as on a genuine zero, and those are indistinguishable, so an
-            // unguarded sweep treated every live mouse as absent and released
-            // a button the user was holding on any transient API hiccup.
-            Assert.Contains("devices.Length > 0", b);
+            // And the sweep must NOT run on a list that could not be read.
+            // This was a regression the fix itself introduced: an unguarded
+            // sweep treated every live mouse as absent and released a button
+            // the user was holding on any transient API hiccup.
+            // EnumerateDevicesByType now says whether the list was read.
+            Assert.Contains("listed && devices.Length > 0", b);
         }
 
         // ── The KBM mouse floor documents what it can actually deliver ──

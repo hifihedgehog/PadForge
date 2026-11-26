@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
@@ -84,16 +83,10 @@ namespace PadForge.Views
 
         private void GitHub_Click(object sender, RoutedEventArgs e) => Open("https://github.com/" + UpdateService.Repo);
 
-        /// <summary>Opens a web page in the browser.</summary>
-        private static void Open(string url)
-        {
-            try { ShellLaunch.Start(new ProcessStartInfo(url) { UseShellExecute = true }); }
-            catch (Win32Exception)
-            {
-                // No program is registered for web pages, and the click does
-                // nothing.
-            }
-        }
+        /// <summary>Opens a web page in the browser, through the desktop
+        /// shell, which throws nothing. With no program registered for web
+        /// pages the click does nothing.</summary>
+        private static void Open(string url) => ShellLaunch.Start(new ProcessStartInfo(url) { UseShellExecute = true });
 
         private void ShowAllCredits_Click(object sender, RoutedEventArgs e)
         {

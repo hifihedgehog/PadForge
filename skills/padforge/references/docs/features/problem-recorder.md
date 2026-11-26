@@ -67,7 +67,7 @@ A recording that stops while nobody is at the page, at its limit, from a macro, 
 
 A recording PadForge did not stop, because PadForge closed or crashed, is finished at the next start and waits on Home.
 
-While a recording runs, its file is in your own temp folder, in `PadForge Recordings`.
+While a recording runs, its file is in your own temp folder, in `PadForge Recordings`. PadForge takes a temp folder only inside your user profile and reached through no link, so with TEMP and TMP set elsewhere it uses the Temp folder in your local app data.
 
 ### Save a Snapshot
 
@@ -85,8 +85,8 @@ Beside the inputs and outputs, a recording holds:
 
 - While the window does not answer: the operation the window was running, the last message it took, how much processor time its thread used, and Windows' wait chain of that thread, which says whether it waits or runs and names a deadlock.
 - A device call that takes long, with its device, and an engine that stops running passes.
-- A health line every ten seconds: memory, processor, handles, window and drawing objects, threads, .NET collections and power.
-- A line when the whole PC was held up.
+- A health line every ten seconds: memory, processor, handles, window and drawing objects, .NET collections and power.
+- A line when the recording's own thread woke late.
 - Every exception, the window thread's included, up to 40, and how the window was shown.
 - Force effects made, stopped, refused and failed, and what a game reads back through XInput.
 - Driver versions, the Windows build and display scale, and every setting changed while it recorded.
@@ -104,7 +104,7 @@ Before anything is written, PadForge replaces your user name, PC name, domain an
 
 A recording is scrubbed before it is written, and the review shows exactly what it holds. Once you have read it, you may attach it to a public bug report or discussion.
 
-Anything you would still rather not post publicly goes by a direct message to the maintainer on [PadForge's Discord](https://discord.gg/qawTZHVhNH) instead. A recording fits in a Discord message as a file, since it stops at 20 MB in the zip. Post the report without it, and say in the report that a file was sent privately.
+Anything you would still rather not post publicly goes by a direct message to the maintainer on [PadForge's Discord](https://discord.gg/qawTZHVhNH) instead. A recording goes in the message as a file when your Discord account takes a file that large, and otherwise by link, as a memory dump does below. A recording that stopped at its 20 MB limit is a little over 20 MB. Post the report without it, and say in the report that a file was sent privately.
 
 ---
 
@@ -117,7 +117,7 @@ Make a memory dump only when a recording and `crash.log` do not explain the prob
 3. Send only the share link, by a direct message to the maintainer on [PadForge's Discord](https://discord.gg/qawTZHVhNH). Where the host allows it, share the file with the maintainer alone rather than with anyone who has the link.
 4. Delete the upload once the issue is solved.
 
-PadForge runs as administrator, so the tool that dumps it must too. Several copies of PadForge.exe can run at once: the app, plus helpers for assistants (`--mcp`), the web (`--web`) and vendor libraries (`--native-host`). Dump the app by its process ID, never by its name.
+PadForge runs as administrator, so the tool that dumps it must too. Several copies of PadForge.exe can run at once: the app, helpers for assistants (`--mcp`), the web (`--web`) and vendor libraries (`--native-host`), and short-lived copies for an install's check (`--install … --check`), a recording's save (`--record save`), a command line's call (`--call`, `--tools` and the other switches that run alone) and a start with `--wait`, which waits until the app exits. Dump the app by its process ID, never by its name.
 
 ### Find PadForge's process ID
 
@@ -125,11 +125,11 @@ Open PowerShell as administrator and run:
 
 ```powershell
 Get-CimInstance Win32_Process -Filter "Name='PadForge.exe'" |
-    Where-Object { $_.CommandLine -notmatch '--(mcp|web|native-host|record)' } |
+    Where-Object { $_.CommandLine -notmatch '--(mcp|web|native-host|install|tools|call|skill|describe|plugin-kit|summarize|settings-folder)|--record save' } |
     Select-Object ProcessId, CommandLine
 ```
 
-The process listed is the app. Its ID is the number to use below. In Task Manager, the app is the PadForge.exe with the window named PadForge.
+The process listed is the app. Its ID is the number to use below. When a copy started with `--wait` is listed too, the app is the other one: PadForge leaves `--wait` off the copy it starts with rights. In Task Manager, the app is the PadForge.exe with the window named PadForge.
 
 ### With ProcDump
 

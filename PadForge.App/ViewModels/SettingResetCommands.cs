@@ -135,7 +135,7 @@ namespace PadForge.ViewModels
                 case nameof(ControllerDatabaseStatus):
                 {
                     // The downloaded rows go, and the row reads what this
-                    // version carries (#597). ControllerDatabaseController
+                    // version carries (#600). ControllerDatabaseController
                     // empties the section.
                     ControllerDatabaseResetRequested?.Invoke(this, EventArgs.Empty);
                     break;
@@ -825,7 +825,7 @@ namespace PadForge.ViewModels
                 }
                 case nameof(ScriptValue):
                 {
-                    // No name, the value a new script value row starts with (#597).
+                    // No name, the value a new script value row starts with (#600).
                     ScriptValue = string.Empty;
                     break;
                 }

@@ -9,7 +9,7 @@ using PadForge.ViewModels;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// What a change would make PadForge do outside itself (#597), one line
+    /// What a change would make PadForge do outside itself (#600), one line
     /// each for the request card: the programs a macro or a profile would run
     /// and the files and addresses it would open, the keys it would press,
     /// the text it would type and the mouse input it would send to Windows,
@@ -60,7 +60,27 @@ namespace PadForge.Services.Automation
                     line = AssistantToolWords.PressesKey(key);
                 }
                 else if (action.Type == MacroActionType.TextBlock) line = AssistantToolWords.TypesText();
+                else if (action.Type == MacroActionType.PlaySound && !string.IsNullOrWhiteSpace(action.SoundFilePath))
+                    line = AssistantToolWords.FileLine(action.SoundFilePath.Trim());
                 else if (Mouse.Contains(action.Type)) line = AssistantToolWords.MovesMouse();
+                else if (action.Type == MacroActionType.CycleTapList)
+                {
+                    // Its key parts tap keys and its mouse and wheel parts
+                    // click and scroll (InputManager.ExecuteCycleTapList),
+                    // read by the parts' own parser.
+                    foreach (string step in (action.CycleStepsCsv ?? string.Empty).Split(',', System.StringSplitOptions.RemoveEmptyEntries))
+                        foreach (string text in step.Split('+', System.StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            if (!CycleStepPart.TryParse(text, out var part)) continue;
+                            string partLine = part.Kind switch
+                            {
+                                'K' => AssistantToolWords.PressesKey("0x" + part.Value.ToString("X2", CultureInfo.InvariantCulture)),
+                                'M' or 'W' or 'H' => AssistantToolWords.MovesMouse(),
+                                _ => null,
+                            };
+                            if (partLine != null && !lines.Contains(partLine)) lines.Add(partLine);
+                        }
+                }
                 else if (action.Type == MacroActionType.ProfileShortcut)
                 {
                     // A switch to a profile that turns on an extra that

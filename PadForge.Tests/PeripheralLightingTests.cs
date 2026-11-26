@@ -489,7 +489,9 @@ namespace PadForge.Tests
             Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.LogitechLightsync, Presence(gHub: true)));
             Assert.True(InputManager.PeripheralRowWanted(PeripheralRowKind.SteelSeriesGG, Presence(gg: true)));
             Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa, Presence(synapse: true)));
-            Assert.True(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa, Presence(synapse: true, sensa: true)));
+            Assert.False(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa, Presence(synapse: true, sensa: true)));
+            Assert.True(InputManager.PeripheralRowWanted(PeripheralRowKind.RazerSensa,
+                Presence(synapse: true, sensa: true) with { RazerSensaRuntime = true }));
         }
 
         // ─────────────────────────────────────────────

@@ -6,7 +6,7 @@ using PadForge.Services.Automation;
 namespace PadForge.Services.Plugins
 {
     /// <summary>
-    /// The two plugins PadForge carries (#597), each a switch on the
+    /// The two plugins PadForge carries (#600), each a switch on the
     /// Plugins page: the Test Controller and Replay. Their devices are
     /// program devices that belong to no session
     /// (<see cref="ProgramDevices.DeclareBuiltIn"/>), on the Devices page
@@ -196,10 +196,10 @@ namespace PadForge.Services.Plugins
             while (_tests.Count < want)
             {
                 int index = _tests.Count;
+                // The motion is the device's before the engine lists it.
+                var motion = new TestControllerMotion(() => _testConfig);
                 var entry = _devices.DeclareBuiltIn(TestControllerProgram, TestControllerKeyOf(index), TestControllerNameOf(index),
-                    TestControllerPattern.Shape());
-                var motion = new TestControllerMotion(entry.Device, () => _testConfig);
-                entry.Device.Live = motion.Read;
+                    TestControllerPattern.Shape(), live: motion.Read, livePeek: motion.Peek);
                 int at = index;
                 Name(entry.Guid, () => TestControllerNameOf(at));
                 _tests.Add((entry, motion));
@@ -209,6 +209,7 @@ namespace PadForge.Services.Plugins
                 var (entry, _) = _tests[_tests.Count - 1];
                 _tests.RemoveAt(_tests.Count - 1);
                 entry.Device.Live = null;
+                entry.Device.LivePeek = null;
                 entry.Device.Rest();
                 _devices.RemoveBuiltIn(entry);
             }
@@ -248,16 +249,15 @@ namespace PadForge.Services.Plugins
         /// <summary>How many devices Replay plays now.</summary>
         public int ReplayDeviceCount => _player != null ? _replayEntries.Count : 0;
 
-        /// <summary>Opens a recording, in place of the one open. Null when it
-        /// opened, or the reason in a word.</summary>
-        public string Open(string path)
+        /// <summary>Takes a recording <see cref="ReplayFile.Read"/> read, in
+        /// place of the one open. On the interface's thread: the read runs
+        /// off it.</summary>
+        public void Open(ReplayFile file)
         {
-            var file = ReplayFile.Read(path, out string error);
-            if (file == null) return error;
+            if (file == null) return;
             CloseReplay();
             _file = file;
             ApplyReplay();
-            return null;
         }
 
         public void Play()

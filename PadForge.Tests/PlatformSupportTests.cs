@@ -14,28 +14,19 @@ namespace PadForge.Tests
     /// cannot run emulated. An in-process library follows the PROCESS,
     /// because an x64 DLL loads into an emulated x64 process on an ARM64
     /// machine and cannot load into a native ARM64 one. HidHide has a driver
-    /// for each machine and Vosk a library for each process, so both are
-    /// available everywhere PadForge runs. Sensa has an x64 engine only, so
-    /// the ARM64 build loses it and the x64 build on an ARM64 machine keeps
-    /// it. Each rule is a pure function of the architecture it is handed,
-    /// so both halves are pinned here on a bench that only has x64.</para>
+    /// for each machine, picked by IsArm64Machine, and Vosk a library for
+    /// each process, so both are available everywhere PadForge runs. Sensa
+    /// has an x64 engine only, so the ARM64 build loses it and the x64 build
+    /// on an ARM64 machine keeps it. Each process rule is a pure function of
+    /// the architecture it is handed, and the source pin below holds
+    /// IsArm64Machine to the machine, so both halves are pinned here on a
+    /// bench that only has x64.</para>
     /// </summary>
     public class PlatformSupportTests
     {
         // Each rule names the architectures that HAVE the native half. The
         // rules first read "anything but ARM64", which answered true for
         // x86, where none of it is usable.
-        // HidHide ships a Microsoft-signed driver for x64 and for ARM64.
-        // 4.5.1 answered false for ARM64 on the strength of an upstream issue
-        // about the SETUP, while the driver package sat in the same repository.
-        [Theory]
-        [InlineData(Architecture.X64, true)]
-        [InlineData(Architecture.Arm64, true)]
-        [InlineData(Architecture.X86, false)]
-        [InlineData(Architecture.Arm, false)]
-        public void HidHideFollowsTheMachine(Architecture machine, bool expected)
-            => Assert.Equal(expected, PlatformSupport.HidHideAvailableOn(machine));
-
         // libvosk is bundled for x64 (from the Vosk package) and for ARM64
         // (built from upstream's own recipe, tools/build-libvosk-arm64.sh).
         [Theory]
@@ -63,8 +54,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheX64BuildOnAnArm64MachineKeepsEverything()
         {
-            Architecture machine = Architecture.Arm64, process = Architecture.X64;
-            Assert.True(PlatformSupport.HidHideAvailableOn(machine));
+            Architecture process = Architecture.X64;
             Assert.True(PlatformSupport.VoskAvailableOn(process));
             Assert.True(PlatformSupport.SensaAvailableOn(process));
         }
@@ -75,8 +65,6 @@ namespace PadForge.Tests
         [Fact]
         public void TheLivePropertiesAgreeWithTheRules()
         {
-            Assert.Equal(PlatformSupport.HidHideAvailableOn(RuntimeInformation.OSArchitecture),
-                         PlatformSupport.HidHideAvailable);
             Assert.Equal(PlatformSupport.VoskAvailableOn(RuntimeInformation.ProcessArchitecture),
                          PlatformSupport.VoskAvailable);
             Assert.Equal(PlatformSupport.SensaAvailableOn(RuntimeInformation.ProcessArchitecture),
@@ -96,7 +84,6 @@ namespace PadForge.Tests
         [InlineData("MachineArchitecture", "RuntimeInformation.OSArchitecture")]
         [InlineData("ProcessArchitecture", "RuntimeInformation.ProcessArchitecture")]
         [InlineData("IsArm64Machine", "MachineArchitecture == Architecture.Arm64")]
-        [InlineData("HidHideAvailable", "HidHideAvailableOn(MachineArchitecture)")]
         [InlineData("VoskAvailable", "VoskAvailableOn(ProcessArchitecture)")]
         [InlineData("SensaAvailable", "SensaAvailableOn(ProcessArchitecture)")]
         public void EachLivePropertyAsksTheArchitectureItsRuleIsAbout(string property, string expression)
@@ -110,8 +97,8 @@ namespace PadForge.Tests
         public void ThePinSeesAMachineProcessSwap()
         {
             string swapped = PlatformSupportSource().Replace(
-                "HidHideAvailableOn(MachineArchitecture)", "HidHideAvailableOn(ProcessArchitecture)");
-            Assert.Equal("HidHideAvailableOn(ProcessArchitecture)", LivePropertyBody(swapped, "HidHideAvailable"));
+                "MachineArchitecture == Architecture.Arm64", "ProcessArchitecture == Architecture.Arm64");
+            Assert.Equal("ProcessArchitecture == Architecture.Arm64", LivePropertyBody(swapped, "IsArm64Machine"));
         }
 
         private static string PlatformSupportSource()

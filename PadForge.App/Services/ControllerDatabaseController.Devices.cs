@@ -33,15 +33,51 @@ namespace PadForge.Services
         /// <summary>No joystick: a keyboard, a mouse, or a device with no
         /// inputs a row could name.</summary>
         None,
+        /// <summary>A saved device that is not connected now.</summary>
+        Away,
+        /// <summary>The engine runs and SDL gave no reading of the device:
+        /// no answer in time, or no ID.</summary>
+        NoAnswer,
+    }
+
+    /// <summary>What Find a Mapping's list leaves out.</summary>
+    internal enum SdlFindMissing
+    {
+        /// <summary>Nothing: SDL listed every row it holds.</summary>
+        None,
+        /// <summary>The rows SDL holds, since the engine is stopped.</summary>
+        Stopped,
+        /// <summary>The rows SDL holds, since it gave no answer in time.</summary>
+        NoAnswer,
+    }
+
+    /// <summary>Why Copy SDL Mapping had nothing to copy.</summary>
+    internal enum SdlCopyEmpty
+    {
+        /// <summary>A row was copied.</summary>
+        None,
+        /// <summary>SDL has no mapping for the device, and it is on no
+        /// controller.</summary>
+        NoMapping,
+        /// <summary>SDL maps the device by a text PadForge does not read, and
+        /// no controller's rows give a binding.</summary>
+        Unreadable,
+        /// <summary>SDL has no mapping for the device, and the picked
+        /// controller's rows give no binding SDL's form takes.</summary>
+        NothingInRows,
+        /// <summary>SDL's mapping for the device was not read (the device is
+        /// away, the engine stopped, or SDL gave no answer), and no row of
+        /// the user's or of the picked controller gives a binding.</summary>
+        NotRead,
     }
 
     /// <summary>What the SDL Mapping card shows for a device (#600 item 45).</summary>
     internal sealed record SdlCardFacts(SdlReading Reading, string Name, string Id, SdlMappingSource Source, string SourceDate,
         SdlMappingRow Row, string RowText, ControllerDatabaseMineRow Mine, IReadOnlyList<(string Controller, IReadOnlyList<SdlPlaceLine> Lines)> Places,
-        IReadOnlyList<string> Unused, string ControllerName)
+        IReadOnlyList<string> Unused)
     {
         internal static readonly SdlCardFacts Nothing = new(SdlReading.None, null, null, SdlMappingSource.None, null, null, null, null,
-            Array.Empty<(string, IReadOnlyList<SdlPlaceLine>)>(), Array.Empty<string>(), null);
+            Array.Empty<(string, IReadOnlyList<SdlPlaceLine>)>(), Array.Empty<string>());
     }
 
     /// <summary>What applying a row came to (#600 item 47).</summary>
@@ -95,6 +131,39 @@ namespace PadForge.Services
         /// tests.</summary>
         internal Func<string> ProfileVariable = ControllerDatabaseProfileRows.Read;
 
+        // The engine's door (ControllerDatabaseEngine.Post), replaceable in
+        // tests: whether the engine runs, and each piece of work the poll
+        // thread does for the card. The test host starts no SDL.
+
+        /// <summary>Whether the engine runs, so posted work is done.</summary>
+        internal Func<bool> EngineRuns = () => ControllerDatabaseEngine.Running;
+
+        /// <summary>What SDL says of a device now, or null.</summary>
+        internal Func<Guid, Task<SdlDeviceFacts>> ReadFacts = instance =>
+            ControllerDatabaseEngine.Post(e => e.ReadSdlFacts(instance), null);
+
+        /// <summary>The mapping SDL holds for an ID (empty for none), or null
+        /// while the engine is stopped.</summary>
+        internal Func<string, Task<string>> HeldFor = id =>
+            ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForGuid(id), null);
+
+        /// <summary>Gives SDL the rows <paramref name="rows"/> makes on the
+        /// poll thread and has every listed joystick read again
+        /// (InputManager.ApplySdlRows).</summary>
+        internal Func<Func<IReadOnlyList<string>>, bool, Task<ControllerDatabaseApplied>> GiveSdl = DefaultGiveSdl;
+
+        private static Task<ControllerDatabaseApplied> DefaultGiveSdl(Func<IReadOnlyList<string>> rows, bool offerNew) =>
+            ControllerDatabaseEngine.Post(e => e.ApplySdlRows(rows(), offerNew), ControllerDatabaseApplied.NotRunning);
+
+        /// <summary>The mapping SDL holds for an ID, empty for none, on the
+        /// poll thread (ControllerDatabaseEngine.MappingForGuid).</summary>
+        internal Func<string, string> HeldOnPollThread = ControllerDatabaseEngine.MappingForGuid;
+
+        /// <summary>Every mapping SDL holds, or null while the engine is
+        /// stopped.</summary>
+        internal Func<Task<List<string>>> HeldRows = () =>
+            ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.AllMappings(), null);
+
         private void StartDevices()
         {
             _ui = System.Threading.SynchronizationContext.Current;
@@ -134,7 +203,6 @@ namespace PadForge.Services
         {
             var ud = DeviceOf(instance);
             if (!IsJoystickClass(ud)) return SdlCardFacts.Nothing;
-            string controller = ControllerNames(instance).FirstOrDefault();
             var mine = ControllerDatabaseMine.Current;
 
             if (string.IsNullOrEmpty(ud.SdlGuid))
@@ -142,19 +210,18 @@ namespace PadForge.Services
                 var own = mine.ForPadForgeDevice(instance);
                 string id = instance.ToString("N");
                 return Build(SdlReading.PadForgeDevice, ud.ProductName ?? ud.ResolvedName, id, own == null ? SdlMappingSource.None : SdlMappingSource.YoursPadForge,
-                    own, own?.Row, own?.Row.TextUnder(id), instance, readAsGamepad: false, controller);
+                    own, own?.Row, own?.Row.TextUnder(id), instance, readAsGamepad: false);
             }
 
-            var facts = ud.IsOnline
-                ? await ControllerDatabaseEngine.Post(e => e.ReadSdlFacts(instance), null)
-                : null;
+            var facts = ud.IsOnline ? await ReadFacts(instance) : null;
             if (facts == null)
             {
-                // Offline, or the engine stopped: the user's row is still
-                // known by the device's ID.
+                // Away, the engine stopped, or no answer from SDL: each says
+                // so, and the user's row is still known by the device's ID.
                 var known = mine.ForSdlDevice(ud.SdlGuid);
-                return Build(SdlReading.Stopped, null, ud.SdlGuid, known == null ? SdlMappingSource.None : SdlMappingSource.Yours,
-                    known, known?.Row, known?.Text, instance, readAsGamepad: false, controller);
+                var why = !ud.IsOnline ? SdlReading.Away : !EngineRuns() ? SdlReading.Stopped : SdlReading.NoAnswer;
+                return Build(why, null, ud.SdlGuid, known == null ? SdlMappingSource.None : SdlMappingSource.Yours,
+                    known, known?.Row, known?.Text, instance, readAsGamepad: false);
             }
 
             SdlMappingSource source;
@@ -175,11 +242,11 @@ namespace PadForge.Services
                 : SdlReading.ReadRaw;
             var yours = mine.ForSdlDevice(facts.Guid);
             return Build(reading, row?.Name, facts.Guid, source, yours, row, row?.TextUnder(SdlMappingRow.CommunityId(facts.Guid)),
-                instance, reading == SdlReading.Gamepad, controller);
+                instance, reading == SdlReading.Gamepad);
         }
 
         private SdlCardFacts Build(SdlReading reading, string name, string id, SdlMappingSource source, ControllerDatabaseMineRow mine,
-            SdlMappingRow row, string rowText, Guid instance, bool readAsGamepad, string controller)
+            SdlMappingRow row, string rowText, Guid instance, bool readAsGamepad)
         {
             string date = source switch
             {
@@ -204,7 +271,7 @@ namespace PadForge.Services
                 places.Add((PadName(pad), lines.Select(l => l with { Target = TargetLabel(pad, l.Target) }).ToList()));
             }
             var unused = readAsGamepad ? ControllerDatabaseLayout.FieldsNotUsed(row, sets, device) : new List<string>();
-            return new SdlCardFacts(reading, name, id, source, date, row, rowText, mine, places, unused, controller);
+            return new SdlCardFacts(reading, name, id, source, date, row, rowText, mine, places, unused);
         }
 
         /// <summary>SDL's mapping text in the form the user grammar reads:
@@ -216,7 +283,12 @@ namespace PadForge.Services
             var parts = mapping.Split(',').ToList();
             parts.RemoveAll(p => p.StartsWith("sdk", StringComparison.Ordinal)
                 || (p.StartsWith("hint:", StringComparison.Ordinal) && !p.Contains("_LABELS:=1", StringComparison.Ordinal)));
-            if (parts.Count > 0 && parts[0].Length != 32) parts[0] = "00000000000000000000000000000001";
+            if (parts.Count > 0 && parts[0].Length != 32)
+            {
+                // The placeholder takes no checksum from a crc field.
+                parts[0] = "00000000000000000000000000000001";
+                parts.RemoveAll(p => p.StartsWith("crc:", StringComparison.Ordinal));
+            }
             if (parts.Count > 1) parts[1] = SdlMappingRow.CleanName(parts[1]);
             return string.Join(",", parts);
         }
@@ -259,16 +331,17 @@ namespace PadForge.Services
         /// <summary>
         /// The device's mapping as a community row: from SDL's mapping while
         /// SDL maps the device, else from the rows of the controller picked
-        /// in the panel. The ID is the device's own with its checksum and
-        /// version zeroed. Null when there is nothing to copy.
+        /// in the panel, else the user's row for it. The ID is the device's
+        /// own with its checksum and version zeroed. Null when there is
+        /// nothing to copy, and <c>Empty</c> says why.
         /// </summary>
-        internal async Task<(string Text, SdlLeftOut LeftOut)> CopyAsync(Guid instance, int pickedSlot)
+        internal async Task<(string Text, SdlLeftOut LeftOut, SdlCopyEmpty Empty)> CopyAsync(Guid instance, int pickedSlot)
         {
             var facts = await ReadAsync(instance);
             var ud = DeviceOf(instance);
-            if (ud == null || facts.Reading == SdlReading.None) return (null, SdlLeftOut.None);
+            if (ud == null || facts.Reading == SdlReading.None) return (null, SdlLeftOut.None, SdlCopyEmpty.NoMapping);
             string id = facts.Reading == SdlReading.PadForgeDevice ? instance.ToString("N") : SdlMappingRow.CommunityId(facts.Id ?? ud.SdlGuid);
-            if (id == null) return (null, SdlLeftOut.None);
+            if (id == null) return (null, SdlLeftOut.None, SdlCopyEmpty.NoMapping);
 
             var left = SdlLeftOut.None;
             var slots = SlotsOf(instance).ToList();
@@ -289,13 +362,36 @@ namespace PadForge.Services
                     ControllerDatabaseLayout.BindingsFromRows(SettingsManager.SlotMappingSets?[pick], instance.ToString(), out var beyond);
                     left |= beyond;
                 }
-                return (facts.Row.With(guid: id, name: SdlMappingRow.CleanName(string.IsNullOrEmpty(ud.ProductName) ? facts.Row.Name : ud.ProductName)).Text, left);
+                return (facts.Row.With(guid: id, name: SdlMappingRow.CleanName(string.IsNullOrEmpty(ud.ProductName) ? facts.Row.Name : ud.ProductName)).Text, left, SdlCopyEmpty.None);
             }
-            if (pick < 0) return (null, left);
+            // SDL maps the device by a text PadForge does not read
+            // (SdlMappingRow.TryParse refused it).
+            bool unreadable = facts.Row == null && facts.Reading is SdlReading.Gamepad or SdlReading.ReadRaw;
+            // No SDL text was read: the device is away, the engine stopped, or
+            // SDL gave no answer.
+            bool notRead = facts.Reading is SdlReading.Stopped or SdlReading.Away or SdlReading.NoAnswer;
+            if (pick < 0)
+            {
+                // The user's row SDL reads the device through, or will once
+                // it runs and the device is connected.
+                if (facts.Mine != null)
+                    return (facts.Mine.Row.With(guid: id, name: SdlMappingRow.CleanName(string.IsNullOrEmpty(ud.ProductName) ? facts.Mine.Row.Name : ud.ProductName)).Text,
+                        left, SdlCopyEmpty.None);
+                return (null, left, unreadable ? SdlCopyEmpty.Unreadable : notRead ? SdlCopyEmpty.NotRead : SdlCopyEmpty.NoMapping);
+            }
             var bindings = ControllerDatabaseLayout.BindingsFromRows(SettingsManager.SlotMappingSets?[pick], instance.ToString(), out var rowsLeft);
-            if (bindings.Count == 0) return (null, left | rowsLeft);
+            if (bindings.Count == 0)
+            {
+                // The user's row, as with no controller, and what the rows
+                // hold beyond SDL's form is named.
+                if (facts.Mine != null)
+                    return (facts.Mine.Row.With(guid: id, name: SdlMappingRow.CleanName(string.IsNullOrEmpty(ud.ProductName) ? facts.Mine.Row.Name : ud.ProductName)).Text,
+                        left | rowsLeft, SdlCopyEmpty.None);
+                // Only what the rows hold beyond SDL's form is named then.
+                return (null, rowsLeft, unreadable ? SdlCopyEmpty.Unreadable : notRead ? SdlCopyEmpty.NotRead : SdlCopyEmpty.NothingInRows);
+            }
             var built = SdlMappingRow.Build(id, string.IsNullOrEmpty(ud.ProductName) ? ud.ResolvedName : ud.ProductName, bindings);
-            return (built.Text, left | rowsLeft);
+            return (built.Text, left | rowsLeft, SdlCopyEmpty.None);
         }
 
         private static UserSetting SettingFor(Guid instance, int slot)
@@ -348,18 +444,25 @@ namespace PadForge.Services
             {
                 var earlier = mine.ForPadForgeDevice(instance);
                 string pid = instance.ToString("N");
+                string here = ControllerDatabaseMineRow.Key(instance, ControllerDatabaseMineRow.ActiveProfile);
                 var kept = new ControllerDatabaseMineRow(pid, row.With(guid: pid), MineNow(), null, instance,
                     earlier?.Before ?? Snapshot(instance))
                 {
-                    Mapped = new[] { ControllerDatabaseMineRow.Key(instance, ControllerDatabaseMineRow.ActiveProfile) },
+                    Mapped = new[] { here },
+                    // The other profiles an earlier row mapped are mapped
+                    // again when each is active, and their rows from before
+                    // still go back with Remove Mine.
+                    Owed = earlier == null ? Array.Empty<string>()
+                        : earlier.OwedOnReplace().Where(k => !string.Equals(k, here, StringComparison.OrdinalIgnoreCase)).ToList(),
                 };
                 if (!ControllerDatabaseMine.Change(m => m.With(kept))) return SdlApplyResult.Full;
                 _markDirty();
+                _vm.Settings.RaiseControllerDatabaseMine();
                 Remap(instance);
                 return SdlApplyResult.InPadForge;
             }
 
-            var facts = ud.IsOnline ? await ControllerDatabaseEngine.Post(e => e.ReadSdlFacts(instance), null) : null;
+            var facts = ud.IsOnline ? await ReadFacts(instance) : null;
             string id = (facts?.Guid ?? ud.SdlGuid).ToLowerInvariant();
             // A row of the user's for the device already keeps what was there
             // before any, and which devices were mapped again through it.
@@ -376,7 +479,7 @@ namespace PadForge.Services
             else
             {
                 string now = facts != null ? facts.Mapping ?? string.Empty
-                    : await ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForGuid(id), null);
+                    : await HeldFor(id);
                 old = now == null ? null
                     : ControllerDatabaseUse.ReadBefore(now, earlierRow, ControllerDatabaseEngine.HeldBeforeCopy(id, out string beforeCopy), beforeCopy,
                         ControllerDatabaseEngine.HadNone(id));
@@ -385,21 +488,55 @@ namespace PadForge.Services
             // the row (HandleUserRowOpened). Until then they keep the reading
             // they were made for.
             var keptRow = new ControllerDatabaseMineRow(id, row.With(guid: id), MineNow(), old, Guid.Empty,
-                sameId ? earlierRow.Before : Snapshot(instance));
+                sameId ? earlierRow.Before : Snapshot(instance))
+            {
+                // What the earlier row mapped is mapped again through this
+                // one, and its rows from before still go back with Remove Mine.
+                Owed = sameId ? earlierRow.OwedOnReplace() : Array.Empty<string>(),
+            };
             // A row past the cap is not kept, and SDL is not given it.
             if (!ControllerDatabaseMine.Change(m => m.With(keptRow))) return SdlApplyResult.Full;
             _markDirty();
-            ControllerDatabaseEngine.SetReadsRaw(id, false);
-            var applied = await ControllerDatabaseEngine.Post(e => e.ApplySdlRows(new[] { keptRow.Text }, false), ControllerDatabaseApplied.NotRunning);
+            _vm.Settings.RaiseControllerDatabaseMine();
+            var lifted = ControllerDatabaseEngine.LiftReadsRaw(id);
+            var applied = await GiveSdl(() => new[] { keptRow.Text }, false);
             if (!applied.Ran) return SdlApplyResult.AtStart;
-            if (applied.Refused > 0) return SdlApplyResult.Refused;
-            var after = await ControllerDatabaseEngine.Post(e => e.ReadSdlFacts(instance), null);
-            if (after == null) return SdlApplyResult.AtStart;
-            if (!string.Equals(ControllerDatabaseSource.LayoutOf(Sanitized(after.Mapping)), ControllerDatabaseSource.StoredLayout(keptRow), StringComparison.Ordinal))
+            if (applied.Refused > 0)
+            {
+                await TakeBackAsync(keptRow, sameId ? earlierRow : null, sdlTook: false, lifted);
                 return SdlApplyResult.Refused;
+            }
+            var after = await ReadFacts(instance);
+            if (after == null) return SdlApplyResult.AtStart;
+            if (!ControllerDatabaseSource.ReadsThrough(Sanitized(after.Mapping), keptRow))
+            {
+                await TakeBackAsync(keptRow, sameId ? earlierRow : null, sdlTook: true, lifted);
+                return SdlApplyResult.Refused;
+            }
             if (applied.Reopened.Contains(instance)) HandleUserRowOpened(instance);
             else if (after.OpenedAsGamepad) MarkMapped(instance);
             return SdlApplyResult.InUse;
+        }
+
+        /// <summary>
+        /// A row SDL refused, or took and reads the device past: the row of
+        /// the user's from before it comes back, or none, the devices read
+        /// raw before are read raw again, and where SDL took the row it is
+        /// given back what it held under the ID, so nothing changed, as the
+        /// card says (SdlMapping_SdlRefused).
+        /// </summary>
+        private async Task TakeBackAsync(ControllerDatabaseMineRow kept, ControllerDatabaseMineRow earlier, bool sdlTook,
+            IReadOnlyList<string> lifted)
+        {
+            ControllerDatabaseMine.Change(m => earlier != null ? m.With(earlier) : m.Without(kept));
+            _markDirty();
+            _vm.Settings.RaiseControllerDatabaseMine();
+            ControllerDatabaseEngine.ReadRawAgain(lifted);
+            if (!sdlTook && lifted.Count == 0) return;
+            var texts = !sdlTook ? new List<string>()
+                : earlier != null ? new List<string> { earlier.Text }
+                : ControllerDatabaseEngine.GiveBack(kept);
+            await GiveSdl(() => texts, false);
         }
 
         /// <summary>
@@ -461,14 +598,34 @@ namespace PadForge.Services
         }
 
         /// <summary>The rows from before of the devices whose rows were
-        /// mapped again through a row, with the profile each was mapped in.
-        /// A device that never was keeps the rows it has.</summary>
+        /// mapped again through a row, or through an earlier row under its ID
+        /// (<see cref="ControllerDatabaseMineRow.Owed"/>), with the profile
+        /// each was mapped in. A device that never was keeps the rows it
+        /// has.</summary>
         private static List<ControllerDatabaseBefore> MappedBefore(ControllerDatabaseMineRow row)
         {
             var list = new List<ControllerDatabaseBefore>();
             foreach (var b in row.Before ?? Array.Empty<ControllerDatabaseBefore>())
-                if (row.HasMapped(b.Instance, b.Profile)) list.Add(b);
+                if (row.HasMapped(b.Instance, b.Profile) || row.IsOwed(b.Instance, b.Profile)) list.Add(b);
             return list;
+        }
+
+        /// <summary>
+        /// After a row of the user's went: the rows from before of the devices
+        /// mapped again through it are put back, or owed to their profiles,
+        /// and a device mapped again with the active profile that has no rows
+        /// kept from before, put on a controller since, takes the layout it
+        /// is read through again. Remove Mine, the catalog's Remove Mine and
+        /// Clear all end so.
+        /// </summary>
+        private void PutBackAfter(ControllerDatabaseMineRow row)
+        {
+            var before = MappedBefore(row);
+            RestoreOrOwe(before);
+            string profile = ControllerDatabaseMineRow.ActiveProfile;
+            foreach (Guid device in row.DevicesFor(profile))
+                if (!before.Exists(b => b.Instance == device && string.Equals(b.Profile, profile, StringComparison.OrdinalIgnoreCase)))
+                    Remap(device);
         }
 
         /// <summary>Puts back the rows from before of the active profile now,
@@ -542,9 +699,8 @@ namespace PadForge.Services
                 // A device SDL reads through the row now: online, opened as a
                 // gamepad, under the row's layout.
                 if (!ud.IsOnline) continue;
-                var facts = await ControllerDatabaseEngine.Post(e => e.ReadSdlFacts(ud.InstanceGuid), null);
-                if (facts?.OpenedAsGamepad == true
-                    && string.Equals(ControllerDatabaseSource.LayoutOf(Sanitized(facts.Mapping)), ControllerDatabaseSource.StoredLayout(row), StringComparison.Ordinal))
+                var facts = await ReadFacts(ud.InstanceGuid);
+                if (facts?.OpenedAsGamepad == true && ControllerDatabaseSource.ReadsThrough(Sanitized(facts.Mapping), row))
                     HandleUserRowOpened(ud.InstanceGuid);
             }
         }
@@ -577,29 +733,29 @@ namespace PadForge.Services
             if (row == null) return;
             ControllerDatabaseMine.Change(m => m.Without(row));
             _markDirty();
+            _vm.Settings.RaiseControllerDatabaseMine();
             await GiveBackAsync(row);
-            var before = MappedBefore(row);
-            RestoreOrOwe(before);
-            // A device mapped again with no rows kept from before, put on a
-            // controller since, takes the layout it is read through again.
-            if (row.HasMapped(instance) && !before.Exists(b => b.Instance == instance)) Remap(instance);
+            PutBackAfter(row);
         }
 
         /// <summary>Gives SDL back the reading a row of the user's replaced:
         /// the mapping SDL held under the row's ID, and under the ID of each
         /// device SDL was given a copy of the row for (#600). Called with the
         /// row already gone from <see cref="ControllerDatabaseMine.Current"/>.</summary>
-        private static Task GiveBackAsync(ControllerDatabaseMineRow row)
+        private Task GiveBackAsync(ControllerDatabaseMineRow row) => GiveBackAsync(row, GiveSdl);
+
+        private static Task GiveBackAsync(ControllerDatabaseMineRow row,
+            Func<Func<IReadOnlyList<string>>, bool, Task<ControllerDatabaseApplied>> give)
         {
             if (row.ForPadForgeDevice) return Task.CompletedTask;
             // A row SDL was never given, added while the engine was stopped
             // and removed before it ran, leaves SDL's entry for its ID as it is.
             var texts = ControllerDatabaseEngine.GiveBack(row);
-            return ControllerDatabaseEngine.Post(e =>
+            return give(() =>
             {
                 texts.AddRange(ControllerDatabaseEngine.TakeCopies(row.Id, ControllerDatabaseMine.Current));
-                return e.ApplySdlRows(texts, false);
-            }, ControllerDatabaseApplied.NotRunning);
+                return texts;
+            }, false);
         }
 
         /// <summary>Every row of the user's goes (Reset to Defaults), each
@@ -608,19 +764,47 @@ namespace PadForge.Services
         {
             var all = ControllerDatabaseMine.Current;
             ControllerDatabaseMine.Current = ControllerDatabaseMine.Empty;
-            foreach (var row in all.Rows) _ = GiveBackAsync(row);
+            foreach (var row in all.Rows) _ = GiveBackAsync(row, DefaultGiveSdl);
+        }
+
+        /// <summary>
+        /// Reload (#600): SDL follows the user's rows the file holds now,
+        /// which <see cref="ControllerDatabaseMine.Current"/> already is. A
+        /// row that left gives its device back the reading it had, as Remove
+        /// Mine does, and a row that came, or whose text changed, is given to
+        /// SDL at once, as Add Rows does. The file's mapping sets are the
+        /// devices' rows, so none is put back. Returns the rows given to SDL.
+        /// </summary>
+        internal static List<string> FollowReloadedRows(ControllerDatabaseMine before)
+        {
+            var now = ControllerDatabaseMine.Current;
+            static bool Same(ControllerDatabaseMineRow a, ControllerDatabaseMineRow b) => string.Equals(a.Id, b.Id, StringComparison.OrdinalIgnoreCase);
+            foreach (var gone in before?.Rows ?? Array.Empty<ControllerDatabaseMineRow>())
+                if (!now.Rows.Any(row => Same(row, gone))) _ = GiveBackAsync(gone, DefaultGiveSdl);
+            var texts = new List<string>();
+            foreach (var row in now.Rows)
+            {
+                if (row.ForPadForgeDevice) continue;
+                var was = before?.Rows.FirstOrDefault(r => Same(r, row));
+                if (was != null && string.Equals(was.Text, row.Text, StringComparison.Ordinal)) continue;
+                ControllerDatabaseEngine.SetReadsRaw(row.Id, false);
+                texts.Add(row.Text);
+            }
+            if (texts.Count > 0) _ = ControllerDatabaseEngine.Post(e => e.ApplySdlRows(texts, false), ControllerDatabaseApplied.NotRunning);
+            return texts;
         }
 
         private async Task ClearMineAsync()
         {
             var all = ControllerDatabaseMine.Current;
             if (all.Count == 0) return;
-            ControllerDatabaseMine.Current = ControllerDatabaseMine.Empty;
+            // The rows from before owed to other profiles stay owed.
+            ControllerDatabaseMine.Change(m => m.WithoutRows());
             _markDirty();
             foreach (var row in all.Rows)
             {
                 await GiveBackAsync(row);
-                RestoreOrOwe(MappedBefore(row));
+                PutBackAfter(row);
             }
             _vm.Settings.RaiseControllerDatabaseMine();
             _vm.Devices.SdlMapping.Refresh();
@@ -664,12 +848,18 @@ namespace PadForge.Services
                 if (!sameId)
                 {
                     string id = row.Guid;
-                    old = await ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForGuid(id), null);
+                    old = await HeldFor(id);
                     if (old != null && ControllerDatabaseEngine.HadNone(id)) old = string.Empty;
                 }
+                // A row of the same bindings keeps the devices mapped through
+                // the earlier one. One of other bindings has them mapped again,
+                // as Paste does, and owes their rows from before to Remove Mine.
+                bool sameLayout = sameId && string.Equals(ControllerDatabaseSource.StoredLayout(earlier),
+                    ControllerDatabaseSource.StoredLayoutOf(row.Text), StringComparison.Ordinal);
                 var kept = new ControllerDatabaseMineRow(row.Guid, row, MineNow(), old, Guid.Empty, before)
                 {
-                    Mapped = sameId ? earlier.Mapped : Array.Empty<string>(),
+                    Mapped = sameLayout ? earlier.Mapped : Array.Empty<string>(),
+                    Owed = !sameId ? Array.Empty<string>() : sameLayout ? earlier.Owed : earlier.OwedOnReplace(),
                 };
                 if (!ControllerDatabaseMine.Change(m => m.With(kept))) continue;
                 keptCount++;
@@ -678,7 +868,7 @@ namespace PadForge.Services
             }
             if (keptCount == 0) return 0;
             _markDirty();
-            var applied = await ControllerDatabaseEngine.Post(e => e.ApplySdlRows(texts, false), ControllerDatabaseApplied.NotRunning);
+            var applied = await GiveSdl(() => texts, false);
             if (applied.Ran)
                 foreach (Guid instance in matched)
                 {
@@ -710,7 +900,7 @@ namespace PadForge.Services
             int count = ControllerDatabaseMine.Current.Count;
             return count == 0
                 ? Strings.Instance.ControllerDatabase_MineNone
-                : string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.ControllerDatabase_Mine_Format), count), count);
+                : string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.ControllerDatabase_Rows_Format), count), count);
         }
 
         /// <summary>The rows of the user's own SDL_GAMECONTROLLERCONFIG
@@ -741,7 +931,7 @@ namespace PadForge.Services
         /// replaces the community copy's in SDL, unless a row of the user's
         /// stands under the same ID, and the new rows are offered to every
         /// joystick SDL reads as a joystick, under the conditions a newly
-        /// listed one meets. A device read again has its rows mapped again.
+        /// listed one meets. No device's rows are made again.
         /// </summary>
         private async Task ApplyDownloadAsync(ControllerDatabaseSection stored, ControllerDatabaseBaseline baseline)
         {
@@ -759,8 +949,31 @@ namespace PadForge.Services
             // No device's rows are made again: a changed row keeps a gamepad a
             // gamepad, its places where they were, and a new row reaches only
             // a joystick no controller uses (NewRowFor).
-            var applied = await ControllerDatabaseEngine.Post(e => e.ApplySdlRows(changed, stored.NewRows > 0), ControllerDatabaseApplied.NotRunning);
+            var applied = await GiveSdl(() =>
+            {
+                // What SDL held under each ID goes back with the row's reset,
+                // and the IDs a reset read raw are offered rows again.
+                ControllerDatabaseEngine.LiftDownloadedRaw();
+                ControllerDatabaseEngine.NoteDownloaded(changed, HeldOnPollThread);
+                return changed;
+            }, stored.NewRows > 0);
             if (applied.Reopened.Count > 0) _vm.Devices.SdlMapping.Refresh();
+        }
+
+        /// <summary>The row's reset (#600): SDL is given back what it held
+        /// under each ID a downloaded row went to this start, so the devices
+        /// are read as before the download, and the card reads its source
+        /// again.</summary>
+        private async Task GiveBackDownloadsAsync()
+        {
+            var taken = new List<(string Id, string Text, string Before)>();
+            await GiveSdl(() => ControllerDatabaseEngine.TakeDownloaded(ControllerDatabaseMine.Current, taken), false);
+            if (_disposed) return;
+            // A row of the user's pasted while a downloaded row read its
+            // device keeps that row as what SDL held before it: it goes back
+            // with Remove Mine as what SDL held before the download.
+            if (taken.Count > 0 && ControllerDatabaseMine.Change(m => m.WithOldRowsBefore(taken))) _markDirty();
+            _vm.Devices.SdlMapping.Refresh();
         }
 
         /// <summary>Now, in whole seconds, as the settings file holds a time.</summary>
@@ -915,13 +1128,19 @@ namespace PadForge.Services
         /// community copy, PadForge's own file, the changed and in-use rows,
         /// the user's), the downloaded new rows SDL has not been given, and
         /// the user's rows for devices SDL does not read. The device's own
-        /// rows come first, then the rest by name.
+        /// rows come first, then the rest by name. While the engine is stopped
+        /// or SDL gives no answer, the rows SDL holds are left out, and
+        /// <c>Missing</c> says why.
         /// </summary>
-        internal async Task<List<SdlFindRow>> AllRowsAsync(Guid instance)
+        internal async Task<(List<SdlFindRow> Rows, SdlFindMissing Missing)> AllRowsAsync(Guid instance)
         {
             var ud = DeviceOf(instance);
             string deviceGuid = ud?.SdlGuid;
-            var held = await ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.AllMappings(), null) ?? new List<string>();
+            var answer = await HeldRows();
+            // Without SDL's answer the list leaves out the rows it holds, and
+            // the dialog says why.
+            var missing = answer != null ? SdlFindMissing.None : EngineRuns() ? SdlFindMissing.NoAnswer : SdlFindMissing.Stopped;
+            var held = answer ?? new List<string>();
             var rows = new List<SdlMappingRow>();
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             void Add(string text)
@@ -935,7 +1154,7 @@ namespace PadForge.Services
                 foreach (var stored in section.Rows) Add(stored.Row.Text);
             foreach (string own in OwnRows) Add(own);
             foreach (var mine in ControllerDatabaseMine.Current.Rows) Add(mine.Text);
-            return Describe(rows, deviceGuid);
+            return (Describe(rows, deviceGuid), missing);
         }
 
         /// <summary>Find's rows with their source line, the device's own
@@ -1085,7 +1304,7 @@ namespace PadForge.Services
             ControllerDatabaseMine.Change(m => m.Without(row));
             _markDirty();
             await GiveBackAsync(row);
-            RestoreOrOwe(MappedBefore(row));
+            PutBackAfter(row);
             _vm.Settings.RaiseControllerDatabaseMine();
             _vm.Devices.SdlMapping.Refresh();
         }

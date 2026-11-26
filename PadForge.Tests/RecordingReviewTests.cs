@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +12,8 @@ using PadForge.Engine;
 using PadForge.Engine.Privacy;
 using PadForge.Engine.Recording;
 using PadForge.Services;
+using PadForge.Resources.Strings;
+using PadForge.Services.Plugins;
 using Xunit;
 
 namespace PadForge.Tests
@@ -73,6 +77,26 @@ namespace PadForge.Tests
             Assert.All(review.Parts.Where(p => p.TextBytes > 0), p => Assert.True(p.ZipBytes > 0));
             Assert.All(review.Parts.Where(p => p.TextBytes > 2000), p => Assert.True(p.ZipBytes < p.TextBytes));
             Assert.Equal(TimeSpan.FromSeconds(0.8), review.Length);
+        }
+
+        /// <summary>A file planted in the folder with more lines than any
+        /// recording holds is refused before its lines are indexed, and its
+        /// unpacked text goes. Within the bound it opens: the positive
+        /// control.</summary>
+        [Fact]
+        public void AFileOfMoreLinesThanTheBound_IsRefused()
+        {
+            string folder = Path.Combine(Path.GetTempPath(), "PadForge.RecorderTests", Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(folder);
+            try
+            {
+                string planted = Path.Combine(folder, ProblemRecorder.FilePrefix + "20261120-120000" + ProblemRecorder.ZipSuffix);
+                File.WriteAllText(planted, RecordingCodec.FirstLineStart + " 2\r\n" + string.Concat(Enumerable.Repeat("\r\n", 200)));
+                Assert.Throws<InvalidDataException>(() => RecordingReview.Open(planted, 100));
+                Assert.Empty(Directory.GetFiles(folder, "*" + ProblemRecorder.TempSuffix));
+                using (var review = RecordingReview.Open(planted, 1000)) Assert.NotNull(review);
+            }
+            finally { Directory.Delete(folder, recursive: true); }
         }
 
         [Fact]
@@ -185,10 +209,12 @@ namespace PadForge.Tests
             model.ShowInExplorer = path => explorer = path;
             model.Closed = () => closed = true;
 
+            await model.Checked;
             Assert.True(model.CheckFailed);
             Assert.False(model.CanSave);
             var diagnostics = model.Parts.Single(p => p.Info.Part == RecordingParts.DiagnosticsLines);
             diagnostics.Keep = false;
+            await model.Checked;
             Assert.False(model.CheckFailed);
             Assert.True(model.CanSave);
             Assert.Contains("left out", diagnostics.SizeText);
@@ -249,6 +275,7 @@ namespace PadForge.Tests
             model.OpenPage = url => { steps.Add("page"); page = url; };
             model.Closed = () => steps.Add("closed");
 
+            await model.Checked;
             await model.SaveAndPostAsync();
 
             Assert.Equal(new[] { "save", "copy", "explorer mine.zip", "page", "closed" }, steps);
@@ -271,6 +298,7 @@ namespace PadForge.Tests
             model.CopyText = _ => steps.Add("copy");
             model.ShowInExplorer = _ => steps.Add("explorer");
             model.OpenPage = _ => steps.Add("page");
+            await model.Checked;
 
             // The box closed with no file.
             model.PickTarget = (folder, name) => null;
@@ -288,6 +316,8 @@ namespace PadForge.Tests
             // The scrub check found this PC's value in a kept part.
             live.Add((PrivateKind.DeviceName, "planted-word-zz"));
             model.PartsChanged();
+            Assert.False(model.CanSave);
+            await model.Checked;
             Assert.False(model.CanSave);
             model.SaveAsUser = (from, to) => { steps.Add("save"); return Task.FromResult<string>(null); };
             await model.SaveAndPostAsync();
@@ -316,24 +346,41 @@ namespace PadForge.Tests
 
         /// <summary>The crash box (#600 item 29) says, after the error and
         /// above its stack, that the details are in crash.log beside
-        /// PadForge.exe and where to send that file. Both boxes that show it
-        /// hand it the report page. The stack goes last: it can run to 16 KB,
-        /// more lines than a screen holds.</summary>
+        /// PadForge.exe, or that they could not be written there, and where
+        /// to send the report. Both boxes that show it build it in CrashText,
+        /// which takes the format for whether crash.log was written and hands
+        /// it the report page. The stack goes last: it can run to 16 KB, more
+        /// lines than a screen holds.</summary>
         [Fact]
         public void TheCrashBox_NamesCrashLog_AndThePageWhereReportsGo_AboveTheStack()
         {
             var resx = System.Xml.Linq.XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"));
-            string format = (string)resx.Root.Elements("data").Single(d => (string)d.Attribute("name") == "App_UnexpectedError_Format").Element("value");
-            string box = string.Format(format, "MESSAGE", "STACK", UpdateService.ReportPage);
-            int message = box.IndexOf("MESSAGE", StringComparison.Ordinal);
-            int log = box.IndexOf("crash.log beside PadForge.exe", StringComparison.Ordinal);
-            int page = box.IndexOf(UpdateService.ReportPage, StringComparison.Ordinal);
-            int stack = box.IndexOf("STACK", StringComparison.Ordinal);
-            Assert.True(message >= 0 && log > message && page > log && stack > page, box);
+            foreach (var (key, says) in new[]
+                     {
+                         ("App_UnexpectedError_Format", "PadForge wrote the details to crash.log beside PadForge.exe"),
+                         ("App_UnexpectedErrorNotWritten_Format", "PadForge could not write the details to crash.log beside PadForge.exe"),
+                     })
+            {
+                string format = (string)resx.Root.Elements("data").Single(d => (string)d.Attribute("name") == key).Element("value");
+                string box = string.Format(format, "MESSAGE", "STACK", UpdateService.ReportPage);
+                int message = box.IndexOf("MESSAGE", StringComparison.Ordinal);
+                int log = box.IndexOf(says, StringComparison.Ordinal);
+                int page = box.IndexOf(UpdateService.ReportPage, StringComparison.Ordinal);
+                int stack = box.IndexOf("STACK", StringComparison.Ordinal);
+                Assert.True(message >= 0 && log > message && page > log && stack > page, key + ": " + box);
+            }
 
+            // Both boxes build their text through App.CrashText, which hands
+            // either format the report page.
             string app = ExtrasPageTests.RepoText("PadForge.App", "App.xaml.cs");
-            Assert.Equal(2, Regex.Matches(app, @"string\.Format\(Strings\.Instance\.App_UnexpectedError_Format,").Count);
-            Assert.Equal(2, Regex.Matches(app, @"ExceptionStackChain\([^)]*\), UpdateService\.ReportPage\)").Count);
+            string text = FenceSource.FirstStatement(app, "internal static string CrashText(bool written, string messages, string stacks)");
+            Assert.Contains("string.Format(written ? Strings.Instance.App_UnexpectedError_Format : Strings.Instance.App_UnexpectedErrorNotWritten_Format,", text, StringComparison.Ordinal);
+            Assert.Contains("messages, stacks, UpdateService.ReportPage)", text, StringComparison.Ordinal);
+            // Both boxes build their text there, each with its own append's result.
+            Assert.Equal(2, Regex.Matches(app, @"CrashText\(written, [^,]+, ExceptionStackChain\(").Count);
+            Assert.Single(Regex.Matches(app, @"Strings\.Instance\.App_UnexpectedError_Format"));
+            Assert.Contains(UpdateService.ReportPage, PadForge.App.CrashText(true, "MESSAGE", "STACK"), StringComparison.Ordinal);
+            Assert.Contains(UpdateService.ReportPage, PadForge.App.CrashText(false, "MESSAGE", "STACK"), StringComparison.Ordinal);
         }
 
         [Theory]
@@ -350,7 +397,297 @@ namespace PadForge.Tests
             Assert.Equal(words, RecordingReviewModel.StopWords(ending));
         }
 
+        /// <summary>The review's X while Save… runs: the close waits for the
+        /// save, which reads the review's text, and the save makes it as it
+        /// ends, deleting the recording it saved. A read after the review is
+        /// closed says so.</summary>
+        [Fact]
+        public async Task ACloseWhileTheSaveRuns_WaitsForIt_AndTheSavedRecordingLeaves()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            string target = Path.Combine(host.Dir, "held", "mine.zip");
+            Directory.CreateDirectory(Path.GetDirectoryName(target));
+            var review = RecordingReview.Open(zip);
+            var model = new RecordingReviewModel(review, () => Array.Empty<(PrivateKind, string)>(), host.Environment());
+            await model.Checked;
+            var held = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+            bool closed = false;
+            model.PickTarget = (folder, name) => target;
+            model.SaveAsUser = (from, to) =>
+            {
+                File.Copy(from, to, overwrite: true);
+                return held.Task;
+            };
+            model.Closed = () => closed = true;
+            model.Parts.Single(p => p.Info.Part == RecordingParts.DiagnosticsLines).Keep = false;
+            await model.Checked;
+
+            var saving = model.SaveAsync();
+            model.Close();
+            Assert.False(closed);
+            Assert.True(File.Exists(zip));
+            held.SetResult(null);
+            await saving;
+            Assert.True(closed);
+            Assert.True(File.Exists(target));
+            Assert.False(File.Exists(zip));
+            Assert.Throws<ObjectDisposedException>(() => review.Check(Array.Empty<(PrivateKind, string)>()));
+        }
+
+        /// <summary>A part's switch starts the scrub check off the window's
+        /// thread and returns at once, Save off and the line saying it checks
+        /// until the answer comes. An answer a newer switch outdated is
+        /// dropped.</summary>
+        [Fact]
+        public async Task APartsSwitch_ChecksOffTheWindowsThread_WithSaveOffUntilTheAnswer()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            var model = new RecordingReviewModel(RecordingReview.Open(zip), () => Array.Empty<(PrivateKind, string)>(), host.Environment());
+            await model.Checked;
+            Assert.True(model.CanSave);
+            using var gate = new ManualResetEventSlim();
+            model.RunsCheck = (live, kept) =>
+            {
+                gate.Wait(TimeSpan.FromSeconds(5));
+                return new RecordingReview.CheckResult(0, 0, 1);
+            };
+            var started = System.Diagnostics.Stopwatch.StartNew();
+            model.Parts.Single(p => p.Info.Part == RecordingParts.DiagnosticsLines).Keep = false;
+            Assert.True(started.Elapsed < TimeSpan.FromSeconds(2), "the switch waited for the check");
+            Assert.False(model.CanSave);
+            Assert.Equal(Strings.Instance.Review_Scrub_Checking, model.ScrubText);
+            var outdated = model.Checked;
+            // A newer switch, whose check answers at once.
+            model.RunsCheck = (live, kept) => new RecordingReview.CheckResult(0, 0, 0);
+            model.Parts.Single(p => p.Info.Part == RecordingParts.Activity).Keep = false;
+            await model.Checked;
+            gate.Set();
+            await outdated;
+            Assert.True(model.CanSave);
+            Assert.False(model.CheckFailed);
+            model.Close();
+        }
+
+        private sealed class EndedLauncher : IPluginLauncher
+        {
+            public PluginLaunch Launch;
+            public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables) => Launch;
+        }
+
+        private sealed class EndedProcess : IPluginProcess
+        {
+            private readonly int _code;
+            public EndedProcess(int code) => _code = code;
+            public int Id => 4243;
+            public bool Owns(int processId) => processId == Id;
+            public event Action<int> Exited
+            {
+                add => Task.Run(() => value(_code));
+                remove { }
+            }
+            public void Stop() { }
+            public void Dispose() { }
+        }
+
+        /// <summary>A save as the user that did not happen says why in the
+        /// user's language, from Strings: a copy that ended on an unhandled
+        /// exception is named by its code, never as a file Windows did not
+        /// let be written, which is code 1 alone, and a start Windows refused
+        /// says its error. Run under French, each line is the Strings text
+        /// formatted in that culture (the French words come with the
+        /// translation round).</summary>
+        [Fact]
+        public async Task TheSavesLines_ComeFromStrings_AndACrashOfTheCopyIsNamedByItsCode()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            var folder = RecordingFolder.Seam;
+            var rights = RecordingSave.RightsSeam;
+            var launcher = RecordingSave.Launcher;
+            var culture = CultureInfo.CurrentCulture;
+            var uiCulture = CultureInfo.CurrentUICulture;
+            var ended = new EndedLauncher();
+            RecordingFolder.Seam = () => host.Dir;
+            RecordingSave.RightsSeam = () => true;
+            RecordingSave.Launcher = ended;
+            try
+            {
+                CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo("fr-FR");
+                var s = Strings.Instance;
+                string target = Path.Combine(host.Dir, "out.zip");
+
+                ended.Launch = new PluginLaunch { Process = new EndedProcess(unchecked((int)0xE0434352)) };
+                string crashed = await RecordingSave.AsUserAsync(zip, target);
+                Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SaveEnded_Format, "0xE0434352"), crashed);
+                Assert.NotEqual(s.Review_SaveNotWritten, crashed);
+
+                ended.Launch = new PluginLaunch { Process = new EndedProcess(1) };
+                Assert.Equal(s.Review_SaveNotWritten, await RecordingSave.AsUserAsync(zip, target));
+
+                ended.Launch = PluginLaunch.Refused(PluginRefusal.Failed, 5);
+                Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SaveStartRefused_Format, 5), await RecordingSave.AsUserAsync(zip, target));
+                ended.Launch = PluginLaunch.Refused(PluginRefusal.NoShell);
+                Assert.Equal(s.Review_SaveNoShell, await RecordingSave.AsUserAsync(zip, target));
+
+                // A file that is no recording of the folder is refused here,
+                // before any copy starts.
+                string other = Path.Combine(host.Dir, "notes.zip");
+                File.WriteAllText(other, "x");
+                Assert.Equal(s.Review_SaveNotOwn, await RecordingSave.AsUserAsync(other, target));
+
+                Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SizeKB_Format, "2"), RecordingReviewModel.Size(2048));
+                Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SizeMB_Format, "1,5"), RecordingReviewModel.Size(1536 * 1024));
+                Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_Stop_Size_Format, RecordingReviewModel.Size(20L * 1024 * 1024)),
+                    RecordingReviewModel.StopWords("It stopped by itself at 20 MB compressed"));
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = culture;
+                CultureInfo.CurrentUICulture = uiCulture;
+                RecordingFolder.Seam = folder;
+                RecordingSave.RightsSeam = rights;
+                RecordingSave.Launcher = launcher;
+            }
+        }
+
+        /// <summary>The review's sizes and its stop line take their units
+        /// from Strings: a locale that writes Ko and Mo (French) shows them in
+        /// a part's size, the sizes line and the stop line. The value is set
+        /// through Strings' seam, since no locale holds the keys until the
+        /// translation round.</summary>
+        [Fact]
+        public void TheReviewsSizes_TakeTheirUnitsFromStrings()
+        {
+            var before = Strings.ValueSeam;
+            Strings.ValueSeam = key => key switch
+            {
+                nameof(Strings.Review_SizeKB_Format) => "{0} Ko",
+                nameof(Strings.Review_SizeMB_Format) => "{0} Mo",
+                _ => null,
+            };
+            try
+            {
+                Assert.Equal("2 Ko", RecordingReviewModel.Size(2048));
+                Assert.Equal("20 Mo", RecordingReviewModel.Size(20L * 1024 * 1024));
+                Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Review_Stop_Size_Format, "20 Mo"),
+                    RecordingReviewModel.StopWords("It stopped by itself at 20 MB compressed"));
+            }
+            finally { Strings.ValueSeam = before; }
+        }
+
+        /// <summary>A scrub check that could not read the review's text says
+        /// so, and Save stays off. A switch after it checks again.</summary>
+        [Fact]
+        public async Task AScrubCheckThatCouldNotRead_SaysSo_AndSaveStaysOff()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            var model = new RecordingReviewModel(RecordingReview.Open(zip), () => Array.Empty<(PrivateKind, string)>(), host.Environment());
+            await model.Checked;
+            model.RunsCheck = (live, kept) => throw new IOException("unreadable");
+            model.Parts.Single(p => p.Info.Part == RecordingParts.Activity).Keep = false;
+            await model.Checked;
+            Assert.Equal(Strings.Instance.Review_Scrub_Unread, model.ScrubText);
+            Assert.False(model.CanSave);
+            // The positive control: a check that reads gives Save back.
+            model.RunsCheck = (live, kept) => new RecordingReview.CheckResult(0, 0, 0);
+            model.Parts.Single(p => p.Info.Part == RecordingParts.Activity).Keep = true;
+            await model.Checked;
+            Assert.True(model.CanSave);
+            model.Close();
+        }
+
         // ── Save as the user ──
+
+        private sealed class ShellElevatedLauncher : PadForge.Services.Plugins.IPluginLauncher
+        {
+            public PadForge.Services.Plugins.PluginLaunch Start(PadForge.Services.Plugins.PluginCommand command, IReadOnlyDictionary<string, string> variables)
+                => PadForge.Services.Plugins.PluginLaunch.Refused(PadForge.Services.Plugins.PluginRefusal.ShellElevated);
+        }
+
+        private sealed class CountingLauncher : PadForge.Services.Plugins.IPluginLauncher
+        {
+            public int Starts;
+            public PadForge.Services.Plugins.PluginLaunch Start(PadForge.Services.Plugins.PluginCommand command, IReadOnlyDictionary<string, string> variables)
+            {
+                Starts++;
+                return PadForge.Services.Plugins.PluginLaunch.Refused(PadForge.Services.Plugins.PluginRefusal.Failed);
+            }
+        }
+
+        /// <summary>The save's own first test is the same rule: with rights,
+        /// it saves in this process only when the shell's user has no lower
+        /// right, and otherwise asks the launcher, whatever the shell's own
+        /// token reads. RightsSeam stays null, so the rule
+        /// itself runs.</summary>
+        [Fact]
+        public async Task WithRights_TheSaveRunsHereOnlyWhenTheShellsUserHasNoLowerRight()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            var before = RecordingFolder.Seam;
+            RecordingFolder.Seam = () => host.Dir;
+            var launcher = new CountingLauncher();
+            RecordingSave.RightsSeam = null;
+            RecordingSave.OwnRightsSeam = () => true;
+            RecordingSave.Launcher = launcher;
+            RecordingSave.Exe = () => @"C:\Apps\PadForge\PadForge.exe";
+            try
+            {
+                string target = Path.Combine(host.Dir, "out.zip");
+                RecordingSave.NoLowerRightSeam = () => false;
+                Assert.NotNull(await RecordingSave.AsUserAsync(zip, target));
+                Assert.Equal(1, launcher.Starts);
+                Assert.False(File.Exists(target));
+                RecordingSave.NoLowerRightSeam = () => true;
+                Assert.Null(await RecordingSave.AsUserAsync(zip, target));
+                Assert.Equal(1, launcher.Starts);
+                Assert.True(File.Exists(target));
+            }
+            finally
+            {
+                RecordingFolder.Seam = before;
+                RecordingSave.OwnRightsSeam = null;
+                RecordingSave.Launcher = null;
+                RecordingSave.NoLowerRightSeam = null;
+                RecordingSave.Exe = () => Environment.ProcessPath;
+            }
+        }
+
+        /// <summary>A save refused for a shell with rights runs in place only
+        /// when the shell's user has no lower right (UAC off, or the built-in
+        /// Administrator), as the install does.</summary>
+        [Fact]
+        public async Task ASaveRefusedForAShellWithRights_RunsInPlaceOnlyWhenItsUserHasNoLowerRight()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            var before = RecordingFolder.Seam;
+            RecordingFolder.Seam = () => host.Dir;
+            RecordingSave.RightsSeam = () => true;
+            RecordingSave.Launcher = new ShellElevatedLauncher();
+            RecordingSave.Exe = () => @"C:\Apps\PadForge\PadForge.exe";
+            try
+            {
+                string target = Path.Combine(host.Dir, "out.zip");
+                RecordingSave.NoLowerRightSeam = () => false;
+                Assert.NotNull(await RecordingSave.AsUserAsync(zip, target));
+                Assert.False(File.Exists(target));
+                RecordingSave.NoLowerRightSeam = () => true;
+                Assert.Null(await RecordingSave.AsUserAsync(zip, target));
+                Assert.True(File.Exists(target));
+            }
+            finally
+            {
+                RecordingFolder.Seam = before;
+                RecordingSave.RightsSeam = null;
+                RecordingSave.Launcher = null;
+                RecordingSave.NoLowerRightSeam = null;
+                RecordingSave.Exe = () => Environment.ProcessPath;
+            }
+        }
 
         [Fact]
         public void TheSaveRun_CopiesOnlyARecordingOfTheUsersOwnFolder()

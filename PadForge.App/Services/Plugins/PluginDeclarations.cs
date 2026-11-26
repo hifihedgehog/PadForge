@@ -114,6 +114,10 @@ namespace PadForge.Services.Plugins
         internal const int LongestUnit = 12;
         internal const int LongestChoice = 64;
 
+        /// <summary>The finest step a number takes: the last of the ten
+        /// decimals <see cref="PluginValues.FormatNumber"/> writes.</summary>
+        internal const double FinestStep = 0.0000000001;
+
         /// <summary>The kinds by the word a plugin gives.</summary>
         internal static readonly IReadOnlyDictionary<string, PluginSettingKind> Kinds = new Dictionary<string, PluginSettingKind>(StringComparer.OrdinalIgnoreCase)
         {
@@ -196,6 +200,13 @@ namespace PadForge.Services.Plugins
                     error = "a number's step is above 0 and no more than max minus min";
                     return null;
                 }
+                // A number is written with ten decimals (FormatNumber), so a
+                // finer step would round every value to a whole one.
+                if (step < FinestStep)
+                {
+                    error = "a number's step is 0.0000000001 or more";
+                    return null;
+                }
             }
 
             var choices = new List<PluginChoice>();
@@ -207,10 +218,16 @@ namespace PadForge.Services.Plugins
                 }
                 else if (Get("choices") is { } flat)
                 {
+                    // A value given twice is refused, as the JSON list
+                    // refuses it (ReadChoices), after the cut to 64
+                    // characters that can make two values one.
+                    var seen = new HashSet<string>(StringComparer.Ordinal);
                     foreach (string part in flat.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                     {
                         string value = ProgramDeviceDeclaration.Clean(part, LongestChoice);
-                        if (value.Length > 0) choices.Add(new PluginChoice(value, value));
+                        if (value.Length == 0) continue;
+                        if (!seen.Add(value)) { error = "the choice " + value + " is given twice"; return null; }
+                        choices.Add(new PluginChoice(value, value));
                     }
                 }
                 if (choices.Count > MostChoices) { error = "a choice has up to 64 entries"; return null; }
@@ -236,7 +253,7 @@ namespace PadForge.Services.Plugins
             if (shell.Name.Length == 0 && kind != PluginSettingKind.Help) shell = With(shell, name: key);
 
             // The default, checked as any value is. A choice with no default
-            // starts at its first entry.
+            // starts at its first entry, and a number at the step nearest 0.
             string fallback = kind switch
             {
                 PluginSettingKind.Switch => "false",
@@ -246,7 +263,9 @@ namespace PadForge.Services.Plugins
                 _ => string.Empty,
             };
             string given = Get("default");
-            string normalized = fallback;
+            // A number's fallback goes on its steps as a given default does.
+            // It is inside the range, so Normalize takes it.
+            string normalized = kind == PluginSettingKind.Number ? PluginValues.Normalize(shell, fallback, out _) ?? fallback : fallback;
             if (given != null && shell.HoldsValue)
             {
                 normalized = PluginValues.Normalize(shell, given, out string why);
@@ -255,7 +274,7 @@ namespace PadForge.Services.Plugins
             return With(shell, defaultValue: normalized);
         }
 
-        private static PluginDeclaration With(PluginDeclaration d, string name = null, string defaultValue = null) => new()
+        internal static PluginDeclaration With(PluginDeclaration d, string name = null, string defaultValue = null) => new()
         {
             Key = d.Key, Kind = d.Kind, Device = d.Device, Name = name ?? d.Name, Help = d.Help, Group = d.Group,
             Unit = d.Unit, Min = d.Min, Max = d.Max, Step = d.Step, Default = defaultValue ?? d.Default,
@@ -372,12 +391,16 @@ namespace PadForge.Services.Plugins
         {
             double steps = Math.Round((n - d.Min) / d.Step);
             double on = d.Min + steps * d.Step;
-            // Keep as many decimals as the step has, so 0.1 steps read 0.3,
-            // not 0.30000000000000004.
-            int decimals = Decimals(d.Step);
-            on = Math.Round(on, Math.Min(decimals, 10));
+            // Keep as many decimals as the grid has, so 0.1 steps read 0.3,
+            // not 0.30000000000000004, and steps of 1 from -0.5 keep 1.5.
+            on = Math.Round(on, Decimals(d));
             return Math.Clamp(on, d.Min, d.Max);
         }
+
+        /// <summary>The decimals of a number's grid: as many as its step or
+        /// its min has, whichever has more, and ten at most, as
+        /// <see cref="FormatNumber"/> writes.</summary>
+        internal static int Decimals(PluginDeclaration d) => Math.Min(Math.Max(Decimals(d.Step), Decimals(d.Min)), 10);
 
         internal static int Decimals(double step)
         {
@@ -386,7 +409,9 @@ namespace PadForge.Services.Plugins
             return dot < 0 ? 0 : text.Length - dot - 1;
         }
 
-        internal static string FormatNumber(double n) => n.ToString("0.##########", CultureInfo.InvariantCulture);
+        /// <summary>A number in its kept form: invariant digits, ten
+        /// decimals at most, and minus zero written as 0.</summary>
+        internal static string FormatNumber(double n) => (n == 0 ? 0.0 : n).ToString("0.##########", CultureInfo.InvariantCulture);
 
         /// <summary>A pad's two axes from its kept form.</summary>
         internal static (double X, double Y) Pad(string value)

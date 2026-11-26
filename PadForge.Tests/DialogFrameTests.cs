@@ -373,29 +373,46 @@ namespace PadForge.Tests
 
         /// <summary>A removal row's first line is its kind in the app's
         /// language. Every kind the shipped HIDMaestro names has a string of
-        /// its own, read from the library's constants, so a kind a later
-        /// HIDMaestro adds fails here until it has one. Until then it shows
-        /// in HIDMaestro's words with its first letter upper.</summary>
+        /// its own: the Uninstaller's, read from the library's constants, so
+        /// a kind a later HIDMaestro adds there fails here until it has one,
+        /// and the usbip-win2 part's, which HIDMaestro writes as literals in
+        /// UsbipRemoval.cs and lists in HMUninstallEntry.Kind's doc
+        /// (HIDMaestro 2.4.0). A kind with no string shows in HIDMaestro's
+        /// words with its first letter upper. The usbip-win2 part's own
+        /// failure row names the product, which keeps its own
+        /// spelling.</summary>
         [Fact]
         public void ARemovalRowsTitleIsItsKindInTheAppsLanguage()
         {
             var uninstaller = typeof(HIDMaestro.HMUninstallEntry).Assembly.GetType("HIDMaestro.Internal.Uninstall.Uninstaller", throwOnError: true);
-            var kinds = uninstaller.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
+            var constants = uninstaller.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
                 .Where(f => f.IsLiteral && f.FieldType == typeof(string) && f.Name.StartsWith("Kind", StringComparison.Ordinal))
                 .Select(f => (string)f.GetRawConstantValue())
                 .ToList();
-            Assert.Equal(15, kinds.Count);
+            Assert.Equal(15, constants.Count);
+            // UsbipRemoval.cs at v2.4.0: its devnode, driver package, registry
+            // key and folder rows share the Uninstaller's kinds.
+            var usbip = new[] { "devnode", "driver package", "service", "registry key", "registry value", "scheduled task",
+                "folder", "file", "Apps entry", "hardware id", "USB/IP import", "upper filter" };
+            var kinds = constants.Concat(usbip).Distinct().ToList();
+            Assert.Equal(23, kinds.Count);
+            // By key, not by English text: a kind with no key shows its own
+            // words with the first letter upper, which for most kinds is the
+            // English string too, and only a translation tells them apart.
             var keys = typeof(Strings).GetProperties()
                 .Where(p => p.Name.StartsWith("HIDMaestroUninstall_Kind", StringComparison.Ordinal))
-                .Select(p => (string)p.GetValue(Strings.Instance))
+                .Select(p => p.Name)
                 .ToList();
-            var titles = kinds.Select(UninstallHIDMaestroDialog.KindTitle).ToList();
-            Assert.All(titles, title => Assert.Contains(title, keys));
-            Assert.Equal(kinds.Count, titles.Distinct().Count());
-            Assert.Equal(keys.Count, titles.Count);
+            var titleKeys = kinds.Select(UninstallHIDMaestroDialog.KindKey).ToList();
+            Assert.All(titleKeys, key => Assert.Contains(key, keys));
+            Assert.Equal(kinds.Count, titleKeys.Distinct().Count());
+            Assert.Equal(keys.Count, titleKeys.Count);
+            Assert.All(kinds, kind => Assert.Equal(Strings.Get(UninstallHIDMaestroDialog.KindKey(kind)), UninstallHIDMaestroDialog.KindTitle(kind)));
+            Assert.Null(UninstallHIDMaestroDialog.KindKey("firmware slot"));
             Assert.Equal(Strings.Instance.HIDMaestroUninstall_KindDevice, UninstallHIDMaestroDialog.KindTitle("devnode"));
             Assert.Equal(Strings.Instance.HIDMaestroUninstall_KindPackage, UninstallHIDMaestroDialog.KindTitle("driver package"));
             Assert.Equal("Firmware slot", UninstallHIDMaestroDialog.KindTitle("firmware slot"));
+            Assert.Equal("usbip-win2", UninstallHIDMaestroDialog.KindTitle("usbip-win2"));
             Assert.Equal(string.Empty, UninstallHIDMaestroDialog.KindTitle(string.Empty));
             Assert.Null(UninstallHIDMaestroDialog.KindTitle(null));
         }

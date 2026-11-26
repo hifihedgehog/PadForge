@@ -38,7 +38,7 @@ namespace PadForge.Common.Input
             if (OffLimitsForTest) return false;
             // The runtime loads into PadForge only from a folder only
             // administrators can change, held from the check through its
-            // load (#597). COM finds it through the machine's registration
+            // load (#600). COM finds it through the machine's registration
             // alone, since an elevated process reads no class a user
             // registered (Microsoft, per-user COM for elevated token
             // processes). Microsoft ships the runtime unsigned, so its place
@@ -65,15 +65,6 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        /// <summary>
-        /// Drops the initializer. Its Dispose calls ShutdownSdkRuntime, which
-        /// in Microsoft's projection only drops the native initializer's
-        /// reference: the native Shutdown call is commented out there (rc-3
-        /// and rc-4 MidiDesktopAppSdkInitializer.cs), so the runtime's DLLs
-        /// stay mapped for the life of the process.
-        /// <paramref name="skipDispose"/> drops the initializer without
-        /// calling Dispose. No production caller passes it.
-        /// </summary>
         /// <summary>The class the runtime's initializer makes, whose
         /// machine registration names the runtime's library
         /// (Initialization.hpp).</summary>
@@ -110,6 +101,15 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>
+        /// Drops the initializer. Its Dispose calls ShutdownSdkRuntime, which
+        /// in Microsoft's projection only drops the native initializer's
+        /// reference: the native Shutdown call is commented out there (rc-3
+        /// and rc-4 MidiDesktopAppSdkInitializer.cs), so the runtime's DLLs
+        /// stay mapped for the life of the process.
+        /// <paramref name="skipDispose"/> drops the initializer without
+        /// calling Dispose. No production caller passes it.
+        /// </summary>
         public void Stop(bool skipDispose)
         {
             if (_initializer != null)

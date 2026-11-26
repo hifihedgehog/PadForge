@@ -9,9 +9,11 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// The system part of a recording (#600 item 32) gives the processor
-    /// count once, on the Windows build's line.
+    /// count once, on the Windows build's line. In the statics' collection
+    /// with HidHideSnapshotStateTests, the other test that sets the system
+    /// part's two seams.
     /// </summary>
-    [Collection("RecordingFolderStatics")]
+    [Collection("SettingsManagerStatics")]
     public class RecorderSystemPartTests
     {
         [Fact]

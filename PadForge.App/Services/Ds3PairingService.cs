@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PadForge.Resources.Strings;
+using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.Win32;
@@ -45,8 +46,33 @@ namespace PadForge.Services
         public const ushort NAV_PID = 0x042F;
 
         private readonly Action<string> _log;
-        public Ds3PairingService(Action<string> log = null)
-            => _log = msg => { LogLine(msg); log?.Invoke(msg); };
+        private readonly Action<string> _step;
+
+        /// <summary>The narration, in English with its addresses, paths and
+        /// error codes, goes to the diagnostics log and to
+        /// <paramref name="log"/>. The steps a person watches go to
+        /// <paramref name="step"/>, each a line of the string table, so the
+        /// pairing dialog shows them in the UI's language.</summary>
+        public Ds3PairingService(Action<string> log = null, Action<string> step = null)
+        {
+            _log = msg => { LogLine(msg); log?.Invoke(msg); };
+            _step = line => { LogLine("step: " + line); step?.Invoke(line); };
+        }
+
+        /// <summary>The line the pairing dialog shows for an exception the
+        /// ceremony threw, by its kind, with the exception's own text kept
+        /// for the diagnostics log.</summary>
+        internal static string FaultLine(Exception ex)
+        {
+            LogLine("ceremony threw " + ex.GetType().Name + ": " + ex.Message);
+            var s = Strings.Instance;
+            return ex switch
+            {
+                UnauthorizedAccessException or System.Security.SecurityException => s.Ds3Pair_FaultAccess,
+                System.IO.IOException or System.ComponentModel.Win32Exception or System.Runtime.InteropServices.ExternalException => s.Ds3Pair_FaultDevice,
+                _ => s.Ds3Pair_FaultOther,
+            };
+        }
 
         // Serialize pairing and unpairing sequences that cycle the radio.
         // This gate is part of the mitigation added after the July 9 crash.
@@ -246,6 +272,7 @@ namespace PadForge.Services
             var r = new PairResult();
 
             // 0. Ensure the driver stack is present (install once). Filled after grounding.
+            _step(Strings.Instance.Ds3Pair_Step_Drivers);
             if (!EnsureBthPs3Installed())
             {
                 _log("BthPS3 driver install failed.");
@@ -274,6 +301,7 @@ namespace PadForge.Services
         private PairResult RunPairingCore(PairResult r, CancellationToken ct)
         {
             // 1. Read this PC's Bluetooth radio address (the pairing target).
+            _step(Strings.Instance.Ds3Pair_Step_Radio);
             byte[] radio = ReadRadioMac();
             if (radio == null) { _log("No Bluetooth radio found."); r.Error = "no-radio"; return r; }
             r.RadioMac = radio;
@@ -284,6 +312,7 @@ namespace PadForge.Services
             //    our driver package": the second is not something plugging the
             //    cable in fixes, and telling the user to check the cable sent
             //    discussion #283 chasing the wrong thing.
+            _step(Strings.Instance.Ds3Pair_Step_Usb);
             if (!EnsureWinUsbBound(ct))
             {
                 // The installer reports WHICH step failed. Asking
@@ -353,6 +382,7 @@ namespace PadForge.Services
                     StampLinkAddress(DS3_VID, DS3_PID, r.Ds3Mac);
 
                     // 4. Sixpair: write the radio MAC into the pad (SET_REPORT FEATURE 0xF5).
+                    _step(Strings.Instance.Ds3Pair_Step_Write);
                     //    Both proven references read 0xF5 before writing it (ds3winusb
                     //    Program.cs:182, DsHidMini reads HostAddress in device init), so
                     //    do the same read-before-write, then read back to confirm the
@@ -417,6 +447,7 @@ namespace PadForge.Services
             // Steps 5-6 touch the radio: serialize against any concurrent unpair so
             // two cycles can't overlap. The pad is on USB here (no live BthPS3 link),
             // so the cycle disconnects nothing.
+            _step(Strings.Instance.Ds3Pair_Step_Register);
             lock (_radioGate)
             {
                 if (!Ds3DriverInstaller.WriteRememberedDeviceRecord(radio, r.Ds3Mac, _log))
@@ -424,6 +455,7 @@ namespace PadForge.Services
                 _log("Pad registered with the Bluetooth stack.");
 
                 // 6. Cycle the radio so the drivers pick up the new record.
+                _step(Strings.Instance.Ds3Pair_Step_Restart);
                 CycleRadio();
             }
 
@@ -909,6 +941,7 @@ namespace PadForge.Services
         {
             var r = new PairResult();
 
+            _step(Strings.Instance.Ds3Pair_Step_Drivers);
             if (!EnsureBthPs3Installed())
             {
                 _log("BthPS3 driver install failed.");
@@ -1175,6 +1208,7 @@ namespace PadForge.Services
 
         private PairResult RunMovePairingCore(PairResult r, CancellationToken ct, string expectedMacHex = null)
         {
+            _step(Strings.Instance.Ds3Pair_Step_Radio);
             byte[] radio = ReadRadioMac();
             if (radio == null) { _log("No Bluetooth radio found."); r.Error = "no-radio"; return r; }
             r.RadioMac = radio;
@@ -1189,6 +1223,7 @@ namespace PadForge.Services
             // reported "No PS Move or Navigation controller found on USB"
             // for a pad sitting on the cable. Its USB node is present on
             // either driver, so that is what decides.
+            _step(Strings.Instance.Ds3Pair_Step_Usb);
             var dev = FindMoveFamilyHid();
             bool navOnUsb = Ds3DriverInstaller.IsSonyPadOnUsb(Ds3DriverInstaller.NavPidToken);
             if (dev == null && !navOnUsb)
@@ -1260,10 +1295,12 @@ namespace PadForge.Services
             {
                 // BthPS3 refuses Motion connections while its category gate is
                 // closed (IsMOTIONSupported ships 0); the cycle below reloads it.
+                _step(Strings.Instance.Ds3Pair_Step_Register);
                 Ds3DriverInstaller.EnsureMoveFamilySupportEnabled(_log);
                 if (!Ds3DriverInstaller.WriteRememberedDeviceRecord(radio, macHex, remoteName, recordPid, _log))
                 { _log("Registering the controller failed."); r.Error = "identity-inject-failed"; return r; }
                 _log("Controller registered with the Bluetooth stack.");
+                _step(Strings.Instance.Ds3Pair_Step_Restart);
                 CycleRadio();
             }
 

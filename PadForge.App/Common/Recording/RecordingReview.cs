@@ -117,17 +117,28 @@ namespace PadForge.Common.Recording
             Parts = parts;
         }
 
+        /// <summary>The most lines a review takes. A recording the recorder
+        /// made stops at a 20 MB zip with about 120 MB of text
+        /// (BoundedLineReader), a few million lines, and each line costs the
+        /// review an index entry, so a file planted in the folder with more
+        /// is refused before it takes gigabytes.</summary>
+        internal const int MostLines = 16 * 1024 * 1024;
+
         /// <summary>Opens a waiting recording: unpacks its text beside it
         /// and reads its parts. Slow for a large one, so off the window's
         /// thread.</summary>
-        internal static RecordingReview Open(string zip)
+        internal static RecordingReview Open(string zip) => Open(zip, MostLines);
+
+        /// <summary><see cref="Open(string)"/> with a bound of its own on
+        /// the lines, for a test.</summary>
+        internal static RecordingReview Open(string zip, int mostLines)
         {
             string folder = System.IO.Path.GetDirectoryName(zip);
             string view = System.IO.Path.Combine(folder, System.IO.Path.GetFileName(zip) + "." + Guid.NewGuid().ToString("N") + ProblemRecorder.TempSuffix);
             var review = new RecordingReview(zip, view);
             try
             {
-                review.Load();
+                review.Load(mostLines);
                 return review;
             }
             catch
@@ -137,7 +148,7 @@ namespace PadForge.Common.Recording
             }
         }
 
-        private void Load()
+        private void Load(int mostLines)
         {
             ZipBytes = new FileInfo(Path).Length;
             var counters = new Dictionary<RecordingParts, (ByteCounter Count, DeflateStream Deflate)>();
@@ -158,7 +169,7 @@ namespace PadForge.Common.Recording
                 int at = 0;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    at++;
+                    if (++at > mostLines) throw new InvalidDataException("too-many-lines");
                     if (at == 1 && !line.StartsWith(RecordingCodec.FirstLineStart, StringComparison.Ordinal))
                         throw new InvalidDataException("not-a-recording");
                     var (place, part) = Classify(line, ref section, ref events);
@@ -269,10 +280,14 @@ namespace PadForge.Common.Recording
         private readonly object _readLock = new();
         private readonly byte[] _lineBuffer = new byte[BoundedLineReader.LongestLine * 4 + 2];
 
+        /// <summary>The line at a place of the unpacked text. Throws
+        /// <see cref="ObjectDisposedException"/> once the review is
+        /// closed.</summary>
         private string ReadAt(long offset)
         {
             lock (_readLock)
             {
+                if (_viewStream == null) throw new ObjectDisposedException(nameof(RecordingReview));
                 _viewStream.Position = offset;
                 int n = 0;
                 while (n < _lineBuffer.Length)
@@ -297,7 +312,16 @@ namespace PadForge.Common.Recording
                 _offsets = offsets;
             }
 
-            public string this[int index] => _review.ReadAt(_offsets[index]);
+            // A list the window still shows after the review closed reads
+            // empty lines.
+            public string this[int index]
+            {
+                get
+                {
+                    try { return _review.ReadAt(_offsets[index]); }
+                    catch (ObjectDisposedException) { return string.Empty; }
+                }
+            }
             public int Count => _offsets.Count;
 
             public IEnumerator<string> GetEnumerator()
@@ -343,8 +367,28 @@ namespace PadForge.Common.Recording
         /// parts holds: every line the finished file's search reads
         /// (ProblemRecorder.IsSearched) is searched again for this PC's own
         /// values, and its stand-ins are counted.</summary>
-        internal CheckResult Check(IReadOnlyList<(PrivateKind Kind, string Value)> live)
+        internal CheckResult Check(IReadOnlyList<(PrivateKind Kind, string Value)> live) => Check(live, KeptNow);
+
+        /// <summary>The parts kept now, the review's own summary among them,
+        /// taken on the window's thread for a check that runs on
+        /// another.</summary>
+        internal RecordingParts KeptNow
         {
+            get
+            {
+                var kept = RecordingParts.None;
+                foreach (var info in Parts)
+                    if (info.Keep) kept |= info.Part;
+                return kept;
+            }
+        }
+
+        /// <summary>The scrub check over the parts <paramref name="kept"/>
+        /// names, as they were when it was asked, not as the switches stand
+        /// while it runs.</summary>
+        internal CheckResult Check(IReadOnlyList<(PrivateKind Kind, string Value)> live, RecordingParts kept)
+        {
+            bool Keeps(RecordingParts part) => part == RecordingParts.None || (kept & part) != 0;
             var standIns = new HashSet<string>(StringComparer.Ordinal);
             var kinds = new HashSet<string>(StringComparer.Ordinal);
             int found = 0;
@@ -529,8 +573,12 @@ namespace PadForge.Common.Recording
 
         public void Dispose()
         {
-            _viewStream?.Dispose();
-            _viewStream = null;
+            // A read on another thread finishes its line first.
+            lock (_readLock)
+            {
+                _viewStream?.Dispose();
+                _viewStream = null;
+            }
             try
             {
                 if (File.Exists(_view) && !RecordingFolder.IsLink(_view)) File.Delete(_view);

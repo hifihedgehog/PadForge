@@ -6,7 +6,7 @@ using PadForge.Common.Input;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// What programs hold and claim on devices (#597, #600 items 22 to 24),
+    /// What programs hold and claim on devices (#600 items 22 to 24),
     /// as the sessions keep it, and the steps that put it where the poll
     /// thread reads it (ControlHolds). Every method runs under the sessions'
     /// lock.

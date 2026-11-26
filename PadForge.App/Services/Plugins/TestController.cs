@@ -65,11 +65,6 @@ namespace PadForge.Services.Plugins
         internal static readonly string[] AxisNames =
             { "Left X", "Left Y", "Left Trigger", "Right X", "Right Y", "Right Trigger" };
 
-        /// <summary>The buttons a Windows app acts on in the window in front,
-        /// and Guide, which opens Xbox Game Bar: A, B, Back, Start,
-        /// Guide.</summary>
-        internal static readonly int[] NavigationButtons = { 0, 1, 6, 7, 10 };
-
         /// <summary>The buttons pressed with the navigation buttons off: X,
         /// Y, the shoulders and the stick buttons.</summary>
         internal static readonly int[] PlainButtons = { 2, 3, 4, 5, 8, 9 };
@@ -308,22 +303,20 @@ namespace PadForge.Services.Plugins
     /// <summary>
     /// One Test Controller's motion, worked out on the poll thread each
     /// time the engine reads the device (ProgramDevice.Live), so it is as
-    /// fine as the polling rate. It counts the reads for Reads per Second,
-    /// and hands the state to the device every 20 ms for readers off the
-    /// poll thread (ProgramDevice.PeekState).
+    /// fine as the polling rate, with nothing allocated. It counts the reads
+    /// for Reads per Second. A reader off the poll thread works the same
+    /// motion out on its own thread, in a state of its own
+    /// (ProgramDevice.LivePeek), so it reads the controller as it moves.
     /// </summary>
     internal sealed class TestControllerMotion
     {
         private readonly Func<TestControllerConfig> _config;
         private readonly Func<long> _nowMs;
         private readonly CustomInputState _state = new();
-        private readonly ProgramDevice _device;
         private int _reads;
-        private long _lastPublishMs = long.MinValue;
 
-        public TestControllerMotion(ProgramDevice device, Func<TestControllerConfig> config, Func<long> nowMs = null)
+        public TestControllerMotion(Func<TestControllerConfig> config, Func<long> nowMs = null)
         {
-            _device = device;
             _config = config;
             var watch = Stopwatch.StartNew();
             _nowMs = nowMs ?? (() => watch.ElapsedMilliseconds);
@@ -334,14 +327,17 @@ namespace PadForge.Services.Plugins
         public CustomInputState Read()
         {
             Interlocked.Increment(ref _reads);
-            long now = _nowMs();
-            TestControllerPattern.Fill(_state, _config(), now);
-            if (now - _lastPublishMs >= 20)
-            {
-                _lastPublishMs = now;
-                _device?.Publish(_state);
-            }
+            TestControllerPattern.Fill(_state, _config(), _nowMs());
             return _state;
+        }
+
+        /// <summary>The state now, in a new state, for a reader off the poll
+        /// thread. It counts no read.</summary>
+        public CustomInputState Peek()
+        {
+            var state = new CustomInputState();
+            TestControllerPattern.Fill(state, _config(), _nowMs());
+            return state;
         }
 
         /// <summary>The reads since the last call, which the page asks once

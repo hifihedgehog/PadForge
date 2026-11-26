@@ -6,7 +6,7 @@ namespace PadForge.Common.Recording
     /// <summary>
     /// A stream that keeps nothing and counts what is written to it. A
     /// recording packs its text into one, so the 20 MB limit reads the size
-    /// the zip will have while the plain text goes to the file (#597).
+    /// the zip will have while the plain text goes to the file (#600).
     /// </summary>
     internal sealed class ByteCounter : Stream
     {

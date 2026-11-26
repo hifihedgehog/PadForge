@@ -6,7 +6,7 @@ using PadForge.Common;
 namespace PadForge.Services
 {
     /// <summary>
-    /// The variables of every process PadForge starts with its rights (#597),
+    /// The variables of every process PadForge starts with its rights (#600),
     /// built from an allow list: the system's variables as the machine has
     /// them, the user's name and folders, and the PadForge variables the
     /// diagnostics read. Every other variable is dropped, CORECLR_*, COR_*,
@@ -27,7 +27,9 @@ namespace PadForge.Services
     /// the Windows tools PadForge runs (schtasks, netsh, pnputil, msiexec,
     /// the installers) all get the block this class builds. A process
     /// PadForge starts as the user without rights (a plugin, the library
-    /// host, the failed start's copy) gets the user's own variables instead
+    /// host, the install and check copy, a recording's save and the web
+    /// helper, each started through <see cref="Plugins.PluginLauncher"/>,
+    /// and the failed start's copy) gets the user's own variables instead
     /// (<see cref="UserVariables"/>).</para>
     ///
     /// <para>This part runs in the protected start, before the process may
@@ -60,8 +62,8 @@ namespace PadForge.Services
 
         /// <summary>The PadForge variables the diagnostics read, taken from
         /// the user's. Each one is a switch or a number, and the one that
-        /// names a file, PADFORGE_DIAG, is held to the exe's own folder in a
-        /// process with rights (SdlDiagLog). A test holds this list to every
+        /// names a file, PADFORGE_DIAG, is held to diag.log in the exe's own
+        /// folder in a process with rights (SdlDiagLog). A test holds this list to every
         /// PADFORGE_ variable the source reads.</summary>
         internal static readonly string[] PadForgeVariables =
         {

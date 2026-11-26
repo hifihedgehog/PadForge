@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Creates one virtual controller of each family through PadForge's own
+       code path, submits a known state the way the poll loop does, and reads
+       what Windows delivers. Run it with administrator rights only when that
+       is the point: see Program.cs for the guards. Not part of the solution,
+       like the other tools. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <WindowsSdkPackageVersion>10.0.26100.57</WindowsSdkPackageVersion>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PlatformTarget>x64</PlatformTarget>
+    <SelfContained>false</SelfContained>
+    <!-- PadForge.App publishes self-contained, and the probe loads its
+         assembly as a library on the shared runtime, as PadForge.Tests
+         does. -->
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+    <!-- PadForge.App is a WPF program, so the probe runs on the desktop
+         runtime it was built for. -->
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>PadForge.Tools.OutputFamilyProbe</RootNamespace>
+    <AssemblyName>OutputFamilyProbe</AssemblyName>
+    <NoWarn>$(NoWarn);CA1416;WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PadForge.Engine\PadForge.Engine.csproj" />
+    <ProjectReference Include="..\..\PadForge.App\PadForge.App.csproj" />
+    <!-- The pre-built SDK DLL the App references. Reference items do not
+         flow through a project reference, as PadForge.Tests.csproj notes. -->
+    <Reference Include="HIDMaestro.Core">
+      <HintPath>..\..\PadForge.App\Resources\HIDMaestro\HIDMaestro.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

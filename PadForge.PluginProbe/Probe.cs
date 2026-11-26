@@ -20,6 +20,14 @@ namespace PadForge.PluginProbe
     /// the test sees it end only when its job is closed.
     /// <c>serve &lt;pipe&gt;</c> stands in for PadForge's side of its web
     /// helper's pipe, under a test's own name (<see cref="Serve"/>).
+    /// <c>linger &lt;ms&gt;</c> leaves a child that holds its output open
+    /// for that long and ends at once (<see cref="Linger"/>), and
+    /// <c>sleep &lt;ms&gt;</c> is that child.
+    /// <c>ask &lt;pipe&gt; &lt;line&gt;</c> sends one line to a pipe of a
+    /// test's own name, as a second start without rights asks the running
+    /// copy over its signal pipe, and writes whether the kit's check takes
+    /// the pipe's server and the answer to the file its
+    /// PADFORGE_PROBE_REPORT variable names (<see cref="Ask"/>).
     /// </summary>
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     internal static class Probe
@@ -28,6 +36,13 @@ namespace PadForge.PluginProbe
         {
             if (args.Length > 0 && args[0] == "kit") return PadForgePluginKit.Program.Main();
             if (args.Length > 1 && args[0] == "serve") return Serve(args[1]);
+            if (args.Length > 1 && args[0] == "linger" && int.TryParse(args[1], out int lingerMs)) return Linger(lingerMs);
+            if (args.Length > 1 && args[0] == "sleep" && int.TryParse(args[1], out int sleepMs))
+            {
+                Thread.Sleep(sleepMs);
+                return 0;
+            }
+            if (args.Length > 2 && args[0] == "ask") return Ask(args[1], args[2]);
             if (args.Length > 1 && args[0] == "owner")
             {
                 // The kit's check of who serves a pipe: for the pipe's own
@@ -136,6 +151,33 @@ namespace PadForge.PluginProbe
             return 0;
         }
 
+        /// <summary>One line to a pipe of a test's own name, and its answer,
+        /// written as <c>owner=&lt;0|1&gt; reply=&lt;answer&gt;</c>. It never
+        /// asks a pipe of PadForge's own names.</summary>
+        private static int Ask(string name, string line)
+        {
+            if (PadForge.Services.Automation.PipeOwner.IsOwnName(name)) return 2;
+            string? report = Environment.GetEnvironmentVariable("PADFORGE_PROBE_REPORT");
+            if (string.IsNullOrEmpty(report)) return 3;
+            string answer;
+            try
+            {
+                using var pipe = new System.IO.Pipes.NamedPipeClientStream(".", name, System.IO.Pipes.PipeDirection.InOut,
+                    System.IO.Pipes.PipeOptions.None, TokenImpersonationLevel.Identification);
+                pipe.Connect(5000);
+                bool taken = PadForge.Services.Automation.PipeOwner.IsServer(pipe.SafePipeHandle, name);
+                Write(pipe, line + "\n");
+                answer = "owner=" + (taken ? 1 : 0) + " reply=" + (ReadLine(pipe) ?? string.Empty);
+            }
+            catch (Exception e)
+            {
+                answer = "error=" + e.GetType().Name;
+            }
+            File.WriteAllText(report + ".part", answer + "\n");
+            File.Move(report + ".part", report, overwrite: true);
+            return 0;
+        }
+
         private static string? ReadLine(Stream stream)
         {
             var line = new List<byte>();
@@ -148,6 +190,24 @@ namespace PadForge.PluginProbe
                 if (b == '\n') return Encoding.UTF8.GetString(line.ToArray());
                 line.Add((byte)b);
             }
+        }
+
+        /// <summary>
+        /// A tool that leaves a child behind: it starts itself again to sleep
+        /// <paramref name="ms"/> milliseconds with its own standard output and
+        /// error, which the child inherits (Process.Start hands a child that
+        /// redirects nothing the parent's GetStdHandle handles,
+        /// Process.Windows.cs), writes one line and ends with code 0 at once.
+        /// A reader of its output sees the end of it only when the child ends.
+        /// </summary>
+        private static int Linger(int ms)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo(Environment.ProcessPath!) { UseShellExecute = false };
+            psi.ArgumentList.Add("sleep");
+            psi.ArgumentList.Add(ms.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            using var child = System.Diagnostics.Process.Start(psi);
+            Console.WriteLine("left a child");
+            return 0;
         }
 
         private static void Write(Stream stream, string text)

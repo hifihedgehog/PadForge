@@ -46,7 +46,7 @@ namespace PadForge.Search
         /// <summary>Writes <paramref name="value"/> to <paramref name="path"/>
         /// on <paramref name="source"/> through a binding with the converter
         /// the page's control uses, as that control's binding would write a
-        /// person's change (#597). For a setting whose control is not drawn
+        /// person's change (#600). For a setting whose control is not drawn
         /// now, such as a row of a card per item.</summary>
         internal static void Write(object source, string path, object value, IValueConverter converter = null)
         {
@@ -106,10 +106,17 @@ namespace PadForge.Search
         /// <summary>Forgets every walk: the pages may have changed.</summary>
         internal void Reset() => _scopes.Clear();
 
+        /// <summary>A label's words: its string in the current language, the
+        /// value its binding path reads from <paramref name="data"/>, or,
+        /// for a path that begins with <c>=</c>, the words after it. The
+        /// index gives a dialog whose title is set in code its class's name
+        /// that way (SearchIndexBuilder), and no binding path begins with
+        /// <c>=</c>.</summary>
         internal static string LabelText(SearchLabel label, object data)
         {
             if (label == null) return null;
             if (label.Key != null) return Strings.Get(label.Key);
+            if (label.Path != null && label.Path.StartsWith('=')) return label.Path.Substring(1);
             object value = BindingProbe.Read(data, label.Path);
             return value as string ?? value?.ToString();
         }

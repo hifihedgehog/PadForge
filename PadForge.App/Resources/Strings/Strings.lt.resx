@@ -299,6 +299,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Rodyti arba slėpti „PadForge“</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Įjungti arba išjungti virtualius valdiklius</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Bet kuris prijungtas įrenginys</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (neprijungta)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Įrenginys, kurio nėra puslapyje Įrenginiai</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Įrašoma…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kai</value></data>
@@ -559,7 +561,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Skaitymas</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Įvesčių siuntimas</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Nustatymų keitimas</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programos gali perjungti profilius ir juos atlaisvinti, paleisti ir sustabdyti variklį, įjungti ir išjungti virtualius valdiklius, rodyti ir slėpti langą, uždaryti „PadForge“, išsaugoti diagnostikos momentinę kopiją ir paklausti, kas veikia.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programos gali perjungti profilius ir juos atlaisvinti, paleisti ir sustabdyti variklį, įjungti ir išjungti virtualius valdiklius, rodyti ir slėpti langą, uždaryti „PadForge“, paklausti, kas veikia, išsaugoti diagnostikos momentinę kopiją bei pradėti, sustabdyti ir pažymėti problemos įrašą.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Viskas, kas lygyje Komandos, o programos dar gali matyti įrenginius, virtualius valdiklius, susiejimus, profilius ir nustatymus, realiu laiku sekti kiekvieno įrenginio įvestis ir parodyti jums vietą „PadForge“. Skaitymo lygio programa mato kiekvieną bet kuriame įrenginyje paspaustą klavišą, įskaitant klavišus, įvestus į langus, veikiančius administratoriaus teisėmis.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Viskas, kas lygyje Skaitymas, o programos dar gali pridėti savo įrenginių ir jais valdyti, laikyti bet kurio įrenginio valdiklį ir perduoti pavadintas reikšmes makrokomandų paleidikliams.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Viskas, kas lygyje Įvesčių siuntimas, o programos dar gali keisti tai, ką galite keisti puslapiuose. Kai kurie pakeitimai visada pirmiau klausia jūsų „PadForge“ klausimo kortelėje.</value></data>
@@ -572,7 +574,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Laukiama jūsų</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Veikla</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Anuliuoti</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>„PadForge“ nepavyko to išsaugoti: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Kol prisijungusi programa, kurios lygis yra Skaitymas ar aukštesnis, mato, kas paspausta kiekviename įrenginyje, įskaitant klaviatūras.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Įskiepiai</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Vykdyti įskiepius</value></data>
@@ -592,7 +593,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} iš {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (atkūrimas)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problemų įrašai|*.zip;*.log|Visi failai|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>„PadForge“ negali atkurti {0}. Tai nėra problemos įrašas arba jame nėra jokio įrenginio įvesties.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>„PadForge“ negali atkurti {0}. Tai nėra problemos įrašas, kurį „PadForge“ gali perskaityti.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>„PadForge“ negali atkurti {0}. Jame yra daugiau nei {1} įrenginių, o Atkūrimas daugiausia atkuria {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>„PadForge“ negali atkurti {0}. Jame nėra jokio įrenginio įvesties.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>„PadForge“ nepavyko perskaityti {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Jūsų įskiepiai</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Pridėti įskiepį…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programos ir scenarijai|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Visi failai|*.*</value></data>
@@ -606,8 +610,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Sustabdyta po penkių nesėkmių iš eilės</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nepaleista: failo nebėra</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nepaleista: „Windows“ neturi programos šiai failo rūšiai</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nepaleista: jokia programa neatidaro Python failų už jus, o „PadForge“ nerado py paleidiklio</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nepaleista: „PadForge“ negali perskaityti, kuri programa už jus atidaro šios rūšies failus</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nepaleista: programos, kuri už jus atidaro šios rūšies failus, šiame kompiuteryje nėra</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nepaleista: neveikia darbalaukio apvalkalas, kuriame jį būtų galima paleisti</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nepaleista: darbalaukio apvalkalas turi administratoriaus teises, todėl jų turėtų ir įskiepis</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nepaleista: „PadForge“ negali perskaityti, ar jis turėtų administratoriaus teises</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nepaleista: „Windows“ suteikė jam administratoriaus teises, todėl „PadForge“ jį nutraukė prieš pradedant veikti</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nepaleista: prašo administratoriaus teisių</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nepaleista: „Windows“ atsisakė su klaida {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nepaleista</value></data>
@@ -635,6 +644,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Pridėta: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Pasirašė {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nepasirašyta.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Jo nustatymai čia rodomi, kol jis veikia.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Jis neskelbia jokių nustatymų.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Jo nustatymai čia rodomi, kai tik jis prisijungia prie „PadForge“.</value></data>
@@ -737,8 +747,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programa naudoja versiją, kurios „PadForge“ nepažįsta</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>„PadForge“ neišdavė to įskiepio rakto</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>„PadForge“ nepriėmė šios programos ryšio</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>„PadForge“ nesukūrė įrenginio, nes Windows nepateikė programos failo pavadinimo</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Paprašyta iš naujo per anksti</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Daugiau tokių nebus, kol „PadForge“ nebus paleista iš naujo</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Per daug tokių, kuriuos programos paliko laukti jūsų peržiūros puslapyje Pradžia</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>„PadForge“ tokio įrankio neturi</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programa perskaitė senesnę būseną</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nieko su tokiu ID nėra</value></data>
@@ -746,6 +757,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Jūs to neleidote</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Niekas neatsakė laiku</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Laukiama jūsų atsakymo</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Dar nebuvote atsakę</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tokios užklausos nėra</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nėra ko anuliuoti</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Tai gali keisti tik jūs</value></data>
@@ -861,6 +873,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Nepasirašyta.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Nuo lygio Skaitymas ir aukščiau ji mato kiekvieną klavišą, paspaustą bet kuriame įrenginyje, įskaitant klaviatūras.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Klausia vieną kartą. Galite ją pašalinti puslapyje Automatizavimas.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Paleido programa, kurios „PadForge“ nepavyko atpažinti.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>„PadForge“ negali atskirti šios programos nuo kitos, todėl klaus dar kartą kitą kartą jai prisijungus.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>„PadForge“ komandų eilutė</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nustato {0} į {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Klauso tinkle, todėl kiti įrenginiai gali pasiekti šį kompiuterį.</value></data>
@@ -876,7 +890,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Perkelti profilį</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importuokite profilio failą iš kitos programos, tada pažiūrėkite, kas perkelta.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kartų: {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, paskutinė iš tokių užklausų: {1}</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 scenarijai (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -906,6 +919,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Šiame kompiuteryje nėra „Logitech“ G-key SDK. Jis įdiegiamas kartu su „Logitech Gaming Software“ 8.55 ar naujesne versija.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK užregistruotas, bet jo failo nebėra. Iš naujo įdiekite „Logitech Gaming Software“.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK rastas, bet jo nepavyko įkelti.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK rastas, bet neįkeltas, nes „PadForge“ negalėjo patvirtinti, kad jį gali keisti tik administratoriai ir kad jį pasirašė „Logitech“.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Ta biblioteka nėra laukiamas G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK atsisakė pasileisti. Dažniausiai taip būna, kai neveikia „Logitech Gaming Software“.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Prisijungta, bet dar negautas nė vienas klavišas. „Logitech Gaming Software“ programoje nuvilkite komandą „G-key“ ant kiekvieno klavišo „PadForge“ profilyje ir nustatykite tą profilį kaip nuolatinį. Pelė G600 arba G300 taip pat turi būti išjungta iš vidinės atminties režimo.</value></data>
@@ -1010,14 +1024,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automatiškai paleisti „PadForge“, kai prisijungiate prie „Windows“. Kol tai įjungta, „PadForge“ taip pat paleidžiamas be „Windows“ raginimo iš nuorodos, scenarijaus ar kitos programos.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>„PadForge“ veikia iš {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tam reikia, kad „PadForge“ būtų savo aplanke. Jos aplanke yra kitų failų, todėl „PadForge“ negali neleisti kitoms programoms jo keisti.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Tam reikia, kad „PadForge“ būtų aplanke, kurio kitos programos negali keisti. „PadForge“ nepavyko neleisti jiems keisti savo aplanko.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Perkelti „PadForge“ į savo aplanką</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Nukopijuoja „PadForge“ ir jos nustatymus į Program Files, nukreipia jos užduotis ten ir paleidžia ją iš ten. Čia esanti kopija lieka nepakeista.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>„PadForge“ neperkelta: {0} yra failų, kurie nėra „PadForge“.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>„PadForge“ neperkelta: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Paleidimas prisijungus išjungtas, nes jis paleido „PadForge“ iš aplanko, kuriame yra kitų failų.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>„PadForge“ neperkelta: „Windows“ nenurodo aplanko „Program Files“.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko perskaityti veikiančios „PadForge“.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko sukurti {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko perskaityti, kas yra {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko neleisti kitoms programoms keisti {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>„PadForge“ neperkelta: jos kopija aplanke {0} neatitiko veikiančios „PadForge“.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>„PadForge“ neperkelta: po kopijavimo {0} turėjo failų, kurie nėra „PadForge“, arba kitos programos galėjo jį keisti.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“, kuri veikė, nebėra.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“ nepavyko neleisti kitoms programoms keisti aplanko, iš kurio ji paleido „PadForge“.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“ nepavyko perskaityti, kuri „PadForge“ veikė.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“ nepavyko perskaityti aplanko, iš kurio veikė „PadForge“.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>„PadForge“ nepavyko sukurti savo apsaugoto aplanko {0}. „PadForge“ ten laiko bibliotekas, kurias vykdo administratoriaus teisėmis, ir be jo negali saugiai prasidėti.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>„PadForge“ nepavyko iš naujo paleisti savęs iš apsaugoto aplanko {0}. „PadForge“ administratoriaus teisėmis veikia tik iš ten, todėl nebuvo paleista.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>„PadForge“ nepavyko sukurti užrakto, kuris leidžia veikti tik vienai kopijai, todėl ji nepasileido.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>„PadForge“ veikia administratoriaus teisėmis iš {0}, aplanko, kurį gali keisti kitos programos. Jos gali pakeisti čia esančius „PadForge“ nustatymus, o „PadForge“ veikia pagal juos savo teisėmis.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>„PadForge“ veikia administratoriaus teisėmis iš {0}, aplanko, kuriame yra kitų failų. „PadForge“ negali neleisti kitoms programoms keisti čia esančių jos nustatymų, o ji veikia pagal juos savo teisėmis.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>„PadForge“ veikia administratoriaus teisėmis iš {0}, aplanko, kurio nepavyko perskaityti. „PadForge“ negali neleisti kitoms programoms keisti čia esančių jos nustatymų, o ji veikia pagal juos savo teisėmis.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Visada rodyti pranešimų srityje</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pranešimų srities piktograma rodoma ir tada, kai langas atidarytas, todėl jos meniu komanda „Išeiti“ visada pasiekiama vienu spustelėjimu.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Naujinimai</value></data>
@@ -1032,7 +1061,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Įdiegti ir paleisti iš naujo</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Leidimo informacija</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Valdiklių duomenų bazė</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atnaujinti dabar atsisiunčia bendruomenės valdiklių duomenų bazę (SDL_GameControllerDB) iš „GitHub“ arba iš adreso, nustatyto skiltyje Daugiau, ir nustatymų faile (PadForge.xml) saugo susiejimus, kurių šioje „PadForge“ versijoje nėra. Jie naudojami iškart. Iš kito adreso saugomi tik nauji susiejimai. Naujas susiejimas naudojamas tik valdikliui, kurio niekas kitas neskaito kaip žaidimų pulto, kuris nepriskirtas ir kuris nėra režime Priverstinai naudoti neapdorotą vairalazdės režimą (apeiti žaidimų pulto perskirstymą). Nustatymas iš naujo pašalina visus atsisiųstus susiejimus ir vėl atsisiunčia iš „GitHub“. Jūsų pačių eilutės, esančios skiltyje Daugiau, lieka.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atnaujinti dabar atsisiunčia bendruomenės valdiklių duomenų bazę (SDL_GameControllerDB) iš „GitHub“ arba iš adreso, nustatyto skiltyje Daugiau, ir nustatymų faile (PadForge.xml) saugo susiejimus, kurių šioje „PadForge“ versijoje nėra. Jie naudojami iškart. Iš kito adreso saugomi tik nauji susiejimai. Naujas susiejimas pirmą kartą naudojamas tik valdikliui, kurį SDL praneša kaip žaidimų pultą arba be konkretaus tipo, kurio niekas kitas neskaito kaip žaidimų pulto, kuris nepriskirtas ir kuris nėra režime Priverstinai naudoti neapdorotą vairalazdės režimą (apeiti žaidimų pulto perskirstymą). Pradėtas naudoti susiejimas lieka naudojamas ir priskyrus valdiklį. Nustatymas iš naujo pašalina atsisiųstus susiejimus ir grąžina Atsisiųsti iš prie bendruomenės failo, kurį atsisiunčia kitas Atnaujinti dabar. Jūsų pačių eilutės, esančios skiltyje Daugiau, lieka.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atnaujinti dabar</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Atnaujinama…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Ieškoma naujinimų…</value></data>
@@ -1065,9 +1094,12 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Įtraukta: susiejimų {1}, bendruomenės kopija nuo {2}. Atsisiųsta {3} iš {4}: naujų eilučių {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Įtraukta: susiejimų {1}, bendruomenės kopija nuo {2}. Atsisiųsta {3} iš {4}: nauja eilutė {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Bendruomenės duomenų bazė nepasikeitė nuo paskutinio naujinimo.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Failas adresu {0} nepasikeitė nuo paskutinio naujinimo.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Nepavyko pasiekti „GitHub“: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Nepavyko pasiekti {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>„PadForge“ atmetė atsisiuntimą, nes tai nėra valdiklių duomenų bazė, kurios ji tikisi. Niekas nepasikeitė.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>„PadForge“ atmetė „GitHub“ atsakymą. Nieko nepakeista.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>„PadForge“ atmetė {0} atsakymą. Nieko nepakeista.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Paleisti sumažintą</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Paleisti prisijungus</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>„HidHide“</value></data>
@@ -1110,6 +1142,14 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Aplankas</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Tarnybos nustatymas</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Šalinimo veiksmas</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Tarnyba</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Failas</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Viršutinis filtras</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registro reikšmė</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Aparatinės įrangos ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Suplanuota užduotis</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Įdiegtų programų įrašas</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP įrenginys</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>„BthPS3“ „Bluetooth“</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Leidžia „PlayStation 3“ valdikliams, „PlayStation Move“ ir „Navigation“ valdikliui jungtis per „Bluetooth“. Įtraukta į „PadForge“ ir įdiegiama, kai pirmą kartą susiejamas vienas iš jų.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Jungia „PlayStation 3“ valdiklius per „Bluetooth“.</value></data>
@@ -1178,6 +1218,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Išsaugota {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Įrašymas nepradėtas. Patikra rado privačią šio PC reikšmę, kuri nebūtų neįtraukta į failą.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Įrašymas nepradėtas. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>„PadForge“ nerado prisijungusio naudotojo laikinųjų failų aplanko naudotojo profilio viduje, pasiekiamo be jokios nuorodos, kad į jį įrašytų įrašą.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Įrašų aplankas yra nuoroda į kitą vietą, kuria „PadForge“ nesekia.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Paskutinis įrašas dar baigiamas.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Laikyti paskutines 60 sekundžių yra išjungta, todėl nėra ko išsaugoti.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Įrašas, kurio „PadForge“ nebuvo sustabdžiusi, laukia, kol jį perskaitysite puslapyje Pradžia: {0}</value></data>
@@ -1191,7 +1233,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>„PadForge“, „Windows“, jūsų įrenginiai ir nustatymai tokie, kokie yra dabar, per tą pačią peržiūrą.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log šalia PadForge.exe, kurį ten galite perskaityti.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ką įrašyti</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Viskas įjungta. Išjungta dalis į kitą įrašą neįtraukiama, o faile nurodoma, kurias dalis jis turi.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Kiekviena dalis pagal numatytuosius nustatymus įjungta. Išjungta dalis į kitą įrašą neįtraukiama, o faile nurodoma, kurias dalis jis turi.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Problemai, kuri pasitaiko kartą per vakarą.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Įrašas laukia, kol jį perskaitysite puslapyje Pradžia.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Santrauka</value></data>
@@ -1230,8 +1272,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 reikšmę</value></data>
   <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>privačių rūšių: {0}</value></data>
   <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 privačią rūšį</value></data>
-  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Valymo patikra: dalyse, kurias paliekate, dar yra šio kompiuterio savų reikšmių: {0}. Išjunkite tas dalis arba ištrinkite įrašą. Iki tol Išsaugoti… neveikia.</value></data>
-  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Valymo patikra: dalyse, kurias paliekate, dar yra viena šio kompiuterio sava reikšmė. Išjunkite tas dalis arba ištrinkite įrašą. Iki tol Išsaugoti… neveikia.</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Valymo patikra: dalyse, kurias paliekate, dar yra šio kompiuterio savų reikšmių: {0}. Išjunkite tas dalis arba ištrinkite įrašą. Iki tol Išsaugoti neveikia.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Valymo patikra: dalyse, kurias paliekate, dar yra viena šio kompiuterio sava reikšmė. Išjunkite tas dalis arba ištrinkite įrašą. Iki tol Išsaugoti neveikia.</value></data>
   <data name="Review_Empty" xml:space="preserve"><value>Įrašant šios dalies nieko neįvyko.</value></data>
   <data name="Review_Delete" xml:space="preserve"><value>Ištrinti</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Kopijuoti santrauką</value></data>
@@ -1242,6 +1284,17 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Išsaugoti įrašą</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip failai</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Neišsaugota. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Valymo patikra: tikrinamos dalys, kurias paliekate…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Valymo patikra: „PadForge“ nepavyko perskaityti dalių, kurias paliekate, todėl Išsaugoti lieka išjungta.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Įrašymas jūsų teisėmis nepaleistas.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Įrašymas jūsų teisėmis nepaleistas: neveikia darbalaukio apvalkalas, kuriame jį būtų galima paleisti.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Įrašymas jūsų teisėmis nepaleistas: „Windows“ atsisakė su klaida {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Įrašymas nesibaigė per {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>„Windows“ neleido ten įrašyti failo.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>„PadForge“ šio failo nepriėmė kaip savo įrašo.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Įrašymas baigėsi kodu {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Išsaugoma jūsų vardu, pirmą kartą į aplanką Downloads, vėliau ten, kur išsaugojote paskutinį kartą, ir parodoma programoje Explorer. Įrašas, kuris sustoja, kai niekas nėra prie puslapio (pasiekus ribą, dėl makrokomandos, programos, asistento įrankio ar --record stop), laukia šios peržiūros puslapyje Pradžia ir po 7 dienų ištrinamas, jei neišsaugotas. Programai pasakoma, kad jis laukia, bet ne kur.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Problemos įrašas, padarytas {0}, laukia, kol jį perskaitysite.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Peržiūrėti</value></data>
@@ -1915,9 +1968,18 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Nepavyko perskaityti: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>„HIDMaestro“ atmetė šį šabloną ties {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Šis šablonas neturi HID deskriptoriaus, todėl iš jo negalima sukurti valdiklio.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>„PadForge“ nepavyko patikrinti šio šablono: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Tikrinamas šablonas…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nieko neimportuota. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importuoti</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(bevardis HID įrenginys)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Pelė</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Vairalazdė</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Žaidimų pultas</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Klaviatūra</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Daugiaašis valdiklis</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Rasta HID sąsajų: {0}.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Rasta 1 HID sąsaja.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Nepavyko išvardyti įrenginių: {0}</value></data>
@@ -3048,7 +3110,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Kol laikoma ir centruojama</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Perjungimas</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Vairavimo įvestis</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Mygtukas, leidžiantis pelei vairuoti, tame pačiame įrenginyje kaip ir šaltinis. Nepasirinkus nieko, pelė vairuoja visada.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Mygtukas, leidžiantis pelei vairuoti, bet kuriame šio lizdo įrenginyje. Nepasirinkus nieko, pelė vairuoja visada.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Glotninimas</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Išlygina netolygiai pranešančią pelę. Svirtelė atsilieka nuo rankos maždaug tiek laiko. 0 išjungia.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Riba esant greičiui</value></data>
@@ -3069,7 +3131,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Pradėti ten, kur prasidėjo vairavimas</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Su Vairavimo įvestimi svirtelė matuojama nuo vietos, kurioje buvo žymeklis prasidėjus vairavimui, kaip svirtelė telefono ekrane prasideda ten, kur nusileidžia pirštas. Išjungta, ji matuojama nuo žymeklio monitoriaus centro.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ši ašis juda santykinai</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Rutuliniam manipuliatoriui arba sukamam ratukui, kuris praneša, kiek pasisuko. Įjungus, ašis laiko padėtį kaip Mouse Travel ir naudoja eigos nustatymus. „Windows“ nenurodo, kurios ašys juda taip.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Rutuliniam manipuliatoriui arba sukamam ratukui, kuris praneša, kiek pasisuko. Įjungus, ašis laiko padėtį kaip Pelės eiga ir naudoja eigos nustatymus. SDL skaito bendrą valdiklį per DirectInput, kuris kiekvieną ašį skaito kaip padėtį, todėl šis jungiklis nurodo, kurios ašys juda taip.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Peržiūra</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Parodo, kaip ši šeima seka jūsų pelę. Niekas nesusiejama, kol jos nepasirenkate.</value></data>
@@ -3261,6 +3323,13 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
 {0}
 
 „PadForge“ išsamią informaciją įrašė į crash.log šalia PadForge.exe. Norėdami apie tai pranešti, pradėkite diskusiją adresu {2} ir numeskite į ją crash.log.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Įvyko netikėta klaida:
+
+{0}
+
+„PadForge“ nepavyko įrašyti išsamios informacijos į crash.log šalia PadForge.exe. Norėdami apie tai pranešti, pradėkite diskusiją adresu {2}, čia paspauskite Ctrl+C, kad nukopijuotumėte šį pranešimą, ir įklijuokite jį ten.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(nerodoma papildomų klaidų: {0})</value></data>
@@ -4180,7 +4249,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>„Zstandard“ išglaudinimas, kurį SteamKit2 naudoja „Steam“ saugyklų dalims, zstd bibliotekos C# perkėlimas, autorius Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol serveris ir klientas, kuriais remiasi asistento ryšys ir PadForge.exe --mcp, sukūrė Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol serveris ir klientas, kuriais remiasi asistento ryšys ir PadForge.exe --mcp, sukūrė Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ir DependencyInjection.Abstractions, kuriais remiasi MCP C# SDK, sukūrė Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5495,7 +5564,18 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>WinUSB priskiriamas G19 ekranui</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19 ekranas naudoja kitą tvarkyklę ({0}), todėl paleiskite „Logitech Gaming Software“</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19 ekranas naudoja kitos programos tvarkyklę ({0}), kurios PadForge neliečia</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Tikrinamos „PadForge“ skirtos „PlayStation“ Bluetooth tvarkyklės…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Skaitomas šio kompiuterio Bluetooth radijas…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Atidaromas valdiklis per jo USB laidą…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Į valdiklį įrašomas šio kompiuterio Bluetooth adresas…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Valdiklis registruojamas „Windows“ Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Paleidžiamas iš naujo Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Susiejimas sustojo: „Windows“ neleido „PadForge“ pasiekti valdiklio ar Bluetooth nustatymų. Išsami informacija yra diagnostikos žurnale.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Susiejimas sustojo: nepavyko perskaityti valdiklio ar Bluetooth radijo arba į juos įrašyti. Išsami informacija yra diagnostikos žurnale.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Susiejimas sustojo dėl klaidos, kurios „PadForge“ nesitikėjo. Išsami informacija yra diagnostikos žurnale.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>reikia „Logitech Gaming Software“ 8.52 ar naujesnės versijos</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>rado savo biblioteką, bet jos neįkėlė, nes „PadForge“ negalėjo patvirtinti, kad ją gali keisti tik administratoriai ir kad ją pasirašė „Logitech“</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>rado savo biblioteką, bet negalėjo jos naudoti, o diagnostikos žurnale nurodyta kodėl</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>paleiskite „Logitech Gaming Software“</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>laukiama telefono su Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>telefone</value></data>
@@ -5591,6 +5671,8 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Pasirinkti dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Įkelia šią Force Dimension bibliotekos kopiją vietoj bet kurios kitos. Falcon, atidarytas per kitą kopiją, užsidaro ir vėl atsidaro per šią. SDK įdiegtos kopijos randamos ir be to.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliotekos (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK atsisiuntimo puslapis neatsidarė: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK atsisiuntimo puslapis dar neatsidarė: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Įdiegti Falcon tvarkyklę</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Iš SDK aplanko įdiegia Force Dimension tvarkyklę Falcon, kuris jos neturi. Windows pirmiausia gali paklausti, ar pasitikite Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Gauti Force Dimension SDK</value></data>
@@ -5792,6 +5874,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Naujas valdiklis</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Nustatymai</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Visos ašys, mygtukai ir jutikliai</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Jo valdikliai pagal pavadinimus, kuriuos naudoja scenarijai</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Paspausta: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, kelias, galimybės, priverstinis neapdorotos vairalazdės režimas</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, kelias, galimybės</value></data>
@@ -5923,8 +6006,13 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Šalinama…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Atnaujinama…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nepavyko užbaigti: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>„PadForge“ įrašas ir įgūdis lieka, nes {0} skaito tą patį nustatymų failą ir įgūdžių aplanką.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>„PadForge“ įrašas lieka, nes {0} skaito tą patį nustatymų failą.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>„PadForge“ pašalinta iš šios programos. Jos įgūdis lieka, nes {0} skaito įgūdžius iš to paties aplanko.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>„PadForge“ negali perskaityti nustatymų: {0}, todėl nežino, ar „PadForge“ pridėta.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Pridėta. „PadForge“ nepavyko perskaityti jos įgūdžių aplanko.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Nukopijuota.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Nenukopijuota: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Nenukopijuota. „Windows“ neleido „PadForge“ naudoti mainų srities.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Leidžiamos programos</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Programa, kuri nori lygio Skaitymas ar aukštesnio, paklausia vieną kartą, pirmą kartą prisijungdama, ir gauna prašomą lygį, ne aukštesnį už pirmiau nurodytą. Aukščiau pridėtas asistentas jau yra leidžiamas.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -5940,6 +6028,8 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Vairalazdė. „PadForge“ skaito ją neapdorotą, todėl SDL susiejimas nenaudojamas.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Vairalazdė, išdėstyta kaip žaidimų pultas pagal jūsų eilutę.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL skaito įrenginius, kol veikia variklis.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Įrenginys neprijungtas. SDL jį perskaitys, kai jis bus prijungtas.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nepateikė „PadForge“ šio įrenginio rodmenų.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Bendruomenės kopija, įtraukta, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Atsisiųsta {0}</value></data>
@@ -5977,6 +6067,11 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, perjungiklių ir kitų veiksmų</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ir {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nėra ką kopijuoti: SDL šiam įrenginiui susiejimo neturi, o jis nėra jokiame valdiklyje.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Nėra ką kopijuoti: „PadForge“ negali perskaityti SDL susiejimo šiam įrenginiui, o nė viena jo valdiklių eilutė nepateikia SDL formos priimamo susiejimo.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Nėra ką kopijuoti: SDL šiam įrenginiui susiejimo neturi, o nė viena {0} eilutė neskaito jo mygtukų, ašių ar kryptukų taip, kaip priima SDL forma.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Nėra ką kopijuoti: SDL šiam įrenginiui susiejimo neturi, o {0} eilutės jį skaito tik dėl {1}, ko SDL forma negali laikyti.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Nėra ką kopijuoti: „PadForge“ dabar negali perskaityti SDL susiejimo šiam įrenginiui, o jis nėra jokiame valdiklyje.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Nėra ką kopijuoti: „PadForge“ dabar negali perskaityti SDL susiejimo šiam įrenginiui, o nė viena {0} eilutė nepateikia SDL formos priimamo susiejimo.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Mainų sritį naudoja kita programa. Niekas nenukopijuota.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Jūsų eilutė pašalinta. Įrenginys skaitomas taip, kaip prieš ją.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Susieta iš naujo pagal SDL išdėstymą: {0}.</value></data>
@@ -5997,6 +6092,8 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Eilutės, kurias turi „PadForge“</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Nė viena eilutė neatitinka.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Pasirinkta eilutė taikoma įrenginiui {0} su jo paties ID, per tą pačią patikrą ir tą patį pasirinkimą kaip Įklijuoti.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Variklis sustabdytas, todėl sąraše nėra eilučių, kurias laiko SDL, tiek jos pačios, tiek į ją įtrauktos bendruomenės kopijos. Jos bus išvardytos, kai variklis veiks.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL laiku neatsakė, todėl sąraše nėra eilučių, kurias ji laiko, tiek jos pačios, tiek į ją įtrauktos bendruomenės kopijos.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL susiejimo eilutė</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Šio įrenginio eilutė.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Atspėtas išdėstymas.</value></data>
@@ -6009,14 +6106,14 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} laukas, to paties gamintojo ir gaminio kitoje magistralėje ar versijoje. Ji išsaugoma su šio įrenginio paties ID.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} laukas, kito įrenginio eilutė. Ji išsaugoma su šio įrenginio paties ID.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} laukas. SDL šio įrenginio neskaito, todėl „PadForge“ išdėsto jo įvestis pagal eilutę.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>„PadForge“ šiems laukams paprasto mygtuko ar ašies neturi ir jų praleidžia: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} laukas, pagal įrenginio ašis, mygtukus ir kryptinius jungiklius. Patikrinkite Įvesties bandymas, tada palikite arba pakeiskite čia.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Tai pakeičia, kaip skaitomas {0}. Jo eilutės: {1} susiejamos iš naujo pagal naują išdėstymą.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Tai pakeičia, kaip skaitomas {0}. Jis nėra jokiame valdiklyje, todėl jokios eilutės nesikeičia.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profilių spartieji klavišai, kurie skaito {0}, išlaiko įvestis, į kurias buvo nustatyti.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Eilutė PadForge.xml išsaugoma kaip jūsų ir šiam įrenginiui turi pirmenybę prieš bet kurį kitą šaltinį. Pašalinti mano grąžina senąją eilutę ir senąsias eilutes.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Eilutės PadForge.xml išsaugomos kaip jūsų ir savo įrenginiams turi pirmenybę prieš bet kurį kitą šaltinį. Išvalyti, esantis skiltyje Daugiau prie eilutės Valdiklių duomenų bazė, jas pašalina.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Eilučių sistemai Windows: {0}. Kitoms sistemoms skirtų eilučių, kurios praleidžiamos: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} eilutė sistemai Windows. Kitoms sistemoms skirtų eilučių, kurios praleidžiamos: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Eilučių „Windows“ sistemai: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Bus pridėta visų: {0:N0}. „PadForge“ saugo iki {1:N0} jūsų eilučių.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ji bus pridėta. „PadForge“ saugo iki {1:N0} jūsų eilučių.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Dabar išsaugota jūsų eilučių: {0:N0}, todėl bus pridėta eilučių: {1:N0}, nepridėta: {2:N0}.</value></data>
@@ -6026,7 +6123,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Šis tekstas nėra SDL valdiklių duomenų bazės eilutė: ID iš 32 šešioliktainių skaitmenų, pavadinimas, tada laukai, pavyzdžiui, a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Eilutės skirtos kitoms sistemoms. „PadForge“ skaito eilutes sistemai Windows arba be konkrečios sistemos.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Eilutės ID nėra įrenginio. Jam reikia 32 šešioliktainių skaitmenų.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Eilutės pavadinimas tuščias, ilgesnis nei 128 simboliai arba turi simbolį, kurį SDL skaito kaip lauką.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Eilutės pavadinimas tuščias, ilgesnis nei 128 simboliai, turi SDL skaitomą lauko žymą, pavyzdžiui, „type:“, arba turi simbolį, kuris nėra raidė, skaitmuo, skyrybos ženklas, simbolis ar paprastas tarpas.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Eilutėje yra užuomina arba Android laukas, kurio „PadForge“ nepriima.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Eilutėje yra laukas, kurio SDL nepažįsta.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Susiejimas nėra SDL formos, pavyzdžiui, b3, a2, +a2, a2~ ar h0.4.</value></data>
@@ -6037,8 +6134,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Jūsų eilutės</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Eilutės, kurias pridedate čia arba įklijuojate įrenginio kortelėje SDL susiejimas, savo įrenginiams turi pirmenybę prieš bet kurį kitą šaltinį ir išlieka po atstatymo.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Pridėti eilutes iš failo arba mainų srities…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Eilučių ir įrenginių po: {0}. Jūsų eilutės turi pirmenybę prieš bet kurį kitą šaltinį.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Eilutė ir įrenginys po: {0}. Jūsų eilutė turi pirmenybę prieš bet kurį kitą šaltinį.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Eilučių: {0:N0}. Jūsų eilutės viršesnės už visus kitus šaltinius.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Dar nėra.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Jūsų kintamajame SDL_GAMECONTROLLERCONFIG yra eilučių, kurių „PadForge“ nesaugo: {0}. Pridėti eilutes iš failo arba mainų srities atsidaro su jomis.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Jūsų kintamajame SDL_GAMECONTROLLERCONFIG yra eilutė, kurios „PadForge“ nesaugo: {0}. Pridėti eilutes iš failo arba mainų srities atsidaro su ja.</value></data>
@@ -6057,7 +6153,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Sustabdyta. Paskutiniai jo žodžiai: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Jo nepavyko paleisti.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Jo šiame kompiuteryje nebėra.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Šiame kompiuteryje tunelio programos nerasta. „PadForge“ veikia su cloudflared, devtunnel, ngrok ir Tailscale Funnel arba su jūsų paties tunelio adresu.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>„PadForge“ šiame kompiuteryje nerado nei cloudflared, nei devtunnel, nei ngrok, nei Tailscale Funnel. Pasirinkite ChatGPT Secure MCP Tunnel, kurį „PadForge“ atsisiunčia, arba nurodykite savo tunelio adresą.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Pasirinkite tunelį, kad „PadForge“ gautų viešą adresą.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Šiame kompiuteryje taip pat yra: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, kurio adresas lieka tas pats</value></data>
@@ -6065,7 +6161,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Paleiskite savo tunelį į http://127.0.0.1:{0} ir įklijuokite jo https adresą. Įvardytas Cloudflare tunelis, nuolatinis kūrėjo tunelis, Tailscale Funnel ir ngrok savasis domenas išlaiko savo adresą.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Įklijuokite https adresą be kelio, išskyrus /mcp, kaip jį pateikia jūsų tunelis.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Paleidžiamas „PadForge“ interneto pagalbininkas.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>„PadForge“ interneto pagalbininkas sustojo ({0}). Išjunkite ir vėl įjunkite Reach PadForge From the Web, kad jį paleistumėte iš naujo.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>„PadForge“ interneto pagalbininkas sustojo ({0}). „PadForge“ toliau bando jį paleisti.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adresas</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Viešo adreso dar nėra.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Pridėti prie Claude</value></data>
@@ -6104,11 +6200,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>jis baigė darbą su kodu {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatizavimas išjungtas, todėl joks interneto asistentas nepasiekia „PadForge“. Interneto pagalbininkas paleidžiamas, kai Automatizavimas įjungiamas.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Tikrinama…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Neįdiegta.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Įdiegta ir naujausia. Scenarijus prasideda {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Įdiegta, skirta {0}, ir naujausia. Scenarijus prasideda {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Įdiegta. Ši „PadForge“ turi naujesnę kopiją.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Įdiegta, skirta {0}. Ši „PadForge“ turi naujesnę kopiją.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Diegiama…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>„PadForge“ nepavyko to patikrinti: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Įdiegti padeda „PadForge“ biblioteką ten, kur tą kalbą randa. Ją įkeliantis scenarijus skaito įrenginius ir valdo susiejimus pirmiau nurodytu lygiu.</value></data>
@@ -6116,22 +6207,24 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Įdiegtos kopijos</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Šalinti visas</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Pašalinta.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>„PadForge“ biblioteka įdiegta šioms versijoms: {0}, ir yra naujausia. Scenarijus prasideda eilute {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>„PadForge“ biblioteka šioms versijoms: {0}, skiriasi nuo šios „PadForge“ kopijos.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>„PadForge“ biblioteka neįdiegta šioms versijoms: {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Scenarijaus ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Jo scenarijaus ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scenarijai jo valdiklius vadina {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scenarijai jo klavišus vadina KeyA, KeySpace, KeyLeftShift ir panašiai, o kiekvieną klavišą pagal jo kodą, nuo Vk0 iki Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} šiame tinkle iš {1}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Nauja versija, pasirašyta to paties leidėjo ({0}) sertifikato raktu, paleidžiama iš naujo be veiksmo Patvirtinti ir paleisti iš naujo. Bet kokį kitą pakeitimą pirmiausia reikia patvirtinti.</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Priimta nauja versija, pasirašyta tuo pačiu sertifikato raktu</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adresas</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>„PadForge“ priima adresą, kuris prasideda https://, nurodo pagrindinį kompiuterį, naudoja numatytąjį prievadą ir neturi naudotojo vardo ar slaptažodžio.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>„PadForge“ priima iki 2 048 simbolių adresą, kuris prasideda https:// ir nurodo serverį, su numatytuoju prievadu, be naudotojo vardo, slaptažodžio ar dalies po #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Prievadas</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Keisti…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Skambučiai ir jų raktas šiuo tinklu keliauja nešifruoti. „Windows“ įleidžia juos tik privačiuose tinkluose.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Skambučiai ir jų raktas šiuo tinklu keliauja nešifruoti. „Windows“ užkardos taisyklė, kurią „PadForge“ sukuria šiam prievadui, nurodo tik privačius tinklus.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Prievadu {0} naudojasi kita programa. Pakeiskite jį, kad pasiektumėte „PadForge“ iš šio tinklo.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>„Windows“ neleido „PadForge“ pagalbininkui klausytis prievado {0}. „PadForge“ tai leidžia su administratoriaus teisėmis, todėl paleiskite „PadForge“ su jomis ir išjunkite bei vėl įjunkite šią parinktį.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>„Windows“ neturi „PadForge“ pagalbininko rezervacijos prievadui {0}. Išjunkite ir vėl įjunkite šią parinktį, ir „PadForge“ ją sukurs iš naujo.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>„PadForge“ pagalbininkas negalėjo klausytis prievado {0}. Pakeiskite prievadą arba išjunkite ir vėl įjunkite šią parinktį.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>„PadForge“ pagalbininkas sustojo ({0}). Išjunkite ir vėl įjunkite Reach PadForge From This Network, kad jį paleistumėte iš naujo.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>„PadForge“ pagalbininkas sustojo ({0}). „PadForge“ toliau bando jį paleisti.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatizavimas išjungtas, todėl joks šio tinklo asistentas nepasiekia „PadForge“. Pagalbininkas paleidžiamas, kai Automatizavimas įjungiamas.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Šis kompiuteris dabar neturi adreso privačiame tinkle.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Šio tinklo asistentai</value></data>
@@ -6148,7 +6241,23 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Komandos iš komandų eilutės vis tiek pasiekia „PadForge“, kaip ir visų programų.</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Prašo valdyti tik savo įrenginius.</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Klausia vieną kartą. Galite ją pašalinti arba pakeisti jos aprėptį puslapyje Automatizavimas.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Veikia su jūsų teisėmis ir yra paruoštas. ChatGPT pasiekia „PadForge“ per šį tunelį be savo prisijungimo ir tik iš jūsų OpenAI organizacijos. Jis vėl paleidžiamas kartu su „PadForge“.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Veikia su jūsų teisėmis. Laukia, kol OpenAI pasakys, kad tunelis paruoštas.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>„PadForge“ saugo raktą užšifruotą tik jums. Tuščias laukelis jį pamiršta. ChatGPT dirba pirmiau nurodytu lygiu.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>„PadForge“ nepavyko išsaugoti įskiepių rinkinio.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Veikla {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Garsai{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Piktogramos{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Eilučių kitoms sistemoms, kurios praleidžiamos: {0:N0}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>„Windows“ jos nepaleido jūsų pačių teisėmis.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ji nesibaigė per {0} sek.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Ji baigėsi kodu {0} ir nenurodė priežasties.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>„PadForge“ negali perskaityti nustatymų: {0}, todėl paliko failą nepakeistą.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>„PadForge“ neįrašė {0}, todėl paliko jį nepakeistą.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>„Windows“ nenurodo jūsų aplanko Dokumentai.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>„PadForge“ nerado jūsų aplanko, skirto {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Programos {0} komanda baigėsi kodu {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Programos {0} komandos šiame kompiuteryje nėra.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>„Windows“ neleido „PadForge“ perskaityti ar įrašyti reikalingo failo.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>„PadForge“ nerado Python: nė viena neregistruota, neįdiegta iš „Microsoft Store“, nenurodyta py paleidiklio ir nėra jūsų PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Joks „PadForge“ rastas Python neatsakė per {0} sek.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Paleidimas nenurodė „PadForge“ žinomos priežasties.</value></data>
 </root>

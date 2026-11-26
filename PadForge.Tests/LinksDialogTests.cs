@@ -348,7 +348,7 @@ namespace PadForge.Tests
             Assert.Contains("Click=\"DeleteRow_Click\" Tag=\"{Binding}\"", page);
             Assert.Contains("DropDownOpened=\"DeviceList_DropDownOpened\"", page);
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ManageProfilesDialog.xaml.cs");
-            Assert.Contains("private void DeviceList_DropDownOpened(object sender, EventArgs e) => PopulateDevices(sayCount: false);", code);
+            Assert.Contains("private void DeviceList_DropDownOpened(object sender, EventArgs e) => _ = PopulateDevices(sayCount: false);", code);
             Assert.DoesNotContain("RefreshButton", code);
         }
     }

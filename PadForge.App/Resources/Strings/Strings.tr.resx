@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge'u göster veya gizle</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Sanal kontrolcüleri aç veya kapat</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Bağlı herhangi bir cihaz</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (bağlı değil)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Cihazlar sayfasında olmayan bir cihaz</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Kayıt yapılıyor…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} sn)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>şu durumda</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Okuma</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Giriş gönderme</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Ayarları değiştirme</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programlar profil değiştirebilir ve bırakabilir, motoru başlatıp durdurabilir, sanal kontrolcüleri açıp kapatabilir, pencereyi gösterip gizleyebilir, PadForge'u kapatabilir, tanılama anlık görüntüsü kaydedebilir ve nelerin çalıştığını sorabilir.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programlar profil değiştirebilir ve bırakabilir, motoru başlatıp durdurabilir, sanal kontrolcüleri açıp kapatabilir, pencereyi gösterip gizleyebilir, PadForge'u kapatabilir, nelerin çalıştığını sorabilir, tanılama anlık görüntüsü kaydedebilir ve bir sorun kaydını başlatıp durdurabilir ve işaretleyebilir.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Komutlar düzeyindeki her şey, ayrıca programlar cihazları, sanal kontrolcüleri, eşlemeleri, profilleri ve ayarları görebilir, her cihazın girişlerini anında izleyebilir ve size PadForge'da bir yer gösterebilir. Okuma düzeyindeki bir program, yönetici olarak çalışan pencerelere yazılan tuşlar dahil, her cihazda basılan her tuşu görür.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Okuma düzeyindeki her şey, ayrıca programlar kendi cihazlarını ekleyip sürebilir, herhangi bir cihazın bir kontrolünü basılı tutabilir ve makro tetikleyicilerine adlandırılmış değerler iletebilir.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Giriş gönderme düzeyindeki her şey, ayrıca programlar sayfalarda değiştirebildiğiniz her şeyi değiştirebilir. Bazı değişiklikler önce her zaman PadForge'un soru kartında size sorar.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Sizi bekleyenler</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Etkinlik</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Geri al</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kaydedemedi: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge dosyayı kaydedemedi.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge eklenti kitini kaydedemedi.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Etkinlik {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Sesler{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Simgeler{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Okuma veya daha yüksek düzeyde bir program bağlıyken, klavyeler dahil her cihazda nelere basıldığını görür.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Eklentiler</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Eklentileri çalıştır</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (yeniden oynatma)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Sorun kayıtları|*.zip;*.log|Tüm dosyalar|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} dosyasını oynatamıyor. Bu bir sorun kaydı değil ya da hiçbir cihazın girişini içermiyor.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge {0} dosyasını oynatamaz. Bu, PadForge'un okuyabildiği bir sorun kaydı değil.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge {0} dosyasını oynatamaz. Dosyada {1} cihazdan fazlası var ve Yeniden oynatma en çok {1} cihaz oynatır.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge {0} dosyasını oynatamaz. Dosyada hiçbir cihazın girdisi yok.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge {0} dosyasını okuyamadı.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Eklentileriniz</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Eklenti ekle…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programlar ve betikler|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tüm dosyalar|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Art arda beş hatadan sonra durdu</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Başlamadı: dosya yok</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Başlamadı: Windows'ta bu tür dosya için bir program yok</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Başlamadı: Python dosyalarını açan bir program yok ve PadForge py başlatıcısını bulamıyor</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Başlamadı: PadForge bu tür dosyayı hangi programın açtığını okuyamıyor</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Başlamadı: bu tür dosyayı açan program bu bilgisayarda yok</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Başlamadı: altında başlatılacak bir masaüstü kabuğu çalışmıyor</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Başlamadı: masaüstü kabuğunun yönetici hakları var, bu yüzden eklentinin de olurdu</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Başlamadı: PadForge yönetici haklarının olup olmayacağını okuyamıyor</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Başlamadı: Windows ona yönetici hakları verdi, bu yüzden PadForge çalışmadan önce onu sonlandırdı</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Başlamadı: yönetici hakları istiyor</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Başlamadı: Windows {0} hatasıyla reddetti</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Başlamadı</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Eklenenler: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>İmzalayan: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>İmzasız.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Ayarları, çalışırken burada görünür.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Hiç ayar bildirmiyor.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Ayarları, PadForge'a bağlanınca burada görünür.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program, PadForge'un tanımadığı bir sürümü konuşuyor</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge o eklenti anahtarını vermedi</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge bu programın bağlantısını kabul etmedi</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Windows programın dosyasını adlandırmadığı için PadForge cihaz oluşturmadı</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Çok erken yeniden istendi</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge yeniden başlayana kadar bunlardan daha fazlası yok</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Programların Ana sayfada incelemenizi bekleten bu türden çok fazla isteği var</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge'da böyle bir araç yok</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program eski bir durumu okudu</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Hiçbir şeyin bu kimliği yok</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>İzin vermediniz</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Zamanında kimse yanıtlamadı</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Yanıtınız bekleniyor</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Henüz yanıtlamamıştınız</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Böyle bir istek yok</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Geri alınacak bir şey yok</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Bunu yalnızca siz değiştirebilirsiniz</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>İmzasız.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Okuma düzeyinde ve üstünde, klavyeler dahil her cihazda basılan her tuşu görür.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Bir kez sorar. Otomasyon sayfasından kaldırabilirsiniz.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>PadForge'un tanıyamadığı bir program başlattı.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge bu programı bir diğerinden ayıramıyor, bu yüzden sonraki bağlantısında yine sorar.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge'un komut satırı</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ayarını {1} yapar</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ağı dinler, böylece diğer cihazlar bu bilgisayara erişebilir.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Bir profili getir</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Başka bir programdan bir profil dosyasını içe aktar, sonra nelerin geldiğine bak.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} kez</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, buna benzer {1} isteğin sonuncusu</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 betikleri (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Bu makinede Logitech G-key SDK yok. Logitech Gaming Software 8.55 veya sonraki sürümlerle birlikte kurulur.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK kayıtlı ama dosyası yok. Logitech Gaming Software'i yeniden kurun.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK bulundu ama yüklenemedi.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK bulundu ama yüklenmedi, çünkü PadForge onu yalnızca yöneticilerin değiştirebildiğini ve Logitech'in imzaladığını doğrulayamadı.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Bu kitaplık, beklenen G-key SDK değil.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK başlamayı reddetti. Bunun nedeni çoğunlukla Logitech Gaming Software'in çalışmamasıdır.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Bağlandı, henüz tuş görülmedi. Logitech Gaming Software'de, PadForge profilindeki her tuşa G-key komutunu sürükleyin ve bu profili kalıcı yapın. Ayrıca G600 veya G300 farenin dahili bellek modundan çıkarılmış olması gerekir.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows'ta oturum açtığınızda PadForge'u otomatik olarak başlatır. Bu açıkken PadForge, bir kısayoldan, bir betikten ya da başka bir programdan da Windows'un istemi olmadan başlar.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge şuradan çalışıyor: {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Bunun için PadForge'un kendi klasöründe olması gerekir. Klasörü başka dosyalar içeriyor, bu yüzden PadForge diğer programların onu değiştirmesini engelleyemez.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Bunun için PadForge'un diğer programların değiştiremeyeceği bir klasörde olması gerekir. PadForge, diğer programların klasörünü değiştirmesini engelleyemedi.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge'u kendi klasörüne taşı</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge'u ve ayarlarını Program Files'a kopyalar, görevlerini oraya yönlendirir ve oradan başlatır. Buradaki kopya olduğu gibi kalır.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} klasöründe PadForge'a ait olmayan dosyalar var.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge taşınmadı: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge'u başka dosyalar içeren bir klasörden çalıştırıyordu.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge taşınmadı: Windows'ta Program Files klasörü tanımlı değil.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge taşınmadı: çalışan PadForge'u okuyamadı.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} oluşturulamadı.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} içindekileri okuyamadı.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge taşınmadı: diğer programların {0} klasörünü değiştirmesini engelleyemedi.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} içindeki kopyası çalışan PadForge ile eşleşmedi.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge taşınmadı: kopyalamadan sonra {0} klasöründe PadForge'a ait olmayan dosyalar vardı ya da diğer programlar onu değiştirebiliyordu.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü çalıştırdığı PadForge artık yerinde değil.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge, diğer programların PadForge'u çalıştırdığı klasörü değiştirmesini engelleyemedi.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge hangi PadForge'u çalıştırdığını okuyamadı.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge çalıştırdığı PadForge'un klasörünü okuyamadı.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge korumalı klasörünü oluşturamadı: {0}. PadForge, yönetici haklarıyla çalıştırdığı kitaplıkları orada tutar ve onsuz güvenli biçimde başlayamaz.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge korumalı klasöründen kendini yeniden başlatamadı: {0}. PadForge yönetici haklarıyla yalnızca oradan çalışır, bu yüzden başlamadı.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge'un yalnızca tek kopyanın çalışmasını sağlayan kilidi oluşturamadı, bu yüzden başlamadı.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge yönetici haklarıyla, diğer programların değiştirebildiği bir klasörden çalışıyor: {0}. Onlar PadForge'un oradaki ayarlarını değiştirebilir ve PadForge bu ayarlara kendi haklarıyla uyar.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge yönetici haklarıyla, başka dosyalar içeren bir klasörden çalışıyor: {0}. PadForge diğer programların oradaki ayarlarını değiştirmesini engelleyemez ve bu ayarlara kendi haklarıyla uyar.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge yönetici haklarıyla, okuyamadığı bir klasörden çalışıyor: {0}. PadForge diğer programların oradaki ayarlarını değiştirmesini engelleyemez ve bu ayarlara kendi haklarıyla uyar.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sistem tepsisinde her zaman göster</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pencere açıkken de tepsi simgesi görünür kalır. Böylece menüsündeki Çıkış her zaman bir tık uzakta olur.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Güncellemeler</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Kur ve yeniden başlat</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Sürüm notları</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrolcü veritabanı</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Şimdi güncelle, topluluğun kontrolcü veritabanını (SDL_GameControllerDB) GitHub'dan ya da Daha fazla altında belirlenen adresten indirir ve PadForge'un bu sürümünde olmayan eşlemeleri ayar dosyasında tutar. Bunlar hemen kullanıma girer. Başka bir adresten yalnızca yeni eşlemeleri tutar. Yeni bir eşleme yalnızca başka hiçbir şeyin oyun kumandası olarak okumadığı, atanmamış ve Ham joystick modunu zorla içinde olmayan bir kontrolcü için kullanılır. Sıfırlama, indirilen her eşlemeyi kaldırır ve yeniden GitHub'dan indirir. Kendi satırlarınız, Daha fazla altında, kalır.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Şimdi güncelle, topluluğun kontrolcü veritabanını (SDL_GameControllerDB) GitHub'dan ya da Daha fazla altında belirlenen adresten indirir ve PadForge'un bu sürümünde olmayan eşlemeleri ayar dosyasında tutar. Bunlar hemen kullanıma girer. Başka bir adresten yalnızca yeni eşlemeleri tutar. Yeni bir eşleme önce yalnızca SDL'nin oyun kumandası olarak ya da belirli bir türü olmayan bir cihaz olarak bildirdiği, başka hiçbir şeyin oyun kumandası olarak okumadığı, atanmamış ve Ham joystick modunu zorla içinde olmayan bir kontrolcü için kullanılır. Bir kez kullanıma girince, kontrolcü atandıktan sonra da kullanımda kalır. Sıfırlama, indirilen eşlemeleri kaldırır ve İndirme adresi'ni topluluğun dosyasına geri alır, sonraki Şimdi güncelle de onu indirir. Kendi satırlarınız, Daha fazla altında, kalır.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Şimdi güncelle</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Güncelleniyor…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Güncellemeler denetleniyor…</value></data>
@@ -1126,9 +1160,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Yerleşik: {1} eşleme, {2} tarihli topluluk kopyası. {3} tarihinde {4} adresinden indirildi: {0} yeni satır.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Yerleşik: {1} eşleme, {2} tarihli topluluk kopyası. {3} tarihinde {4} adresinden indirildi: {0} yeni satır.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Topluluk veritabanı son güncellemeden beri değişmedi.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>{0} adresindeki dosya son güncellemeden beri değişmedi.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub'a ulaşılamadı: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} adresine ulaşılamadı: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge, beklediği kontrolcü veritabanı olmadığı için indirmeyi reddetti. Hiçbir şey değişmedi.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge GitHub'ın yanıtını reddetti. Hiçbir şey değişmedi.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge {0} adresinden gelen yanıtı reddetti. Hiçbir şey değişmedi.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Simge durumunda başlat</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Oturum açılışında başlat</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Klasör</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Hizmet ayarı</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Kaldırma adımı</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Hizmet</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Dosya</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Üst filtre</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Kayıt defteri değeri</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Donanım kimliği</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Zamanlanmış görev</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Yüklü uygulamalar girdisi</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP cihazı</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 kontrolcülerinin, PlayStation Move'un ve Navigation kontrolcüsünün Bluetooth üzerinden bağlanmasını sağlar. PadForge içine gömülüdür ve bunlardan biri ilk kez eşleştirildiğinde kurulur.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 kontrolcülerini Bluetooth üzerinden bağlar.</value></data>
@@ -1239,6 +1284,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Kaydedildi: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Kayıt başlamadı. Bir denetim, bu PC'ye ait özel bir değerin dosyadan dışarıda tutulamayacağını gösterdi.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Kayıt başlamadı. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge, kaydın yazılacağı, oturum açmış kullanıcının profili içinde ve hiçbir bağlantı üzerinden erişilmeyen bir geçici klasör bulamadı.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Kayıt klasörü başka bir yere işaret eden bir bağlantı ve PadForge bağlantıları izlemez.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Son kaydın bitirilmesi sürüyor.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Son 60 saniyeyi tut kapalı, bu yüzden kaydedilecek bir şey yok.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge'un durdurmadığı bir kayıt, Ana sayfada okumanızı bekliyor: {0}</value></data>
@@ -1252,7 +1299,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, cihazlarınız ve ayarlarınız şu anki hâliyle, aynı inceleme üzerinden.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe'nin yanındaki diagnostics.log, orada okuyabilirsiniz.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Neyin kaydedileceği</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Hepsi açık. Kapatılan bir parça sonraki kayıttan çıkarılır ve dosya hangi parçaları içerdiğini söyler.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Her parça varsayılan olarak açık. Kapatılan bir parça sonraki kayıttan çıkarılır ve dosya hangi parçaları içerdiğini söyler.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Akşamda bir kez gelen bir sorun için.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Kayıt, Ana sayfada okumanızı bekliyor.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Özet</value></data>
@@ -1303,6 +1350,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>Kaydı kaydet</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip dosyaları</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Kaydedilmedi. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Temizleme denetimi: sakladığınız parçalar denetleniyor…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Temizleme denetimi: PadForge sakladığınız parçaları okuyamadı, bu yüzden Kaydet kapalı kalır.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Kendi haklarınızla kaydetme başlamadı.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Kendi haklarınızla kaydetme başlamadı: onu altında başlatacak bir masaüstü kabuğu çalışmıyor.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Kendi haklarınızla kaydetme başlamadı: Windows {0} hatasıyla reddetti.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Kaydetme {0} içinde bitmedi.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows dosyanın oraya yazılmasına izin vermedi.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge bu dosyayı kendi kaydı olarak kabul etmedi.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Kaydetme {0} koduyla sona erdi.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Siz olarak, ilk seferde Downloads klasörüne, sonra en son kaydettiğiniz yere kaydedilir ve Explorer'da gösterilir. Sayfada kimse yokken duran bir kayıt (sınırı, bir makro, bir program, asistan aracı veya --record stop) bu inceleme için Ana sayfada bekler ve kaydedilmezse 7 gün sonra silinir. Bir programa kaydın beklediği söylenir, nerede olduğu söylenmez.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} tarihli bir sorun kaydı, sizin okumanızı bekliyor.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>İncele</value></data>
@@ -1653,6 +1711,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Yeni kontrolcü</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Ayarlar</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Tüm eksenler, düğmeler ve sensörler</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Denetimleri, betiklerin kullandığı adlarla</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Basılı: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Kimlikler, yol, yetenekler, Ham joystick modunu zorla</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Kimlikler, yol, yetenekler</value></data>
@@ -2154,9 +2213,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Okunamadı: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro bu ön ayarı {1} konumunda reddetti: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Bu ön ayarda HID tanımlayıcısı yok, bu yüzden ondan bir kontrolcü oluşturulamaz.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge bu ön ayarı denetleyemedi: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Ön ayar denetleniyor…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Hiçbir şey içe aktarılmadı. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>İçe aktar</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(adsız HID cihazı)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Fare</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Oyun kumandası</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Klavye</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Çok eksenli kontrolcü</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID arayüzü bulundu.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID arayüzü bulundu.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Numaralandırılamadı: {0}</value></data>
@@ -3288,7 +3356,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Basılı tutulurken ve ortala</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Aç/kapat</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Yönlendirme girişi</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Farenin yönlendirmesine izin veren düğme, kaynakla aynı cihazda. Hiçbiri seçilmezse fare her zaman yönlendirir.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Farenin yönlendirmesine izin veren düğme, bu yuvanın herhangi bir cihazında olabilir. Hiçbiri seçilmezse fare her zaman yönlendirir.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Yumuşatma</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Düzensiz bildiren bir fareyi düzgünleştirir. Çubuk, eli yaklaşık bu kadar geriden izler. 0 kapalıdır.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Hızda kilit</value></data>
@@ -3309,7 +3377,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Yönlendirmenin başladığı yerden başla</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Bir yönlendirme girişi ile çubuk, yönlendirme başladığında işaretçinin olduğu yerden ölçer, tıpkı telefon ekranındaki bir çubuğun parmağın değdiği yerden başlaması gibi. Kapalıyken işaretçinin monitörünün merkezinden ölçer.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Bu eksen göreli hareket eder</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Ne kadar döndüğünü bildiren bir izleme topu veya döner kontrol için. Açıkken eksen, Mouse Travel gibi bir konumu tutar ve yol ayarlarını kullanır. Windows hangi eksenlerin böyle hareket ettiğini söylemez.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Ne kadar döndüğünü bildiren bir izleme topu veya döner kontrol için. Açıkken eksen, Fare yolu gibi bir konumu tutar ve yol ayarlarını kullanır. SDL genel bir kontrolcüyü, her ekseni konum olarak okuyan DirectInput üzerinden okur, bu yüzden bu anahtar hangi eksenlerin böyle hareket ettiğini söyler.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Önizleme</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Bu ailenin kendi farenizi nasıl izlediğini gösterir. Siz seçene kadar hiçbir şey eşlenmez.</value></data>
@@ -3502,6 +3570,13 @@
 {0}
 
 PadForge ayrıntıları PadForge.exe'nin yanındaki crash.log dosyasına yazdı. Bunu bildirmek için {2} adresinde bir tartışma başlatın ve crash.log dosyasını üzerine bırakın.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Beklenmeyen bir hata oluştu:
+
+{0}
+
+PadForge ayrıntıları PadForge.exe'nin yanındaki crash.log dosyasına yazamadı. Bunu bildirmek için {2} adresinde bir tartışma başlatın, bu iletiyi kopyalamak için burada Ctrl+C tuşlarına basın ve oraya yapıştırın.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} ek hata gizlendi)</value></data>
@@ -4430,7 +4505,7 @@ PadForge ayrıntıları PadForge.exe'nin yanındaki crash.log dosyasına yazdı.
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2'nin Steam depo parçaları için kullandığı Zstandard açma kitaplığı. Oleg Stepanischev'in zstd kitaplığından yaptığı C# uyarlaması.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Asistan bağlantısının ve PadForge.exe --mcp komutunun arkasındaki Model Context Protocol sunucusu ve istemcisi, Model Context Protocol a Series of LF Projects tarafından.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Asistan bağlantısının ve PadForge.exe --mcp komutunun arkasındaki Model Context Protocol sunucusu ve istemcisi, Model Context Protocol a Series of LF Projects, LLC tarafından.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK kitaplığının dayandığı Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ve DependencyInjection.Abstractions, Microsoft tarafından.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>WinUSB, G19'un ekranına bağlanıyor</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19'un ekranı başka bir sürücüde ({0}), bu yüzden Logitech Gaming Software'i başlatın</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19'un ekranı başka bir programın sürücüsünde ({0}), PadForge ona dokunmuyor</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>PadForge'un PlayStation Bluetooth sürücüleri denetleniyor…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Bu bilgisayarın Bluetooth radyosu okunuyor…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Kontrolcü USB kablosundan açılıyor…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Bu bilgisayarın Bluetooth adresi kontrolcüye yazılıyor…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Kontrolcü Windows Bluetooth'a kaydediliyor…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Bluetooth yeniden başlatılıyor…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Eşleştirme durdu: Windows, PadForge'un kontrolcüye veya Bluetooth ayarlarına erişmesini reddetti. Ayrıntılar tanılama günlüğünde.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Eşleştirme durdu: kontrolcü ya da Bluetooth radyosu okunamadı veya yazılamadı. Ayrıntılar tanılama günlüğünde.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Eşleştirme, PadForge'un beklemediği bir hatayla durdu. Ayrıntılar tanılama günlüğünde.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 veya üstünü gerektirir</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>kitaplığını buldu ama yüklemedi, çünkü PadForge onu yalnızca yöneticilerin değiştirebildiğini ve Logitech'in imzaladığını doğrulayamadı</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>kitaplığını buldu ama kullanamadı, nedeni tanılama günlüğünde yazıyor</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software'i başlatın</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control'lü bir telefon bekleniyor</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>telefonda</value></data>
@@ -5938,6 +6024,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>dhd64.dll seç…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension kitaplığının bu kopyasını diğerlerinin yerine yükler. Başka bir kopyada açık olan Falcon kapanır ve bu kopyada yeniden açılır. SDK'nın kurduğu kopyalar bu olmadan da bulunur.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Kitaplıklar (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK indirme sayfası açılmadı: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK indirme sayfası henüz açılmadı: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon sürücüsünü kur</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Force Dimension'ın sürücüsünü SDK klasöründen, sürücüsü olmayan bir Falcon'a kurar. Windows önce Force Dimension'a güvenip güvenmediğinizi sorabilir.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension SDK'yı al</value></data>
@@ -6604,12 +6692,17 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Kaldırılıyor…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Güncelleniyor…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Bitmedi: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>{0} aynı ayar dosyasını ve beceri klasörünü okuduğu için PadForge girdisi ve becerisi kalır.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>{0} aynı ayar dosyasını okuduğu için PadForge girdisi kalır.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge bu programdan kaldırıldı. {0} becerileri aynı klasörden okuduğu için PadForge becerisi kalır.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge {0} içindeki ayarları okuyamıyor, bu yüzden PadForge'un ekli olup olmadığını bilmiyor.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Eklendi. PadForge beceri klasörünü okuyamadı.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Diğer asistanlar</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Yukarıda listelenmeyen bir asistan için: Ayarları kopyala, MCP ayarları için girdiyi verir, Bir ileti kopyala ise herhangi bir sohbet için nasıl bağlanılacağını ve önce ne isteneceğini söyleyen kısa bir metin verir.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Ayarları kopyala</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Bir ileti kopyala</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopyalandı.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Kopyalanmadı: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Kopyalanmadı. Windows, PadForge'un panoyu kullanmasına izin vermedi.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>PadForge'a bağlanın, bilgisayarımdaki kontrolcü eşleyici. stdio üzerinden çalışan yerel bir MCP sunucusudur: komut {0}, argüman --mcp ile. JSON ayarı olarak: {1} Bağlandıktan sonra önce status aracını çağırın, sonra neyi kurmak istediğimi sorun, örneğin: “Kontrolcümün tetiklerini nereden eşleyeceğimi göster.”</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge'un Otomasyon özelliği şu an kapalı: önce PadForge içinde Ekstralar, Otomasyon altından açın.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>İzin verilen programlar</value></data>
@@ -6630,6 +6723,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Bir joystick. PadForge onu ham okur, bu yüzden SDL'nin eşlemesi kullanılmaz.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Bir joystick, sizin satırınızla oyun kumandası düzenine konmuş.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL, motor çalışırken cihazları okur.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Cihaz bağlı değil. Bağlanınca SDL onu okur.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL, PadForge'a bu cihazın bir okumasını vermedi.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Yerleşik topluluk kopyası, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} tarihinde indirildi</value></data>
@@ -6667,6 +6762,11 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, aç/kapat ve diğer eylemler</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ve {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Kopyalanacak bir şey yok: SDL'nin bu cihaz için eşlemesi yok ve cihaz hiçbir kontrolcüde değil.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Kopyalanacak bir şey yok: PadForge, SDL'nin bu cihaz için eşlemesini okuyamıyor ve kontrolcülerinin hiçbir satırı SDL'nin biçiminin kabul ettiği bir bağlama vermiyor.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Kopyalanacak bir şey yok: SDL'nin bu cihaz için eşlemesi yok ve {0} kontrolcüsünün hiçbir satırı düğmelerinden, eksenlerinden veya hat'lerinden birini SDL'nin biçiminin kabul ettiği şekilde okumuyor.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Kopyalanacak bir şey yok: SDL'nin bu cihaz için eşlemesi yok ve {0} kontrolcüsünün satırları cihazı yalnızca şunlar için okuyor: {1}. SDL'nin biçimi bunları tutamaz.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Kopyalanacak bir şey yok: PadForge, SDL'nin bu cihaz için eşlemesini şu anda okuyamıyor ve cihaz hiçbir kontrolcüde değil.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Kopyalanacak bir şey yok: PadForge, SDL'nin bu cihaz için eşlemesini şu anda okuyamıyor ve {0} kontrolcüsünün hiçbir satırı SDL'nin biçiminin kabul ettiği bir bağlama vermiyor.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Başka bir program panoyu kullanıyor. Hiçbir şey kopyalanmadı.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Satırınız kaldırıldı. Cihaz, ondan önceki gibi okunur.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL'nin düzeninden yeniden eşlendi: {0}.</value></data>
@@ -6687,6 +6787,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge'un taşıdığı satırlar</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Eşleşen satır yok.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Seçilen satır, Yapıştır ile aynı denetimden ve aynı seçimden geçerek {0} cihazına kendi kimliği altında uygulanır.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Motor durdu, bu yüzden liste SDL'nin elindeki satırları, yani kendi satırlarını ve yerleşik topluluk kopyasını içermiyor. Motor çalışınca listelenirler.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL zamanında yanıt vermedi, bu yüzden liste elindeki satırları, yani kendi satırlarını ve yerleşik topluluk kopyasını içermiyor.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL eşleme satırı</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Bu cihaz için bir satır.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Tahmin edilmiş bir düzen.</value></data>
@@ -6699,14 +6801,17 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} alan, başka bir veri yolundaki veya sürümdeki aynı üretici ve üründen. Bu cihazın kendi kimliği altında saklanır.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} alan, başka bir cihazın satırı. Bu cihazın kendi kimliği altında saklanır.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} alan. SDL bu cihazı okumaz, bu yüzden PadForge girişlerini satıra göre düzenler.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge'un bu alanlar için düz bir düğmesi veya ekseni yok ve onları dışarıda bırakır: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} alan, cihazın eksenlerinden, düğmelerinden ve hat anahtarlarından. Girişleri test et bölümünde denetleyin, sonra burada saklayın veya değiştirin.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Bu, {0} cihazının okunuşunu değiştirir. Şu kontrolcülerdeki satırları yeni düzenden yeniden eşlenir: {1}.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Bu, {0} cihazının okunuşunu değiştirir. Hiçbir kontrolcüde olmadığı için hiçbir satır değişmez.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} cihazını okuyan profil kısayolları, ayarlandıkları girişleri korur.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Satır, PadForge.xml içinde sizin olarak saklanır ve bu cihaz için her kaynağın üstünde geçerlidir. Benimkini kaldır, eski satırı ve eski satırları geri koyar.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Satırlar PadForge.xml içinde sizin olarak saklanır ve kendi cihazları için her kaynağın üstünde geçerlidir. Kontrolcü veritabanı satırının Daha fazla bölümündeki Temizle bunları kaldırır.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows için {0} satır. Diğer sistemler için {1} satır atlandı.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows için {0} satır. Diğer sistemler için {1} satır atlandı.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Windows için {0:N0} satır.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>Windows için {0:N0} satır.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Diğer sistemler için {0:N0} satır atlandı.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>Başka bir sistem için {0:N0} satır atlandı.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>{0:N0} satırın hepsi eklenecek. PadForge en fazla {1:N0} satırınızı tutar.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Eklenecek. PadForge en fazla {1:N0} satırınızı tutar.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Şu an {0:N0} satırınız tutuluyor, bu yüzden bunların {1:N0} satırı eklenecek, {2:N0} satırı eklenmeyecek.</value></data>
@@ -6716,7 +6821,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Metin, SDL'nin kontrolcü veritabanının bir satırı değil: 32 onaltılık basamaktan oluşan bir kimlik, bir ad, sonra a:b0 gibi alanlar.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Satırlar başka sistemler için. PadForge Windows için veya belirli bir sistem belirtmeyen satırları okur.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Satırın kimliği bir cihaza ait değil. 32 onaltılık basamak gerekir.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Satırın adı boş, 128 karakterden uzun ya da SDL'nin alan olarak okuduğu bir karakter içeriyor.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Satırın adı boş, 128 karakterden uzun, SDL'nin okuduğu “type:” gibi bir alan işareti içeriyor ya da harf, rakam, noktalama, simge ve düz boşluk dışında bir karakter içeriyor.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Satır, PadForge'un kabul etmediği bir ipucu veya Android alanı taşıyor.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Satırda SDL'nin tanımadığı bir alan var.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Bir bağlama SDL'nin biçiminde değil, örneğin b3, a2, +a2, a2~ veya h0.4.</value></data>
@@ -6727,8 +6832,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Satırlarınız</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Buraya eklediğiniz veya bir cihazın SDL eşlemesi kartına yapıştırdığınız satırlar, kendi cihazları için her kaynağın üstünde geçerlidir ve sıfırlamadan sonra da kalır.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Dosyadan veya panodan satır ekle…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} cihaz için {0} satır, diğer her kaynağın üstünde sizin.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} cihaz için {0} satır, diğer her kaynağın üstünde sizin.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} satır, sizinkiler her kaynağın önünde.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} satır, sizinki her kaynağın önünde.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Henüz yok.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG değişkeniniz, PadForge'un tutmadığı {0} satır içeriyor. Dosyadan veya panodan satır ekle bunlarla açılır.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG değişkeniniz, PadForge'un tutmadığı {0} satır içeriyor. Dosyadan veya panodan satır ekle bununla açılır.</value></data>
@@ -6738,7 +6843,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Değiştir…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Topluluğun dosyasını kullan</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adres</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge, https:// ile başlayan, bir ana makine adı veren, varsayılan bağlantı noktasını kullanan ve kullanıcı adı ya da parola içermeyen bir adresi kabul eder.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge, https:// ile başlayan, bir ana makine adı içeren, varsayılan bağlantı noktasındaki, kullanıcı adı, parola veya # sonrası bölümü olmayan en çok 2.048 karakterlik bir adresi kabul eder.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>PadForge'a web'den ulaş</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Bir web sitesinde çalışan asistan, bu bilgisayardaki bir tünel programı üzerinden PadForge'a ulaşır. Bunu açmak önce size sorar.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>PadForge'a web'den ulaşılsın mı?</value></data>
@@ -6755,7 +6860,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Durdu. Son sözleri: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Başlatılamadı.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Artık bu bilgisayarda yok.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Bu bilgisayarda tünel programı bulunamadı. PadForge cloudflared, devtunnel, ngrok ve Tailscale Funnel ile ya da kendi tünelinizin adresiyle çalışır.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge bu bilgisayarda cloudflared, devtunnel, ngrok veya Tailscale Funnel programlarından hiçbirini bulamadı. PadForge'un indirdiği ChatGPT Secure MCP Tunnel seçeneğini seçin ya da kendi tünelinizin adresini verin.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge'a genel bir adres vermek için bir tünel seçin.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Bu bilgisayarda ayrıca: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, adresi aynı kalan</value></data>
@@ -6763,7 +6868,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Kendi tünelinizi http://127.0.0.1:{0} adresine çalıştırın ve https adresini yapıştırın. Adlandırılmış bir Cloudflare tüneli, kalıcı bir geliştirici tüneli, Tailscale Funnel ve ngrok'un kendi alan adı adreslerini korur.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>/mcp dışında yolu olmayan bir https adresi yapıştırın, tünelinizin verdiği gibi.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge'un web yardımcısı başlıyor.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge'un web yardımcısı durdu ({0}). Yeniden başlatmak için PadForge'a web'den ulaş seçeneğini kapatıp açın.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge'un web yardımcısı durdu ({0}). PadForge onu başlatmayı denemeye devam ediyor.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adres</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Henüz genel adres yok.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude'a ekle</value></data>
@@ -6802,11 +6907,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>{0} koduyla sona erdi</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Otomasyon kapalı, bu yüzden hiçbir web asistanı PadForge'a ulaşamaz. Web yardımcısı, Otomasyon açılınca başlar.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Denetleniyor…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Kurulu değil.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Kurulu ve güncel. Bir betik {0} ile başlar.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} için kurulu ve güncel. Bir betik {1} ile başlar.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Kurulu. Bu PadForge'un daha yeni bir kopyası var.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} için kurulu. Bu PadForge'un daha yeni bir kopyası var.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Kuruluyor…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge bunu denetleyemedi: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Kur, PadForge'un kitaplığını o dilin bulacağı yere koyar. Onu yükleyen bir betik, yukarıdaki düzeyde cihazları okur ve eşlemeleri yönetir.</value></data>
@@ -6814,8 +6914,27 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kurulu kopyalar</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Tümünü kaldır</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Kaldırıldı.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge kitaplığı {0} için yüklü ve güncel. Bir betik {1} ile başlar.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>{0} için PadForge kitaplığı, bu PadForge'un kopyasından farklı.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge kitaplığı {0} için yüklü değil.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>PadForge kitaplığı {0} için güncel. {1} için olan kopya, bu PadForge'unkinden farklı.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>PadForge kitaplığı {0} için güncel ve {1} için yüklü değil.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>{0} için PadForge kitaplığı bu PadForge'un kopyasından farklı ve {1} için yüklü değil.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>PadForge kitaplığı {0} için güncel. {1} için olan kopya bu PadForge'unkinden farklı ve {2} için yüklü değil.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows onu kendi haklarınızla başlatmadı.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>{0} saniye içinde bitmedi.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>{0} koduyla sona erdi ve neden vermedi.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge {0} içindeki ayarları okuyamıyor, bu yüzden dosyayı olduğu gibi bıraktı.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge {0} dosyasını yazmadı, bu yüzden onu olduğu gibi bıraktı.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows sizin için bir Belgeler klasörü tanımlamıyor.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge {0} için size ait bir klasör bulamıyor.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0} uygulamasının kendi komutu {1} koduyla sona erdi.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0} uygulamasının komutu bu bilgisayarda yok.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows, PadForge'un gereken bir dosyayı okumasına veya yazmasına izin vermedi.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge Python bulamıyor: hiçbiri kayıtlı değil, Microsoft Store'dan yüklenmemiş, bir py başlatıcısı tarafından listelenmiyor ve PATH içinde de yok.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge'un bulduğu hiçbir Python {0} saniye içinde yanıt vermedi.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Çalıştırma, PadForge'un bildiği bir neden vermedi.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Betik kimliği</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Betik kimliği</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Betikler kontrollerini şöyle adlandırır: {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Betikler tuşlarını KeyA, KeySpace, KeyLeftShift gibi, her tuşu da koduyla adlandırır, Vk0 ile Vk255 arası.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0}, bu ağda {1} adresinden</value></data>
@@ -6827,11 +6946,11 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>PadForge'un yönetici hakları olmadan çalışan yardımcısı bu bilgisayarın ağ adreslerini dinler ve PadForge yalnızca özel ağlarda bağlantı noktasına izin verir. Başka bir bilgisayardaki asistan, ancak burada oluşturduğunuz bir anahtarla içeri girer. Çağrılar ve anahtarı ağdan şifresiz geçer.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Bağlantı noktası</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Değiştir…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Çağrılar ve anahtarı bu ağdan şifresiz geçer. Windows bunlara yalnızca özel ağlarda izin verir.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Çağrılar ve anahtarları bu ağdan şifrelenmeden geçer. PadForge'un bu bağlantı noktası için oluşturduğu Windows Güvenlik Duvarı kuralı yalnızca özel ağları kapsar.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>{0} numaralı bağlantı noktasını başka bir program kullanıyor. PadForge'a bu ağdan ulaşmak için bunu değiştirin.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows, PadForge'un yardımcısının {0} numaralı bağlantı noktasını dinlemesine izin vermedi. PadForge buna yönetici haklarıyla izin verir, bu yüzden PadForge'u bu haklarla başlatın ve bunu kapatıp açın.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows'ta PadForge'un yardımcısı için {0} numaralı bağlantı noktasında bir ayırma yok. Bunu kapatıp açın, PadForge onu yeniden oluşturur.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge'un yardımcısı {0} numaralı bağlantı noktasını dinleyemedi. Bağlantı noktasını değiştirin ya da bunu kapatıp açın.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge'un yardımcısı durdu ({0}). Yeniden başlatmak için PadForge'a bu ağdan ulaş seçeneğini kapatıp açın.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge'un yardımcısı durdu ({0}). PadForge onu başlatmayı denemeye devam ediyor.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Otomasyon kapalı, bu yüzden bu ağdaki hiçbir asistan PadForge'a ulaşamaz. Yardımcı, Otomasyon açılınca başlar.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Bu bilgisayarın şu an özel bir ağda adresi yok.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Bu ağdaki asistanlar</value></data>
@@ -6875,11 +6994,12 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Cihazları seç</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0}, kendi cihazlarını ve işaretlediklerinizi sürebilir. Yine de her cihazı okur.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Cihazlar sayfasında hiç cihaz yok.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Çalışıyor, sizin haklarınızla, ve hazır. ChatGPT, kendi oturum açması olmadan ve yalnızca OpenAI kuruluşunuzdan PadForge'a bu tünel üzerinden ulaşır. PadForge ile birlikte yeniden başlar.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Çalışıyor, sizin haklarınızla. OpenAI'ın tünelin hazır olduğunu bildirmesini bekliyor.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Kendi haklarınızla çalışıyor ve tunnel-client hazır olduğunu bildiriyor. PadForge ile birlikte yeniden başlar.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Kendi haklarınızla çalışıyor. tunnel-client şu anda hazır olduğunu bildirmiyor.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>OpenAI'ın tunnel-client programı indiriliyor ve sürümünün SHA-256 toplamlarıyla denetleniyor.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client indirilemedi: {0}. Yeniden denemek için tüneli tekrar seçin.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Aşağıya bir çalışma anahtarı ve bir tünel kimliği yapıştırın, tünel başlar.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>OpenAI'ın tunnel-client programı henüz bu bilgisayarda yok. İndirmek için tüneli yeniden seçin.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Çalışma anahtarı</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Kısıtlı, Tunnels Read and Use ile.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Bir tane oluştur</value></data>
@@ -6888,6 +7008,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>ChatGPT'yi aç</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge anahtarı yalnızca sizin için şifreli tutar. Boş bırakılan kutu anahtarı unutturur. ChatGPT yukarıdaki düzeyde çalışır.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Anahtar tutulmadı: PadForge'un web yardımcısı çalışmıyor ve anahtarı yalnızca o sizin için şifreleyebilir.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Anahtar tutulmadı: PadForge'un web yardımcısı anahtarı şifrelemeden önce sona erdi. Yeniden yapıştırın.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Anahtar tutulmadı: Windows onu sizin için şifreleyemedi. Yeniden yapıştırın.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Başka cihazdan yanıtla</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Bu bilgisayardan uzaktayken PadForge'un sorularını telefondan ya da başka bir bilgisayardan yanıtlayın.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Yalnızca bu ağda, web denetleyicisinin adresi üzerinden çalışır.</value></data>
@@ -6905,9 +7027,10 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Kod bir kez çalışır ve {0} saatine kadar geçerlidir. Beş yanlış denemede kapanır, QR kodu yine de çalışır.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Web denetleyicisinin adresi başlatılıyor…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Sayfa açılamıyor: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Bu bilgisayarın özel bir ağda adresi yok.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows bu pencereyi ekran yakalamadan gizlemediği için kod gösterilmiyor.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Yazılan kod beş yanlış denemeden sonra kapandı. QR kodu {0} saatine kadar yine de çalışır.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Kodun süresi doldu. Cihaz eşleştir… yenisini oluşturur.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Kodun süresi doldu. Cihaz eşleştir yenisini oluşturur.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge en fazla {0} ağ anahtarı tutar. Önce onu geri alın.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Renk döngüsü veya sese uyan renkler gibi değişen renkler ona ulaşmaz. Sabit kalan bir renk ulaşır.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Tüm dosyalar (*.*)|*.*</value></data>

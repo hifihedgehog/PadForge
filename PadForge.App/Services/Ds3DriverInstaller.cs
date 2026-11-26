@@ -101,9 +101,15 @@ namespace PadForge.Services
         public static bool EnsureInstalled(Action<string> log)
         {
             if (OffLimitsForTest) return false;
+            try { return EnsureInstalledNow(log); }
+            finally { ForgetBthPs3Packages(); }
+        }
+
+        private static bool EnsureInstalledNow(Action<string> log)
+        {
             try
             {
-                if (IsServiceInstalled("BthPS3"))
+                if (IsProfileDriverInstalled())
                 {
                     EnsureConsumerParams();       // keep RawPDO=1/ExclusivePDO=0 if a prior install set them wrong
                     if (!IsPsmFilterPresent())
@@ -1390,9 +1396,6 @@ namespace PadForge.Services
         public static void CycleBluetoothRadio(Action<string> log)
         {
             if (OffLimitsForTest) return;
-            // Every Bluetooth device drops for seconds: the connection notes
-            // wait for them to settle (#600 item 42).
-            PadForge.Engine.OwnDrops.Settle();
             try
             {
                 lock (_cycleLock)
@@ -1402,6 +1405,9 @@ namespace PadForge.Services
                         log("No USB Bluetooth radio to cycle.");
                         return;
                     }
+                    // Every Bluetooth device drops for seconds: the connection
+                    // notes wait for them to settle (#600 item 42).
+                    PadForge.Engine.OwnDrops.Settle();
                     try
                     {
                         radio.ToUsbPnPDevice().CyclePort();
@@ -1869,7 +1875,7 @@ namespace PadForge.Services
         /// startup reconcile that follows arms the filter again.</summary>
         internal static void UpgradeAtStartupIfOlder(Action<string> log)
         {
-            if (!ShouldUpgradeAtStartup(IsServiceInstalled("BthPS3"), IsDsHidMiniInstalled(),
+            if (!ShouldUpgradeAtStartup(IsProfileDriverInstalled(), IsDsHidMiniInstalled(),
                     InstalledBthPs3Version(), BundledBthPs3Version()))
                 return;
             RequestPsmPatching(false, log);
@@ -1878,7 +1884,7 @@ namespace PadForge.Services
 
         /// <summary>File version of the BthPS3.sys the installed service points
         /// at through its ImagePath, or null.</summary>
-        private static Version InstalledBthPs3Version()
+        internal static Version InstalledBthPs3Version()
         {
             try
             {
@@ -2025,8 +2031,9 @@ namespace PadForge.Services
         private static int EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log, 20000);
 
         /// <summary>True when the BthPS3 profile driver service is installed
-        /// (the stack that carries the DS3 over Bluetooth). Cheap registry-free
-        /// SCM query; the crash-safety reconcile no-ops when this is false.</summary>
+        /// (the stack that carries the DS3 over Bluetooth): one registry read
+        /// of the service's ImagePath. The crash-safety reconcile no-ops when
+        /// this is false.</summary>
         public static bool IsBthPs3Installed() => IsServiceInstalled("BthPS3");
 
         /// <summary><para>True when Nefarius DsHidMini is installed. DsHidMini is
@@ -2268,7 +2275,7 @@ namespace PadForge.Services
         internal static string ExtractDrivers()
         {
             if (_extractedDir != null && Directory.Exists(_extractedDir)) return _extractedDir;
-            // The protected folder's Work folder (#597): these packages are
+            // The protected folder's Work folder (#600): these packages are
             // stocked and signed with PadForge's rights, and in the temp folder
             // any program of the user could change one between its write and
             // its use. The test host keeps the temp folder.
@@ -2391,18 +2398,147 @@ namespace PadForge.Services
         /// (BthPS3Installer/InstallScript.cs ProductName).</summary>
         internal const string BthPs3SetupName = "Nefarius BthPS3 Bluetooth Drivers";
 
-        /// <summary>True while either BthPS3 driver is installed as a service,
+        /// <summary>True while either BthPS3 driver is installed with its
+        /// package (<see cref="IsAnyBthPs3DriverInstalled(BthPs3Reads)"/>),
         /// where <see cref="IsBthPs3Installed"/> asks about the profile
-        /// driver alone. Two registry reads, so its row in Settings follows it
-        /// on its five-second timer.</summary>
-        internal static bool IsAnyBthPs3DriverInstalled()
+        /// driver's service alone. The service reads come first, so a PC
+        /// without BthPS3 reads no driver database on the Settings row's
+        /// five-second timer, and a PC with it reads the database only
+        /// after a change.</summary>
+        internal static bool IsAnyBthPs3DriverInstalled() => IsAnyBthPs3DriverInstalled(s_bthPs3Reads);
+
+        /// <summary>The reads behind the Settings row's answer, each a
+        /// test's to replace.</summary>
+        internal sealed class BthPs3Reads
+        {
+            /// <summary>Whether a driver's service has an ImagePath.</summary>
+            public Func<string, bool> ServiceInstalled = name =>
+            {
+                try
+                {
+                    using var services = Registry.LocalMachine.OpenSubKey(ServicesRoot);
+                    return IsServiceInstalled(services, name);
+                }
+                catch { return false; }
+            };
+            /// <summary>The driver database's package folders.</summary>
+            public Func<string[]> PackageFolders = () =>
+            {
+                try
+                {
+                    using var packages = Registry.LocalMachine.OpenSubKey(DriverPackagesKey);
+                    return packages?.GetSubKeyNames() ?? Array.Empty<string>();
+                }
+                catch { return Array.Empty<string>(); }
+            };
+            /// <summary>How many device changes Windows has reported.</summary>
+            public Func<int> DeviceChanges = () => PadForge.Common.Input.DeviceChanges.Count;
+
+            private readonly object _gate = new();
+            private string[] _folders;
+            private int _foldersChanges;
+
+            /// <summary>The package folders, read again only when no list
+            /// is kept or a device changed since the kept one.</summary>
+            internal string[] FoldersNow()
+            {
+                lock (_gate)
+                {
+                    int changes = DeviceChanges();
+                    if (_folders != null && changes == _foldersChanges) return _folders;
+                    _folders = PackageFolders() ?? Array.Empty<string>();
+                    _foldersChanges = changes;
+                    return _folders;
+                }
+            }
+
+            /// <summary>Drops the kept list, after PadForge's own BthPS3
+            /// install or removal.</summary>
+            internal void Forget()
+            {
+                lock (_gate) _folders = null;
+            }
+        }
+
+        private static readonly BthPs3Reads s_bthPs3Reads = new();
+
+        /// <summary>Drops the Settings row's kept package list, after
+        /// PadForge installed or removed BthPS3.</summary>
+        internal static void ForgetBthPs3Packages() => s_bthPs3Reads.Forget();
+
+        /// <summary>The Settings row's answer: either driver's service with
+        /// its package in the driver database. The service reads run on
+        /// each call. The driver database, which holds every package on the
+        /// PC, is read once, and again only after a device change
+        /// (<see cref="PadForge.Common.Input.DeviceChanges"/>) or PadForge's
+        /// own install or removal of BthPS3, so the 5 s timer reads none of
+        /// it while nothing changes.</summary>
+        internal static bool IsAnyBthPs3DriverInstalled(BthPs3Reads reads)
+        {
+            string[] folders = null;
+            foreach (var (service, inf) in BthPs3Drivers)
+            {
+                if (!reads.ServiceInstalled(service)) continue;
+                folders ??= reads.FoldersNow();
+                if (folders.Any(f => f.StartsWith(inf + "_", StringComparison.OrdinalIgnoreCase))) return true;
+            }
+            return false;
+        }
+
+        /// <summary>The driver database's key. Its subkeys are the driver
+        /// store's packages, each named for its FileRepository folder.</summary>
+        private const string DriverPackagesKey = @"SYSTEM\DriverDatabase\DriverPackages";
+
+        /// <summary>Each BthPS3 driver's service and the package that
+        /// installs it.</summary>
+        private static readonly (string Service, string Inf)[] BthPs3Drivers =
+        {
+            ("BthPS3", "bthps3.inf"), ("BthPS3PSM", "bthps3psm.inf"),
+        };
+
+        /// <summary>
+        /// Whether either BthPS3 driver is installed: its service with an
+        /// ImagePath, and its package in the driver database. BthPS3's own
+        /// removal deletes the packages from the driver store and leaves the
+        /// two services and their binaries (BthPS3Installer/CustomActions.cs
+        /// UninstallDrivers, DriverStore.RemoveDriver, which is
+        /// DriverStoreOfflineDeleteDriverPackage on the store alone in
+        /// Nefarius.Utilities.DeviceManagement v6.1.0
+        /// src/Drivers/DriverStore.cs), so a service alone is no install.
+        /// </summary>
+        internal static bool IsAnyBthPs3DriverInstalled(RegistryKey services, RegistryKey driverPackages)
+            => BthPs3Drivers.Any(d => IsServiceInstalled(services, d.Service) && HasDriverPackage(driverPackages, d.Inf));
+
+        /// <summary>Whether the profile driver is installed: the BthPS3
+        /// service with an ImagePath, and bthps3.inf in the driver
+        /// database. A pairing over a service left without its package takes
+        /// the full install, whose last step advertises the profile service
+        /// that BthPS3's removal turned off.</summary>
+        internal static bool IsProfileDriverInstalled(RegistryKey services, RegistryKey driverPackages)
+            => IsServiceInstalled(services, "BthPS3") && HasDriverPackage(driverPackages, "bthps3.inf");
+
+        private static bool IsProfileDriverInstalled()
         {
             try
             {
                 using var services = Registry.LocalMachine.OpenSubKey(ServicesRoot);
-                return BthPs3Services.Any(s => IsServiceInstalled(services, s));
+                using var packages = Registry.LocalMachine.OpenSubKey(DriverPackagesKey);
+                return IsProfileDriverInstalled(services, packages);
             }
             catch { return false; }
+        }
+
+        /// <summary>Whether the driver database holds a package of this INF:
+        /// a subkey named for its FileRepository folder,
+        /// <c>&lt;inf&gt;_&lt;arch&gt;_&lt;hash&gt;</c>. The names alone are
+        /// read, and only after the service read said yes.</summary>
+        internal static bool HasDriverPackage(RegistryKey driverPackages, string infName)
+        {
+            if (driverPackages == null) return false;
+            string prefix = infName + "_";
+            foreach (string folder in driverPackages.GetSubKeyNames())
+                if (folder.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return true;
+            return false;
         }
 
         /// <summary>One package the driver database lists
@@ -2603,9 +2739,6 @@ namespace PadForge.Services
         internal static void RestartOffRadio(Action<string> log)
         {
             if (OffLimitsForTest) return;
-            // Every Bluetooth device drops for seconds: the connection notes
-            // wait for them to settle (#600 item 42).
-            PadForge.Engine.OwnDrops.Settle();
             bool restarting = false;
             try
             {
@@ -2617,6 +2750,9 @@ namespace PadForge.Services
                         return;
                     }
                     restarting = true;
+                    // Every Bluetooth device drops for seconds: the connection
+                    // notes wait for them to settle (#600 item 42).
+                    PadForge.Engine.OwnDrops.Settle();
                     try
                     {
                         radio.ToUsbPnPDevice().CyclePort();

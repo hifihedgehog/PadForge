@@ -85,7 +85,7 @@ public sealed class PersonaReaderLifetimeTests(ITestOutputHelper output)
             IntPtr handle = (IntPtr)feed.GetType().GetField(lane + "Handle")!.GetValue(feed)!;
             lifetime = (AudioPassthroughService.PersonaReader)feed.GetType().GetField(lane + "Reader")!.GetValue(feed)!;
             Task<int> closeRead = bluetooth ? server.ReadAsync(new byte[1024], 0, 1024) : Task.FromResult(0);
-            stop.Invoke(null, [feed]);
+            stop.Invoke(null, StopArgs(stop, feed));
             if (bluetooth) Assert.Equal(AudioPassthroughService.Ds5HapticBtReportSize, await closeRead.WaitAsync(TimeSpan.FromSeconds(2)));
             bool unpublished = (IntPtr)feed.GetType().GetField(lane + "Handle")!.GetValue(feed)! == IntPtr.Zero;
             bool retained = GetFileType(handle) == 3;
@@ -112,7 +112,7 @@ public sealed class PersonaReaderLifetimeTests(ITestOutputHelper output)
             Assert.True(current);
             Assert.True(previous);
             Assert.Equal((uint)0, GetFileType(handle));
-            stop.Invoke(null, [feed]);
+            stop.Invoke(null, StopArgs(stop, feed));
             allowOpen.Set();
             Assert.True(replacement.Join(2000));
         }
@@ -135,4 +135,8 @@ public sealed class PersonaReaderLifetimeTests(ITestOutputHelper output)
             states.TryRemove(newPad, out _);
         }
     }
+
+    // StopBtMic takes whether to write the close, which retirement does.
+    static object[] StopArgs(MethodInfo stop, AudioPassthroughService.PersonaFeed feed)
+        => stop.GetParameters().Length == 2 ? [feed, true] : [feed];
 }

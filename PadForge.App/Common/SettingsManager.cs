@@ -75,17 +75,19 @@ namespace PadForge.Common.Input
         public static event System.Action ActiveProfileChanged;
 
         /// <summary>
-        /// Snapshot of the default profile's state captured during settings load,
-        /// before the active named profile's topology is applied. Used by
-        /// InputService.Start to initialize _defaultProfileSnapshot correctly
-        /// when the app restarts with a named profile active.
+        /// The default profile's snapshot, the one copy of it: taken at the
+        /// settings load when a named profile is in force, before that
+        /// profile's topology is applied, at the engine's start when none is,
+        /// and at each switch away from the default. A return to the default
+        /// applies it (InputService.ApplyDefaultProfile), engine started or
+        /// not.
         /// </summary>
         public static ProfileData PendingDefaultSnapshot { get; set; }
 
         /// <summary>Whether auto-switching profiles based on foreground application is enabled.</summary>
         public static bool EnableAutoProfileSwitching { get; set; }
 
-        /// <summary>Whether Automation is on (#597): outside programs reach
+        /// <summary>Whether Automation is on (#600): outside programs reach
         /// PadForge through its pipes, as the old External Control switch of
         /// #366 let a launcher or script switch profiles. Off by default. The
         /// switch is the Automation extra's, and no program can turn it.</summary>
@@ -95,7 +97,7 @@ namespace PadForge.Common.Input
         public static Services.Automation.AutomationLevel AutomationLevel { get; set; }
 
         /// <summary>Whether PadForge runs the plugins the user approved
-        /// (#597): programs that add devices. Off by default. The switch is
+        /// (#600): programs that add devices. Off by default. The switch is
         /// the Plugins extra's.</summary>
         public static bool EnablePlugins { get; set; }
 
@@ -111,7 +113,7 @@ namespace PadForge.Common.Input
         public static GlobalMacroData[] GlobalMacros { get; set; }
 
         // ─────────────────────────────────────────────
-        //  Controller database (#597)
+        //  Controller database (#600)
         // ─────────────────────────────────────────────
 
         private static ControllerDatabaseSection _controllerDatabase;
@@ -648,17 +650,6 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
         //  UserSetting management
         // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Finds the UserSetting for a device. Thread-safe.
-        /// Shorthand for <c>UserSettings.FindByInstanceGuid(guid)</c>.
-        /// </summary>
-        public static UserSetting FindSettingByInstanceGuid(Guid instanceGuid)
-        {
-            var settings = UserSettings;
-            if (settings == null) return null;
-            return settings.FindByInstanceGuid(instanceGuid);
-        }
 
         /// <summary>
         /// Finds the UserSetting for a device on a specific pad slot. Thread-safe.
@@ -1740,39 +1731,6 @@ namespace PadForge.Common.Input
                         ? " device=NOT-FOUND -> empty defaults"
                         : $" cap={ud.CapType} forceRaw={ud.ForceRawJoystickMode} objs={ud.DeviceObjects?.Length ?? 0} rawRows={rawCount}"));
             }
-        }
-
-        // ─────────────────────────────────────────────
-        //  Diagnostics
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Returns a summary string for diagnostics.
-        /// </summary>
-        public static string GetSummary()
-        {
-            int deviceCount = 0, onlineCount = 0, settingCount = 0;
-
-            var devices = UserDevices;
-            if (devices != null)
-            {
-                lock (devices.SyncRoot)
-                {
-                    deviceCount = devices.Items.Count;
-                    onlineCount = devices.Items.Count(d => d.IsOnline);
-                }
-            }
-
-            var settings = UserSettings;
-            if (settings != null)
-            {
-                lock (settings.SyncRoot)
-                {
-                    settingCount = settings.Items.Count;
-                }
-            }
-
-            return $"Devices: {onlineCount}/{deviceCount} online, Settings: {settingCount}";
         }
     }
 }

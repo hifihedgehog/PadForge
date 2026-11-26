@@ -93,7 +93,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// What the command set acts on (#597): PadForge as the interface drives
+    /// What the command set acts on (#600): PadForge as the interface drives
     /// it. The main window is the one that implements it for the app, and a
     /// test stands a recorder in its place. Every member is called on the
     /// interface's thread, and each does what the control named in its
@@ -155,12 +155,13 @@ namespace PadForge.Services.Automation
         /// number.</summary>
         bool SetController(int number, bool on);
 
-        /// <summary>Saves a diagnostics snapshot, as Save Snapshot does, and
-        /// gives the file's name without its folder. With
-        /// <paramref name="scrubbed"/> every line goes through the
-        /// scrubber first, as the problem recorder's do: the snapshot a
-        /// program asks for lands where that program can read it.</summary>
-        string SaveSnapshot(bool scrubbed);
+        /// <summary>Takes a snapshot, as Save a Snapshot… does: a problem
+        /// recording that waits for the user's review in the user's
+        /// recordings folder. Gives the recording's file, which the command
+        /// set counts while it waits and never tells a program: a program is
+        /// told <c>waiting-for-review</c>. Throws IOException when the
+        /// recorder refused.</summary>
+        string SaveSnapshot();
 
         /// <summary>Reads what the state line says, from the engine and the
         /// settings and never from what a hidden window stopped

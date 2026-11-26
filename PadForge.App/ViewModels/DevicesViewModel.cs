@@ -98,6 +98,7 @@ namespace PadForge.ViewModels
                         previous.PropertyChanged -= OnSelectedDevicePropertyChanged;
                         previous.ShowsHidingDriverSwitch = false;
                         previous.IsTouchpadMouse = false;
+                        previous.ClearScriptIdNote();
                     }
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
@@ -1032,6 +1033,7 @@ namespace PadForge.ViewModels
         {
             // The compact test (#574) for a device in SDL's gamepad layout.
             ResetGamepadTest(gamepadLayout);
+            ResetLiveReadings();
             // Analog keyboards (#468): key chips, gathered as keys move.
             IsAnalogKeyboardDevice = analogKeyOrder != null;
             _analogKeyOrder = analogKeyOrder ?? System.Array.Empty<int>();
@@ -1189,15 +1191,37 @@ namespace PadForge.ViewModels
             TwitchChatStatusDevice = null;
             HandheldButtons.Clear();
             ConsumerButtons.Clear();
-            LiveMidi = null;
+            ResetLiveReadings();
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;
             HasAccelAuxData = false;
             HasGyroAuxData = false;
             HasTouchpadData = false;
-            HasSecondTouchpadData = false;
             LastRawStateDeviceGuid = Guid.Empty;
+        }
+
+        /// <summary>Sets every live reading of the preview back to rest: the
+        /// motion sensors, both touchpads' dots, the mouse's motion and the
+        /// MIDI state. InputService writes them only while the row's device
+        /// reads, so without this a row that does not read (one under Not
+        /// Connected) showed the numbers and dots of the row opened
+        /// before.</summary>
+        private void ResetLiveReadings()
+        {
+            GyroX = GyroY = GyroZ = 0;
+            AccelX = AccelY = AccelZ = 0;
+            AccelAuxX = AccelAuxY = AccelAuxZ = 0;
+            GyroAuxX = GyroAuxY = GyroAuxZ = 0;
+            TouchpadX0 = TouchpadY0 = TouchpadX1 = TouchpadY1 = TouchpadX2 = TouchpadY2 = 0;
+            TouchpadX3 = TouchpadY3 = TouchpadX4 = TouchpadY4 = 0;
+            TouchpadDown0 = TouchpadDown1 = TouchpadDown2 = TouchpadDown3 = TouchpadDown4 = false;
+            HasSecondTouchpadData = false;
+            Pad2X0 = Pad2Y0 = Pad2X1 = Pad2Y1 = Pad2X2 = Pad2Y2 = 0;
+            Pad2X3 = Pad2Y3 = Pad2X4 = Pad2Y4 = 0;
+            Pad2Down0 = Pad2Down1 = Pad2Down2 = Pad2Down3 = Pad2Down4 = false;
+            MouseMotionX = MouseMotionY = MouseScrollIntensity = 0;
+            LiveMidi = null;
         }
 
         // ─────────────────────────────────────────────

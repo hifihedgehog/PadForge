@@ -145,8 +145,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Lenaneo le bua mofuta oo PadForge e sa o tsebeng</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ha e a fana ka senotlolo seo sa plagini</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ha e a amohela kgokahano ya lenaneo lena</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge ha e a etsa sesebediswa, hobane Windows ha e a fana ka lebitso la faele ya lenaneo</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ho kopilwe hape kapele haholo</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ha ho sa na tse ding tsa mofuta ona ho fihlela PadForge e qala hape</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Tse ngata haholo tsa mofuta ona tseo mananeo a di entseng di emetse hore o di hlahlobe ho Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ha e na sesebediswa se jwalo</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Lenaneo le badile boemo ba kgale</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ha ho letho le nang le ID eo</value></data>
@@ -154,6 +155,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ha o a ka wa ho dumella</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ha ho motho ya arabileng ka nako</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>E emetse karabo ya hao</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>O ne o eso arabe</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ha ho kopo e jwalo</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ha ho letho la ho etsolla</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ke wena feela ya ka fetolang sena</value></data>
@@ -276,7 +278,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Tlisa profaele</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Kenya faele ya profaele ho tswa lenaneong le leng, ebe o bona se tlileng.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, makgetlo a {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya ho qetela ho tse {1} tse tshwanang</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Hokela</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E hoketswe</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Hana</value></data>
@@ -309,6 +310,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Foldara</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Setting ya service</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Mohato wa ho tlosa</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Tshebeletso</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Faele</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Sefilthara se kahodimo</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Boleng ba registry</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID ya hardware</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Mosebetsi o hlophisitsweng</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Kenyo ya diapp tse kentsweng</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Sesebediswa sa USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth ya BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>E dumella di-controller tsa PlayStation 3, PlayStation Move le Navigation controller ho hokahana ka Bluetooth. E kentswe ka hare ho PadForge, mme e kenngwa la pele ha e nngwe ya tsona e hokahanngwa le PC.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>E hokahanya di-controller tsa PlayStation 3 ka Bluetooth.</value></data>
@@ -732,6 +741,13 @@
 PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala puisano ho {2} ebe o lahlela crash.log ho yona.
 
 {1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Ho bile le phoso e sa lebellwang:
+
+{0}
+
+PadForge ha e a kgona ho ngola dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala puisano ho {2}, tobetsa Ctrl+C mona ho kopitsa molaetsa ona, ebe o o kgomaretsa moo.
+
+{1}</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F0} Hz</value></data>
@@ -1127,6 +1143,8 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>e timile</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>ka Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>e hloka Logitech Gaming Software 8.52 kapa e ntjha ho feta</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>e fumane laeborari ya yona mme ha e a e kenya, hobane PadForge ha e a kgona ho netefatsa hore ke batsamaisi feela ba ka e fetolang le hore Logitech e e saenne</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>e fumane laeborari ya yona mme ha e a kgona ho e sebedisa, mme log ya ditlhahlobo e bolela lebaka</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>qalisa Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, e emetse mmala wa lightbar</value></data>
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, ha ho setshwantsho se kgethilweng</value></data>
@@ -1276,6 +1294,7 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>betri {0}</value></data>
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>betri {0}, e a tjhajwa</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, konopo le sensor ka nngwe</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Ditaolo tsa sona ka mabitso ao diskripte di a sebedisang</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopitsa dintlha</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Sehlahiswa</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Mofuta</value></data>
@@ -1463,9 +1482,9 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dikhaonto</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kamehla</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ha o ntse o tshwere, ebe e kgutlela bohareng</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Konopo e dumellang mouse ho kganna, sesebedisweng se le seng le mohlodi. Ha ho se e kgethilweng, mouse e kganna kamehla.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Konopo e dumellang mouse ho kganna, sesebedisweng sefe kapa sefe sa slot ena. Ha ho se e kgethilweng, mouse e kganna kamehla.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seva le moreki wa Model Context Protocol ka mora kgokahano ya mothusi le PadForge.exe --mcp, ka Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Seva le moreki wa Model Context Protocol ka mora kgokahano ya mothusi le PadForge.exe --mcp, ka Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions le DependencyInjection.Abstractions, tseo MCP C# SDK e ahilweng hodima tsona, ka Microsoft.</value></data>
   <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>E a sebetsa.</value></data>
@@ -1508,8 +1527,13 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>E a tlosa…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>E a ntjhafatsa…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ha e a qeta: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Kenyo le tsebo ya PadForge di a sala, hobane {0} e bala faele e tshwanang ya disetting le foldara e tshwanang ya tsebo.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Kenyo ya PadForge e a sala, hobane {0} e bala faele e tshwanang ya disetting.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge e tlositswe lenaneong lena. Tsebo ya yona e a sala, hobane {0} e bala ditsebo foldareng e tshwanang.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ha e kgone ho bala disetting tse ho {0}, kahoo ha e tsebe hore na PadForge e ekeditswe.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>E ekeditswe. PadForge ha e a kgona ho bala foldara ya tsebo ya yona.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>E kopitsitswe.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ha e a kopitswa: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Ha e a kopitswa. Windows ha e a dumella PadForge ho sebedisa klipebote.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Mananeo a dumelletsweng</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Lenaneo le batlang Read kapa ho feta le botsa hang, la pele ha le hokahana, mme le fumana boemo boo le bo kopang, ho fihlela boemong bo ka hodimo. Mothusi eo o mo ekelitseng ka hodimo o dumelletswe ke seo.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -1521,6 +1545,8 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge e e bala e le tala, kahoo mmapping wa SDL ha o sebediswe.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, e hlophisitsweng jwalo ka gamepad ke mola wa hao.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL e bala disebediswa ha enjene e ntse e sebetsa.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Sesebediswa ha se a hokahanngwa. SDL e tla se bala hang ha se hokahantswe.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ha e a fa PadForge dintlha tsa sesebediswa sena.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi ya setjhaba e kentsweng, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E jarollotswe {0}</value></data>
@@ -1558,6 +1584,11 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, ditoggle le diketso tse ding</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} le {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Ha ho letho la ho kopitswa: SDL ha e na mmapping bakeng sa sesebediswa sena, mme ha se ho khonthrolara efe kapa efe.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Ha ho letho la ho kopitswa: PadForge ha e kgone ho bala mmapping ya SDL bakeng sa sesebediswa sena, mme ha ho mola wa dikhonthrolara tsa sona o fanang ka kgokahano eo sebopeho sa SDL se e amohelang.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Ha ho letho la ho kopitswa: SDL ha e na mmapping bakeng sa sesebediswa sena, mme ha ho mola wa {0} o balang e nngwe ya dikonopo, diaxis kapa dihat tsa sona ka tsela eo sebopeho sa SDL se e amohelang.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Ha ho letho la ho kopitswa: SDL ha e na mmapping bakeng sa sesebediswa sena, mme mela ya {0} e se bala feela bakeng sa {1}, tseo sebopeho sa SDL se sa kgoneng ho di tshwara.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Ha ho letho la ho kopitswa: PadForge ha e kgone ho bala mmapping ya SDL bakeng sa sesebediswa sena hona jwale, mme ha se ho khonthrolara efe kapa efe.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Ha ho letho la ho kopitswa: PadForge ha e kgone ho bala mmapping ya SDL bakeng sa sesebediswa sena hona jwale, mme ha ho mola wa {0} o fanang ka kgokahano eo sebopeho sa SDL se e amohelang.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Lenaneo le leng le sebedisa klipeboto. Ha ho letho le kopitsitsweng.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Mola wa hao o tlositswe. Sesebediswa se balwa jwalo ka pele ho wona.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>E mmapuwe hape ho tswa sebopehong sa SDL: {0}.</value></data>
@@ -1578,6 +1609,8 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Mela eo PadForge e e tshwereng</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ha ho mola o tshwanang.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Mola o kgethilweng o sebediswa ho {0} tlasa ID ya sona, ka tlhahlobo e tshwanang le kgetho e tshwanang le Kgomaretsa.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Enjene e emisitswe, kahoo lenane ha le kenyelletse mela eo SDL e e tshwereng, ya yona le kopi ya setjhaba e kentsweng ka hare. E tla thathamiswa hang ha e sebetsa.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL ha e a araba ka nako, kahoo lenane ha le kenyelletse mela eo e e tshwereng, ya yona le kopi ya setjhaba e kentsweng ka hare.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Mola wa mmapping wa SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Mola bakeng sa sesebediswa sena.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Sebopeho se hakantsweng.</value></data>
@@ -1590,14 +1623,14 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, lebala le {0}, ho tswa ho morekisi le sehlahiswa se le seng bese e nngwe kapa mofuteng o mong. O bolokwa tlasa ID ya sesebediswa sena.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, lebala le {0}, mola wa sesebediswa se seng. O bolokwa tlasa ID ya sesebediswa sena.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Lebala le {0}. SDL ha e bale sesebediswa sena, kahoo PadForge e hlophisa dikenyo tsa sona ka mola.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge ha e na konopo kapa axis e bonolo bakeng sa mabala ana mme e a siya: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Lebala le {0}, ho tswa ho diaxis, dikonopo le dihat tsa sesebediswa. O hlahlobe ho Test Inputs, ebe o o boloka kapa o o fetola mona.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Sena se fetola tsela eo {0} e balwang ka yona. Mela ya yona ho {1} e mmapuwa hape ho tswa sebopehong se setjha.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Sena se fetola tsela eo {0} e balwang ka yona. Ha e ho khonthrolara efe kapa efe, kahoo ha ho mela e fetohang.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Ditsela tse kgutshwane tsa profaele tse balang {0} di boloka dikenyo tseo di neng di behetswe tsona.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Mola o bolokwa e le wa hao ho PadForge.xml mme o tla pele ho mehlodi e meng yohle bakeng sa sesebediswa sena. Tlosa sa ka e kgutlisa mola wa kgale le mela ya kgale.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Mela e bolokwa e le ya hao ho PadForge.xml mme e tla pele ho mehlodi e meng yohle bakeng sa disebediswa tsa yona. Hlakola, tlasa More ya mola wa Controller Database, e a e tlosa.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Mela e {0} bakeng sa Windows. Tse {1} tsa disistimi tse ding di a fetwa.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Mola o {0} bakeng sa Windows. Tse {1} tsa disistimi tse ding di a fetwa.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Mela bakeng sa Windows: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Mela yohle e {0:N0} e tla eketswa. PadForge e boloka ho fihla ho mela e {1:N0} ya hao.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>O tla eketswa. PadForge e boloka ho fihla ho mela e {1:N0} ya hao.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Mela e {0:N0} ya hao e bolokilwe hona jwale, kahoo e {1:N0} ya ena e tla eketswa mme e {2:N0} e ke ke ya eketswa.</value></data>
@@ -1607,7 +1640,7 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Mongolo hase mola wa dathabeise ya dikhonthrolara ya SDL: ID ya dinomoro tse 32 tsa hex, lebitso, ebe mabala a kang a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Mela ke ya disistimi tse ding. PadForge e bala mela ya Windows, kapa ya ntle le sistimi e itseng.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID ya mola hase ya sesebediswa. E hloka dinomoro tse 32 tsa hex.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Lebitso la mola ha le na letho, le feta ditlhaku tse 128, kapa le na le tlhaku eo SDL e e balang e le lebala.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Lebitso la mola ha le na letho, le feta ditlhaku tse 128, le na le letshwao la lebala leo SDL e le balang, jwalo ka “type:”, kapa le na le sebopeho se fapaneng le ditlhaku, dinomoro, matshwao a ho ngola, disymbole le sebaka se bonolo.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Mola o na le hint kapa lebala la Android, tseo PadForge e sa di amoheleng.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Mola o na le lebala leo SDL e sa le tsebeng.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Kgokahanyo e nngwe hase sebopehong sa SDL, jwalo ka b3, a2, +a2, a2~ kapa h0.4.</value></data>
@@ -1629,7 +1662,7 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>E emisitswe. Mantswe a yona a ho qetela: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ha e a kgona ho qalwa.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ha e sa le PC ena.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ha ho lenaneo la thanele le fumanweng PC ena. PadForge e sebetsa le cloudflared, devtunnel, ngrok le Tailscale Funnel, kapa le aterese ya thanele ya hao.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge ha e a fumana cloudflared, devtunnel, ngrok kapa Tailscale Funnel ho PC ena. Kgetha ChatGPT Secure MCP Tunnel, eo PadForge e e jarollang, kapa o fane ka aterese ya thanele ya hao.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Kgetha thanele ho fa PadForge aterese ya setjhaba.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Hape PC ena: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, eo aterese ya yona e dulang e tshwana</value></data>
@@ -1637,7 +1670,7 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Sebedisa thanele ya hao ho ya ho http://127.0.0.1:{0} mme o kgomaretse aterese ya yona ya https. Thanele ya Cloudflare e nang le lebitso, dev tunnel e sa feleng, Tailscale Funnel le domain ya ngrok ka boyona di boloka aterese ya tsona.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Kgomaretsa aterese ya https e se nang tsela ntle le /mcp, jwalo ka ha thanele ya hao e e fana.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>E qala mothusi wa websaete wa PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Mothusi wa websaete wa PadForge o emisitswe ({0}). Tima Reach PadForge From the Web ebe o e bulela hape ho o qala hape.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Mothusi wa websaete wa PadForge o emile ({0}). PadForge e ntse e leka ho o qala.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Aterese</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Ha ho eso be le aterese ya setjhaba.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Eketsa ho Claude</value></data>
@@ -1675,9 +1708,6 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>e fedile ka khoutu {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation e tjhesitswe, kahoo ha ho mothusi wa websaete ya fihlelang PadForge. Mothusi wa websaete o qala hang ha Automation e bulehile.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>E a hlahloba…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Ha e a kenngwa.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>E kentswe. PadForge ena e na le kopi e ntjha.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>E kentswe bakeng sa {0}. PadForge ena e na le kopi e ntjha.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>E a kenya…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ha e a kgona ho e hlahloba: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Kenya e beha laeborari ya PadForge moo puo eo e e fumanang teng. Skripte e e kenyang e bala disebediswa mme e tsamaisa dimmapping boemong bo ka hodimo.</value></data>
@@ -1685,8 +1715,10 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Dikopi tse kentsweng</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Tlosa tsohle</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Di tlositswe.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Laeborari ya PadForge e kentswe bakeng sa {0} mme e ntjhafaditswe. Skripte e qala ka {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Laeborari ya PadForge bakeng sa {0} e fapane le kopi ya PadForge ena.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Laeborari ya PadForge ha e a kengwa bakeng sa {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID ya skripte</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID ya yona ya skripte</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Diskripte di reha ditaolo tsa yona {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Diskripte di reha dinotlolo tsa yona KeyA, KeySpace, KeyLeftShift le tse jwalo, le senotlolo ka seng ka khoutu ya sona, Vk0 ho isa Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} netweking ena ho tswa ho {1}</value></data>
@@ -1695,14 +1727,14 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Jarolla ho tswa ho</value></data>
   <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS feela. Ho tswa atereseng eo e seng ya setjhaba sa basebedisi, PadForge e nka mela e metjha feela.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Aterese</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge e amohela aterese e qalang ka https:// mme e bolela seva, potang ya kamehla, ntle le lebitso la mosebedisi kapa phasewete.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge e amohela aterese ya ditlhaku tse fihlang ho 2,048 e qalang ka https:// mme e bolela host, potang ya kamehla, ntle le lebitso la mosebedisi, phasewete kapa karolo ka mora #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Pota</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Fetola…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Mehala le senotlolo sa yona di tshela netweke ena di sa patwa ka khoutu. Windows e di dumella ho kena dinetweking tsa poraefete feela.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Mehala le key ya yona di tshela netweke ena di sa notlelwa. Molao wa Windows Firewall oo PadForge e o etsang bakeng sa pota ena o bolela dinetweke tsa poraefete feela.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Pota {0} e sebediswa ke lenaneo le leng. E fetole ho fihlela PadForge ho tswa netweking ena.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ha e a dumella mothusi wa PadForge ho mamela potang {0}. PadForge e e dumella ka ditokelo tsa motsamaisi, kahoo qala PadForge ka tsona ebe o tima sena o se bulela hape.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows ha e na pehelo bakeng sa mothusi wa PadForge potang {0}. Tima sena ebe o se bulela hape, mme PadForge e tla e etsa hape.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Mothusi wa PadForge ha a a kgona ho mamela potang {0}. Fetola pota, kapa tima sena ebe o se bulela hape.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Mothusi wa PadForge o emisitswe ({0}). Tima Reach PadForge From This Network ebe o e bulela hape ho o qala hape.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Mothusi wa PadForge o emile ({0}). PadForge e ntse e leka ho o qala.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation e timilwe, kahoo ha ho mothusi netweking ena ya fihlelang PadForge. Mothusi o qala hang ha Automation e bulehile.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>PC ena ha e na aterese netweking ya poraefete hona jwale.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Bathusi netweking ena</value></data>
@@ -1717,7 +1749,25 @@ PadForge e ngotse dintlha ho crash.log pela PadForge.exe. Ho tlaleha sena, qala 
   <data name="Reach_Line_Format" xml:space="preserve"><value>E tsamaisa disebediswa tsa yona le {0}. E ntse e bala sesebediswa ka seng.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>E tsamaisa disebediswa tsa yona feela. E ntse e bala sesebediswa ka seng.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Ditaelo tse tswang moleng wa ditaelo di ntse di fihla PadForge, jwalo ka ha di etsa bakeng sa lenaneo ka leng.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>E a sebetsa, ka ditokelo tsa hao, mme e lokile. ChatGPT e fihla PadForge ka thanele ena ntle le ho kena ha yona, mme feela ho tswa mokgatlong wa hao wa OpenAI. E qala hape le PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>E a sebetsa, ka ditokelo tsa hao. E emetse hore OpenAI e re thanele e lokile.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge e boloka senotlolo se patilwe ka khoutu bakeng sa hao feela. Lebokose le se nang letho le se lebala. ChatGPT e sebetsa boemong bo ka hodimo.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge ha e a kgona ho boloka sephutheloana sa diplagini.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>Mesebetsi ya PadForge {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge ha e a kgona ho etsa senotlolo se e bolokang e le kopi e le nngwe e sebetsang, kahoo ha e a qala.</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Leqephe la ho jarolla la Falcon SDK ha le a buleha: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Leqephe la ho jarolla la Falcon SDK ha le eso bulehe: {0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Mela bakeng sa ditsamaiso tse ding e fetilwe: {0:N0}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ha e a e qala ka ditokelo tsa hao.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ha e a fela ka nako, metsotswana: {0}.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>E fedile ka khoutu {0} mme ha e a fana ka lebaka.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ha e kgone ho bala disetting tse ho {0}, kahoo e siile faele kamoo e leng kateng.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge ha e a ngola {0}, kahoo e e siile kamoo e leng kateng.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows ha e bolele foldara ya Ditokomane bakeng sa hao.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ha e fumane foldara ya hao bakeng sa {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Taelo ya {0} ka boyona e fedile ka khoutu {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Taelo ya {0} ha e eo ho PC ena.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows ha e a dumella PadForge ho bala kapa ho ngola faele eo e e hlokang.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ha e fumane Python: ha ho e ngodisitsweng, e kentsweng ho tswa ho Microsoft Store, e thathamisitsweng ke py launcher kapa e leng ho PATH ya hao.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ha ho Python eo PadForge e e fumaneng e arabileng ka nako, metsotswana: {0}.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Ho matha ha ho a fana ka lebaka leo PadForge e le tsebang.</value></data>
 </root>

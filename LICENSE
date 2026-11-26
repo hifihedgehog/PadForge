@@ -1551,8 +1551,10 @@ usbip-win2
   https://github.com/vadimgrn/usbip-win2
   Copyright (c) 2021-2026, Vadym Hrynchyshyn
   HIDMaestro.Core.dll carries the upstream 0.9.8.1 host controller
-  driver for x64 and ARM64, unmodified, and installs the one matching the
-  machine the first time a controller that runs on it is created. It is
+  driver and root hub filter driver (usbip2_filter.sys) for x64 and ARM64,
+  unmodified, and installs the ones matching the machine the first time a
+  controller that runs on them is created. The filter runs on the root hub
+  of HIDMaestro's own host controller alone. The host controller is
   the USB transport for every virtual controller on Windows on ARM, and on
   x64 for the composite controllers, the Steam Controller (2026), the Xbox
   One S: Full profile and the Joy-Con Charging Grip forms. No other x64

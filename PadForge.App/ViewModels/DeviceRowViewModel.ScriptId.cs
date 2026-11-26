@@ -50,12 +50,16 @@ namespace PadForge.ViewModels
             ScriptIdNote = Strings.Instance.Extras_Automation_Copied;
         });
 
-        /// <summary>"Copied." after Copy, until the device shown
-        /// changes.</summary>
+        /// <summary>"Copied." after Copy, until the device shown changes
+        /// (<see cref="ClearScriptIdNote"/>).</summary>
         public string ScriptIdNote
         {
             get => _scriptIdNote;
             private set => SetProperty(ref _scriptIdNote, value);
         }
+
+        /// <summary>Takes the note away: the Devices page shows another
+        /// device.</summary>
+        internal void ClearScriptIdNote() => ScriptIdNote = null;
     }
 }

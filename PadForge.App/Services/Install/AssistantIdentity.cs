@@ -33,7 +33,15 @@ namespace PadForge.Services.Install
         internal readonly record struct Identity(string Path, string Script, string PackageFolder);
 
         /// <summary>The longest shim read. npm's are under 1 KB.</summary>
-        private const int MostShimBytes = 64 * 1024;
+        internal const int MostShimBytes = 64 * 1024;
+
+        /// <summary>Test seam: opens a shim for reading. Null opens the
+        /// file.</summary>
+        internal static Func<string, Stream> ShimOpenSeam;
+
+        /// <summary>Test seam: the desktop shell user's variables. Null reads
+        /// them through the shell's token.</summary>
+        internal static Func<IReadOnlyList<string>> ShellVariablesSeam;
 
         /// <summary>The identity of the program an assistant row found, or
         /// the default for none.</summary>
@@ -90,17 +98,8 @@ namespace PadForge.Services.Install
         /// </summary>
         internal static Identity? ReadShim(string file)
         {
-            string text;
-            try
-            {
-                var info = new FileInfo(file);
-                if (!info.Exists || info.Length > MostShimBytes) return null;
-                text = File.ReadAllText(file);
-            }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Security.SecurityException)
-            {
-                return null;
-            }
+            string text = ReadCapped(file);
+            if (text == null) return null;
             string dp0 = System.IO.Path.GetDirectoryName(file) + "\\";
             var programs = new List<string>();
             string target = null;
@@ -141,20 +140,84 @@ namespace PadForge.Services.Install
             return new Identity(InterpreterOf(programs), script, PackageFolderOf(script));
         }
 
+        /// <summary>A shim's text, read through one open of the file and no
+        /// further than <see cref="MostShimBytes"/>: the folder is the user's,
+        /// so the file can grow or be swapped between a read of its size and
+        /// a second open. Null for no file, an unreadable one or one past the
+        /// cap.</summary>
+        private static string ReadCapped(string file)
+        {
+            try
+            {
+                using var stream = ShimOpenSeam?.Invoke(file)
+                    ?? new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                var bytes = new byte[MostShimBytes + 1];
+                int got = 0, n;
+                while (got < bytes.Length && (n = stream.Read(bytes, got, bytes.Length - got)) > 0) got += n;
+                if (got > MostShimBytes) return null;
+                // As File.ReadAllText reads it: UTF-8 unless a byte order mark
+                // names another encoding.
+                using var reader = new StreamReader(new MemoryStream(bytes, 0, got), System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+                return reader.ReadToEnd();
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Security.SecurityException
+                or ArgumentException or NotSupportedException)
+            {
+                return null;
+            }
+        }
+
         /// <summary>The first program named that is a file here, else the
-        /// first bare name found on the PATH as its .exe, as cmd.exe would
-        /// run it. Null when neither is there.</summary>
+        /// first bare name found as its .exe on the PATH of the desktop
+        /// shell's user, who starts the assistant, as cmd.exe would run it
+        /// for that user. PadForge with rights has the machine's Path alone
+        /// (RightsVariables), which holds no Node or Python installed for the
+        /// user. This process's own PATH is searched when the shell gives no
+        /// variables. Null when none is there.</summary>
         private static string InterpreterOf(List<string> programs)
         {
             foreach (string program in programs)
                 if (program.Contains('\\') && File.Exists(program)) return Final(Full(program));
+            IReadOnlyList<string> shell = null;
+            bool shellRead = false;
             foreach (string program in programs)
             {
                 if (program.Contains('\\') || program.Contains('/')) continue;
                 string name = program.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? program.Substring(0, program.Length - 4) : program;
-                if (UserInstall.FindCommand(name) is { } found && found.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                if (!shellRead)
+                {
+                    shell = ShellVariables();
+                    shellRead = true;
+                }
+                string path = ValueOf(shell, "PATH");
+                string found = path != null ? UserInstall.FindCommandOn(name, path, ValueOf(shell, "PATHEXT")) : UserInstall.FindCommand(name);
+                if (found != null && found.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
                     return Final(found);
             }
+            return null;
+        }
+
+        /// <summary>The desktop shell user's variables, or null when there is
+        /// no shell, its variables cannot be read, or the test host's fence
+        /// stands.</summary>
+        private static IReadOnlyList<string> ShellVariables()
+        {
+            if (ShellVariablesSeam == null && UserInstall.OffLimitsForTest) return null;
+            var seam = ShellVariablesSeam;
+            if (seam != null) return seam();
+            using var shell = PadForge.Services.Plugins.PluginLauncher.OpenShell();
+            return shell == null ? null : PadForge.Services.Plugins.PluginLauncher.ShellVariables(shell, out _);
+        }
+
+        /// <summary>A variable's value in NAME=value lines, its name in any
+        /// case, or null.</summary>
+        private static string ValueOf(IReadOnlyList<string> variables, string name)
+        {
+            if (variables == null) return null;
+            foreach (string line in variables)
+                if (line != null && line.Length > name.Length && line[name.Length] == '='
+                    && line.StartsWith(name, StringComparison.OrdinalIgnoreCase))
+                    return line.Substring(name.Length + 1);
             return null;
         }
 

@@ -7,7 +7,7 @@ namespace PadForge.Services
     /// <summary>
     /// The app's own part of <see cref="RightsVariables"/>: a program started
     /// through ProcessStartInfo with PadForge's rights gets the variables the
-    /// allow list builds, never a copy of PadForge's (#597).
+    /// allow list builds, never a copy of PadForge's (#600).
     /// </summary>
     internal static partial class RightsVariables
     {

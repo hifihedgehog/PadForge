@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// The one path every tool call takes (#597), an assistant's through its
+    /// The one path every tool call takes (#600), an assistant's through its
     /// session's server and a script's through its <c>call</c> line. In
     /// order: the tool is found, its level is asked of the host, the
     /// program's rate is checked, the arguments are read as the tool's type,
@@ -89,11 +89,28 @@ namespace PadForge.Services.Automation
 
             var invocation = new AssistantInvocation(this, caller, tool, _ui, stopping);
             AssistantOutcome outcome;
+            AssistantOutcome unanswered = null;
             // A program whose first connection waits for the user's answer
-            // waits for it here (#600), as long as the card does.
+            // waits for it here (#600), no longer than a call waits for an
+            // answer: a host gives a call about a minute. A call that ends
+            // while the card still waits is told so, and goes into Activity
+            // as not answered, never as refused.
             if (_host.IsOn && !Allows(caller, tool.Level) && caller.Session != null && _host.Sessions.ConsentWaits(caller.Session))
-                await _host.Sessions.ConsentAnswered(caller.Session, stopping).ConfigureAwait(false);
-            if (!Allows(caller, tool.Level))
+            {
+                using (var bounded = CancellationTokenSource.CreateLinkedTokenSource(stopping))
+                {
+                    bounded.CancelAfter(AnswerWait);
+                    await _host.Sessions.ConsentAnswered(caller.Session, bounded.Token).ConfigureAwait(false);
+                }
+                if (_host.IsOn && !Allows(caller, tool.Level) && _host.Sessions.ConsentWaits(caller.Session))
+                    unanswered = AssistantOutcome.Failure("not-answered", "The user has not answered this program's connection yet. PadForge asks on its question card whether it may work at "
+                        + LevelWords(caller.Session.Wanted ?? _host.Level) + ". Call again once the user has answered, and do not connect again meanwhile.");
+            }
+            if (unanswered != null)
+            {
+                outcome = unanswered;
+            }
+            else if (!Allows(caller, tool.Level))
             {
                 outcome = AssistantOutcome.Failure("not-allowed", _host.IsOn
                     ? "This program works at " + LevelWords(LevelOf(caller)) + ", which does not allow " + name + ". It needs " + LevelWords(tool.Level)
@@ -150,7 +167,7 @@ namespace PadForge.Services.Automation
             }
             catch (AssistantRefusal refusal)
             {
-                return AssistantOutcome.Failure(refusal.Code, refusal.Words);
+                return AssistantOutcome.Failure(refusal.Code, ScrubWords(refusal.Words));
             }
             catch (OperationCanceledException) when (invocation.Stopping.IsCancellationRequested)
             {
@@ -174,6 +191,18 @@ namespace PadForge.Services.Automation
             string json = node.ToJsonString(AssistantJson.Options);
             using var doc = JsonDocument.Parse(json);
             return new AssistantOutcome { Ok = true, Json = json, Structured = doc.RootElement.Clone() };
+        }
+
+        /// <summary>A refusal's words as the program gets them, scrubbed of
+        /// this PC's private values as a result is: a picker's refusal lists
+        /// its choices, a headset's name among them. Only known values are
+        /// searched for, as in an ID (<see cref="Identifiers"/>), so the IDs
+        /// a refusal names stay as they are.</summary>
+        internal string ScrubWords(string words)
+        {
+            if (string.IsNullOrEmpty(words)) return words;
+            var scrubber = App?.MakeScrubber();
+            return scrubber == null ? words : scrubber.SearchFinished(words, count: false);
         }
 
         /// <summary>The properties whose strings are PadForge's own words
@@ -212,7 +241,7 @@ namespace PadForge.Services.Automation
             _ => "the Commands level",
         };
 
-        private bool TakeRate(int key)
+        internal bool TakeRate(int key)
         {
             lock (_sync)
             {
@@ -226,15 +255,49 @@ namespace PadForge.Services.Automation
         /// to come back before its rate and waiting requests go.</summary>
         internal static readonly TimeSpan ResumeGrace = TimeSpan.FromMinutes(10);
 
+        /// <summary>The drops of each helper's key, counted, so a grace
+        /// that ends after a later drop of the same key forgets nothing: the
+        /// later drop's grace does.</summary>
+        private readonly Dictionary<int, int> _drops = new();
+
         /// <summary>A helper with a resume secret left: what it keeps goes
-        /// after <see cref="ResumeGrace"/>, unless it is back by then.</summary>
+        /// after <see cref="ResumeGrace"/> from its last drop, unless it is
+        /// back by then.</summary>
         internal void ForgetLater(int key)
         {
-            _ = Task.Delay(ResumeGrace).ContinueWith(_ =>
+            int drop;
+            lock (_sync)
             {
+                _drops.TryGetValue(key, out drop);
+                _drops[key] = ++drop;
+            }
+            _ = Task.Delay(Grace).ContinueWith(_ =>
+            {
+                lock (_sync)
+                {
+                    if (!_drops.TryGetValue(key, out int last) || last != drop) return;
+                    _drops.Remove(key);
+                }
                 bool back = _host.Sessions.Snapshot().Any(s => s.CallerKey == key);
                 if (!back) Forget(key);
             }, TaskScheduler.Default);
+        }
+
+        /// <summary>The grace this instance gives, <see cref="ResumeGrace"/>
+        /// unless a test shortens it.</summary>
+        internal TimeSpan Grace { get; set; } = ResumeGrace;
+
+        /// <summary>How many entries, rate and waiting requests, are kept
+        /// under a key.</summary>
+        internal int KeptFor(int key)
+        {
+            lock (_sync) return (_rates.ContainsKey(key) ? 1 : 0) + _pending.Count(p => p.Value.Key == key);
+        }
+
+        /// <summary>How many entries are kept under every key.</summary>
+        internal int KeptInAll()
+        {
+            lock (_sync) return _rates.Count + _pending.Count;
         }
 
         /// <summary>A program left: its rate and its waiting requests go.</summary>
@@ -303,7 +366,12 @@ namespace PadForge.Services.Automation
             // pipe drop. The card's own two minutes end it.
             var session = invocation.Caller.Session;
             var lifetime = session?.Resume != null ? CancellationToken.None : session?.Lifetime ?? invocation.Stopping;
-            Task<ApprovalAnswer> answer = _host.Approvals.AskAsync(request, lifetime);
+            // The program can also take its call back (notifications/cancelled,
+            // which cancels the call's token while its session runs): the
+            // question goes then, and nothing is kept for it.
+            var withdraw = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
+            Task<ApprovalAnswer> answer = _host.Approvals.AskAsync(request, withdraw.Token);
+            _ = answer.ContinueWith(_ => withdraw.Dispose(), TaskScheduler.Default);
             if (answer.IsCompletedSuccessfully && answer.Result == ApprovalAnswer.TooMany)
                 throw TooManyQuestions();
             invocation.Asked = true;
@@ -311,6 +379,16 @@ namespace PadForge.Services.Automation
             var first = await Task.WhenAny(answer, Task.Delay(AnswerWait, invocation.Stopping)).ConfigureAwait(false);
             if (first == answer)
                 return Finish(invocation, await answer.ConfigureAwait(false), change);
+            // A dropped pipe ends the session's lifetime with the call, and a
+            // helper's question then waits for its return. A script's call
+            // ends a moment before its lifetime does, so only an assistant's
+            // session tells the two apart while the helper holds a secret.
+            if (invocation.Stopping.IsCancellationRequested && session != null && !session.Lifetime.IsCancellationRequested
+                && (session.Resume == null || session.Kind == AutomationClientKind.Assistant))
+            {
+                try { withdraw.Cancel(); } catch (ObjectDisposedException) { }
+                invocation.Stopping.ThrowIfCancellationRequested();
+            }
 
             var pending = new PendingCall { Key = invocation.Caller.Key, Tool = invocation.Tool.Name, Detail = invocation.Detail };
             lock (_sync) _pending[id] = pending;
@@ -357,7 +435,7 @@ namespace PadForge.Services.Automation
             }
             catch (AssistantRefusal refusal)
             {
-                outcome = AssistantOutcome.Failure(refusal.Code, refusal.Words);
+                outcome = AssistantOutcome.Failure(refusal.Code, ScrubWords(refusal.Words));
             }
             catch (Exception error)
             {

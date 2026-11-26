@@ -13,7 +13,7 @@ namespace PadForge.Engine.Common
 
     /// <summary>
     /// Who signed a program's file, as the request card and Activity name it
-    /// (#597): the signer of an Authenticode signature Windows trusts, the
+    /// (#600): the signer of an Authenticode signature Windows trusts, the
     /// one embedded in the file or the one of a catalog that lists it, as
     /// Windows' own files are signed. Null when the file is not signed or
     /// its signature does not hold.

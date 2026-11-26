@@ -13,7 +13,7 @@ using PadForge.ViewModels;
 namespace PadForge.Views
 {
     /// <summary>
-    /// The request card (#597): asks the user to allow or refuse what a
+    /// The request card (#600): asks the user to allow or refuse what a
     /// program asked, above other windows, without taking the focus. It shows
     /// the oldest question that waits, "1 of 3" while several do, and the
     /// time left, and moves on as each ends. The questions are the Automation
@@ -200,9 +200,8 @@ namespace PadForge.Views
         /// read every key; and a show's Not Now and Show, both alike.</summary>
         internal void WordAnswers(ApprovalKind kind)
         {
-            var s = Strings.Instance;
-            DenyButton.Content = kind == ApprovalKind.Show ? s.Automation_Request_NotNow : s.Automation_Request_Deny;
-            AllowButton.Content = kind == ApprovalKind.Show ? s.Automation_Request_Show : s.Automation_Request_Allow;
+            DenyButton.Content = AutomationRequestItem.DenyWordsFor(kind);
+            AllowButton.Content = AutomationRequestItem.AllowWordsFor(kind);
             AllowButton.Style = (Style)FindResource(kind == ApprovalKind.Change ? "DialogPrimaryButton" : "DialogButton");
         }
 

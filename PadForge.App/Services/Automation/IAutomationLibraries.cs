@@ -4,10 +4,11 @@ namespace PadForge.Services.Automation
 {
     /// <summary>
     /// The script libraries PadForge carries, as the Automation page's Save
-    /// a Library button writes them (#597). The page asks for the
+    /// a Library button writes them (#600). The page asks for the
     /// libraries, shows one Save dialog that offers each as a file type,
     /// and has the one the user picked written where the user said.
-    /// <see cref="AutomationLibraries"/> is the one the app hands the host.
+    /// <see cref="AutomationLibraries.Instance"/> is the one the page
+    /// reaches.
     /// </summary>
     internal interface IAutomationLibraries
     {

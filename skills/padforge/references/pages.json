@@ -4913,7 +4913,7 @@
     "words": "Copy More",
     "kind": "menu item",
     "reach": "asks",
-    "why": "SendsInput",
+    "why": null,
     "under_more": false
   },
   {
@@ -4979,7 +4979,7 @@
     "words": "Copy More",
     "kind": "menu item",
     "reach": "asks",
-    "why": "SendsInput",
+    "why": null,
     "under_more": false
   },
   {
@@ -4990,7 +4990,7 @@
     "words": "Clear Trigger More",
     "kind": "menu item",
     "reach": "asks",
-    "why": "SendsInput",
+    "why": null,
     "under_more": false
   },
   {
@@ -5001,7 +5001,7 @@
     "words": "Remove More",
     "kind": "menu item",
     "reach": "asks",
-    "why": "SendsInput",
+    "why": null,
     "under_more": false
   },
   {
@@ -7799,7 +7799,7 @@
     "under_more": false
   },
   {
-    "id": "devices.action/HidingRows/ExeFolder_Move",
+    "id": "devices.action/TouchpadFolderNote/ExeFolder_Move",
     "page": "Devices",
     "place": "",
     "card": "Settings",
@@ -7883,7 +7883,7 @@
     "words": "Restore the Windows Driver",
     "kind": "action",
     "reach": "asks",
-    "why": "UseOnly",
+    "why": "Drivers",
     "under_more": false
   },
   {
@@ -9548,6 +9548,72 @@
     "under_more": true
   },
   {
+    "id": "dialog.dialog/RecordingReviewView/==RecordingReviewView",
+    "page": "Dialogs",
+    "place": "RecordingReviewView",
+    "card": null,
+    "words": "RecordingReviewView",
+    "kind": "dialog",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/RecordingReviewView/CloseButton/Common_Close",
+    "page": "Dialogs",
+    "place": "RecordingReviewView",
+    "card": null,
+    "words": "Close",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/RecordingReviewView/DeleteButton/Review_Delete",
+    "page": "Dialogs",
+    "place": "RecordingReviewView",
+    "card": null,
+    "words": "Delete",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/RecordingReviewView/CopySummaryButton/Review_CopySummary",
+    "page": "Dialogs",
+    "place": "RecordingReviewView",
+    "card": null,
+    "words": "Copy Summary",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/RecordingReviewView/SaveButton/Review_Save",
+    "page": "Dialogs",
+    "place": "RecordingReviewView",
+    "card": null,
+    "words": "Save…",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/RecordingReviewView/SaveAndPostButton/Review_SaveAndPost",
+    "page": "Dialogs",
+    "place": "RecordingReviewView",
+    "card": null,
+    "words": "Save and Post",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
     "id": "dialog.dialog/RegisterNfcTagDialog/Nfc_Title",
     "page": "Dialogs",
     "place": "RegisterNfcTagDialog",
@@ -10412,7 +10478,7 @@
     "card": null,
     "words": "Show PadForge",
     "kind": "menu item",
-    "reach": "free",
+    "reach": "yours-alone",
     "why": null,
     "under_more": false
   },

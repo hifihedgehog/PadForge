@@ -31,7 +31,12 @@ namespace PadForge.Tests
     /// controller's HTTPS address alone, the pairing window kept out of
     /// screen capture, and the secrets kept out of every read and
     /// recording.
+    ///
+    /// <para>In the statics' collection: a test here loads
+    /// <see cref="WebAnswer.Shared"/>, which a settings load and Reset to
+    /// Defaults load too.</para>
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class AnswerFromAnotherDeviceTests
     {
         private const string Host = "192.168.1.24:8080";
@@ -265,46 +270,6 @@ namespace PadForge.Tests
             Assert.Null(rig.Answers.Pairing);
             Assert.Equal(410, Secret(pairing.Secret).Status);
             Assert.Single(rig.Answers.Devices);
-        }
-
-        /// <summary>The pairing window says when the typed code has closed,
-        /// with the time the QR code works until, and keeps the QR code while
-        /// it hides the six digits.</summary>
-        [Fact]
-        public void ThePairingWindow_SaysTheTypedCodeClosed_AndKeepsTheQrCode()
-        {
-            DialogTestHost.Run(() =>
-            {
-                var now = DateTimeOffset.Now;
-                var answers = new WebAnswer(() => now) { RowShows = () => true };
-                answers.SetAddress("https://192.168.1.24:8080", null);
-                var dialog = new AnswerPairDialog(answers);
-                try
-                {
-                    new WindowInteropHelper(dialog).EnsureHandle();
-                    var pairing = answers.Pairing;
-                    Assert.NotNull(pairing);
-                    var state = (System.Windows.Controls.TextBlock)dialog.FindName("StateText");
-                    var qr = (System.Windows.Controls.Image)dialog.FindName("QrImage");
-                    var digits = (System.Windows.Controls.ItemsControl)dialog.FindName("CodeDigits");
-                    Assert.Equal(System.Windows.Visibility.Collapsed, state.Visibility);
-                    Assert.NotNull(digits.ItemsSource);
-                    string wrong = pairing.Code == "000000" ? "111111" : "000000";
-                    for (int i = 0; i < WebAnswer.MostWrongTries; i++)
-                        answers.Handle(new AnswerRequest("POST", "/answer/pair", Host, "https://" + Host, null, JsonSerializer.Serialize(new { code = wrong }), Phone));
-                    var culture = System.Globalization.CultureInfo.CurrentCulture;
-                    Assert.Equal(string.Format(culture, PadForge.Resources.Strings.Strings.Instance.Answer_Pair_CodeClosed_Format,
-                        pairing.Until.ToLocalTime().ToString("t", culture)), state.Text);
-                    Assert.Equal(System.Windows.Visibility.Visible, state.Visibility);
-                    Assert.NotNull(qr.Source);
-                    Assert.Null(digits.ItemsSource);
-                    Assert.Same(pairing, answers.Pairing);
-                }
-                finally
-                {
-                    dialog.Close();
-                }
-            });
         }
 
         [Fact]
@@ -704,35 +669,40 @@ namespace PadForge.Tests
             });
         }
 
-        // ─────────────────────────────────────────────
-        //  The pairing window
-        // ─────────────────────────────────────────────
-
-        /// <summary>The pairing window asks Windows to leave it out of screen
-        /// capture before it opens a pairing, and closing it closes the
-        /// pairing. Its handle is made and never shown.</summary>
+        /// <summary>The engine's own Stop gives the page its listener back:
+        /// the stop takes the web controller's listener down with the engine,
+        /// and a web assistant can still ask while the engine is
+        /// stopped.</summary>
         [Fact]
-        public void ThePairingWindow_IsHiddenFromCapture_BeforeItOpensAPairing()
+        public void TheEnginesStop_GivesThePageAListenerOfItsOwn()
         {
-            DialogTestHost.Run(() =>
+            RunSta(dispatcher =>
             {
+                var vm = new MainViewModel();
+                using var service = new InputService(vm);
                 var answers = new WebAnswer { RowShows = () => true };
-                var dialog = new AnswerPairDialog(answers);
+                service.Answers = answers;
+                service.WebServerFactory = () => new WebControllerServer(_ => null, () => new IdleListener());
+                WebControllerServer Server() => Get<WebControllerServer>(service, "_webServer");
                 try
                 {
-                    Assert.Null(answers.Pairing);
-                    IntPtr hwnd = new WindowInteropHelper(dialog).EnsureHandle();
-                    Assert.True(AnswerPairDialog.GetWindowDisplayAffinity(hwnd, out uint affinity));
-                    Assert.Equal(AnswerPairDialog.WDA_EXCLUDEFROMCAPTURE, affinity);
-                    Assert.True(dialog.HiddenFromCapture);
-                    Assert.NotNull(answers.Pairing);
-                    Assert.Same(answers.Pairing, dialog.Pairing);
+                    vm.Dashboard.WebControllerPort = 18094;
+                    vm.Dashboard.EnableWebController = true;
+                    answers.StartPairing();
+                    // The engine runs: the web controller's run serves the page.
+                    Set(service, "_inputManager", new InputManager());
+                    Call(service, "StartWebServerIfEnabled");
+                    PumpUntil(dispatcher, () => Server()?.IsRunning == true && Server().ServesControls);
+
+                    service.Stop();
+                    PumpUntil(dispatcher, () => Server()?.IsRunning == true && !Server().ServesControls);
+                    Assert.Same(answers, Server().Answers);
                 }
                 finally
                 {
-                    dialog.Close();
+                    Call(service, "StopWebServer");
+                    Set(service, "_inputManager", null);
                 }
-                Assert.Null(answers.Pairing);
             });
         }
 
@@ -798,6 +768,86 @@ namespace PadForge.Tests
             }
             public void Stop() { IsListening = false; _stopped.Set(); }
             public void Close() => Stop();
+        }
+
+        /// <summary>
+        /// The pairing window's tests. DialogTestHost makes a plain
+        /// Application for the body and releases it after. The class above
+        /// runs in a collection beside the others, where that Application
+        /// reached windows other tests had open on their own threads. So
+        /// these run in the WpfApplicationSingleton collection, which runs
+        /// alone, as DialogTestHost asks.
+        /// </summary>
+        [Collection("WpfApplicationSingleton")]
+        public class PairingWindowTests
+        {
+            /// <summary>The pairing window says when the typed code has closed,
+            /// with the time the QR code works until, and keeps the QR code while
+            /// it hides the six digits.</summary>
+            [Fact]
+            public void ThePairingWindow_SaysTheTypedCodeClosed_AndKeepsTheQrCode()
+            {
+                DialogTestHost.Run(() =>
+                {
+                    var now = DateTimeOffset.Now;
+                    var answers = new WebAnswer(() => now) { RowShows = () => true };
+                    answers.SetAddress("https://192.168.1.24:8080", null);
+                    var dialog = new AnswerPairDialog(answers);
+                    try
+                    {
+                        new WindowInteropHelper(dialog).EnsureHandle();
+                        var pairing = answers.Pairing;
+                        Assert.NotNull(pairing);
+                        var state = (System.Windows.Controls.TextBlock)dialog.FindName("StateText");
+                        var qr = (System.Windows.Controls.Image)dialog.FindName("QrImage");
+                        var digits = (System.Windows.Controls.ItemsControl)dialog.FindName("CodeDigits");
+                        Assert.Equal(System.Windows.Visibility.Collapsed, state.Visibility);
+                        Assert.NotNull(digits.ItemsSource);
+                        string wrong = pairing.Code == "000000" ? "111111" : "000000";
+                        for (int i = 0; i < WebAnswer.MostWrongTries; i++)
+                            answers.Handle(new AnswerRequest("POST", "/answer/pair", Host, "https://" + Host, null, JsonSerializer.Serialize(new { code = wrong }), Phone));
+                        var culture = System.Globalization.CultureInfo.CurrentCulture;
+                        Assert.Equal(string.Format(culture, PadForge.Resources.Strings.Strings.Instance.Answer_Pair_CodeClosed_Format,
+                            pairing.Until.ToLocalTime().ToString("t", culture)), state.Text);
+                        Assert.Equal(System.Windows.Visibility.Visible, state.Visibility);
+                        Assert.NotNull(qr.Source);
+                        Assert.Null(digits.ItemsSource);
+                        Assert.Same(pairing, answers.Pairing);
+                    }
+                    finally
+                    {
+                        dialog.Close();
+                    }
+                });
+            }
+
+            /// <summary>The pairing window asks Windows to leave it out of screen
+            /// capture before it opens a pairing, and closing it closes the
+            /// pairing. Its handle is made and never shown.</summary>
+            [Fact]
+            public void ThePairingWindow_IsHiddenFromCapture_BeforeItOpensAPairing()
+            {
+                DialogTestHost.Run(() =>
+                {
+                    var answers = new WebAnswer { RowShows = () => true };
+                    var dialog = new AnswerPairDialog(answers);
+                    try
+                    {
+                        Assert.Null(answers.Pairing);
+                        IntPtr hwnd = new WindowInteropHelper(dialog).EnsureHandle();
+                        Assert.True(AnswerPairDialog.GetWindowDisplayAffinity(hwnd, out uint affinity));
+                        Assert.Equal(AnswerPairDialog.WDA_EXCLUDEFROMCAPTURE, affinity);
+                        Assert.True(dialog.HiddenFromCapture);
+                        Assert.NotNull(answers.Pairing);
+                        Assert.Same(answers.Pairing, dialog.Pairing);
+                    }
+                    finally
+                    {
+                        dialog.Close();
+                    }
+                    Assert.Null(answers.Pairing);
+                });
+            }
         }
     }
 }

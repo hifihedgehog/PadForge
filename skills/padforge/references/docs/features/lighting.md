@@ -29,6 +29,7 @@ The controller page's **Lights & Sound** section holds the **Lighting** card for
 - A Switch Pro Controller or right Joy-Con (alone, in a pair, or in the charging grip), for the HOME button LED only
 - A Flydigi Apex 4, Apex 5 or Apex 6 Pro, once it has answered as one. See [Flydigi Apex pads](#flydigi-apex-pads) below
 - A mouse or keyboard that PadForge can light, of any brand and analog keyboard rows included, a lit device with a row of its own on the Devices page (a headset, a mousepad, a monitor, a light strip, a laptop light bar), and the Razer Chroma, Logitech LIGHTSYNC, SteelSeries GG, ASUS Aura, MSI Mystic Light and Corsair iCUE rows
+- A device a script, an assistant or a plugin adds that declares a light. See [Plugins](plugins.md) and [Scripts](scripts.md)
 
 The card's settings belong to the device picked under **Driven by** in the page's header, which its **This device** chip says.
 

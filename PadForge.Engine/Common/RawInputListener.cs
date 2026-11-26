@@ -23,7 +23,9 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
 
         private const int WM_INPUT = 0x00FF;
+        private const int WM_INPUT_DEVICE_CHANGE = 0x00FE;
         private const int WM_QUIT = 0x0012;
+        private const long GIDC_ARRIVAL = 1, GIDC_REMOVAL = 2;
 
         private const ushort HID_USAGE_PAGE_GENERIC = 0x01;
         private const ushort HID_USAGE_GENERIC_MOUSE = 0x02;
@@ -40,6 +42,7 @@ namespace PadForge.Engine
         private const ushort HID_USAGE_CONSUMER_CONTROL = 0x01;
 
         private const uint RIDEV_INPUTSINK = 0x00000100;
+        private const uint RIDEV_DEVNOTIFY = 0x00002000;
         private const uint RID_INPUT = 0x10000003;
         private const uint RIDI_PREPARSEDDATA = 0x20000005;
 
@@ -430,8 +433,8 @@ namespace PadForge.Engine
 
         /// <summary>Per-handle preparsed HID data for HidP_GetUsages, fetched
         /// once on first report (mirrors PrecisionTouchpadReader's cache).
-        /// AllocHGlobal buffers, freed on Stop. A hot-unplugged handle's entry
-        /// lingers until Stop (bounded, a few KB per replug).</summary>
+        /// AllocHGlobal buffers, freed when the handle's device is removed
+        /// (<see cref="OnDeviceChange"/>) and on Stop.</summary>
         private static readonly ConcurrentDictionary<IntPtr, IntPtr> _consumerPreparsed = new();
 
         /// <summary>Per-handle verdict of "is this a Consumer Control
@@ -540,13 +543,31 @@ namespace PadForge.Engine
         //  Public API — Device Enumeration
         // ─────────────────────────────────────────────
 
+        /// <summary>Test seam, for the calling thread alone: asked before
+        /// each device-list call, and false makes the call fail. Null asks
+        /// Windows.</summary>
+        [ThreadStatic] internal static Func<bool> ListSeam;
+
+        /// <summary>GetRawInputDeviceList, through <see cref="ListSeam"/>.</summary>
+        private static uint ListDevices(RAWINPUTDEVICELIST[] list, ref uint count, uint size)
+        {
+            var seam = ListSeam;
+            if (seam != null && !seam()) return unchecked((uint)-1);
+            return GetRawInputDeviceList(list, ref count, size);
+        }
+
         /// <summary>
         /// Enumerates all currently connected Raw Input keyboard devices.
         /// Includes a synthetic "All Keyboards" aggregate device if multiple keyboards exist.
         /// </summary>
-        public static DeviceInfo[] EnumerateKeyboards()
+        public static DeviceInfo[] EnumerateKeyboards() => EnumerateKeyboards(out _);
+
+        /// <summary>The keyboards, and whether Raw Input's list was read:
+        /// false when a list call failed, and the keyboards are then only the
+        /// aggregate.</summary>
+        public static DeviceInfo[] EnumerateKeyboards(out bool listed)
         {
-            var devices = EnumerateDevicesByType(RIM_TYPEKEYBOARD);
+            var devices = EnumerateDevicesByType(RIM_TYPEKEYBOARD, out listed);
 
             // Always prepend the aggregate device.
             var result = new DeviceInfo[devices.Length + 1];
@@ -565,14 +586,20 @@ namespace PadForge.Engine
         /// Enumerates all currently connected Raw Input mouse devices.
         /// Includes a synthetic "All Mice" aggregate device if multiple mice exist.
         /// </summary>
-        public static DeviceInfo[] EnumerateMice()
+        public static DeviceInfo[] EnumerateMice() => EnumerateMice(out _);
+
+        /// <summary>The mice, and whether Raw Input's list was read: false
+        /// when a list call failed, and the mice are then only the
+        /// aggregate.</summary>
+        public static DeviceInfo[] EnumerateMice(out bool listed)
         {
-            var devices = EnumerateDevicesByType(RIM_TYPEMOUSE);
+            var devices = EnumerateDevicesByType(RIM_TYPEMOUSE, out listed);
 
             // Release buttons still held by mice that are GONE. Raw Input
             // synthesizes no button-up when a device disappears mid-click, and
-            // nothing shrinks _mouseStates at runtime (only RIDEV_INPUTSINK is
-            // registered, so no WM_INPUT_DEVICE_CHANGE ever arrives). The
+            // nothing shrinks _mouseStates at runtime (the mouse is registered
+            // without RIDEV_DEVNOTIFY, so no WM_INPUT_DEVICE_CHANGE arrives for
+            // one). The
             // merged handle ORs every entry, so one dead entry pins the mapped
             // output ON for the process lifetime. This used to self-heal by
             // accident: the aggregate was a copy of a last-writer-wins bitmask,
@@ -584,15 +611,11 @@ namespace PadForge.Engine
             // whether or not that array has been rebuilt, and no Length/Count
             // staleness race is introduced. IntPtr.Zero is skipped because it
             // is the synthetic injected-input key, which never enumerates.
-            // Length 0 means "I don't know", NOT "no mice present":
-            // EnumerateDevicesByType returns an empty array on a failed
-            // GetRawInputDeviceList as well as on a genuine zero, and those are
-            // indistinguishable here. Sweeping on an empty list would treat
-            // every live mouse as absent and release a button the user is
-            // holding. If there really are no mice there is nothing to release
-            // anyway, so skipping costs nothing and the failure case is the
-            // only one that differs.
-            if (devices != null && devices.Length > 0 && !_mouseStates.IsEmpty)
+            // A list that could not be read says nothing of which mice are
+            // gone: sweeping on it would treat every live mouse as absent and
+            // release a button the user is holding. An empty list read whole
+            // is skipped too: with no mice there is nothing to release.
+            if (listed && devices.Length > 0 && !_mouseStates.IsEmpty)
             {
                 var present = new HashSet<IntPtr>();
                 for (int i = 0; i < devices.Length; i++) present.Add(devices[i].Handle);
@@ -622,8 +645,14 @@ namespace PadForge.Engine
         /// (issue #168), prepending the "All Consumer Controls" aggregate the
         /// same way the keyboard and mouse enumerations do.
         /// </summary>
-        public static DeviceInfo[] EnumerateConsumerControls()
+        public static DeviceInfo[] EnumerateConsumerControls() => EnumerateConsumerControls(out _);
+
+        /// <summary>The Consumer Control collections, and whether Raw
+        /// Input's list was read: false when a list call failed, and the
+        /// collections are then only the aggregate.</summary>
+        public static DeviceInfo[] EnumerateConsumerControls(out bool listed)
         {
+            listed = false;
             var matches = new List<DeviceInfo>
             {
                 new DeviceInfo
@@ -637,13 +666,19 @@ namespace PadForge.Engine
 
             uint numDevices = 0;
             uint structSize = (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>();
-            if (GetRawInputDeviceList(null, ref numDevices, structSize) != 0 || numDevices == 0)
+            if (ListDevices(null, ref numDevices, structSize) != 0)
                 return matches.ToArray();
+            if (numDevices == 0)
+            {
+                listed = true;
+                return matches.ToArray();
+            }
 
             var deviceList = new RAWINPUTDEVICELIST[numDevices];
-            uint result = GetRawInputDeviceList(deviceList, ref numDevices, structSize);
+            uint result = ListDevices(deviceList, ref numDevices, structSize);
             if (result == unchecked((uint)-1))
                 return matches.ToArray();
+            listed = true;
 
             ForgetUnlisted(deviceList, (int)result);
             for (int i = 0; i < (int)result; i++)
@@ -676,21 +711,30 @@ namespace PadForge.Engine
             return matches.ToArray();
         }
 
-        private static DeviceInfo[] EnumerateDevicesByType(uint targetType)
+        /// <summary>The devices of one type. <paramref name="listed"/> is
+        /// false when a list call failed, the count call or the fill (a
+        /// device that arrives between the two makes the fill fail), and the
+        /// array is then empty without meaning none.</summary>
+        private static DeviceInfo[] EnumerateDevicesByType(uint targetType, out bool listed)
         {
+            listed = false;
             uint numDevices = 0;
             uint structSize = (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>();
 
-            if (GetRawInputDeviceList(null, ref numDevices, structSize) != 0)
+            if (ListDevices(null, ref numDevices, structSize) != 0)
                 return Array.Empty<DeviceInfo>();
 
             if (numDevices == 0)
+            {
+                listed = true;
                 return Array.Empty<DeviceInfo>();
+            }
 
             var deviceList = new RAWINPUTDEVICELIST[numDevices];
-            uint result = GetRawInputDeviceList(deviceList, ref numDevices, structSize);
+            uint result = ListDevices(deviceList, ref numDevices, structSize);
             if (result == unchecked((uint)-1))
                 return Array.Empty<DeviceInfo>();
+            listed = true;
 
             ForgetUnlisted(deviceList, (int)result);
             var matches = new List<DeviceInfo>();
@@ -1179,29 +1223,6 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Returns true if there is active mouse state for the given handle.
-        /// </summary>
-        public static bool HasMouseState(IntPtr hDevice) =>
-            hDevice != IntPtr.Zero && _mouseStates.ContainsKey(hDevice);
-
-        /// <summary>
-        /// Resolves the current Raw Input handle for a mouse device by path.
-        /// Handles can change after other HID registrations (e.g. PTP touchpad).
-        /// Returns IntPtr.Zero if no active handle matches the path.
-        /// </summary>
-        public static IntPtr ResolveMouseHandle(string devicePath)
-        {
-            if (string.IsNullOrEmpty(devicePath)) return IntPtr.Zero;
-            foreach (var kvp in _mouseStates)
-            {
-                string name = GetDeviceName(kvp.Key);
-                if (!string.IsNullOrEmpty(name) && name.Equals(devicePath, StringComparison.OrdinalIgnoreCase))
-                    return kvp.Key;
-            }
-            return IntPtr.Zero;
-        }
-
-        /// <summary>
         /// Atomically consumes accumulated mouse deltas for a specific device.
         /// Pass <see cref="AggregateKeyboardHandle"/> or <see cref="AggregateMouseHandle"/> to consume summed deltas from all mice.
         /// </summary>
@@ -1358,11 +1379,15 @@ namespace PadForge.Engine
                     // Consumer Control (issue #168): same hidden window, same
                     // pump thread. RIDEV_NOLEGACY is a keyboard/mouse-only
                     // flag and is deliberately absent here.
+                    // RIDEV_DEVNOTIFY on the HID collections: their removal
+                    // drops what a handle holds (OnDeviceChange), as SDL's raw
+                    // input reader registers its controllers
+                    // (SDL_rawinputjoystick.c, RAWINPUT_RegisterNotifications).
                     new RAWINPUTDEVICE
                     {
                         usUsagePage = HID_USAGE_PAGE_CONSUMER,
                         usUsage = HID_USAGE_CONSUMER_CONTROL,
-                        dwFlags = RIDEV_INPUTSINK,
+                        dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY,
                         hwndTarget = _hwnd
                     },
                     // Joysticks, game pads and multi-axis controllers (#600):
@@ -1375,33 +1400,39 @@ namespace PadForge.Engine
                     {
                         usUsagePage = HID_USAGE_PAGE_GENERIC,
                         usUsage = HID_USAGE_GENERIC_JOYSTICK,
-                        dwFlags = RIDEV_INPUTSINK,
+                        dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY,
                         hwndTarget = _hwnd
                     },
                     new RAWINPUTDEVICE
                     {
                         usUsagePage = HID_USAGE_PAGE_GENERIC,
                         usUsage = HID_USAGE_GENERIC_GAMEPAD,
-                        dwFlags = RIDEV_INPUTSINK,
+                        dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY,
                         hwndTarget = _hwnd
                     },
                     new RAWINPUTDEVICE
                     {
                         usUsagePage = HID_USAGE_PAGE_GENERIC,
                         usUsage = HID_USAGE_GENERIC_MULTI_AXIS,
-                        dwFlags = RIDEV_INPUTSINK,
+                        dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY,
                         hwndTarget = _hwnd
                     }
                 };
 
                 if (!RegisterRawInputDevices(devices, (uint)devices.Length, (uint)Marshal.SizeOf<RAWINPUTDEVICE>()))
                 {
-                    _startFailure = "Windows refused its keyboards, mice and consumer controls";
+                    _startFailure = "Windows refused its Raw Input registration of keyboards, mice, consumer controls, joysticks, game pads and multi-axis controllers";
                     DestroyWindow(_hwnd);
                     _hwnd = IntPtr.Zero;
                     _running = false;
                     return;
                 }
+
+                // The game controllers present now, read here on the pump so
+                // the polling thread that opens one never lists a device
+                // (RelativeHidAxes.LeftOutRelative). The ones that arrive
+                // later come through WM_INPUT_DEVICE_CHANGE.
+                RelativeHidAxes.LearnPresent();
 
                 while (_running && GetMessageW(out MSG msg, IntPtr.Zero, 0, 0))
                 {
@@ -1429,8 +1460,61 @@ namespace PadForge.Engine
                 ProcessRawInput(lParam);
                 return IntPtr.Zero;
             }
+            if (msg == WM_INPUT_DEVICE_CHANGE)
+            {
+                OnDeviceChange((long)wParam, lParam);
+                return IntPtr.Zero;
+            }
             return DefWindowProcW(hWnd, msg, wParam, lParam);
         }
+
+        /// <summary>A HID collection arrived or left (RIDEV_DEVNOTIFY): an
+        /// arrival is read for its relative values, and a removal drops all
+        /// the handle held, its layout and preparsed data, its consumer keys
+        /// and their preparsed data, as SDL deletes a removed device
+        /// (SDL_rawinputjoystick.c, RAWINPUT_WindowProc). Pump thread, which
+        /// is the only reader of the preparsed data.</summary>
+        internal static void OnDeviceChange(long change, IntPtr hDevice)
+        {
+            if (change == GIDC_ARRIVAL)
+            {
+                RelativeHidAxes.LayoutFor(hDevice);
+                return;
+            }
+            if (change != GIDC_REMOVAL) return;
+            RelativeHidAxes.Forget(hDevice);
+            if (_consumerPreparsed.TryRemove(hDevice, out IntPtr preparsed) && preparsed != IntPtr.Zero)
+                (ConsumerFreeSeam ?? Marshal.FreeHGlobal)(preparsed);
+            _isConsumerHandle.TryRemove(hDevice, out _);
+            _consumerMaxUsages.TryRemove(hDevice, out _);
+            _ownVirtual.TryRemove(hDevice, out _);
+            // Its held keys go too, so none stays pressed.
+            if (_consumerStates.TryRemove(hDevice, out _))
+                _consumerStatesValues = System.Linq.Enumerable.ToArray(_consumerStates.Values);
+        }
+
+        /// <summary>Frees a consumer collection's preparsed block in place of
+        /// FreeHGlobal, for a test.</summary>
+        internal static Action<IntPtr> ConsumerFreeSeam { get; set; }
+
+        /// <summary>Puts a consumer collection's preparsed block in, for a
+        /// test.</summary>
+        internal static void PutConsumerPreparsedForTest(IntPtr hDevice, IntPtr preparsed)
+            => _consumerPreparsed[hDevice] = preparsed;
+
+        /// <summary>Puts held consumer keys in for a handle, for a test.</summary>
+        internal static void PutConsumerStateForTest(IntPtr hDevice, bool[] keys)
+        {
+            _consumerStates[hDevice] = keys;
+            _consumerStatesValues = System.Linq.Enumerable.ToArray(_consumerStates.Values);
+        }
+
+        /// <summary>True while a handle has consumer keys kept, for a test.</summary>
+        internal static bool HasConsumerStateForTest(IntPtr hDevice) => _consumerStates.ContainsKey(hDevice);
+
+        /// <summary>True while a consumer collection's preparsed block is
+        /// kept, for a test.</summary>
+        internal static bool HasConsumerPreparsedForTest(IntPtr hDevice) => _consumerPreparsed.ContainsKey(hDevice);
 
         // ─────────────────────────────────────────────
         //  Raw Input Processing (per-device)

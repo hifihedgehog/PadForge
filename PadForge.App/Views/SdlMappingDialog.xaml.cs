@@ -126,10 +126,24 @@ namespace PadForge.Views
         }
 
         /// <summary>Find's rows, which the caller reads on the poll thread.</summary>
-        internal void SetRows(List<SdlFindRow> rows)
+        internal void SetRows(List<SdlFindRow> rows, SdlFindMissing missing = SdlFindMissing.None)
         {
             _all = rows ?? new List<SdlFindRow>();
+            NoteLine.Text = FindNoteWords(_deviceName, missing);
             Filter();
+        }
+
+        /// <summary>Find's note: how the picked row is applied, and what the
+        /// list leaves out while SDL gave no rows.</summary>
+        internal static string FindNoteWords(string deviceName, SdlFindMissing missing)
+        {
+            string note = string.Format(CultureInfo.CurrentCulture, Strings.Instance.SdlMappingDialog_FindNote_Format, deviceName);
+            return missing switch
+            {
+                SdlFindMissing.Stopped => note + " " + Strings.Instance.SdlMappingDialog_FindStopped,
+                SdlFindMissing.NoAnswer => note + " " + Strings.Instance.SdlMappingDialog_FindNoAnswer,
+                _ => note,
+            };
         }
 
         // ─────────────────────────────────────────────
@@ -210,7 +224,10 @@ namespace PadForge.Views
 
             if (mode == Mode.AddRows)
             {
-                string found = string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.SdlMappingDialog_AddFound_Format), all.Count), all.Count, other);
+                // The rows for other systems are named only when there are some.
+                string found = string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.SdlMappingDialog_AddWindows_Format), all.Count), all.Count);
+                if (other > 0)
+                    found += " " + string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.SdlMappingDialog_AddOther_Format), other), other);
                 string detail = refused == 0 ? null
                     : string.Format(CultureInfo.CurrentCulture, s.SdlMappingDialog_AddRefused_Format, refused, RefusalWords(refusal));
                 return new CheckResult(true, found, detail);
@@ -228,7 +245,16 @@ namespace PadForge.Views
                     _ => nameof(Strings.SdlMappingDialog_Detail_Other_Format),
                 };
             // A row of one field says field (Strings.OneForms).
-            return new CheckResult(true, lead, string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(detailKey, row.FieldCount), fields));
+            string said = string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(detailKey, row.FieldCount), fields);
+            // A device SDL does not read takes only the fields PadForge lays
+            // out (ControllerDatabaseLayout.PlacementOf), and the rest are named.
+            if (mode != Mode.Guess && string.IsNullOrEmpty(deviceGuid))
+            {
+                ControllerDatabaseLayout.PlacementOf(row, out var leftOut);
+                if (leftOut.Count > 0)
+                    said += " " + string.Format(CultureInfo.CurrentCulture, s.SdlMappingDialog_Detail_LeftOut_Format, string.Join(", ", leftOut));
+            }
+            return new CheckResult(true, lead, said);
         }
 
         /// <summary>Why a text was not taken, in words.</summary>
@@ -239,7 +265,7 @@ namespace PadForge.Views
             {
                 SdlRowRefusal.OtherPlatform => s.SdlMappingDialog_Refused_OtherPlatform,
                 SdlRowRefusal.BadId => s.SdlMappingDialog_Refused_BadId,
-                SdlRowRefusal.BadName => s.SdlMappingDialog_Refused_BadName,
+                SdlRowRefusal.BadName => s.SdlMappingDialog_Refused_Name,
                 SdlRowRefusal.Hint => s.SdlMappingDialog_Refused_Hint,
                 SdlRowRefusal.UnknownField => s.SdlMappingDialog_Refused_UnknownField,
                 SdlRowRefusal.BadBinding => s.SdlMappingDialog_Refused_BadBinding,
@@ -302,7 +328,22 @@ namespace PadForge.Views
 
         private void FindList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (FindList.SelectedItem is SdlFindRow) DialogResult = true;
+            if (PicksARow(FindList, e.OriginalSource as DependencyObject, e.ChangedButton) && FindList.SelectedItem is SdlFindRow)
+                DialogResult = true;
+        }
+
+        /// <summary>Whether a double-click applies the picked row: the left
+        /// button, on a row of the list. WPF raises the list's MouseDoubleClick
+        /// for a double-click anywhere in it, on its scroll bar and its empty
+        /// space included, and for any button (Control.HandleDoubleClick).</summary>
+        internal static bool PicksARow(ItemsControl list, DependencyObject source, MouseButton button)
+        {
+            if (button != MouseButton.Left || list == null) return false;
+            // Up the visual tree, and the logical one where an element has no
+            // visual parent (a row not drawn yet).
+            for (var at = source; at != null && !ReferenceEquals(at, list); at = PadForge.Common.TreeWalk.Parent(at) ?? LogicalTreeHelper.GetParent(at))
+                if (at is ListBoxItem item) return ReferenceEquals(ItemsControl.ItemsControlFromItemContainer(item), list);
+            return false;
         }
 
         /// <summary>
@@ -383,23 +424,47 @@ namespace PadForge.Views
             if (picker.ShowDialog(this) != true) return;
             try
             {
-                var info = new System.IO.FileInfo(picker.FileName);
+                // One open, and no more than the cap read through it: a file
+                // in a folder a program without rights can write may be
+                // replaced or grow between a size check and a second open.
                 // The community's whole file is about 0.6 MB.
-                if (info.Length > ControllerDatabaseDownload.MaxBytes)
+                string text;
+                using (var file = new System.IO.FileStream(picker.FileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
+                    text = ReadCapped(file, ControllerDatabaseDownload.MaxBytes);
+                if (text == null)
                 {
                     VerdictLead.Text = Strings.Instance.SdlMappingDialog_FileTooLarge;
                     VerdictDetail.Text = string.Empty;
                     PrimaryButton.IsEnabled = false;
                     return;
                 }
-                RowBox.Text = System.IO.File.ReadAllText(picker.FileName);
+                RowBox.Text = text;
             }
-            catch (Exception ex) when (ex is System.IO.IOException or UnauthorizedAccessException)
+            catch (Exception ex) when (ex is System.IO.IOException or UnauthorizedAccessException or NotSupportedException)
             {
                 VerdictLead.Text = ex.Message;
                 VerdictDetail.Text = string.Empty;
                 PrimaryButton.IsEnabled = false;
             }
+        }
+
+        /// <summary>A file's text read through <paramref name="stream"/>, at
+        /// most <paramref name="cap"/> bytes: null when it holds more. The
+        /// encoding comes from a byte order mark, UTF-8 without one, as
+        /// File.ReadAllText reads it.</summary>
+        internal static string ReadCapped(System.IO.Stream stream, int cap)
+        {
+            using var held = new System.IO.MemoryStream();
+            var chunk = new byte[81920];
+            int read;
+            while ((read = stream.Read(chunk, 0, chunk.Length)) > 0)
+            {
+                if (held.Length + read > cap) return null;
+                held.Write(chunk, 0, read);
+            }
+            held.Position = 0;
+            using var reader = new System.IO.StreamReader(held, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+            return reader.ReadToEnd();
         }
 
         private void Primary_Click(object sender, RoutedEventArgs e)

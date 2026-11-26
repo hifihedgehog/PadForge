@@ -43,7 +43,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// One tool (#597): its name, the words a host and an assistant read, the
+    /// One tool (#600): its name, the words a host and an assistant read, the
     /// level it needs, its four hints, the types of its arguments and its
     /// result, and what it does. The list of them is
     /// <see cref="AssistantTools.All"/>, in the order every list keeps.
@@ -197,7 +197,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// Who calls (#597): one program's connection on the Automation pipe, an
+    /// Who calls (#600): one program's connection on the Automation pipe, an
     /// assistant through its copy of PadForge.exe or a script through its
     /// <c>call</c> lines. The session it holds is where a device it adds and
     /// a control it holds belong.

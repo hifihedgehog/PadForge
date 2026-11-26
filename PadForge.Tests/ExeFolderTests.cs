@@ -33,6 +33,7 @@ namespace PadForge.Tests
         [InlineData("diagnostics.log")]
         [InlineData("diagnostics.log.old")]
         [InlineData("diag.log")]
+        [InlineData("diag.log.old")]
         [InlineData("diag-snapshot-20261123-101010.log")]
         [InlineData("PadForge-recording-20261123-101010.zip")]
         [InlineData("PadForge-recording-20261123-101010.zip.tmp")]
@@ -54,6 +55,7 @@ namespace PadForge.Tests
         [InlineData("notes.txt")]
         [InlineData("PadForge.dll")]
         [InlineData("diag-snapshot-x.txt")]
+        [InlineData("persona-diag.log")]
         [InlineData("")]
         public void AnythingElse_IsNotPadForges(string name)
             => Assert.False(ExeFolder.IsPadForgeFile(name, "PadForge.exe"));
@@ -149,6 +151,246 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A move that could not make its folder says so, and only a
+        /// folder that holds files that are not PadForge's is called that.</summary>
+        [Fact]
+        public void AMoveThatCouldNotMakeItsFolder_IsNotTakenForAFolderOfOtherFiles()
+        {
+            string dir = Path.Combine(UpdateService.TestScratchRoot, "exefolder-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                string exe = Path.Combine(dir, "PadForge.exe");
+                System.IO.File.WriteAllText(exe, "x");
+                string aFile = Path.Combine(dir, "a-file");
+                System.IO.File.WriteAllText(aFile, "x");
+                var notMade = ExeFolder.CopyInto(Path.Combine(aFile, "PadForge"), exe, null, null);
+                Assert.Null(notMade.NewExe);
+                Assert.False(notMade.TargetTaken);
+
+                Assert.Equal(ExeFolder.MoveRefusal.NotMade, notMade.Why);
+
+                // The control: a folder of other files is what the refusal names.
+                string taken = Path.Combine(dir, "taken");
+                Directory.CreateDirectory(taken);
+                System.IO.File.WriteAllText(Path.Combine(taken, "notes.txt"), "x");
+                Assert.True(ExeFolder.CopyInto(taken, exe, null, null).TargetTaken);
+
+                // No Program Files folder, and a folder others may change that
+                // the test host does not protect, each say their own.
+                Assert.Equal(ExeFolder.MoveRefusal.NoProgramFiles, ExeFolder.CopyInto(null, exe, null, null).Why);
+                string open = Path.Combine(dir, "open");
+                Directory.CreateDirectory(open);
+                Assert.Equal(ExeFolder.MoveRefusal.NotProtected, ExeFolder.CopyInto(open, exe, null, null).Why);
+
+                // One whole sentence per reason, each its own.
+                var lines = Enum.GetValues<ExeFolder.MoveRefusal>().Where(why => why != ExeFolder.MoveRefusal.None)
+                    .Select(why => ExeFolderState.ErrorFor(new ExeFolder.MoveResult(null, @"C:\Program Files\PadForge", why))).ToArray();
+                Assert.Equal(lines.Length, lines.Distinct().Count());
+                Assert.All(lines, line => Assert.StartsWith("PadForge did not move: ", line, StringComparison.Ordinal));
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+        }
+
+        /// <summary>The move copies the bytes that run. Any program of the
+        /// user can rename the running exe in a shared folder and put its own
+        /// at the name, so the copy is read from the hold on the running exe,
+        /// never from its path again, and checked against those bytes.</summary>
+        [Fact]
+        public void AMove_CopiesTheBytesThatRun_NotWhateverThePathHoldsNow()
+        {
+            string dir = Path.Combine(UpdateService.TestScratchRoot, "exefolder-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                string exe = Path.Combine(dir, "PadForge.exe");
+                System.IO.File.WriteAllText(exe, "the PadForge that runs");
+                string staged = Path.Combine(dir, "copy.tmp");
+                using (var image = System.IO.File.OpenHandle(exe, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
+                {
+                    System.IO.File.Move(exe, exe + ".renamed");
+                    System.IO.File.WriteAllText(exe, "planted");
+                    Assert.True(ExeFolder.CopyImage(image, exe, staged));
+                }
+                Assert.Equal("the PadForge that runs", System.IO.File.ReadAllText(staged));
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+
+            // The hold is taken on the image's file by the name Windows maps
+            // it under now: here the test host's own, read as the same file
+            // as its path names, shared for reading alone.
+            using (var held = ExeFolder.OpenImageOf(GetModuleHandleW(null)))
+            {
+                Assert.NotNull(held);
+                using var byPath = System.IO.File.OpenHandle(Environment.ProcessPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                Assert.True(HandleTree.Identify(held, out _, out ulong volume, out ulong id, out _));
+                Assert.True(HandleTree.Identify(byPath, out _, out ulong pathVolume, out ulong pathId, out _));
+                Assert.Equal((pathVolume, pathId), (volume, id));
+            }
+            Assert.Null(ExeFolder.OpenImageOf(IntPtr.Zero));
+
+            // The name Windows gives a mapped file follows a rename, so the
+            // hold is taken on the file at its name now, and once held it can
+            // no longer be renamed.
+            string mappedDir = Path.Combine(UpdateService.TestScratchRoot, "mapped-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(mappedDir);
+            try
+            {
+                string first = Path.Combine(mappedDir, "first.bin"), second = Path.Combine(mappedDir, "second.bin");
+                System.IO.File.WriteAllBytes(first, new byte[4096]);
+                using var stream = new FileStream(first, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
+                using var map = System.IO.MemoryMappedFiles.MemoryMappedFile.CreateFromFile(stream, null, 0,
+                    System.IO.MemoryMappedFiles.MemoryMappedFileAccess.Read, HandleInheritability.None, leaveOpen: true);
+                using var view = map.CreateViewAccessor(0, 0, System.IO.MemoryMappedFiles.MemoryMappedFileAccess.Read);
+                System.IO.File.Move(first, second);
+                IntPtr at = view.SafeMemoryMappedViewHandle.DangerousGetHandle();
+                using (var held = ExeFolder.OpenImageOf(at))
+                {
+                    Assert.NotNull(held);
+                    using var byPath = System.IO.File.OpenHandle(second, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                    Assert.True(HandleTree.Identify(held, out _, out ulong volume, out ulong id, out _));
+                    Assert.True(HandleTree.Identify(byPath, out _, out ulong pathVolume, out ulong pathId, out _));
+                    Assert.Equal((pathVolume, pathId), (volume, id));
+                    Assert.ThrowsAny<IOException>(() => System.IO.File.Move(second, first));
+                }
+            }
+            finally
+            {
+                Directory.Delete(mappedDir, true);
+            }
+            // The test host takes no hold of the app's.
+            ExeFolder.HoldRunningImage();
+            Assert.Null(ExeFolder.RunningImage);
+        }
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        private static extern IntPtr GetModuleHandleW(string name);
+
+        /// <summary>The protection sets each entry through a handle opened
+        /// relative to its folder's own handle, as itself, and only when it is
+        /// still the entry the reading saw. A GameLooks folder swapped for a
+        /// junction after the reading is refused, and nothing of the
+        /// junction's target is handed on to be set. The test host sets no
+        /// owner, so a recording setter stands in for the list's
+        /// write.</summary>
+        [Fact]
+        public void TheProtection_SetsEachEntryThroughItsFoldersHandle_AndRefusesOneSwappedForAJunction()
+        {
+            string dir = Path.Combine(UpdateService.TestScratchRoot, "protect-" + Guid.NewGuid().ToString("N"));
+            string own = Path.Combine(dir, "own"), canary = Path.Combine(dir, "canary");
+            Directory.CreateDirectory(Path.Combine(own, ExeFolder.GameLooksFolder));
+            Directory.CreateDirectory(canary);
+            System.IO.File.WriteAllText(Path.Combine(own, "PadForge.exe"), "x");
+            System.IO.File.WriteAllText(Path.Combine(own, ExeFolder.GameLooksFolder, "look.png"), "x");
+            System.IO.File.WriteAllText(Path.Combine(canary, "look.png"), "not PadForge's");
+            try
+            {
+                var given = new List<ulong>();
+                bool Record(Microsoft.Win32.SafeHandles.SafeFileHandle entry, bool isFolder)
+                {
+                    Assert.True(HandleTree.Identify(entry, out _, out _, out ulong id, out _));
+                    given.Add(id);
+                    return true;
+                }
+                ulong IdOf(string path)
+                {
+                    using var handle = HandleTree.OpenByPath(path, 0x80);
+                    Assert.True(HandleTree.Identify(handle, out _, out _, out ulong id, out _));
+                    return id;
+                }
+
+                // The control: the folder as it was read, every entry set.
+                var items = ExeFolder.Read(own);
+                Assert.True(ExeFolder.IsOwn(items, "PadForge.exe"));
+                using (var root = HandleTree.OpenByPath(own, 0x80 | HandleTree.ListAccess))
+                    Assert.True(ExeFolder.ProtectEntries(root, items, Record));
+                Assert.Equal(3, given.Count);
+                Assert.Contains(IdOf(Path.Combine(own, ExeFolder.GameLooksFolder, "look.png")), given);
+
+                // GameLooks swapped for a junction to the canary after the reading.
+                given.Clear();
+                Directory.Move(Path.Combine(own, ExeFolder.GameLooksFolder), Path.Combine(dir, "looks.moved"));
+                HandleTreeTests.MakeJunction(Path.Combine(own, ExeFolder.GameLooksFolder), canary);
+                using (var root = HandleTree.OpenByPath(own, 0x80 | HandleTree.ListAccess))
+                    Assert.False(ExeFolder.ProtectEntries(root, items, Record));
+                Assert.DoesNotContain(IdOf(canary), given);
+                Assert.DoesNotContain(IdOf(Path.Combine(canary, "look.png")), given);
+
+                // GameLooks swapped for another plain folder: not the entry
+                // read, by its ID, so it is refused too.
+                Directory.Delete(Path.Combine(own, ExeFolder.GameLooksFolder));
+                Directory.CreateDirectory(Path.Combine(own, ExeFolder.GameLooksFolder));
+                given.Clear();
+                using (var root = HandleTree.OpenByPath(own, 0x80 | HandleTree.ListAccess))
+                    Assert.False(ExeFolder.ProtectEntries(root, items, Record));
+                Assert.DoesNotContain(IdOf(Path.Combine(own, ExeFolder.GameLooksFolder)), given);
+            }
+            finally
+            {
+                string junction = Path.Combine(own, ExeFolder.GameLooksFolder);
+                if (Directory.Exists(junction) && (System.IO.File.GetAttributes(junction) & FileAttributes.ReparsePoint) != 0) Directory.Delete(junction);
+                Directory.Delete(dir, true);
+            }
+        }
+
+        /// <summary>With rights, as a start protects an own folder: a
+        /// GameLooks folder swapped for a junction once the folder's own list
+        /// is set is refused, and the list and owner of the junction's
+        /// target's file of the same name stay as they were. The control: the
+        /// same folder as it was read is protected, and no other account may
+        /// change it.</summary>
+        [ElevatedFact]
+        public void TheProtection_WithRights_LeavesTheListOfAJunctionsTargetAsItWas()
+        {
+            string dir = Path.Combine(UpdateService.TestScratchRoot, "protect-" + Guid.NewGuid().ToString("N"));
+            string own = Path.Combine(dir, "own"), control = Path.Combine(dir, "control"), canary = Path.Combine(dir, "canary");
+            foreach (string folder in new[] { own, control })
+            {
+                Directory.CreateDirectory(Path.Combine(folder, ExeFolder.GameLooksFolder));
+                System.IO.File.WriteAllText(Path.Combine(folder, "PadForge.exe"), "x");
+                System.IO.File.WriteAllText(Path.Combine(folder, ExeFolder.GameLooksFolder, "look.png"), "x");
+            }
+            Directory.CreateDirectory(canary);
+            string target = Path.Combine(canary, "look.png");
+            System.IO.File.WriteAllText(target, "not PadForge's");
+            static string ListOf(string path) => new FileInfo(path).GetAccessControl()
+                .GetSecurityDescriptorSddlForm(AccessControlSections.Owner | AccessControlSections.Access);
+            string before = ListOf(target);
+            try
+            {
+                var items = ExeFolder.Read(own);
+                ExeFolder.BeforeEntriesSeam = _ =>
+                {
+                    Directory.Move(Path.Combine(own, ExeFolder.GameLooksFolder), Path.Combine(dir, "looks.moved"));
+                    HandleTreeTests.MakeJunction(Path.Combine(own, ExeFolder.GameLooksFolder), canary);
+                };
+                try
+                {
+                    Assert.False(ExeFolder.ProtectAt(own, items));
+                }
+                finally
+                {
+                    ExeFolder.BeforeEntriesSeam = null;
+                }
+                Assert.Equal(before, ListOf(target));
+
+                Assert.True(ExeFolder.ProtectAt(control, ExeFolder.Read(control)));
+                Assert.False(ExeFolder.OthersMayChange(control, ExeFolder.FilesOf(control, ExeFolder.Read(control))));
+            }
+            finally
+            {
+                string junction = Path.Combine(own, ExeFolder.GameLooksFolder);
+                if (Directory.Exists(junction) && (System.IO.File.GetAttributes(junction) & FileAttributes.ReparsePoint) != 0) Directory.Delete(junction);
+                Directory.Delete(dir, true);
+            }
+        }
+
         [Fact]
         public void TheOwnFolder_IsPadForgeUnderProgramFiles()
             => Assert.Equal(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "PadForge"), ExeFolder.OwnFolderPath());
@@ -160,12 +402,34 @@ namespace PadForge.Tests
         public void TheProtection_GivesTheFolderTheProtectedList_AndEachFileItsInheritance()
         {
             string source = AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "ExeFolder.cs");
-            string protect = FenceSource.Body(source, "internal static bool Protect(string folder, IReadOnlyList<Item> items)");
             Assert.StartsWith("if (OffLimitsForTest) return false;", FenceSource.FirstStatement(source, "internal static bool Protect(string folder, IReadOnlyList<Item> items)"), StringComparison.Ordinal);
+            string protect = FenceSource.Body(source, "internal static bool ProtectAt(string folder, IReadOnlyList<Item> items)");
             Assert.Contains("using (Privileges.Hold(\"SeTakeOwnershipPrivilege\", \"SeRestorePrivilege\"))", protect, StringComparison.Ordinal);
-            Assert.Contains("own.SetSecurityDescriptorSddlForm(ProtectedFolder.Sddl);", protect, StringComparison.Ordinal);
-            Assert.Contains("inherit.SetAccessRuleProtection(isProtected: false, preserveInheritance: false);", protect, StringComparison.Ordinal);
+            Assert.Contains("if (!SetSecurity(root, ProtectedFolder.Sddl, protect: true)) return false;", protect, StringComparison.Ordinal);
+            Assert.Contains("if (!ProtectEntries(root, items, SetInherited)) return false;", protect, StringComparison.Ordinal);
             Assert.Contains("return !OthersMayChange(folder, FilesOf(folder, items));", protect, StringComparison.Ordinal);
+            Assert.DoesNotContain("SetAccessControl(", source, StringComparison.Ordinal);
+            // What a child inherits in a folder of the protected list: each of
+            // its entries, inherited, with the folder's own inheritance.
+            var folder = new System.Security.AccessControl.RawSecurityDescriptor(ProtectedFolder.Sddl);
+            foreach (var (sddl, flags) in new[]
+                     {
+                         (ExeFolder.InheritedFileSddl, System.Security.AccessControl.AceFlags.Inherited),
+                         (ExeFolder.InheritedFolderSddl, System.Security.AccessControl.AceFlags.Inherited | System.Security.AccessControl.AceFlags.ContainerInherit | System.Security.AccessControl.AceFlags.ObjectInherit),
+                     })
+            {
+                var child = new System.Security.AccessControl.RawSecurityDescriptor(sddl);
+                Assert.Equal(folder.Owner, child.Owner);
+                Assert.Equal(folder.DiscretionaryAcl.Count, child.DiscretionaryAcl.Count);
+                for (int k = 0; k < folder.DiscretionaryAcl.Count; k++)
+                {
+                    var parentAce = (System.Security.AccessControl.CommonAce)folder.DiscretionaryAcl[k];
+                    var childAce = (System.Security.AccessControl.CommonAce)child.DiscretionaryAcl[k];
+                    Assert.Equal(parentAce.SecurityIdentifier, childAce.SecurityIdentifier);
+                    Assert.Equal(parentAce.AccessMask, childAce.AccessMask);
+                    Assert.Equal(flags, childAce.AceFlags);
+                }
+            }
         }
 
         /// <summary>The list the protection sets, applied by this test to a
@@ -278,6 +542,29 @@ namespace PadForge.Tests
 
         public void Dispose() => ShellLaunch.UserShellSeam = null;
 
+        /// <summary>The Falcon card's download button: a start the desktop
+        /// shell refused puts its reason on the status line, as a failed start
+        /// did before every start went through the shell. The shell's start
+        /// throws nothing, so the reason comes back from it.</summary>
+        [Fact]
+        public void AFalconDownloadTheShellRefused_PutsItsReasonOnTheStatusLine()
+        {
+            const string refused = "the desktop shell refused the start (0x80004005)";
+            ShellLaunch.UserStart asked = null;
+            ShellLaunch.UserShellSeam = start => { asked = start; return refused; };
+            var status = new List<string>();
+            MainWindow.OpenFalconDownload(status.Add);
+            Assert.Equal(MainWindow.FalconSdkDownloadUrl, asked?.File);
+            var line = Assert.Single(status);
+            Assert.Contains(refused, line, StringComparison.Ordinal);
+
+            // The control: a start the shell took says nothing.
+            ShellLaunch.UserShellSeam = _ => null;
+            status.Clear();
+            MainWindow.OpenFalconDownload(status.Add);
+            Assert.Empty(status);
+        }
+
         [Fact]
         public void AProgram_GoesToTheDesktopShell_WithItsArgumentsAndFolder()
         {
@@ -341,13 +628,14 @@ namespace PadForge.Tests
                 foreach (string path in OffLimitsSource.Sources(project))
                     if (System.IO.File.ReadAllText(path).Contains("ShellLaunch.StartOwnHelper(", StringComparison.Ordinal))
                         helpers.Add(Path.GetFileName(path));
-            // The library host is one too, started so only with UAC off,
-            // where every program of the user has full rights and no lower
-            // right exists to start it with.
+            // The library host is one too, started so only when the shell's
+            // user has no lower right (UAC off, or the built-in Administrator),
+            // where every program of the user has full rights.
             Assert.Equal(new[] { "App.xaml.cs", "DsxStandIn.cs", "NativeHost.cs" }, helpers.OrderBy(h => h, StringComparer.Ordinal).ToArray());
             string host = OffLimitsSource.Read("PadForge.App/Services/NativeHost/NativeHost.cs");
-            Assert.True(host.IndexOf("if (launch.Refusal == PluginRefusal.ShellElevated && UacIsOff())", StringComparison.Ordinal)
+            Assert.True(host.IndexOf("if (StartsAsOwnHelper(launch.Refusal))", StringComparison.Ordinal)
                         < host.IndexOf("Common.ShellLaunch.StartOwnHelper(psi)", StringComparison.Ordinal));
+            Assert.Contains("=> refusal == PluginRefusal.ShellElevated && (NoLowerRightSeam?.Invoke() ?? PluginLauncher.ShellUserHasNoLowerRight());", host, StringComparison.Ordinal);
         }
     }
 
@@ -380,7 +668,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTestHost_TouchesNoLogonTask()
         {
-            Assert.False(StartupHelper.AuditTask());
+            Assert.Equal(StartupHelper.TaskRemoval.None, StartupHelper.AuditTask());
             Assert.True(StartupHelper.RepointTask(@"C:\nowhere\PadForge.exe"));
         }
     }

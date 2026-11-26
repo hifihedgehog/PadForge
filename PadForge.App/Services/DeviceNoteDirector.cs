@@ -5,7 +5,7 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.Services
 {
-    /// <summary>What a device note says (#597).</summary>
+    /// <summary>What a device note says (#600).</summary>
     internal enum DeviceNoteKind
     {
         /// <summary>Nothing.</summary>
@@ -39,6 +39,9 @@ namespace PadForge.Services
         InBurst,
         /// <summary>The note is its count of drops.</summary>
         Keeps,
+        /// <summary>No note on screen names it, and its count of drops waits
+        /// for the flyout.</summary>
+        Queued,
     }
 
     /// <summary>One device assigned to a virtual controller that exists and
@@ -126,13 +129,17 @@ namespace PadForge.Services
         /// <summary>A device read for the first time: what it is now is
         /// what is known of it, so nothing is said. One that is away when
         /// first read was never seen to drop, so that absence counts as no
-        /// drop.</summary>
-        public static DeviceNoteState Seed(bool online, long nowMs) => new DeviceNoteState
+        /// drop. One the user was told is connected before a sleep or
+        /// PadForge's own work forgot it (<paramref name="toldConnected"/>)
+        /// and that is not back yet is still connected as far as the user
+        /// knows: its absence is that work's until it returns, and neither
+        /// is said.</summary>
+        public static DeviceNoteState Seed(bool online, long nowMs, bool toldConnected = false) => new DeviceNoteState
         {
-            Told = online,
+            Told = online || toldConnected,
             AwaySince = online ? DeviceNoteDirector.Never : nowMs,
-            DropCounted = !online,
-            OwnUntil = DeviceNoteDirector.Never,
+            DropCounted = !online && !toldConnected,
+            OwnUntil = !online && toldConnected ? DeviceNoteDirector.UntilBack : DeviceNoteDirector.Never,
             LastNote = DeviceNoteDirector.Never,
             Drop1 = DeviceNoteDirector.Never,
             Drop2 = DeviceNoteDirector.Never,
@@ -189,7 +196,7 @@ namespace PadForge.Services
 
     /// <summary>
     /// Decides when the flyout names a mapped device that disconnects or
-    /// connects (#597). A device has no event for either, and Step 2 of the
+    /// connects (#600). A device has no event for either, and Step 2 of the
     /// engine clears a row's online flag with no word to anyone, so InputService
     /// reads every mapped row four times a second on the UI timer and hands
     /// the readings here. This class holds no window and reads no device, so
@@ -213,7 +220,9 @@ namespace PadForge.Services
     /// <item>After an engine start, a sleep or a USB port PadForge cycled
     /// itself, the rows are not believed until an enumeration that began
     /// <see cref="SettleMs"/> later has finished. Then every device is read
-    /// as for the first time.</item>
+    /// as for the first time. A device the user was told is connected
+    /// before a sleep or a cycle that is not back by then says nothing when
+    /// it returns: it was connected before and is connected after.</item>
     /// <item>A device is named by a new note once in <see cref="RateMs"/>.
     /// A change that falls inside that time is said when it ends, if it
     /// still stands then.</item>
@@ -283,6 +292,11 @@ namespace PadForge.Services
         private readonly HashSet<Guid> _read = new HashSet<Guid>();
         private readonly List<Guid> _gone = new List<Guid>();
 
+        // The devices the user was told are connected when the rows were
+        // last believed, kept through the marks after it until the first
+        // walk that believes the rows again seeds from them.
+        private readonly HashSet<Guid> _keptConnected = new HashSet<Guid>();
+
         // The devices decided on and waiting out their half second, and
         // when the first of each kind was decided.
         private readonly List<Guid> _dropped = new List<Guid>();
@@ -322,8 +336,14 @@ namespace PadForge.Services
 
         /// <summary>Forgets every device and every line, so the next walk
         /// reads each device as for the first time: a profile switch, which
-        /// changes what is mapped, and an engine stop.</summary>
+        /// changes what is mapped, an engine stop and an engine start.</summary>
         internal void Reset()
+        {
+            _keptConnected.Clear();
+            Forget();
+        }
+
+        private void Forget()
         {
             _states.Clear();
             _dropped.Clear();
@@ -349,12 +369,22 @@ namespace PadForge.Services
         /// is forgotten, and nothing is read until an enumeration that began
         /// <see cref="SettleMs"/> after the latest mark has finished. A
         /// sleep is marked at both ends, so the rows of the moments before
-        /// it and of the moments after it are both left unread.</summary>
+        /// it and of the moments after it are both left unread. The first
+        /// mark after the rows were believed keeps the devices the user was
+        /// told are connected, and the marks after it carry them, so one of
+        /// them still away when the rows are believed again is seeded as
+        /// connected (<see cref="DeviceNoteState.Seed"/>).</summary>
         internal void Mark(long atMs)
         {
+            if (!_settling)
+            {
+                _keptConnected.Clear();
+                foreach (var pair in _states)
+                    if (pair.Value.Told) _keptConnected.Add(pair.Key);
+            }
             if (atMs > _mark) _mark = atMs;
             _settling = true;
-            Reset();
+            Forget();
         }
 
         /// <summary>One walk. <paramref name="rowsReadAt"/> is when the
@@ -397,7 +427,7 @@ namespace PadForge.Services
                 _read.Add(reading.Device);
                 if (!_states.TryGetValue(reading.Device, out var state))
                 {
-                    _states[reading.Device] = DeviceNoteState.Seed(reading.Online, nowMs);
+                    _states[reading.Device] = DeviceNoteState.Seed(reading.Online, nowMs, _keptConnected.Contains(reading.Device));
                     continue;
                 }
                 var (next, note, inPlace) = Decide(state, reading.Online, nowMs, noteDrops, noteReturns, waiting,
@@ -448,6 +478,10 @@ namespace PadForge.Services
                 }
             }
 
+            // The walk that believed the rows again has seeded from what was
+            // kept across the marks.
+            _keptConnected.Clear();
+
             // A device that is no longer mapped is forgotten with what was
             // about to be said of it: its controller was deleted or turned
             // off, or it was taken off it.
@@ -497,17 +531,27 @@ namespace PadForge.Services
                             line.Kind == DeviceNoteKind.Disconnected ? EmptiedSlot(mapped, kept[0]) : -1));
                     if (kept.Count < line.Count) return Shows(new DeviceNote(line.Kind, kept.Count, Guid.Empty, -1, kept));
                 }
+                // A count reads the drops counted while it waited, and a drop
+                // names the controller it leaves empty now.
                 if (line.Kind == DeviceNoteKind.KeepsDisconnecting)
                     line = new DeviceNote(line.Kind, 1, line.Device, -1) { Times = _states[line.Device].KeepsCount };
+                else if (line.Kind == DeviceNoteKind.Disconnected && line.Count == 1)
+                    line = new DeviceNote(line.Kind, 1, line.Device, EmptiedSlot(mapped, line.Device));
                 return Shows(line);
             }
             return default;
         }
 
-        /// <summary>What the note on screen says of a device.</summary>
+        /// <summary>What the note on screen says of a device, or that its
+        /// count of drops waits behind it.</summary>
         private DeviceNoteScreen ScreenOf(Guid device)
         {
-            if (_screen.Count == 0 || !_screen.Contains(device)) return DeviceNoteScreen.None;
+            if (_screen.Count == 0 || !_screen.Contains(device))
+            {
+                foreach (var line in _lines)
+                    if (line.Kind == DeviceNoteKind.KeepsDisconnecting && line.Device == device) return DeviceNoteScreen.Queued;
+                return DeviceNoteScreen.None;
+            }
             if (_screenKeeps) return DeviceNoteScreen.Keeps;
             return _screen.Count == 1 ? DeviceNoteScreen.Alone : DeviceNoteScreen.InBurst;
         }
@@ -584,7 +628,10 @@ namespace PadForge.Services
         /// returns for <paramref name="ownRowAt"/>, a stamp that names the
         /// row, and while the window lasts for <paramref name="ownEveryAt"/>,
         /// one that covers every row, after which a row still away is a drop.
-        /// A stamp read after the walk's clock is as recent as can be.</para>
+        /// A later stamp of that kind read while the window lasts moves its
+        /// end to five seconds after that stamp, so an absence that began
+        /// inside a bring-up stays covered while the bring-up runs. A stamp
+        /// read after the walk's clock is as recent as can be.</para>
         ///
         /// <para>Every other drop counts. The third within
         /// <see cref="FlapWindowMs"/> is the device that keeps disconnecting,
@@ -628,6 +675,14 @@ namespace PadForge.Services
                     : Recent(ownEveryAt, nowMs) ? ownEveryAt + OwnWorkMs
                     : Never;
             }
+            else if (s.OwnUntil != Never && s.OwnUntil != UntilBack && nowMs < s.OwnUntil
+                     && ownEveryAt != Never && ownEveryAt + OwnWorkMs > s.OwnUntil)
+            {
+                // Work that covers every row and still runs, a virtual
+                // controller's bring-up, stamps every walk: the absence stays
+                // its own until five seconds after the last stamp.
+                s.OwnUntil = ownEveryAt + OwnWorkMs;
+            }
             if (waiting) return (s, DeviceNoteKind.None, false);
 
             // PadForge's own work: nothing is said or counted while it runs.
@@ -638,13 +693,16 @@ namespace PadForge.Services
             if (dropped)
             {
                 s.DropCounted = true;
-                // The count on screen grows with the drop.
+                // The count on screen grows with the drop, and so does a
+                // count that waits for the flyout, which reads it when it
+                // shows.
                 if (screen == DeviceNoteScreen.Keeps)
                 {
                     s.KeepsCount++;
                     s.LastNote = nowMs;
                     return (s, DeviceNoteKind.KeepsDisconnecting, true);
                 }
+                if (screen == DeviceNoteScreen.Queued) s.KeepsCount++;
                 if (!silent)
                 {
                     if (s.KeepsOwed)
@@ -759,14 +817,15 @@ namespace PadForge.Services
         /// <paramref name="batteryPercent"/> is the returned device's level,
         /// or negative when PadForge does not know it. A line for several
         /// names each of <paramref name="deviceNames"/>, in the order they
-        /// changed (#600 item 42). A device that keeps disconnecting is said
-        /// with its count of drops, and a note turned to a return says the
-        /// device is back.</summary>
+        /// changed (#600 item 42), joined by the language's own list
+        /// separator. A device that keeps disconnecting is said with its
+        /// count of drops, and a note turned to a return says the device is
+        /// back.</summary>
         internal static string Text(DeviceNote note, string deviceName, string controllerName, int batteryPercent,
             IReadOnlyList<string> deviceNames = null)
         {
             var s = Strings.Instance;
-            string names = deviceNames == null ? string.Empty : string.Join(", ", deviceNames);
+            string names = deviceNames == null ? string.Empty : string.Join(s.Search_WhereSeparator, deviceNames);
             switch (note.Kind)
             {
                 case DeviceNoteKind.Disconnected:

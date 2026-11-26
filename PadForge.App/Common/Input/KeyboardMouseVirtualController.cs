@@ -340,12 +340,9 @@ namespace PadForge.Common.Input
         /// </summary>
         public void SubmitGamepadState(Gamepad gp) { }
 
-        /// <summary>
-        /// Sends keyboard and mouse input based on the KBM raw state.
-        /// Uses change detection to only send key down/up on transitions.
-        /// </summary>
         /// <summary>Sends the slot's state, each part with its cause
-        /// (<paramref name="cause"/>), which ProgramInputGate reads.</summary>
+        /// (<paramref name="cause"/>), which ProgramInputGate reads. On Windows
+        /// input a key or a button is queued only when it changed.</summary>
         public void SubmitKbmState(KbmRawState raw, KbmCause cause)
         {
             _cause = cause;
@@ -393,8 +390,9 @@ namespace PadForge.Common.Input
                 // Releases across ALL four words before any press: the
                 // release-before-press discipline must be global, not
                 // per-word, or a cross-word SOCD pair (arrow + letter) still
-                // exposed both directions held between the two SendInput
-                // calls when the winner's word processed first.
+                // had both directions held for a moment, the winner's press
+                // queued before the loser's release, when the winner's word
+                // processed first. The injector sends the queue in order.
                 ProcessKeyWord(raw.Keys0, _prevKeys0, 0, releases: true);
                 ProcessKeyWord(raw.Keys1, _prevKeys1, 64, releases: true);
                 ProcessKeyWord(raw.Keys2, _prevKeys2, 128, releases: true);
@@ -531,7 +529,11 @@ namespace PadForge.Common.Input
                 // the system, so a resting finger firing it every poll (1 kHz)
                 // is the same syscall-storm class as the SendInput poll-rate
                 // regression. Only write when the target pixel actually moved.
-                if (px != _lastAbsCursorX || py != _lastAbsCursorY)
+                // A move the gate holds is not taken as made, so the cursor
+                // goes to the pixel once the gate lets it, though the aim
+                // point stays.
+                if ((px != _lastAbsCursorX || py != _lastAbsCursorY)
+                    && !ProgramInputGate.HoldsKeys(_cause.Pointer))
                 {
                     SetCursorPos(px, py, _cause.Pointer);
                     _lastAbsCursorX = px;

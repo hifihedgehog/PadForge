@@ -32,7 +32,7 @@
         <!-- Why the address was not taken. -->
         <TextBlock x:Name="ErrorText" common:LiveText.Polite="True" Margin="0,10,0,0" FontSize="13" TextWrapping="Wrap"
                    Foreground="{DynamicResource WaitBrush}" Visibility="Collapsed"
-                   Text="{Binding ControllerDatabase_DownloadFromRefused, Source={x:Static strings:Strings.Instance}}"/>
+                   Text="{Binding ControllerDatabase_DownloadFromRule, Source={x:Static strings:Strings.Instance}}"/>
         <TextBlock Style="{StaticResource DialogNote}" Margin="0,10,0,0"
                    Text="{Binding ControllerDatabase_DownloadFromNote, Source={x:Static strings:Strings.Instance}}"/>
     </StackPanel>

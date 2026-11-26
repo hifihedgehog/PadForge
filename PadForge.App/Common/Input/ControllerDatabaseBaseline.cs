@@ -29,7 +29,7 @@ namespace PadForge.Common.Input
 
     /// <summary>
     /// What this release carries of the community controller database
-    /// (#597): the copy the SDL fork pinned, and for each controller ID of
+    /// (#600): the copy the SDL fork pinned, and for each controller ID of
     /// its Windows rows a hash of the row and how SDL reads it. PadForge
     /// cannot ask SDL3.dll which community rows it holds, so
     /// tools/gen_controller_database_baseline.py writes this list from the

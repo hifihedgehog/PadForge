@@ -38,11 +38,11 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  External Control (#366, #597)
+        //  External Control (#366, #600)
         // ─────────────────────────────────────────────
 
         /// <summary>Hands the External Control card the view model that
-        /// holds Automation's switch and level (#597), whose one line the
+        /// holds Automation's switch and level (#600), whose one line the
         /// card prints. The page's own view model is the Settings one, and
         /// Automation is an extra. MainWindow calls it once at startup.</summary>
         public void BindAutomationState(DashboardViewModel dashboard)

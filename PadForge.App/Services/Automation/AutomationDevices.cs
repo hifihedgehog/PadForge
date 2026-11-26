@@ -11,7 +11,7 @@ using PadForge.Engine.Data;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// How the Automation pipe names and describes devices (#597). Every kind
+    /// How the Automation pipe names and describes devices (#600). Every kind
     /// of device PadForge reads is listed and read alike, keyboards and mice
     /// included: the owner's ruling is that every input device is readable
     /// at the Read level, with no grant or exclusion for any kind.
@@ -225,6 +225,11 @@ namespace PadForge.Services.Automation
             return rows;
         }
 
+        /// <summary>The state line with axes and hats in plain units
+        /// (#600): each axis read against its rest in
+        /// <paramref name="rests"/>, hats in degrees or -1.</summary>
+        internal static string StateLine(CustomInputState s, int buttonCount, int[] rests) => StateLine(s, buttonCount, rests, plain: true);
+
         /// <summary>
         /// A device's whole state on one line, after <c>ok</c>:
         /// <c>b=</c> the buttons as hex, two digits a byte with button 0 in
@@ -234,11 +239,6 @@ namespace PadForge.Services.Automation
         /// click and then <c>:x;y;down</c> for each finger, or <c>-</c> for
         /// none, and <c>bat=</c> the battery and whether it charges.
         /// </summary>
-        /// <summary>The state line with axes and hats in plain units
-        /// (#600): each axis read against its rest in
-        /// <paramref name="rests"/>, hats in degrees or -1.</summary>
-        internal static string StateLine(CustomInputState s, int buttonCount, int[] rests) => StateLine(s, buttonCount, rests, plain: true);
-
         internal static string StateLine(CustomInputState s, int buttonCount) => StateLine(s, buttonCount, null, plain: false);
 
         private static string StateLine(CustomInputState s, int buttonCount, int[] rests, bool plain)

@@ -6,7 +6,7 @@ using PadForge.Services.Automation;
 namespace PadForge.Services.Plugins
 {
     /// <summary>
-    /// The plugin kit embedded in PadForge (#597, #600 item 20). Save the
+    /// The plugin kit embedded in PadForge (#600 item 20). Save the
     /// Plugin Kit… and <c>--plugin-kit &lt;folder&gt;</c> write it: a guide
     /// to every verb, event, declaration and kind of setting (README.md), a
     /// complete small plugin in C# with its build settings file and build
@@ -105,7 +105,7 @@ namespace PadForge.Services.Plugins
             say?.Invoke("The plugin kit is written to " + full + ".\r\n"
                         + "README.md there lists every verb, event and kind of setting.\r\n"
                         + "To build the C# plugin: powershell -ExecutionPolicy Bypass -File \"" + Path.Combine(full, "build.ps1") + "\"\r\n"
-                        + "To add a plugin, open PadForge, go to Extras, Plugins, press Add a Plugin... and pick its file.");
+                        + "To add a plugin, open PadForge, go to Extras, Plugins, press Add a Plugin… and pick its file.");
             return 0;
         }
     }

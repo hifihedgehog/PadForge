@@ -11,7 +11,8 @@ namespace PadForge.Services.Install
     /// PC, and the file of each, whose icon the Automation page shows (#600).
     /// Read in the install run, with the user's own token and folders, so a
     /// program installed for the user is found under an administrator's
-    /// window as well. Each place below is where the maker's installer puts
+    /// window as well, and read again in PadForge with the shell user's
+    /// variables for the file an Add allows (<see cref="FindForShellUser"/>). Each place below is where the maker's installer puts
     /// the program, read on this PC on 2026-11-24 where it is installed
     /// here.
     ///
@@ -31,6 +32,95 @@ namespace PadForge.Services.Install
         /// names it: Claude_pzs8sxrjxfjjc (Get-AppxPackage on this PC).</summary>
         internal const string ClaudeFamily = "Claude_pzs8sxrjxfjjc";
 
+        // ── The search as the desktop shell's user ──
+
+        /// <summary>The variables of the user whose places a search on this
+        /// thread reads, or null for this process's own.</summary>
+        [ThreadStatic] private static IReadOnlyDictionary<string, string> _user;
+
+        /// <summary>
+        /// The program's own file for an assistant as the signed-in user
+        /// finds it, read in this process (#600): the file an Add allows. The
+        /// check copy started as the user reports a program too, and a
+        /// program of the user can rewrite its report before PadForge reads
+        /// it, so the grant never rests on the report. A copy with rights the
+        /// shell lacks searches the shell user's Path and folders, read from
+        /// the shell's own variables (PluginLauncher.ShellVariables), the
+        /// places the check copy searches. Null when the program is not
+        /// found, or the shell's variables cannot be read.
+        /// </summary>
+        internal static string FindForShellUser(string key)
+        {
+            if (!UserSave.RunsWithRightsTheShellLacks()) return Find(key);
+            // The test host reads no shell's variables of the machine's.
+            if (ShellVariablesSeam == null && UserInstall.OffLimitsForTest) return null;
+            var variables = ShellUserVariables();
+            return variables == null ? null : FindAs(variables, key);
+        }
+
+        /// <summary><see cref="Find"/> with the Path, PATHEXT, USERPROFILE and
+        /// LOCALAPPDATA of <paramref name="variables"/> in place of this
+        /// process's.</summary>
+        internal static string FindAs(IReadOnlyDictionary<string, string> variables, string key)
+        {
+            var before = _user;
+            _user = variables;
+            try { return Find(key); }
+            finally { _user = before; }
+        }
+
+        /// <summary>Test seam: the shell user's variables. Null reads the
+        /// desktop shell's.</summary>
+        internal static Func<IReadOnlyDictionary<string, string>> ShellVariablesSeam;
+
+        private static IReadOnlyDictionary<string, string> ShellUserVariables()
+        {
+            if (ShellVariablesSeam != null) return ShellVariablesSeam();
+            using var shell = PadForge.Services.Plugins.PluginLauncher.OpenShell();
+            if (shell == null) return null;
+            string[] lines = PadForge.Services.Plugins.PluginLauncher.ShellVariables(shell, out _);
+            if (lines == null) return null;
+            var variables = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string line in lines)
+            {
+                int equals = line.IndexOf('=', 1);
+                if (equals > 0 && !variables.ContainsKey(line.Substring(0, equals))) variables[line.Substring(0, equals)] = line.Substring(equals + 1);
+            }
+            return variables;
+        }
+
+        /// <summary>A command on the Path, as UserInstall.FindCommand finds
+        /// it, on the Path of the user a search reads for.</summary>
+        private static string Command(string name)
+        {
+            var user = _user;
+            if (user == null) return UserInstall.FindCommand(name);
+            // The user's own Path, read with rights: FindCommandOn looks only
+            // in folders on a drive of this PC.
+            return UserInstall.FindCommandOn(name, user.TryGetValue("PATH", out string p) ? p : null,
+                user.TryGetValue("PATHEXT", out string x) ? x : null);
+        }
+
+        /// <summary>A folder of the user a search reads for.</summary>
+        private static string Folder(UserFolder folder)
+        {
+            var user = _user;
+            if (user == null) return UserFolders.Of(folder);
+            string name = folder switch
+            {
+                UserFolder.LocalData => "LOCALAPPDATA",
+                UserFolder.RoamingData => "APPDATA",
+                _ => "USERPROFILE",
+            };
+            return user.TryGetValue(name, out string value) && IsOnADrive(value) ? value : null;
+        }
+
+        /// <summary>A full path on a drive of this PC: never a share nor a
+        /// device path (\\?\, \\.\).</summary>
+        internal static bool IsOnADrive(string path)
+            => !string.IsNullOrEmpty(path) && path.Length >= 3 && char.IsAsciiLetter(path[0]) && path[1] == ':'
+               && (path[2] == '\\' || path[2] == '/') && Path.IsPathFullyQualified(path);
+
         /// <summary>The program's own file for an assistant, or null when it
         /// is not on this PC.</summary>
         internal static string Find(string key) => key switch
@@ -39,14 +129,14 @@ namespace PadForge.Services.Install
             // folder (C:\Program Files\WindowsApps\Claude_6.28899.6.0_x64__
             // pzs8sxrjxfjjc\app\claude.exe here).
             "claude-desktop" => Existing(PackageRoot(ClaudeFamily) is { } root ? Path.Combine(root, "app", "claude.exe") : null),
-            "claude-code" => UserInstall.FindCommand("claude") ?? CommandOf("claude-code"),
-            "codex" => UserInstall.FindCommand("codex"),
-            "gemini-cli" => UserInstall.FindCommand("gemini"),
-            "copilot-cli" => UserInstall.FindCommand("copilot"),
+            "claude-code" => Command("claude") ?? CommandOf("claude-code"),
+            "codex" => Command("codex"),
+            "gemini-cli" => Command("gemini"),
+            "copilot-cli" => Command("copilot"),
             "vscode" => VsCode(),
             "visual-studio" => VisualStudio(),
-            "zed" => Existing(Local("Programs", "Zed", "Zed.exe")) ?? UserInstall.FindCommand("zed"),
-            "junie" => UserInstall.FindCommand("junie"),
+            "zed" => Existing(Local("Programs", "Zed", "Zed.exe")) ?? Command("zed"),
+            "junie" => Command("junie"),
             _ => null,
         };
 
@@ -59,7 +149,7 @@ namespace PadForge.Services.Install
         internal static string CommandOf(string key)
         {
             if (key != "claude-code") return null;
-            string profile = UserFolders.Of(UserFolder.Profile);
+            string profile = Folder(UserFolder.Profile);
             if (string.IsNullOrEmpty(profile)) return null;
             // The native installer's own place first.
             string native = Existing(Path.Combine(profile, ".local", "bin", "claude.exe"));
@@ -90,7 +180,7 @@ namespace PadForge.Services.Install
         /// setup installs under %LOCALAPPDATA%\Programs.</summary>
         private static string VsCode()
         {
-            string code = UserInstall.FindCommand("code");
+            string code = Command("code");
             if (code != null && Path.GetDirectoryName(Path.GetDirectoryName(code)) is { } folder
                 && Existing(Path.Combine(folder, "Code.exe")) is { } exe)
                 return exe;
@@ -148,7 +238,7 @@ namespace PadForge.Services.Install
 
         private static string Local(params string[] parts)
         {
-            string local = UserFolders.Of(UserFolder.LocalData);
+            string local = Folder(UserFolder.LocalData);
             return string.IsNullOrEmpty(local) ? null : Path.Combine(new[] { local }.Concat(parts).ToArray());
         }
 

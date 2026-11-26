@@ -491,7 +491,7 @@ namespace PadForge.Common.Input
         /// triggers i16 at 6/8, sticks at 10..16, left pad 18/20 with
         /// pressure at 22, right pad 24/26 with pressure at 28, IMU timestamp
         /// at 30, accel 34..38, gyro 40..44, quaternion 46..52 zeroed. Y on
-        /// the left pad is flipped on the wire (SDL3 PR #15528). Triggers
+        /// both pads is flipped on the wire (SDL3 PR #15528). Triggers
         /// are int16 on this wire, so the 0..32767 pull maps straight in.
         /// Capacitive stick and grip touch ride their own rows, the bits
         /// SDL_hidapi_steam_triton.c reads as SDL_GAMEPAD_CAPSENSE_LEFT_STICK,

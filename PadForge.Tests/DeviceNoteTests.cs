@@ -390,6 +390,27 @@ namespace PadForge.Tests
             device.Read(false, 12_000);
             Assert.Equal("11250 KeepsDisconnecting", device.Said.Last());
         }
+
+        /// <summary>A virtual controller's bring-up that outlasts the five
+        /// seconds: every row counts as stamped now for as long as it runs,
+        /// so an absence that began inside it stays PadForge's own work until
+        /// five seconds after the bring-up's last stamp.</summary>
+        [Fact]
+        public void AnAbsenceInsideALongBringUp_IsOwnWorkForAsLongAsTheBringUpRuns()
+        {
+            var device = new Device(online: true).Read(true, 1000);
+            // The row is away from 1250, and the bring-up stamps every walk
+            // up to 9000.
+            while (device.Now < 9000)
+            {
+                device.Own = device.Now + DeviceNoteDirector.WalkMs;
+                device.Read(false, device.Now + DeviceNoteDirector.WalkMs);
+            }
+            // The bring-up ended at 9000. The row returns at 10000.
+            device.Read(false, 9750).Read(true, 30_000);
+            Assert.Empty(device.Said);
+            Assert.Equal(DeviceNoteDirector.Never, device.State.Drop1);
+        }
     }
 
     /// <summary>
@@ -653,11 +674,17 @@ namespace PadForge.Tests
             Assert.True(stage.Director.Knows(wheel));
             Assert.Empty(stage.Said);
 
-            // The pad is turned on again: that is news.
+            // The pad is turned on again. It was connected before the sleep
+            // and is connected after it, so nothing is said of it.
             stage.RowsReadAt = null;
             stage.Set(pad, true);
             stage.Walk(wake + 61_000);
-            Assert.Equal(new[] { (wake + 60_750) + " Connected Bluetooth Pad" }, stage.Said);
+            Assert.Empty(stage.Said);
+
+            // Its next drop is news.
+            stage.Set(pad, false);
+            stage.Walk(wake + 62_000);
+            Assert.Equal(new[] { (wake + 61_750) + " Disconnected Bluetooth Pad" }, stage.Said);
         }
 
         /// <summary>A walk that comes long after the one before it stood
@@ -1036,6 +1063,101 @@ namespace PadForge.Tests
             stage.Walk(stage.Now + 1000);
             Assert.Single(stage.Said);
         }
+
+        /// <summary>A device's count of drops that waits behind another note
+        /// counts every drop while it waits, and shows the count it reached
+        /// when its turn comes.</summary>
+        [Fact]
+        public void ACountThatWaitsBehindANote_CountsEveryDropWhileItWaits()
+        {
+            var stage = new Stage();
+            var pad = stage.Add("Pad", online: true);
+            stage.Walk(1000);
+            stage.Set(pad, false);
+            stage.Walk(2000);
+            stage.Set(pad, true);
+            stage.Walk(20_000);
+            stage.Set(pad, false);
+            stage.Walk(22_000);
+            stage.Set(pad, true);
+            stage.Walk(40_000);
+
+            // Another device's note is up. The third drop is decided and its
+            // line waits, and the pad drops a fourth time while it waits.
+            stage.Free = false;
+            stage.Set(pad, false);
+            stage.Walk(41_000);
+            stage.Set(pad, true);
+            stage.Walk(42_000);
+            stage.Set(pad, false);
+            stage.Walk(43_000);
+            Assert.Equal(4, stage.Director.StateOf(pad).KeepsCount);
+
+            stage.Free = true;
+            stage.Walk(43_250);
+            Assert.Equal("43250 KeepsDisconnecting Pad times 4", stage.Said.Last());
+        }
+
+        /// <summary>A drop's line that waits behind another note names the
+        /// controller it left empty as that controller is when the line
+        /// shows: a device that came online on it since leaves it named by
+        /// nothing.</summary>
+        [Fact]
+        public void AWaitingDropLine_NamesTheControllerItEmptiesWhenItShows()
+        {
+            var stage = new Stage();
+            var pad = stage.Add("Pad", online: true, slots: 1);
+            var wheel = stage.Add("Wheel", online: false, slots: 1);
+            stage.Walk(1000);
+
+            stage.Free = false;
+            stage.Set(pad, false);
+            stage.Walk(2000);
+            stage.Set(wheel, true);
+            stage.Walk(3000);
+            Assert.Empty(stage.Said);
+
+            stage.Free = true;
+            stage.Walk(3250);
+            Assert.Equal(new[] { "3250 Disconnected Pad" }, stage.Said);
+        }
+
+        /// <summary>A device the user was told is connected before a sleep
+        /// that is still away when the rows are believed again says nothing
+        /// when it returns: it was connected before the sleep and is
+        /// connected after it. An engine stop forgets it.</summary>
+        [Fact]
+        public void ADeviceLateBackFromASleep_SaysNothing()
+        {
+            var stage = new Stage { Now = 10_000 };
+            var pad = stage.Add("Pad", online: true);
+            stage.Walk(20_000);
+            Assert.True(stage.Director.Knows(pad));
+
+            // Suspend and resume.
+            stage.Director.Mark(20_000);
+            stage.Director.Mark(21_000);
+            stage.Set(pad, false);
+            stage.RowsReadAt = 26_020;
+            stage.Walk(27_000);
+            Assert.True(stage.Director.Knows(pad));
+            stage.Set(pad, true);
+            stage.Walk(40_000);
+            Assert.Empty(stage.Said);
+
+            // A late return after an engine stop and start is news: the stop
+            // forgot what the user was told.
+            stage.RowsReadAt = null;
+            stage.Director.Reset();
+            stage.Director.Mark(stage.Now);
+            stage.Set(pad, false);
+            stage.RowsReadAt = stage.Now + 6000;
+            stage.Walk(stage.Now + 7000);
+            stage.Set(pad, true);
+            stage.Walk(stage.Now + 2000);
+            Assert.Single(stage.Said);
+            Assert.Contains("Connected Pad", stage.Said[0], StringComparison.Ordinal);
+        }
     }
 
     /// <summary>
@@ -1106,6 +1228,27 @@ namespace PadForge.Tests
             Assert.Contains("Virtual Controller 2", Text(Kind.Disconnected, 1, controller: "Virtual Controller 2", slot: 1), StringComparison.Ordinal);
             Assert.Contains("80", Text(Kind.Connected, 1, battery: 80), StringComparison.Ordinal);
             Assert.Contains("3", Text(Kind.Disconnected, 3), StringComparison.Ordinal);
+        }
+
+        /// <summary>A burst's names are joined by the language's own list
+        /// separator, the ideographic comma in Japanese.</summary>
+        [Fact]
+        public void ABurstsNames_AreJoinedByTheLanguagesSeparator()
+        {
+            var previous = System.Globalization.CultureInfo.CurrentUICulture;
+            try
+            {
+                System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ja");
+                string separator = Strings.Instance.Search_WhereSeparator;
+                Assert.NotEqual(", ", separator);
+                var note = new DeviceNote(Kind.Disconnected, 2, Guid.Empty, -1, new[] { Guid.NewGuid(), Guid.NewGuid() });
+                string line = DeviceNoteDirector.Text(note, null, null, -1, new[] { "DualSense", "G29" });
+                Assert.Equal(string.Format(Strings.Instance.Main_DevicesDisconnectedNamed_Format, 2, "DualSense" + separator + "G29"), line);
+            }
+            finally
+            {
+                System.Globalization.CultureInfo.CurrentUICulture = previous;
+            }
         }
     }
 

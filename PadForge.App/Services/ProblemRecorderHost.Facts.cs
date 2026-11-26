@@ -210,9 +210,10 @@ namespace PadForge.Services
             into.Add(TimeZoneLine());
             var settings = Main?.Settings;
             into.Add("Virtual controller driver: " + (settings == null ? "not known"
-                : settings.IsHIDMaestroInstalled ? "HIDMaestro " + (settings.HIDMaestroVersion ?? "of no known version") : "HIDMaestro not installed"));
+                : settings.IsHIDMaestroInstalled ? "HIDMaestro " + (string.IsNullOrEmpty(settings.HIDMaestroVersion) ? "of no known version" : settings.HIDMaestroVersion)
+                : "HIDMaestro not installed"));
             into.Add("HidHide: " + (settings == null ? "not known"
-                : settings.IsHidHideInstalled ? settings.HidHideVersion ?? "of no known version" : "not installed"));
+                : settings.IsHidHideInstalled ? (string.IsNullOrEmpty(settings.HidHideVersion) ? "of no known version" : settings.HidHideVersion) : "not installed"));
             into.Add(XInputReadBack.LibraryLine());
             into.Add("Readers: SDL, and Raw Input " + RawInputListener.Status);
             var engine = Engine;
@@ -228,7 +229,7 @@ namespace PadForge.Services
         internal static string HeldWord(UserDevice device)
             => device.HidHideEnabled ? "hidden" : device.ConsumeInputEnabled ? "exclusive" : "shared";
 
-        /// <summary>The XInput place a device read through XInput holds,
+        /// <summary>The XInput number a device read through XInput holds, in the numbering of the library SDL reads with,
         /// counted from 1, or 0.</summary>
         internal static int XInputPlace(UserDevice device)
             => XInputSlotIdentity.TryParseSlot(device.DevicePath, out int slot) ? slot + 1 : 0;
@@ -526,19 +527,17 @@ namespace PadForge.Services
         public virtual bool EngineRunning() => Engine?.IsRunning ?? false;
 
         /// <summary>Each keyboard and mouse PadForge reads through Raw Input
-        /// that is online, and whether Raw Input lists it now.</summary>
+        /// that is online, and whether the engine's last Raw Input list,
+        /// read every two seconds, names it. Null with no engine or before
+        /// a list was read whole: the recorder enumerates no devices of its
+        /// own.</summary>
         public virtual List<(UserDevice Device, bool Listed)> RawInputListing()
         {
+            var lists = Engine?.RawInputLists;
+            if (lists == null) return null;
             var listed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            try
-            {
-                foreach (var d in RawInputListener.EnumerateKeyboards()) if (d.DevicePath != null) listed.Add(d.DevicePath);
-                foreach (var d in RawInputListener.EnumerateMice()) if (d.DevicePath != null) listed.Add(d.DevicePath);
-            }
-            catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException or InvalidOperationException)
-            {
-                return null;
-            }
+            foreach (var d in lists.Value.Keyboards) if (d.DevicePath != null) listed.Add(d.DevicePath);
+            foreach (var d in lists.Value.Mice) if (d.DevicePath != null) listed.Add(d.DevicePath);
             var result = new List<(UserDevice, bool)>();
             foreach (var device in Devices())
             {
@@ -550,10 +549,13 @@ namespace PadForge.Services
             return result;
         }
 
-        /// <summary>The controller programs that run now, or "none".</summary>
+        /// <summary>The controller programs that run now, "none", or null
+        /// when the process list could not be read.</summary>
         public virtual string ControllerProgramsNow()
         {
-            var running = RunningOf(Images(), ControllerPrograms);
+            var images = Images();
+            if (images == null) return null;
+            var running = RunningOf(images, ControllerPrograms);
             return running.Count == 0 ? "none" : string.Join(", ", running);
         }
     }

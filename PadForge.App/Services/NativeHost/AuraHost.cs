@@ -7,7 +7,7 @@ using PadForge.Engine.Common;
 namespace PadForge.Services.NativeHost
 {
     /// <summary>The ASUS Aura SDK's calls over the host's channel
-    /// (#597).</summary>
+    /// (#600).</summary>
     internal static class AuraOps
     {
         internal const int Open = 1, Paint = 2, Close = 3;
@@ -53,7 +53,9 @@ namespace PadForge.Services.NativeHost
                                 for (int i = 0; i < devices.Count && i < AuraOps.MaxDevices; i++)
                                 {
                                     var d = devices[i];
-                                    w.Int(d.Index).UInt(d.Type).Text(Cut(d.Name)).Int(d.LightCount).Int(Math.Min(d.KeyCodes.Count, AuraOps.MaxKeys));
+                                    // The lights past the bound PadForge reads stay
+                                    // unaddressed, as the keys past theirs do.
+                                    w.Int(d.Index).UInt(d.Type).Text(Cut(d.Name)).Int(Math.Clamp(d.LightCount, 0, AuraOps.MaxLights)).Int(Math.Min(d.KeyCodes.Count, AuraOps.MaxKeys));
                                     for (int k = 0; k < d.KeyCodes.Count && k < AuraOps.MaxKeys; k++) w.Int(d.KeyCodes[k]);
                                 }
                             });

@@ -30,25 +30,35 @@ namespace PadForge.ViewModels
         /// <summary>Trust New Versions From This Signer.</summary>
         void SetTrust(PluginRowItem row, bool on);
 
-        /// <summary>Opens a recording for Replay. Null when it opened, or the
-        /// reason in a word.</summary>
-        string OpenRecording(string path);
+        /// <summary>Reads a recording for Replay, off the interface's thread:
+        /// the file is inflated and every line read, and nothing on the page
+        /// changes.</summary>
+        RecordingRead ReadRecording(string path);
+
+        /// <summary>Opens a recording <see cref="ReadRecording"/> read, on
+        /// the interface's thread. Null when it opened, or the reason in a
+        /// word.</summary>
+        string OpenRecording(RecordingRead read);
 
         void Play();
         void Stop();
 
         /// <summary>Writes the plugin kit into a new folder in
-        /// <paramref name="parent"/> and gives that folder. A failure
-        /// throws.</summary>
-        string SaveKit(string parent);
+        /// <paramref name="parent"/> as the user (UserSave.KitAsync) and
+        /// gives that folder, or null when it was not written.</summary>
+        System.Threading.Tasks.Task<string> SaveKitAsync(string parent);
     }
+
+    /// <summary>A recording as it was read for Replay: the file, or null
+    /// and the reason in a word.</summary>
+    internal sealed record RecordingRead(PadForge.Services.Plugins.ReplayFile File, string Error);
 
     /// <summary>A file as PadForge's confirmation shows it before the user
     /// approves it.</summary>
     internal sealed record PluginApproval(string Path, string Signer, string Sha256, string Key = null);
 
     /// <summary>
-    /// The Plugins extra (#597, #600): its switch and state, the two built-in
+    /// The Plugins extra (#600): its switch and state, the two built-in
     /// plugins' settings, the rows of the user's plugins, Replay's file and
     /// place, and the log of the plugin the user picked. The switches are
     /// saved for the app, never in a profile, as Automation's is. The

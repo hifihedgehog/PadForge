@@ -54,8 +54,6 @@ namespace PadForge.ViewModels
         public IReadOnlyList<PluginSettingItem> Sliders { get; }
         public IReadOnlyList<PluginSettingItem> Toggles { get; }
         public IReadOnlyList<PluginSettingItem> Others { get; }
-        public bool HasSliders => Sliders.Count > 0;
-        public bool HasToggles => Toggles.Count > 0;
     }
 
     /// <summary>
@@ -189,13 +187,13 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>The number with the decimals its step has and its
+        /// <summary>The number with the decimals its grid has and its
         /// unit: "4.0 s", "250 ms", "3%".</summary>
         public string NumberText
         {
             get
             {
-                int decimals = Math.Min(PluginValues.Decimals(Declaration.Step), 4);
+                int decimals = Math.Min(PluginValues.Decimals(Declaration), 4);
                 string digits = Number.ToString("N" + decimals.ToString(CultureInfo.InvariantCulture), CultureInfo.CurrentCulture);
                 if (Unit.Length == 0) return digits;
                 return Unit == "%" ? digits + "%" : digits + " " + Unit;
@@ -247,9 +245,10 @@ namespace PadForge.ViewModels
         private void Write(string value)
         {
             if (_value == value) return;
-            string error = _host.Set.Set(_host.Device, Key, value);
-            // A refused value leaves the control where the kept one is.
-            if (error != null) OnPropertyChanged(nameof(Value));
+            // A refused value is not kept, and the control goes back to the
+            // kept one: a binding reads its source again after every update
+            // it makes (BindingExpressionBase.EndSourceUpdate).
+            _host.Set.Set(_host.Device, Key, value);
         }
 
         /// <summary>Takes the declaration and the value in force from the
@@ -270,6 +269,16 @@ namespace PadForge.ViewModels
         /// <summary>A choice's list opens: the plugin is asked for the list
         /// as it is now.</summary>
         internal void OpenChoices() => _host.Set.AskChoices(_host.Device, Key);
+
+        /// <summary>The language changed: the words of PadForge's own the
+        /// row shows, and its number in the new culture, are read
+        /// again.</summary>
+        internal void Relanguage()
+        {
+            OnPropertyChanged(nameof(InputText));
+            OnPropertyChanged(nameof(ChangedStatus));
+            OnPropertyChanged(nameof(NumberText));
+        }
 
         private void Pick()
         {
@@ -331,7 +340,22 @@ namespace PadForge.ViewModels
                 else set.Changed -= listen;
             };
             Set.Changed += listen;
+            // Held weakly as well (Strings.CultureChanged keeps an
+            // instance's handler by a weak reference).
+            Strings.CultureChanged += OnCultureChanged;
             Refresh();
+        }
+
+        /// <summary>The rows' words of PadForge's own follow a language
+        /// change, on the interface's thread.</summary>
+        private void OnCultureChanged()
+        {
+            if (!_ui.CheckAccess())
+            {
+                _ui.BeginInvoke(new Action(OnCultureChanged));
+                return;
+            }
+            foreach (var item in _items.Values) item.Relanguage();
         }
 
         internal PluginSettingSet Set { get; }

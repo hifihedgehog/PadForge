@@ -48,7 +48,7 @@ namespace PadForge.Tests
             UserInstall.PythonsSeam = null;
             UserInstall.Launcher = null;
             UserInstall.HasRightsSeam = null;
-            UserInstall.ShellHasRightsSeam = null;
+            UserInstall.NoLowerRightSeam = null;
             UserInstall.ShellEnvironmentSeam = null;
             UserInstall.Exe = () => Environment.ProcessPath;
             try { Directory.Delete(_root, recursive: true); } catch (IOException) { }
@@ -220,7 +220,7 @@ namespace PadForge.Tests
                 asked.Add(exe);
                 Assert.Equal("-c", words[0]);
                 Assert.Contains("site.getusersitepackages()", words[1]);
-                return (0, exe == a ? At("Site", "A") : At("Store", "LocalCache", "local-packages", "Python312", "site-packages"));
+                return (0, exe == a ? "3.13\n" + At("Site", "A") : "3.12\n" + At("Store", "LocalCache", "local-packages", "Python312", "site-packages"));
             };
             var request = new InstallRequest(InstallWhat.Python, null);
             Assert.Equal(UserInstall.Done, Run(request));
@@ -244,7 +244,7 @@ namespace PadForge.Tests
         public void ALibrary_IntoAFileTheUserPicked_IsThatFile()
         {
             string file = At("Mine", "pad.py");
-            AutomationLibraries.Save(AutomationLibraryKind.Python, file);
+            LibraryFiles.Write(AutomationLibraryKind.Python, file);
             Assert.Equal(AutomationLibraries.Read(AutomationLibraryKind.Python), File.ReadAllBytes(file));
         }
 
@@ -372,8 +372,8 @@ namespace PadForge.Tests
             string other = At("Other");
             Directory.CreateDirectory(other);
             File.WriteAllText(Path.Combine(other, "keep.txt"), "x");
-            Assert.Throws<InvalidOperationException>(() => OwnFiles.Mirror(other, new[] { ("a.txt", new byte[] { 1 }) }));
-            Assert.Throws<InvalidOperationException>(() => OwnFiles.RemoveFolder(other, "a.txt"));
+            Assert.Equal(InstallReason.NotOurs, Assert.Throws<InstallProblem>(() => OwnFiles.Mirror(other, new[] { ("a.txt", new byte[] { 1 }) })).Reason);
+            Assert.Equal(InstallReason.NotOurs, Assert.Throws<InstallProblem>(() => OwnFiles.RemoveFolder(other, "a.txt")).Reason);
             Assert.Throws<InvalidOperationException>(() => OwnFiles.Mirror(At("padforge"), new[] { (@"..\out.txt", new byte[] { 1 }) }));
             Assert.True(File.Exists(Path.Combine(other, "keep.txt")));
             Assert.False(File.Exists(At("out.txt")));
@@ -546,13 +546,15 @@ namespace PadForge.Tests
             Assert.False(File.Exists(At("OneDrive", "Documents", "AutoHotkey", "Lib", "PadForge.ahk")));
         }
 
-        /// <summary>With UAC off the install runs as a PadForge.exe of its
-        /// own with the desktop shell's variables, so the user's PATH finds
-        /// the assistants' commands.</summary>
+        /// <summary>With no lower right for the shell's user (UAC off, or
+        /// the built-in Administrator) the install runs as a PadForge.exe of
+        /// its own with the desktop shell's variables, so the user's PATH
+        /// finds the assistants' commands.</summary>
         [Fact]
-        public async Task WithUacOff_TheInstallRunsWithTheShellsVariables()
+        public async Task WithNoLowerRight_TheInstallRunsWithTheShellsVariables()
         {
             UserInstall.Launcher = new FakeLauncher { Refusal = PluginRefusal.ShellElevated };
+            UserInstall.NoLowerRightSeam = () => true;
             UserInstall.ShellEnvironmentSeam = () => new[] { "PATH=C:\\Users\\Someone\\bin" };
             var runs = new List<(string, IReadOnlyList<string>)>();
             UserInstall.ToolSeam = (exe, words) => { runs.Add((exe, words)); return (0, string.Empty); };
@@ -660,14 +662,14 @@ namespace PadForge.Tests
             var launcher = new FakeLauncher { ExitCode = UserInstall.IsMissing };
             UserInstall.Launcher = launcher;
             UserInstall.HasRightsSeam = () => true;
-            UserInstall.ShellHasRightsSeam = () => false;
+            UserInstall.NoLowerRightSeam = () => false;
             Assert.Equal(UserInstall.IsMissing, UserInstall.RunAsTheUser(new InstallRequest(InstallWhat.Python, null, Check: true), _ => { }, _ => { }));
             Assert.NotNull(launcher.Started);
 
-            // With the shell's rights, every program of the user has them,
-            // and it runs here.
+            // With no lower right for the shell's user, every program of the
+            // user has full rights, and it runs here.
             launcher.Started = null;
-            UserInstall.ShellHasRightsSeam = () => true;
+            UserInstall.NoLowerRightSeam = () => true;
             UserInstall.PythonsSeam = () => Array.Empty<string>();
             UserInstall.RunAsTheUser(new InstallRequest(InstallWhat.AutoHotkey, null), _ => { }, _ => { });
             Assert.Null(launcher.Started);

@@ -6,8 +6,9 @@ namespace PadForge.ViewModels
     /// <summary>
     /// The Extras catalog's switches for the four extras that have several
     /// switches and no single one (#574): Head Tracking's three inputs, the
-    /// three overlays and the two device notes (#597), the Screen Overlay
-    /// list and the crosshair list (#585).
+    /// three overlays, the two device notes (#600) and the controllers on or
+    /// off note (#600 item 42), the Screen Overlay list and the crosshair
+    /// list (#585).
     ///
     /// <para>Each catalog switch reads on while any of its own is on. Turning
     /// it off turns them all off and remembers which were on. Turning it on
@@ -29,7 +30,7 @@ namespace PadForge.ViewModels
         internal const int HeadTrackingStartingSources = HeadTrackingUdpBit | HeadTrackingFreeTrackBit;
 
         /// <summary>The overlays as bits: menu, shift layer, profile switch,
-        /// the two device notes (#597) and the controllers on or off note
+        /// the two device notes (#600) and the controllers on or off note
         /// (#600 item 42).</summary>
         internal const int MenuOverlayBit = 1, ShiftLayerFlyoutBit = 2, ProfileOverlayBit = 4,
             DeviceDisconnectedNoteBit = 8, DeviceConnectedNoteBit = 16, ControllersNoteBit = 32;
@@ -304,7 +305,7 @@ namespace PadForge.ViewModels
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(MagnifierEnabled)));
                     break;
                 case nameof(AutomationLevel):
-                    // The Automation page's choice and its line (#597).
+                    // The Automation page's choice and its line (#600).
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(AutomationLevelIndex)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(AutomationLevelLine)));
                     break;

@@ -304,61 +304,6 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Fast check (no inquiry) for whether a paired Wii controller is
-        /// currently connected. Used after pairing to time the SDL
-        /// re-enumeration to the moment the controller actually connects (it
-        /// connects on a button press, which can be many seconds after the
-        /// pair completes), rather than a fixed delay.
-        /// </summary>
-        public bool IsWiiConnected()
-        {
-            IntPtr hRadio = IntPtr.Zero, hRadioFind = IntPtr.Zero;
-            try
-            {
-                var rp = new BLUETOOTH_FIND_RADIO_PARAMS
-                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_FIND_RADIO_PARAMS>() };
-                hRadioFind = BluetoothFindFirstRadio(ref rp, out hRadio);
-                if (hRadioFind == IntPtr.Zero || hRadio == IntPtr.Zero) return false;
-
-                var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
-                {
-                    dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>(),
-                    fReturnAuthenticated = 1,
-                    fReturnRemembered = 1,
-                    fReturnUnknown = 0,
-                    fReturnConnected = 1,
-                    fIssueInquiry = 0, // no inquiry: just read current state, fast
-                    cTimeoutMultiplier = 0,
-                    hRadio = hRadio
-                };
-                var di = new BLUETOOTH_DEVICE_INFO
-                { dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_INFO>() };
-
-                IntPtr hFind = BluetoothFindFirstDevice(ref search, ref di);
-                if (hFind == IntPtr.Zero) return false;
-                try
-                {
-                    do
-                    {
-                        string name = di.szName ?? string.Empty;
-                        if (di.fConnected != 0
-                            && name.StartsWith(WiiNamePrefix, StringComparison.OrdinalIgnoreCase))
-                            return true;
-                    }
-                    while (BluetoothFindNextDevice(hFind, ref di));
-                }
-                finally { BluetoothFindDeviceClose(hFind); }
-                return false;
-            }
-            catch { return false; }
-            finally
-            {
-                if (hRadio != IntPtr.Zero) CloseHandle(hRadio);
-                if (hRadioFind != IntPtr.Zero) BluetoothFindRadioClose(hRadioFind);
-            }
-        }
-
-        /// <summary>
         /// Bonds one discovered controller, following the sequence of
         /// Dolphin's AuthenticateWiimote (GPL, read as documentation only)
         /// plus the HID-service enable. Authenticates with the deprecated

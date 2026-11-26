@@ -2186,7 +2186,8 @@ namespace PadForge.ViewModels
         //    Touchpad card's live view (the sections pass of #574). The slot's
         //    state above is the virtual controller's own touchpad, which an
         //    Xbox slot never has, so the card reads the device's. Positions
-        //    run from 0 to 1 across and down the device's first pad. ──
+        //    run from 0 to 1 across and down the pad the card's Touchpad
+        //    Number picks (ShowDeviceTouchpad). ──
         private float _deviceTouchX0, _deviceTouchY0, _deviceTouchX1, _deviceTouchY1;
         private bool _deviceTouchDown0, _deviceTouchDown1;
 
@@ -2203,6 +2204,46 @@ namespace PadForge.ViewModels
         /// sides close in toward its foot, so the live view draws that
         /// outline. Any other pad is drawn as a rounded rectangle.</summary>
         public bool DeviceTouchTapered { get => _deviceTouchTapered; set => SetProperty(ref _deviceTouchTapered, value); }
+
+        private Guid _deviceTouchDevice;
+        private int _deviceTouchPad = -1;
+
+        /// <summary>Draws one touchpad of the device picked under Driven by
+        /// on the Touchpad card's live view: the pad the card's Touchpad
+        /// Number picks (<see cref="SelectedTouchpadIndex"/>), its first two
+        /// fingers. Discussion #596: the view drew the first pad whatever the
+        /// pick, so a Steam Controller's second pad never showed. A position
+        /// is written before its finger's contact, so a finger that lands is
+        /// drawn where it landed, and it stays while the finger is up. A
+        /// change of device or pad clears it, since it was another pad's. A
+        /// pick past the pads the device reads now draws no finger.</summary>
+        /// <param name="device">The device picked under Driven by, or
+        /// <see cref="Guid.Empty"/> when none is.</param>
+        /// <param name="pads">The device's touchpads as it reads them now, or
+        /// null when it has none.</param>
+        /// <param name="tapered">Whether the device's pad is a PlayStation
+        /// pad (<see cref="DeviceTouchTapered"/>).</param>
+        internal void ShowDeviceTouchpad(Guid device, TouchpadInputState[] pads, bool tapered)
+        {
+            int index = _selectedTouchpadIndex;
+            if (device != _deviceTouchDevice || index != _deviceTouchPad)
+            {
+                _deviceTouchDevice = device;
+                _deviceTouchPad = index;
+                DeviceTouchX0 = 0f;
+                DeviceTouchY0 = 0f;
+                DeviceTouchX1 = 0f;
+                DeviceTouchY1 = 0f;
+            }
+            var pad = pads != null && index >= 0 && index < pads.Length ? pads[index] : null;
+            bool down0 = pad != null && pad.MaxFingers > 0 && pad.FingerDown[0];
+            bool down1 = pad != null && pad.MaxFingers > 1 && pad.FingerDown[1];
+            if (down0) { DeviceTouchX0 = pad.FingerX[0]; DeviceTouchY0 = pad.FingerY[0]; }
+            if (down1) { DeviceTouchX1 = pad.FingerX[1]; DeviceTouchY1 = pad.FingerY[1]; }
+            DeviceTouchDown0 = down0;
+            DeviceTouchDown1 = down1;
+            DeviceTouchTapered = tapered;
+        }
 
         // ── Per-device values for stick/trigger tab previews ──
         // These show the selected device only, not the combined slot.
@@ -4241,8 +4282,8 @@ namespace PadForge.ViewModels
             }
         }
 
-        // Live calibrated rate readouts (deg/s) — refreshed by InputService
-        // when a Pad page is visible on a slot with a gyro-capable device.
+        // Live calibrated rate readouts (deg/s) of the device picked under
+        // Driven by (InputService.ShowDeviceMotion), zero while it reads none.
         private double _gyroLiveRatePitch;
         public double GyroLiveRatePitch { get => _gyroLiveRatePitch; set => SetProperty(ref _gyroLiveRatePitch, value); }
         private double _gyroLiveRateYaw;
@@ -8713,22 +8754,31 @@ namespace PadForge.ViewModels
         private void ClearAllMappings() => ClearMappingRows(Mappings);
 
         /// <summary>Clears the rows given as Clear All clears every row: the
-        /// one clear, which an assistant's set_mappings with clear_all also takes for the
-        /// rows it names (#597).</summary>
+        /// one clear, which an assistant's set_mappings also takes, for every row with
+        /// clear_all and for each row it gives an empty source (#600).</summary>
         internal void ClearMappingRows(System.Collections.Generic.IEnumerable<MappingItem> rows)
         {
-            // Stop any recording first. A Map All walk or a single-row record
-            // writes its result into the row instance when it completes, so
-            // one landing after this walk repopulated a row the user had just
-            // cleared, with nothing on screen to say why.
-            if (IsMapAllActive)
+            // Stop a recording that would land in a cleared row first. A Map
+            // All walk or a single-row record writes its result into the row
+            // instance when it completes, so one landing after this walk
+            // repopulated a row the user had just cleared, with nothing on
+            // screen to say why. Clear All stops it whatever it records. A
+            // program's clear of other rows (set_mappings with an empty
+            // source for each row it names) leaves the user's walk or
+            // recording of another row running.
+            var cleared = rows.ToList();
+            bool every = cleared.Count >= Mappings.Count && Mappings.All(cleared.Contains);
+            if (every || cleared.Any(m => IsRecordTargetOf(m, CurrentRecordingTarget)))
             {
-                IsMapAllActive = false;
-                MapAllCancelRequested?.Invoke(this, EventArgs.Empty);
+                if (IsMapAllActive)
+                {
+                    IsMapAllActive = false;
+                    MapAllCancelRequested?.Invoke(this, EventArgs.Empty);
+                }
+                CurrentRecordingTarget = null;
             }
-            CurrentRecordingTarget = null;
 
-            foreach (var m in rows.ToList())
+            foreach (var m in cleared)
             {
                 m.SourceDescriptor = string.Empty;
                 m.NegSourceDescriptor = string.Empty;

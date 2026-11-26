@@ -37,7 +37,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// What <c>PadForge.exe --mcp</c> runs (#597): the copy an assistant
+    /// What <c>PadForge.exe --mcp</c> runs (#600): the copy an assistant
     /// starts. It runs with the caller's rights and loads none of WPF.
     ///
     /// <para>Toward the assistant it is the SDK's server over standard input
@@ -68,6 +68,12 @@ namespace PadForge.Services.Automation
     /// </summary>
     internal sealed class AssistantMirror : IAsyncDisposable
     {
+        /// <summary>The hello of an assistant's own copy, which names the
+        /// assistant and the program that started it.</summary>
+        internal static string McpHello(string clientName, string host)
+            => "hello kind=mcp name=" + AutomationLine.Quote(clientName ?? "assistant")
+               + (string.IsNullOrEmpty(host) ? string.Empty : " host=" + AutomationLine.Quote(host)) + " protocol=" + AutomationLine.Protocol;
+
         /// <summary>The protocol version toward PadForge.</summary>
         internal const string UpstreamVersion = "2025-11-25";
 
@@ -98,7 +104,7 @@ namespace PadForge.Services.Automation
         /// <summary>What PadForge.xml says of Automation, read without
         /// loading the app: the switch and the level. A test gives its
         /// own.</summary>
-        internal Func<AutomationFileSettings> FileSettings { get; set; } = () => AutomationFileSettings.Read(AutomationFileSettings.DefaultPath());
+        internal Func<AutomationFileSettings> FileSettings { get; set; } = () => AutomationFileSettings.Kept(AutomationFileSettings.DefaultPath());
 
         /// <summary>Starts PadForge minimized through the normal start path:
         /// the desktop shell starts PadForge.exe as a double-click does, with
@@ -134,6 +140,7 @@ namespace PadForge.Services.Automation
 
         private readonly string _pipeName;
         private readonly Func<bool> _padForgeRuns;
+        private readonly Func<bool> _padForgeReady;
         private readonly Func<SafePipeHandle, bool> _trust;
         private readonly string _host;
         private readonly McpServerPrimitiveCollection<McpServerTool> _tools = new();
@@ -156,10 +163,15 @@ namespace PadForge.Services.Automation
         /// this copy, for Activity. Found when none is given.</param>
         /// <param name="fileSettings">What PadForge.xml says of Automation
         /// (#600). The file beside this exe when none is given.</param>
+        /// <param name="padForgeReady">Whether the PadForge that runs is
+        /// past its start and not yet closing (RunningCopy.IsReady), which
+        /// tells Automation off from a copy that does not serve its pipe
+        /// yet.</param>
         public AssistantMirror(string pipeName = null, Func<bool> padForgeRuns = null, Func<SafePipeHandle, bool> trustServer = null, string host = null,
-            Func<AutomationFileSettings> fileSettings = null)
+            Func<AutomationFileSettings> fileSettings = null, Func<bool> padForgeReady = null)
         {
             if (fileSettings != null) FileSettings = fileSettings;
+            _padForgeReady = padForgeReady ?? RunningCopy.IsReady;
             _pipeName = pipeName ?? AutomationPipe.PipeName;
             _padForgeRuns = padForgeRuns ?? RunningCopy.Exists;
             _trust = trustServer ?? (handle => PipeOwner.IsServer(handle, _pipeName));
@@ -270,7 +282,8 @@ namespace PadForge.Services.Automation
         /// that runs on the PC.</summary>
         internal static AssistantMirror ForTestsOwnPipe(string pipe, string settingsFile = null)
             => new AssistantMirror(pipe, () => ControlPipeClient.Stands(pipe),
-                fileSettings: string.IsNullOrEmpty(settingsFile) ? () => AutomationFileSettings.None : () => AutomationFileSettings.Read(settingsFile))
+                fileSettings: string.IsNullOrEmpty(settingsFile) ? () => AutomationFileSettings.None : () => AutomationFileSettings.Kept(settingsFile),
+                padForgeReady: () => ControlPipeClient.Stands(pipe))
             {
                 StartPadForge = () => false,
             };
@@ -351,6 +364,13 @@ namespace PadForge.Services.Automation
             }
         }
 
+        /// <summary>Where PadForge stands when its pipe did not answer: a
+        /// copy that runs and is ready serves no pipe because Automation is
+        /// off, and one that runs and is not ready is still starting, or
+        /// closing (RunningCopy).</summary>
+        private MirrorState NoPipe()
+            => !_padForgeRuns() ? MirrorState.Closed : _padForgeReady() ? MirrorState.AutomationOff : MirrorState.Starting;
+
         private async Task TryOnceAsync(CancellationToken stopping)
         {
             using var pipe = PipeOwner.Open(_pipeName);
@@ -365,12 +385,12 @@ namespace PadForge.Services.Automation
             }
             catch (TimeoutException)
             {
-                Set(_padForgeRuns() ? MirrorState.AutomationOff : MirrorState.Closed, null);
+                Set(NoPipe(), null);
                 return;
             }
             catch (IOException)
             {
-                Set(_padForgeRuns() ? MirrorState.AutomationOff : MirrorState.Closed, null);
+                Set(NoPipe(), null);
                 return;
             }
             // Nothing goes to a pipe another program made.
@@ -380,10 +400,7 @@ namespace PadForge.Services.Automation
                 return;
             }
 
-            string hello = HelloLine != null ? HelloLine() + " resume=" + Resume + "\n"
-                : "hello kind=mcp name=" + AutomationLine.Quote(_clientName ?? "assistant")
-                + (string.IsNullOrEmpty(_host) ? string.Empty : " host=" + AutomationLine.Quote(_host))
-                + " resume=" + Resume + "\n";
+            string hello = (HelloLine != null ? HelloLine() : McpHello(_clientName, _host)) + " resume=" + Resume + "\n";
             byte[] bytes = Encoding.UTF8.GetBytes(hello);
             await pipe.WriteAsync(bytes, stopping).ConfigureAwait(false);
             await pipe.FlushAsync(stopping).ConfigureAwait(false);
@@ -920,6 +937,49 @@ namespace PadForge.Services.Automation
             {
                 return None;
             }
+        }
+
+        private static readonly object KeptSync = new object();
+        private static string _keptPath;
+        private static DateTime _keptWritten;
+        private static long _keptLength = -1;
+        private static AutomationFileSettings _kept;
+
+        /// <summary>The two values from a file, read again only when its
+        /// last write time or its length changed. The copy asks at every try
+        /// of the pipe while PadForge is away, and the file holds every saved
+        /// device's settings before the two values (SettingsService writes
+        /// AppSettings after them).</summary>
+        internal static AutomationFileSettings Kept(string path, Func<string, AutomationFileSettings> read = null)
+        {
+            read ??= Read;
+            DateTime written;
+            long length;
+            try
+            {
+                var info = new FileInfo(path ?? string.Empty);
+                if (!info.Exists) return read(path);
+                written = info.LastWriteTimeUtc;
+                length = info.Length;
+            }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
+            {
+                return read(path);
+            }
+            lock (KeptSync)
+            {
+                if (_kept != null && string.Equals(_keptPath, path, StringComparison.OrdinalIgnoreCase) && _keptWritten == written && _keptLength == length)
+                    return _kept;
+            }
+            var settings = read(path);
+            lock (KeptSync)
+            {
+                _keptPath = path;
+                _keptWritten = written;
+                _keptLength = length;
+                _kept = settings;
+            }
+            return settings;
         }
 
         internal static AutomationFileSettings Read(Stream stream)

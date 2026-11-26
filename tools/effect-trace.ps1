@@ -29,7 +29,8 @@
 #   no lines at all                         the dispatcher never started, so
 #                                           this slot is not passthrough at all.
 #
-# Usage: right-click, Run with PowerShell.
+# Usage: right-click, Run with PowerShell. Ctrl+C stops the tail and copies
+# the trace to -Log.
 
 param(
     [string]$Exe = 'C:\PadForge\PadForge.exe',
@@ -49,9 +50,16 @@ while ((Get-Process PadForge -ErrorAction SilentlyContinue) -and $n -lt 20) {
     $n++
 }
 
-Write-Host "Log: $Log"
-$cmd = "`$env:PADFORGE_DIAG = '$Log'; Start-Process '$Exe'"
-Start-Process powershell -Verb RunAs -ArgumentList '-NoProfile', '-WindowStyle', 'Hidden', '-Command', $cmd
+# PadForge with rights takes PADFORGE_DIAG only when it names diag.log
+# directly in its own folder (SdlDiagLog.MirrorPathWithRights), so the mirror is
+# diag.log beside the exe, and -Log is its copy, made when the tail stops.
+# The elevated shell deletes the last run's mirror, which only an
+# administrator may do in PadForge's folder, and this script waits for it.
+$mirror = Join-Path (Split-Path -Parent $Exe) 'diag.log'
+Write-Host "Log: $Log (copied from $mirror when the trace stops)"
+$cmd = "Remove-Item -LiteralPath '$mirror' -Force -ErrorAction SilentlyContinue; `$env:PADFORGE_DIAG = '$mirror'; Start-Process '$Exe'"
+$elevated = Start-Process powershell -Verb RunAs -PassThru -ArgumentList '-NoProfile', '-WindowStyle', 'Hidden', '-Command', $cmd
+$elevated.WaitForExit()
 
 Write-Host ""
 Write-Host "Setup that matters (the reporters all had these):"
@@ -70,9 +78,13 @@ Write-Host "  5. Note whether the pad still clicks, and what enq/wr say."
 Write-Host ""
 
 $deadline = (Get-Date).AddSeconds(60)
-while (-not (Test-Path $Log) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
-if (-not (Test-Path $Log)) {
+while (-not (Test-Path $mirror) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
+if (-not (Test-Path $mirror)) {
     Write-Warning "No log file appeared. PadForge may not have started, or the elevation prompt was declined."
     return
 }
-Get-Content $Log -Wait -Tail 0 | Where-Object { $_ -match 'DS5EFFECT|BTAUDIO' }
+try { Get-Content $mirror -Wait -Tail 0 | Where-Object { $_ -match 'DS5EFFECT|BTAUDIO' } }
+finally {
+    Copy-Item -LiteralPath $mirror -Destination $Log -Force
+    Write-Host "The trace is copied to $Log"
+}

@@ -5,7 +5,7 @@ namespace PadForge.Engine.Steering
     /// <summary>
     /// How fast a car's front tires bring a let-go steering wheel back at a
     /// speed, a grip and an angle, against the spring that Return Time sets
-    /// (#597, #600). A travel source whose Centering is From Telemetry
+    /// (#600). A travel source whose Centering is From Telemetry
     /// multiplies its spring's rate by the answer.
     ///
     /// <para>The torque is the steering model's

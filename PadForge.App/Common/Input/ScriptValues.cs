@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Named numbers programs hand to Custom Expression macro triggers (#597),
+    /// Named numbers programs hand to Custom Expression macro triggers (#600),
     /// set by a <c>var name=value</c> line on the Automation pipe. A Custom
     /// Expression variable whose source is a script value reads one by name,
     /// as a telemetry variable reads its channel (GameTelemetryRuntime.Read).
@@ -45,19 +45,27 @@ namespace PadForge.Common.Input
         private static readonly Dictionary<string, HashSet<int>> Known = new(StringComparer.OrdinalIgnoreCase);
         private static volatile bool _anySet;
 
+        // The names' changes, queued under Sync in the order it decided them
+        // and told in that order (TellChanges), so a name one session ends as
+        // another sets it is told gone and then added, as Known holds it.
+        private static readonly Queue<(string Name, bool Added)> Changes = new();
+        private static readonly object TellSync = new object();
+
         /// <summary>Raised when a name is set while no session holds it, on
-        /// the thread that set it. The expression editor offers it from
-        /// then on.</summary>
+        /// the thread of a session that changed the names, in the order the
+        /// changes were made. The expression editor offers it from then
+        /// on.</summary>
         internal static event Action<string> NameAdded;
 
         /// <summary>Raised when the last session that set a name ended, on
-        /// the thread that ended it. The expression editor offers it no
+        /// the thread of a session that changed the names, in the order the
+        /// changes were made. The expression editor offers it no
         /// more.</summary>
         internal static event Action<string> NameRemoved;
 
-        /// <summary>Whether a program has a value set now. Keyboard and
-        /// mouse output to windows with rights waits while one does
-        /// (ProgramInputGate).</summary>
+        /// <summary>Whether a program has a value set now, which counts as a
+        /// program driving PadForge for ProgramInputGate.InForce. The gate
+        /// holds output by its own cause, whatever this says.</summary>
         internal static bool AnySet => _anySet;
 
         /// <summary>Whether a name can be used: a letter, then letters,
@@ -95,13 +103,14 @@ namespace PadForge.Common.Input
                 {
                     if (Known.Count >= MostNames) return false;
                     Known[name] = setters = new HashSet<int>();
+                    Changes.Enqueue((name, true));
                     added = true;
                 }
                 setters.Add(owner);
                 Values[name] = new Held(value, owner);
                 _anySet = true;
             }
-            if (added) NameAdded?.Invoke(name);
+            if (added) TellChanges();
             return true;
         }
 
@@ -126,11 +135,58 @@ namespace PadForge.Common.Input
                     {
                         Known.Remove(name);
                         Values.TryRemove(name, out _);
+                        Changes.Enqueue((name, false));
                     }
                 _anySet = !Values.IsEmpty;
             }
-            if (gone != null && NameRemoved is { } removed)
-                foreach (string name in gone) removed(name);
+            AfterReleaseForTest?.Invoke();
+            if (gone != null) TellChanges();
+        }
+
+        /// <summary>Tells the queued changes of the names, one at a time and
+        /// in order, whichever thread queued them.</summary>
+        private static void TellChanges()
+        {
+            lock (TellSync)
+            {
+                while (true)
+                {
+                    (string Name, bool Added) change;
+                    lock (Sync)
+                    {
+                        if (Changes.Count == 0) return;
+                        change = Changes.Dequeue();
+                    }
+                    (change.Added ? NameAdded : NameRemoved)?.Invoke(change.Name);
+                }
+            }
+        }
+
+        /// <summary>Program <paramref name="owner"/> lets go of one name, as
+        /// its end lets go of all of them (<see cref="ReleaseOwner"/>): the
+        /// value reads 0 again when it set it last, it is no longer one of
+        /// the name's setters, and a name no open session has set goes. True
+        /// when it held the value.</summary>
+        internal static bool Release(string name, int owner)
+        {
+            if (string.IsNullOrEmpty(name)) return false;
+            bool held = false, gone = false;
+            lock (Sync)
+            {
+                if (Values.TryGetValue(name, out var value) && value.Owner == owner)
+                    held = ((ICollection<KeyValuePair<string, Held>>)Values).Remove(new KeyValuePair<string, Held>(name, value));
+                if (Known.TryGetValue(name, out var setters) && setters.Remove(owner) && setters.Count == 0)
+                {
+                    Known.Remove(name);
+                    Values.TryRemove(name, out _);
+                    Changes.Enqueue((name, false));
+                    gone = true;
+                }
+                _anySet = !Values.IsEmpty;
+            }
+            AfterReleaseForTest?.Invoke();
+            if (gone) TellChanges();
+            return held;
         }
 
         /// <summary>Lets go of every value, as a level below Send Inputs
@@ -150,6 +206,11 @@ namespace PadForge.Common.Input
             lock (Sync) return new List<string>(Known.Keys);
         }
 
+        /// <summary>Test seam: runs in <see cref="ReleaseOwner"/> and <see cref="Release"/> after the
+        /// names it removed are decided, before they are told. Null in the
+        /// app.</summary>
+        internal static Action AfterReleaseForTest;
+
         /// <summary>Test seam: nothing set and no name known.</summary>
         internal static void ResetForTest()
         {
@@ -157,6 +218,7 @@ namespace PadForge.Common.Input
             {
                 Values.Clear();
                 Known.Clear();
+                Changes.Clear();
                 _anySet = false;
             }
         }

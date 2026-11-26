@@ -55,6 +55,10 @@ namespace PadForge.Common.Input
         private static readonly string[] HatFields = { "dpup", "dpright", "dpdown", "dpleft" };
         private static readonly int[] HatMasks = { 1, 2, 4, 8 };
 
+        /// <summary>The D-pad's fields in the order of GamepadPlacement's
+        /// D-pad buttons.</summary>
+        private static readonly string[] DPadButtonFields = { "dpup", "dpdown", "dpleft", "dpright" };
+
         /// <summary>The field SDL's row has for each of a controller's
         /// targets (MappingSetMigrator's target names).</summary>
         private static readonly Dictionary<string, string> TargetFields = new(StringComparer.Ordinal)
@@ -299,8 +303,11 @@ namespace PadForge.Common.Input
         /// pads report: the left stick on X and Y, the right stick on Z and
         /// Rz, or on Rx and Ry with the triggers on Z and Rz when the device
         /// has all six axes, the first hat as the D-pad, and the face buttons
-        /// first. Sony's pads (vendor 054C) number the face buttons square,
-        /// cross, circle, triangle and put Select and Start at 8 and 9.
+        /// first. For vendor 054C the guess follows the community's DualShock 4
+        /// and DualSense rows, which number the face buttons square, cross,
+        /// circle, triangle and put Select and Start at 8 and 9. Its PS3 and
+        /// PlayStation Classic rows number them triangle, circle, cross,
+        /// square, so a guess for those pads is wrong until the user fixes it.
         /// A button the device lacks is left out, so a short pad never maps
         /// a dead input. Every guess is labeled one where it shows.
         /// </summary>
@@ -364,9 +371,12 @@ namespace PadForge.Common.Input
         /// A row's bindings as the places of SDL's layout on a device that
         /// SDL does not read, such as a plugin's (#600 item 47): each field
         /// takes the device's "Button N" or "Axis N", and the first hat is
-        /// the D-pad when the row binds its four directions there. A half
-        /// axis and a turned axis have no such plain form, and their fields
-        /// are left out and named in <paramref name="leftOut"/>.
+        /// the D-pad when the row binds its four directions there. Otherwise
+        /// each D-pad direction on a plain button is the placement's D-pad
+        /// button for it, as the Twitch Chat row's are (#555). A half axis, a
+        /// turned axis and a direction on a hat that is not the whole D-pad
+        /// have no such plain form, and their fields are left out and named
+        /// in <paramref name="leftOut"/>.
         /// </summary>
         internal static GamepadPlacement PlacementOf(SdlMappingRow row, out List<string> leftOut)
         {
@@ -378,11 +388,20 @@ namespace PadForge.Common.Input
             for (int i = 0; i < HatFields.Length; i++)
                 if (!string.Equals(row.InputOf(HatFields[i]), "h0." + HatMasks[i].ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal))
                     hatPad = false;
+            string[] dpadButtons = null;
             foreach (var b in row.Bindings)
             {
                 if (Array.IndexOf(HatFields, b.Field) >= 0)
                 {
-                    if (!hatPad) leftOut.Add(b.Field);
+                    if (hatPad) continue;
+                    string pressed = PlainDescriptor(b.Input);
+                    if (pressed == null || !pressed.StartsWith("Button ", StringComparison.Ordinal))
+                    {
+                        leftOut.Add(b.Field);
+                        continue;
+                    }
+                    // GamepadPlacement's D-pad buttons are up, down, left, right.
+                    (dpadButtons ??= new string[4])[Array.IndexOf(DPadButtonFields, b.Field)] = pressed;
                     continue;
                 }
                 string plain = PlainDescriptor(b.Input);
@@ -398,7 +417,7 @@ namespace PadForge.Common.Input
                 else if (axis >= 0) axes[axis] = plain;
                 else leftOut.Add(b.Field);
             }
-            return new GamepadPlacement(buttons, axes, hatPad, null);
+            return new GamepadPlacement(buttons, axes, hatPad, null, dpadButtons);
         }
 
         /// <summary>"b3" as "Button 3" and "a2" as "Axis 2". Null for a hat,

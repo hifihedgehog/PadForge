@@ -2,7 +2,7 @@ namespace PadForge.Engine
 {
     /// <summary>
     /// A device with no HID report of its own to carry its feedback: what
-    /// feeds it, a phone's page or a program on the Automation pipe (#597),
+    /// feeds it, a phone's page or a program on the Automation pipe (#600),
     /// draws its light and its player number and plays its trigger motors.
     /// PadForge hands each value to the device and the device passes it on.
     ///

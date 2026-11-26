@@ -1081,11 +1081,15 @@ namespace PadForge.Services
         /// Sets default input hiding options when a device is newly assigned to a slot.
         /// Gamepads: HidHide auto-ON (if installed). Keyboards and mice get
         /// nothing turned on, because consuming someone's only keyboard or
-        /// mouse locks them out of Windows.
+        /// mouse locks them out of Windows. A row with no Hide from Games
+        /// switch gets nothing either: the Test Controller, a replay, a web
+        /// controller or a program's device has no HID instance to cloak,
+        /// and a tick the user cannot see or clear held the HidHide
+        /// uninstall back.
         /// </summary>
-        private void AutoEnableHidingDefaults(UserDevice ud, DeviceRowViewModel row)
+        internal static void AutoEnableHidingDefaults(UserDevice ud, DeviceRowViewModel row, Func<bool> hidHideAvailable = null)
         {
-            if (ud == null || row == null) return;
+            if (ud == null || row == null || !row.ShowHidHideToggle) return;
 
             bool isGamepad = ud.CapType == InputDeviceType.Gamepad ||
                              ud.CapType == InputDeviceType.Joystick ||
@@ -1096,7 +1100,7 @@ namespace PadForge.Services
             if (isGamepad)
             {
                 // Auto-enable HidHide if the driver is available.
-                if (HidHideController.IsAvailable())
+                if ((hidHideAvailable ?? HidHideController.IsAvailable)())
                 {
                     ud.HidHideEnabled = true;
                     row.HidHideEnabled = true;

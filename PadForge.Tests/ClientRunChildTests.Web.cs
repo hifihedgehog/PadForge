@@ -182,7 +182,7 @@ namespace PadForge.Tests
                 await AssistantRig.Until(() => door.HelperState == WebHelperState.Running && store.Port > 0, 30000);
                 string endpoint = WebAddress.Loopback(store.Port) + "/mcp";
                 door.Arm();
-                await AssistantRig.Until(() => door.HelperArmed, 30000);
+                await WebSignInWait.UntilTaking(store.Port, 30000);
 
                 var client = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
                 {

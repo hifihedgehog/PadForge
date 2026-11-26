@@ -212,7 +212,7 @@
             else if (r.status === 409) say("PadForge keeps eight paired devices. Remove one on the PC first.");
             else if (r.status === 410 && r.body.codeClosed) say("Five wrong tries closed the typed code. Scan the QR code PadForge shows with this phone’s camera.");
             else if (r.status === 401 && r.body.secret === false) say("This QR code is not the one PadForge shows now. Scan the one on the PC.");
-            else say("The pairing is closed. Pair a Device… on the PC makes a new code.");
+            else say("The pairing is closed. Pair a Device on the PC makes a new code.");
         }, function () {
             say("PadForge did not answer. This page works on PadForge’s network only.");
         }).then(function () {
@@ -322,10 +322,17 @@
             } else {
                 show(false);
                 questions = [];
-                if (r.status === 401 && !r.body.pairing)
-                    $("pairLine").textContent = "No pairing is open. Pair a Device… on the PC shows a code for five minutes.";
-                else
+                // The code is asked for only while PadForge says a pairing
+                // is open. A 403 comes before PadForge reads the pairing (a
+                // peer off its network, or a Host that is not its own), so
+                // it says that alone. A 404 has no device and no pairing, or
+                // a stopped route.
+                if (r.status === 401 && r.body.pairing)
                     $("pairLine").textContent = "Type the six digits PadForge shows. Or scan its code with this phone’s camera, which opens this page paired.";
+                else if (r.status === 403)
+                    $("pairLine").textContent = "PadForge answers this page only on its own network and at its own address.";
+                else
+                    $("pairLine").textContent = "No pairing is open. Pair a Device on the PC shows a code for five minutes.";
             }
         }, function () {
             say("PadForge did not answer. This page works on PadForge’s network only.");

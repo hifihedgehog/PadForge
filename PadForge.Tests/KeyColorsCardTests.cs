@@ -168,6 +168,27 @@ namespace PadForge.Tests
             Assert.Equal("Base>k04=FF0000,k1A=FF0000,k29=FF0000", cfg.KeyLighting);
         }
 
+        /// <summary>One key picked, red on Base and blue on the
+        /// shift layer. A click on the shift layer's chip kept the picker on
+        /// red, and Apply Color wrote Base's red onto the shift layer. The
+        /// picker shows the layer's own color of the one light, and back on
+        /// Base shows Base's.</summary>
+        [Fact]
+        public void ThePickerShowsTheOneLightsColorOnTheLayerPicked()
+        {
+            var (card, cfg) = Attached("Base>k04=FF0000|Shift1>k04=0000FF", Layer("Base"), Layer("Shift1"));
+            card.SetSelection(new[] { 1 });
+            Assert.Equal("FF0000", card.PaintHex);
+
+            card.SelectedLayerMask = "Shift1";
+            Assert.Equal("0000FF", card.PaintHex);
+            card.ApplyColorCommand.Execute(null);
+            Assert.Equal("Base>k04=FF0000|Shift1>k04=0000FF", cfg.KeyLighting);
+
+            card.SelectedLayerMask = "Base";
+            Assert.Equal("FF0000", card.PaintHex);
+        }
+
         [Fact]
         public void AChannelColorsTheSelectionAtOnce()
         {

@@ -12,7 +12,7 @@ using ModelContextProtocol.Server;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// The protocol server inside PadForge (#597): one server per connection
+    /// The protocol server inside PadForge (#600): one server per connection
     /// on the Automation pipe whose hello says <c>kind=mcp</c>, made with the
     /// SDK's <c>McpServer.Create</c> over a <c>StreamServerTransport</c> on
     /// the pipe's own stream. Its protocol version is left open, so every
@@ -80,10 +80,51 @@ namespace PadForge.Services.Automation
         {
             if (!AssistantJson.TryParse(call.Arguments, out var arguments))
                 return AutomationCallResult.Failure("bad-argument", "the arguments are one JSON object");
-            var caller = new AssistantCaller(call.Peer, SessionOf(call.Peer));
+            var session = SessionOf(call.Peer);
+            var caller = new AssistantCaller(call.Peer, session);
+            ForgetWhenItEnds(session, caller.Key);
             var outcome = await _calls.CallAsync(caller, call.Tool, arguments, stopping).ConfigureAwait(false);
+            // A call that ended with its session took its rate after the
+            // session's end let go.
+            if (session != null && session.Lifetime.IsCancellationRequested) LetGo(session, caller.Key);
             return outcome.Ok ? AutomationCallResult.Success(outcome.Json) : AutomationCallResult.Failure(outcome.Code, outcome.Words);
         }
+
+        /// <summary>The script sessions whose end is watched, by session
+        /// number.</summary>
+        private readonly HashSet<int> _watched = new();
+
+        /// <summary>A session that sends call lines keeps a rate and waiting
+        /// requests under its key: they go when the session ends, as an
+        /// assistant's go at the end of <see cref="ServeAsync"/>.</summary>
+        private void ForgetWhenItEnds(AutomationSession session, int key)
+        {
+            if (session == null) return;
+            lock (_watched)
+                if (!_watched.Add(session.Number)) return;
+            session.Lifetime.Register(() =>
+            {
+                lock (_watched) _watched.Remove(session.Number);
+                LetGo(session, key);
+            });
+        }
+
+        /// <summary>What a session that ended kept goes, at once or, for a
+        /// helper that holds a resume secret, after its grace.</summary>
+        private void LetGo(AutomationSession session, int key)
+        {
+            if (session?.Resume != null) _calls.ForgetLater(key);
+            else _calls.Forget(key);
+        }
+
+        /// <summary>Test seam: runs right after a session's first list is
+        /// read, on the session's own thread.</summary>
+        internal Action<AutomationSession> AfterFirstList { get; set; }
+
+        /// <summary>Test seam: runs inside Follow between its read of the
+        /// level and its write of the tool list, on the thread that
+        /// follows.</summary>
+        internal Action<AssistantCaller> AfterLevelRead { get; set; }
 
         /// <summary>Runs one assistant's session to its end.</summary>
         internal async Task ServeAsync(AutomationPeer peer, Stream stream, CancellationToken stopping)
@@ -100,9 +141,10 @@ namespace PadForge.Services.Automation
             var resources = new McpServerResourceCollection();
             var prompts = new McpServerPrimitiveCollection<McpServerPrompt>();
             foreach (var prompt in AssistantGuidance.Prompts) prompts.Add(new AssistantPrompt(prompt));
-            Follow(tools, resources, caller);
 
-            var options = Options(tools, prompts, resources);
+            // The list follows the level before its first read, so a change
+            // between the two is never missed: the user can answer the first
+            // connection as the list is read.
             EventHandler changed = (s, e) => Follow(tools, resources, caller);
             _host.Changed += changed;
             // The user answering this program's first connection, or
@@ -111,6 +153,9 @@ namespace PadForge.Services.Automation
             _host.Sessions.SessionLevelChanged += levelChanged;
             try
             {
+                Follow(tools, resources, caller);
+                AfterFirstList?.Invoke(session);
+                var options = Options(tools, prompts, resources);
                 await using var capped = new LineCappedStream(stream, LongestLine);
                 await using var transport = new StreamServerTransport(capped, stream, "PadForge");
                 await using var server = McpServer.Create(transport, options);
@@ -125,8 +170,7 @@ namespace PadForge.Services.Automation
                 _host.Sessions.SessionLevelChanged -= levelChanged;
                 // A helper that holds a resume secret keeps its undo, rate
                 // and waiting requests for a while, for its reconnect.
-                if (session?.Resume != null) _calls.ForgetLater(caller.Key);
-                else _calls.Forget(caller.Key);
+                LetGo(session, caller.Key);
             }
         }
 
@@ -167,12 +211,15 @@ namespace PadForge.Services.Automation
         /// <summary>Puts a session's tools and resources in step with the
         /// level in force. One change raises one notice: removals only take
         /// tools out, and anything that adds builds the list again in its one
-        /// order.</summary>
+        /// order. The level is read under each list's lock, so of two
+        /// changes that cross, the one put in last read the newer
+        /// level.</summary>
         private void Follow(McpServerPrimitiveCollection<McpServerTool> tools, McpServerResourceCollection resources, AssistantCaller caller)
         {
-            var allowed = _calls.Allowed(caller).ToList();
             lock (tools)
             {
+                var allowed = _calls.Allowed(caller).ToList();
+                AfterLevelRead?.Invoke(caller);
                 var now = tools.Select(t => ((AssistantMcpTool)t).Definition).ToList();
                 if (!now.SequenceEqual(allowed))
                 {
@@ -196,9 +243,9 @@ namespace PadForge.Services.Automation
 
             // The skill's files and the pages are for any level. The
             // settings catalog holds values, which Read allows.
-            bool catalog = _calls.Allows(caller, AutomationLevel.Read);
             lock (resources)
             {
+                bool catalog = _calls.Allows(caller, AutomationLevel.Read);
                 var want = new List<McpServerResource>();
                 want.AddRange(AssistantSkill.Resources());
                 want.Add(new AssistantTextResource(PagesUri, "pages", "What each page of PadForge is for.", "text/markdown", PagesText));

@@ -49,7 +49,7 @@ namespace PadForge.Search
         /// <summary>Takes a result to its place. With
         /// <paramref name="takeFocus"/> false the place is opened, scrolled to
         /// and ringed, and the keyboard focus stays where it is: an
-        /// assistant's show (#597), which must never activate the window,
+        /// assistant's show (#600), which must never activate the window,
         /// lands that way. With <paramref name="ring"/> false nothing is
         /// ringed: the guided pointer (#600) rings and holds the place
         /// itself. A walk of the guided pointer never comes here: its user
@@ -184,7 +184,7 @@ namespace PadForge.Search
             var entry = result.Entry;
             DependencyObject label;
             if (entry.RowOptions) label = RowOption(entry, page);
-            else if (entry.Kind == SearchKind.MenuItem) label = MenuOwner(page, entry);
+            else if (entry.Kind == SearchKind.MenuItem) label = MenuOwnerOf(page, entry, e => e.IsVisible);
             else if (entry.ItemsPath != null) label = _service.Locator.FindInItem(entry, result.Payload, _service.Index);
             else
             {
@@ -205,9 +205,26 @@ namespace PadForge.Search
         }
 
         /// <summary>The button whose context menu holds a menu item's
-        /// entry (#600): the menu's own element is not in the page until it
-        /// opens, so the landing rings what opens it.</summary>
-        private static DependencyObject MenuOwner(FrameworkElement page, SearchEntry entry) => MenuItemOf(page, entry).Owner;
+        /// entry (#600), of the ones <paramref name="shows"/> takes: the
+        /// menu's own element is not in the page until it opens, so the
+        /// landing rings what opens it. A page's menu is looked for in the
+        /// page, and a menu each item of a list has of its own
+        /// (<see cref="SearchEntry.ItemsList"/>) in the container the list
+        /// drew for each item, the first that has it. Null when no such
+        /// button shows.</summary>
+        internal static FrameworkElement MenuOwnerOf(FrameworkElement page, SearchEntry entry, Func<FrameworkElement, bool> shows)
+        {
+            if (page == null) return null;
+            if (entry.ItemsList == null) return MenuItemAmong(SearchLocator.LogicalDescendants(page).OfType<FrameworkElement>(), entry, shows).Owner;
+            if (page.FindName(entry.ItemsList) is not ItemsControl list) return null;
+            foreach (object item in list.Items)
+            {
+                if (item is UIElement || list.ItemContainerGenerator.ContainerFromItem(item) is not { } container) continue;
+                var owner = MenuItemAmong(SearchLocator.VisualDescendants(container).OfType<FrameworkElement>(), entry, shows).Owner;
+                if (owner != null) return owner;
+            }
+            return null;
+        }
 
         /// <summary>
         /// A menu item's entry as the page shows it now: the item, and the
@@ -218,22 +235,26 @@ namespace PadForge.Search
         /// sits in the entry's scope is taken, else the first.
         /// </summary>
         internal static (FrameworkElement Owner, MenuItem Item) MenuItemOf(FrameworkElement root, SearchEntry entry)
-            => root == null ? (null, null) : MenuItemAmong(SearchLocator.LogicalDescendants(root).OfType<FrameworkElement>(), entry);
+            => root == null ? (null, null) : MenuItemAmong(SearchLocator.LogicalDescendants(root).OfType<FrameworkElement>(), entry, e => e.IsVisible);
 
         /// <summary>A menu item's entry among the elements given: in the
         /// container a list drew for one item, for a menu each item has of its
         /// own (<see cref="SearchEntry.ItemsList"/>), whose elements a
         /// template made and the logical tree does not hold.</summary>
         internal static (FrameworkElement Owner, MenuItem Item) MenuItemIn(DependencyObject container, SearchEntry entry)
-            => container == null ? (null, null) : MenuItemAmong(SearchLocator.VisualDescendants(container).OfType<FrameworkElement>(), entry);
+            => container == null ? (null, null) : MenuItemAmong(SearchLocator.VisualDescendants(container).OfType<FrameworkElement>(), entry, e => e.IsVisible);
 
-        private static (FrameworkElement Owner, MenuItem Item) MenuItemAmong(System.Collections.Generic.IEnumerable<FrameworkElement> elements, SearchEntry entry)
+        /// <summary>The menu item an entry names among the elements given,
+        /// and its button, of the buttons <paramref name="shows"/>
+        /// takes.</summary>
+        internal static (FrameworkElement Owner, MenuItem Item) MenuItemAmong(System.Collections.Generic.IEnumerable<FrameworkElement> elements, SearchEntry entry,
+            Func<FrameworkElement, bool> shows)
         {
             string header = SearchLocator.LabelText(entry.Label, null);
             (FrameworkElement Owner, MenuItem Item) first = (null, null);
             foreach (var element in elements)
             {
-                if (element.ContextMenu is not { } menu || !element.IsVisible) continue;
+                if (element.ContextMenu is not { } menu || !shows(element)) continue;
                 foreach (var item in menu.Items.OfType<MenuItem>())
                 {
                     if (!string.Equals(item.Header as string, header, StringComparison.CurrentCulture)) continue;

@@ -94,6 +94,25 @@ namespace PadForge.Tests
             Assert.Empty(joined.Refused);
         }
 
+        /// <summary>A start hands the command set the recording it made,
+        /// which waits while it records and once it is finished, and waits
+        /// no more once Home's Delete removed it: what the program's limit
+        /// counts (#600). The program is told none of it.</summary>
+        [Fact]
+        public void ARecordingAStartMade_WaitsUntilItIsDeleted()
+        {
+            using var joined = new Joined();
+            var started = joined.Host.RecordStart();
+            Assert.Equal(AutomationRecordOutcome.Done, started.Outcome);
+            Assert.Equal("recording", started.Word);
+            Assert.True(AutomationCommands.RecordingWaits(started.Path));
+            Assert.Equal(AutomationRecordOutcome.Done, joined.Host.RecordStop().Outcome);
+            string finished = joined.WaitFinished();
+            Assert.True(AutomationCommands.RecordingWaits(started.Path));
+            Assert.True(PadForge.Common.Recording.RecordingStore.Delete(finished));
+            Assert.False(AutomationCommands.RecordingWaits(started.Path));
+        }
+
         [Fact]
         public void TheRecordersRefusals_ComeBackAsBusyOrNotAvailable()
         {

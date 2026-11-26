@@ -6,7 +6,7 @@ namespace PadForge.Services.Automation
     /// <summary>
     /// The app's own part of <see cref="PipeOwner"/>, which the plugin kit
     /// does not carry: the client end PadForge's copies open, and the test
-    /// fence on it (#597).
+    /// fence on it (#600).
     /// </summary>
     internal static partial class PipeOwner
     {

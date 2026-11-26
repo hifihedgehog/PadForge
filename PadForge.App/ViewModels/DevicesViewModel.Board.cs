@@ -73,11 +73,6 @@ namespace PadForge.ViewModels
         /// connected.</summary>
         public ImageSource SelectedPictureGray => _selectedPictureGray;
 
-        /// <summary>Whether the panel has a picture to show. False while a
-        /// still of the 3D model is being made, when the stage shows
-        /// nothing for that moment.</summary>
-        public bool HasSelectedPicture => _selectedPicture != null;
-
         /// <summary>Whether the stage shows the device's kind: it has no
         /// picture and none is on its way.</summary>
         public bool ShowSelectedKind => _selectedPicture == null && !_pictureComing;
@@ -109,7 +104,6 @@ namespace PadForge.ViewModels
             if (!changed) return;
             OnPropertyChanged(nameof(SelectedPicture));
             OnPropertyChanged(nameof(SelectedPictureGray));
-            OnPropertyChanged(nameof(HasSelectedPicture));
             OnPropertyChanged(nameof(ShowSelectedKind));
         }
 

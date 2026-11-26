@@ -373,8 +373,9 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>The offer's sentence and the engine's lines in the new
-        /// language. Called from OnCultureChanged.</summary>
+        /// <summary>The offer's sentence, the waiting recording's line and
+        /// the engine's lines in the new language. Called from
+        /// OnCultureChanged.</summary>
         private void RefreshHomeText()
         {
             if (HasHomeOffer)
@@ -382,6 +383,9 @@ namespace PadForge.ViewModels
             SetOfferParts();
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HeroLine)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LiveLine)));
+            // The waiting recording's sentence and its time, in the new
+            // language's words and clock.
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(WaitingRecordingText)));
             foreach (var slot in SlotSummaries) slot.RefreshWords();
             RaiseExtrasRestParts();
             RefreshFirstRunText();

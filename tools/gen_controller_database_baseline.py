@@ -1,5 +1,5 @@
 """Writes the list of what this release carries of the community controller
-database, and counts what the community has changed since (#597).
+database, and counts what the community has changed since (#600).
 
 WHEN TO RUN IT
 - At each SDL take, after the new SDL3.dll files are in the repo: run the write

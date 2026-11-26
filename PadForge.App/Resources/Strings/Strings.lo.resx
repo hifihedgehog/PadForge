@@ -299,6 +299,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ສະແດງ ຫຼື ເຊື່ອງ PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ເປີດ ຫຼື ປິດຕົວຄວບຄຸມສະເໝືອນ</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ອຸປະກອນໃດກໍໄດ້ທີ່ເຊື່ອມຕໍ່</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (ບໍ່ໄດ້ເຊື່ອມຕໍ່)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>ອຸປະກອນທີ່ບໍ່ຢູ່ໃນໜ້າ ອຸປະກອນ</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>ກຳລັງອັດ…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} ວິ)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ເມື່ອ</value></data>
@@ -565,7 +567,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>ອ່ານ</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>ສົ່ງອິນພຸດ</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>ປ່ຽນການຕັ້ງຄ່າ</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ໂປຣແກຣມສາມາດປ່ຽນໂປຣໄຟລ໌ ແລະ ປ່ອຍມັນ, ເລີ່ມ ແລະ ຢຸດເອັນຈິນ, ເປີດ ແລະ ປິດຕົວຄວບຄຸມສະເໝືອນ, ສະແດງ ແລະ ເຊື່ອງໜ້າຕ່າງ, ປິດ PadForge, ບັນທຶກສະແນັບຊັອດການວິນິດໄສ ແລະ ຖາມວ່າມີຫຍັງກຳລັງເຮັດວຽກ.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ໂປຣແກຣມສາມາດປ່ຽນໂປຣໄຟລ໌ ແລະ ປ່ອຍມັນ, ເລີ່ມ ແລະ ຢຸດເອັນຈິນ, ເປີດ ແລະ ປິດຕົວຄວບຄຸມສະເໝືອນ, ສະແດງ ແລະ ເຊື່ອງໜ້າຕ່າງ, ປິດ PadForge, ຖາມວ່າມີຫຍັງກຳລັງເຮັດວຽກ, ບັນທຶກສະແນັບຊັອດການວິນິດໄສ, ແລະ ເລີ່ມ, ຢຸດ ແລະ ໝາຍການບັນທຶກບັນຫາ.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>ທຸກຢ່າງໃນລະດັບ ຄຳສັ່ງ, ແລະ ໂປຣແກຣມສາມາດເບິ່ງອຸປະກອນ, ຕົວຄວບຄຸມສະເໝືອນ, ການແມັບ, ໂປຣໄຟລ໌ ແລະ ການຕັ້ງຄ່າ, ຕິດຕາມອິນພຸດຂອງທຸກອຸປະກອນໃນຂະນະທີ່ມັນເກີດຂຶ້ນ, ແລະ ສະແດງບ່ອນໃດໜຶ່ງໃນ PadForge ໃຫ້ທ່ານເບິ່ງ. ໂປຣແກຣມໃນລະດັບ ອ່ານ ເຫັນທຸກປຸ່ມທີ່ກົດໃນທຸກອຸປະກອນ, ລວມທັງປຸ່ມທີ່ພິມໃສ່ໜ້າຕ່າງທີ່ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບ.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>ທຸກຢ່າງໃນລະດັບ ອ່ານ, ແລະ ໂປຣແກຣມສາມາດເພີ່ມອຸປະກອນຂອງມັນເອງ ແລະ ຂັບເຄື່ອນມັນ, ຄ້າງການຄວບຄຸມຂອງອຸປະກອນໃດກໍໄດ້ ແລະ ສົ່ງຄ່າທີ່ມີຊື່ໃຫ້ທຣິກເກີຂອງມາໂຄຣ.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ທຸກຢ່າງໃນລະດັບ ສົ່ງອິນພຸດ, ແລະ ໂປຣແກຣມສາມາດປ່ຽນສິ່ງທີ່ທ່ານປ່ຽນໄດ້ໃນໜ້າຕ່າງໆ. ບາງການປ່ຽນແປງຈະຖາມທ່ານກ່ອນສະເໝີໃນບັດຄຳຖາມຂອງ PadForge.</value></data>
@@ -578,7 +580,6 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>ລໍຖ້າທ່ານຢູ່</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>ກິດຈະກຳ</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>ຍ້ອນກັບ</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດບັນທຶກມັນໄດ້: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>ໃນຂະນະທີ່ໂປຣແກຣມໃນລະດັບ ອ່ານ ຫຼື ສູງກວ່າເຊື່ອມຕໍ່ຢູ່, ມັນຈະເຫັນສິ່ງທີ່ກົດໃນທຸກອຸປະກອນ, ລວມທັງແປ້ນພິມ.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>ປລັກອິນ</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ເປີດໃຊ້ປລັກອິນ</value></data>
@@ -598,7 +599,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} ຈາກ {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (ຫຼິ້ນຄືນ)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>ການບັນທຶກບັນຫາ|*.zip;*.log|ໄຟລ໌ທັງໝົດ|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດຫຼິ້ນ {0} ໄດ້. ມັນບໍ່ແມ່ນການບັນທຶກບັນຫາ, ຫຼື ມັນບໍ່ມີອິນພຸດຂອງອຸປະກອນໃດເລີຍ.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດຫຼິ້ນ {0} ໄດ້. ມັນບໍ່ແມ່ນການບັນທຶກບັນຫາທີ່ PadForge ອ່ານໄດ້.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດຫຼິ້ນ {0} ໄດ້. ມັນມີອຸປະກອນຫຼາຍກວ່າ {1} ອັນ, ແລະ ຫຼິ້ນຄືນ ຫຼິ້ນໄດ້ຫຼາຍສຸດ {1} ອັນ.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດຫຼິ້ນ {0} ໄດ້. ມັນບໍ່ມີການປ້ອນຂໍ້ມູນຂອງອຸປະກອນໃດເລີຍ.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດອ່ານ {0} ໄດ້.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>ປລັກອິນຂອງທ່ານ</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>ເພີ່ມປລັກອິນ…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>ໂປຣແກຣມ ແລະ ສະຄຣິບ|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ໄຟລ໌ທັງໝົດ|*.*</value></data>
@@ -612,8 +616,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>ຢຸດແລ້ວຫຼັງຈາກລົ້ມເຫຼວ 5 ຄັ້ງຕິດຕໍ່ກັນ</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: ໄຟລ໌ຫາຍໄປແລ້ວ</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: Windows ບໍ່ມີໂປຣແກຣມສຳລັບໄຟລ໌ປະເພດນີ້</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: ບໍ່ມີໂປຣແກຣມໃດເປີດໄຟລ໌ Python ໃຫ້ທ່ານ, ແລະ PadForge ບໍ່ພົບຕົວເປີດ py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: PadForge ບໍ່ສາມາດອ່ານໄດ້ວ່າໂປຣແກຣມໃດເປີດໄຟລ໌ປະເພດນີ້ໃຫ້ທ່ານ</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: ໂປຣແກຣມທີ່ເປີດໄຟລ໌ປະເພດນີ້ໃຫ້ທ່ານບໍ່ຢູ່ໃນຄອມພິວເຕີເຄື່ອງນີ້</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: ບໍ່ມີເຊວເດັສທັອບເຮັດວຽກຢູ່ເພື່ອເລີ່ມມັນ</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: ເຊວເດັສທັອບມີສິດຜູ້ເບິ່ງແຍງລະບົບ, ສະນັ້ນປລັກອິນກໍຈະມີສິດນັ້ນນຳ</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: PadForge ບໍ່ສາມາດອ່ານໄດ້ວ່າມັນຈະມີສິດຜູ້ເບິ່ງແຍງລະບົບຫຼືບໍ່</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: Windows ໃຫ້ສິດຜູ້ເບິ່ງແຍງລະບົບແກ່ມັນ, ສະນັ້ນ PadForge ຈຶ່ງປິດມັນກ່ອນທີ່ມັນຈະເຮັດວຽກ</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: ມັນຂໍສິດຜູ້ເບິ່ງແຍງລະບົບ</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ: Windows ປະຕິເສດດ້ວຍຂໍ້ຜິດພາດ {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>ບໍ່ໄດ້ເລີ່ມ</value></data>
@@ -641,6 +650,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ເພີ່ມ {0} ແລ້ວ.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ລົງລາຍເຊັນໂດຍ {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ບໍ່ໄດ້ລົງລາຍເຊັນ.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>ການຕັ້ງຄ່າຂອງມັນຈະສະແດງຢູ່ນີ້ຂະນະທີ່ມັນເຮັດວຽກ.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>ມັນບໍ່ໄດ້ປະກາດການຕັ້ງຄ່າໃດໆ.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>ການຕັ້ງຄ່າຂອງມັນຈະສະແດງຢູ່ນີ້ເມື່ອມັນເຊື່ອມຕໍ່ກັບ PadForge.</value></data>
@@ -743,8 +753,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>ໂປຣແກຣມໃຊ້ເວີຊັນທີ່ PadForge ບໍ່ຮູ້ຈັກ</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ໃຫ້ກະແຈປລັກອິນນັ້ນ</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ບໍ່ຮັບການເຊື່ອມຕໍ່ຂອງໂປຣແກຣມນີ້</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ສ້າງອຸປະກອນ, ເພາະ Windows ບໍ່ໄດ້ບອກຊື່ໄຟລ໌ຂອງໂປຣແກຣມ</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>ຂໍອີກໄວເກີນໄປ</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>ບໍ່ມີອີກຈົນກວ່າ PadForge ຈະເລີ່ມໃໝ່</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>ມີລາຍການແບບນີ້ທີ່ໂປຣແກຣມສົ່ງມາລໍຖ້າໃຫ້ທ່ານກວດໃນ ໜ້າຫຼັກ ຫຼາຍເກີນໄປ</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ບໍ່ມີເຄື່ອງມືນີ້</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>ໂປຣແກຣມອ່ານສະຖານະເກົ່າ</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ບໍ່ມີຫຍັງມີ ID ນັ້ນ</value></data>
@@ -752,6 +763,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>ທ່ານບໍ່ໄດ້ອະນຸຍາດ</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>ບໍ່ມີໃຜຕອບທັນເວລາ</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>ກຳລັງລໍຖ້າຄຳຕອບຂອງທ່ານ</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>ທ່ານຍັງບໍ່ໄດ້ຕອບ</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ບໍ່ມີຄຳຂໍນີ້</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ຍ້ອນກັບ</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ມີແຕ່ທ່ານທີ່ປ່ຽນສິ່ງນີ້ໄດ້</value></data>
@@ -867,6 +879,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>ບໍ່ໄດ້ລົງລາຍເຊັນ.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>ໃນລະດັບ ອ່ານ ຂຶ້ນໄປ ມັນເຫັນທຸກປຸ່ມທີ່ກົດໃນທຸກອຸປະກອນ, ລວມທັງແປ້ນພິມ.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>ມັນຖາມພຽງຄັ້ງດຽວ. ທ່ານສາມາດເອົາມັນອອກໄດ້ໃນໜ້າ ລະບົບອັດຕະໂນມັດ.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>ເລີ່ມໂດຍໂປຣແກຣມທີ່ PadForge ບໍ່ສາມາດລະບຸໄດ້.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge ບໍ່ສາມາດແຍກໂປຣແກຣມນີ້ອອກຈາກໂປຣແກຣມອື່ນໄດ້, ສະນັ້ນມັນຈະຖາມອີກຄັ້ງເມື່ອເຊື່ອມຕໍ່ຄັ້ງຕໍ່ໄປ.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>ແຖວຄຳສັ່ງຂອງ PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>ຕັ້ງ {0} ເປັນ {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ຮັບຟັງໃນເຄືອຂ່າຍ, ສະນັ້ນອຸປະກອນອື່ນສາມາດເຂົ້າເຖິງ PC ນີ້ໄດ້.</value></data>
@@ -882,7 +896,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>ນຳໂປຣໄຟລ໌ມາໃຊ້</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>ນຳເຂົ້າໄຟລ໌ໂປຣໄຟລ໌ຈາກໂປຣແກຣມອື່ນ, ຈາກນັ້ນເບິ່ງວ່າມີຫຍັງມາແດ່.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} ຄັ້ງ</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ອັນສຸດທ້າຍຈາກ {1} ອັນທີ່ຄ້າຍກັນ</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>ສະຄຣິບ AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -912,6 +925,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>ບໍ່ມີ Logitech G-key SDK ໃນເຄື່ອງນີ້. ມັນຕິດຕັ້ງມາພ້ອມກັບ Logitech Gaming Software 8.55 ຫຼື ໃໝ່ກວ່າ.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK ລົງທະບຽນໄວ້ແລ້ວ ແຕ່ໄຟລ໌ຂອງມັນຫາຍໄປ. ຕິດຕັ້ງ Logitech Gaming Software ຄືນໃໝ່.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>ພົບ G-key SDK ແຕ່ບໍ່ສາມາດໂຫຼດມັນໄດ້.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>ພົບ G-key SDK ແຕ່ບໍ່ໄດ້ໂຫຼດມັນ, ເພາະ PadForge ບໍ່ສາມາດຢືນຢັນໄດ້ວ່າມີແຕ່ຜູ້ເບິ່ງແຍງລະບົບເທົ່ານັ້ນທີ່ປ່ຽນມັນໄດ້ ແລະ Logitech ໄດ້ລົງລາຍເຊັນມັນ.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>ໄລບຣາຣີນັ້ນບໍ່ແມ່ນ G-key SDK ທີ່ຄາດໄວ້.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ປະຕິເສດການເລີ່ມ. ສ່ວນຫຼາຍແມ່ນ Logitech Gaming Software ບໍ່ໄດ້ເຮັດວຽກຢູ່.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ, ຍັງບໍ່ເຫັນປຸ່ມໃດ. ໃນ Logitech Gaming Software, ລາກຄຳສັ່ງ G-key ໄປໃສ່ແຕ່ລະປຸ່ມໃນໂປຣໄຟລ໌ PadForge, ແລະ ຕັ້ງໂປຣໄຟລ໌ນັ້ນໃຫ້ຖາວອນ. ເມົ້າ G600 ຫຼື G300 ຍັງຕ້ອງອອກຈາກໂໝດໜ່ວຍຄວາມຈຳໃນຕົວນຳ.</value></data>
@@ -1016,14 +1030,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ເລີ່ມ PadForge ອັດຕະໂນມັດເມື່ອທ່ານເຂົ້າສູ່ລະບົບ Windows. ຂະນະທີ່ສິ່ງນີ້ເປີດຢູ່, PadForge ຍັງເລີ່ມໄດ້ໂດຍບໍ່ມີການຖາມຂອງ Windows ຈາກທາງລັດ, ສະຄຣິບ ຫຼື ໂປຣແກຣມອື່ນ.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ເຮັດວຽກຈາກ {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ສິ່ງນີ້ຕ້ອງການໃຫ້ PadForge ຢູ່ໃນໂຟນເດີຂອງມັນເອງ. ໂຟນເດີຂອງມັນມີໄຟລ໌ອື່ນ, ສະນັ້ນ PadForge ຈຶ່ງບໍ່ສາມາດກັນບໍ່ໃຫ້ໂປຣແກຣມອື່ນປ່ຽນມັນໄດ້.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>ສິ່ງນີ້ຕ້ອງການໃຫ້ PadForge ຢູ່ໃນໂຟນເດີທີ່ໂປຣແກຣມອື່ນປ່ຽນບໍ່ໄດ້. PadForge ບໍ່ສາມາດກັນບໍ່ໃຫ້ພວກມັນປ່ຽນໂຟນເດີຂອງມັນໄດ້.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>ຍ້າຍ PadForge ໄປໂຟນເດີຂອງມັນເອງ</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>ສຳເນົາ PadForge ແລະ ການຕັ້ງຄ່າຂອງມັນໄປ Program Files, ຊີ້ໜ້າວຽກຂອງມັນໄປທີ່ນັ້ນ, ແລະ ເລີ່ມມັນຈາກທີ່ນັ້ນ. ສຳເນົາຢູ່ນີ້ຍັງຄືເກົ່າ.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: {0} ມີໄຟລ໌ທີ່ບໍ່ແມ່ນຂອງ PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ ຖືກປິດແລ້ວ, ເພາະມັນເຮັດວຽກ PadForge ຈາກໂຟນເດີທີ່ມີໄຟລ໌ອື່ນ.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: Windows ບໍ່ໄດ້ກຳນົດໂຟນເດີ Program Files ໃດໄວ້.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: ມັນບໍ່ສາມາດອ່ານ PadForge ທີ່ກຳລັງເຮັດວຽກຢູ່ໄດ້.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: ມັນບໍ່ສາມາດສ້າງ {0} ໄດ້.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: ມັນບໍ່ສາມາດອ່ານໄດ້ວ່າ {0} ມີຫຍັງແດ່.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: ມັນບໍ່ສາມາດກັນບໍ່ໃຫ້ໂປຣແກຣມອື່ນປ່ຽນ {0} ໄດ້.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: ສຳເນົາຂອງມັນໃນ {0} ບໍ່ກົງກັບ PadForge ທີ່ກຳລັງເຮັດວຽກຢູ່.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຍ້າຍ: ຫຼັງຈາກສຳເນົາແລ້ວ, {0} ມີໄຟລ໌ທີ່ບໍ່ແມ່ນຂອງ PadForge, ຫຼື ໂປຣແກຣມອື່ນສາມາດປ່ຽນມັນໄດ້.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ ຖືກປິດແລ້ວ, ເພາະ PadForge ທີ່ມັນເປີດນັ້ນບໍ່ຢູ່ແລ້ວ.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ ຖືກປິດແລ້ວ, ເພາະ PadForge ບໍ່ສາມາດກັນບໍ່ໃຫ້ໂປຣແກຣມອື່ນປ່ຽນໂຟນເດີທີ່ມັນເປີດ PadForge ຈາກນັ້ນໄດ້.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ ຖືກປິດແລ້ວ, ເພາະ PadForge ບໍ່ສາມາດອ່ານໄດ້ວ່າມັນເປີດ PadForge ໂຕໃດ.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ ຖືກປິດແລ້ວ, ເພາະ PadForge ບໍ່ສາມາດອ່ານໂຟນເດີຂອງ PadForge ທີ່ມັນເປີດໄດ້.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດສ້າງໂຟນເດີທີ່ປ້ອງກັນຂອງມັນ, {0}. PadForge ເກັບໄລບຣາຣີທີ່ມັນໃຊ້ດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບໄວ້ທີ່ນັ້ນ, ແລະ ມັນບໍ່ສາມາດເລີ່ມຢ່າງປອດໄພໄດ້ຖ້າບໍ່ມີໂຟນເດີນີ້.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດເລີ່ມຕົວເອງໃໝ່ຈາກໂຟນເດີທີ່ປ້ອງກັນຂອງມັນ, {0}. PadForge ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບຈາກທີ່ນັ້ນເທົ່ານັ້ນ, ສະນັ້ນມັນຈຶ່ງບໍ່ໄດ້ເລີ່ມ.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge ບໍ່ສາມາດສ້າງລັອກທີ່ຈຳກັດໃຫ້ມັນເຮັດວຽກໄດ້ພຽງສຳເນົາດຽວ, ສະນັ້ນມັນຈຶ່ງບໍ່ໄດ້ເລີ່ມ.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບຈາກ {0}, ເຊິ່ງເປັນໂຟນເດີທີ່ໂປຣແກຣມອື່ນປ່ຽນໄດ້. ພວກມັນສາມາດປ່ຽນການຕັ້ງຄ່າຂອງ PadForge ຢູ່ທີ່ນັ້ນ, ແລະ PadForge ຈະເຮັດຕາມດ້ວຍສິດຂອງມັນ.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບຈາກ {0}, ເຊິ່ງເປັນໂຟນເດີທີ່ມີໄຟລ໌ອື່ນ. PadForge ບໍ່ສາມາດກັນບໍ່ໃຫ້ໂປຣແກຣມອື່ນປ່ຽນການຕັ້ງຄ່າຂອງມັນຢູ່ທີ່ນັ້ນ, ແລະ ມັນຈະເຮັດຕາມດ້ວຍສິດຂອງມັນ.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ເຮັດວຽກດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບຈາກ {0}, ເຊິ່ງເປັນໂຟນເດີທີ່ມັນອ່ານບໍ່ໄດ້. PadForge ບໍ່ສາມາດກັນບໍ່ໃຫ້ໂປຣແກຣມອື່ນປ່ຽນການຕັ້ງຄ່າຂອງມັນຢູ່ທີ່ນັ້ນ, ແລະ ມັນຈະເຮັດຕາມດ້ວຍສິດຂອງມັນ.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ສະແດງໃນຖາດລະບົບສະເໝີ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ສະແດງໄອຄອນໃນຖາດໄວ້ໃນຂະນະທີ່ໜ້າຕ່າງເປີດຢູ່, ເພື່ອໃຫ້ ອອກ ໃນເມນູຂອງມັນຢູ່ຫ່າງພຽງຄລິກດຽວສະເໝີ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ອັບເດດ</value></data>
@@ -1038,7 +1067,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ຕິດຕັ້ງ ແລະ ເລີ່ມຄືນໃໝ່</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>ໝາຍເຫດການອອກລຸ້ນ</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>ຖານຂໍ້ມູນຕົວຄວບຄຸມ</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ອັບເດດດຽວນີ້ ຈະດາວໂຫຼດຖານຂໍ້ມູນຕົວຄວບຄຸມຂອງຊຸມຊົນ (SDL_GameControllerDB) ຈາກ GitHub, ຫຼື ຈາກທີ່ຢູ່ທີ່ຕັ້ງໄວ້ພາຍໃຕ້ ເພີ່ມເຕີມ, ແລະ ເກັບການແມັບທີ່ PadForge ເວີຊັນນີ້ບໍ່ມີໄວ້ໃນໄຟລ໌ການຕັ້ງຄ່າ. ພວກມັນຖືກໃຊ້ທັນທີ. ຈາກທີ່ຢູ່ອື່ນ ມັນເກັບພຽງການແມັບໃໝ່ເທົ່ານັ້ນ. ການແມັບໃໝ່ຈະຖືກໃຊ້ສະເພາະກັບຕົວຄວບຄຸມທີ່ບໍ່ມີຫຍັງອື່ນອ່ານເປັນເກມແພດ, ບໍ່ໄດ້ຖືກກຳນົດ ແລະ ບໍ່ຢູ່ໃນ ບັງຄັບໂໝດຈອຍສະຕິກດິບ. ການຄືນຄ່າຈະລຶບການແມັບທີ່ດາວໂຫຼດມາທັງໝົດ ແລະ ດາວໂຫຼດຈາກ GitHub ອີກຄັ້ງ. ແຖວຂອງທ່ານເອງ, ພາຍໃຕ້ ເພີ່ມເຕີມ, ຍັງຄົງຢູ່.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ອັບເດດດຽວນີ້ ຈະດາວໂຫຼດຖານຂໍ້ມູນຕົວຄວບຄຸມຂອງຊຸມຊົນ (SDL_GameControllerDB) ຈາກ GitHub, ຫຼື ຈາກທີ່ຢູ່ທີ່ຕັ້ງໄວ້ພາຍໃຕ້ ເພີ່ມເຕີມ, ແລະ ເກັບການແມັບທີ່ PadForge ເວີຊັນນີ້ບໍ່ມີໄວ້ໃນໄຟລ໌ການຕັ້ງຄ່າ. ພວກມັນຖືກໃຊ້ທັນທີ. ຈາກທີ່ຢູ່ອື່ນ ມັນເກັບພຽງການແມັບໃໝ່ເທົ່ານັ້ນ. ການແມັບໃໝ່ຈະຖືກໃຊ້ໃນເບື້ອງຕົ້ນສະເພາະກັບຕົວຄວບຄຸມທີ່ SDL ລາຍງານວ່າເປັນເກມແພດ ຫຼື ບໍ່ມີປະເພດສະເພາະ, ທີ່ບໍ່ມີຫຍັງອື່ນອ່ານເປັນເກມແພດ, ບໍ່ໄດ້ຖືກກຳນົດ ແລະ ບໍ່ຢູ່ໃນ ບັງຄັບໂໝດຈອຍສະຕິກດິບ. ເມື່ອຖືກໃຊ້ແລ້ວ, ມັນຈະຍັງຖືກໃຊ້ຕໍ່ໄປຫຼັງຈາກຕົວຄວບຄຸມຖືກກຳນົດ. ການຄືນຄ່າຈະລຶບການແມັບທີ່ດາວໂຫຼດມາ ແລະ ຕັ້ງ ດາວໂຫຼດຈາກ ກັບຄືນເປັນໄຟລ໌ຂອງຊຸມຊົນ, ເຊິ່ງ ອັບເດດດຽວນີ້ ຄັ້ງຕໍ່ໄປຈະດາວໂຫຼດ. ແຖວຂອງທ່ານເອງ, ພາຍໃຕ້ ເພີ່ມເຕີມ, ຍັງຄົງຢູ່.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ອັບເດດດຽວນີ້</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>ກຳລັງອັບເດດ…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>ກຳລັງກວດຫາອັບເດດ…</value></data>
@@ -1071,9 +1100,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>ມີມາໃນຕົວ: {1} ການແມັບ, ສຳເນົາຂອງຊຸມຊົນວັນທີ {2}. ດາວໂຫຼດເມື່ອ {3} ຈາກ {4}: ແຖວໃໝ່ {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>ມີມາໃນຕົວ: {1} ການແມັບ, ສຳເນົາຂອງຊຸມຊົນວັນທີ {2}. ດາວໂຫຼດເມື່ອ {3} ຈາກ {4}: ແຖວໃໝ່ {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>ຖານຂໍ້ມູນຂອງຊຸມຊົນບໍ່ໄດ້ປ່ຽນແປງຕັ້ງແຕ່ການອັບເດດຄັ້ງຫຼ້າສຸດ.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>ໄຟລ໌ທີ່ {0} ບໍ່ໄດ້ປ່ຽນແປງຕັ້ງແຕ່ການອັບເດດຄັ້ງຫຼ້າສຸດ.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>ບໍ່ສາມາດເຂົ້າເຖິງ GitHub ໄດ້: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>ບໍ່ສາມາດເຂົ້າເຖິງ {0} ໄດ້: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ປະຕິເສດການດາວໂຫຼດ ເພາະມັນບໍ່ແມ່ນຖານຂໍ້ມູນຕົວຄວບຄຸມທີ່ຄາດໄວ້. ບໍ່ມີຫຍັງປ່ຽນແປງ.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge ປະຕິເສດຄຳຕອບຂອງ GitHub. ບໍ່ມີຫຍັງປ່ຽນແປງ.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge ປະຕິເສດຄຳຕອບຈາກ {0}. ບໍ່ມີຫຍັງປ່ຽນແປງ.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ເລີ່ມແບບຫຍໍ້ໄວ້</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1116,6 +1148,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>ໂຟນເດີ</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>ການຕັ້ງຄ່າບໍລິການ</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>ຂັ້ນຕອນການລຶບ</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>ບໍລິການ</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>ໄຟລ໌</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>ຕົວກັ່ນຕອງເທິງ</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>ຄ່າຣີຈິສຕຣີ</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID ຮາດແວ</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>ໜ້າວຽກທີ່ກຳນົດເວລາ</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>ລາຍການໃນແອັບທີ່ຕິດຕັ້ງແລ້ວ</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>ອຸປະກອນ USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>ໃຫ້ຕົວຄວບຄຸມ PlayStation 3, PlayStation Move ແລະ ຕົວຄວບຄຸມ Navigation ເຊື່ອມຕໍ່ຜ່ານ Bluetooth ໄດ້. ຝັງຢູ່ໃນ PadForge ແລະ ຕິດຕັ້ງເມື່ອຈັບຄູ່ຕົວຄວບຄຸມໃດໜຶ່ງເຫຼົ່ານີ້ຄັ້ງທຳອິດ.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມ PlayStation 3 ຜ່ານ Bluetooth.</value></data>
@@ -1184,6 +1224,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>ບັນທຶກ {0} ແລ້ວ</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ການບັນທຶກບໍ່ໄດ້ເລີ່ມ. ການກວດພົບຄ່າສ່ວນຕົວຂອງ PC ນີ້ທີ່ຈະບໍ່ຖືກກັນອອກຈາກໄຟລ໌.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ການບັນທຶກບໍ່ໄດ້ເລີ່ມ. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge ບໍ່ພົບໂຟນເດີຊົ່ວຄາວຂອງຜູ້ໃຊ້ທີ່ເຂົ້າສູ່ລະບົບຢູ່ພາຍໃນໂປຣໄຟລ໌ຂອງຜູ້ໃຊ້ນັ້ນ, ທີ່ເຂົ້າເຖິງໄດ້ໂດຍບໍ່ຜ່ານລິ້ງ, ເພື່ອຂຽນການບັນທຶກລົງໄປ.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>ໂຟນເດີການບັນທຶກເປັນລິ້ງໄປຫາບ່ອນອື່ນ, ເຊິ່ງ PadForge ບໍ່ຕິດຕາມໄປ.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>ການບັນທຶກຄັ້ງກ່ອນຍັງບໍ່ທັນສຳເລັດ.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>ເກັບ 60 ວິນາທີສຸດທ້າຍ ປິດຢູ່, ສະນັ້ນຈຶ່ງບໍ່ມີຫຍັງໃຫ້ບັນທຶກ.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>ການບັນທຶກທີ່ PadForge ບໍ່ໄດ້ຢຸດ ກຳລັງລໍຖ້າໃຫ້ທ່ານອ່ານໃນ ໜ້າຫຼັກ: {0}</value></data>
@@ -1197,7 +1239,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, ອຸປະກອນ ແລະ ການຕັ້ງຄ່າຂອງທ່ານ ຕາມທີ່ເປັນຢູ່ຕອນນີ້, ຜ່ານການກວດທົບທວນແບບດຽວກັນ.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log ຢູ່ຂ້າງ PadForge.exe, ເຊິ່ງທ່ານສາມາດອ່ານໄດ້ຢູ່ບ່ອນນັ້ນ.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>ສິ່ງທີ່ຈະບັນທຶກ</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>ເປີດທັງໝົດ. ສ່ວນທີ່ປິດໄວ້ຈະຖືກຍົກເວັ້ນຈາກການບັນທຶກຄັ້ງຕໍ່ໄປ, ແລະ ໄຟລ໌ຈະບອກວ່າມັນມີສ່ວນໃດແດ່.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>ທຸກສ່ວນເປີດໄວ້ຕາມຄ່າເລີ່ມຕົ້ນ. ສ່ວນທີ່ປິດໄວ້ຈະຖືກຍົກເວັ້ນຈາກການບັນທຶກຄັ້ງຕໍ່ໄປ, ແລະ ໄຟລ໌ຈະບອກວ່າມັນມີສ່ວນໃດແດ່.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>ສຳລັບບັນຫາທີ່ເກີດຂຶ້ນຄັ້ງດຽວໃນຕອນແລງ.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>ການບັນທຶກລໍຖ້າໃຫ້ທ່ານອ່ານມັນໃນ ໜ້າຫຼັກ.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>ສະຫຼຸບ</value></data>
@@ -1236,8 +1278,8 @@
   <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 ຄ່າ</value></data>
   <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} ປະເພດຂໍ້ມູນສ່ວນຕົວ</value></data>
   <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 ປະເພດຂໍ້ມູນສ່ວນຕົວ</value></data>
-  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>ການກວດຂໍ້ມູນສ່ວນຕົວ: ຄ່າຂອງ PC ນີ້ {0} ຄ່າ ຍັງຢູ່ໃນສ່ວນທີ່ທ່ານເກັບໄວ້. ປິດສ່ວນເຫຼົ່ານັ້ນ ຫຼື ລຶບການບັນທຶກ. ບັນທຶກ… ຈະໃຊ້ບໍ່ໄດ້ຈົນກວ່າຈະແກ້ໄຂ.</value></data>
-  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>ການກວດຂໍ້ມູນສ່ວນຕົວ: ຄ່າໜຶ່ງຂອງ PC ນີ້ ຍັງຢູ່ໃນສ່ວນທີ່ທ່ານເກັບໄວ້. ປິດສ່ວນເຫຼົ່ານັ້ນ ຫຼື ລຶບການບັນທຶກ. ບັນທຶກ… ຈະໃຊ້ບໍ່ໄດ້ຈົນກວ່າຈະແກ້ໄຂ.</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>ການກວດຂໍ້ມູນສ່ວນຕົວ: ຄ່າຂອງ PC ນີ້ {0} ຄ່າ ຍັງຢູ່ໃນສ່ວນທີ່ທ່ານເກັບໄວ້. ປິດສ່ວນເຫຼົ່ານັ້ນ ຫຼື ລຶບການບັນທຶກ. “ບັນທຶກ” ຈະໃຊ້ບໍ່ໄດ້ຈົນກວ່າຈະແກ້ໄຂ.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>ການກວດຂໍ້ມູນສ່ວນຕົວ: ຄ່າໜຶ່ງຂອງ PC ນີ້ ຍັງຢູ່ໃນສ່ວນທີ່ທ່ານເກັບໄວ້. ປິດສ່ວນເຫຼົ່ານັ້ນ ຫຼື ລຶບການບັນທຶກ. “ບັນທຶກ” ຈະໃຊ້ບໍ່ໄດ້ຈົນກວ່າຈະແກ້ໄຂ.</value></data>
   <data name="Review_Empty" xml:space="preserve"><value>ບໍ່ມີຫຍັງຂອງສ່ວນນີ້ເກີດຂຶ້ນຂະນະທີ່ບັນທຶກ.</value></data>
   <data name="Review_Delete" xml:space="preserve"><value>ລຶບ</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>ສຳເນົາສະຫຼຸບ</value></data>
@@ -1248,6 +1290,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>ບັນທຶກໄຟລ໌ການບັນທຶກ</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>ໄຟລ໌ Zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>ບໍ່ໄດ້ບັນທຶກ. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>ການກວດຂໍ້ມູນສ່ວນຕົວ: ກຳລັງກວດສ່ວນທີ່ທ່ານເກັບໄວ້…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>ການກວດຂໍ້ມູນສ່ວນຕົວ: PadForge ບໍ່ສາມາດອ່ານສ່ວນທີ່ທ່ານເກັບໄວ້ໄດ້, ສະນັ້ນ “ບັນທຶກ” ຈຶ່ງໃຊ້ບໍ່ໄດ້.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>ການບັນທຶກດ້ວຍສິດຂອງທ່ານບໍ່ໄດ້ເລີ່ມ.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>ການບັນທຶກດ້ວຍສິດຂອງທ່ານບໍ່ໄດ້ເລີ່ມ: ບໍ່ມີເຊວເດັສທັອບເຮັດວຽກຢູ່ເພື່ອເລີ່ມມັນ.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>ການບັນທຶກດ້ວຍສິດຂອງທ່ານບໍ່ໄດ້ເລີ່ມ: Windows ປະຕິເສດດ້ວຍຂໍ້ຜິດພາດ {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>ການບັນທຶກບໍ່ສຳເລັດພາຍໃນ {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ບໍ່ອະນຸຍາດໃຫ້ຂຽນໄຟລ໌ລົງບ່ອນນັ້ນ.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ບໍ່ຮັບໄຟລ໌ນີ້ເປັນການບັນທຶກຂອງມັນເອງ.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>ການບັນທຶກສິ້ນສຸດດ້ວຍລະຫັດ {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>ບັນທຶກໃນນາມທ່ານ, ໄປທີ່ໂຟນເດີ ດາວໂຫຼດ ຂອງທ່ານໃນຄັ້ງທຳອິດ, ຈາກນັ້ນໄປບ່ອນທີ່ທ່ານບັນທຶກຄັ້ງຫຼ້າສຸດ, ແລະ ສະແດງໃນ Explorer. ການບັນທຶກທີ່ຢຸດໃນຂະນະທີ່ບໍ່ມີໃຜຢູ່ໜ້ານີ້ (ຮອດຂີດຈຳກັດ, ມາໂຄຣ, ໂປຣແກຣມ, ເຄື່ອງມືຂອງຜູ້ຊ່ວຍ ຫຼື --record stop) ຈະລໍຖ້າການກວດທົບທວນນີ້ໃນ ໜ້າຫຼັກ, ແລະ ຈະຖືກລຶບຫຼັງຈາກ 7 ມື້ ຖ້າບໍ່ໄດ້ບັນທຶກ. ໂປຣແກຣມຈະຮູ້ພຽງວ່າມັນລໍຖ້າຢູ່, ບໍ່ເຄີຍຮູ້ວ່າຢູ່ໃສ.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>ການບັນທຶກບັນຫາຈາກ {0} ກຳລັງລໍຖ້າໃຫ້ທ່ານອ່ານ.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>ກວດທົບທວນ</value></data>
@@ -1920,9 +1973,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>ອ່ານບໍ່ສຳເລັດ: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ປະຕິເສດພຣີເຊັດນີ້ທີ່ {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ພຣີເຊັດນີ້ບໍ່ມີ HID descriptor ຈຶ່ງບໍ່ສາມາດສ້າງຕົວຄວບຄຸມຈາກມັນໄດ້.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດກວດພຣີເຊັດນີ້ໄດ້: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>ກຳລັງກວດພຣີເຊັດ…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ບໍ່ມີຫຍັງຖືກນຳເຂົ້າ. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>ນຳເຂົ້າ</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ອຸປະກອນ HID ບໍ່ມີຊື່)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>ເມົ້າ</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>ຈອຍສະຕິກ</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>ເກມແພດ</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>ແປ້ນພິມ</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>ຕົວຄວບຄຸມຫຼາຍແກນ</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>ພົບອິນເຕີເຟດ HID {0} ອັນ.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>ພົບອິນເຕີເຟດ HID 1 ອັນ.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>ການລະບຸລາຍການບໍ່ສຳເລັດ: {0}</value></data>
@@ -3053,7 +3115,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ຂະນະກົດຄ້າງ ແລະ ກັບຈຸດກາງ</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ສະຫຼັບ</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ອິນພຸດບັງຄັບລ້ຽວ</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ປຸ່ມທີ່ໃຫ້ເມົ້າບັງຄັບລ້ຽວ, ຢູ່ໃນອຸປະກອນດຽວກັນກັບແຫຼ່ງ. ຖ້າບໍ່ໄດ້ເລືອກ, ເມົ້າຈະບັງຄັບລ້ຽວຕະຫຼອດ.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ປຸ່ມທີ່ໃຫ້ເມົ້າບັງຄັບລ້ຽວ, ຢູ່ໃນອຸປະກອນໃດກໍໄດ້ຂອງຊ່ອງນີ້. ຖ້າບໍ່ໄດ້ເລືອກ, ເມົ້າຈະບັງຄັບລ້ຽວຕະຫຼອດ.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ການເຮັດໃຫ້ລຽບ</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ເຮັດໃຫ້ເມົ້າທີ່ລາຍງານບໍ່ສະໝ່ຳສະເໝີລຽບຂຶ້ນ. ສະຕິກຈະຊ້າກວ່າມືປະມານເທົ່ານີ້. 0 ແມ່ນປິດ.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>ການໝຸນສຸດທີ່ຄວາມໄວ</value></data>
@@ -3074,7 +3136,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>ເລີ່ມບ່ອນທີ່ເລີ່ມບັງຄັບລ້ຽວ</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>ເມື່ອມີ ອິນພຸດບັງຄັບລ້ຽວ, ສະຕິກຈະວັດຈາກບ່ອນທີ່ຕົວຊີ້ຢູ່ຕອນເລີ່ມບັງຄັບລ້ຽວ, ຄືກັບສະຕິກເທິງໜ້າຈໍໂທລະສັບທີ່ເລີ່ມບ່ອນນິ້ວແຕະ. ເມື່ອປິດ, ມັນຈະວັດຈາກຈຸດກາງຂອງຈໍທີ່ຕົວຊີ້ຢູ່.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>ແກນນີ້ເຄື່ອນທີ່ແບບສົມທຽບ</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ສຳລັບແທຣັກບອນ ຫຼື ສະປິນເນີທີ່ລາຍງານວ່າມັນໝຸນໄປໄກເທົ່າໃດ. ເມື່ອເປີດ, ແກນຈະຄ້າງຕຳແໜ່ງຄືກັບ ການເລື່ອນເມົ້າ ແລະ ໃຊ້ການຕັ້ງຄ່າໄລຍະເລື່ອນ. Windows ບໍ່ບອກວ່າແກນໃດເຄື່ອນທີ່ແບບນີ້.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ສຳລັບແທຣັກບອນ ຫຼື ສະປິນເນີທີ່ລາຍງານວ່າມັນໝຸນໄປໄກເທົ່າໃດ. ເມື່ອເປີດ, ແກນຈະຄ້າງຕຳແໜ່ງຄືກັບ ການເລື່ອນເມົ້າ ແລະ ໃຊ້ການຕັ້ງຄ່າໄລຍະເລື່ອນ. SDL ອ່ານຕົວຄວບຄຸມທົ່ວໄປຜ່ານ DirectInput, ເຊິ່ງອ່ານທຸກແກນເປັນຕຳແໜ່ງ, ສະນັ້ນສະວິດນີ້ຈຶ່ງບອກວ່າແກນໃດເຄື່ອນທີ່ແບບນີ້.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} ຊມ</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>ສະແດງຕົວຢ່າງ</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>ສະແດງວ່າກຸ່ມນີ້ຕິດຕາມເມົ້າຂອງທ່ານແນວໃດ. ບໍ່ມີຫຍັງຖືກແມັບຈົນກວ່າທ່ານຈະເລືອກມັນ.</value></data>
@@ -3260,6 +3322,13 @@
 {0}
 
 PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ້າງ PadForge.exe. ເພື່ອລາຍງານບັນຫານີ້, ໃຫ້ເລີ່ມການສົນທະນາທີ່ {2} ແລະ ລາກ crash.log ໄປວາງໃສ່.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>ເກີດຂໍ້ຜິດພາດທີ່ບໍ່ຄາດຄິດ:
+
+{0}
+
+PadForge ບໍ່ສາມາດຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ້າງ PadForge.exe ໄດ້. ເພື່ອລາຍງານບັນຫານີ້, ໃຫ້ເລີ່ມການສົນທະນາທີ່ {2}, ກົດ Ctrl+C ຢູ່ນີ້ເພື່ອສຳເນົາຂໍ້ຄວາມນີ້, ແລະ ວາງມັນໄວ້ທີ່ນັ້ນ.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(ລະງັບຂໍ້ຜິດພາດເພີ່ມເຕີມ {0} ລາຍການ)</value></data>
@@ -4171,7 +4240,7 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>ການຖອດການບີບອັດ Zstandard ທີ່ SteamKit2 ໃຊ້ສຳລັບກ້ອນຂໍ້ມູນ depot ຂອງ Steam, ເປັນການພອດ C# ຂອງໄລບຣາຣີ zstd ໂດຍ Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>ເຊີບເວີ ແລະ ໄຄລເອັນ Model Context Protocol ທີ່ຢູ່ເບື້ອງຫຼັງການເຊື່ອມຕໍ່ຜູ້ຊ່ວຍ ແລະ PadForge.exe --mcp, ໂດຍ Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>ເຊີບເວີ ແລະ ໄຄລເອັນ Model Context Protocol ທີ່ຢູ່ເບື້ອງຫຼັງການເຊື່ອມຕໍ່ຜູ້ຊ່ວຍ ແລະ PadForge.exe --mcp, ໂດຍ Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ແລະ DependencyInjection.Abstractions, ເຊິ່ງ MCP C# SDK ສ້າງຂຶ້ນເທິງມັນ, ໂດຍ Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5484,7 +5553,18 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>ກຳລັງຜູກ WinUSB ກັບໜ້າຈໍຂອງ G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>ໜ້າຈໍຂອງ G19 ໃຊ້ໄດຣເວີອື່ນ ({0}), ສະນັ້ນໃຫ້ເປີດ Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>ໜ້າຈໍຂອງ G19 ໃຊ້ໄດຣເວີຂອງໂປຣແກຣມອື່ນ ({0}), ເຊິ່ງ PadForge ຈະບໍ່ແຕະຕ້ອງ</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>ກຳລັງກວດໄດຣເວີ PlayStation Bluetooth ຂອງ PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>ກຳລັງອ່ານວິທະຍຸ Bluetooth ຂອງຄອມພິວເຕີເຄື່ອງນີ້…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>ກຳລັງເປີດຕົວຄວບຄຸມຜ່ານສາຍ USB ຂອງມັນ…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>ກຳລັງຂຽນທີ່ຢູ່ Bluetooth ຂອງຄອມພິວເຕີເຄື່ອງນີ້ລົງໃນຕົວຄວບຄຸມ…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>ກຳລັງລົງທະບຽນຕົວຄວບຄຸມກັບ Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>ກຳລັງເລີ່ມ Bluetooth ຄືນໃໝ່…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>ການຈັບຄູ່ຢຸດລົງ: Windows ປະຕິເສດບໍ່ໃຫ້ PadForge ເຂົ້າເຖິງຕົວຄວບຄຸມ ຫຼື ການຕັ້ງຄ່າ Bluetooth. ບັນທຶກການວິນິດໄສມີລາຍລະອຽດ.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>ການຈັບຄູ່ຢຸດລົງ: ການອ່ານ ຫຼື ການຂຽນຕົວຄວບຄຸມ ຫຼື ວິທະຍຸ Bluetooth ລົ້ມເຫຼວ. ບັນທຶກການວິນິດໄສມີລາຍລະອຽດ.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>ການຈັບຄູ່ຢຸດລົງຍ້ອນຂໍ້ຜິດພາດທີ່ PadForge ບໍ່ໄດ້ຄາດໄວ້. ບັນທຶກການວິນິດໄສມີລາຍລະອຽດ.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>ຕ້ອງການ Logitech Gaming Software 8.52 ຫຼື ໃໝ່ກວ່າ</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ພົບໄລບຣາຣີຂອງມັນແຕ່ບໍ່ໄດ້ໂຫຼດ, ເພາະ PadForge ບໍ່ສາມາດຢືນຢັນໄດ້ວ່າມີແຕ່ຜູ້ເບິ່ງແຍງລະບົບເທົ່ານັ້ນທີ່ປ່ຽນມັນໄດ້ ແລະ Logitech ໄດ້ລົງລາຍເຊັນມັນ</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ພົບໄລບຣາຣີຂອງມັນແຕ່ບໍ່ສາມາດໃຊ້ໄດ້, ແລະ ບັນທຶກການວິນິດໄສບອກສາເຫດ</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>ເປີດ Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ກຳລັງລໍຖ້າໂທລະສັບທີ່ມີ Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>ເທິງໂທລະສັບ</value></data>
@@ -5580,6 +5660,8 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>ເລືອກ dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>ໂຫຼດສຳເນົາໄລບຣາຣີຂອງ Force Dimension ນີ້ແທນສຳເນົາອື່ນທັງໝົດ. Falcon ທີ່ເປີດຢູ່ກັບສຳເນົາອື່ນຈະປິດ ແລະ ເປີດຄືນໃໝ່ກັບສຳເນົານີ້. ສຳເນົາທີ່ SDK ຕິດຕັ້ງຈະຖືກພົບເອງໂດຍບໍ່ຕ້ອງເລືອກ.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|ໄລບຣາຣີ (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>ໜ້າດາວໂຫຼດ Falcon SDK ບໍ່ໄດ້ເປີດ: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>ໜ້າດາວໂຫຼດ Falcon SDK ຍັງບໍ່ໄດ້ເປີດ: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>ຕິດຕັ້ງໄດຣເວີ Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>ຕິດຕັ້ງໄດຣເວີຂອງ Force Dimension ຈາກໂຟນເດີ SDK ໃສ່ Falcon ທີ່ບໍ່ມີໄດຣເວີ. Windows ອາດຈະຖາມກ່ອນວ່າຈະເຊື່ອຖື Force Dimension ຫຼື ບໍ່.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>ດາວໂຫຼດ SDK ຂອງ Force Dimension</value></data>
@@ -5781,6 +5863,7 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>ຕົວຄວບຄຸມໃໝ່</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>ການຕັ້ງຄ່າ</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>ທຸກແກນ, ປຸ່ມ ແລະ ເຊັນເຊີ</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>ການຄວບຄຸມຂອງມັນຕາມຊື່ທີ່ສະຄຣິບໃຊ້</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>ກົດຢູ່: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, ເສັ້ນທາງ, ຄວາມສາມາດ, ບັງຄັບໂໝດຈອຍສະຕິກດິບ</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, ເສັ້ນທາງ, ຄວາມສາມາດ</value></data>
@@ -5908,8 +5991,13 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>ກຳລັງເອົາອອກ…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>ກຳລັງອັບເດດ…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>ມັນບໍ່ສຳເລັດ: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>ລາຍການ ແລະ ສະກິລຂອງ PadForge ຍັງຄົງຢູ່, ເພາະ {0} ອ່ານໄຟລ໌ການຕັ້ງຄ່າ ແລະ ໂຟນເດີສະກິລດຽວກັນ.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>ລາຍການຂອງ PadForge ຍັງຄົງຢູ່, ເພາະ {0} ອ່ານໄຟລ໌ການຕັ້ງຄ່າດຽວກັນ.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge ຖືກເອົາອອກຈາກໂປຣແກຣມນີ້ແລ້ວ. ສະກິລຂອງມັນຍັງຄົງຢູ່, ເພາະ {0} ອ່ານສະກິລຈາກໂຟນເດີດຽວກັນ.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດອ່ານການຕັ້ງຄ່າໃນ {0} ໄດ້, ສະນັ້ນມັນບໍ່ຮູ້ວ່າ PadForge ຖືກເພີ່ມແລ້ວຫຼືບໍ່.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>ເພີ່ມແລ້ວ. PadForge ບໍ່ສາມາດອ່ານໂຟນເດີສະກິລຂອງມັນໄດ້.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>ສຳເນົາແລ້ວ.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>ບໍ່ໄດ້ສຳເນົາ: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>ບໍ່ໄດ້ສຳເນົາ. Windows ບໍ່ອະນຸຍາດໃຫ້ PadForge ໃຊ້ຄລິບບອດ.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>ໂປຣແກຣມທີ່ອະນຸຍາດ</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>ໂປຣແກຣມທີ່ຕ້ອງການ ອ່ານ ຂຶ້ນໄປ ຈະຖາມຄັ້ງດຽວ, ໃນຄັ້ງທຳອິດທີ່ມັນເຊື່ອມຕໍ່, ແລະ ໄດ້ຮັບລະດັບທີ່ມັນຂໍ, ບໍ່ເກີນລະດັບຂ້າງເທິງ. ຜູ້ຊ່ວຍທີ່ທ່ານເພີ່ມຂ້າງເທິງຖືກອະນຸຍາດໂດຍການເພີ່ມນັ້ນ.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -5925,6 +6013,8 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ຈອຍສະຕິກ. PadForge ອ່ານມັນແບບດິບ, ສະນັ້ນການແມັບຂອງ SDL ບໍ່ຖືກໃຊ້.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>ຈອຍສະຕິກ, ຈັດວາງເປັນເກມແພດໂດຍແຖວຂອງທ່ານ.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL ອ່ານອຸປະກອນຂະນະທີ່ເອັນຈິນເຮັດວຽກ.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>ອຸປະກອນບໍ່ໄດ້ເຊື່ອມຕໍ່. SDL ຈະອ່ານມັນເມື່ອມັນເຊື່ອມຕໍ່.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ບໍ່ໄດ້ໃຫ້ຂໍ້ມູນການອ່ານອຸປະກອນນີ້ແກ່ PadForge.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>ສຳເນົາຂອງຊຸມຊົນທີ່ມີມາໃນຕົວ, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ດາວໂຫຼດເມື່ອ {0}</value></data>
@@ -5962,6 +6052,11 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>ເທີໂບ, ການສະຫຼັບ ແລະ ການກະທຳອື່ນ</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ແລະ {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ສຳເນົາ: SDL ບໍ່ມີການແມັບສຳລັບອຸປະກອນນີ້, ແລະ ມັນບໍ່ຢູ່ໃນຕົວຄວບຄຸມໃດ.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ສຳເນົາ: PadForge ບໍ່ສາມາດອ່ານການແມັບຂອງ SDL ສຳລັບອຸປະກອນນີ້ໄດ້, ແລະ ບໍ່ມີແຖວໃດຂອງຕົວຄວບຄຸມຂອງມັນໃຫ້ການຜູກທີ່ຮູບແບບຂອງ SDL ຮັບໄດ້.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ສຳເນົາ: SDL ບໍ່ມີການແມັບສຳລັບອຸປະກອນນີ້, ແລະ ບໍ່ມີແຖວໃດຂອງ {0} ອ່ານປຸ່ມ, ແກນ ຫຼື ແຮັດຂອງມັນໃນແບບທີ່ຮູບແບບຂອງ SDL ຮັບໄດ້.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ສຳເນົາ: SDL ບໍ່ມີການແມັບສຳລັບອຸປະກອນນີ້, ແລະ ແຖວຂອງ {0} ອ່ານມັນພຽງສຳລັບ {1}, ເຊິ່ງຮູບແບບຂອງ SDL ບໍ່ສາມາດຮອງຮັບໄດ້.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ສຳເນົາ: PadForge ບໍ່ສາມາດອ່ານການແມັບຂອງ SDL ສຳລັບອຸປະກອນນີ້ໄດ້ໃນຕອນນີ້, ແລະ ມັນບໍ່ຢູ່ໃນຕົວຄວບຄຸມໃດ.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ສຳເນົາ: PadForge ບໍ່ສາມາດອ່ານການແມັບຂອງ SDL ສຳລັບອຸປະກອນນີ້ໄດ້ໃນຕອນນີ້, ແລະ ບໍ່ມີແຖວໃດຂອງ {0} ໃຫ້ການຜູກທີ່ຮູບແບບຂອງ SDL ຮັບໄດ້.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>ໂປຣແກຣມອື່ນກຳລັງໃຊ້ຄລິບບອດ. ບໍ່ມີຫຍັງຖືກສຳເນົາ.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>ແຖວຂອງທ່ານຖືກເອົາອອກແລ້ວ. ອຸປະກອນຈະອ່ານຄືກັບກ່ອນໜ້ານັ້ນ.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>ແມັບອີກຄັ້ງຈາກໂຄງຮ່າງຂອງ SDL: {0}.</value></data>
@@ -5982,6 +6077,8 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>ແຖວທີ່ PadForge ມີ</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>ບໍ່ມີແຖວທີ່ກົງກັນ.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>ແຖວທີ່ເລືອກຈະຖືກນຳໃຊ້ກັບ {0} ພາຍໃຕ້ ID ຂອງມັນເອງ, ຜ່ານການກວດ ແລະ ການເລືອກແບບດຽວກັນກັບ ວາງ.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>ເອັນຈິນຢຸດຢູ່, ສະນັ້ນລາຍການຈຶ່ງບໍ່ລວມແຖວທີ່ SDL ມີ, ທັງຂອງມັນເອງ ແລະ ສຳເນົາຂອງຊຸມຊົນທີ່ມີມາໃນຕົວ. ພວກມັນຈະຖືກສະແດງເມື່ອເອັນຈິນເຮັດວຽກ.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL ບໍ່ໄດ້ຕອບທັນເວລາ, ສະນັ້ນລາຍການຈຶ່ງບໍ່ລວມແຖວທີ່ມັນມີ, ທັງຂອງມັນເອງ ແລະ ສຳເນົາຂອງຊຸມຊົນທີ່ມີມາໃນຕົວ.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>ແຖວການແມັບ SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>ແຖວສຳລັບອຸປະກອນນີ້.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>ໂຄງຮ່າງທີ່ຄາດເດົາ.</value></data>
@@ -5994,14 +6091,14 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} ຊ່ອງຂໍ້ມູນ, ຈາກຜູ້ຂາຍ ແລະ ຜະລິດຕະພັນດຽວກັນໃນບັສ ຫຼື ເວີຊັນອື່ນ. ມັນຖືກເກັບໄວ້ພາຍໃຕ້ ID ຂອງອຸປະກອນນີ້ເອງ.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} ຊ່ອງຂໍ້ມູນ, ແຖວຂອງອຸປະກອນອື່ນ. ມັນຖືກເກັບໄວ້ພາຍໃຕ້ ID ຂອງອຸປະກອນນີ້ເອງ.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} ຊ່ອງຂໍ້ມູນ. SDL ບໍ່ອ່ານອຸປະກອນນີ້, ສະນັ້ນ PadForge ຈັດວາງອິນພຸດຂອງມັນຕາມແຖວ.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge ບໍ່ມີປຸ່ມ ຫຼື ແກນທຳມະດາສຳລັບຊ່ອງຂໍ້ມູນເຫຼົ່ານີ້ ແລະ ຈະຍົກເວັ້ນພວກມັນ: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} ຊ່ອງຂໍ້ມູນ, ຈາກແກນ, ປຸ່ມ ແລະ ແຮັດຂອງອຸປະກອນ. ກວດມັນໃນ ທົດສອບອິນພຸດ, ແລ້ວເກັບມັນໄວ້ ຫຼື ປ່ຽນມັນຢູ່ນີ້.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>ສິ່ງນີ້ປ່ຽນວິທີອ່ານ {0}. ແຖວຂອງມັນໃນ {1} ຈະຖືກແມັບອີກຄັ້ງຈາກໂຄງຮ່າງໃໝ່.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>ສິ່ງນີ້ປ່ຽນວິທີອ່ານ {0}. ມັນບໍ່ຢູ່ໃນຕົວຄວບຄຸມໃດ, ສະນັ້ນບໍ່ມີແຖວໃດປ່ຽນ.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>ປຸ່ມລັດໂປຣໄຟລ໌ທີ່ອ່ານ {0} ຈະຮັກສາອິນພຸດທີ່ຕັ້ງໄວ້.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>ແຖວນີ້ຖືກເກັບໄວ້ເປັນຂອງທ່ານໃນ PadForge.xml ແລະ ມີຜົນເໜືອທຸກແຫຼ່ງອື່ນສຳລັບອຸປະກອນນີ້. ເອົາຂອງຂ້ອຍອອກ ຈະຄືນແຖວເກົ່າ ແລະ ແຖວຕ່າງໆເກົ່າ.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>ແຖວເຫຼົ່ານີ້ຖືກເກັບໄວ້ເປັນຂອງທ່ານໃນ PadForge.xml ແລະ ມີຜົນເໜືອທຸກແຫຼ່ງອື່ນສຳລັບອຸປະກອນຂອງພວກມັນ. ລ້າງ, ພາຍໃຕ້ ເພີ່ມເຕີມ ຂອງແຖວ ຖານຂໍ້ມູນຕົວຄວບຄຸມ, ຈະເອົາພວກມັນອອກ.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} ແຖວສຳລັບ Windows. {1} ແຖວສຳລັບລະບົບອື່ນຖືກຂ້າມໄປ.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ແຖວສຳລັບ Windows. {1} ແຖວສຳລັບລະບົບອື່ນຖືກຂ້າມໄປ.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} ແຖວສຳລັບ Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>ທັງໝົດ {0:N0} ແຖວຈະຖືກເພີ່ມ. PadForge ເກັບແຖວຂອງທ່ານໄດ້ສູງສຸດ {1:N0} ແຖວ.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>ມັນຈະຖືກເພີ່ມ. PadForge ເກັບແຖວຂອງທ່ານໄດ້ສູງສຸດ {1:N0} ແຖວ.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>ຕອນນີ້ແຖວຂອງທ່ານຖືກເກັບໄວ້ {0:N0} ແຖວ, ສະນັ້ນ {1:N0} ແຖວໃນນີ້ຈະຖືກເພີ່ມ ແລະ {2:N0} ແຖວຈະບໍ່ຖືກເພີ່ມ.</value></data>
@@ -6011,7 +6108,7 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ຂໍ້ຄວາມນີ້ບໍ່ແມ່ນແຖວຂອງຖານຂໍ້ມູນຕົວຄວບຄຸມ SDL: ID ເລກຖານສິບຫົກ 32 ຕົວ, ຊື່, ແລ້ວຊ່ອງຂໍ້ມູນເຊັ່ນ a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>ແຖວເຫຼົ່ານີ້ສຳລັບລະບົບອື່ນ. PadForge ອ່ານແຖວສຳລັບ Windows, ຫຼື ສຳລັບບໍ່ມີລະບົບສະເພາະ.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID ຂອງແຖວບໍ່ແມ່ນ ID ຂອງອຸປະກອນ. ມັນຕ້ອງມີເລກຖານສິບຫົກ 32 ຕົວ.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>ຊື່ຂອງແຖວຫວ່າງເປົ່າ, ຍາວເກີນ 128 ຕົວອັກສອນ, ຫຼື ມີຕົວອັກສອນທີ່ SDL ອ່ານເປັນຊ່ອງຂໍ້ມູນ.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>ຊື່ຂອງແຖວຫວ່າງເປົ່າ, ຍາວເກີນ 128 ຕົວອັກສອນ, ມີເຄື່ອງໝາຍຊ່ອງຂໍ້ມູນທີ່ SDL ອ່ານ ເຊັ່ນ “type:”, ຫຼື ມີຕົວອັກສອນອື່ນນອກຈາກຕົວໜັງສື, ຕົວເລກ, ເຄື່ອງໝາຍວັກຕອນ, ສັນຍາລັກ ແລະ ຍະຫວ່າງທຳມະດາ.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>ແຖວມີຄຳແນະນຳ ຫຼື ຊ່ອງຂໍ້ມູນ Android, ເຊິ່ງ PadForge ບໍ່ຮັບ.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>ແຖວມີຊ່ອງຂໍ້ມູນທີ່ SDL ບໍ່ຮູ້ຈັກ.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>ການຜູກປຸ່ມບໍ່ຢູ່ໃນຮູບແບບຂອງ SDL, ເຊັ່ນ b3, a2, +a2, a2~ ຫຼື h0.4.</value></data>
@@ -6022,8 +6119,7 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>ແຖວຂອງທ່ານ</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>ແຖວທີ່ທ່ານເພີ່ມຢູ່ນີ້, ຫຼື ວາງໃນບັດ ການແມັບ SDL ຂອງອຸປະກອນ, ມີຜົນເໜືອທຸກແຫຼ່ງອື່ນສຳລັບອຸປະກອນຂອງພວກມັນ ແລະ ຍັງຢູ່ຫຼັງການຄືນຄ່າ.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ເພີ່ມແຖວຈາກໄຟລ໌ ຫຼື ຄລິບບອດ…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} ແຖວສຳລັບອຸປະກອນເທົ່າກັນ, ຂອງທ່ານມີຜົນເໜືອທຸກແຫຼ່ງອື່ນ.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ແຖວສຳລັບອຸປະກອນດຽວ, ຂອງທ່ານມີຜົນເໜືອທຸກແຫຼ່ງອື່ນ.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} ແຖວ, ຂອງທ່ານມາກ່ອນທຸກແຫຼ່ງອື່ນ.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>ຍັງບໍ່ມີ.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>ຕົວແປ SDL_GAMECONTROLLERCONFIG ຂອງທ່ານມີ {0} ແຖວທີ່ PadForge ບໍ່ໄດ້ເກັບ. ເພີ່ມແຖວຈາກໄຟລ໌ ຫຼື ຄລິບບອດ ຈະເປີດພ້ອມກັບແຖວເຫຼົ່ານັ້ນ.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>ຕົວແປ SDL_GAMECONTROLLERCONFIG ຂອງທ່ານມີ {0} ແຖວທີ່ PadForge ບໍ່ໄດ້ເກັບ. ເພີ່ມແຖວຈາກໄຟລ໌ ຫຼື ຄລິບບອດ ຈະເປີດພ້ອມກັບແຖວນັ້ນ.</value></data>
@@ -6042,7 +6138,7 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>ຢຸດແລ້ວ. ຄຳສຸດທ້າຍຂອງມັນ: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>ມັນບໍ່ສາມາດເລີ່ມໄດ້.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>ມັນບໍ່ຢູ່ໃນ PC ນີ້ອີກແລ້ວ.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>ບໍ່ພົບໂປຣແກຣມອຸໂມງໃນ PC ນີ້. PadForge ເຮັດວຽກກັບ cloudflared, devtunnel, ngrok ແລະ Tailscale Funnel, ຫຼື ກັບທີ່ຢູ່ຂອງອຸໂມງຂອງທ່ານເອງ.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge ບໍ່ພົບ cloudflared, devtunnel, ngrok ຫຼື Tailscale Funnel ໃນຄອມພິວເຕີເຄື່ອງນີ້. ເລືອກ ChatGPT Secure MCP Tunnel, ເຊິ່ງ PadForge ຈະດາວໂຫຼດໃຫ້, ຫຼື ໃສ່ທີ່ຢູ່ຂອງອຸໂມງຂອງທ່ານເອງ.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>ເລືອກອຸໂມງເພື່ອໃຫ້ PadForge ມີທີ່ຢູ່ສາທາລະນະ.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>ມີໃນ PC ນີ້ນຳ: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ເຊິ່ງທີ່ຢູ່ຄືເກົ່າ</value></data>
@@ -6050,7 +6146,7 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>ເປີດອຸໂມງຂອງທ່ານເອງໄປຫາ http://127.0.0.1:{0} ແລະ ວາງທີ່ຢູ່ https ຂອງມັນ. ອຸໂມງ Cloudflare ທີ່ມີຊື່, ອຸໂມງ dev ແບບຖາວອນ, Tailscale Funnel ແລະ ໂດເມນຂອງ ngrok ເອງ ຮັກສາທີ່ຢູ່ຂອງພວກມັນ.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>ວາງທີ່ຢູ່ https ທີ່ບໍ່ມີເສັ້ນທາງນອກຈາກ /mcp, ຕາມທີ່ອຸໂມງຂອງທ່ານໃຫ້.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>ກຳລັງເລີ່ມຕົວຊ່ວຍເວັບຂອງ PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>ຕົວຊ່ວຍເວັບຂອງ PadForge ຢຸດແລ້ວ ({0}). ປິດ ແລະ ເປີດ Reach PadForge From the Web ເພື່ອເລີ່ມມັນອີກຄັ້ງ.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>ຕົວຊ່ວຍເວັບຂອງ PadForge ຢຸດແລ້ວ ({0}). PadForge ຍັງພະຍາຍາມເລີ່ມມັນຕໍ່ໄປ.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>ທີ່ຢູ່</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>ຍັງບໍ່ມີທີ່ຢູ່ສາທາລະນະ.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>ເພີ່ມໃສ່ Claude</value></data>
@@ -6089,11 +6185,6 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ມັນສິ້ນສຸດດ້ວຍລະຫັດ {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດ ປິດຢູ່, ສະນັ້ນບໍ່ມີຜູ້ຊ່ວຍເວັບໃດເຂົ້າເຖິງ PadForge. ຕົວຊ່ວຍເວັບຈະເລີ່ມເມື່ອ ລະບົບອັດຕະໂນມັດ ເປີດ.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>ກຳລັງກວດ…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>ບໍ່ໄດ້ຕິດຕັ້ງ.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>ຕິດຕັ້ງແລ້ວ ແລະ ເປັນລຸ້ນປັດຈຸບັນ. ສະຄຣິບເລີ່ມດ້ວຍ {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>ຕິດຕັ້ງສຳລັບ {0} ແລ້ວ ແລະ ເປັນລຸ້ນປັດຈຸບັນ. ສະຄຣິບເລີ່ມດ້ວຍ {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>ຕິດຕັ້ງແລ້ວ. PadForge ນີ້ມີສຳເນົາທີ່ໃໝ່ກວ່າ.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>ຕິດຕັ້ງສຳລັບ {0} ແລ້ວ. PadForge ນີ້ມີສຳເນົາທີ່ໃໝ່ກວ່າ.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>ກຳລັງຕິດຕັ້ງ…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດກວດມັນໄດ້: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>ຕິດຕັ້ງ ຈະວາງຄັງຂອງ PadForge ໄວ້ບ່ອນທີ່ພາສານັ້ນຊອກພົບ. ສະຄຣິບທີ່ໂຫຼດມັນຈະອ່ານອຸປະກອນ ແລະ ຂັບເຄື່ອນການແມັບໃນລະດັບຂ້າງເທິງ.</value></data>
@@ -6101,22 +6192,24 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>ສຳເນົາທີ່ຕິດຕັ້ງແລ້ວ</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>ເອົາອອກທັງໝົດ</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>ເອົາອອກແລ້ວ.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>ໄລບຣາຣີຂອງ PadForge ຕິດຕັ້ງແລ້ວສຳລັບ {0} ແລະ ເປັນເວີຊັນປັດຈຸບັນ. ສະຄຣິບເລີ່ມດ້ວຍ {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>ໄລບຣາຣີຂອງ PadForge ສຳລັບ {0} ແຕກຕ່າງຈາກສຳເນົາໃນ PadForge ນີ້.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>ໄລບຣາຣີຂອງ PadForge ບໍ່ໄດ້ຕິດຕັ້ງສຳລັບ {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID ສະຄຣິບ</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID ສະຄຣິບຂອງມັນ</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>ສະຄຣິບເອີ້ນການຄວບຄຸມຂອງມັນວ່າ {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>ສະຄຣິບເອີ້ນປຸ່ມຂອງມັນວ່າ KeyA, KeySpace, KeyLeftShift ແລະ ອື່ນໆ, ແລະ ທຸກປຸ່ມຕາມລະຫັດຂອງມັນ, Vk0 ຫາ Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ໃນເຄືອຂ່າຍນີ້ຈາກ {1}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>ເວີຊັນໃໝ່ທີ່ລົງນາມດ້ວຍກະແຈໃບຢັ້ງຢືນດຽວກັນຂອງ {0} ຈະເລີ່ມຄືນໃໝ່ໂດຍບໍ່ຕ້ອງ ອະນຸມັດ ແລະ ເລີ່ມຄືນໃໝ່. ການປ່ຽນແປງອື່ນໃດກໍ່ຕາມຈະຖາມທ່ານກ່ອນ.</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>ຮັບເວີຊັນໃໝ່ທີ່ລົງນາມດ້ວຍກະແຈໃບຢັ້ງຢືນດຽວກັນ</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>ທີ່ຢູ່</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge ຮັບທີ່ຢູ່ທີ່ເລີ່ມດ້ວຍ https:// ແລະ ລະບຸໂຮສ, ໃຊ້ພອດເລີ່ມຕົ້ນ, ໂດຍບໍ່ມີຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານ.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge ຮັບທີ່ຢູ່ທີ່ຍາວບໍ່ເກີນ 2,048 ຕົວອັກສອນ ທີ່ເລີ່ມດ້ວຍ https:// ແລະ ລະບຸໂຮສ, ໃນພອດເລີ່ມຕົ້ນ, ໂດຍບໍ່ມີຊື່ຜູ້ໃຊ້, ລະຫັດຜ່ານ ຫຼື ສ່ວນຫຼັງ #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>ພອດ</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>ປ່ຽນ…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>ການເອີ້ນ ແລະ ກະແຈຂອງມັນຂ້າມເຄືອຂ່າຍນີ້ໂດຍບໍ່ໄດ້ເຂົ້າລະຫັດ. Windows ໃຫ້ພວກມັນເຂົ້າໄດ້ສະເພາະໃນເຄືອຂ່າຍສ່ວນຕົວເທົ່ານັ້ນ.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>ການເອີ້ນ ແລະ ຄີຂອງມັນຂ້າມເຄືອຂ່າຍນີ້ໂດຍບໍ່ໄດ້ເຂົ້າລະຫັດ. ກົດຂອງ Windows Firewall ທີ່ PadForge ສ້າງສຳລັບພອດນີ້ ລະບຸສະເພາະເຄືອຂ່າຍສ່ວນຕົວເທົ່ານັ້ນ.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>ພອດ {0} ຖືກໃຊ້ໂດຍໂປຣແກຣມອື່ນ. ປ່ຽນມັນເພື່ອເຂົ້າເຖິງ PadForge ຈາກເຄືອຂ່າຍນີ້.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ບໍ່ອະນຸຍາດໃຫ້ຕົວຊ່ວຍຂອງ PadForge ຮັບຟັງໃນພອດ {0}. PadForge ອະນຸຍາດມັນໄດ້ດ້ວຍສິດຜູ້ເບິ່ງແຍງລະບົບ, ສະນັ້ນໃຫ້ເລີ່ມ PadForge ດ້ວຍສິດນັ້ນ ແລ້ວປິດ ແລະ ເປີດສິ່ງນີ້ຄືນ.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows ບໍ່ມີການຈອງໄວ້ສຳລັບຕົວຊ່ວຍຂອງ PadForge ໃນພອດ {0}. ປິດ ແລະ ເປີດສິ່ງນີ້ຄືນ, ແລ້ວ PadForge ຈະສ້າງມັນອີກຄັ້ງ.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>ຕົວຊ່ວຍຂອງ PadForge ບໍ່ສາມາດຮັບຟັງໃນພອດ {0} ໄດ້. ປ່ຽນພອດ, ຫຼື ປິດ ແລະ ເປີດສິ່ງນີ້ຄືນ.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>ຕົວຊ່ວຍຂອງ PadForge ຢຸດແລ້ວ ({0}). ປິດ ແລະ ເປີດ Reach PadForge From This Network ເພື່ອເລີ່ມມັນອີກຄັ້ງ.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>ຕົວຊ່ວຍຂອງ PadForge ຢຸດແລ້ວ ({0}). PadForge ຍັງພະຍາຍາມເລີ່ມມັນຕໍ່ໄປ.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>ລະບົບອັດຕະໂນມັດ ປິດຢູ່, ສະນັ້ນບໍ່ມີຜູ້ຊ່ວຍໃດໃນເຄືອຂ່າຍນີ້ເຂົ້າເຖິງ PadForge. ຕົວຊ່ວຍຈະເລີ່ມເມື່ອ ລະບົບອັດຕະໂນມັດ ເປີດ.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>ຕອນນີ້ PC ນີ້ບໍ່ມີທີ່ຢູ່ໃນເຄືອຂ່າຍສ່ວນຕົວ.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>ຜູ້ຊ່ວຍໃນເຄືອຂ່າຍນີ້</value></data>
@@ -6133,7 +6226,23 @@ PadForge ໄດ້ຂຽນລາຍລະອຽດໄວ້ໃນ crash.log ຂ
   <data name="Reach_LocalCommands" xml:space="preserve"><value>ຄຳສັ່ງຈາກບັນທັດຄຳສັ່ງຍັງເຂົ້າເຖິງ PadForge, ຄືກັນກັບທຸກໂປຣແກຣມ.</value></data>
   <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>ມັນຂໍຄວບຄຸມສະເພາະອຸປະກອນຂອງມັນເອງ.</value></data>
   <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>ມັນຖາມພຽງຄັ້ງດຽວ. ທ່ານສາມາດເອົາມັນອອກ ຫຼື ປ່ຽນຂອບເຂດຂອງມັນໄດ້ໃນໜ້າ ລະບົບອັດຕະໂນມັດ.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, ດ້ວຍສິດຂອງທ່ານ, ແລະ ພ້ອມແລ້ວ. ChatGPT ເຂົ້າເຖິງ PadForge ຜ່ານອຸໂມງນີ້ໂດຍບໍ່ມີການເຂົ້າສູ່ລະບົບຂອງມັນເອງ, ແລະ ສະເພາະຈາກອົງກອນ OpenAI ຂອງທ່ານເທົ່ານັ້ນ. ມັນຈະເລີ່ມໃໝ່ພ້ອມກັບ PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, ດ້ວຍສິດຂອງທ່ານ. ມັນລໍຖ້າໃຫ້ OpenAI ບອກວ່າອຸໂມງພ້ອມແລ້ວ.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge ເກັບກະແຈແບບເຂົ້າລະຫັດໄວ້ສຳລັບທ່ານຜູ້ດຽວ. ຊ່ອງທີ່ຫວ່າງເປົ່າຈະລືມມັນ. ChatGPT ເຮັດວຽກໃນລະດັບຂ້າງເທິງ.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge ບໍ່ສາມາດບັນທຶກຊຸດພັດທະນາປລັກອິນໄດ້.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge ກິດຈະກຳ {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>ສຽງ{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>ໄອຄອນ{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} ແຖວສຳລັບລະບົບອື່ນຖືກຂ້າມໄປ.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ບໍ່ໄດ້ເລີ່ມມັນດ້ວຍສິດຂອງທ່ານເອງ.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>ມັນບໍ່ສິ້ນສຸດພາຍໃນ {0} ວິນາທີ.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>ມັນສິ້ນສຸດດ້ວຍລະຫັດ {0} ແລະ ບໍ່ໄດ້ໃຫ້ເຫດຜົນ.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ບໍ່ສາມາດອ່ານການຕັ້ງຄ່າໃນ {0} ໄດ້, ສະນັ້ນມັນຈຶ່ງປະໄຟລ໌ໄວ້ຕາມເດີມ.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge ບໍ່ໄດ້ຂຽນ {0}, ສະນັ້ນມັນຈຶ່ງປະມັນໄວ້ຕາມເດີມ.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows ບໍ່ໄດ້ກຳນົດໂຟນເດີ ເອກະສານ ໃຫ້ທ່ານ.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ບໍ່ພົບໂຟນເດີຂອງທ່ານສຳລັບ {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>ຄຳສັ່ງຂອງ {0} ເອງສິ້ນສຸດດ້ວຍລະຫັດ {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>ຄຳສັ່ງຂອງ {0} ບໍ່ຢູ່ໃນຄອມພິວເຕີເຄື່ອງນີ້.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows ບໍ່ອະນຸຍາດໃຫ້ PadForge ອ່ານ ຫຼື ຂຽນໄຟລ໌ທີ່ມັນຕ້ອງການ.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ບໍ່ພົບ Python: ບໍ່ມີອັນໃດລົງທະບຽນໄວ້, ຕິດຕັ້ງຈາກ Microsoft Store, ຢູ່ໃນລາຍການຂອງຕົວເປີດ py ຫຼື ຢູ່ໃນ PATH ຂອງທ່ານ.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>ບໍ່ມີ Python ໃດທີ່ PadForge ພົບຕອບພາຍໃນ {0} ວິນາທີ.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>ການເຮັດວຽກບໍ່ໄດ້ໃຫ້ເຫດຜົນທີ່ PadForge ຮູ້ຈັກ.</value></data>
 </root>

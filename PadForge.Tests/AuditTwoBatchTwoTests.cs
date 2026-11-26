@@ -363,6 +363,7 @@ namespace PadForge.Tests
             var macros = Materialized(t);
 
             var im = new InputManager();
+            im.WorkOutOutputCauses();               // the person's own pad
             im.MacroSnapshots[0] = macros;
 
             var gp = new Gamepad { Buttons = Gamepad.A };
@@ -391,6 +392,7 @@ namespace PadForge.Tests
             var release = macros[1];
 
             var im = new InputManager();
+            im.WorkOutOutputCauses();               // the person's own pad
             im.MacroSnapshots[0] = macros;
 
             var gp = new Gamepad { Buttons = Gamepad.A };
@@ -480,6 +482,7 @@ namespace PadForge.Tests
             var macros = new[] { press, release };
 
             var im = new InputManager();
+            im.WorkOutOutputCauses();               // the person's own pad
             im.MacroSnapshots[0] = macros;
 
             var raw = RawState(0x1);

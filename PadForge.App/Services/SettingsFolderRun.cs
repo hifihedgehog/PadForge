@@ -30,13 +30,16 @@ namespace PadForge.Services
         }
 
         /// <summary>Opens the folder and gives the run's exit code: 0 when
-        /// the shell took it, 1 when it did not, with why.</summary>
+        /// the shell took it, 1 when it did not, or has not answered yet, with
+        /// why.</summary>
         internal static int Run(Action<string> sayError)
         {
             string file = AutomationFileSettings.DefaultPath();
             var start = new ProcessStartInfo(ShellLaunch.Explorer, ExplorerArguments(file, File.Exists));
             if (ShellLaunch.AsTheUser(start, out string why)) return ClientRun.Done;
-            sayError("Explorer did not open the settings folder" + (string.IsNullOrEmpty(why) ? "." : ": " + why));
+            sayError(why == ShellLaunch.NotAnswered
+                ? "Explorer has not opened the settings folder yet: " + why + "."
+                : "Explorer did not open the settings folder" + (string.IsNullOrEmpty(why) ? "." : ": " + why));
             return ClientRun.AnsweredAnError;
         }
     }

@@ -9,7 +9,7 @@ using PadForge.ViewModels;
 namespace PadForge.Services
 {
     /// <summary>
-    /// Runs the Controller Database row of the Updates card (#597): Update
+    /// Runs the Controller Database row of the Updates card (#600): Update
     /// Now, the row's reset, the status line and the line under it, and
     /// Download From under its More (#600). UI
     /// thread only, as <see cref="UpdateController"/> is. The request lives
@@ -69,7 +69,32 @@ namespace PadForge.Services
             Settings.ControllerDatabaseResetRequested += _onReset;
             Settings.ControllerDatabaseAddressChosen += _onAddress;
             Settings.SetControllerDatabaseStatus(StatusText);
+            Replaced += OnSettingsReplaced;
             StartDevices();
+        }
+
+        private static event Action<bool> Replaced;
+
+        /// <summary>
+        /// SettingsService took a new controller database section, Download
+        /// From and rows of the user's: Reload, or Reset to Defaults
+        /// (<paramref name="toDefaults"/>). A
+        /// running download ends, since what it brought would be stored over
+        /// the settings that replaced the ones it was asked for, and the
+        /// lines on the user's rows are read again. Interface thread.
+        /// </summary>
+        internal static void SettingsReplaced(bool toDefaults) => Replaced?.Invoke(toDefaults);
+
+        private void OnSettingsReplaced(bool toDefaults)
+        {
+            if (_disposed) return;
+            _op?.Cancel();
+            Settings.SetControllerDatabaseResult(null);
+            Settings.RaiseControllerDatabaseMine();
+            // Reset to Defaults empties the section, as the row's reset does,
+            // and SDL is given back what the downloaded rows replaced.
+            if (toDefaults) _ = GiveBackDownloadsAsync();
+            else _vm.Devices.SdlMapping.Refresh();
         }
 
         private string StatusText()
@@ -110,7 +135,7 @@ namespace PadForge.Services
                 switch (fetch.Outcome)
                 {
                     case ControllerDatabaseFetchOutcome.NotModified:
-                        Settings.SetControllerDatabaseResult(() => Strings.Instance.ControllerDatabase_NothingChanged);
+                        Settings.SetControllerDatabaseResult(() => NothingChanged(address));
                         break;
                     case ControllerDatabaseFetchOutcome.Unreachable:
                         Log("MAPPINGS database update: no answer (" + (fetch.Stalled ? "stalled" : fetch.Reason) + ")");
@@ -120,7 +145,7 @@ namespace PadForge.Services
                             warning: true);
                         break;
                     case ControllerDatabaseFetchOutcome.Refused:
-                        Refuse(fetch.Reason);
+                        RefuseAnswer(address, fetch.Reason);
                         break;
                     default:
                         byte[] content = fetch.Content;
@@ -134,7 +159,12 @@ namespace PadForge.Services
                                    + baseline.PinnedIds.Count + " known rows, SHA-256 " + download.Sha256);
                             break;
                         }
-                        Store(download, fetch.ETag, fetch.ServerTimeUtc ?? UtcNow(), baseline, address);
+                        // GitHub's own time for the community's file, which the
+                        // pin test of a later release reads. The PC's clock for
+                        // an address the user set: its Date header is the
+                        // host's word, not the day of the download.
+                        DateTime fetched = ControllerDatabaseAddress.IsCommunity(address) ? fetch.ServerTimeUtc ?? UtcNow() : UtcNow();
+                        Store(download, fetch.ETag, fetched, baseline, address);
                         break;
                 }
             }
@@ -165,10 +195,32 @@ namespace PadForge.Services
             ? string.Format(Strings.Instance.ControllerDatabase_NoNetwork_Format, reason)
             : string.Format(Strings.Instance.ControllerDatabase_NoNetworkAt_Format, ControllerDatabaseAddress.HostOf(address), reason);
 
+        /// <summary>The line for a 304: the community's file by name, the
+        /// host for an address the user set.</summary>
+        private static string NothingChanged(string address) => ControllerDatabaseAddress.IsCommunity(address)
+            ? Strings.Instance.ControllerDatabase_NothingChanged
+            : string.Format(Strings.Instance.ControllerDatabase_NothingChangedAt_Format, ControllerDatabaseAddress.HostOf(address));
+
+        /// <summary>A file that came and failed the database's checks
+        /// (<see cref="ControllerDatabaseDownload.Read"/>).</summary>
         private void Refuse(string what)
         {
             Log("MAPPINGS database update refused: " + what);
             Settings.SetControllerDatabaseResult(() => Strings.Instance.ControllerDatabase_Refused, warning: true);
+        }
+
+        /// <summary>An answer the request itself refused before any file was
+        /// read as the database (<see cref="ControllerDatabaseUpdater.FetchAsync"/>:
+        /// a redirect off the host, with no address or past the limit, a size,
+        /// encoding or body PadForge does not take): GitHub by name for the
+        /// community's file, the host for an address the user set.</summary>
+        private void RefuseAnswer(string address, string what)
+        {
+            Log("MAPPINGS database update refused: " + what);
+            Settings.SetControllerDatabaseResult(() => ControllerDatabaseAddress.IsCommunity(address)
+                ? Strings.Instance.ControllerDatabase_AnswerRefused
+                : string.Format(Strings.Instance.ControllerDatabase_AnswerRefusedAt_Format, ControllerDatabaseAddress.HostOf(address)),
+                warning: true);
         }
 
         private void Store(ControllerDatabaseDownload download, string etag, DateTime fetchedUtc, ControllerDatabaseBaseline baseline,
@@ -191,9 +243,10 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>The row's reset: empties the section, puts the
-        /// community's address back under Download From, and ends a download
-        /// that would fill it again.</summary>
+        /// <summary>The row's reset: empties the section, gives SDL back what
+        /// the downloaded rows replaced, puts the community's address back
+        /// under Download From, and ends a download that would fill it
+        /// again.</summary>
         public void Reset()
         {
             if (_disposed) return;
@@ -202,6 +255,9 @@ namespace PadForge.Services
             bool moved = !ControllerDatabaseAddress.IsCommunity(SettingsManager.ControllerDatabaseFrom);
             SettingsManager.ControllerDatabaseFrom = null;
             if (emptied || moved) _markDirty();
+            // SDL keeps a given mapping until it quits: it is given back what
+            // each downloaded row replaced.
+            _ = GiveBackDownloadsAsync();
             Settings.SetControllerDatabaseResult(null);
             Settings.RaiseControllerDatabaseStatus();
             Settings.RaiseControllerDatabaseAddress();
@@ -236,6 +292,7 @@ namespace PadForge.Services
             if (_onUpdate != null) Settings.UpdateControllerDatabaseRequested -= _onUpdate;
             if (_onReset != null) Settings.ControllerDatabaseResetRequested -= _onReset;
             if (_onAddress != null) Settings.ControllerDatabaseAddressChosen -= _onAddress;
+            Replaced -= OnSettingsReplaced;
             StopDevices();
             // A running download disposes its own linked source when it ends.
             _cts.Cancel();

@@ -10,7 +10,7 @@
              through its prompt cannot reach. The one start that is the app
              needs administrator rights for HIDMaestro's driver and device
              nodes, and asks for them itself (Services/StartWithRights.cs,
-             #597). -->
+             #600). -->
         <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
       </requestedPrivileges>
     </security>

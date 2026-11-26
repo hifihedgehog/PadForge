@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge megjelenítése vagy elrejtése</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Virtuális kontrollerek be- vagy kikapcsolása</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Bármely csatlakoztatott eszköz</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (nincs csatlakoztatva)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Eszköz, amely nincs az Eszközök oldalon</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Rögzítés…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>amikor</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Olvasás</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Bemenetek küldése</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Beállítások módosítása</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>A programok válthatnak profilt és elengedhetik azt, elindíthatják és leállíthatják a motort, be- és kikapcsolhatják a virtuális kontrollereket, megjeleníthetik és elrejthetik az ablakot, bezárhatják a PadForge-ot, menthetnek diagnosztikai pillanatképet, és megkérdezhetik, mi fut éppen.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>A programok válthatnak profilt és elengedhetik azt, elindíthatják és leállíthatják a motort, be- és kikapcsolhatják a virtuális kontrollereket, megjeleníthetik és elrejthetik az ablakot, bezárhatják a PadForge-ot, megkérdezhetik, mi fut éppen, menthetnek diagnosztikai pillanatképet, valamint elindíthatnak, leállíthatnak és megjelölhetnek egy hibafelvételt.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Minden, ami a Parancsok szinten, ezen felül a programok láthatják az eszközöket, a virtuális kontrollereket, a leképezéseket, a profilokat és a beállításokat, valós időben követhetik minden eszköz bemeneteit, és megmutathatnak Önnek egy helyet a PadForge-ban. Az Olvasás szinten lévő program minden eszköz minden lenyomott billentyűjét látja, a rendszergazdaként futó ablakokba gépelteket is.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Minden, ami az Olvasás szinten, ezen felül a programok hozzáadhatnak saját eszközöket és vezérelhetik azokat, bármely eszköz egy vezérlőelemét lenyomva tarthatják, és megnevezett értékeket adhatnak át a makróindítóknak.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Minden, ami a Bemenetek küldése szinten, ezen felül a programok módosíthatják mindazt, amit Ön az oldalakon módosíthat. Egyes módosítások előtt mindig megkérdezi Önt a PadForge kérdéskártyáján.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Az Ön válaszára vár</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Tevékenység</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Visszavonás</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>A PadForge nem tudta menteni: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>A PadForge nem tudta menteni a fájlt.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>A PadForge nem tudta menteni a bővítménykészletet.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Tevékenység {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Hangok{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Ikonok{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Amíg egy Olvasás vagy magasabb szintű program csatlakozik, látja, mi van lenyomva minden eszközön, a billentyűzeteket is beleértve.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Bővítmények</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Bővítmények futtatása</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (visszajátszás)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problémafelvételek|*.zip;*.log|Minden fájl|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>A PadForge nem tudja lejátszani a(z) {0} fájlt. Nem problémafelvétel, vagy nem tartalmaz egyetlen eszköz bemenetét sem.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>A PadForge nem tudja lejátszani ezt: {0}. Nem olyan hibafelvétel, amelyet a PadForge olvasni tud.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>A PadForge nem tudja lejátszani ezt: {0}. Több mint {1} eszközt tartalmaz, a Visszajátszás pedig legfeljebb {1} eszközt játszik le.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>A PadForge nem tudja lejátszani ezt: {0}. Egyetlen eszköz bemenetét sem tartalmazza.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>A PadForge nem tudta beolvasni ezt: {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Az Ön bővítményei</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Bővítmény hozzáadása…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programok és szkriptek|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Minden fájl|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Leállt egymás utáni öt hiba után</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nem indult el: a fájl eltűnt</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nem indult el: a Windowsban nincs program ehhez a fájltípushoz</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nem indult el: egyetlen program sem nyitja meg Önnek a Python-fájlokat, és a PadForge nem talál py indítót</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nem indult el: a PadForge nem tudja kiolvasni, melyik program nyitja meg Önnek ezt a fájltípust</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nem indult el: az a program, amely megnyitja Önnek ezt a fájltípust, nincs ezen a számítógépen</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nem indult el: nem fut asztali shell, amely alatt elindíthatná</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nem indult el: az asztali shell rendszergazdai jogokkal fut, így a bővítmény is megkapná azokat</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nem indult el: a PadForge nem tudja kiolvasni, hogy lenne-e rendszergazdai joga</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nem indult el: a Windows rendszergazdai jogot adott neki, ezért a PadForge leállította, mielőtt futott volna</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nem indult el: rendszergazdai jogokat kér</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nem indult el: a Windows hibával utasította el, hibakód: {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nem indult el</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Hozzáadott: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Aláíró: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Aláíratlan.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>A beállításai itt jelennek meg, amíg fut.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Nem deklarál beállításokat.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>A beállításai itt jelennek meg, amint csatlakozik a PadForge-hoz.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>A program olyan verziót használ, amelyet a PadForge nem ismer</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>A PadForge nem adta meg azt a bővítménykulcsot</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>A PadForge nem fogadta el ennek a programnak a csatlakozását</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>A PadForge nem hozott létre eszközt, mert a Windows nem adta meg a program fájljának nevét</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Túl hamar kérte újra</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>A PadForge újraindulásáig több ilyen nem lehet</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Túl sok ilyen, programok által készített elem várja az áttekintését a Kezdőlapon</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>A PadForge nem rendelkezik ilyen eszközzel</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>A program régebbi állapotot olvasott</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Semminek sincs ilyen azonosítója</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ön nem engedélyezte</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Senki nem válaszolt időben</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Az Ön válaszára vár</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Még nem válaszolt</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Nincs ilyen kérés</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nincs mit visszavonni</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ezt csak Ön módosíthatja</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Aláíratlan.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Olvasás szinten és fölötte látja az összes eszközön lenyomott minden billentyűt, a billentyűzeteket is beleértve.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Egyszer kérdez. Az Automatizálás oldalon eltávolíthatja.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Indította egy program, amelyet a PadForge nem tudott azonosítani.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>A PadForge nem tudja megkülönböztetni ezt a programot egy másiktól, ezért a következő csatlakozáskor újra kérdez.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>a PadForge parancssora</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>A(z) {0} értéke ez lesz: {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>A hálózaton figyel, így más eszközök elérhetik ezt a számítógépet.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Profil átvétele</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Egy másik programból származó profilfájl importálása, majd annak megtekintése, mi került át.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, ismétlések száma: {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, az utolsó az ilyen {1} kérés közül</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 szkriptek (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Ezen a gépen nincs Logitech G-key SDK. A Logitech Gaming Software 8.55-ös vagy újabb verziójával települ.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>A G-key SDK regisztrálva van, de a fájlja hiányzik. Telepítse újra a Logitech Gaming Software programot.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>A G-key SDK megvan, de nem sikerült betölteni.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>A G-key SDK megvan, de nem lett betöltve, mert a PadForge nem tudta megerősíteni, hogy csak rendszergazdák módosíthatják, és hogy a Logitech írta alá.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Ez a könyvtár nem az a G-key SDK, amelyre a program számít.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>A G-key SDK nem volt hajlandó elindulni. Ilyenkor általában nem fut a Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Csatlakoztatva, de még nem érkezett billentyű. A Logitech Gaming Software programban húzza a „G-key” parancsot a PadForge-profil minden billentyűjére, és állítsa a profilt állandóra. A G600 és a G300 egeret emellett ki kell venni a beépített memóriás módból.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>A PadForge automatikus indítása a Windowsba való bejelentkezéskor. Amíg ez be van kapcsolva, a PadForge a Windows kérdése nélkül is elindul parancsikonból, szkriptből vagy másik programból.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>A PadForge innen fut: {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ehhez a PadForge-nak saját mappára van szüksége. A mappája más fájlokat is tartalmaz, ezért a PadForge nem tudja megakadályozni, hogy más programok módosítsák.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Ehhez a PadForge-nak olyan mappára van szüksége, amelyet más programok nem módosíthatnak. A PadForge nem tudta megakadályozni, hogy más programok módosítsák a mappáját.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>A PadForge áthelyezése saját mappába</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Átmásolja a PadForge-ot és a beállításait a Program Files mappába, ide irányítja a feladatait, és onnan indítja el. Az itteni másolat változatlan marad.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>A PadForge nem költözött át: a(z) {0} olyan fájlokat tartalmaz, amelyek nem a PadForge-hoz tartoznak.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>A PadForge nem költözött át: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge-ot egy más fájlokat tartalmazó mappából indította.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>A PadForge nem költözött át: a Windows nem nevez meg Program Files mappát.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta beolvasni a futó PadForge-ot.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta létrehozni ezt: {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta beolvasni, mit tartalmaz a(z) {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta megakadályozni, hogy más programok módosítsák ezt: {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>A PadForge nem költözött át: a(z) {0} mappában lévő másolata nem egyezett a futó PadForge-gal.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>A PadForge nem költözött át: a másolás után a(z) {0} olyan fájlokat tartalmazott, amelyek nem a PadForge-hoz tartoznak, vagy más programok módosíthatták.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a futtatott PadForge már nincs ott.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge nem tudta megakadályozni, hogy más programok módosítsák azt a mappát, amelyből a PadForge-ot futtatta.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge nem tudta kiolvasni, melyik PadForge-ot futtatta.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge nem tudta kiolvasni, melyik mappában van az a PadForge, amelyet futtatott.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>A PadForge nem tudta létrehozni a védett mappáját: {0}. A PadForge itt tartja a rendszergazdai jogokkal használt könyvtárait, és enélkül nem indulhat el biztonságosan.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>A PadForge nem tudta újraindítani magát a védett mappájából: {0}. A PadForge rendszergazdai jogokkal csak onnan fut, ezért nem indult el.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>A PadForge nem tudta létrehozni azt a zárat, amely egyetlen futó példányra korlátozza, ezért nem indult el.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>A PadForge rendszergazdai jogokkal fut innen: {0}, ez olyan mappa, amelyet más programok módosíthatnak. Ott módosíthatják a PadForge beállításait, és a PadForge a saját jogaival végrehajtja azokat.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>A PadForge rendszergazdai jogokkal fut innen: {0}, ez olyan mappa, amely más fájlokat is tartalmaz. A PadForge nem tudja megakadályozni, hogy más programok módosítsák ott a beállításait, és a saját jogaival végrehajtja azokat.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>A PadForge rendszergazdai jogokkal fut innen: {0}, ezt a mappát nem tudta beolvasni. A PadForge nem tudja megakadályozni, hogy más programok módosítsák ott a beállításait, és a saját jogaival végrehajtja azokat.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Megjelenítés mindig a rendszertálcán</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>A tálcaikon akkor is látható marad, amikor az ablak nyitva van, így a menüjében a Kilépés mindig egy kattintásnyira van.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Frissítések</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Telepítés és újraindítás</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Kiadási megjegyzések</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrolleradatbázis</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>A Frissítés most letölti a közösségi kontrolleradatbázist (SDL_GameControllerDB) a GitHub webhelyéről, vagy a Továbbiak alatt megadott címről, és a beállításfájlban megtartja azokat a leképezéseket, amelyek a PadForge ezen verziójából hiányoznak. Azonnal használatban vannak. Más címről csak új leképezéseket tart meg. Az új leképezést csak olyan kontrollerhez használja, amelyet semmi más nem olvas gamepadként, amely nincs hozzárendelve, és amely nincs Nyers joystick mód kényszerítése állapotban. A visszaállítás minden letöltött leképezést eltávolít, és újra a GitHubról tölt le. Az Ön saját sorai a Továbbiak alatt megmaradnak.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>A Frissítés most letölti a közösségi kontrolleradatbázist (SDL_GameControllerDB) a GitHub webhelyéről, vagy a Továbbiak alatt megadott címről, és a beállításfájlban megtartja azokat a leképezéseket, amelyek a PadForge ezen verziójából hiányoznak. Azonnal használatban vannak. Más címről csak új leképezéseket tart meg. Az új leképezést először csak olyan kontrollerhez használja, amelyet az SDL gamepadként vagy különleges típus nélkül jelent, amelyet semmi más nem olvas gamepadként, amely nincs hozzárendelve, és amely nincs Nyers joystick mód kényszerítése állapotban. Használatba vétel után a kontroller hozzárendelése után is használatban marad. A visszaállítás eltávolítja a letöltött leképezéseket, és a Letöltés innen értékét visszaállítja a közösség fájljára, amelyet a következő Frissítés most letölt. Az Ön saját sorai a Továbbiak alatt megmaradnak.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Frissítés most</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Frissítés…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Frissítések keresése…</value></data>
@@ -1126,9 +1160,12 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Beépített: {1} leképezés, a közösségi adatbázis másolata, {2}. Letöltve: {3}, innen: {4}, új sor: {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Beépített: {1} leképezés, a közösségi adatbázis másolata, {2}. Letöltve: {3}, innen: {4}, új sor: {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>A közösségi adatbázis az utolsó frissítés óta nem változott.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>A(z) {0} címen lévő fájl az utolsó frissítés óta nem változott.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>A GitHub nem érhető el: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>A(z) {0} nem érhető el: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>A PadForge elutasította a letöltést, mert az nem az általa várt kontrolleradatbázis. Semmi sem változott.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>A PadForge elutasította a GitHub válaszát. Semmi sem változott.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>A PadForge elutasította a(z) {0} címről érkezett választ. Semmi sem változott.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Indítás kis méretben</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Indítás bejelentkezéskor</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Mappa</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Szolgáltatásbeállítás</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Eltávolítási lépés</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Szolgáltatás</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Fájl</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Felső szűrő</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Beállításjegyzék-érték</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardverazonosító</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Ütemezett feladat</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Telepített alkalmazások bejegyzése</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP-eszköz</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Lehetővé teszi, hogy a PlayStation 3 kontrollerek, a PlayStation Move és a Navigation kontroller Bluetooth-on keresztül csatlakozzanak. A PadForge része, és az első ilyen eszköz párosításakor települ.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 kontrollerek csatlakoztatása Bluetooth-kapcsolaton keresztül.</value></data>
@@ -1239,6 +1284,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Elmentve: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>A felvétel nem indult el. Egy ellenőrzés talált egy olyan privát értéket ezen a PC-n, amely nem maradna ki a fájlból.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>A felvétel nem indult el. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>A PadForge nem talált a bejelentkezett felhasználó profilján belül ideiglenes mappát, amely hivatkozás nélkül érhető el, és amelybe a felvételt írhatná.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>A felvételek mappája egy másik helyre mutató hivatkozás, amelyet a PadForge nem követ.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Az utolsó felvétel lezárása még folyamatban van.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Az Utolsó 60 másodperc megőrzése ki van kapcsolva, ezért nincs mit menteni.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Egy olyan felvétel, amelyet a PadForge nem állított le, a Kezdőlap oldalon vár, hogy elolvassa: {0}</value></data>
@@ -1252,7 +1299,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>A PadForge, a Windows, az eszközei és a beállításai a jelenlegi állapotukban, ugyanazzal az átnézéssel.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log a PadForge.exe mellett, ott elolvashatja.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Mit rögzítsen</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Minden bekapcsolva. A kikapcsolt rész kimarad a következő felvételből, és a fájl megmondja, mely részeket tartalmazza.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Alapértelmezés szerint minden rész be van kapcsolva. A kikapcsolt rész kimarad a következő felvételből, és a fájl megmondja, mely részeket tartalmazza.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Olyan hibához, amely csak esténként egyszer jelentkezik.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>A felvétel arra vár, hogy a Kezdőlap oldalon elolvassa.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Összefoglaló</value></data>
@@ -1303,6 +1350,17 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Review_SaveTitle" xml:space="preserve"><value>A felvétel mentése</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-fájlok</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nincs mentve. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Megtisztítás ellenőrzése: a megtartott részek ellenőrzése…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Megtisztítás ellenőrzése: a PadForge nem tudta beolvasni a megtartott részeket, ezért a Mentés le van tiltva.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>A mentés az Ön jogaival nem indult el.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>A mentés az Ön jogaival nem indult el: nem fut asztali shell, amelyben elindulhatna.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>A mentés az Ön jogaival nem indult el: a Windows a(z) {0} hibakóddal elutasította.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>A mentés nem fejeződött be ennyi idő alatt: {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>A Windows nem engedte, hogy a fájl oda legyen írva.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>A PadForge nem fogadta el ezt a fájlt saját felvételként.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>A mentés a(z) {0} kóddal fejeződött be.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Az Ön nevében mentve, először a Letöltések mappába, utána oda, ahová legutóbb mentett, és megjelenítve a Fájlkezelőben. Az a felvétel, amely akkor áll le, amikor senki sincs az oldalon (a korlátja, egy makró, egy program, az asszisztenseszköz vagy a --record stop miatt), a Kezdőlap oldalon vár erre az átnézésre, és 7 nap után törlődik, ha nincs mentve. A program azt megtudja, hogy vár, azt nem, hogy hol.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Egy problémafelvétel ebből az időből ({0}) arra vár, hogy elolvassa.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Átnézés</value></data>
@@ -1653,6 +1711,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Új kontroller</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Beállítások</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Minden tengely, gomb és érzékelő</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Vezérlői a szkriptek által használt nevekkel</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Lenyomva: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Azonosítók, útvonal, képességek, Nyers joystick mód kényszerítése</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Azonosítók, útvonal, képességek</value></data>
@@ -2154,9 +2213,18 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Az olvasás nem sikerült: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>A HIDMaestro elutasította ezt az előbeállítást (hely: {1}): {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Ennek az előbeállításnak nincs HID-leírója, ezért nem készíthető belőle kontroller.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>A PadForge nem tudta ellenőrizni ezt az előbeállítást: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Az előbeállítás ellenőrzése…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Semmi sem lett importálva. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importálás</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(névtelen HID-eszköz)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Egér</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Billentyűzet</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Többtengelyes kontroller</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID-interfész található.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID-interfész található.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>A felsorolás nem sikerült: {0}</value></data>
@@ -3288,7 +3356,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Nyomva tartva és középre áll</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Kapcsoló</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Kormányzó bemenet</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Az a gomb, amely lehetővé teszi az egér kormányzását, ugyanazon az eszközön, mint a forrás. Ha egyet sem választ, az egér mindig kormányoz.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Az a gomb, amely lehetővé teszi az egér kormányzását, ennek a helynek bármely eszközén. Ha egyet sem választ, az egér mindig kormányoz.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Simítás</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Kiegyenlíti az egyenetlenül jelentő egeret. A kar nagyjából ennyivel késik a kéz mögött. A 0 kikapcsolja.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Végállás sebességnél</value></data>
@@ -3309,7 +3377,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Indulás ott, ahol a kormányzás kezdődött</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Kormányzó bemenet esetén a kar attól a helytől mér, ahol a mutató a kormányzás kezdetén volt, ahogyan egy telefonképernyőn a kar ott indul, ahol az ujj leér. Kikapcsolva a mutató monitorának közepétől mér.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ez a tengely relatívan mozog</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Egy trackballhoz vagy egy forgatógombhoz, amely azt jelenti, mennyit fordult. Bekapcsolva a tengely helyzetet tart, ahogy az Egérelmozdulás, és átveszi az elmozdulás beállításait. A Windows nem mondja meg, mely tengelyek mozognak így.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Egy trackballhoz vagy egy forgatógombhoz, amely azt jelenti, mennyit fordult. Bekapcsolva a tengely helyzetet tart, ahogy az Egérelmozdulás, és átveszi az elmozdulás beállításait. Az SDL az általános kontrollert a DirectInput-on keresztül olvassa, amely minden tengelyt helyzetként olvas, ezért ez a kapcsoló mondja meg, mely tengelyek mozognak így.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Előnézet</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Megmutatja, hogyan követi ez a család az Ön saját egerét. Semmi sincs leképezve, amíg ki nem választja.</value></data>
@@ -3502,6 +3570,13 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
 {0}
 
 A PadForge a részleteket a PadForge.exe melletti crash.log fájlba írta. A jelentéshez indítson megbeszélést itt: {2}, és húzza rá a crash.log fájlt.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Váratlan hiba történt:
+
+{0}
+
+A PadForge nem tudta a részleteket a PadForge.exe melletti crash.log fájlba írni. A jelentéshez indítson megbeszélést itt: {2}, nyomja meg itt a Ctrl+C billentyűkombinációt az üzenet másolásához, és illessze be oda.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(további {0} hiba elrejtve)</value></data>
@@ -4430,7 +4505,7 @@ A PadForge a részleteket a PadForge.exe melletti crash.log fájlba írta. A jel
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-kicsomagolás, amelyet a SteamKit2 a Steam depot adatdarabjaihoz használ. A zstd könyvtár C# portja, készítette: Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>A Model Context Protocol kiszolgálója és kliense az asszisztenskapcsolat és a PadForge.exe --mcp mögött, készítette: Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>A Model Context Protocol kiszolgálója és kliense az asszisztenskapcsolat és a PadForge.exe --mcp mögött, készítette: Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions és DependencyInjection.Abstractions, amelyekre az MCP C# SDK épül, készítette: Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>a WinUSB kötése a G19 képernyőjéhez</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>a G19 képernyője másik illesztőprogramot használ ({0}), ezért indítsa el a Logitech Gaming Software-t</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>a G19 képernyője egy másik program illesztőprogramját használja ({0}), amelyet a PadForge nem érint</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>A PadForge PlayStation Bluetooth-illesztőprogramjainak ellenőrzése…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>A számítógép Bluetooth-rádiójának beolvasása…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>A kontroller megnyitása az USB-kábelén…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>A számítógép Bluetooth-címének beírása a kontrollerbe…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>A kontroller regisztrálása a Windows Bluetooth-ban…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>A Bluetooth újraindítása…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>A párosítás leállt: a Windows megtagadta a PadForge hozzáférését a kontrollerhez vagy a Bluetooth-beállításokhoz. A részleteket a diagnosztikai napló tartalmazza.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>A párosítás leállt: a kontroller vagy a Bluetooth-rádió olvasása vagy írása sikertelen volt. A részleteket a diagnosztikai napló tartalmazza.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>A párosítás leállt egy olyan hiba miatt, amelyre a PadForge nem számított. A részleteket a diagnosztikai napló tartalmazza.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 vagy újabb szükséges</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>megtalálta a könyvtárát, de nem töltötte be, mert a PadForge nem tudta megerősíteni, hogy csak rendszergazdák módosíthatják, és hogy a Logitech írta alá</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>megtalálta a könyvtárát, de nem tudta használni, és a diagnosztikai napló megmondja, miért</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>indítsa el a Logitech Gaming Software-t</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>várakozás egy Arx Control alkalmazást futtató telefonra</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>telefonon</value></data>
@@ -5938,6 +6024,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>A dhd64.dll kiválasztása…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>A Force Dimension könyvtárának ezt a másolatát tölti be bármelyik másik helyett. Ha egy Falcon másik másolaton van megnyitva, bezárul, és ezen nyílik meg újra. Az SDK által telepített másolatok enélkül is megtalálhatók.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Könyvtárak (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>A Falcon SDK letöltőoldala nem nyílt meg: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>A Falcon SDK letöltőoldala még nem nyílt meg: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon-illesztőprogram telepítése</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Telepíti a Force Dimension illesztőprogramját az SDK mappájából egy olyan Falcon-eszközre, amelyhez még nincs illesztőprogram. A Windows előbb megkérdezheti, megbízik-e a Force Dimension-ben.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>A Force Dimension SDK letöltése</value></data>
@@ -6604,12 +6692,17 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Eltávolítás…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Frissítés…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nem fejeződött be: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>A PadForge bejegyzése és skillje megmarad, mert a(z) {0} ugyanazt a beállításfájlt és skillmappát olvassa.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>A PadForge bejegyzése megmarad, mert a(z) {0} ugyanazt a beállításfájlt olvassa.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>A PadForge el lett távolítva ebből a programból. A skillje megmarad, mert a(z) {0} ugyanabból a mappából olvas skilleket.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>A PadForge nem tudja beolvasni a beállításokat itt: {0}, ezért nem tudja, hogy a PadForge hozzá van-e adva.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Hozzáadva. A PadForge nem tudta beolvasni a skillmappáját.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Más asszisztensek</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>A fent nem szereplő asszisztensekhez: a Beállítások másolása megadja az MCP-beállításokba illő bejegyzést, az Üzenet másolása pedig rövid szöveget bármely csevegéshez, amely megmondja, hogyan kell csatlakozni, és mit kérjen először.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Beállítások másolása</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Üzenet másolása</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Másolva.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Nincs másolva: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Nincs másolva. A Windows nem engedte, hogy a PadForge használja a vágólapot.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Csatlakozz a PadForge-hoz, a számítógépemen lévő kontrollerleképezőhöz. Ez egy helyi MCP-kiszolgáló, amely stdio-n fut: a parancs {0}, a --mcp argumentummal. JSON-beállításként: {1} Csatlakozás után először a status eszközét hívd meg, aztán kérdezd meg, mit szeretnék beállítani, például: „Mutasd meg, hol képezhetem le a kontrollerem ravaszait.”</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>A PadForge Automatizálás szolgáltatása most ki van kapcsolva: előbb kapcsold be a PadForge-ban az Extrák, Automatizálás oldalon.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Engedélyezett programok</value></data>
@@ -6630,6 +6723,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. A PadForge nyersen olvassa, ezért az SDL leképezése nincs használatban.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, az Ön sora által gamepadként kiosztva.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>Az SDL a motor futása közben olvassa az eszközöket.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Az eszköz nincs csatlakoztatva. Az SDL beolvassa, amint csatlakoztatva lesz.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Az SDL nem adott a PadForge-nak leolvasást erről az eszközről.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>A beépített közösségi másolat, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Letöltve: {0}</value></data>
@@ -6667,6 +6762,11 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbó, kapcsolók és egyéb műveletek</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} és {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nincs mit másolni: az SDL-nek nincs leképezése ehhez az eszközhöz, és egy kontrolleren sincs rajta.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Nincs mit másolni: a PadForge nem tudja beolvasni az SDL leképezését ehhez az eszközhöz, és a kontrollerei egyik sora sem ad olyan kötést, amelyet az SDL formátuma elfogad.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Nincs mit másolni: az SDL-nek nincs leképezése ehhez az eszközhöz, és a(z) {0} egyik sora sem olvassa a gombjait, tengelyeit vagy hat-kapcsolóit az SDL formátuma által elfogadott módon.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Nincs mit másolni: az SDL-nek nincs leképezése ehhez az eszközhöz, és a(z) {0} sorai csak ezt olvassák: {1}, amelyet az SDL formátuma nem tud tartalmazni.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Nincs mit másolni: a PadForge most nem tudja beolvasni az SDL leképezését ehhez az eszközhöz, és egy kontrolleren sincs rajta.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Nincs mit másolni: a PadForge most nem tudja beolvasni az SDL leképezését ehhez az eszközhöz, és a(z) {0} egyik sora sem ad olyan kötést, amelyet az SDL formátuma elfogad.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Egy másik program használja a vágólapot. Semmi sem lett másolva.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Az Ön sora el lett távolítva. Az eszköz úgy olvasódik, ahogy előtte.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Újra leképezve az SDL elrendezéséből: {0}.</value></data>
@@ -6687,6 +6787,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>A PadForge által hordozott sorok</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Egy sor sem egyezik.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>A kiválasztott sor alkalmazva lesz ehhez: {0}, a saját azonosítója alatt, ugyanazzal az ellenőrzéssel és ugyanazzal a választással, mint a Beillesztés esetén.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>A motor le van állítva, ezért a lista kihagyja az SDL által tárolt sorokat, a sajátját és a beépített közösségi másolatot. A motor futásakor ezek is megjelennek.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>Az SDL nem válaszolt időben, ezért a lista kihagyja az általa tárolt sorokat, a sajátját és a beépített közösségi másolatot.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL-leképezéssor</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Egy sor ehhez az eszközhöz.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Egy tippelt elrendezés.</value></data>
@@ -6699,14 +6801,17 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} mező, ugyanattól a gyártótól és termékből, másik buszon vagy verzióban. Az eszköz saját azonosítója alatt marad meg.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} mező, egy másik eszköz sora. Az eszköz saját azonosítója alatt marad meg.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} mező. Az SDL nem olvassa ezt az eszközt, ezért a PadForge a sor szerint osztja ki a bemeneteit.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>A PadForge-nak nincs egyszerű gombja vagy tengelye ezekhez a mezőkhöz, ezért kihagyja őket: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} mező, az eszköz tengelyeiből, gombjaiból és hatjaiból. Ellenőrizze a Bemenetek tesztelése oldalon, aztán tartsa meg vagy módosítsa itt.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ez megváltoztatja, hogyan olvasódik a(z) {0}. A(z) {1} kontrollereken lévő sorai újra le lesznek képezve az új elrendezésből.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ez megváltoztatja, hogyan olvasódik a(z) {0}. Egy kontrolleren sincs rajta, ezért egy sor sem változik.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>A profil gyorsbillentyűi, amelyek a(z) {0} eszközt olvassák, megtartják a beállított bemeneteiket.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>A sor az Öné marad a PadForge.xml fájlban, és ennél az eszköznél minden más forrást felülír. A Saját eltávolítása visszaállítja a régi sort és a régi sorokat.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>A sorok az Önéi maradnak a PadForge.xml fájlban, és a saját eszközeiknél minden más forrást felülírnak. A Törlés, a Kontrolleradatbázis sor Továbbiak részében, eltávolítja őket.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} sor Windowshoz. {1} más rendszerekhez, ezeket kihagyjuk.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} sor Windowshoz. {1} más rendszerekhez, ezeket kihagyjuk.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} sor Windowsra.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} sor Windowsra.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} más rendszerre szóló sor ki van hagyva.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} más rendszerre szóló sor ki van hagyva.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Mindegyik hozzáadódik ({0:N0}). A PadForge legfeljebb {1:N0} saját sort tart meg.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Hozzáadódik. A PadForge legfeljebb {1:N0} saját sort tart meg.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Az Öné jelenleg {0:N0} sor van megtartva, ezért ezekből {1:N0} hozzáadódik, {2:N0} pedig nem.</value></data>
@@ -6716,7 +6821,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>A szöveg nem az SDL kontrolleradatbázisának sora: egy 32 hexadecimális számjegyből álló azonosító, egy név, majd olyan mezők, mint az a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>A sorok más rendszerekhez valók. A PadForge a Windowshoz vagy bármely rendszerhez tartozó sorokat olvassa.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>A sor azonosítója nem egy eszközé. 32 hexadecimális számjegy kell hozzá.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>A sor neve üres, 128 karakternél hosszabb, vagy olyan karaktert tartalmaz, amelyet az SDL mezőként olvas.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>A sor neve üres, 128 karakternél hosszabb, az SDL által olvasott mezőjelölőt tartalmaz, például „type:”, vagy a betűkön, számjegyeken, írásjeleken, szimbólumokon és a sima szóközön kívül más karaktert is tartalmaz.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>A sor hintet vagy Android-mezőt tartalmaz, amelyet a PadForge nem fogad el.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>A sorban van egy mező, amelyet az SDL nem ismer.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Egy kötés nem az SDL formájában van, például b3, a2, +a2, a2~ vagy h0.4.</value></data>
@@ -6727,8 +6832,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Saját sorok</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Az itt hozzáadott vagy egy eszköz SDL-leképezés kártyáján beillesztett sorok a saját eszközeiknél minden más forrást felülírnak, és a visszaállítás után is megmaradnak.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Sorok hozzáadása fájlból vagy a vágólapról…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} sor, mindegyik egy eszközhöz, az Öné minden más forrás fölött.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} sor, egy eszközhöz, az Öné minden más forrás fölött.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} sor, az Öné minden más forrás előtt.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} sor, az Öné minden más forrás előtt.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Még nincs.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Az Ön SDL_GAMECONTROLLERCONFIG változója {0} olyan sort tartalmaz, amelyet a PadForge nem tart meg. A Sorok hozzáadása fájlból vagy a vágólapról ezekkel nyílik meg.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Az Ön SDL_GAMECONTROLLERCONFIG változója {0} olyan sort tartalmaz, amelyet a PadForge nem tart meg. A Sorok hozzáadása fájlból vagy a vágólapról ezzel nyílik meg.</value></data>
@@ -6738,7 +6843,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Módosítás…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>A közösségi fájl használata</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Cím</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>A PadForge olyan címet fogad el, amely https://-sel kezdődik, gazdagépet nevez meg, az alapértelmezett porton van, és nem tartalmaz felhasználónevet vagy jelszót.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>A PadForge legfeljebb 2 048 karakter hosszú, https:// előtaggal kezdődő címet fogad el, amely megnevez egy gazdagépet, az alapértelmezett porton, felhasználónév, jelszó és # utáni rész nélkül.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>A PadForge elérése a webről</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Egy weboldalon futó asszisztens egy alagútprogramon keresztül éri el a PadForge-ot ezen a számítógépen. A bekapcsolás előtt megkérdezi Önt.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Eléri a PadForge-ot a webről?</value></data>
@@ -6755,7 +6860,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Leállt. Az utolsó szavai: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nem sikerült elindítani.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Már nincs ezen a számítógépen.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ezen a számítógépen nem található alagútprogram. A PadForge a cloudflared, a devtunnel, az ngrok és a Tailscale Funnel programmal működik, vagy a saját alagútja címével.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>A PadForge a cloudflared, a devtunnel, az ngrok és a Tailscale Funnel közül egyet sem talált ezen a számítógépen. Válassza a ChatGPT Secure MCP Tunnel lehetőséget, amelyet a PadForge letölt, vagy adja meg saját alagútja címét.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Válasszon egy alagutat, hogy a PadForge nyilvános címet kapjon.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Ezen a számítógépen még: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, amelynek a címe ugyanaz marad</value></data>
@@ -6763,7 +6868,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Futtassa a saját alagútját a http://127.0.0.1:{0} címre, és illessze be az https címét. A névvel ellátott Cloudflare-alagút, a tartós fejlesztői alagút, a Tailscale Funnel és az ngrok saját tartománya megtartja a címét.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Illesszen be egy https címet, amelyben nincs más elérési út, csak /mcp, ahogyan az alagútja adja.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>A PadForge webes segédprogramja indul.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>A PadForge webes segédprogramja leállt ({0}). Kapcsolja ki, majd be a PadForge elérését a webről, hogy újra elinduljon.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>A PadForge webes segédprogramja leállt ({0}). A PadForge folyamatosan próbálja elindítani.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Cím</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Még nincs nyilvános cím.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Hozzáadás a Claude-hoz</value></data>
@@ -6802,11 +6907,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>a(z) {0} kóddal fejeződött be</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Az Automatizálás ki van kapcsolva, ezért egy webes asszisztens sem éri el a PadForge-ot. A webes segédprogram az Automatizálás bekapcsolása után indul.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ellenőrzés…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Nincs telepítve.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Telepítve és naprakész. A szkript ezzel kezdődik: {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Telepítve ehhez: {0}, és naprakész. A szkript ezzel kezdődik: {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Telepítve. Ennek a PadForge-nak újabb másolata van.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Telepítve ehhez: {0}. Ennek a PadForge-nak újabb másolata van.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Telepítés…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>A PadForge nem tudta ellenőrizni: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>A Telepítés oda teszi a PadForge könyvtárát, ahol az adott nyelv megtalálja. Az azt betöltő szkript a fenti szinten olvassa az eszközöket és vezérli a leképezéseket.</value></data>
@@ -6814,8 +6914,27 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Telepített másolatok</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Összes eltávolítása</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Eltávolítva.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>A PadForge könyvtára telepítve van ehhez: {0}, és naprakész. A szkript ezzel a sorral kezdődik: {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>A PadForge könyvtára ehhez: {0} eltér a PadForge ezen verziójának másolatától.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>A PadForge könyvtára nincs telepítve ehhez: {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>A PadForge könyvtára naprakész ehhez: {0}. A másolata ehhez: {1} eltér a PadForge ezen verziójának másolatától.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>A PadForge könyvtára naprakész ehhez: {0}, és nincs telepítve ehhez: {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>A PadForge könyvtára ehhez: {0} eltér a PadForge ezen verziójának másolatától, ehhez pedig nincs telepítve: {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>A PadForge könyvtára naprakész ehhez: {0}. A másolata ehhez: {1} eltér a PadForge ezen verziójának másolatától, ehhez pedig nincs telepítve: {2}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>A Windows nem indította el az Ön saját jogaival.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Nem fejeződött be {0} másodperc alatt.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>A(z) {0} kóddal fejeződött be, és nem adott okot.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>A PadForge nem tudja beolvasni a beállításokat itt: {0}, ezért a fájlt úgy hagyta, ahogy van.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>A PadForge nem ezt írta: {0}, ezért úgy hagyta, ahogy van.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>A Windows nem nevez meg Dokumentumok mappát az Ön számára.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>A PadForge nem talál az Ön számára mappát ehhez: {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>A(z) {0} saját parancsa a(z) {1} kóddal fejeződött be.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>A(z) {0} parancsa nincs ezen a számítógépen.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>A Windows nem engedte, hogy a PadForge beolvasson vagy írjon egy szükséges fájlt.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>A PadForge nem talál Python-telepítést: egy sincs regisztrálva, telepítve a Microsoft Store-ból, felsorolva egy py indító által, vagy az Ön PATH változójában.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>A PadForge által talált Python-telepítések egyike sem válaszolt {0} másodpercen belül.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>A futás nem adott olyan okot, amelyet a PadForge ismer.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Szkriptazonosító</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>A szkriptazonosítója</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>A szkriptek a vezérlőelemeit így nevezik: {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>A szkriptek a billentyűit KeyA, KeySpace, KeyLeftShift és hasonló néven nevezik, minden billentyűt pedig a kódjával, Vk0-tól Vk255-ig.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ezen a hálózaton, innen: {1}</value></data>
@@ -6827,11 +6946,11 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>A PadForge rendszergazdai jogok nélkül futó segédprogramja ennek a számítógépnek a hálózati címein figyel, és a PadForge csak a privát hálózatokon engedi be a portját. Egy másik számítógépen futó asszisztens csak az Ön által itt készített kulccsal jut be. A hívások és a kulcsuk titkosítatlanul haladnak át a hálózaton.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Módosítás…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>A hívások és a kulcsuk titkosítatlanul haladnak át ezen a hálózaton. A Windows csak a privát hálózatokon engedi be őket.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>A hívások és kulcsuk titkosítatlanul haladnak át ezen a hálózaton. A Windows tűzfalban a PadForge által ehhez a porthoz létrehozott szabály csak a magánhálózatokra vonatkozik.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>A(z) {0} portot egy másik program használja. Módosítsa, hogy elérje a PadForge-ot erről a hálózatról.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>A Windows nem engedte, hogy a PadForge segédprogramja a(z) {0} porton figyeljen. A PadForge rendszergazdai jogokkal engedélyezi, ezért indítsa el a PadForge-ot rendszergazdaként, majd kapcsolja ki és be ezt.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>A Windows nem tart fenn foglalást a PadForge segédprogramja számára a(z) {0} porton. Kapcsolja ki és be ezt, és a PadForge újra létrehozza.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>A PadForge segédprogramja nem tudott a(z) {0} porton figyelni. Módosítsa a portot, vagy kapcsolja ki és be ezt.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>A PadForge segédprogramja leállt ({0}). Kapcsolja ki, majd be a PadForge elérését erről a hálózatról, hogy újra elinduljon.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>A PadForge segédprogramja leállt ({0}). A PadForge folyamatosan próbálja elindítani.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Az Automatizálás ki van kapcsolva, ezért egy ezen a hálózaton lévő asszisztens sem éri el a PadForge-ot. A segédprogram az Automatizálás bekapcsolása után indul.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Ennek a számítógépnek jelenleg nincs címe privát hálózaton.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Asszisztensek ezen a hálózaton</value></data>
@@ -6875,11 +6994,12 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Eszközök kiválasztása</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>A(z) {0} vezérelheti a saját eszközeit és azokat, amelyeket bejelöl. Továbbra is minden eszközt olvas.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Az Eszközök oldalon nincs eszköz.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Fut, az Ön jogaival, és kész. A ChatGPT ezen az alagúton keresztül éri el a PadForge-ot, saját bejelentkezés nélkül, és csak az Ön OpenAI-szervezetéből. A PadForge-gal együtt újra elindul.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Fut, az Ön jogaival. Arra vár, hogy az OpenAI jelezze, hogy az alagút kész.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Fut, az Ön jogaival, és a tunnel-client jelzi, hogy készen áll. A PadForge-gal együtt újra elindul.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Fut, az Ön jogaival. A tunnel-client most nem jelzi, hogy készen áll.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Az OpenAI tunnel-client programjának letöltése és ellenőrzése a kiadás SHA-256 összegei alapján.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>A tunnel-client nem tölthető le: {0}. Az újrapróbálkozáshoz válassza ki újra az alagutat.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Illesszen be lent egy futásidejű kulcsot és egy alagútazonosítót, és az alagút elindul.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>Az OpenAI tunnel-client programja még nincs ezen a számítógépen. Válassza ki újra az alagutat a letöltéséhez.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Futásidejű kulcs</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Korlátozott, a Tunnels Read and Use jogosultsággal.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Készítés</value></data>
@@ -6888,6 +7008,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>A ChatGPT megnyitása</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>A PadForge titkosítva, csak Önnek tartja meg a kulcsot. Az üres mező elfelejti. A ChatGPT a fenti szinten dolgozik.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>A kulcs nem lett megtartva: a PadForge webes segédprogramja nem fut, és csak az tudja titkosítani a kulcsot az Ön számára.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>A kulcs nem lett megtartva: a PadForge webes segédprogramja leállt, mielőtt titkosította volna a kulcsot. Illessze be újra.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>A kulcs nem lett megtartva: a Windows nem tudta titkosítani az Ön számára. Illessze be újra.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Válasz másik eszközről</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Válaszoljon a PadForge kérdéseire telefonról vagy másik számítógépről, amíg távol van ettől.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Csak ezen a hálózaton működik, a webes vezérlő címén keresztül.</value></data>
@@ -6905,9 +7027,10 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>A kód egyszer használható, eddig: {0}. Öt hibás próbálkozás lezárja, a QR-kód ettől még működik.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>A webes vezérlő címének indítása…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Az oldal nem nyitható meg: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Ennek a számítógépnek nincs címe magánhálózaton.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>A Windows nem rejtette el ezt az ablakot a képernyőfelvétel elől, ezért nem mutat kódot.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>A begépelt kód öt hibás próbálkozás után lezárult. A QR-kód még eddig működik: {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>A kód lejárt. Az Eszköz párosítása… újat készít.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>A kód lejárt. Az Eszköz párosítása újat készít.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>A PadForge legfeljebb {0} hálózati kulcsot tart meg. Előbb vonja vissza.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. A változó színek, például a színváltás vagy a hangot követő színek nem jutnak el hozzá. Az állandó szín igen.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Minden fájl (*.*)|*.*</value></data>

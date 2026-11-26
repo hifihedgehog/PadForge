@@ -199,6 +199,13 @@
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Amóeló</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>A amóeló "{0}".</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID device esor itan)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Controller mi chómmóng axis</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Esor</value></data>
@@ -322,6 +329,13 @@
 {0}
 
 PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe ripotei, poputá eu discussion won {2} me isetiw crash.log won.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>A fis eú osukosuk:
+
+{0}
+
+PadForge ese tongeni makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe ripotei, poputá eu discussion won {2}, tiki Ctrl+C ikei pwe kopwe kapiini ei kapas, me isetiw ikenan.
 
 {1}</value></data>
 
@@ -668,6 +682,7 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Devices_Filter_All" xml:space="preserve"><value>Meinisin</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Minefen controller</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, button me sensor meinisin</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>An kewe control fiti ekkewe it script ra aea</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Kapiini ekkewe details</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Pisek</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Sókkun</value></data>
@@ -835,8 +850,9 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ewe program a kapas non eu version PadForge ese silei</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge ese ngeni ena plugin key</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge ese etiwa ewe riri an ei program</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge ese féri eu device, pun Windows ese ngeni iten ewe file an ewe program</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>A tingor sefál mi fókkun mwittir</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Esor pwal ekkeei tori PadForge epwe poputá sefál</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>A fókkun chómmóng ekei program ra féri mi witiwit ren om kopwe etittina won Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Esor ena tool ren PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Ewe program a álleani eu state mi ochufesen</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Esor met a wor ena ID</value></data>
@@ -844,6 +860,7 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Automation_Result_Declined" xml:space="preserve"><value>En ka ese mwútátá</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Esor emén a pólúweni non fansoun</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>A witiwiti óm pólúwen</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Kese mwo pélúweni</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Esor ena tingor</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Esor met epwe liwinsefál</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>En chök ka tongeni siwili ei</value></data>
@@ -962,7 +979,6 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Uweto eu Profile</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Uweto eu profile file seni pwal eu program, mwirin kúna met a war.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fán</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ewe sópwólóón seni {1} mi ina usun</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 Script (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python_Filter" xml:space="preserve"><value>Python Script (*.py)|*.py</value></data>
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell Module (*.psm1)|*.psm1</value></data>
@@ -972,7 +988,7 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Seni eu program Windows ese aita</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ewe Model Context Protocol server me client mi nom tuun ewe riri ngeni chón álillis me PadForge.exe --mcp, ren Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ewe Model Context Protocol server me client mi nom tuun ewe riri ngeni chón álillis me PadForge.exe --mcp, ren Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions me DependencyInjection.Abstractions, ekkewe ewe MCP C# SDK a pwo won, ren Microsoft.</value></data>
   <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>A angang.</value></data>
@@ -1000,13 +1016,20 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Iei a atoui…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Iei a afööló…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ese unusoló: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Ewe entry me skill an PadForge ra chök nóm, pun {0} a álleani ewe chök settings file me skill folder.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Ewe entry an PadForge a chök nóm, pun {0} a álleani ewe chök settings file.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge a atoowuló seni ei program. An skill a chök nóm, pun {0} a álleani skill seni ewe chök folder.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ese tongeni álleani ewe settings lón {0}, ina minne ese silei ika PadForge a apachaatá.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>A apachaatá. PadForge ese tongeni álleani an skill folder.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>A kapiiniló.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ese kapiiniló: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Ese kapiiniló. Windows ese mútátá ngeni PadForge an epwe aea ewe clipboard.</value></data>
   <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Eu gamepad, “{0}”</value></data>
   <data name="SdlMapping_Joystick" xml:space="preserve"><value>Eu joystick. Esor an SDL mapping ren.</value></data>
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Eu joystick. PadForge a álleani ren raw, ina minne ese aea ewe mapping an SDL.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Eu joystick, mi akkota usun eu gamepad ren om row.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL a álleani device lupwen ewe engine a angang.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Ewe device ese riri. SDL epwe álleani lupwen a riri.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ese ngeni PadForge eú porousen ei device.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ewe kapi an community mi nóm non, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>A download {0}</value></data>
@@ -1044,6 +1067,11 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle me ekkoch action</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} me {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Esor met epwe kapiiniló: esor an SDL mapping ren ei device, me ese nóm won eu controller.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Esor met epwe kapiiniló: PadForge ese tongeni álleani an SDL mapping ren ei device, me esor row lón an kewe controller a ngeni eú binding ewe form an SDL a etiwa.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Esor met epwe kapiiniló: esor an SDL mapping ren ei device, me esor row lón {0} a álleani eú button, axis ika hat an lón eú napanap ewe form an SDL a etiwa.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Esor met epwe kapiiniló: esor an SDL mapping ren ei device, me ekkewe row lón {0} ra chök álleani ren {1}, ewe form an SDL ese tongeni amwéchú.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Esor met epwe kapiiniló: PadForge ese tongeni álleani an SDL mapping ren ei device iei, me ese nóm won eu controller.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Esor met epwe kapiiniló: PadForge ese tongeni álleani an SDL mapping ren ei device iei, me esor row lón {0} a ngeni eú binding ewe form an SDL a etiwa.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Pwal eu program a aea ewe clipboard. Esor met a kapiiniló.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Om row a atouló. Ewe device a álleani usun me mwan.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>A map sefál seni ewe layout an SDL: {0}.</value></data>
@@ -1063,6 +1091,8 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Row PadForge a uwei</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Esor row a tipeew ngeni.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ewe row ka filata epwe aea ngeni {0} fán pwisin an ID, fiti ewe chök etittin me ewe chök filata usun Paste.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Ewe engine a stop, ina minne ewe list ese apachaatá ekkewe row SDL a amwéchú, pwisin an me ewe community kopi mi nóm lón. Repwe nóm lón ewe list lupwen a angang.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL ese pélúweni lón fansoun, ina minne ewe list ese apachaatá ekkewe row a amwéchú, pwisin an me ewe community kopi mi nóm lón.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Row ren SDL mapping</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Eu row ren ei device.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Eu layout mi ekieki.</value></data>
@@ -1075,14 +1105,14 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} field, seni ewe chök vendor me product won pwal eu bus are version. A isóni fán pwisin an ID ei device.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} field, an pwal eu device row. A isóni fán pwisin an ID ei device.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} field. SDL ese álleani ei device, ina minne PadForge a akkota an kewe input ren ewe row.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>Esor an PadForge button ika axis mi mecheres ren ekei field, ina minne a likitiniló: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} field, seni ekkewe axis, button me hat an ewe device. Etittina non Test Inputs, mwirin isóni are siwili ikei.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ei a siwili ifa usun ra álleani {0}. An kewe row non {1} ra map sefál seni ewe layout mi fö.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ei a siwili ifa usun ra álleani {0}. Ese nóm won eu controller, ina minne esor row a siwil.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profile shortcut mi álleani {0} ra amwéch ekkewe input ra akkota ngeni.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Ewe row a isóni usun om non PadForge.xml me a akkomw asan source meinisin ren ei device. Atoowu Ai a aliwinitiw ewe row mi chinnap me ekkewe row mi chinnap.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ekkewe row ra isóni usun om non PadForge.xml me ra akkomw ren ar kewe device asan source meinisin. Clear, fán More an ewe row Controller Database, a atoui.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} row ren Windows. {1} ren ekkoch system ra likitiló.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} row ren Windows. {1} ren ekkoch system ra likitiló.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} row ren Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Meinisin {0:N0} repwe kapachelong. PadForge a isóni tori {1:N0} row an om.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Epwe kapachelong. PadForge a isóni tori {1:N0} row an om.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} row an om ra isóni iei, ina minne {1:N0} seni ekkei repwe kapachelong nge {2:N0} resap.</value></data>
@@ -1092,7 +1122,7 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ewe kapas sap eu row non ewe controller database an SDL: eu ID mi 32 hex digit, eu it, mwirin field usun a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ekkewe row ra ren ekkoch system. PadForge a álleani row ren Windows, are ren esor system mi chék.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Ewe ID an ewe row sap an eu device. A mwochen 32 hex digit.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Ewe it an ewe row a pon, a lap seni 128 character, are a amwéch eu character SDL a álleani usun eu field.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Iten ewe row esor met lón, a lap seni 128 character, a wor lón eú field marker SDL a álleani, usun “type:”, ika a wor lón eú character sap letter, digit, punctuation, symbol me ewe space mi mecheres.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Ewe row a uwei eu hint are eu field an Android, PadForge ese etiwa.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Ewe row a wor eu field SDL ese sinei.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Eu binding ese nóm non ewe form an SDL, usun b3, a2, +a2, a2~ are h0.4.</value></data>
@@ -1111,7 +1141,7 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>A úkútiw. An kapas mi le sópwólóón: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ese tongeni poputá.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ese chüen nóm won ei PC.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Esor program ren tunnel a kúnóó won ei PC. PadForge a angang fiti cloudflared, devtunnel, ngrok me Tailscale Funnel, are fiti ewe address an pwisin om tunnel.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge ese kúna cloudflared, devtunnel, ngrok ika Tailscale Funnel won ei PC. Filata ewe ChatGPT Secure MCP Tunnel, ewe PadForge a download, ika ngeni address an pwisin om tunnel.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Filata eu tunnel pwe PadForge epwe wor an eu public address.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Pwal won ei PC: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, mi an address a chök ewe chök</value></data>
@@ -1119,7 +1149,7 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Angangééni pwisin om tunnel ngeni http://127.0.0.1:{0} me pacheei an https address. Eu Cloudflare tunnel mi wor itan, eu dev tunnel mi nómottam, Tailscale Funnel me pwisin domain an ngrok ra amwéch ar address.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Pacheei eu https address esor path chiwen /mcp, usun om tunnel a ngonuk.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Iei a poputá ewe web helper an PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Ewe web helper an PadForge a úkútiw ({0}). Akkota Reach PadForge From the Web ngeni off me on pwe epwe poputá sefál.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Ewe web helper an PadForge a stop ({0}). PadForge a chök sótun poputááni.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Address</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Esor mwo public address.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Apachaatá ngeni Claude</value></data>
@@ -1156,28 +1186,26 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows ese poputá</value></data>
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>a muchuló fiti kóót {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation a off, ina minne esor web chón álillis a tori PadForge. Ewe web helper epwe poputá lupwen Automation a on.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>A install me a fö. Eu script a poputá fiti {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>A install ren {0} me a fö. Eu script a poputá fiti {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>A install. Ei PadForge a wor eu kapi mi fö.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>A install ren {0}. Ei PadForge a wor eu kapi mi fö.</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ese tongeni etittina: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Install a isóni ewe library an PadForge ia ena fós a kúna. Eu script mi uwei epwe álleani ekkewe device me emmweni ekkewe mapping won ewe level asan.</value></data>
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kapi mi Install</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Atoui Meinisin</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>A atouló.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Ewe library an PadForge a install ren {0} me a fö. Eú script a poputá fiti {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Ewe library an PadForge ren {0} a sókkópaat seni ewe kopi an ei PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Ewe library an PadForge ese install ren {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>Script ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>An script ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script ra áeita an kewe control {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script ra áeita an kewe key KeyA, KeySpace, KeyLeftShift me ekkewe ra usun, me iteiten key ren an kóót, Vk0 tori Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} won ei network seni {1}</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} a poputá nge ese fókkun riri ngeni PadForge.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Siwili…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Kewe call me an kewe key ra feila won ei network nge ese encrypt. Windows a mwúttiri ir won private network chök.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Ekkewe call me ar key ra fetál won ei network nge esor encryption. Ewe Windows Firewall rule PadForge a féri ren ei port a chök aiti private network.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} a aea ren pwal eu program. Siwili pwe kopwe tori PadForge seni ei network.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ese mwúttiri ewe helper an PadForge pwe epwe áúselinga won port {0}. PadForge a mwúttiri ika a wor tufichin administrator, ina minne poputá PadForge fiti ena tufich me akkota ei ngeni off me on.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows esor an reservation ren ewe helper an PadForge won port {0}. Akkota ei ngeni off me on, nge PadForge epwe pwal féri.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Ewe helper an PadForge ese tongeni áúselinga won port {0}. Siwili ewe port, ika akkota ei ngeni off me on.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ewe helper an PadForge a úkútiw ({0}). Akkota Reach PadForge From This Network ngeni off me on pwe epwe poputá sefál.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Ewe helper an PadForge a stop ({0}). PadForge a chök sótun poputááni.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation a off, ina minne esor chón álillis won ei network a tori PadForge. Ewe helper epwe poputá lupwen Automation a on.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Ei PC esor an address won eu private network iei.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Chón Álillis won Ei Network</value></data>
@@ -1188,7 +1216,26 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Net_Port_Title" xml:space="preserve"><value>Siwili ewe Port</value></data>
   <data name="Net_Port_Subtitle" xml:space="preserve"><value>Filata eu port seni 1024 tori 49151. An iteiten chón álillis address mi isóni a affata ewe port, ina minne kapachelong emén me emén sefál mwirin ewe siwil.</value></data>
   <data name="Net_Port_Wrong" xml:space="preserve"><value>Makkei eu port seni 1024 tori 49151.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>A angang, fiti om tufich, me a molleta. ChatGPT a tori PadForge non ei tunnel nge esor an sign in, me seni om OpenAI organization chök. Epwe pwal poputá fiti PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>A angang, fiti om tufich. A witiwiti OpenAI pwe epwe ereni pwe ewe tunnel a molleta.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge a isóni ewe key mi encrypt ren om chök. Ika ewe box esor met lón, PadForge epwe likitiló ewe key. ChatGPT a angang won ewe level asan.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge ese tongeni isóni ewe plugin kit.</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Sound{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Icon{0}</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge ese tongeni féri ewe lock mi efisi pwe eú chök kopi epwe angang, ina minne ese poputá.</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>a kúna an library nge ese load-ei, pun PadForge ese tongeni pennúku pwe chök administrator ra tongeni siwili me pwe Logitech a sain won</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>a kúna an library nge ese tongeni aea, me ewe diagnostics log a apasa popun</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} row ren pwal ekkoch system ra likitiniló.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ese poputá fiti pwisin om pwúng.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ese muchuló lón {0} sekon.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>A muchuló fiti kóót {0} nge ese apasa popun.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ese tongeni álleani ewe settings lón {0}, ina minne a likitú ewe file usun a nóm.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge ese makkei {0}, ina minne a likitú usun a nóm.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows ese aiti eú Documents folder ren en.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge ese kúna om eú folder ren {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Pwisin command an {0} a muchuló fiti kóót {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Ewe command an {0} ese nóm won ei PC.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows ese mútátá ngeni PadForge an epwe álleani ika makkei eú file a lamot ngeni.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge ese kúna Python: esor eú a register, a install seni Microsoft Store, eú py launcher a aiti, ika a nóm won om PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Esor Python PadForge a kúna a pélúweni lón {0} sekon.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Ewe angang ese apasa eú popun PadForge a silei.</value></data>
 </root>

@@ -664,5 +664,12 @@
   <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>With the DPI set, Mouse Travel also shows its travel in centimetres. 0 means not set.</value></data>
   <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maximise the window</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Connect to PadForge, the controller mapper on my PC. It is a local MCP server that runs over stdio: the command is {0}, with the argument --mcp. As JSON settings: {1} Once connected, call its status tool first, then ask me what I want to set up, for example: “Show me where to map my controller’s triggers”.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Running, with your rights, and ready. ChatGPT reaches PadForge through this tunnel with no sign-in of its own, and only from your OpenAI organisation. It starts again with PadForge.</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>An unexpected error occurred:
+
+{0}
+
+PadForge could not write the details to crash.log beside PadForge.exe. To report this, start a discussion at {2}, press Ctrl+C here to copy this message and paste it there.
+
+{1}</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programs can switch profiles and release them, start and stop the engine, turn virtual controllers on and off, show and hide the window, close PadForge, ask what is running, save a diagnostics snapshot and start, stop and mark a problem recording.</value></data>
 </root>

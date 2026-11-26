@@ -31,6 +31,8 @@ namespace PadForge.Common.Input
         private IHMaestroSubmitTarget _target;
         // The lane _target is, or null.
         private HMaestroSubmitLane _lane;
+        // The latch _target is, or null.
+        private HMaestroRefusalLatch _latch;
         private HMaestroFfbDecoder _ffbDecoder;
         private Vibration[] _fbVibrationStates; // for the per-tick FFB re-evaluation
         private DualSensePassthroughDispatcher _ds5Dispatcher;
@@ -316,12 +318,30 @@ namespace PadForge.Common.Input
                 }
                 return defaultAxis;
             }
-            _axLeftStickX  = ResolveAxisByRole("leftStickX",  HMAxis.X);
-            _axLeftStickY  = ResolveAxisByRole("leftStickY",  HMAxis.Y);
-            _axRightStickX = ResolveAxisByRole("rightStickX", HMAxis.Rx);
-            _axRightStickY = ResolveAxisByRole("rightStickY", HMAxis.Ry);
+            // A stick the axis map does not name sits on the profile's own
+            // stick axes, as HIDMaestro's HMGamepadStateHelpers.StandardAxes
+            // fills them, and only a profile that declares no such stick
+            // takes the XInput convention. The plain DualShock 3 (SIXAXIS)
+            // has no axis map and its right stick on Z and Rz, and the
+            // convention put that stick on Rx and Ry, which it does not have.
+            var declaredSticks = _profile.Sticks;
+            HMAxis StickAxis(int stick, bool y, HMAxis convention)
+            {
+                if (declaredSticks == null || stick >= declaredSticks.Count) return convention;
+                return y ? declaredSticks[stick].YAxis : declaredSticks[stick].XAxis;
+            }
+            _axLeftStickX  = ResolveAxisByRole("leftStickX",  StickAxis(0, false, HMAxis.X));
+            _axLeftStickY  = ResolveAxisByRole("leftStickY",  StickAxis(0, true, HMAxis.Y));
+            _axRightStickX = ResolveAxisByRole("rightStickX", StickAxis(1, false, HMAxis.Rx));
+            _axRightStickY = ResolveAxisByRole("rightStickY", StickAxis(1, true, HMAxis.Ry));
             _axLeftTrigger  = ResolveAxisByRole("leftTrigger",  HMAxis.Z);
             _axRightTrigger = ResolveAxisByRole("rightTrigger", HMAxis.Rz);
+            // A trigger never lands on an axis a stick holds (StandardAxes:
+            // "keeps its right stick, and the trigger values go nowhere").
+            // The DualShock 3's Z and Rz are its right stick, so its
+            // triggers wrote over it.
+            if (HeldByStick(_axLeftTrigger)) _axLeftTrigger = HMAxis.None;
+            if (HeldByStick(_axRightTrigger)) _axRightTrigger = HMAxis.None;
 
             // Mirror targets: the trigger rows' own wire-field keys, None
             // when they coincide with the canonical position (Sony, where
@@ -353,8 +373,8 @@ namespace PadForge.Common.Input
                 ? profTriggers[0].Axis : HMAxis.None;
             _axRightTriggerField = (profTriggers != null && profTriggers.Count > 1)
                 ? profTriggers[1].Axis : HMAxis.None;
-            if (_axLeftTriggerField  == _axLeftTrigger)  _axLeftTriggerField  = HMAxis.None;
-            if (_axRightTriggerField == _axRightTrigger) _axRightTriggerField = HMAxis.None;
+            if (_axLeftTriggerField  == _axLeftTrigger || HeldByStick(_axLeftTriggerField))  _axLeftTriggerField  = HMAxis.None;
+            if (_axRightTriggerField == _axRightTrigger || HeldByStick(_axRightTriggerField)) _axRightTriggerField = HMAxis.None;
 
             // Seed the hot-path scratch dict so HM's encoder receives
             // sensible rest values for every declared axis. Sticks center
@@ -372,6 +392,21 @@ namespace PadForge.Common.Input
                     _axesScratch[hmAxis] = rest;
                 }
             }
+        }
+
+        /// <summary>True for an axis a stick the profile declares holds
+        /// (HMProfile.Sticks). A stick the profile does not declare takes the
+        /// XInput convention and holds no axis against a declared trigger:
+        /// the Xbox 360 flight stick declares one stick and its throttle and
+        /// rudder on Rx and Ry, which stay theirs.</summary>
+        private bool HeldByStick(HMAxis axis)
+        {
+            if (axis == HMAxis.None) return false;
+            var sticks = _profile.Sticks;
+            if (sticks == null) return false;
+            for (int i = 0; i < sticks.Count; i++)
+                if (sticks[i].XAxis == axis || sticks[i].YAxis == axis) return true;
+            return false;
         }
 
         /// <summary>Set by the test assembly for the life of its process
@@ -439,6 +474,17 @@ namespace PadForge.Common.Input
         /// so it records the frames here.</summary>
         internal Func<IHMaestroSubmitTarget> SubmitTargetSeam;
 
+        /// <summary>Test seam for the made controller's
+        /// HMController.DeliversEveryReport, null in production. A test has
+        /// no SDK controller to ask (<see cref="CreateControllerSeam"/> hands
+        /// back none).</summary>
+        internal Func<bool> DeliversEveryReportSeam;
+
+        /// <summary>True once HIDMaestro refused a frame of this controller
+        /// (<see cref="HMaestroRefusalLatch"/>): nothing more is sent to it
+        /// until it is made again.</summary>
+        internal bool SubmitsRefused => _latch?.Refused ?? false;
+
         public void Connect()
         {
             if (IsConnected) return;
@@ -494,6 +540,7 @@ namespace PadForge.Common.Input
             var controller = _controller;
             _controller = null;
             _target = null;
+            _latch = null;
             _lane?.Dispose();
             _lane = null;
             _ffbDecoder = null;
@@ -516,9 +563,24 @@ namespace PadForge.Common.Input
             var target = SubmitTargetSeam?.Invoke()
                 ?? (_controller != null ? new HMControllerSubmitTarget(_controller) : null);
             // A submit that can wait inside HIDMaestro goes out on a lane of
-            // its own, off the poll thread (HMaestroSubmitLane).
-            if (target != null && HMaestroSubmitLane.SubmitCanWait(_profile))
-                target = _lane = new HMaestroSubmitLane(target, _profile.Id);
+            // its own, off the poll thread (HMaestroSubmitLane): a profile
+            // with a protocol host, and a controller HIDMaestro delivers
+            // every report of, which waits for the driver to deliver the
+            // frame before (HMController.DeliversEveryReport). That is a
+            // keyboard, mouse or digitizer profile, and an "other" one
+            // whose descriptor has such a collection, which the Extended
+            // pickers offer (ControllerProfile.DeliversEveryReport). HIDMaestro
+            // sends that controller every report in order, so its lane keeps
+            // every frame in order too, and on a descriptor with relative
+            // input, where each report is a movement, it keeps every state as
+            // well. The protocol hosts' lanes keep the newest.
+            bool delivers = DeliversEveryReportSeam?.Invoke() ?? _controller?.DeliversEveryReport ?? false;
+            if (target != null && (HMaestroSubmitLane.SubmitCanWait(_profile) || delivers))
+                target = _lane = new HMaestroSubmitLane(target, _profile.Id, ordered: delivers,
+                    mergeStates: !HMaestroProfileCatalog.DeclaresRelativeInput(_profile));
+            // Outside the lane, so a refusal the lane's thread met and the
+            // next hand-over threw stops the submits as one on this thread does.
+            if (target != null) target = _latch = new HMaestroRefusalLatch(target, _profile.Id);
             _target = target;
 
             // Fresh HMController = fresh shared section. Reset the idle-dedup
@@ -619,6 +681,7 @@ namespace PadForge.Common.Input
             // The lane stops before the controller goes. A frame in flight
             // holds the controller's submit lock, which its dispose takes.
             _target = null;
+            _latch = null;
             _lane?.Dispose();
             _lane = null;
             _controller?.Dispose();
@@ -1467,6 +1530,11 @@ namespace PadForge.Common.Input
             return state;
         }
 
+        /// <summary>The usages a trigger past the named pair takes first,
+        /// in order. One array for every call: the lookup runs on every
+        /// frame SubmitRawHidState sends.</summary>
+        private static readonly HMAxis[] TriggerPool = { HMAxis.Rx, HMAxis.Ry, HMAxis.Slider, HMAxis.Dial };
+
         /// <summary>The usage the descriptor gave trigger <paramref name="t"/>,
         /// for the triggers past the profile's named pair.
         ///
@@ -1483,7 +1551,7 @@ namespace PadForge.Common.Input
             bool rxUsed = sticks >= 3, ryUsed = sticks >= 3;
             bool sliderUsed = sticks >= 4, dialUsed = sticks >= 4;
             int index = 0;
-            foreach (HMAxis candidate in new[] { HMAxis.Rx, HMAxis.Ry, HMAxis.Slider, HMAxis.Dial })
+            foreach (HMAxis candidate in TriggerPool)
             {
                 bool taken = candidate switch
                 {
@@ -1704,7 +1772,7 @@ namespace PadForge.Common.Input
                     // (+bit 1 HAPTICS_SELECT on DS5), and an
                     // audio/lightbar-only report carries motor=0 meaning
                     // "ignore", NOT "stop"):
-                    //   1. exact declared report size (Decode silently
+                    //   1. at least the declared report size (Decode silently
                     //      skips out-of-range bytes, so a truncated BT
                     //      report can surface partial fields);
                     //   2. CRC valid (CrcValid alone is insufficient: it
@@ -1806,6 +1874,12 @@ namespace PadForge.Common.Input
                 // the driver serves feature reads synchronously and has no
                 // deferred-response path; fire-and-forget commands like the
                 // sine test don't need one.
+                int idx = FeedbackPadIndex;
+
+                // A problem recording takes every report a game sends (#600),
+                // the vendor test feature forwarded below among them.
+                Recording.RecordingTaps.GameReport(idx, pkt.Source, pkt.ReportId, pkt.Data.Span);
+
                 if (_ds5Dispatcher != null
                     && pkt.Source == HMOutputSource.HidFeature
                     && pkt.ReportId == 0x80)
@@ -1813,11 +1887,6 @@ namespace PadForge.Common.Input
                     _ds5Dispatcher.EnqueueFeature(pkt.ReportId, pkt.Data.Span);
                     return;
                 }
-
-                int idx = FeedbackPadIndex;
-
-                // A problem recording takes every report a game sends (#597).
-                Recording.RecordingTaps.GameReport(idx, pkt.Source, pkt.ReportId, pkt.Data.Span);
 
                 // Evidence line (#350): every output packet, before any
                 // gate, so a packet dropped by the pad-index guard or
@@ -2143,7 +2212,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The Sony motor trust gate (#236 / 2026-07-25 audit), as
-        /// one pure predicate so tests can pin its legs: exact declared
+        /// one pure predicate so tests can pin its legs: at least the declared
         /// report size (a truncated BT report surfaces partial fields AND
         /// CrcValid=true, since the codec skips CRC when the footer is out
         /// of range), CRC valid, and the motor-valid flag asserted (DS4

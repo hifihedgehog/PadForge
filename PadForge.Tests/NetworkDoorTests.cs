@@ -264,7 +264,11 @@ namespace PadForge.Tests
             {
                 Assistant = new AssistantRig(level);
                 Door = new WebDoor(Assistant.Host, Store, Launcher, () => @"C:\PadForge\PadForge.exe", Assistant.PipeName,
-                    network: new NetworkDoor(a => { lock (Netsh) Netsh.Add(a); return a.StartsWith("interface", StringComparison.Ordinal) ? NetworkDoorTests.ExcludedSample : string.Empty; }));
+                    network: new NetworkDoor(a => { lock (Netsh) Netsh.Add(a); return a.StartsWith("interface", StringComparison.Ordinal) ? NetworkDoorTests.ExcludedSample : string.Empty; }))
+                {
+                    // The desktop's user, whom the helper names.
+                    HelperUserSeam = () => Sid,
+                };
             }
 
             public string[] Ran() { lock (Netsh) return Netsh.ToArray(); }
@@ -282,6 +286,8 @@ namespace PadForge.Tests
             using var rig = new Rig();
             Assert.False(rig.Store.On);
             rig.Door.TurnNetworkOn();
+            // The pick runs on the pool, with the other netsh runs.
+            await rig.Door.NetshDone();
             int port = rig.Store.NetworkPort;
             Assert.InRange(port, 1024, 49151);
             Assert.True(rig.Store.NetworkOn);
@@ -341,10 +347,11 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AKey_IsShownOnce_KeptAsItsHash_CappedAtTheUsersLevel_AndRevokeTakesItOut()
+        public async Task AKey_IsShownOnce_KeptAsItsHash_CappedAtTheUsersLevel_AndRevokeTakesItOut()
         {
             using var rig = new Rig(AutomationLevel.SendInputs);
             rig.Door.TurnNetworkOn();
+            await rig.Door.NetshDone();
             string key = rig.Door.AddNetworkKey("Office PC", AutomationLevel.ChangeSettings);
             Assert.StartsWith("pfn_", key);
             var kept = rig.Store.Keys.Single();
@@ -428,7 +435,11 @@ namespace PadForge.Tests
             var launcher = new WebTestLauncher();
             var netsh = new List<string>();
             using var door = new WebDoor(rig.Host, store, launcher, () => @"C:\PadForge\PadForge.exe", rig.PipeName,
-                network: new NetworkDoor(a => { lock (netsh) netsh.Add(a); return string.Empty; }));
+                network: new NetworkDoor(a => { lock (netsh) netsh.Add(a); return string.Empty; }))
+            {
+                // The helper runs in this process, as this process's user.
+                HelperUserSeam = () => System.Security.Principal.WindowsIdentity.GetCurrent().User?.Value,
+            };
             int port = FreePort();
             store.SetNetworkPort(port);
             door.TurnNetworkOn();
@@ -498,7 +509,10 @@ namespace PadForge.Tests
             var store = new WebAccessStore();
             var launcher = new WebTestLauncher();
             using var door = new WebDoor(rig.Host, store, launcher, () => @"C:\PadForge\PadForge.exe", rig.PipeName,
-                network: new NetworkDoor(_ => string.Empty));
+                network: new NetworkDoor(_ => string.Empty))
+            {
+                HelperUserSeam = () => System.Security.Principal.WindowsIdentity.GetCurrent().User?.Value,
+            };
             int port = FreePort();
             var holder = new TcpListener(IPAddress.Loopback, port);
             holder.Start();

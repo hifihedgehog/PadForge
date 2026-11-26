@@ -132,13 +132,15 @@ Pick **Custom Expression** in the **Fire** dropdown when the shape you want is b
 
 Add up to 32 variables. Each one becomes a letter: `a` for the first, `b` for the second, and so on through `z`. Variables 27 through 32 go by index, `s[26]` through `s[31]`. The formula refers to those names.
 
-Each variable binds to one of three things:
+Each variable binds to one of five things:
 
 - An **Assigned Devices** input: any button or POV direction, or one of the first six axes (the stick and trigger axes), on any physical device assigned to the slot.
 - A **Virtual Controller** channel: a standard button, D-pad direction, trigger, or stick axis on the slot's combined virtual controller output. The macro reacts to what the slot is emitting after merge, so a macro can fire on its own virtual controller's behavior.
 - A **Game Telemetry** channel: the speed, RPM, gear, pedals or steering a driving game sends, or a custom telemetry variable, in its own unit (km/h, percent, gear number). See [Game Telemetry](../features/game-telemetry.md#telemetry-in-custom-expression-triggers).
+- A **Script Value**: a value a script or a program sets by name, as `SetValue("pull", 40)` does. Pick a name a program set this run, or type one a script has not set yet. See [Scripts](../features/scripts.md#values-commands-and-tools).
+- A **Device Connection**: pick a device, connected or not. The variable reads 1 while it is connected and 0 while it is not. See [Connection Notes](../features/connection-notes.md#a-devices-connection-as-a-value).
 
-Click the record icon (tooltip **Record Trigger**) on a variable row, push the input you want it to follow, and PadForge fills it in. Click the clear icon (tooltip **Clear**) to wipe a binding. A Game Telemetry variable has no record icon: pick its channel from the list.
+Click the record icon (tooltip **Record Trigger**) on a variable row, push the input you want it to follow, and PadForge fills it in. Click the clear icon (tooltip **Clear**) to wipe a binding. A Game Telemetry, Script Value or Device Connection variable has no record icon: pick its channel, name or device from the list.
 
 ### Trigger Formula
 
@@ -241,7 +243,7 @@ Click **Add Action** to add a Button Press step, then pick its kind from the **T
 | **Sound & Volume** | Play Sound, Stop Sounds, System Volume, App Volume, Raise Headphone Volume, Lower Headphone Volume |
 | **Motion & Pointer** | Set Gyro Engaged, Gyro Recenter, Set Pointer Mode, Cycle Pointer Modes |
 | **Layers & Overlays** | Switch Layer, Toggle Touchpad Overlay, Toggle Screen Overlay, Toggle Crosshair, Toggle Magnifier, Magnifier (While Held) |
-| **System & Apps** | Profile Shortcut, Run Program, Voice Listen (While Held), Disconnect Controller |
+| **System & Apps** | Profile Shortcut, Problem Recording, Run Program, Voice Listen (While Held), Disconnect Controller |
 
 ### Button Press / Button Release
 
@@ -324,6 +326,10 @@ Each fire performs the next tap in the **Steps** list and advances. With **Wrap*
 ### Profile Shortcut
 
 Does what a [profile shortcut](profiles.md) does. The **Profile Shortcut** list picks **Specific Profile**, **Next Profile**, **Previous Profile**, **Toggle Window** or **Toggle Virtual Controllers Disabled**. Specific Profile adds a box for the profile's name, matched without regard to case. A name no profile has does nothing. The action runs once and the macro moves on.
+
+### Problem Recording
+
+Starts or stops a [problem recording](../features/problem-recorder.md), marks the one that runs, or saves the last 60 seconds, without leaving the game. The **Problem Recording** list picks **Start or Stop Recording**, **Mark the Recording** or **Save the Last 60 Seconds**. A mark lands at the moment the macro fires. Saving the last 60 seconds needs [Keep the Last 60 Seconds](../features/problem-recorder.md#keep-the-last-60-seconds) on.
 
 ### Run Program
 

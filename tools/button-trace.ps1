@@ -20,7 +20,8 @@
 # 3 Y/Triangle, 4 LB, 5 RB, 6 Back/Create, 7 Start/Options, 8 LS, 9 RS,
 # 10 Guide/PS, 11 Misc1 (DualSense MUTE), 12-15 paddles, 16 touchpad click.
 #
-# Usage: right-click, Run with PowerShell. Ctrl+C to stop tailing.
+# Usage: right-click, Run with PowerShell. Ctrl+C stops the tail and copies
+# the trace to -Log.
 
 param(
     [string]$Exe = 'C:\PadForge\PadForge.exe',
@@ -40,9 +41,16 @@ while ((Get-Process PadForge -ErrorAction SilentlyContinue) -and $n -lt 20) {
     $n++
 }
 
-Write-Host "Log: $Log"
-$cmd = "`$env:PADFORGE_DIAG = '$Log'; Start-Process '$Exe'"
-Start-Process powershell -Verb RunAs -ArgumentList '-NoProfile', '-WindowStyle', 'Hidden', '-Command', $cmd
+# PadForge with rights takes PADFORGE_DIAG only when it names diag.log
+# directly in its own folder (SdlDiagLog.MirrorPathWithRights), so the mirror is
+# diag.log beside the exe, and -Log is its copy, made when the tail stops.
+# The elevated shell deletes the last run's mirror, which only an
+# administrator may do in PadForge's folder, and this script waits for it.
+$mirror = Join-Path (Split-Path -Parent $Exe) 'diag.log'
+Write-Host "Log: $Log (copied from $mirror when the trace stops)"
+$cmd = "Remove-Item -LiteralPath '$mirror' -Force -ErrorAction SilentlyContinue; `$env:PADFORGE_DIAG = '$mirror'; Start-Process '$Exe'"
+$elevated = Start-Process powershell -Verb RunAs -PassThru -ArgumentList '-NoProfile', '-WindowStyle', 'Hidden', '-Command', $cmd
+$elevated.WaitForExit()
 
 Write-Host ""
 Write-Host "PadForge is starting. With the DualSense connected, press in this order:"
@@ -56,9 +64,13 @@ Write-Host "whole time, so the silence on X and mute is real and not a dead log.
 Write-Host ""
 
 $deadline = (Get-Date).AddSeconds(60)
-while (-not (Test-Path $Log) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
-if (-not (Test-Path $Log)) {
+while (-not (Test-Path $mirror) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
+if (-not (Test-Path $mirror)) {
     Write-Warning "No log file appeared. PadForge may not have started, or the elevation prompt was declined."
     return
 }
-Get-Content $Log -Wait -Tail 0 | Where-Object { $_ -match 'BTNSURFACE|BTNEDGE' }
+try { Get-Content $mirror -Wait -Tail 0 | Where-Object { $_ -match 'BTNSURFACE|BTNEDGE' } }
+finally {
+    Copy-Item -LiteralPath $mirror -Destination $Log -Force
+    Write-Host "The trace is copied to $Log"
+}

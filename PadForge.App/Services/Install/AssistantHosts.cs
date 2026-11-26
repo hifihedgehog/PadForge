@@ -85,18 +85,34 @@ namespace PadForge.Services.Install
             return entry;
         }
 
-        /// <summary>Claude Desktop's settings file: in its package's own data
-        /// folder when the packaged app has one, as on the PC this was
-        /// built on, else the documented %APPDATA%\Claude.</summary>
+        /// <summary>Claude Desktop's settings file, the one it reads: the copy
+        /// in its package's own data folder when that copy exists, as on the
+        /// PC this was built on, else the documented
+        /// %APPDATA%\Claude\claude_desktop_config.json when that file exists,
+        /// which the packaged app reads while it has no copy of its own, else
+        /// the package's folder, where the packaged app writes, and with no
+        /// package the documented file.</summary>
         internal static string ClaudeDesktopFile()
         {
-            string packaged = UserFolders.PackagedRoaming("Claude");
-            if (packaged != null) return Path.Combine(packaged, "Claude", "claude_desktop_config.json");
+            string packaged = UserFolders.PackagedRoaming(AssistantPrograms.ClaudeFamily) is { } folder
+                ? Path.Combine(folder, "Claude", "claude_desktop_config.json")
+                : null;
             string roaming = UserFolders.Of(UserFolder.RoamingData);
-            return string.IsNullOrEmpty(roaming) ? null : Path.Combine(roaming, "Claude", "claude_desktop_config.json");
+            string documented = string.IsNullOrEmpty(roaming) ? null : Path.Combine(roaming, "Claude", "claude_desktop_config.json");
+            if (packaged != null && File.Exists(packaged)) return packaged;
+            if (documented != null && File.Exists(documented)) return documented;
+            return packaged ?? documented;
         }
 
         private static string CopilotHome() => Variable("COPILOT_HOME") ?? InProfile(".copilot");
+
+        // A place more than one program reads is one function that every host
+        // reading it names, so two hosts share a place exactly when they hold
+        // the same function (SharesSkills, SharesEntry). Declared before All,
+        // which the class's static fields fill in their order.
+        private static readonly Func<string> CopilotSkills = () => CopilotHome() is { } home ? Path.Combine(home, "skills") : null;
+        private static readonly Func<string> CopilotSettings = () => CopilotHome() is { } home ? Path.Combine(home, "mcp-config.json") : null;
+        private static readonly Func<string> AgentsSkills = () => InProfile(".agents", "skills");
 
         /// <summary>Every host, in the order a list shows them.</summary>
         internal static IReadOnlyList<AssistantHost> All { get; } = new[]
@@ -129,7 +145,7 @@ namespace PadForge.Services.Install
                 AddWords = exe => new[] { "mcp", "add", EntryName, "--", exe, "--mcp" },
                 RemoveWords = new[] { "mcp", "remove", EntryName },
                 SettingsFile = () => Variable("CODEX_HOME") is { } home ? Path.Combine(home, "config.toml") : InProfile(".codex", "config.toml"),
-                SkillsFolder = () => InProfile(".agents", "skills"),
+                SkillsFolder = AgentsSkills,
             },
             // gemini-cli docs/tools/mcp-server.md: gemini mcp add [options] <name> <commandOrUrl> [args...],
             // --scope user writes ~/.gemini/settings.json. Skills in ~/.gemini/skills.
@@ -148,18 +164,18 @@ namespace PadForge.Services.Install
                 Key = "copilot-cli", Name = "GitHub Copilot CLI", Command = "copilot", FileWhenNoCommand = true,
                 AddWords = exe => new[] { "mcp", "add", EntryName, "--", exe, "--mcp" },
                 RemoveWords = new[] { "mcp", "remove", EntryName },
-                SettingsFile = () => CopilotHome() is { } home ? Path.Combine(home, "mcp-config.json") : null,
+                SettingsFile = CopilotSettings,
                 Container = "mcpServers", Entry = exe => Stdio(exe, typed: true),
-                SkillsFolder = () => CopilotHome() is { } home ? Path.Combine(home, "skills") : null,
+                SkillsFolder = CopilotSkills,
             },
             // VS Code docs agents/reference/mcp-configuration.md: the Copilot harness reads
             // ~/.copilot/mcp-config.json, mcpServers, type stdio. Skills in ~/.copilot/skills.
             new AssistantHost
             {
                 Key = "vscode", Name = "Visual Studio Code",
-                SettingsFile = () => CopilotHome() is { } home ? Path.Combine(home, "mcp-config.json") : null,
+                SettingsFile = CopilotSettings,
                 Container = "mcpServers", Entry = exe => Stdio(exe, typed: true),
-                SkillsFolder = () => CopilotHome() is { } home ? Path.Combine(home, "skills") : null,
+                SkillsFolder = CopilotSkills,
             },
             // learn.microsoft.com visualstudio/ide/mcp-servers: %USERPROFILE%\.mcp.json, servers.
             // Personal skills in ~/.copilot/skills.
@@ -167,7 +183,7 @@ namespace PadForge.Services.Install
             {
                 Key = "visual-studio", Name = "Visual Studio",
                 SettingsFile = () => InProfile(".mcp.json"), Container = "servers", Entry = exe => Stdio(exe, typed: true),
-                SkillsFolder = () => CopilotHome() is { } home ? Path.Combine(home, "skills") : null,
+                SkillsFolder = CopilotSkills,
             },
             // zed.dev/docs ai/mcp: %APPDATA%\Zed\settings.json, context_servers. Skills in ~/.agents/skills.
             new AssistantHost
@@ -175,7 +191,7 @@ namespace PadForge.Services.Install
                 Key = "zed", Name = "Zed",
                 SettingsFile = () => UserFolders.Of(UserFolder.RoamingData) is { } roaming ? Path.Combine(roaming, "Zed", "settings.json") : null,
                 Container = "context_servers", Entry = exe => Stdio(exe, typed: false),
-                SkillsFolder = () => InProfile(".agents", "skills"),
+                SkillsFolder = AgentsSkills,
             },
             // junie.jetbrains.com junie-cli-mcp-configuration: ~/.junie/mcp/mcp.json, mcpServers.
             // Skills in %USERPROFILE%\.junie\skills.
@@ -186,6 +202,19 @@ namespace PadForge.Services.Install
                 SkillsFolder = () => InProfile(".junie", "skills"),
             },
         };
+
+        /// <summary>Whether two hosts read their skills from one folder, as
+        /// GitHub Copilot CLI, VS Code and Visual Studio do, and Codex and
+        /// Zed: taking the skill out for one takes it out for the
+        /// other.</summary>
+        internal static bool SharesSkills(AssistantHost a, AssistantHost b)
+            => a != null && b != null && a != b && a.SkillsFolder != null && ReferenceEquals(a.SkillsFolder, b.SkillsFolder);
+
+        /// <summary>Whether two hosts read PadForge's entry from one settings
+        /// file, as GitHub Copilot CLI and VS Code do.</summary>
+        internal static bool SharesEntry(AssistantHost a, AssistantHost b)
+            => a != null && b != null && a != b && a.SettingsFile != null && ReferenceEquals(a.SettingsFile, b.SettingsFile)
+               && string.Equals(a.Container, b.Container, StringComparison.Ordinal);
 
         /// <summary>The host with this key, or null.</summary>
         internal static AssistantHost Find(string key)

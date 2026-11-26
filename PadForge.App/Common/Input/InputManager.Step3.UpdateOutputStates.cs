@@ -113,15 +113,15 @@ namespace PadForge.Common.Input
                     }
                     us.RawMappedState = rawMapped;
 
-                    // Raw physical touchpad click (SDL_GAMEPAD_BUTTON_TOUCHPAD = Buttons[16]),
+                    // Raw physical touchpad click (SDL_GAMEPAD_BUTTON_TOUCHPAD = Buttons[16],
+                    // or the pad's own click on a program's device whose button 16 is its own),
                     // OR'd into the per-slot flag for the InputReactive lightbar so the press
                     // flashes regardless of virtual-controller type or click mapping. Done here
                     // (not via TouchpadOutputState) because that's only computed for PlayStation
                     // slots and reflects the click's mapping, not the physical press.
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                     {
-                        var rawButtons = ud.InputState.Buttons;
-                        if (rawButtons != null && rawButtons.Length > 16 && rawButtons[16])
+                        if (ud.InputState.FirstPadClicked)
                             SlotRawTouchpadClick[slotIndex] = true;
                     }
 
@@ -1310,7 +1310,7 @@ namespace PadForge.Common.Input
             // Touchpad-typed descriptors that resolve to a bool. Parallel to the
             // "Touchpad N Finger M X/Y/Down" descriptors consumed by Step 3's
             // touchpad output path; here we recognize:
-            //   "Touchpad N Click"          → state.Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD;
+            //   "Touchpad N Click"          → state.FirstPadClicked (Buttons[16], SDL_GAMEPAD_BUTTON_TOUCHPAD;
             //                                  N>0 returns false until a per-device
             //                                  multi-touchpad-click extension lands)
             //   "Touchpad N Finger M Down"  → state.TouchpadDown[M] for finger M

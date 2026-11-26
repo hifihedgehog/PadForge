@@ -51,7 +51,7 @@ namespace PadForge.Views
             CommandBindings.Add(new CommandBinding(BackCommand,
                 (_, e) => { ShowCatalog(); e.Handled = true; },
                 (_, e) => { e.CanExecute = CurrentExtra != null; e.Handled = true; }));
-            IsVisibleChanged += (_, _) => FollowDisplays();
+            IsVisibleChanged += (_, _) => { FollowDisplays(); FollowShellDrop(); };
             // The Scripts card keeps its own rows, checked as the user each
             // time it shows (#600 item 26).
             AutomationScriptsCard.DataContext = ScriptsCardModel;
@@ -99,6 +99,7 @@ namespace PadForge.Views
             CurrentExtra = key;
             PageScroll.ScrollToTop();
             FollowDisplays();
+            FollowShellDrop();
             RefreshAutomationPage();
             ExtraShown?.Invoke(this, EventArgs.Empty);
             return true;
@@ -216,7 +217,7 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Automation (#597)
+        //  Automation (#600)
         // ─────────────────────────────────────────────
 
         /// <summary>Save a Library…, under the Scripts card's More: one Save
@@ -247,9 +248,11 @@ namespace PadForge.Views
             {
                 await System.Threading.Tasks.Task.Run(() => libraries.Save(picked.Kind, file));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ConfirmDialog.Notice(Window.GetWindow(this), title, string.Format(s.Extras_Automation_NotSaved_Format, ex.Message));
+                // The install's own words are English, and say what the
+                // command line says: the notice says it in the user's.
+                ConfirmDialog.Notice(Window.GetWindow(this), title, s.Extras_Automation_NotSaved);
             }
         }
 
@@ -269,7 +272,7 @@ namespace PadForge.Views
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
                 Title = title,
-                FileName = "PadForge Activity " + DateTime.Now.ToString("yyyy-MM-dd HHmm", System.Globalization.CultureInfo.InvariantCulture) + ".txt",
+                FileName = ActivityFileName(DateTime.Now),
                 DefaultExt = ".txt",
                 Filter = s.Extras_Automation_ExportFilter + "|*.txt",
                 AddExtension = true,
@@ -278,15 +281,28 @@ namespace PadForge.Views
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
             string file = dialog.FileName;
             string text = vm.AutomationActivityText() ?? string.Empty;
-            try
-            {
-                await System.Threading.Tasks.Task.Run(() => System.IO.File.WriteAllText(file, text, new System.Text.UTF8Encoding(true)));
-            }
-            catch (Exception ex)
-            {
-                ConfirmDialog.Notice(Window.GetWindow(this), title, string.Format(s.Extras_Automation_NotSaved_Format, ex.Message));
-            }
+            // Written as the user (UserSave): the dialog ran with PadForge's
+            // rights, and the file is the user's to write where the user may.
+            if (!await ExportActivityAsync(text, file))
+                ConfirmDialog.Notice(Window.GetWindow(this), title, s.Extras_Automation_NotSaved);
         }
+
+        /// <summary>The activity as UTF-8 text with its mark, saved as the
+        /// user. True when it is saved.</summary>
+        internal static System.Threading.Tasks.Task<bool> ExportActivityAsync(string text, string file)
+            => PadForge.Services.UserSave.FileAsync(stream =>
+            {
+                var utf8 = new System.Text.UTF8Encoding(true);
+                byte[] mark = utf8.GetPreamble(), body = utf8.GetBytes(text ?? string.Empty);
+                stream.Write(mark, 0, mark.Length);
+                stream.Write(body, 0, body.Length);
+            }, file);
+
+        /// <summary>Export Activity…'s name in the Save box, in the user's
+        /// language, with the time it was asked for.</summary>
+        internal static string ActivityFileName(DateTime when)
+            => string.Format(System.Globalization.CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Extras_Automation_ExportFileName_Format,
+                when.ToString("yyyy-MM-dd HHmm", System.Globalization.CultureInfo.InvariantCulture));
 
         /// <summary>The Automation page asks which assistant programs are on
         /// this PC each time it shows (#600 item 9).</summary>
@@ -306,7 +322,7 @@ namespace PadForge.Views
             menu.IsOpen = true;
         }
 
-        // ── Plugins (#597, #600) ──
+        // ── Plugins (#600) ──
 
         // A file being read for a confirmation: a second press waits for it.
         private bool _describingPlugin;
@@ -426,11 +442,28 @@ namespace PadForge.Views
                 + string.Format(s.Plugins_Confirm_Sha_Format, approval.Sha256);
         }
 
+        // A recording being read for Replay: a second press waits for it.
+        private bool _readingRecording;
+
+        /// <summary>The recording read off the interface's thread: a file of
+        /// many megabytes of text holds no page while it is inflated and
+        /// read. It is put in place on the page's own thread.</summary>
+        private async System.Threading.Tasks.Task<ViewModels.RecordingRead> ReadRecordingAsync(ViewModels.IPluginsPageActions actions, string path)
+        {
+            _readingRecording = true;
+            try { return await ReadRecordingOffTheInterfaceThread(actions, path); }
+            finally { _readingRecording = false; }
+        }
+
+        internal static System.Threading.Tasks.Task<ViewModels.RecordingRead> ReadRecordingOffTheInterfaceThread(ViewModels.IPluginsPageActions actions, string path)
+            => System.Threading.Tasks.Task.Run(() => actions.ReadRecording(path));
+
         /// <summary>Open a Recording…: a problem recording for Replay, as a
         /// .zip or a .log.</summary>
-        private void OpenRecording_Click(object sender, RoutedEventArgs e)
+        private async void OpenRecording_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
+            if (_readingRecording) return;
             var s = PadForge.Resources.Strings.Strings.Instance;
             var owner = Window.GetWindow(this);
             var dialog = new Microsoft.Win32.OpenFileDialog
@@ -440,27 +473,39 @@ namespace PadForge.Views
                 CheckFileExists = true,
             };
             if (dialog.ShowDialog(owner) != true) return;
-            if (actions.OpenRecording(dialog.FileName) != null)
-                ConfirmDialog.Notice(owner, s.Plugins_Replay, string.Format(s.Plugins_Replay_NotOpened_Format, System.IO.Path.GetFileName(dialog.FileName)));
+            var read = await ReadRecordingAsync(actions, dialog.FileName);
+            if (actions.OpenRecording(read) is { } reason)
+                ConfirmDialog.Notice(owner, s.Plugins_Replay, ReplayNotOpenedLine(reason, System.IO.Path.GetFileName(dialog.FileName)));
+        }
+
+        /// <summary>The notice for a recording Replay did not open, by the
+        /// reason ReplayFile.Read gave: no recording or one whose bytes the
+        /// reader refused, too many devices, no device's input, or a file
+        /// that could not be read, the line for any other word too.</summary>
+        internal static string ReplayNotOpenedLine(string reason, string file)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            return reason switch
+            {
+                "not-a-recording" or "malformed" => string.Format(culture, s.Plugins_Replay_NotARecording_Format, file),
+                "too-many-devices" => string.Format(culture, s.Plugins_Replay_TooManyDevices_Format, file, PadForge.Services.Plugins.ReplayFile.MostDevices),
+                "no-devices" => string.Format(culture, s.Plugins_Replay_NoInput_Format, file),
+                _ => string.Format(culture, s.Plugins_Replay_Unreadable_Format, file),
+            };
         }
 
         /// <summary>Save the Plugin Kit…: a folder of example plugins in the
         /// folder the user picks.</summary>
-        private void SavePluginKit_Click(object sender, RoutedEventArgs e)
+        private async void SavePluginKit_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
             var s = PadForge.Resources.Strings.Strings.Instance;
             string title = s.Plugins_Kit_Save.TrimEnd('…');
             var dialog = new Microsoft.Win32.OpenFolderDialog { Title = title };
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
-            try
-            {
-                actions.SaveKit(dialog.FolderName);
-            }
-            catch (Exception ex)
-            {
-                ConfirmDialog.Notice(Window.GetWindow(this), title, string.Format(s.Extras_Automation_NotSaved_Format, ex.Message));
-            }
+            if (await actions.SaveKitAsync(dialog.FolderName) == null)
+                ConfirmDialog.Notice(Window.GetWindow(this), title, s.Plugins_Kit_NotSaved);
         }
 
         /// <summary>Enter keeps a paired PC's new name and Escape puts the old

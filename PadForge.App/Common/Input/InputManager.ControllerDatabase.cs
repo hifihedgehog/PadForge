@@ -11,7 +11,7 @@ namespace PadForge.Common.Input
     public partial class InputManager
     {
         // ─────────────────────────────────────────────
-        //  Controller database rows (#597)
+        //  Controller database rows (#600)
         //  The changed rows go to SDL as it starts
         //  (LoadEmbeddedGamepadMappings). A new row goes to SDL here, when
         //  Step 1 meets a joystick the row is for, before it opens it. The
@@ -67,6 +67,8 @@ namespace PadForge.Common.Input
                     ModelHasSavedAssignment, ModelIsForcedRaw, out bool firstUse);
                 if (row == null) return null;
 
+                // What SDL held under the ID goes back with the row's reset.
+                ControllerDatabaseEngine.NoteDownloaded(row.Guid, ControllerDatabaseEngine.MappingForGuid(row.Guid), row.Text);
                 int added = SDL_AddGamepadMapping(row.Text);
                 bool reads = added >= 0 && SDL_IsGamepad(instanceId);
                 SdlDiagLog.WriteLine($"MAPPINGS database row {row.Guid} for SDL#{instanceId}: added={added} gamepad={reads} firstUse={firstUse}");
@@ -266,8 +268,7 @@ namespace PadForge.Common.Input
             var row = mine.ForSdlDevice(ud.SdlGuid);
             if (row == null || row.HasMapped(ud.InstanceGuid)) return;
             // Only when SDL reads it through this row.
-            string layout = ControllerDatabaseSource.LayoutOf(ControllerDatabaseEngine.MappingForId(wrapper.SdlInstanceId));
-            if (!string.Equals(layout, ControllerDatabaseSource.StoredLayout(row), StringComparison.Ordinal)) return;
+            if (!ControllerDatabaseSource.ReadsThrough(ControllerDatabaseEngine.MappingForId(wrapper.SdlInstanceId), row)) return;
             ControllerDatabaseEngine.RaiseUserRowOpened(ud.InstanceGuid);
         }
     }
@@ -326,6 +327,93 @@ namespace PadForge.Common.Input
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> NoneIds =
             new(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>The IDs SDL was given a downloaded row under this start,
+        /// a changed one as SDL started or after Update Now, or a new one as a
+        /// joystick of its ID was listed, each with what SDL held under the ID
+        /// before the first, empty for none. The row's reset gives that back
+        /// (<see cref="TakeDownloaded"/>), since SDL keeps a mapping once
+        /// given until it quits.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (string Before, string Text)> Downloaded =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The IDs the row's reset read raw because SDL held nothing
+        /// under them before a downloaded row, each with that row's text:
+        /// lifted when a download is applied again
+        /// (<see cref="LiftDownloadedRaw"/>), so its new rows are offered.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, string> DownloadedRaw =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Notes what SDL holds under a row's ID before the downloaded
+        /// row <paramref name="text"/> is given to it. The first note for an
+        /// ID stands. Poll thread, or as SDL starts.</summary>
+        internal static void NoteDownloaded(string id, string before, string text)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            Downloaded.TryAdd(id, (before ?? string.Empty, text ?? string.Empty));
+        }
+
+        /// <summary><see cref="NoteDownloaded(string, string, string)"/> for
+        /// each row text, by its ID, with <paramref name="held"/> asked what
+        /// SDL holds under it.</summary>
+        internal static void NoteDownloaded(IEnumerable<string> rows, Func<string, string> held)
+        {
+            foreach (string row in rows ?? Array.Empty<string>())
+            {
+                if (row == null || row.Length < 33 || row[32] != ',') continue;
+                string id = row.Substring(0, 32).ToLowerInvariant();
+                if (!Downloaded.ContainsKey(id)) NoteDownloaded(id, held(id), row);
+            }
+        }
+
+        /// <summary>Lifts the raw read the row's reset set for IDs SDL held
+        /// nothing under (<see cref="TakeDownloaded"/>), and no other: a
+        /// download applied again offers its new rows. SDL still holds the
+        /// downloaded row under each such ID, and reads its device through it
+        /// again without offering it once more, so the ID is noted again with
+        /// nothing before it, for the next reset. Poll thread.</summary>
+        internal static void LiftDownloadedRaw()
+        {
+            foreach (string id in DownloadedRaw.Keys)
+            {
+                if (!DownloadedRaw.TryRemove(id, out string text)) continue;
+                RawIds.TryRemove(id, out _);
+                NoteDownloaded(id, string.Empty, text);
+            }
+        }
+
+        /// <summary>
+        /// What SDL is given back as the downloaded rows go (the row's reset):
+        /// for each ID it was given one under, the mapping it held before,
+        /// under that ID, or, where it held none, the devices of the ID read
+        /// raw until SDL starts again. An ID a row of the user's stands under
+        /// in <paramref name="mine"/> keeps that row. Poll thread.
+        /// </summary>
+        internal static List<string> TakeDownloaded(ControllerDatabaseMine mine,
+            List<(string Id, string Text, string Before)> taken = null)
+        {
+            var back = new List<string>();
+            foreach (var pair in Downloaded)
+            {
+                if (!Downloaded.TryRemove(pair.Key, out var held)) continue;
+                taken?.Add((pair.Key, held.Text, held.Before));
+                bool yours = false;
+                foreach (var row in mine?.Rows ?? Array.Empty<ControllerDatabaseMineRow>())
+                    if (!row.ForPadForgeDevice && string.Equals(row.Id, pair.Key, StringComparison.OrdinalIgnoreCase)) yours = true;
+                if (yours) continue;
+                if (held.Before.Length > 0)
+                {
+                    back.Add(ControllerDatabaseUse.Under(pair.Key, held.Before));
+                    GivenBack[pair.Key] = 0;
+                }
+                else
+                {
+                    if (!RawIds.ContainsKey(pair.Key)) DownloadedRaw[pair.Key] = held.Text;
+                    SetReadsRaw(pair.Key, true);
+                }
+            }
+            return back;
+        }
+
         /// <summary>As the engine starts, before SDL does: the joysticks read
         /// raw since a row of the user's went are read as SDL maps them
         /// again, and no copy of a row or mapping given back is held, since
@@ -337,6 +425,8 @@ namespace PadForge.Common.Input
             Copies.Clear();
             GivenBack.Clear();
             NoneIds.Clear();
+            Downloaded.Clear();
+            DownloadedRaw.Clear();
         }
 
         /// <summary>
@@ -496,6 +586,26 @@ namespace PadForge.Common.Input
             foreach (string id in RawIds.Keys)
                 if (string.Equals(id, rowId, StringComparison.OrdinalIgnoreCase) || SdlMappingRow.Maps(rowId, id) || SdlMappingRow.Maps(id, rowId))
                     RawIds.TryRemove(id, out _);
+        }
+
+        /// <summary><see cref="SetReadsRaw"/> lifting the raw read for a row
+        /// given again, which answers the IDs it lifted, for
+        /// <see cref="ReadRawAgain"/>.</summary>
+        internal static List<string> LiftReadsRaw(string rowId)
+        {
+            var lifted = new List<string>();
+            if (string.IsNullOrEmpty(rowId)) return lifted;
+            foreach (string id in RawIds.Keys)
+                if (string.Equals(id, rowId, StringComparison.OrdinalIgnoreCase) || SdlMappingRow.Maps(rowId, id) || SdlMappingRow.Maps(id, rowId))
+                    if (RawIds.TryRemove(id, out _)) lifted.Add(id);
+            return lifted;
+        }
+
+        /// <summary>Reads raw again the IDs a row SDL did not keep lifted
+        /// (<see cref="LiftReadsRaw"/>).</summary>
+        internal static void ReadRawAgain(IEnumerable<string> ids)
+        {
+            foreach (string id in ids ?? Array.Empty<string>()) RawIds[id] = 0;
         }
 
         /// <summary>Runs every posted piece of work. Poll thread only.</summary>

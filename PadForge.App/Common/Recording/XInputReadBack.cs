@@ -8,32 +8,41 @@ using PadForge.Engine.Recording;
 
 namespace PadForge.Common.Recording
 {
-    /// <summary>One XInput place's state as a game reads it.</summary>
+    /// <summary>One XInput number's state as PadForge's own XInput library
+    /// reads it.</summary>
     internal readonly record struct XInputRead(bool Connected, ushort Buttons, byte LeftTrigger, byte RightTrigger,
         short LeftX, short LeftY, short RightX, short RightY);
 
     /// <summary>
-    /// What a game reads back through XInput (#600), read from the XInput
-    /// library PadForge itself loads (xinput1_4.dll, which may be PadForge's
-    /// own OpenXInput build or Windows'), at the four places a game reads.
-    /// The recording writes a place's state when it changes, and which
-    /// virtual controller a place belongs to once a frame PadForge handed
-    /// over is read back there.
+    /// What PadForge's own XInput library reads (#600), at the first four
+    /// numbers, the ones PadForge's reader uses: SDL reads through the same
+    /// library, and its "XInput#N" paths carry these numbers. The recording
+    /// writes a number's state when it changes, and the reader comparison
+    /// compares a pad at a number with this read of the same number.
+    ///
+    /// <para>In the app that library is PadForge's OpenXInput fork, loaded
+    /// by name from the folder the host unpacked into (App.xaml.cs). It gives
+    /// no HIDMaestro controller a number (OpenXinput.cpp,
+    /// IsHidMaestroInterface), so its numbers are not the ones a game reads
+    /// once a virtual controller is connected, and no read here finds a
+    /// virtual controller. The numbers a game reads are not read: Windows'
+    /// own xinput1_4.dll would number PadForge's pads, which a game does
+    /// not see behind HidHide, and write their player lights.</para>
     ///
     /// <para>The test host reads no controller of the machine's: with
-    /// <see cref="OffLimitsForTest"/> set, a place comes from
+    /// <see cref="OffLimitsForTest"/> set, a number comes from
     /// <see cref="ReadSeam"/> or not at all.</para>
     /// </summary>
     internal static class XInputReadBack
     {
-        /// <summary>The places a game reads.</summary>
+        /// <summary>The numbers read.</summary>
         internal const int Places = 4;
 
         /// <summary>Set by the test assembly for the life of its process,
         /// never by the app.</summary>
         internal static bool OffLimitsForTest;
 
-        /// <summary>Test seam: a place's state.</summary>
+        /// <summary>Test seam: a number's state.</summary>
         internal static Func<int, XInputRead> ReadSeam;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -50,7 +59,7 @@ namespace PadForge.Common.Recording
 
         private static bool _missing;
 
-        /// <summary>A place's state, or one not connected.</summary>
+        /// <summary>A number's state, or one not connected.</summary>
         internal static XInputRead Read(int place)
         {
             if (OffLimitsForTest && ReadSeam == null) return default;
@@ -69,8 +78,8 @@ namespace PadForge.Common.Recording
             }
         }
 
-        /// <summary>A place's state as the tokens of its line: the buttons by
-        /// name, then each stick and trigger, exact.</summary>
+        /// <summary>A number's state as the tokens of its line: the buttons
+        /// by name, then each stick and trigger, exact.</summary>
         internal static string Tokens(XInputRead read)
         {
             if (!read.Connected) return "none";
@@ -86,33 +95,29 @@ namespace PadForge.Common.Recording
             return sb.ToString();
         }
 
-        /// <summary>Whether a place reads the frame a virtual controller was
-        /// handed: the same buttons and sticks, and triggers at the byte the
-        /// handed value packs to. A frame at rest matches every idle place,
-        /// so it names none.</summary>
-        internal static bool Matches(XInputRead read, RecordedOutputState handed)
-        {
-            if (!read.Connected || handed == null) return false;
-            bool rest = handed.Buttons == 0 && handed.LeftX == 0 && handed.LeftY == 0 && handed.RightX == 0 && handed.RightY == 0
-                && handed.LeftTrigger == 0 && handed.RightTrigger == 0;
-            if (rest) return false;
-            return read.Buttons == handed.Buttons && read.LeftX == handed.LeftX && read.LeftY == handed.LeftY
-                && read.RightX == handed.RightX && read.RightY == handed.RightY
-                && Math.Abs(read.LeftTrigger - (handed.LeftTrigger >> 8)) <= 1 && Math.Abs(read.RightTrigger - (handed.RightTrigger >> 8)) <= 1;
-        }
-
         /// <summary>Which XInput library this process has loaded, and whose:
-        /// PadForge's own copy beside it or Windows'. Only file names.</summary>
+        /// PadForge's own copy or Windows'. Only file names.</summary>
         internal static string LibraryLine()
         {
             IntPtr module = GetModuleHandle("xinput1_4.dll");
-            if (module == IntPtr.Zero) return "XInput read back with: xinput1_4.dll, not loaded yet";
+            if (module == IntPtr.Zero) return LibraryLine(null, Environment.GetFolderPath(Environment.SpecialFolder.System));
             var path = new StringBuilder(520);
             int n = GetModuleFileName(module, path, path.Capacity);
-            string file = n > 0 ? path.ToString(0, n) : string.Empty;
-            string system = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            bool windows = file.Length > 0 && string.Equals(Path.GetDirectoryName(file), system, StringComparison.OrdinalIgnoreCase);
-            return "XInput read back with: " + (file.Length == 0 ? "xinput1_4.dll" : Path.GetFileName(file)) + ", " + (windows ? "Windows' own" : "PadForge's own");
+            return LibraryLine(n > 0 ? path.ToString(0, n) : string.Empty, Environment.GetFolderPath(Environment.SpecialFolder.System));
+        }
+
+        /// <summary>The facts line for the library loaded from
+        /// <paramref name="file"/>, null when none is loaded: whose it is, the
+        /// numbering it reads by, and that the numbers a game reads are not
+        /// read.</summary>
+        internal static string LibraryLine(string file, string systemDirectory)
+        {
+            const string notRead = "The numbers a game reads are not read";
+            if (file == null) return "XInput read back with: xinput1_4.dll, not loaded yet. " + notRead;
+            bool windows = file.Length > 0 && string.Equals(Path.GetDirectoryName(file), systemDirectory, StringComparison.OrdinalIgnoreCase);
+            return "XInput read back with: " + (file.Length == 0 ? "xinput1_4.dll" : Path.GetFileName(file))
+                + (windows ? ", Windows' own" : ", PadForge's own") + ", by the numbers PadForge's reader uses. "
+                + (windows ? "" : "It gives no virtual controller a number. ") + notRead;
         }
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]

@@ -8,8 +8,8 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// <c>--web</c> (#600 item 11, the command-line table): the web helper
-    /// PadForge starts itself. With no copy running it gives 4, and with one
-    /// it runs the helper, which that copy takes only when it started it
+    /// PadForge starts itself. It runs the helper, which gives 4 when no
+    /// copy serves the pipe, and which that copy takes only when it started it
     /// (WebEndToEndTests.AHelperPadForgeDidNotStart_IsRefused).
     /// </summary>
     public class WebCommandLineTests
@@ -33,10 +33,17 @@ namespace PadForge.Tests
             return (done, code, served);
         }
 
+        /// <summary>The helper reaches PadForge over its Automation pipe,
+        /// whose owner it checks, with the key PadForge handed it
+        /// (WebHelper.RunAsync), and answers 4 itself when no pipe stands. It
+        /// runs as the signed-in user, who may not be PadForge's (a user
+        /// without rights who typed an administrator's password), and such a
+        /// user may not read PadForge's process to find its window. So the
+        /// helper runs whether or not the running copy is seen.</summary>
         [Fact]
-        public void Web_WithNoCopyRunning_Gives4_AndWithOne_RunsTheHelper()
+        public void Web_RunsTheHelper_WhetherOrNotTheRunningCopyIsSeen()
         {
-            Assert.Equal((true, ClientRun.NotRunning, 0), Go(copy: false));
+            Assert.Equal((true, ClientRun.Done, 1), Go(copy: false));
             Assert.Equal((true, ClientRun.Done, 1), Go(copy: true));
         }
 

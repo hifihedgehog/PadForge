@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// The guidance that travels with PadForge's server (#597): the
+    /// The guidance that travels with PadForge's server (#600): the
     /// instructions a host gives its model, the prompts that start common
     /// jobs, and the short description of each page the resources hold. Text
     /// for the model is English. A prompt's title and description are shown

@@ -122,7 +122,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The folder an ImagePath's executable sits in: the
         /// quoted path, or the text up to ".exe", with environment
-        /// variables expanded from the machine's own values (#597): a user
+        /// variables expanded from the machine's own values (#600): a user
         /// variable of the same name would otherwise point the path at a
         /// folder of the user's.</summary>
         internal static string FolderOfImagePath(string imagePath)
@@ -193,7 +193,7 @@ namespace PadForge.Common.Input.Peripherals
                 // MSI's own copy loads into PadForge only when only
                 // administrators could have put it in place and Micro-Star
                 // signed it, held open from the check through the load
-                // (#597, TrustedLibrary).
+                // (#600, TrustedLibrary).
                 module = PadForge.Engine.Common.TrustedLibrary.Load(path, PadForge.Engine.Common.TrustedLibrary.MicroStar,
                     p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
                 if (module == IntPtr.Zero)

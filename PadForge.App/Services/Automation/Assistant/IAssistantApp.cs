@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// What an assistant's tools act on (#597): PadForge as its pages drive
+    /// What an assistant's tools act on (#600): PadForge as its pages drive
     /// it. The main window implements it for the app (MainWindow.Assistant),
     /// through the same calls the pages make, and a test stands a recorder in
     /// its place. Every member is called on the interface's thread unless its
@@ -66,9 +66,12 @@ namespace PadForge.Services.Automation
 
         void DeleteProfile(string profile);
 
-        /// <summary>Reads a profile file into what it would add, without
-        /// adding it. Called inside the program's own rights.</summary>
-        AssistantImport ReadProfileFile(string path);
+        /// <summary>Reads a profile file's bytes into what it would add,
+        /// without adding it: the bytes a program sent, or read with its own
+        /// rights, held in memory. <paramref name="fileName"/> is the file's
+        /// name, whose extension says which importer reads it. Called on the
+        /// interface's thread.</summary>
+        AssistantImport ReadProfileFile(string fileName, byte[] bytes);
 
         /// <summary>Adds a profile <see cref="ReadProfileFile"/> read, and
         /// gives its ID and the name it took.</summary>
@@ -98,8 +101,8 @@ namespace PadForge.Services.Automation
 
         void SetMappings(int number, IReadOnlyList<AssistantMappingEdit> rows);
 
-        /// <summary>Clears the rows named, or every row for none.</summary>
-        void ClearMappings(int number, IReadOnlyList<string> targets);
+        /// <summary>Clears every row, as the page's Clear All does.</summary>
+        void ClearMappings(int number);
 
         /// <summary>Maps the controller as assigning its devices does.</summary>
         void AutoMap(int number);

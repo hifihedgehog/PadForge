@@ -121,8 +121,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>The read is bounded: a client that never sends a newline
-        /// cannot grow the server's buffer without limit. A line keeps its
-        /// first 1,024 bytes, and what is read past them is dropped.</summary>
+        /// cannot grow the server's buffer without limit. A line takes up to
+        /// 1,024 bytes, and a longer one is read to its end and refused.</summary>
         [Fact]
         public void TheRequestReadIsCapped()
         {
@@ -130,6 +130,7 @@ namespace PadForge.Tests
             Assert.Contains("internal const int LongestRequest = 1024;", src);
             Assert.Contains("var line = new byte[LongestRequest];", src);
             Assert.Contains("if (kept < LongestRequest) line[kept++] = chunk[i];", src);
+            Assert.Contains("else over = true;", src);
             Assert.Contains("while (!ended && read < LongestRequest + LongestDrained)", src);
         }
 
@@ -315,10 +316,12 @@ namespace PadForge.Tests
             string app = RepoText("PadForge.App", "App.xaml.cs");
             int at = app.IndexOf("out bool isNewInstance", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = app.Substring(at, 900);
-            int show = body.IndexOf("Services.RunningCopy.Show();", StringComparison.Ordinal);
-            int leave = body.IndexOf("Shutdown();", StringComparison.Ordinal);
-            Assert.True(show > 0 && leave > show);
+            string body = app.Substring(at, 1800);
+            // The copy that lost the race hands its command line to the winner,
+            // as a second start does, and leaves with the run's exit code.
+            int hand = body.IndexOf("HandToTheCopyThatWon(e.Args, out int handed)", StringComparison.Ordinal);
+            int leave = body.IndexOf("Shutdown(done ? handed : ClientRun.NotRunning);", StringComparison.Ordinal);
+            Assert.True(hand > 0 && leave > hand);
             Assert.DoesNotContain("MessageBox.Show", body);
             // The old forward and its three helpers are gone with the box.
             foreach (string gone in new[] { "TryForwardExternalCommand", "ParseProfileCommand", "PendingProfileCommand", "App_AlreadyRunning" })

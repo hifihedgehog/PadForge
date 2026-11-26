@@ -6,7 +6,7 @@ namespace PadForge.Common
     /// <summary>
     /// Windows calls made through the System32 copies of kernel32.dll and
     /// advapi32.dll, loaded by full path, before a start with rights may trust
-    /// the folder its native libraries were unpacked into (#597).
+    /// the folder its native libraries were unpacked into (#600).
     ///
     /// <para>The runtime looks for every library a <c>DllImport</c> names in
     /// the folders the host lists before it asks Windows (nativelibrary.cpp,
@@ -77,7 +77,6 @@ namespace PadForge.Common
         private static readonly IntPtr pCloseHandle = Find(Kernel32, "CloseHandle");
         private static readonly IntPtr pCreateEventW = Find(Kernel32, "CreateEventW");
         private static readonly IntPtr pSetEvent = Find(Kernel32, "SetEvent");
-        private static readonly IntPtr pSetHandleInformation = Find(Kernel32, "SetHandleInformation");
         private static readonly IntPtr pAttachConsole = Find(Kernel32, "AttachConsole");
         private static readonly IntPtr pCreateDirectoryW = Find(Kernel32, "CreateDirectoryW");
         private static readonly IntPtr pGetFileAttributesW = Find(Kernel32, "GetFileAttributesW");
@@ -155,7 +154,7 @@ namespace PadForge.Common
             && pFreeEnvironmentStringsW != IntPtr.Zero && pGetStartupInfoW != IntPtr.Zero
             && pCreateProcessW != IntPtr.Zero && pWaitForMultipleObjects != IntPtr.Zero
             && pGetExitCodeProcess != IntPtr.Zero && pCloseHandle != IntPtr.Zero
-            && pCreateEventW != IntPtr.Zero && pSetEvent != IntPtr.Zero && pSetHandleInformation != IntPtr.Zero
+            && pCreateEventW != IntPtr.Zero && pSetEvent != IntPtr.Zero
             && pAttachConsole != IntPtr.Zero && pCreateDirectoryW != IntPtr.Zero
             && pGetFileAttributesW != IntPtr.Zero && pMoveFileExW != IntPtr.Zero && pCreateFileW != IntPtr.Zero
             && pGetFileInformationByHandle != IntPtr.Zero && pGetFullPathNameW != IntPtr.Zero
@@ -488,26 +487,113 @@ namespace PadForge.Common
                 ((delegate* unmanaged<IntPtr, int>)pCloseHandle)(handle);
         }
 
-        /// <summary>A new event no other process can open by name, set by
-        /// hand. Its handle is handed on to a child when
-        /// <paramref name="inheritable"/>.</summary>
-        internal static IntPtr NewEvent(bool inheritable)
-        {
-            if (pCreateEventW == IntPtr.Zero) return IntPtr.Zero;
-            var sa = new SecurityAttributes { Length = sizeof(SecurityAttributes), Inherit = inheritable ? 1 : 0 };
-            return ((delegate* unmanaged<SecurityAttributes*, int, int, char*, IntPtr>)pCreateEventW)(&sa, 1, 0, null);
-        }
-
         internal static bool SetEvent(IntPtr handle)
             => pSetEvent != IntPtr.Zero && ((delegate* unmanaged<IntPtr, int>)pSetEvent)(handle) != 0;
 
-        private const uint HandleFlagInherit = 1;
+        // ── The Administrators namespace of the handover (#600) ──
 
-        /// <summary>Keeps a handle from being handed on to this process's
-        /// children.</summary>
-        internal static bool StopHandingOn(IntPtr handle)
-            => pSetHandleInformation != IntPtr.Zero
-               && ((delegate* unmanaged<IntPtr, uint, uint, int>)pSetHandleInformation)(handle, HandleFlagInherit, 0) != 0;
+        private static readonly IntPtr pCreateBoundaryDescriptorW = Find(Kernel32, "CreateBoundaryDescriptorW");
+        private static readonly IntPtr pAddSIDToBoundaryDescriptor = Find(Kernel32, "AddSIDToBoundaryDescriptor");
+        private static readonly IntPtr pDeleteBoundaryDescriptor = Find(Kernel32, "DeleteBoundaryDescriptor");
+        private static readonly IntPtr pCreatePrivateNamespaceW = Find(Kernel32, "CreatePrivateNamespaceW");
+        private static readonly IntPtr pOpenPrivateNamespaceW = Find(Kernel32, "OpenPrivateNamespaceW");
+        private static readonly IntPtr pClosePrivateNamespace = Find(Kernel32, "ClosePrivateNamespace");
+        private static readonly IntPtr pOpenEventW = Find(Kernel32, "OpenEventW");
+
+        // S-1-5-32-544, the Administrators group, in its binary form.
+        private static readonly byte[] AdministratorsSid = { 1, 2, 0, 0, 0, 0, 0, 5, 32, 0, 0, 0, 32, 2, 0, 0 };
+        private const int ErrorAlreadyExists = 183;
+        private const uint EventModifyState = 0x0002;
+
+        /// <summary>
+        /// The private namespace of that name whose boundary is the
+        /// Administrators group, as InstanceLock makes it: made with an access
+        /// list that grants Administrators and the system alone when
+        /// <paramref name="create"/> asks and none stands, opened otherwise.
+        /// Only a token with administrator rights can make or open it. Zero
+        /// when neither works. <paramref name="boundary"/> is closed with it
+        /// (<see cref="CloseNamespace"/>).
+        /// </summary>
+        internal static IntPtr OpenAdministratorsNamespace(string name, bool create, out IntPtr boundary)
+        {
+            boundary = IntPtr.Zero;
+            if (pCreateBoundaryDescriptorW == IntPtr.Zero || pAddSIDToBoundaryDescriptor == IntPtr.Zero || pDeleteBoundaryDescriptor == IntPtr.Zero
+                || pCreatePrivateNamespaceW == IntPtr.Zero || pOpenPrivateNamespaceW == IntPtr.Zero || pConvertStringSdToSd == IntPtr.Zero
+                || pLocalFree == IntPtr.Zero || string.IsNullOrEmpty(name))
+                return IntPtr.Zero;
+            IntPtr made;
+            fixed (char* n = name) made = ((delegate* unmanaged<char*, uint, IntPtr>)pCreateBoundaryDescriptorW)(n, 0);
+            if (made == IntPtr.Zero) return IntPtr.Zero;
+            int added;
+            fixed (byte* sid = AdministratorsSid) added = ((delegate* unmanaged<IntPtr*, byte*, int>)pAddSIDToBoundaryDescriptor)(&made, sid);
+            if (added == 0)
+            {
+                ((delegate* unmanaged<IntPtr, void>)pDeleteBoundaryDescriptor)(made);
+                return IntPtr.Zero;
+            }
+            IntPtr ns = IntPtr.Zero;
+            if (create)
+            {
+                IntPtr descriptor = IntPtr.Zero;
+                const uint SddlRevision1 = 1;
+                fixed (char* s = "D:(A;;GA;;;BA)(A;;GA;;;SY)")
+                    if (((delegate* unmanaged<char*, uint, IntPtr*, uint*, int>)pConvertStringSdToSd)(s, SddlRevision1, &descriptor, null) == 0)
+                        descriptor = IntPtr.Zero;
+                if (descriptor != IntPtr.Zero)
+                {
+                    try
+                    {
+                        var sa = new SecurityAttributes { Length = sizeof(SecurityAttributes), Descriptor = descriptor, Inherit = 0 };
+                        fixed (char* n = name) ns = ((delegate* unmanaged<SecurityAttributes*, IntPtr, char*, IntPtr>)pCreatePrivateNamespaceW)(&sa, made, n);
+                    }
+                    finally
+                    {
+                        ((delegate* unmanaged<IntPtr, IntPtr>)pLocalFree)(descriptor);
+                    }
+                }
+            }
+            if (ns == IntPtr.Zero)
+                fixed (char* n = name) ns = ((delegate* unmanaged<IntPtr, char*, IntPtr>)pOpenPrivateNamespaceW)(made, n);
+            if (ns == IntPtr.Zero)
+            {
+                ((delegate* unmanaged<IntPtr, void>)pDeleteBoundaryDescriptor)(made);
+                return IntPtr.Zero;
+            }
+            boundary = made;
+            return ns;
+        }
+
+        /// <summary>Closes a namespace <see cref="OpenAdministratorsNamespace"/>
+        /// gave, and its boundary.</summary>
+        internal static void CloseNamespace(IntPtr ns, IntPtr boundary)
+        {
+            if (ns != IntPtr.Zero && pClosePrivateNamespace != IntPtr.Zero) ((delegate* unmanaged<IntPtr, uint, int>)pClosePrivateNamespace)(ns, 0);
+            if (boundary != IntPtr.Zero && pDeleteBoundaryDescriptor != IntPtr.Zero) ((delegate* unmanaged<IntPtr, void>)pDeleteBoundaryDescriptor)(boundary);
+        }
+
+        /// <summary>A new event of that full name, set by hand, handed on to
+        /// no child. Zero when it cannot be made or the name is taken.</summary>
+        internal static IntPtr NewNamedEvent(string fullName)
+        {
+            if (pCreateEventW == IntPtr.Zero || string.IsNullOrEmpty(fullName)) return IntPtr.Zero;
+            var sa = new SecurityAttributes { Length = sizeof(SecurityAttributes), Inherit = 0 };
+            IntPtr handle;
+            fixed (char* n = fullName) handle = ((delegate* unmanaged<SecurityAttributes*, int, int, char*, IntPtr>)pCreateEventW)(&sa, 1, 0, n);
+            if (handle != IntPtr.Zero && LastError() == ErrorAlreadyExists)
+            {
+                Close(handle);
+                return IntPtr.Zero;
+            }
+            return handle;
+        }
+
+        /// <summary>The event of that full name, opened to be set. Zero when
+        /// there is none or it may not be opened.</summary>
+        internal static IntPtr OpenNamedEvent(string fullName)
+        {
+            if (pOpenEventW == IntPtr.Zero || string.IsNullOrEmpty(fullName)) return IntPtr.Zero;
+            fixed (char* n = fullName) return ((delegate* unmanaged<uint, int, char*, IntPtr>)pOpenEventW)(EventModifyState, 0, n);
+        }
 
         private const uint AttachParentProcess = 0xFFFFFFFF;
 

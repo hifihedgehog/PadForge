@@ -65,7 +65,9 @@ namespace PadForge.Tests
             ["--plugin-kit"] = new(new[] { "--plugin-kit", "{folder}\\kit" },
                 After: run => Assert.True(File.Exists(Path.Combine(run.Folder, "kit", "README.md")), "the child wrote no kit")),
             ["--settings-folder"] = new(new[] { "--settings-folder" }),
-            ["--web, no copy"] = new(new[] { "--web" }),
+            ["--port-files"] = new(new[] { "--port-files", "7000" }),
+            ["--web, no copy"] = new(new[] { "--web" }, CompareWords: false, Code: WebHelper.Refused,
+                Error: "PadForge starts its web helper itself"),
             ["--web, a copy, no key"] = new(new[] { "--web" }, CopyRuns: true, CompareWords: false, Code: WebHelper.Refused,
                 Error: "PadForge starts its web helper itself"),
             ["--tools"] = new(new[] { "--tools" }, CopyRuns: true),
@@ -252,10 +254,19 @@ namespace PadForge.Tests
             var known = new SortedSet<string>(StringComparer.Ordinal);
             // A row of the parser, never a comment that quotes one.
             foreach (Match m in Regex.Matches(source, "^ *case \"(--[^\"]+)\":", RegexOptions.Multiline)) known.Add(m.Groups[1].Value);
-            foreach (Match m in Regex.Matches(source, @"case ([A-Z][A-Za-z]*Switch):"))
+            // A row named by a constant: CommandLineSwitches' own, or one of
+            // another class by its dotted name. A row the test cannot read
+            // fails here, so no switch escapes the table.
+            foreach (Match m in Regex.Matches(source, @"case ((?:[A-Za-z][A-Za-z0-9]*\.)*(?:[A-Z][A-Za-z]*)?Switch):"))
             {
-                var field = typeof(CommandLineSwitches).GetField(m.Groups[1].Value, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                Assert.NotNull(field);
+                string label = m.Groups[1].Value;
+                int dot = label.LastIndexOf('.');
+                Type owner = dot < 0 ? typeof(CommandLineSwitches)
+                    : typeof(CommandLineSwitches).Assembly.GetTypes().SingleOrDefault(t => t.FullName != null
+                        && (t.FullName == label.Substring(0, dot) || t.FullName.EndsWith("." + label.Substring(0, dot), StringComparison.Ordinal)));
+                Assert.True(owner != null, "the parser's row " + label + " names a class this test cannot find");
+                var field = owner.GetField(label.Substring(dot + 1), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                Assert.True(field != null, "the parser's row " + label + " names a constant this test cannot read");
                 known.Add((string)field.GetRawConstantValue());
             }
             known.Add(UpdateService.ApplyUpdateSwitch);

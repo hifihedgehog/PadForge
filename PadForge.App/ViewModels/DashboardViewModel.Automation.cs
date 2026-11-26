@@ -4,7 +4,7 @@ using PadForge.Services.Automation;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// Automation's switch, level and state (#597). The one switch for every
+    /// Automation's switch, level and state (#600). The one switch for every
     /// outside program: launchers, scripts and assistants. It replaces the
     /// External Control switch of #366, which the Profiles page held, and is
     /// saved for the app, never in a profile. The Profiles page's External

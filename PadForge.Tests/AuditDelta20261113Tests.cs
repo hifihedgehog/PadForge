@@ -1355,13 +1355,16 @@ namespace PadForge.Tests
             Assert.Contains(footReset, foot.ElementsAfterSelf());
             Assert.Null(At(foot, "TabIndex"));
             Assert.Null(At(footReset, "TabIndex"));
-            // Two Removes stand with no Reset All: a plugin's row on the
-            // Plugins page (#597), beside its Approve, and an allowed
-            // program's row on Automation (#600).
-            var lone = all.Except(beside).ToList();
-            Assert.Equal(2, lone.Count);
-            Assert.Single(lone, r => r.Parent.Elements().Any(e => At(e, "AutomationProperties.AutomationId") == "{Binding ApproveId}"));
-            Assert.Single(lone, r => r.Ancestors().Any(a => At(a, "Name") == "AutomationAllowedCard"));
+            // Two Removes stand with no Reset All: an allowed program's row on
+            // Automation (#600), and a plugin's row on the Plugins page
+            // (#597), beside its Approve. The plugin row's Remove has an id
+            // of its own, RemoveHeaderId, since its open card's foot holds
+            // the RemoveId one.
+            var lone = Assert.Single(all.Except(beside));
+            Assert.Contains(lone.Ancestors(), a => At(a, "Name") == "AutomationAllowedCard");
+            var header = Assert.Single(page.Descendants(), e => At(e, "AutomationProperties.AutomationId") == "{Binding RemoveHeaderId}");
+            Assert.Contains(header.Parent.Elements(), e => At(e, "AutomationProperties.AutomationId") == "{Binding ApproveId}");
+            Assert.DoesNotContain(header.Parent.Elements(), e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}");
             foreach (var remove in removes)
             {
                 var resetAll = Assert.Single(resets, r => r.Parent == remove.Parent);

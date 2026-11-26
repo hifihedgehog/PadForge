@@ -68,5 +68,37 @@ namespace PadForge.Tests
             // The reload finished and published a catalog with the profile.
             Assert.NotNull(HMaestroProfileCatalog.GetProfileById(id));
         }
+
+        /// <summary>Manage Profiles builds the catalog off the UI thread
+        /// and publishes it after the store changed. A build made from the
+        /// store as it is now is published as it is, and one the store moved
+        /// past is built again, so the published catalog always holds the
+        /// store's profiles.</summary>
+        [Fact]
+        public void APublishedBuildHoldsTheStoresProfiles()
+        {
+            const string id = "padforge-test-publish-user";
+            string json = UserProfileProblemTests.ProfileJson(id);
+            var savedProvider = HMaestroProfileCatalog.UserProfilesProvider;
+            try
+            {
+                HMaestroProfileCatalog.UserProfilesProvider = () => new[] { json };
+                HMaestroProfileCatalog.Publish(HMaestroProfileCatalog.Build(new[] { json }));
+                Assert.NotNull(HMaestroProfileCatalog.GetProfileById(id));
+
+                // A build from before the store took the profile.
+                HMaestroProfileCatalog.UserProfilesProvider = () => System.Array.Empty<string>();
+                HMaestroProfileCatalog.Reload();
+                var stale = HMaestroProfileCatalog.Build(System.Array.Empty<string>());
+                HMaestroProfileCatalog.UserProfilesProvider = () => new[] { json };
+                HMaestroProfileCatalog.Publish(stale);
+                Assert.NotNull(HMaestroProfileCatalog.GetProfileById(id));
+            }
+            finally
+            {
+                HMaestroProfileCatalog.UserProfilesProvider = savedProvider;
+                HMaestroProfileCatalog.Reload();
+            }
+        }
     }
 }

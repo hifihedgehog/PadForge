@@ -290,7 +290,7 @@ namespace PadForge.Common.Input
             /// <summary>Published by the create worker under the lifecycle
             /// lock, cleared by the poll thread under it.</summary>
             public volatile KeyboardMouseVirtualController Vc;
-            public volatile bool Failed, Abandoned;
+            public volatile bool Abandoned;
             public Task Create;
             public bool KeysDown;
         }
@@ -407,12 +407,15 @@ namespace PadForge.Common.Input
                             KeyboardIdentityKey = MenuKeyboardIdentityKey(rec.Slot, rec.MenuId),
                         };
                 }
-                if (vc == null)
-                {
-                    rec.Failed = true;
-                    return;
-                }
-                vc.Connect();
+                if (vc == null) return;
+                // A HIDMaestro keyboard's arrival is a new HID device, and
+                // its bring-up is stamped as PadForge's own work as Step 5's
+                // are (CreateVirtualController, #600 item 42). A test's
+                // factory makes no device.
+                bool hid = factory == null;
+                if (hid) PadForge.Engine.OwnDrops.Begin();
+                try { vc.Connect(); }
+                finally { if (hid) PadForge.Engine.OwnDrops.End(); }
                 lock (_vcLifecycleLock)
                 {
                     if (!_oskHidClosed && !rec.Abandoned)
@@ -426,7 +429,6 @@ namespace PadForge.Common.Input
             }
             catch (Exception ex)
             {
-                rec.Failed = true;
                 RaiseEngineError($"Could not make the On-Screen Keyboard's virtual keyboard '{rec.ProfileId}'.", ex);
             }
             finally

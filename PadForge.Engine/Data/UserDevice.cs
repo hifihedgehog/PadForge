@@ -734,7 +734,7 @@ namespace PadForge.Engine.Data
         public CustomInputState InputState { get; set; }
 
         /// <summary>The state the device itself reported on the same pass,
-        /// before the On-Screen Keyboard and a program's holds (#597) swapped
+        /// before the On-Screen Keyboard and a program's holds (#600) swapped
         /// what mappings read. The same object as <see cref="InputState"/>
         /// when nothing swapped it. Written by Step 2 just before
         /// <see cref="InputState"/>, from the same pooled buffers, so a
@@ -1184,6 +1184,11 @@ namespace PadForge.Engine.Data
             Device = null;
             IsOnline = false;
             InputState = null;
+            // The device's own state goes with the one mappings read: a
+            // reader that takes it first (AutomationDevices.CopyState) would
+            // otherwise read the last connection's after a reconnect, before
+            // Step 2 writes this one's.
+            ReadInputState = null;
             OldInputState = null;
             // DeviceObjects preserved — static device capabilities needed by UI dropdowns.
             ForceFeedbackState = null;

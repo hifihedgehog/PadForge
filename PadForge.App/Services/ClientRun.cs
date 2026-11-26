@@ -12,7 +12,7 @@ namespace PadForge.Services
     /// <summary>
     /// A start of PadForge.exe that is not the app: it hands its switches to
     /// the running copy, prints what the copy answers, and exits with a code a
-    /// script can read (#597).
+    /// script can read (#600).
     ///
     /// <para>It needs no administrator rights and asks for none, so a prompt,
     /// a launcher or a batch file gets its answer on its own console. A copy
@@ -71,18 +71,19 @@ namespace PadForge.Services
             public Action LendForeground = RunningCopy.LendForeground;
 
             /// <summary>Takes hold of the running copy and answers with the
-            /// wait for its exit, or null when it cannot be watched.</summary>
-            public Func<Func<int?>> Watch = () => RunningCopy.Watch();
+            /// hold, whose wait for its exit gives its code, or null when it
+            /// cannot be watched.</summary>
+            public Func<RunningCopy.Hold<int?>> Watch = () => RunningCopy.Watch();
 
-            /// <summary>Asks the running copy to close over its signal
-            /// window and waits for its end (#600 item 44). Needs no
-            /// pipe.</summary>
+            /// <summary>Asks the running copy to close over its signal pipe,
+            /// or its signal window for a caller with rights, and waits for its
+            /// end (#600 item 44). Needs no Automation.</summary>
             public Func<RunningCopy.Closing> ExitCopy = () => RunningCopy.Exit();
 
             /// <summary>Takes hold of the running copy before <c>exit</c>
-            /// goes down the pipe, and answers with the wait for its end, or
-            /// null when it cannot be held.</summary>
-            public Func<Func<bool>> HoldForClose = RunningCopy.HoldForClose;
+            /// goes down the pipe, and answers with the hold, whose wait is
+            /// for its end, or null when it cannot be held.</summary>
+            public Func<RunningCopy.Hold<bool>> HoldForClose = RunningCopy.HoldForClose;
 
             /// <summary>An answer. It goes to standard output or the caller's
             /// console, and nowhere when the caller gave neither: a launcher
@@ -119,6 +120,10 @@ namespace PadForge.Services
             /// (#600) and gives their exit codes.</summary>
             public Func<string, Action<string>, Action<string>, int> Summarize = PadForge.Common.Recording.RecordingSummaryPrint.Run;
             public Func<string, string, Action<string>, int> RecordSave = PadForge.Common.Recording.RecordingSave.RunForClient;
+
+            /// <summary>Runs <c>--port-files</c>: the DSX port files, written
+            /// as the user.</summary>
+            public Func<int, int> PortFiles = GameModPortFiles.RunForClient;
 
             /// <summary>Runs <c>--plugin-kit</c> (#600 item 20) and gives its
             /// exit code.</summary>
@@ -188,6 +193,12 @@ namespace PadForge.Services
                     sayError(TestsChildSavesNothing);
                     return AnsweredAnError;
                 };
+                // --port-files writes the PC's own DSX port files.
+                seams.PortFiles = _ =>
+                {
+                    seams.SayError(TestsChildWritesNoPortFiles);
+                    return AnsweredAnError;
+                };
                 return seams;
             }
         }
@@ -195,6 +206,7 @@ namespace PadForge.Services
         internal const string TestsChildInstallsNothing = "A test's run of PadForge installs nothing.";
         internal const string TestsChildOpensNothing = "A test's run of PadForge opens nothing.";
         internal const string TestsChildSavesNothing = "A test's run of PadForge saves no recording.";
+        internal const string TestsChildWritesNoPortFiles = "A test's run of PadForge writes no DSX port file.";
 
         /// <summary>
         /// Runs the command line as a client when it is one. True when this
@@ -246,6 +258,12 @@ namespace PadForge.Services
                 exitCode = seams.RecordSave(save.Source, save.Target, seams.SayError);
                 return true;
             }
+            if (request.PortFiles is int port)
+            {
+                // The DSX port files, as the user.
+                exitCode = seams.PortFiles(port);
+                return true;
+            }
             if (request.PluginKit != null)
             {
                 // The kit is written with the user's rights where the user
@@ -269,9 +287,13 @@ namespace PadForge.Services
             }
             if (request.Web)
             {
-                // The web helper reaches the running copy, which takes only
-                // the one it started. With no copy running it gives 4.
-                exitCode = seams.CopyRuns() ? seams.ServeWeb() : NotRunning;
+                // The web helper reaches the running copy over its Automation
+                // pipe, whose owner it checks, with the key that copy handed
+                // it, and gives 4 when no pipe stands. It runs as the
+                // signed-in user, who need not be the user PadForge runs as,
+                // and such a user may not read PadForge's process to find its
+                // window, so the window is not looked for.
+                exitCode = seams.ServeWeb();
                 return true;
             }
             if (request.AssistantRun)
@@ -299,8 +321,9 @@ namespace PadForge.Services
             }
 
             // Taken before any line goes out, so a copy told to exit is
-            // still the one waited for.
-            var wait = request.Wait ? seams.Watch() : null;
+            // still the one waited for. Let go on every way out, so a start
+            // that goes on to become the app holds no handle on the old copy.
+            using var wait = request.Wait ? seams.Watch() : null;
 
             for (int i = 0; i < request.Steps.Count; i++)
             {
@@ -323,7 +346,7 @@ namespace PadForge.Services
 
             if (wait != null)
             {
-                int? copyExit = wait();
+                int? copyExit = wait.Wait();
                 if (copyExit.HasValue) exitCode = copyExit.Value;
             }
             return true;
@@ -407,16 +430,20 @@ namespace PadForge.Services
             // to the front. A line cannot carry that right, so it is lent
             // first. --maximized shows the window too (#600 item 44).
             if (line is "show" or "maximize") seams.LendForeground();
-            // The copy told to exit is the one waited for (#600 item 44).
-            var closing = line == "exit" ? seams.HoldForClose() : null;
+            // The copy told to exit is the one waited for (#600 item 44). Let
+            // go on every way out, waited for or not.
+            using var closing = line == "exit" ? seams.HoldForClose() : null;
 
             string reply = seams.Exchange(line);
             if (reply == ControlPipeClient.NotPadForge) return NotPadForge(line, seams);
+            bool unsettled = false;
             if (reply == null && !seams.PipeStands())
             {
                 // No pipe: Automation is off, or the copy is not serving yet,
                 // or not any more.
-                switch (seams.Settle())
+                var settled = seams.Settle();
+                unsettled = settled == RunningCopy.Settled.Starting;
+                switch (settled)
                 {
                     case RunningCopy.Settled.Gone:
                         gone = true;
@@ -439,8 +466,11 @@ namespace PadForge.Services
                 }
                 // So is closing, which the tray icon's Exit does (#600 item
                 // 44).
-                if (line == "exit") return ExitOverTheWindow(seams);
-                if (!seams.PipeStands())
+                if (line == "exit") return ExitOverTheSignal(seams);
+                // A copy still starting or closing at the end of the wait
+                // serves no pipe, which says nothing about Automation. Only a
+                // ready copy with no pipe has it off.
+                if (!unsettled && !seams.PipeStands())
                 {
                     seams.SayError(AutomationOffText);
                     return NotAllowed;
@@ -451,9 +481,9 @@ namespace PadForge.Services
 
             if (reply.StartsWith("ok", StringComparison.Ordinal))
             {
-                // --exit returns once PadForge has closed, as over the
-                // window.
-                if (closing != null && !closing())
+                // --exit returns once PadForge has closed, as it does over
+                // the signal (ExitOverTheSignal).
+                if (closing != null && !closing.Wait())
                 {
                     seams.SayError(DidNotCloseText);
                     return AnsweredAnError;
@@ -474,7 +504,7 @@ namespace PadForge.Services
                 seams.Say("ok");
                 return Done;
             }
-            if (line == "exit" && reply.StartsWith(NotAllowedReply, StringComparison.Ordinal)) return ExitOverTheWindow(seams);
+            if (line == "exit" && reply.StartsWith(NotAllowedReply, StringComparison.Ordinal)) return ExitOverTheSignal(seams);
 
             seams.SayError(reply);
             return reply.StartsWith(NotAllowedReply, StringComparison.Ordinal) ? NotAllowed : AnsweredAnError;
@@ -482,8 +512,9 @@ namespace PadForge.Services
 
         /// <summary>The pipe's server is not PadForge: it is treated as no
         /// PadForge, and the caller hears that another program holds the
-        /// name. Showing the window and closing need no pipe and still go to
-        /// the running copy, which is found by its own checked window.</summary>
+        /// name. Showing the window and closing need no control pipe and still
+        /// go to the running copy, which is found by its own checked window
+        /// and asked over its signal pipe.</summary>
         private static int NotPadForge(string line, Seams seams)
         {
             if (line == "show" && seams.ShowWindow())
@@ -491,15 +522,15 @@ namespace PadForge.Services
                 seams.Say("ok");
                 return Done;
             }
-            if (line == "exit") return ExitOverTheWindow(seams);
+            if (line == "exit") return ExitOverTheSignal(seams);
             seams.SayError(NotPadForgeText);
             return NotRunning;
         }
 
-        /// <summary><c>exit</c> over the signal window (#600 item 44): ok
+        /// <summary><c>exit</c> over the signal (#600 item 44): ok
         /// once the copy's process ended, 1 when it still runs at the end of
         /// the wait, 4 when no copy runs.</summary>
-        private static int ExitOverTheWindow(Seams seams)
+        private static int ExitOverTheSignal(Seams seams)
         {
             switch (seams.ExitCopy())
             {

@@ -291,6 +291,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Montre oswa kache PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Aktive oswa dezaktive kontwolè vityèl yo</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Nenpòt aparèy konekte</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (pa konekte)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Yon aparèy ki pa sou paj Aparèy la</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ap anrejistre…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>lè</value></data>
@@ -497,8 +499,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Pwogram lan pale yon vèsyon PadForge pa konnen</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge pa t bay kle plugin sa a</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge pa t aksepte koneksyon pwogram sa a</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge pa t fè okenn aparèy, paske Windows pa t bay non fichye pwogram nan</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Li mande ankò twò vit</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Pa gen plis nan sa yo jiskaske PadForge demare ankò</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Twòp nan sa yo pwogram mete ap tann pou ou revize sou Akèy</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge pa gen zouti sa a</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Pwogram lan te li yon eta ki pi ansyen</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Anyen pa gen ID sa a</value></data>
@@ -506,6 +509,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ou pa t pèmèt li</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Pèsonn pa t reponn atan</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ap tann repons ou</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Ou pa t ko reponn</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Demann sa a pa egziste</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Pa gen anyen pou defèt</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Se ou sèl ki ka chanje sa</value></data>
@@ -628,7 +632,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Pote yon pwofil vini</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Enpòte yon fichye pwofil ki soti nan yon lòt pwogram, epi gade sa ki pase.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} fwa</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, dènye nan {1} ki sanble</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Script AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -742,14 +745,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Demare PadForge otomatikman lè ou konekte nan Windows. Pandan sa a limen, PadForge demare tou san demann Windows lan depi yon rakousi, yon script oswa yon lòt pwogram.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ap mache apati {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Sa a bezwen PadForge nan yon dosye pa li. Dosye li a gen lòt fichye ladan l, kidonk PadForge pa ka anpeche lòt pwogram chanje l.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Sa a bezwen PadForge nan yon dosye lòt pwogram pa ka chanje. PadForge pa t ka anpeche yo chanje dosye li a.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Deplase PadForge nan pwòp dosye li</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopye PadForge ak paramèt li yo nan Program Files, dirije travay li yo la, epi demare l la. Kopi ki isit la rete jan li ye a.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge pa t deplase: {0} gen fichye ki pa pou PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge pa t deplase: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Demare lè ou konekte te dezaktive, paske li te lanse PadForge apati yon dosye ki gen lòt fichye.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge pa t deplase: Windows pa nonmen okenn dosye Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka li PadForge k ap kouri a.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka kreye {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka li sa {0} genyen.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka anpeche lòt pwogram chanje {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge pa t deplase: kopi li nan {0} pa t menm ak PadForge k ap kouri a.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge pa t deplase: apre kopi a, {0} te gen fichye ki pa pou PadForge, oswa lòt pwogram te ka chanje l.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge li te konn lanse a pa la ankò.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge pa t ka anpeche lòt pwogram chanje dosye li te lanse PadForge ladan l lan.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge pa t ka li ki PadForge li te lanse.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge pa t ka li dosye PadForge li te lanse a.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge pa t ka kreye dosye pwoteje li a, {0}. PadForge kenbe bibliyotèk li itilize ak dwa administratè yo la, epi li pa ka demare an sekirite san li.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge pa t ka redemare tèt li apati dosye pwoteje li a, {0}. PadForge mache ak dwa administratè sèlman apati la, kidonk li pa t demare.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge pa t ka kreye kadna ki fè sèlman yon kopi li kouri, kidonk li pa t demare.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ap mache ak dwa administratè apati {0}, yon dosye lòt pwogram ka chanje. Yo ka chanje paramèt PadForge la, epi PadForge aji sou yo ak dwa li.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ap mache ak dwa administratè apati {0}, yon dosye ki gen lòt fichye ladan l. PadForge pa ka anpeche lòt pwogram chanje paramèt li yo la, epi li aji sou yo ak dwa li.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ap mache ak dwa administratè apati {0}, yon dosye li pa t ka li. PadForge pa ka anpeche lòt pwogram chanje paramèt li yo la, epi li aji sou yo ak dwa li.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Toujou montre nan zòn notifikasyon an</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Kenbe ikòn zòn notifikasyon an vizib pandan fenèt la louvri, konsa Sòti nan meni li toujou a yon klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mizajou</value></data>
@@ -761,7 +779,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Enstale epi redemare</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Nòt vèsyon</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Baz done kontwolè</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Mete ajou kounye a telechaje baz done kontwolè kominote a (SDL_GameControllerDB) sou GitHub, oswa sou adrès ki mete anba Plis, epi kenbe, nan fichye paramèt la, asiyasyon vèsyon PadForge sa a pa genyen. Yo an sèvis touswit. Sou yon lòt adrès li kenbe nouvo asiyasyon sèlman. Yon nouvo asiyasyon itilize sèlman pou yon kontwolè ke anyen lòt pa li kòm gamepad, ki pa asiyen epi ki pa nan Force Raw Joystick Mode (Bypass Gamepad Remapping). Reyinisyalizasyon an retire tout asiyasyon ki telechaje epi li telechaje sou GitHub ankò. Pwòp liy pa w yo, anba Plis, rete.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Mete ajou kounye a telechaje baz done kontwolè kominote a (SDL_GameControllerDB) sou GitHub, oswa sou adrès ki mete anba Plis, epi kenbe, nan fichye paramèt la, asiyasyon vèsyon PadForge sa a pa genyen. Yo an sèvis touswit. Sou yon lòt adrès li kenbe nouvo asiyasyon sèlman. Okòmansman, yon nouvo asiyasyon itilize sèlman pou yon kontwolè SDL rapòte kòm gamepad oswa kòm okenn tip patikilye, ke anyen lòt pa li kòm gamepad, ki pa asiyen epi ki pa nan Force Raw Joystick Mode. Depi li an sèvis, li rete an sèvis apre kontwolè a asiyen. Reyinisyalizasyon an retire asiyasyon ki telechaje yo epi li remete fichye kominote a nan Telechaje sou, ke pwochen Mete ajou kounye a telechaje. Pwòp liy pa w yo, anba Plis, rete.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Mete ajou kounye a</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ap mete ajou…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Ap chèche mizajou…</value></data>
@@ -790,9 +808,12 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Entegre: {1} asiyasyon, kopi kominote a {2}. Telechaje {3} sou {4}: {0} nouvo liy.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Entegre: {1} asiyasyon, kopi kominote a {2}. Telechaje {3} sou {4}: {0} nouvo liy.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Baz done kominote a pa chanje depi dènye mizajou a.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Fichye ki sou {0} pa chanje depi dènye mizajou a.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Pa t ka rive jwenn GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Pa t ka rive jwenn {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge refize telechajman an paske se pa baz done kontwolè li tann nan. Anyen pa chanje.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge refize repons GitHub la. Anyen pa chanje.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge refize repons ki soti sou {0}. Anyen pa chanje.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Demare minimize</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Demare lè ou konekte</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -835,6 +856,14 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Dosye</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Paramèt sèvis</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Etap retire</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Sèvis</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Fichye</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Filtè siperyè</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Valè rejis</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID materyèl</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Travay planifye</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Antre nan aplikasyon ki enstale</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Aparèy USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Pèmèt kontwolè PlayStation 3 yo, PlayStation Move la ak kontwolè Navigation lan konekte pa Bluetooth. Entegre nan PadForge epi li enstale premye fwa youn ladan yo asosye.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Konekte kontwolè PlayStation 3 sou Bluetooth.</value></data>
@@ -902,6 +931,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Anrejistre {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Anrejistreman an pa t kòmanse. Yon verifikasyon jwenn yon valè prive PC sa a ki pa t ap rete deyò fichye a.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Anrejistreman an pa t kòmanse. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge pa jwenn okenn dosye tanporè itilizatè ki konekte a andedan pwofil itilizatè a, san pase pa okenn lyen, pou ekri anrejistreman an ladan l.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Dosye anrejistreman yo se yon lyen sou yon lòt kote, epi PadForge pa swiv li.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Dènye anrejistreman an poko fin ekri.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Kenbe dènye 60 segonn yo dezaktive, kidonk pa gen anyen pou anrejistre.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Yon anrejistreman PadForge pa t kanpe ap tann ou li l nan Akèy: {0}</value></data>
@@ -915,7 +946,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, aparèy ou yo ak paramèt ou yo jan yo ye kounye a, atravè menm revizyon an.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log bò kote PadForge.exe, kote ou ka li l.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Sa pou anrejistre</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Tout limen. Yon pati ki etenn rete deyò pwochen anrejistreman an, epi fichye a di ki pati li genyen.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Tout pati yo limen pa defo. Yon pati ki etenn rete deyò pwochen anrejistreman an, epi fichye a di ki pati li genyen.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Pou yon pwoblèm ki parèt yon fwa pa aswè.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Anrejistreman an ap tann ou li l nan Akèy.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Rezime</value></data>
@@ -954,8 +985,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 valè</value></data>
   <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} kalite prive</value></data>
   <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 kalite prive</value></data>
-  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Verifikasyon netwayaj: {0} nan valè PC sa a toujou nan pati ou kenbe yo. Etenn pati sa yo oswa efase anrejistreman an. Anrejistre… rete etenn jiskaske sa fèt.</value></data>
-  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Verifikasyon netwayaj: youn nan valè PC sa a toujou nan pati ou kenbe yo. Etenn pati sa yo oswa efase anrejistreman an. Anrejistre… rete etenn jiskaske sa fèt.</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Verifikasyon netwayaj: {0} nan valè PC sa a toujou nan pati ou kenbe yo. Etenn pati sa yo oswa efase anrejistreman an. Anrejistre rete etenn jiskaske sa fèt.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Verifikasyon netwayaj: youn nan valè PC sa a toujou nan pati ou kenbe yo. Etenn pati sa yo oswa efase anrejistreman an. Anrejistre rete etenn jiskaske sa fèt.</value></data>
   <data name="Review_Empty" xml:space="preserve"><value>Anyen nan pati sa a pa t pase pandan anrejistreman an.</value></data>
   <data name="Review_Delete" xml:space="preserve"><value>Efase</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Kopye rezime a</value></data>
@@ -966,6 +997,17 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Anrejistre anrejistreman an</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Fichye zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Pa anrejistre. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Verifikasyon netwayaj: ap verifye pati ou kenbe yo…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Verifikasyon netwayaj: PadForge pa t ka li pati ou kenbe yo, kidonk Anrejistre rete etenn.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Anrejistreman fichye a ak pwòp dwa ou pa t demare.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Anrejistreman fichye a ak pwòp dwa ou pa t demare: pa gen okenn biwo Windows k ap mache pou demare l.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Anrejistreman fichye a ak pwòp dwa ou pa t demare: Windows refize ak erè {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Anrejistreman fichye a pa t fini nan {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows pa t kite fichye a ekri la.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge pa t pran fichye sa a kòm yon anrejistreman pa li.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Anrejistreman fichye a fini ak kòd {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Anrejistre kòm ou menm, nan dosye Downloads ou a premye fwa a, apre sa kote ou te anrejistre dènye fwa a, epi montre nan Explorer. Yon anrejistreman ki kanpe pandan pèsonn pa sou paj la (limit li, yon makro, yon pwogram, zouti asistan an oswa --record stop) ap tann revizyon sa a nan Akèy, epi li efase apre 7 jou si yo pa anrejistre l. Yo di yon pwogram li ap tann, men yo pa janm di l ki kote.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Yon anrejistreman pwoblèm depi {0} ap tann ou li l.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Revize</value></data>
@@ -1561,9 +1603,18 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lekti echwe: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro refize prereglaj sa a nan {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Prereglaj sa a pa gen deskriptè HID, kidonk yo pa ka fè okenn kontwolè avè l.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge pa t ka verifye prereglaj sa a: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Ap verifye prereglaj la…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Anyen pa t enpòte. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Enpòte</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(aparèy HID san non)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Sourit</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Klavye</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Kontwolè plizyè aks</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Jwenn {0} entèfas HID.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Jwenn 1 entèfas HID.</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Ekstraksyon echwe: {0}</value></data>
@@ -2524,7 +2575,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Pandan ou kenbe epi santre</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Limen/etenn</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Antre direksyon</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton ki kite sourit la dirije, sou menm aparèy ak sous la. Si pa gen okenn chwazi, sourit la toujou dirije.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton ki kite sourit la dirije, sou nenpòt aparèy nan plas sa a. Si pa gen okenn chwazi, sourit la toujou dirije.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Adousisman</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Li egalize yon sourit ki rapòte yon fason inegal. Joystick la rete dèyè men an anviwon tan sa a. 0 vle di dezaktive.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limit a vitès</value></data>
@@ -2545,7 +2596,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Kòmanse kote direksyon an te kòmanse</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Avèk yon Antre direksyon, joystick la mezire apati kote pwentè a te ye lè direksyon an te kòmanse, tankou yon joystick sou ekran telefòn kòmanse kote dwèt la poze. Lè l etenn, li mezire apati sant monitè pwentè a.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Aks sa a deplase an relatif</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pou yon trackball oswa yon spinner ki rapòte konbyen li vire. Lè l limen, aks la kenbe yon pozisyon menm jan ak Deplasman sourit epi li pran paramèt deplasman yo. Windows pa di ki aks ki deplase konsa.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pou yon trackball oswa yon spinner ki rapòte konbyen li vire. Lè l limen, aks la kenbe yon pozisyon menm jan ak Deplasman sourit epi li pran paramèt deplasman yo. SDL li yon kontwolè jeneral atravè DirectInput, ki li chak aks kòm yon pozisyon, kidonk chwa sa a di ki aks ki deplase konsa.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Apèsi</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Li montre kijan fanmi sa a swiv pwòp sourit ou. Anyen pa asiyen jiskaske ou chwazi l.</value></data>
@@ -2687,6 +2738,13 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
 {0}
 
 PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, kòmanse yon diskisyon sou {2} epi depoze crash.log sou li.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Yon erè ou pa t atann rive:
+
+{0}
+
+PadForge pa t ka ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, kòmanse yon diskisyon sou {2}, peze Ctrl+C isit la pou kopye mesaj sa a, epi kole l la.
 
 {1}</value></data>
 
@@ -4539,7 +4597,18 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>ap mare WinUSB ak ekran G19 la</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>ekran G19 la sou yon lòt pilòt ({0}), kidonk lanse Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>ekran G19 la sou pilòt yon lòt pwogram ({0}), epi PadForge pa manyen l</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Ap verifye drayvè Bluetooth PlayStation PadForge yo…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Ap li radyo Bluetooth PC sa a…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Ap louvri kontwolè a sou kab USB li…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Ap ekri adrès Bluetooth PC sa a nan kontwolè a…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Ap anrejistre kontwolè a nan Bluetooth Windows…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Ap redemare Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Asosyasyon an kanpe: Windows refize bay PadForge aksè nan kontwolè a oswa nan paramèt Bluetooth yo. Jounal dyagnostik la gen detay yo.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Asosyasyon an kanpe: lekti oswa ekriti nan kontwolè a oswa nan radyo Bluetooth la echwe. Jounal dyagnostik la gen detay yo.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Asosyasyon an kanpe sou yon erè PadForge pa t atann. Jounal dyagnostik la gen detay yo.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>bezwen Logitech Gaming Software 8.52 oswa pi resan</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>jwenn bibliyotèk li epi li pa chaje l, paske PadForge pa t ka konfime se sèlman administratè ki ka chanje l epi ke Logitech siyen l</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>jwenn bibliyotèk li epi li pa t ka itilize l, epi jounal dyagnostik la di poukisa</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>lanse Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ap tann yon telefòn ki gen Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>sou yon telefòn</value></data>
@@ -4634,6 +4703,8 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Chwazi dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Chaje kopi bibliyotèk Force Dimension sa a nan plas tout lòt. Yon Falcon ki louvri sou yon lòt kopi ap fèmen epi l ap louvri ankò sou kopi sa a. PadForge jwenn kopi SDK a enstale yo san li.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliyotèk (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Paj telechajman SDK Falcon lan pa t louvri: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Paj telechajman SDK Falcon lan poko louvri: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Enstale pilòt Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Enstale pilòt Force Dimension lan, ki nan dosye SDK a, sou yon Falcon ki pa genyen youn. Windows ka mande w anvan si pou w fè Force Dimension konfyans.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Telechaje SDK Force Dimension lan</value></data>
@@ -4928,6 +4999,7 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Nouvo kontwolè</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Paramèt</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Chak aks, bouton ak detektè</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Kontwòl li yo ak non script yo itilize</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Peze: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, chemen, kapasite, Fòse mòd joystick brit</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, chemen, kapasite</value></data>
@@ -5086,7 +5158,6 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>K ap tann ou</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivite</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Defèt</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge pa t ka anrejistre l: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Pandan yon pwogram nan nivo Li oswa pi wo konekte, li wè sa ki peze sou chak aparèy, klavye yo enkli.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Fè plugin yo mache</value></data>
@@ -5106,7 +5177,10 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} sou {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Rejwe)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Anrejistreman pwoblèm|*.zip;*.log|Tout fichye|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge pa ka jwe {0}. Se pa yon anrejistreman pwoblèm, oswa li pa gen antre okenn aparèy.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge pa ka jwe {0}. Se pa yon anrejistreman pwoblèm PadForge ka li.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge pa ka jwe {0}. Li gen plis pase {1} aparèy, epi Rejwe pa jwe plis pase {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge pa ka jwe {0}. Li pa gen okenn antre ki soti nan yon aparèy.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge pa t ka li {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Plugin ou yo</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Ajoute yon plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Pwogram ak script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tout fichye|*.*</value></data>
@@ -5120,8 +5194,13 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Kanpe apre senk echèk youn dèyè lòt</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Pa demare: fichye a pa la ankò</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Pa demare: Windows pa gen okenn pwogram pou kalite fichye sa a</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Pa demare: okenn pwogram pa louvri fichye Python pou ou, epi PadForge pa jwenn okenn lansè py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Pa demare: PadForge pa ka li ki pwogram ki louvri kalite fichye sa a pou ou</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Pa demare: pwogram ki louvri kalite fichye sa a pou ou a pa sou PC sa a</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Pa demare: pa gen okenn biwo Windows k ap mache pou demare l anba li</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Pa demare: biwo Windows la gen dwa administratè, kidonk plugin lan t ap genyen yo tou</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Pa demare: PadForge pa ka li si li t ap gen dwa administratè</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Pa demare: Windows ba li dwa administratè, kidonk PadForge fèmen l anvan li kouri</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Pa demare: li mande dwa administratè</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Pa demare: Windows refize ak erè {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Pa demare</value></data>
@@ -5149,6 +5228,7 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Li ajoute {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Siyen pa {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Pa siyen.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Paramèt li yo parèt isit la pandan l ap mache.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Li pa deklare okenn paramèt.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Paramèt li yo parèt isit la depi li konekte ak PadForge.</value></data>
@@ -5199,7 +5279,7 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Chwazi yon plugin pou wè jounal li.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Poko gen anyen nan jounal plugin sa a.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Sèvè ak kliyan Model Context Protocol ki dèyè koneksyon asistan an ak PadForge.exe --mcp, pa Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Sèvè ak kliyan Model Context Protocol ki dèyè koneksyon asistan an ak PadForge.exe --mcp, pa Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ak DependencyInjection.Abstractions, ke MCP C# SDK la bati sou yo, pa Microsoft.</value></data>
   <data name="MacroAction_Type_CenterMouseSteering" xml:space="preserve"><value>Resantre direksyon sourit</value></data>
@@ -5241,8 +5321,13 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Ap retire…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ap mete ajou…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Li pa t fini: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Antre ak skill PadForge yo rete, paske {0} li menm fichye paramèt la ak menm dosye skill la.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Antre PadForge la rete, paske {0} li menm fichye paramèt la.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge retire nan pwogram sa a. Skill li a rete, paske {0} li skill nan menm dosye a.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge pa ka li paramèt ki nan {0}, kidonk li pa konnen si PadForge ajoute.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Ajoute. PadForge pa t ka li dosye skill li a.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopye.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Pa kopye: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Pa kopye. Windows pa t kite PadForge itilize kalpin nan.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Pwogram ki pèmèt</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Yon pwogram ki vle Read oswa plis mande yon sèl fwa, premye fwa li konekte, epi li jwenn nivo li mande a, jiska nivo ki anwo a. Yon asistan ou ajoute anwo a gen pèmisyon pa sa.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -5258,6 +5343,8 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Yon joystick. PadForge li l brit, kidonk asiyasyon SDL la pa itilize.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Yon joystick, ranje kòm yon gamepad pa liy pa w la.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL li aparèy yo pandan motè a ap mache.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Aparèy la pa konekte. SDL ap li l depi li konekte.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL pa t bay PadForge okenn lekti aparèy sa a.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi kominote a ki enkli, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Telechaje {0}</value></data>
@@ -5295,6 +5382,11 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, baskil ak lòt aksyon</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ak {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Anyen pou kopye: SDL pa gen okenn asiyasyon pou aparèy sa a, epi li pa sou okenn kontwolè.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Anyen pou kopye: PadForge pa ka li asiyasyon SDL pou aparèy sa a, epi okenn liy nan kontwolè li yo pa bay yon liyezon fòm SDL la aksepte.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Anyen pou kopye: SDL pa gen okenn asiyasyon pou aparèy sa a, epi okenn liy nan {0} pa li youn nan bouton, aks oswa hat li yo nan yon fason fòm SDL la aksepte.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Anyen pou kopye: SDL pa gen okenn asiyasyon pou aparèy sa a, epi liy {0} yo li l sèlman pou {1}, ke fòm SDL la pa ka kenbe.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Anyen pou kopye: PadForge pa ka li asiyasyon SDL pou aparèy sa a kounye a, epi li pa sou okenn kontwolè.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Anyen pou kopye: PadForge pa ka li asiyasyon SDL pou aparèy sa a kounye a, epi okenn liy nan {0} pa bay yon liyezon fòm SDL la aksepte.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Yon lòt pwogram ap itilize kalpin nan. Anyen pa t kopye.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Liy pa w la retire. Aparèy la li jan li te ye anvan l.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Asiyen ankò apati dispozisyon SDL la: {0}.</value></data>
@@ -5315,6 +5407,8 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Liy PadForge genyen</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Okenn liy pa koresponn.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Liy ou chwazi a aplike sou {0} anba pwòp ID li, atravè menm verifikasyon an ak menm chwa a ak Kole.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Motè a kanpe, kidonk lis la kite deyò liy SDL genyen yo, pwòp pa li ak kopi kominote a ki entegre ladan l. Yo parèt nan lis la depi motè a mache.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL pa t reponn a tan, kidonk lis la kite deyò liy li genyen yo, pwòp pa li ak kopi kominote a ki entegre ladan l.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Liy asiyasyon SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Yon liy pou aparèy sa a.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Yon dispozisyon devine.</value></data>
@@ -5327,14 +5421,14 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} chan, menm machann ak menm pwodwi sou yon lòt bis oswa yon lòt vèsyon. Li kenbe anba pwòp ID aparèy sa a.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} chan, liy yon lòt aparèy. Li kenbe anba pwòp ID aparèy sa a.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} chan. SDL pa li aparèy sa a, kidonk PadForge ranje antre li yo dapre liy lan.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge pa gen okenn bouton oswa aks senp pou chan sa yo, epi li kite yo deyò: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} chan, apati aks, bouton ak hat aparèy la. Verifye l nan Teste antre yo, epi kenbe l oswa chanje l isit la.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Sa chanje fason yo li {0}. Liy li yo nan {1} asiyen ankò apati nouvo dispozisyon an.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Sa chanje fason yo li {0}. Li pa sou okenn kontwolè, kidonk okenn liy pa chanje.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Rakousi pwofil ki li {0} kenbe antre yo te mete yo.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Liy lan kenbe kòm pa w nan PadForge.xml epi li genyen priyorite sou tout lòt sous pou aparèy sa a. Retire pa m remete ansyen liy lan ak ansyen liy yo.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Liy yo kenbe kòm pa w nan PadForge.xml epi yo genyen priyorite pou aparèy yo sou tout lòt sous. Efase, anba Plis nan liy Baz done kontwolè a, retire yo.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} liy pou Windows. {1} pou lòt sistèm yo sote.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} liy pou Windows. {1} pou lòt sistèm yo sote.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} liy pou Windows.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Tout {0:N0} yo ap ajoute. PadForge kenbe jiska {1:N0} liy pa w.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Li ap ajoute. PadForge kenbe jiska {1:N0} liy pa w.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} liy pa w kenbe kounye a, kidonk {1:N0} nan sa yo ap ajoute epi {2:N0} p ap ajoute.</value></data>
@@ -5344,7 +5438,7 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Tèks la pa yon liy nan baz done kontwolè SDL la: yon ID 32 chif ekzadesimal, yon non, epi chan tankou a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Liy yo se pou lòt sistèm. PadForge li liy pou Windows, oswa pou okenn sistèm an patikilye.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID liy lan pa ID yon aparèy. Li bezwen 32 chif ekzadesimal.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Non liy lan vid, depase 128 karaktè, oswa gen yon karaktè SDL li kòm yon chan.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Non liy lan vid, depase 128 karaktè, gen yon mak chan SDL li, tankou “type:”, oswa gen yon karaktè ki pa lèt, chif, ponktiyasyon, senbòl oswa espas senp.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Liy lan gen yon hint oswa yon chan Android, ke PadForge pa aksepte.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Liy lan gen yon chan SDL pa konnen.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Yon liyezon pa nan fòm SDL la, tankou b3, a2, +a2, a2~ oswa h0.4.</value></data>
@@ -5355,8 +5449,7 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Liy pa w yo</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Liy ou ajoute isit la, oswa ou kole sou kat Asiyasyon SDL yon aparèy, genyen priyorite pou aparèy yo sou tout lòt sous epi yo rete apre reyinisyalizasyon an.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ajoute liy soti nan yon fichye oswa kalpin nan…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} liy pou menm kantite aparèy, pa w, ak priyorite sou tout lòt sous.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} liy pou yon aparèy, pa w, ak priyorite sou tout lòt sous.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} liy, pa w yo pase devan tout lòt sous.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Poko genyen.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Varyab SDL_GAMECONTROLLERCONFIG ou a gen {0} liy PadForge pa kenbe. Ajoute liy soti nan yon fichye oswa kalpin nan louvri ak yo.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Varyab SDL_GAMECONTROLLERCONFIG ou a gen {0} liy PadForge pa kenbe. Ajoute liy soti nan yon fichye oswa kalpin nan louvri ak li.</value></data>
@@ -5375,7 +5468,7 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Kanpe. Dènye mo li: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Li pa t ka demare.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Li pa sou PC sa a ankò.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Pa gen okenn pwogram tinèl sou PC sa a. PadForge mache ak cloudflared, devtunnel, ngrok ak Tailscale Funnel, oswa ak adrès pwòp tinèl pa w.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge pa jwenn ni cloudflared, ni devtunnel, ni ngrok, ni Tailscale Funnel sou PC sa a. Chwazi ChatGPT Secure MCP Tunnel, ke PadForge telechaje, oswa bay adrès pwòp tinèl pa w.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Chwazi yon tinèl pou bay PadForge yon adrès piblik.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Sou PC sa a tou: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ki gen yon adrès ki rete menm jan</value></data>
@@ -5383,7 +5476,7 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Lanse pwòp tinèl pa w sou http://127.0.0.1:{0} epi kole adrès https li. Yon tinèl Cloudflare ki gen non, yon dev tunnel pèmanan, Tailscale Funnel ak pwòp domèn ngrok kenbe adrès yo.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Kole yon adrès https san okenn chemen eksepte /mcp, jan tinèl ou bay li.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Ap demare asistan wèb PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Asistan wèb PadForge kanpe ({0}). Etenn epi limen Reach PadForge From the Web pou demare l ankò.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Asistan wèb PadForge kanpe ({0}). PadForge kontinye eseye demare l.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adrès</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Poko gen adrès piblik.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Ajoute nan Claude</value></data>
@@ -5421,11 +5514,6 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>li fini ak kòd {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Otomatizasyon dezaktive, kidonk okenn asistan wèb pa rive jwenn PadForge. Asistan wèb la demare depi Otomatizasyon limen.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ap verifye…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Pa enstale.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Enstale epi ajou. Yon script kòmanse ak {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Enstale pou {0} epi ajou. Yon script kòmanse ak {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Enstale. PadForge sa a gen yon kopi ki pi nouvo.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Enstale pou {0}. PadForge sa a gen yon kopi ki pi nouvo.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Ap enstale…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge pa t ka verifye l: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Enstale mete bibliyotèk PadForge la kote langaj sa a jwenn li. Yon script ki chaje l li aparèy yo epi kontwole asiyasyon yo nan nivo ki anwo a.</value></data>
@@ -5433,22 +5521,24 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kopi enstale yo</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Retire tout</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Retire.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Bibliyotèk PadForge la enstale pou {0} epi li ajou. Yon script kòmanse ak {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Bibliyotèk PadForge pou {0} diferan de kopi PadForge sa a.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Bibliyotèk PadForge la pa enstale pou {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID script</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID script li</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script yo rele kontwòl li yo {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script yo rele touch li yo KeyA, KeySpace, KeyLeftShift ak lòt konsa, epi chak touch pa kòd li, Vk0 rive Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} sou rezo sa a depi {1}</value></data>
   <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Yon nouvo vèsyon ki siyen ak menm kle sètifika {0} an rekòmanse san Apwouve epi rekòmanse. Nenpòt lòt chanjman mande w anvan.</value></data>
   <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Te pran yon nouvo vèsyon ki siyen ak menm kle sètifika a</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adrès</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge aksepte yon adrès ki kòmanse ak https:// epi ki bay yon lame, sou pò default la, san non itilizatè ni modpas.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge pran yon adrès jiska 2,048 karaktè ki kòmanse ak https:// epi ki nonmen yon sèvè, sou pò pa defo a, san non itilizatè, modpas oswa pati apre #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Pò</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Chanje…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Apèl yo ak kle yo travèse rezo sa a san chifreman. Windows kite yo antre sou rezo prive sèlman.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Apèl yo ak kle yo travèse rezo sa a san chifreman. Règ Windows Firewall PadForge kreye pou pò sa a nonmen rezo prive sèlman.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Yon lòt pwogram ap itilize pò {0}. Chanje l pou rive jwenn PadForge depi rezo sa a.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows pa t kite asistan PadForge koute sou pò {0}. PadForge pèmèt li ak dwa administratè, kidonk demare PadForge ak dwa sa yo epi etenn epi limen sa a.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows pa kenbe okenn rezèvasyon pou asistan PadForge sou pò {0}. Etenn epi limen sa a, epi PadForge ap refè l.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Asistan PadForge pa t ka koute sou pò {0}. Chanje pò a, oswa etenn epi limen sa a.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Asistan PadForge kanpe ({0}). Etenn epi limen Reach PadForge From This Network pou demare l ankò.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Asistan PadForge kanpe ({0}). PadForge kontinye eseye demare l.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Otomatizasyon dezaktive, kidonk okenn asistan sou rezo sa a pa rive jwenn PadForge. Asistan an demare depi Otomatizasyon limen.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>PC sa a pa gen adrès sou yon rezo prive kounye a.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Asistan sou rezo sa a</value></data>
@@ -5463,7 +5553,23 @@ PadForge ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte sa a, k�
   <data name="Reach_Line_Format" xml:space="preserve"><value>Kontwole pwòp aparèy li yo ak {0}. Li toujou li tout aparèy.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Kontwole pwòp aparèy li yo sèlman. Li toujou li tout aparèy.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Kòmand ki soti nan liy kòmand lan toujou rive jwenn PadForge, menm jan yo fè pou tout pwogram.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>K ap mache, ak dwa pa w, epi li pare. ChatGPT rive jwenn PadForge atravè tinèl sa a san pwòp koneksyon pa l, epi sèlman depi òganizasyon OpenAI pa w la. Li demare ankò ak PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>K ap mache, ak dwa pa w. Li ap tann OpenAI di tinèl la pare.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge kenbe kle a chifre pou ou sèlman. Yon bwat vid bliye l. ChatGPT travay nan nivo ki anwo a.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge pa t ka anrejistre twous plugin lan.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Aktivite {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Son{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Ikòn{0}</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Yo sote {0:N0} liy pou lòt sistèm.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows pa t demare l ak pwòp dwa ou.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Li pa t fini nan {0} segonn.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Li fini ak kòd {0} san bay okenn rezon.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge pa ka li paramèt ki nan {0}, kidonk li kite fichye a jan l ye a.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge pa t ekri {0}, kidonk li kite l jan l ye a.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows pa nonmen okenn dosye Documents pou ou.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge pa jwenn okenn dosye pa w pou {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Pwòp kòmand {0} fini ak kòd {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Kòmand {0} pa sou PC sa a.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows pa t kite PadForge li oswa ekri yon fichye li bezwen.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge pa jwenn okenn Python: okenn pa anrejistre, enstale sou Microsoft Store, nan lis yon lansè py oswa sou PATH ou.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Okenn Python PadForge jwenn pa t reponn nan {0} segonn.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Egzekisyon an pa bay okenn rezon PadForge konnen.</value></data>
 </root>

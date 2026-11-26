@@ -33,38 +33,62 @@ namespace PadForge.Engine.Common.Logitech
 
         /// <summary>Every path a class's registration names that exists, the
         /// 64-bit registration first. Only the machine's registrations, under
-        /// HKEY_LOCAL_MACHINE (#597): HKEY_CLASSES_ROOT lays the user's
+        /// HKEY_LOCAL_MACHINE (#600): HKEY_CLASSES_ROOT lays the user's
         /// classes over them, and the user's programs can write those, so a
         /// registration there would choose the library PadForge loads with
         /// its rights. A value's variables are filled in from the machine's
-        /// own environment for the same reason.</summary>
+        /// own environment for the same reason (<see cref="ReadPath"/>).</summary>
         public static IReadOnlyList<string> Registered(string classId)
         {
             var list = new List<string>();
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var (hive, subKey) in new[]
+            foreach (string subKey in new[]
                      {
-                         (Registry.LocalMachine, @"SOFTWARE\Classes\CLSID\" + classId + @"\" + ServerBinary),
-                         (Registry.LocalMachine, @"SOFTWARE\Classes\Wow6432Node\CLSID\" + classId + @"\" + ServerBinary),
-                         (Registry.LocalMachine, @"SOFTWARE\Wow6432Node\Classes\CLSID\" + classId + @"\" + ServerBinary),
+                         @"SOFTWARE\Classes\CLSID\" + classId + @"\" + ServerBinary,
+                         @"SOFTWARE\Classes\Wow6432Node\CLSID\" + classId + @"\" + ServerBinary,
+                         @"SOFTWARE\Wow6432Node\Classes\CLSID\" + classId + @"\" + ServerBinary,
                      })
             {
-                string value = null;
-                try
-                {
-                    using var key = hive.OpenSubKey(subKey);
-                    value = key?.GetValue(string.Empty) as string;
-                }
-                catch (Exception)
-                {
-                    // A registry the process cannot read is the same outcome
-                    // as one with nothing in it.
-                }
-                if (string.IsNullOrWhiteSpace(value)) continue;
-                string path = MachineEnvironment.Expand(value.Trim().Trim('"'));
-                if (File.Exists(path) && seen.Add(path)) list.Add(path);
+                string path = ReadPath(subKey);
+                if (path != null && File.Exists(path) && seen.Add(path)) list.Add(path);
             }
             return list;
+        }
+
+        /// <summary>
+        /// The library path a registration under HKEY_LOCAL_MACHINE names
+        /// (<see cref="PathOf"/>), or null when the key or its value is not
+        /// there or cannot be read. The value is read as written: without
+        /// RegistryValueOptions.DoNotExpandEnvironmentNames, RegistryKey fills
+        /// a REG_EXPAND_SZ value's variables in from this process's
+        /// environment (dotnet runtime, RegistryKey.InternalGetValue), which
+        /// the user's own variables make.
+        /// </summary>
+        internal static string ReadPath(string subKey)
+        {
+            string value = null;
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(subKey);
+                value = key?.GetValue(string.Empty, null, RegistryValueOptions.DoNotExpandEnvironmentNames) as string;
+            }
+            catch (Exception)
+            {
+                // A registry the process cannot read is the same outcome as
+                // one with nothing in it.
+            }
+            return PathOf(value);
+        }
+
+        /// <summary>A registered value as the path it names: trimmed, its
+        /// quotes taken off, and its variables filled in from the machine's
+        /// own values (<see cref="MachineEnvironment.Expand"/>). Null for an
+        /// empty value.</summary>
+        internal static string PathOf(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            string path = MachineEnvironment.Expand(value.Trim().Trim('"').Trim());
+            return path.Length == 0 ? null : path;
         }
 
         /// <summary>The LCD library's candidates: its registrations.</summary>

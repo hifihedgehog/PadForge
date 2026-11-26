@@ -9,6 +9,17 @@ using Xunit;
 
 namespace PadForge.Tests
 {
+    /// <summary>The handover taker's test: it runs only in the test host the
+    /// handover proof starts, which sets its variables.</summary>
+    public sealed class HandoverTakerFactAttribute : FactAttribute
+    {
+        public HandoverTakerFactAttribute()
+        {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(ProtectedStartTests.HandoverNamespaceVariable)))
+                Skip = "Run only by TheHandover_WithRights_SetsTheEventItsStartMadeInTheNamespace, in the test host it starts.";
+        }
+    }
+
     /// <summary>
     /// A start with rights unpacks its native libraries only into a folder no
     /// program without rights can change (#597): the decision, the rule that
@@ -463,6 +474,127 @@ namespace PadForge.Tests
             string project = AuditDelta20261002Tests.RepoText("PadForge.App", "PadForge.App.csproj");
             Assert.Contains("<StartupHookSupport>false</StartupHookSupport>", project, StringComparison.Ordinal);
             Assert.Contains("<EventSourceSupport>false</EventSourceSupport>", project, StringComparison.Ordinal);
+        }
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = true)]
+        private static extern IntPtr CreateMutexW(IntPtr attributes, bool owned, string name);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GetHandleInformation(IntPtr handle, out uint flags);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CloseHandle(IntPtr handle);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        private static extern uint WaitForSingleObject(IntPtr handle, uint milliseconds);
+
+        /// <summary>Every program of the user can set the handover variable
+        /// for a start through Windows' prompt. A value it wrote, the number
+        /// of a handle this process holds, sets and closes nothing: the
+        /// handover is an event the start names in the Administrators
+        /// namespace, which only a token with rights opens, and a test host
+        /// without rights opens none.</summary>
+        [Fact]
+        public void AHandoverValueAProgramWrote_ClosesNoHandleOfThisProcess()
+        {
+            string ns = "PadForge.Tests.Handover." + Guid.NewGuid().ToString("N");
+            IntPtr mutex = CreateMutexW(IntPtr.Zero, false, null);
+            Assert.NotEqual(IntPtr.Zero, mutex);
+            bool open = true;
+            try
+            {
+                ProtectedStart.TakeHandover(ProtectedFolder.Hex(unchecked((ulong)(long)mutex)), ns);
+                ProtectedStart.HandOver();
+                open = GetHandleInformation(mutex, out _);
+                Assert.True(open, "the handover closed the handle its variable named");
+
+                // A name of the handover's shape opens nothing without rights.
+                ProtectedStart.TakeHandover("Handover-1f-2e", ns);
+                ProtectedStart.HandOver();
+                Assert.True(GetHandleInformation(mutex, out _));
+            }
+            finally
+            {
+                if (open) CloseHandle(mutex);
+            }
+            Assert.True(ProtectedStart.IsHandoverName("Handover-1f-2e"));
+            Assert.True(ProtectedStart.IsHandoverName(ProtectedStart.HandoverName()));
+            foreach (string value in new[] { "1a4", "Handover-", "Handover-1f", "Handover-1f-", "Handover--2e", "Handover-1f-2e-3",
+                         "Handover-zz-1", "Handover-1f-2e\\..\\x", "handover-1f-2e", "Handover-" + new string('f', 17) + "-1" })
+                Assert.False(ProtectedStart.IsHandoverName(value), value);
+        }
+
+        /// <summary>The variable that makes the copy's side below run, set
+        /// only by the test that starts it: the namespace to take the
+        /// handover from.</summary>
+        internal const string HandoverNamespaceVariable = "PADFORGE_TEST_HANDOVER_NS";
+
+        /// <summary>With rights, the restarting start's steps in two
+        /// processes, as a start and its copy take them. This one makes the
+        /// event under its name in an Administrators namespace of the test's
+        /// own and holds both, as StartCopy does. A test host it starts, with
+        /// the name in the handover variable, takes the handover and hands
+        /// over, as the copy's Run and App.OnStartup do, and that sets the
+        /// event. The take runs in another process because Windows lets one
+        /// process open a private namespace under one alias once: a second
+        /// open answers ERROR_DUP_NAME, and TakeHandover then opens
+        /// nothing.</summary>
+        [ElevatedFact]
+        public void TheHandover_WithRights_SetsTheEventItsStartMadeInTheNamespace()
+        {
+            string ns = "PadForge.Tests.Handover." + Guid.NewGuid().ToString("N");
+            IntPtr space = System32Calls.OpenAdministratorsNamespace(ns, create: true, out IntPtr boundary);
+            Assert.NotEqual(IntPtr.Zero, space);
+            string name = ProtectedStart.HandoverName();
+            IntPtr made = System32Calls.NewNamedEvent(ns + "\\" + name);
+            try
+            {
+                Assert.NotEqual(IntPtr.Zero, made);
+                Assert.Equal(0x102u /* WAIT_TIMEOUT */, WaitForSingleObject(made, 0));
+
+                var psi = ElevatedProofTests.InnerTestRun("FullyQualifiedName~ProtectedStartTests.TakesTheHandoverForAnotherProcess");
+                psi.Environment[ProtectedStart.HandoverVariable] = name;
+                psi.Environment[HandoverNamespaceVariable] = ns;
+                var lines = new System.Collections.Concurrent.ConcurrentQueue<string>();
+                using var copy = new System.Diagnostics.Process { StartInfo = psi };
+                copy.OutputDataReceived += (_, e) => { if (e.Data != null) lines.Enqueue(e.Data); };
+                copy.ErrorDataReceived += (_, e) => { if (e.Data != null) lines.Enqueue("err " + e.Data); };
+                copy.Start();
+                copy.BeginOutputReadLine();
+                copy.BeginErrorReadLine();
+                if (!copy.WaitForExit(120000))
+                {
+                    try { copy.Kill(entireProcessTree: true); } catch (InvalidOperationException) { }
+                    copy.WaitForExit(10000);
+                    Assert.Fail("the copy's side did not end: " + string.Join(" | ", lines));
+                }
+                copy.WaitForExit();
+                string said = "exit " + copy.ExitCode + ": " + string.Join(" | ", lines);
+                Assert.True(copy.ExitCode == 0, "the copy's side failed, " + said);
+                Assert.True(lines.Any(l => System.Text.RegularExpressions.Regex.IsMatch(l, @"Passed:\s+1,")), "the copy's side did not run, " + said);
+
+                Assert.True(WaitForSingleObject(made, 0) == 0 /* WAIT_OBJECT_0 */, "the copy's handover did not set the event, " + said);
+                // The same name a second time is refused: it is taken.
+                Assert.Equal(IntPtr.Zero, System32Calls.NewNamedEvent(ns + "\\" + name));
+            }
+            finally
+            {
+                System32Calls.Close(made);
+                System32Calls.CloseNamespace(space, boundary);
+            }
+        }
+
+        /// <summary>The copy's side of the test above: the take from the
+        /// handover variable, as Run makes it, and the handover. Runs only
+        /// when that test starts it.</summary>
+        [HandoverTakerFact]
+        public void TakesTheHandoverForAnotherProcess()
+        {
+            string ns = Environment.GetEnvironmentVariable(HandoverNamespaceVariable);
+            Assert.True(ProtectedStart.IsHandoverName(System32Calls.GetVariable(ProtectedStart.HandoverVariable)));
+            ProtectedStart.TakeHandover(System32Calls.GetVariable(ProtectedStart.HandoverVariable), ns);
+            Assert.Null(System32Calls.GetVariable(ProtectedStart.HandoverVariable));
+            ProtectedStart.HandOver();
         }
     }
 }

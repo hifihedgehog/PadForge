@@ -28,8 +28,14 @@ namespace PadForge.ViewModels
     /// <para>It reads the mouse through RawInputListener's running totals,
     /// which no reader consumes, so the engine's reads lose nothing, and the
     /// pointer with GetCursorPos. A preview of a family with a Steer input
-    /// reads the mouse's own buttons, where the line's Steer input is, and
-    /// says while it waits.</para>
+    /// reads it on the mouse's own buttons, or on the device the line names
+    /// for it, from that device's last published state, and says while it
+    /// waits. The
+    /// line's slot keys what the slot's game sends, its force on a virtual
+    /// wheel.</para>
+    /// <para>A step allocates nothing once the preview is pinned: one state,
+    /// one buttons array and the gate's read are kept, and the caption is
+    /// built again only when what it says changes.</para>
     /// </summary>
     public sealed class MouseFamilyPreview : ObservableObject
     {
@@ -57,6 +63,12 @@ namespace PadForge.ViewModels
         private Sample _last;
         private long _lastTicks;
         private DispatcherTimer _timer;
+        private int _slot = -1;
+        private readonly CustomInputState _state = new();
+        private readonly bool[] _buttons = new bool[5];
+        private MappingSource _gateRead;
+        private string _gateReadKey;
+        private (int percent, int side, bool waits) _captionSaid;
 
         /// <summary>The entry Preview pins now, or null.</summary>
         public InputChoice Pinned => _pinned;
@@ -90,37 +102,44 @@ namespace PadForge.ViewModels
 
         /// <summary>Pins the family of the entry its parameter names, or
         /// unpins it when it is pinned already. The parameter is the entry,
-        /// or an array of the entry and the source's line.</summary>
+        /// or an array of the entry, the source's line and the line's slot
+        /// index.</summary>
         public RelayCommand<object> PinCommand => _pinCommand ??= new RelayCommand<object>(p =>
         {
             InputChoice choice = p as InputChoice;
             object line = null;
+            int slot = -1;
             if (p is object[] pair && pair.Length >= 1)
             {
                 choice = pair[0] as InputChoice;
                 line = pair.Length > 1 ? pair[1] : null;
+                if (pair.Length > 2 && pair[2] is int s) slot = s;
             }
             if (choice == null) return;
             if (ReferenceEquals(choice, _pinned)) Stop();
-            else Pin(choice, line);
+            else Pin(choice, line, slot);
         });
 
         /// <summary>Starts the preview of the family of
         /// <paramref name="choice"/>, with the settings of
         /// <paramref name="line"/> (a MappingItem or a MappingSourceItem)
-        /// where it reads the same descriptor, and stops any other.</summary>
-        internal void Pin(InputChoice choice, object line)
+        /// where it reads the same descriptor, on the line's slot
+        /// <paramref name="slotIndex"/> (-1 for none), and stops any
+        /// other.</summary>
+        internal void Pin(InputChoice choice, object line, int slotIndex = -1)
         {
             if (choice?.PreviewFamily == null) return;
             Stop();
             _pinned = choice;
+            _slot = slotIndex;
             choice.IsPreviewing = true;
             _source = SourceFor(choice, line, out _gateWords);
             _runtime = new SourceKindRuntime();
-            _last = Read();
+            _last = Read(_buttons);
             _lastTicks = Now();
             Value = 0;
             Caption = Words(0, false);
+            _captionSaid = (0, 0, false);
             OnPropertyChanged(nameof(Pinned));
             if (ReadSeam == null && Application.Current?.Dispatcher is { } dispatcher)
             {
@@ -148,17 +167,16 @@ namespace PadForge.ViewModels
         internal void Step()
         {
             if (_pinned == null || _source == null) return;
-            var now = Read();
+            var now = Read(_buttons);
             long ticks = Now();
             double dt = Math.Max(0, (ticks - _lastTicks) / (double)Stopwatch.Frequency);
             _lastTicks = ticks;
-            var state = new CustomInputState
-            {
-                MouseRawDX = (int)(now.X - _last.X),
-                MouseRawDY = (int)(now.Y - _last.Y),
-                MouseRawWheel = (int)(now.Wheel - _last.Wheel),
-                MouseRawWheelH = (int)(now.WheelH - _last.WheelH),
-            };
+            var state = _state;
+            state.MouseRawDX = (int)(now.X - _last.X);
+            state.MouseRawDY = (int)(now.Y - _last.Y);
+            state.MouseRawWheel = (int)(now.Wheel - _last.Wheel);
+            state.MouseRawWheelH = (int)(now.WheelH - _last.WheelH);
+            Array.Clear(state.Buttons);
             if (now.Buttons != null)
                 for (int i = 0; i < now.Buttons.Length && i < state.Buttons.Length; i++) state.Buttons[i] = now.Buttons[i];
             _last = now;
@@ -168,25 +186,47 @@ namespace PadForge.ViewModels
             string d = _source.Descriptor;
             double v = _pinned.PreviewFamily switch
             {
-                InputChoice.PreviewSpeed => _runtime.TickMouseSpeed(0, Target, 0, _source, state, dt, held, d == "Axis 1"),
-                InputChoice.PreviewPosition => _runtime.TickMousePosition(0, Target, 0, _source, dt, held, d.EndsWith(" Y", StringComparison.Ordinal), now.Pointer),
-                _ => _runtime.TickMouseTravel(0, Target, 0, _source, state, dt, held),
+                InputChoice.PreviewSpeed => _runtime.TickMouseSpeed(_slot, Target, 0, _source, state, dt, held, d == "Axis 1"),
+                InputChoice.PreviewPosition => _runtime.TickMousePosition(_slot, Target, 0, _source, dt, held, d.EndsWith(" Y", StringComparison.Ordinal), now.Pointer),
+                _ => _runtime.TickMouseTravel(_slot, Target, 0, _source, state, dt, held),
             };
             Value = double.IsFinite(v) ? Math.Clamp(v, -1.0, 1.0) : 0;
             bool waits = !string.IsNullOrEmpty(_source.GateDescriptor) && !held
                 && MappingSource.EffectiveMouseSteer(_source.ParamTravelSteer, _source.ParamTravelCentering, true,
                     _pinned.PreviewFamily is InputChoice.PreviewTravel or InputChoice.PreviewWheel) != MappingSource.TravelSteerToggle;
-            Caption = Words(Value, waits);
+            // The words only change with the whole percent, its side and the
+            // wait, so a still mouse builds none.
+            int percent = (int)Math.Round(Math.Abs(Value) * 100.0, MidpointRounding.AwayFromZero);
+            var said = (percent, percent == 0 ? 0 : Math.Sign(Value), waits);
+            if (said != _captionSaid)
+            {
+                _captionSaid = said;
+                Caption = Words(Value, waits);
+            }
         }
 
-        /// <summary>The line's Steer input, read on the mouse's own buttons,
-        /// where the line's picker takes it from.</summary>
+        /// <summary>The line's Steer input: on the device the line names for
+        /// it, from that device's last published state, or on the mouse's own
+        /// buttons, where an input of the source's own device is, and an
+        /// "(Any Device)" one is read here too. The read of the gate is kept
+        /// while the gate stays.</summary>
         private bool SteerHeld(CustomInputState state)
         {
             string gate = _source?.GateDescriptor;
             if (string.IsNullOrEmpty(gate)) return false;
-            var read = new MappingSource { Kind = "Direct", Descriptor = gate.Trim() };
-            return SourceCoercion.EvaluateForButtonTarget(state, read, 50, -1, null);
+            if (_gateRead == null || !ReferenceEquals(_gateReadKey, gate))
+            {
+                _gateRead = new MappingSource { Kind = "Direct", Descriptor = gate.Trim() };
+                _gateReadKey = gate;
+            }
+            string device = _source.ParamTravelSteerDeviceGuid;
+            if (!string.IsNullOrEmpty(device))
+            {
+                var dev = Guid.TryParse(device, out var g) ? PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(g) : null;
+                var devState = dev != null && dev.IsOnline ? dev.InputState : null;
+                return devState != null && SourceCoercion.EvaluateForButtonTarget(devState, _gateRead, 50, -1, device);
+            }
+            return SourceCoercion.EvaluateForButtonTarget(state, _gateRead, 50, -1, null);
         }
 
         /// <summary>The source the preview runs: the line's own settings
@@ -200,15 +240,16 @@ namespace PadForge.ViewModels
             {
                 case MappingItem row when string.Equals(row.LineDeviceGuid, src.DeviceGuid, StringComparison.OrdinalIgnoreCase)
                                           && row.SelectedInput?.Descriptor == choice.Descriptor:
-                    row.StoreMouseTravel(src);
+                    // The gate before the settings, which carry its device.
                     src.GateDescriptor = row.GateDescriptor ?? string.Empty;
+                    row.StoreMouseTravel(src);
                     src.MouseCursorSensitivity = row.MouseCursorSensitivity;
                     gateWords = row.GateText ?? string.Empty;
                     break;
                 case MappingSourceItem item when string.Equals(item.LineDeviceGuid, src.DeviceGuid, StringComparison.OrdinalIgnoreCase)
                                                  && item.Descriptor == choice.Descriptor:
-                    item.StoreMouseTravel(src);
                     src.GateDescriptor = item.GateDescriptor ?? string.Empty;
+                    item.StoreMouseTravel(src);
                     src.MouseCursorSensitivity = item.MouseCursorSensitivity;
                     gateWords = item.GateText ?? string.Empty;
                     break;
@@ -266,12 +307,13 @@ namespace PadForge.ViewModels
 
         private static long Now() => ClockSeam?.Invoke() ?? Stopwatch.GetTimestamp();
 
-        private static Sample Read()
+        /// <summary>One read of the mouse, its buttons into
+        /// <paramref name="buttons"/>, the preview's own array.</summary>
+        private static Sample Read(bool[] buttons)
         {
             var seam = ReadSeam;
             if (seam != null) return seam();
             var (x, y, wheel, wheelH) = RawInputListener.MouseTotals();
-            var buttons = new bool[5];
             RawInputListener.GetMouseButtons(RawInputListener.AggregateMouseHandle, buttons);
             (double, double, double, double, double)? pointer = null;
             if (GetCursorPos(out var p))

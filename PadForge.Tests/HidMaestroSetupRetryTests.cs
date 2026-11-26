@@ -68,7 +68,7 @@ namespace PadForge.Tests
             Assert.Contains("Volatile.Write(ref _hmaestroSetupFailedTick, Math.Max(1, Environment.TickCount64));", ensure);
             Assert.Contains("RaiseError(_hmSetupFailedStatus, HmSetupFailedLog, ex);", ensure);
 
-            string shutdown = Body(step5, "private void DisposeHMaestroContextOnShutdown()", 900);
+            string shutdown = Body(step5, "DisposeHMaestroContextOnShutdown(IReadOnlyList", 2500);
             Assert.Contains("Volatile.Write(ref _hmaestroSetupFailedTick, 0);", shutdown);
 
             string svc = RepoFile("PadForge.App", "Services", "InputService.cs");

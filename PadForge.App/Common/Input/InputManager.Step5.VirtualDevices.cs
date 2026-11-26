@@ -49,6 +49,8 @@ namespace PadForge.Common.Input
         //      swap in _virtualControllers[] plus FeedbackPadIndex update
         //      on the moved VC. Per-VC state arrays follow the VC:
         //      _extendedAppliedProductString, _extendedAppliedLayout,
+        //      _extendedAppliedFfbEnabled, _extendedAppliedCustomize,
+        //      _extendedAppliedVendorId, _extendedAppliedProductId,
         //      _oemOverrideClaimedVidPid, _lastAppliedOemLabel.
         //
         //  (e) Different-profile positions destroy + recreate.
@@ -59,7 +61,11 @@ namespace PadForge.Common.Input
         //      _slotInactiveCounter, _createFailed, _hmInactivityFired,
         //      _slotInitializing, _pendingDisposeTask, _pendingConnectTask
         //      describe the pad's lifecycle, not the VC, so they don't
-        //      move on reorder.
+        //      move on reorder. So do the create's attach gate marks,
+        //      _createGateTimeout, _createFailedGateTick and
+        //      _createGateRetry. _submitFailedVc names the controller its
+        //      latch is for, so a controller moved onto the pad raises
+        //      its own submit error.
         //
         //  (g) Pass 2's visual-order gate and ApplyAscendingIndexPreemption
         //      handle fresh creates (a slot transitions to active for the
@@ -108,7 +114,10 @@ namespace PadForge.Common.Input
         /// <see cref="HmSetupRetryHoldMs"/> runs the setup again. A slot whose
         /// create failed keeps its own latch, which only a change to that slot
         /// clears, so a retry follows the user's next change to a slot, or a
-        /// slot created later, and never loops on its own. Inside the hold the
+        /// slot created later, and never loops on its own. A create that
+        /// HIDMaestro's attach gate turned away is the one exception: it
+        /// tries once more after the same hold
+        /// (<see cref="CreateFailedClearReason"/>). Inside the hold the
         /// other slots of the same burst fail fast instead of each running
         /// the setup again, since creates run one at a time.</summary>
         private static long _hmaestroSetupFailedTick;
@@ -363,8 +372,8 @@ namespace PadForge.Common.Input
         public VirtualControllerType[] SlotControllerTypes { get; } = new VirtualControllerType[MaxPads];
 
         /// <summary>
-        /// Per-slot HIDMaestro profile slug. Identifies which of the 233
-        /// embedded profiles the slot uses (e.g. "xbox-360-wired",
+        /// Per-slot HIDMaestro profile slug. Identifies which of HIDMaestro's
+        /// embedded profiles, or which user profile, the slot uses (e.g. "xbox-360-wired",
         /// "dualsense", "logitech-g920"). Empty string falls back to a
         /// category-appropriate default in CreateHMaestroController.
         /// Ignored for MIDI and KeyboardMouse slots.
@@ -564,8 +573,9 @@ namespace PadForge.Common.Input
         /// Set by <see cref="DestroyAllVirtualControllers"/> under the lifecycle
         /// lock and cleared by every Step 5 cycle. A create worker that
         /// finishes after the engine tore everything down (a shutdown past the
-        /// 30 s lifecycle wait) finds it set and disposes its result instead of
-        /// publishing a controller nothing will ever destroy.
+        /// lifecycle wait, <see cref="LifecycleWaitBound"/>) finds it set and
+        /// disposes its result instead of publishing a controller nothing will
+        /// ever destroy.
         /// </summary>
         private bool _lifecycleClosed;
 
@@ -873,19 +883,28 @@ namespace PadForge.Common.Input
         // contract (60 s default, 0 = never), so a flaky assigned device is
         // masked identically regardless of slot type.
 
+        /// <summary>The controller and the exception type whose submit
+        /// error Pass 3 last raised for a slot, or null. Pass 3 raises a
+        /// submit that throws again only for another controller or another
+        /// exception type, or after a pass whose submit went through, which
+        /// clears both.</summary>
+        private readonly IVirtualController[] _submitFailedVc = new IVirtualController[MaxPads];
+        private readonly Type[] _submitFailedType = new Type[MaxPads];
+
         /// <summary>
-        /// Per-slot cooldown counter after a failed virtual controller creation.
-        /// Counts down each cycle; creation retries at 0. At ~1000Hz polling,
-        /// 2000 cycles ≈ 2 seconds between retries.
+        /// Per-slot "creation failed" latch. Set when CreateVirtualController
+        /// returns null (HIDMaestro exception or early abort). Cleared only on
+        /// a meaningful state change: a type switch, a profile switch, a slot
+        /// toggle, the slot's devices coming back, or another change
+        /// <see cref="CreateFailedClearReason"/> names. Hammering creation in
+        /// a tight retry loop is wrong for HIDMaestro: SetupController already
+        /// does its own adaptive waits (WaitForHidChild 10 s,
+        /// WaitForDeviceStarted 5 s, and a 500 ms XInput slot-claim wait), and
+        /// a failure is a real failure, not a timing flake. The one exception
+        /// is a create HIDMaestro's attach gate turned away, which waited on
+        /// another party and tries once more after
+        /// <see cref="CreateGateRetryHoldMs"/>.
         /// </summary>
-        // Per-slot "creation failed" latch. Set when CreateVirtualController
-        // returns null (HIDMaestro exception or early abort). Cleared only on
-        // a meaningful state change — type switch, profile switch, or slot
-        // toggle. Hammering creation in a tight retry loop is wrong for
-        // HIDMaestro: SetupController already does its own adaptive waits
-        // (WaitForHidChild 10 s, WaitForDeviceStarted 5 s, and a 500 ms
-        // XInput slot-claim wait) and a failure is a real failure, not a
-        // timing flake.
         private readonly bool[] _createFailed = new bool[MaxPads];
 
         /// <summary>What configuration the createFailed latch was set FOR:
@@ -929,6 +948,34 @@ namespace PadForge.Common.Input
         /// MIDI running (bench 2026-10-28). Every create starts with it
         /// cleared.</summary>
         private readonly bool[] _createNoMidiApi = new bool[MaxPads];
+
+        /// <summary>Set by the create when HIDMaestro's attach gate turned it
+        /// away (<see cref="IsAttachGateTimeout"/>): a root hub restart or
+        /// another program's attach held the gate past 30 s, a wait on
+        /// another party that ends by itself. Every create starts with it
+        /// cleared.</summary>
+        private readonly bool[] _createGateTimeout = new bool[MaxPads];
+
+        /// <summary>When a create the attach gate turned away latched, as
+        /// Environment.TickCount64, or 0. The latch clears once
+        /// <see cref="CreateGateRetryHoldMs"/> has passed, for one retry.
+        /// 0 when the create that latched was that retry.</summary>
+        private readonly long[] _createFailedGateTick = new long[MaxPads];
+
+        /// <summary>Set when the latch clears for the attach gate's retry,
+        /// and cleared when that create's worker ends, so a second refusal
+        /// latches with no retry of its own.</summary>
+        private readonly bool[] _createGateRetry = new bool[MaxPads];
+
+        /// <summary>Whether a create failed because HIDMaestro's attach gate
+        /// was held past its wait. HIDMaestro 2.4.0 throws this exception,
+        /// with this text, from one place, HoldHubRestartGate
+        /// (UsbipDriverInstaller.HubFilter.cs:293-294), on the USB/IP attach
+        /// of every create that rides USB/IP (VhciClient.Attach, :269), and
+        /// HMContext's create rethrows it as it is.</summary>
+        internal static bool IsAttachGateTimeout(Exception ex)
+            => ex is InvalidOperationException
+               && ex.Message.StartsWith("A USB/IP root hub restart or another program's attach held HIDMaestro's attach gate", StringComparison.Ordinal);
 
         /// <summary>The MIDI generation (<see cref="MidiVirtualController.Generation"/>)
         /// when a MIDI create failed, read after the create's own service
@@ -1111,7 +1158,10 @@ namespace PadForge.Common.Input
         /// The tests run in the order the clear has always run them, and
         /// <see cref="LegacyMidiPortCameBack"/> runs last and only when every
         /// other test is false, since it starts a port listing and marks a
-        /// missing port. Called only while the slot's latch is set.</summary>
+        /// missing port. A create HIDMaestro's attach gate turned away gets
+        /// one retry once its hold has passed, which this marks, with
+        /// nothing about the slot changed. Called only while the slot's latch
+        /// is set.</summary>
         private string CreateFailedClearReason(int padIndex)
         {
             var type = SlotControllerTypes[padIndex];
@@ -1121,6 +1171,13 @@ namespace PadForge.Common.Input
                 return "profile changed";
             if (type == VirtualControllerType.KeyboardMouse && !_createFailedKbm[padIndex].Matches(DesiredKbmBuild(padIndex)))
                 return "keyboard or mouse device changed";
+            long gateTick = _createFailedGateTick[padIndex];
+            if (gateTick != 0 && Environment.TickCount64 - gateTick >= CreateGateRetryHoldMs)
+            {
+                _createFailedGateTick[padIndex] = 0;
+                _createGateRetry[padIndex] = true;
+                return "HIDMaestro's attach gate was held, one retry";
+            }
             if (type != VirtualControllerType.Midi)
                 return null;
             if (!string.Equals(_createFailedMidiPort[padIndex], MidiOutputPortOf(padIndex), StringComparison.Ordinal))
@@ -1169,6 +1226,9 @@ namespace PadForge.Common.Input
             _createPortMissing[padIndex] = false;
             _createFailedPortShared[padIndex] = _createPortShared[padIndex];
             _createPortShared[padIndex] = false;
+            _createFailedGateTick[padIndex] = _createGateTimeout[padIndex] && !_createGateRetry[padIndex]
+                ? Math.Max(1, Environment.TickCount64) : 0;
+            _createGateTimeout[padIndex] = false;
             _createFailed[padIndex] = true;
             PadForge.Engine.SdlDiagLog.WriteLine(
                 $"VCTRACE slot={padIndex} createFailed LATCH type={failedType} profile={failedProfile ?? "<null>"}"
@@ -1416,9 +1476,10 @@ namespace PadForge.Common.Input
                 // its port changed, the probe settled on another API or in a
                 // newer generation (both wait for the probe, so the retry
                 // runs on an API that answers), the other slot set to its
-                // legacy port let go of it, or its legacy port came back
-                // (CreateFailedClearReason). A MIDI slot's retry clears or
-                // replaces its line.
+                // legacy port let go of it, or its legacy port came back,
+                // or HIDMaestro's attach gate turned its create away and the
+                // hold for its one retry has passed (CreateFailedClearReason).
+                // A MIDI slot's retry clears or replaces its line.
                 if (_createFailed[padIndex] && CreateFailedClearReason(padIndex) is string clearReason)
                 {
                     _createFailed[padIndex] = false;
@@ -2216,6 +2277,7 @@ namespace PadForge.Common.Input
                                     // Publication transfers the claim. A failed, spare, or
                                     // closed worker releases only its unpublished claim.
                                     ReleasePendingOemOverrideClaim(capturedIndex);
+                                    _createGateRetry[capturedIndex] = false;
                                     _slotInitializing[capturedIndex] = false;
                                     PadForge.Engine.SdlDiagLog.WriteLine(
                                         $"VCTRACE slot={capturedIndex} async create DONE");
@@ -2241,7 +2303,7 @@ namespace PadForge.Common.Input
             // bound grows.
             Span<byte> rawReportScratch = stackalloc byte[63];
             // A problem recording takes each slot's frame as it is handed
-            // over, and what became of it (#597).
+            // over, and what became of it (#600).
             var rec = Recording.RecordingCapture.Active;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
@@ -2657,12 +2719,36 @@ namespace PadForge.Common.Input
                     else if (rec != null) RecordUnsent(rec, padIndex);
                     if (rec != null && sentState == PadForge.Engine.Recording.RecordingCodec.SentState.Ok)
                         rec.Sent(padIndex, sentState, (int)SlotControllerTypes[padIndex]);
+                    // A pass that handed the controller its frame and went
+                    // through arms the error again. A pass with no submit
+                    // leaves it latched: an inactive slot's, and every pass
+                    // while EveryPassFrameGate may hold a frame back above
+                    // 1000 passes a second.
+                    if (_submitFailedVc[padIndex] != null && vc != null
+                        && _slotInactiveCounter[padIndex] <= 1 && !EveryPassFrameGate.Engaged)
+                    {
+                        _submitFailedVc[padIndex] = null;
+                        _submitFailedType[padIndex] = null;
+                    }
                 }
                 catch (Exception ex)
                 {
                     rec?.Sent(padIndex, PadForge.Engine.Recording.RecordingCodec.SentState.Failed, (int)SlotControllerTypes[padIndex]);
                     RecordNotFed(rec, padIndex, ex);
-                    RaiseSlotError(padIndex, $"Error updating virtual controller for pad {padIndex}", ex);
+                    // A submit the controller refuses throws again on the
+                    // next pass, and nothing in HMaestroVirtualController's
+                    // submits catches. Raised on every pass, it formatted a
+                    // line, wrote its stack trace to the log and posted to
+                    // the dispatcher at the poll rate. It is raised once per
+                    // controller and exception type, until a pass goes
+                    // through.
+                    var failedVc = _virtualControllers[padIndex];
+                    if (!ReferenceEquals(_submitFailedVc[padIndex], failedVc) || _submitFailedType[padIndex] != ex.GetType())
+                    {
+                        _submitFailedVc[padIndex] = failedVc;
+                        _submitFailedType[padIndex] = ex.GetType();
+                        RaiseSlotError(padIndex, $"Error updating virtual controller for pad {padIndex}", ex);
+                    }
                 }
             }
         }
@@ -2886,10 +2972,14 @@ namespace PadForge.Common.Input
         // that has never moved, so the rename costs nothing here.
         //
         // One first-run cost this carries that dualshock-4-v2 did not: the
-        // first composite create triggers HM's one-time embedded
-        // usbip-win2 deploy, and installing that filter restarts the USB
-        // root hubs, so every USB device blinks once. It is a one-time
-        // event per machine, not per slot.
+        // first composite create installs usbip-win2's host controller,
+        // which HIDMaestro carries. From HIDMaestro 2.4.0 it also lists
+        // usbip-win2's root hub filter on that host controller's own root
+        // hub alone, and restarts that one hub only while no device sits on
+        // it, at most once per Windows session. HIDMaestro never runs
+        // usbip-win2's installer, whose filter install restarts every USB 3
+        // root hub, so no physical USB device drops
+        // (UsbipDriverInstaller.cs and UsbipDriverInstaller.HubFilter.cs).
         public const string DefaultPlayStationProfileId = "dualsense-composite";
         // The synthetic "Custom" entry anchors Extended — new slots start
         // there with Customize auto-enabled and the user fills in the
@@ -2956,13 +3046,16 @@ namespace PadForge.Common.Input
             _createPortMissing[padIndex] = false;
             _createPortShared[padIndex] = false;
             _createNoMidiApi[padIndex] = false;
+            _createGateTimeout[padIndex] = false;
 
             // MIDI and KeyboardMouse stay on their dedicated implementations.
             // Xbox / PlayStation / Nintendo / Extended route through HIDMaestro.
-            if (controllerType == VirtualControllerType.Xbox
+            bool hmType = controllerType == VirtualControllerType.Xbox
                 || controllerType == VirtualControllerType.PlayStation
                 || controllerType == VirtualControllerType.Nintendo
-                || controllerType == VirtualControllerType.Extended)
+                || controllerType == VirtualControllerType.Extended;
+            var createForTest = HMaestroCreateForTest;
+            if (hmType && createForTest == null)
             {
                 EnsureHMaestroContext();
                 if (_hmaestroContext == null)
@@ -2981,7 +3074,7 @@ namespace PadForge.Common.Input
             IVirtualController vc = null;
             try
             {
-                vc = controllerType switch
+                vc = hmType && createForTest != null ? createForTest(controllerType, profileId) : controllerType switch
                 {
                     VirtualControllerType.Xbox => CreateHMaestroController(VirtualControllerType.Xbox, profileId, padIndex, in build),
                     VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId, padIndex, in build),
@@ -3016,9 +3109,10 @@ namespace PadForge.Common.Input
                 // debounce in Step 1), and PadForge cannot name that pad:
                 // every row counts as stamped as PadForge's own work for
                 // the whole bring-up, which can take seconds, and is stamped
-                // again when it ends (#600 item 42). A MIDI port is no HID
-                // device.
-                bool hid = controllerType != VirtualControllerType.Midi;
+                // again when it ends (#600 item 42). A MIDI port, a VR
+                // controller and a Keyboard + Mouse slot on Windows input
+                // bring up no HID device (BringsUpHidDevice).
+                bool hid = BringsUpHidDevice(vc);
                 if (hid) PadForge.Engine.OwnDrops.Begin();
                 try { vc.Connect(); }
                 finally { if (hid) PadForge.Engine.OwnDrops.End(); }
@@ -3032,10 +3126,32 @@ namespace PadForge.Common.Input
                 vc?.Dispose();
                 _createPortMissing[padIndex] = ex is MidiPortNotConnectedException;
                 _createNoMidiApi[padIndex] = ex is MidiServiceUnavailableException;
+                _createGateTimeout[padIndex] = IsAttachGateTimeout(ex);
                 RaiseCreateError(padIndex, controllerType, ex);
                 return null;
             }
         }
+
+        /// <summary>The test host's stand-in for a HIDMaestro controller's
+        /// construction, for the four HIDMaestro types, in place of the
+        /// context and the catalog, which the test host never sets up. Null
+        /// outside the tests.</summary>
+        internal Func<VirtualControllerType, string, IVirtualController> HMaestroCreateForTest;
+
+        /// <summary>How long a create that HIDMaestro's attach gate turned
+        /// away waits before its retry: the setup's own hold. The tests set
+        /// it.</summary>
+        internal long CreateGateRetryHoldMs = HmSetupRetryHoldMs;
+
+        /// <summary>Whether a controller's Connect brings up a HID device:
+        /// a HIDMaestro controller, or a Keyboard + Mouse controller on a
+        /// virtual keyboard or mouse. A VR controller registers SteamVR's
+        /// driver and opens shared memory (HMaestroVRController.Connect),
+        /// and a Keyboard + Mouse controller on Windows input makes no
+        /// device. The create worker's FinalizeNames call reads the same
+        /// two kinds.</summary>
+        internal static bool BringsUpHidDevice(IVirtualController vc)
+            => vc is HMaestroVirtualController || vc is KeyboardMouseVirtualController { HasHidDevices: true };
 
         /// <summary>Builds a Keyboard + Mouse controller. A half on Windows
         /// input needs nothing more. A half on a device needs the HIDMaestro
@@ -3315,8 +3431,8 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Constructs a HIDMaestro-backed virtual controller using the named
         /// embedded profile. The profile slug must match a profile shipped in
-        /// HIDMaestro.Core's embedded catalog (337 profiles in HIDMaestro 2.0.2),
-        /// or a user profile the catalog loaded beside it.
+        /// HIDMaestro.Core's embedded catalog, or a user profile the catalog
+        /// loaded beside it.
         ///
         /// For Extended slots, applies per-slot customizations on top of the
         /// catalog profile via <see cref="HMProfileBuilder"/>:
@@ -3336,7 +3452,7 @@ namespace PadForge.Common.Input
             {
                 return null;
             }
-            // Look up via HIDMaestro's catalog first (the 125+ real profiles).
+            // Look up via HIDMaestro's catalog first.
             // Fall back to HMaestroProfileCatalog for PadForge-injected
             // synthetic entries like "padforge-custom" that HIDMaestro
             // doesn't know about — those are built at runtime via
@@ -3710,19 +3826,6 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Xbox-only variant kept for any callers that still need to
-        /// distinguish Xbox specifically (e.g. an Xbox-only diagnostic).
-        /// New code should use <see cref="IsHmVcAt"/> instead.
-        /// </summary>
-        public bool IsXboxHmVcAt(int padIndex)
-        {
-            if (padIndex < 0 || padIndex >= MaxPads) return false;
-            var vc = _virtualControllers[padIndex];
-            return vc is HMaestroVirtualController hm
-                && hm.Type == VirtualControllerType.Xbox;
-        }
-
-        /// <summary>
         /// True when the slot at <paramref name="padIndex"/> currently holds
         /// any live virtual controller. Used by InputService's reorder paths
         /// to gate the kernel-order rebuild: a slot with no live VC has no
@@ -3822,6 +3925,7 @@ namespace PadForge.Common.Input
             var stateExtendedAppliedProductString = new string[n];
             var stateExtendedAppliedLayout = new CustomControllerLayout[n];
             var stateExtendedAppliedFfbEnabled = new bool[n];
+            var stateExtendedAppliedCustomize = new bool[n];
             var stateExtendedAppliedVendorId = new int[n];
             var stateExtendedAppliedProductId = new int[n];
             var stateOemOverrideClaimedVidPid = new uint[n];
@@ -3861,6 +3965,7 @@ namespace PadForge.Common.Input
                     stateExtendedAppliedProductString[V] = _extendedAppliedProductString[oldPad];
                     stateExtendedAppliedLayout[V] = _extendedAppliedLayout[oldPad];
                     stateExtendedAppliedFfbEnabled[V] = _extendedAppliedFfbEnabled[oldPad];
+                    stateExtendedAppliedCustomize[V] = _extendedAppliedCustomize[oldPad];
                     stateExtendedAppliedVendorId[V] = _extendedAppliedVendorId[oldPad];
                     stateExtendedAppliedProductId[V] = _extendedAppliedProductId[oldPad];
                     stateOemOverrideClaimedVidPid[V] = _oemOverrideClaimedVidPid[oldPad];
@@ -3895,6 +4000,7 @@ namespace PadForge.Common.Input
                 _extendedAppliedProductString[oldPad] = null;
                 _extendedAppliedLayout[oldPad] = default;
                 _extendedAppliedFfbEnabled[oldPad] = false;
+                _extendedAppliedCustomize[oldPad] = false;
                 _extendedAppliedVendorId[oldPad] = 0;
                 _extendedAppliedProductId[oldPad] = 0;
                 _oemOverrideClaimedVidPid[oldPad] = 0;
@@ -3928,6 +4034,7 @@ namespace PadForge.Common.Input
                 _extendedAppliedProductString[newPad] = stateExtendedAppliedProductString[V];
                 _extendedAppliedLayout[newPad] = stateExtendedAppliedLayout[V];
                 _extendedAppliedFfbEnabled[newPad] = stateExtendedAppliedFfbEnabled[V];
+                _extendedAppliedCustomize[newPad] = stateExtendedAppliedCustomize[V];
                 _extendedAppliedVendorId[newPad] = stateExtendedAppliedVendorId[V];
                 _extendedAppliedProductId[newPad] = stateExtendedAppliedProductId[V];
                 _oemOverrideClaimedVidPid[newPad] = stateOemOverrideClaimedVidPid[V];
@@ -4246,8 +4353,19 @@ namespace PadForge.Common.Input
         /// explicit call the teardown would happen in HIDMaestro's own
         /// ProcessExit handler, which runs AFTER the window has closed, so
         /// the window would look closed with cleanup still running headless.
+        ///
+        /// The context leaves the field at once, so the next start sets up
+        /// its own, with the driver install that a removal of HIDMaestro in
+        /// between needs. A lifecycle task of <paramref name="unfinished"/>
+        /// still running is inside the context, a create in CreateController
+        /// among them, and the dispose waits for those tasks to end: the
+        /// worker finds the engine closed and disposes what it built on a
+        /// live context. Disposed under a create, the context left that
+        /// create's teardown to run on a disposed context after the shutdown
+        /// overlay had gone. Returns the dispose, done at once when no task
+        /// still runs.
         /// </summary>
-        private void DisposeHMaestroContextOnShutdown()
+        private System.Threading.Tasks.Task DisposeHMaestroContextOnShutdown(IReadOnlyList<System.Threading.Tasks.Task> unfinished)
         {
             HMContext ctx;
             lock (_hmaestroContextLock)
@@ -4256,11 +4374,27 @@ namespace PadForge.Common.Input
                 _hmaestroContext = null;
                 Volatile.Write(ref _hmaestroSetupFailedTick, 0);
             }
-            if (ctx != null)
+            if (ctx == null) return System.Threading.Tasks.Task.CompletedTask;
+            var running = new List<System.Threading.Tasks.Task>();
+            if (unfinished != null)
+                foreach (var task in unfinished)
+                    if (!task.IsCompleted) running.Add(task);
+            if (running.Count == 0)
             {
-                try { ctx.Dispose(); }
-                catch (Exception ex) { RaiseEngineError("Error disposing HIDMaestro context", ex); }
+                DisposeStoppedContext(ctx);
+                return System.Threading.Tasks.Task.CompletedTask;
             }
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"HIDMaestro context dispose waits for {running.Count} lifecycle task(s) still running past the stop's wait");
+            return System.Threading.Tasks.Task.WhenAll(running).ContinueWith(_ => DisposeStoppedContext(ctx),
+                System.Threading.CancellationToken.None, System.Threading.Tasks.TaskContinuationOptions.None,
+                System.Threading.Tasks.TaskScheduler.Default);
+        }
+
+        private void DisposeStoppedContext(HMContext ctx)
+        {
+            try { ctx.Dispose(); }
+            catch (Exception ex) { RaiseEngineError("Error disposing HIDMaestro context", ex); }
         }
 
         private void ReleaseSlotEffectsAndClaims(int padIndex)
@@ -4297,16 +4431,30 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Stop's wait for the lifecycle tasks. A create that rides
+        /// USB/IP (a composite persona, or any profile on ARM64) can wait 55 s
+        /// inside HIDMaestro 2.4.0 before its attach gives up: 5 s for its
+        /// root hub, 15 s for that hub's restart, 5 s for the hub again and
+        /// 30 s for the attach gate (UsbipDriverInstaller.HubFilter.cs:236,
+        /// :396, :427 and :279), each at TimeoutScale's factor of 1, which
+        /// only the HIDMAESTRO_TIMEOUT_SCALE variable changes. Stop waited
+        /// 30 s before, and gave up on such a create while it still
+        /// ran.</summary>
+        internal static readonly TimeSpan LifecycleWaitBound = TimeSpan.FromMilliseconds(LifecycleWaitMs);
+
+        /// <summary><see cref="LifecycleWaitBound"/> in milliseconds.</summary>
+        internal const int LifecycleWaitMs = 60_000;
+
         /// <summary>
         /// Block until every pending HM lifecycle task (connect or async
-        /// dispose) finishes, with a 30-second cap so a hung SDK call
-        /// can't deadlock shutdown.  Called from InputManager.Stop right
-        /// before DestroyAllVirtualControllers so any connect that's
+        /// dispose) finishes, for at most <paramref name="bound"/>, so a hung
+        /// SDK call can't deadlock shutdown. Called from InputManager.Stop
+        /// right before DestroyAllVirtualControllers so any connect that's
         /// currently building a kernel device finishes and stores its VC,
-        /// letting DestroyAllVirtualControllers see and tear it down
-        /// properly instead of leaking it.
+        /// letting DestroyAllVirtualControllers see and tear it down. Returns
+        /// the tasks still running when the wait ends, empty when none is.
         /// </summary>
-        private void AwaitPendingLifecycleTasks()
+        private List<System.Threading.Tasks.Task> AwaitPendingLifecycleTasks(TimeSpan bound)
         {
             var tasks = new System.Collections.Generic.List<System.Threading.Tasks.Task>(MaxPads * 2);
             for (int i = 0; i < MaxPads; i++)
@@ -4317,11 +4465,11 @@ namespace PadForge.Common.Input
                 if (connect != null) tasks.Add(connect);
             }
             AddMenuKeyboardTasks(tasks);
-            if (tasks.Count == 0) return;
+            if (tasks.Count == 0) return tasks;
 
             try
             {
-                System.Threading.Tasks.Task.WaitAll(tasks.ToArray(), TimeSpan.FromSeconds(30));
+                System.Threading.Tasks.Task.WaitAll(tasks.ToArray(), bound);
             }
             catch
             {
@@ -4329,6 +4477,8 @@ namespace PadForge.Common.Input
                 // task that threw will have set _createFailed/etc. on
                 // its slot, and the catch keeps shutdown progressing.
             }
+            tasks.RemoveAll(t => t.IsCompleted);
+            return tasks;
         }
 
     }

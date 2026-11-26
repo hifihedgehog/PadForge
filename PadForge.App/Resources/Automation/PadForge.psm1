@@ -204,17 +204,24 @@ namespace PadForgeAutomation
 
         // Whether PadForge runs: its window PadForge.Instance stands, made
         // by a process with administrator rights, which a program that made
-        // one without them does not have.
+        // one without them does not have. Every window of the name is looked
+        // at, so windows another program makes cannot hide PadForge's, and
+        // each process's rights are read once.
         private static bool PadForgeRuns()
         {
             IntPtr after = IntPtr.Zero;
-            for (int i = 0; i < 64; i++)
+            var seen = new Dictionary<uint, bool>();
+            while ((after = FindWindowExW(new IntPtr(-3), after, null, "PadForge.Instance")) != IntPtr.Zero)
             {
-                after = FindWindowExW(new IntPtr(-3), after, null, "PadForge.Instance");
-                if (after == IntPtr.Zero) return false;
                 uint pid;
                 GetWindowThreadProcessId(after, out pid);
-                if (Integrity(pid) >= 0x3000) return true;
+                bool rights;
+                if (!seen.TryGetValue(pid, out rights))
+                {
+                    rights = Integrity(pid) >= 0x3000;
+                    seen[pid] = rights;
+                }
+                if (rights) return true;
             }
             return false;
         }
@@ -279,8 +286,6 @@ namespace PadForgeAutomation
             _started = true;
             BeginRead();
         }
-
-        public bool IsClosed { get { return _closed; } }
 
         private void BeginRead()
         {
@@ -535,8 +540,15 @@ namespace PadForgeAutomation
             if (kind == 'a')
             {
                 if (text != null && string.Equals(text.Trim(), "rest", StringComparison.OrdinalIgnoreCase)) return "rest";
+                // A percent written as text, '50%', is the number before its
+                // sign.
+                double share;
+                if (text != null && text.Trim().EndsWith("%", StringComparison.Ordinal)
+                    && double.TryParse(text.Trim().TrimEnd('%').Trim(), NumberStyles.Float, Invariant, out share)) return Number(share) + "%";
                 return Number(ToNumber(value, "An axis")) + "%";
             }
+            // A hat's rest is -1 on the pipe.
+            if (text != null && string.Equals(text.Trim(), "rest", StringComparison.OrdinalIgnoreCase)) return "-1";
             double degrees;
             if (TryNumber(value, out degrees)) return degrees < 0 ? "-1" : Number(degrees) + "deg";
             text = value == null ? string.Empty : Convert.ToString(value, Invariant);
@@ -548,6 +560,45 @@ namespace PadForgeAutomation
             string s = Convert.ToString(Plain(text), Invariant) ?? string.Empty;
             s = s.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r", " ").Replace("\n", " ");
             return "\"" + s + "\"";
+        }
+
+        // The words PadForge's refusal carries when a line is past the
+        // program's level (AutomationLine.WordsFor).
+        internal const string LevelRefusal = "the Automation level does not allow this";
+
+        // Where a level stands among the four: Commands (and off) 0, Read 1,
+        // Send Inputs 2, Change Settings 3.
+        internal static int Rank(string word)
+        {
+            switch (word)
+            {
+                case "read": return 1;
+                case "send-inputs": return 2;
+                case "change-settings": return 3;
+                default: return 0;
+            }
+        }
+
+        // A level's word on the pipe by its name, or null.
+        internal static string LevelName(string word)
+        {
+            switch (word)
+            {
+                case "commands": return "Commands";
+                case "read": return "Read";
+                case "send-inputs": return "Send Inputs";
+                case "change-settings": return "Change Settings";
+                default: return null;
+            }
+        }
+
+        // A word for the line: bare when it can be, quoted otherwise, so a
+        // key or a name with a space reaches PadForge whole.
+        internal static string Word(object text)
+        {
+            string s = Convert.ToString(Plain(text), Invariant) ?? string.Empty;
+            if (s.Length == 0 || s.IndexOfAny(new[] { ' ', '"', '\\', '=', '{', '\r', '\n' }) >= 0) return Quote(s);
+            return s;
         }
 
         // The directions a hat in degrees holds: the nearest of the eight
@@ -831,6 +882,8 @@ namespace PadForgeAutomation
         internal volatile string _type = string.Empty;
         internal volatile bool _online;
         internal volatile bool _followed;
+        // The script asked for it: Device() or a first use of a listed one.
+        internal volatile bool _wanted;
         internal volatile bool _connected;
         internal readonly Dictionary<string, Control> _controls = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
         internal readonly Dictionary<string, Control> _byIndex = new Dictionary<string, Control>(StringComparer.Ordinal);
@@ -847,6 +900,7 @@ namespace PadForgeAutomation
         private static readonly string[] Stems = { "Button", "Axis", "Slider", "Hat" };
         private static readonly string[] Ends = { "Up", "Right", "Down", "Left" };
         private static readonly Regex Numbered = new Regex("^(Button|Axis|Slider|Hat)([0-9]+)$", RegexOptions.IgnoreCase);
+        private static readonly Regex Short = new Regex("^([bah])([0-9]+)$", RegexOptions.IgnoreCase);
         private static readonly Regex UpOrDown = new Regex("\\s+(up|down)$", RegexOptions.IgnoreCase);
         private static readonly Regex Form = new Regex("^([A-Za-z0-9_]+)\\s*(?:([<>])\\s*(-?[0-9]+(?:\\.[0-9]+)?)\\s*%?)?$");
 
@@ -860,7 +914,10 @@ namespace PadForgeAutomation
         public string Id { get { return _id; } }
         public virtual string Name { get { return _name; } }
         public virtual string Type { get { return _type; } }
-        public virtual bool Connected { get { return _followed ? _connected : _online; } }
+        // A device the script asked for says it is connected from its own
+        // state, while it is found and after PadForge comes back too. One the
+        // script only listed says what the list said.
+        public virtual bool Connected { get { return _followed || _wanted ? _connected : _online; } }
 
         // Its controls: each name to an object with Name, Kind (button,
         // axis, slider or hat) and Index.
@@ -1009,6 +1066,7 @@ namespace PadForgeAutomation
                 foreach (DictionaryEntry entry in map) pairs.Add(new KeyValuePair<string, object>(Word(entry.Key), Text.Plain(entry.Value)));
                 return pairs;
             }
+            if (a.Length % 2 != 0) throw new ArgumentException("hold takes names and values in pairs.");
             for (int i = 0; i + 1 < a.Length; i += 2) pairs.Add(new KeyValuePair<string, object>(Word(a[i]), a[i + 1]));
             return pairs;
         }
@@ -1038,7 +1096,20 @@ namespace PadForgeAutomation
             }
             if (pick == null) pick = spare;
             if (pick == null) return;
-            Row(pick.Get("id", string.Empty), pick.Get("name", string.Empty), pick.Get("type", string.Empty), pick.Get("online", "0") == "1");
+            string found = pick.Get("id", string.Empty);
+            // The device it follows on this connection already, connected or
+            // not: its state subscription says when it comes back.
+            if (_followed && found == _id) return;
+            string old = _followed ? _id : null;
+            Row(found, pick.Get("name", string.Empty), pick.Get("type", string.Empty), pick.Get("online", "0") == "1");
+            if (old != null && old != _id)
+            {
+                // It followed another device, which is not connected: what
+                // it followed and held there goes, and comes to this one.
+                _pf.Send("rel " + old + " all");
+                try { _pf.Ask("unsub " + old); }
+                catch (Exception e) { _pf.Note(e.Message); }
+            }
             Attach();
         }
 
@@ -1071,6 +1142,20 @@ namespace PadForgeAutomation
                 try { Hotkey(item.Name, item.Callback); }
                 catch (Exception e) { _pf.Note(e.Message); }
             }
+            // Change callbacks made before the controls were known are
+            // filed again under each control's own name.
+            List<KeyValuePair<string, List<object>>> changes = _changes.ToList();
+            _changes.Clear();
+            foreach (KeyValuePair<string, List<object>> change in changes)
+            {
+                Control named = Lookup(change.Key);
+                string key = named == null ? change.Key : named.Name;
+                List<object> list;
+                if (!_changes.TryGetValue(key, out list)) _changes[key] = list = new List<object>();
+                list.AddRange(change.Value);
+            }
+            // A hold whose name or value the device does not take is noted
+            // and goes, and the rest are held.
             StringBuilder line = new StringBuilder();
             List<KeyValuePair<string, object>> held = new List<KeyValuePair<string, object>>();
             foreach (KeyValuePair<string, object> hold in _holds)
@@ -1081,8 +1166,15 @@ namespace PadForgeAutomation
                     _pf.Note("No such control: " + hold.Key);
                     continue;
                 }
+                string wire;
+                try { wire = Text.Wire(c.Kind, hold.Value); }
+                catch (Exception e)
+                {
+                    _pf.Note(e.Message);
+                    continue;
+                }
                 held.Add(new KeyValuePair<string, object>(c.Name, hold.Value));
-                line.Append(' ').Append(c.Name).Append('=').Append(Text.Wire(c.Kind, hold.Value));
+                line.Append(' ').Append(c.Name).Append('=').Append(wire);
             }
             _holds.Clear();
             foreach (KeyValuePair<string, object> hold in held) _holds[hold.Key] = hold.Value;
@@ -1124,6 +1216,7 @@ namespace PadForgeAutomation
             string key = _what.ToLowerInvariant();
             if (_pf.Wanting.ContainsKey(key)) return;
             _pf.Wanting[key] = this;
+            _wanted = true;
             if (!_pf.Connected) return;
             try { Attach(); }
             catch (Exception e) { _pf.Note(e.Message); }
@@ -1239,13 +1332,23 @@ namespace PadForgeAutomation
             }
         }
 
-        // The control a name names, or null for none.
+        // The control a name names, or null for none: its name, its
+        // numbered name, or the pipe's short form (b3, a0, h0).
         internal Control Lookup(string name)
         {
             Control c;
             if (_controls.TryGetValue(name, out c)) return c;
             Match m = Numbered.Match(name);
-            if (!m.Success) return null;
+            if (!m.Success)
+            {
+                Match s = Short.Match(name);
+                int at;
+                if (!s.Success || !int.TryParse(s.Groups[2].Value, NumberStyles.None, Text.Invariant, out at)) return null;
+                char kind = char.ToLowerInvariant(s.Groups[1].Value[0]);
+                if (_byIndex.TryGetValue(kind.ToString() + at, out c)) return c;
+                string stand = kind == 'b' ? "Button" + at : kind == 'h' ? "Hat" + at : at >= 24 ? "Slider" + (at - 24) : "Axis" + at;
+                return new Control(stand, kind, at, kind == 'a' && at < 24);
+            }
             string stem = null;
             foreach (string s in Stems)
                 if (string.Equals(m.Groups[1].Value, s, StringComparison.OrdinalIgnoreCase)) stem = s;
@@ -1467,23 +1570,30 @@ namespace PadForgeAutomation
         }
 
         // Taps controls one after the other, each held its ms:
-        // Sequence('A', 50, 'B', 50). Each starts as the one before lets go.
-        // Refused before the device is found, and by PadForge while the
-        // device is not connected.
+        // Sequence('A', 50, 'B', 50). Each starts as the one before lets go,
+        // every step timed from the call on PadForge's clock. Refused before
+        // the device is found, and by PadForge while the device is not
+        // connected.
         internal virtual void Sequence(object[] steps)
         {
+            if (steps.Length % 2 != 0) throw new ArgumentException("sequence takes names and times in pairs.");
             if (_id.Length == 0) throw Absent("sequence");
             FollowSelf();
             if (_controls.Count == 0)
                 for (int i = 0; i + 1 < steps.Length; i += 2)
                     if (Target(Word(steps[i])) == null) throw Absent("sequence");
+            // Each step is timed from now (in=), so a Tap or Sequence before
+            // it, which moves the end of the session's timed steps, does not
+            // stretch a step.
             List<string> lines = new List<string>();
+            int at = 0;
             foreach (KeyValuePair<Control, int> step in Steps(steps))
             {
                 Control c = step.Key;
                 string on = c.Kind == 'b' || c.Kind == 'd' ? "1" : c.Kind == 'h' ? "0deg" : "100%";
-                lines.Add("own " + _id + " " + c.Name + "=" + on + (lines.Count == 0 ? " in=0" : " after=0"));
-                lines.Add("rel " + _id + " " + c.Name + " after=" + step.Value.ToString(Text.Invariant));
+                lines.Add("own " + _id + " " + c.Name + "=" + on + " in=" + at.ToString(Text.Invariant));
+                at += step.Value;
+                lines.Add("rel " + _id + " " + c.Name + " in=" + at.ToString(Text.Invariant));
             }
             if (lines.Count > 0) _pf.Timed("sequence", lines);
         }
@@ -1491,6 +1601,7 @@ namespace PadForgeAutomation
         internal List<KeyValuePair<Control, int>> Steps(object[] steps)
         {
             List<KeyValuePair<Control, int>> list = new List<KeyValuePair<Control, int>>();
+            if (steps.Length % 2 != 0) throw new ArgumentException("sequence takes names and times in pairs.");
             for (int i = 0; i + 1 < steps.Length; i += 2)
             {
                 Control c = Target(Word(steps[i]));
@@ -1527,7 +1638,8 @@ namespace PadForgeAutomation
             }
             h.Callback = Client.Callable(callback, "A hotkey needs a script block or 'Off': " + keyName);
             HotkeyKey key;
-            if (!_keys.TryGetValue(id, out key))
+            bool fresh = !_keys.TryGetValue(id, out key);
+            if (fresh)
             {
                 key = new HotkeyKey();
                 key.What = h.What;
@@ -1535,9 +1647,24 @@ namespace PadForgeAutomation
                 key.Line = h.Line;
                 _keys[id] = key;
             }
+            List<HotkeyItem> before = key.List.ToList();
             key.List.RemoveAll(item => string.Equals(item.Name, h.Name, StringComparison.OrdinalIgnoreCase));
             key.List.Add(h);
-            Claim(key);
+            try { Claim(key); }
+            catch (Exception)
+            {
+                // PadForge refused the claim: the hotkeys on the control,
+                // and what it follows, are as they were.
+                if (fresh) _keys.Remove(id);
+                else
+                {
+                    key.List.Clear();
+                    key.List.AddRange(before);
+                    try { Claim(key); }
+                    catch (Exception again) { _pf.Note(again.Message); }
+                }
+                throw;
+            }
         }
 
         internal HotkeyItem Parse(string keyName)
@@ -1643,6 +1770,9 @@ namespace PadForgeAutomation
             {
                 _lines.Remove(key.Number);
                 _pf.Ask("unsub " + _id + " line=" + key.Number.ToString(Text.Invariant));
+                // The line is gone: a refused claim after it leaves no
+                // number that names a line.
+                key.Number = 0;
             }
             Answer answer = _pf.Ask("sub " + _id + " " + key.What + (key.Line.Length > 0 ? " " + key.Line : string.Empty) + (claim ? " claim" : string.Empty));
             key.Claimed = claim ? 1 : 0;
@@ -1730,7 +1860,8 @@ namespace PadForgeAutomation
                 {
                     if (w.Length < 5) return;
                     Control c;
-                    Changed(_byIndex.TryGetValue("a" + w[3], out c) ? c.Name : "Axis" + w[3], Text.Real(w[4]));
+                    int index = Text.Int(w[3]);
+                    Changed(_byIndex.TryGetValue("a" + index, out c) ? c.Name : index >= 24 ? "Slider" + (index - 24) : "Axis" + index, Text.Real(w[4]));
                     break;
                 }
                 case "x":
@@ -1785,6 +1916,8 @@ namespace PadForgeAutomation
         private readonly Dictionary<string, List<object>> _feedback = new Dictionary<string, List<object>>(StringComparer.Ordinal);
         private readonly Dictionary<string, object> _extras = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> _extraWire = new Dictionary<string, string>(StringComparer.Ordinal);
+        // Each declared axis's rest as a share of its travel, 0 to 100.
+        private readonly Dictionary<int, double> _rests = new Dictionary<int, double>();
 
         // The words of the pipe a declared name may not take, as PadForge
         // keeps them.
@@ -1817,6 +1950,7 @@ namespace PadForgeAutomation
             internal int Index;
             internal string Label;
             internal bool Stick;
+            internal double Rest;
         }
 
         private object Spec(string name)
@@ -1827,15 +1961,30 @@ namespace PadForgeAutomation
         // The controls named by the declaration, as PadForge names them:
         // each declared name made one word, or the numbered name when that
         // word is empty, taken, a word of the pipe or reads as another
-        // control.
+        // control. The hats are named first, and a hat's name with Up,
+        // Right, Down or Left is the hat's direction and no other control's.
         private void Shape()
         {
             List<Declared> buttons = Declare(Spec("Buttons"), 'b', 0, 0);
             List<Declared> axes = Declare(Spec("Axes"), 'a', 0, 50);
             axes.AddRange(Declare(Spec("Sliders"), 'a', 24, 0));
-            List<Declared> hats = Declare(Spec("Hats"), 'h', 0, 0);
+            // PadForge makes every hat up to the last one declared, each
+            // without a name of its own named by its number.
+            List<Declared> hats = new List<Declared>();
+            foreach (Declared d in Declare(Spec("Hats"), 'h', 0, 0))
+            {
+                while (hats.Count <= d.Index)
+                {
+                    Declared filler = new Declared();
+                    filler.Kind = 'h';
+                    filler.Index = hats.Count;
+                    hats.Add(filler);
+                }
+                hats[d.Index] = d;
+            }
             HashSet<string> taken = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (List<Declared> list in new[] { buttons, axes, hats })
+            Dictionary<string, string> named = new Dictionary<string, string>();
+            foreach (List<Declared> list in new[] { hats, buttons, axes })
             {
                 foreach (Declared d in list.OrderBy(x => x.Index))
                 {
@@ -1844,9 +1993,20 @@ namespace PadForgeAutomation
                     string word = ScriptWord(d.Label);
                     if (word == null || taken.Contains(word) || Reserved.Contains(word) || LooksNumbered(word)) word = numbered;
                     taken.Add(word);
+                    if (d.Kind == 'h')
+                        foreach (string end in new[] { "Up", "Right", "Down", "Left" }) taken.Add(word + end);
+                    named[d.Kind.ToString() + d.Index] = word;
+                }
+            }
+            foreach (List<Declared> list in new[] { buttons, axes, hats })
+            {
+                foreach (Declared d in list.OrderBy(x => x.Index))
+                {
+                    string word = named[d.Kind.ToString() + d.Index];
                     Control c = new Control(word, d.Kind, d.Index, d.Stick);
                     _controls[word] = c;
                     _byIndex[d.Kind.ToString() + d.Index] = c;
+                    if (d.Kind == 'a') _rests[d.Index] = d.Rest;
                 }
             }
         }
@@ -1871,6 +2031,7 @@ namespace PadForgeAutomation
                 else d.Label = Convert.ToString(item, Text.Invariant);
                 d.Index = first + index;
                 d.Stick = rest == 50;
+                d.Rest = rest;
                 found.Add(d);
                 position++;
             }
@@ -1884,14 +2045,44 @@ namespace PadForgeAutomation
             return Text.ToNumber(text ?? rest, "A rest");
         }
 
+        // A name as PadForge keeps it (ProgramDeviceDeclaration.Clean):
+        // control and format characters out, and what XML cannot hold, a
+        // line or paragraph separator a space, cut at 64 without splitting a
+        // pair, and trimmed.
+        private static string Clean(string text)
+        {
+            StringBuilder kept = new StringBuilder(text.Length);
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (char.IsSurrogate(c))
+                {
+                    // A pair is one character. A lone surrogate goes.
+                    if (char.IsHighSurrogate(c) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
+                    {
+                        if (CharUnicodeInfo.GetUnicodeCategory(text, i) != UnicodeCategory.Format) kept.Append(c).Append(text[i + 1]);
+                        i++;
+                    }
+                    continue;
+                }
+                if (c == '\uFFFE' || c == '\uFFFF') continue;
+                UnicodeCategory kind = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (kind == UnicodeCategory.Format || kind == UnicodeCategory.Control) continue;
+                kept.Append(kind == UnicodeCategory.LineSeparator || kind == UnicodeCategory.ParagraphSeparator ? ' ' : c);
+            }
+            string s = kept.ToString();
+            if (s.Length > 64) s = s.Substring(0, char.IsHighSurrogate(s[63]) ? 63 : 64);
+            return s.Trim();
+        }
+
         // A name as one word: its letters and digits, each word's first
-        // letter upper case. Null when nothing is left, it starts with a
-        // digit or it runs past 32 letters.
+        // letter upper case, from the name PadForge keeps. Null when nothing
+        // is left, it starts with a digit or it runs past 32 letters.
         private static string ScriptWord(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) return null;
-            name = name.Trim();
-            if (name.Length > 64) name = name.Substring(0, 64);
+            if (name == null) return null;
+            name = Clean(name);
+            if (name.Length == 0) return null;
             StringBuilder sb = new StringBuilder(name.Length);
             bool start = true;
             foreach (char c in name)
@@ -1941,8 +2132,14 @@ namespace PadForgeAutomation
             List<object> touch = Text.Items(Spec("Touchpads"));
             if (touch.Count > 0) json.Append(",\"touchpads\":").Append(Text.Json(touch));
             json.Append(",\"feedback\":").Append(Text.Json(Text.Items(Spec("Feedback")))).Append('}');
-            Answer answer = _pf.Ask("declare key=" + _key + " name=" + Text.Quote(_label) + " " + json);
+            Answer answer = _pf.Ask("declare key=" + Text.Word(_key) + " name=" + Text.Quote(_label) + " " + json);
             Row(answer.Get("id", string.Empty), _label, "program", true);
+            // Back after a loss: OnConnect hears it, as it heard the loss.
+            if (!_connected)
+            {
+                _connected = true;
+                Changed(string.Empty, true);
+            }
             Again();
         }
 
@@ -1985,6 +2182,18 @@ namespace PadForgeAutomation
             {
                 object extra;
                 if (Extra(name)) return _extras.TryGetValue(name, out extra) ? extra : null;
+                // An axis's two halves, from the controller's own read of it.
+                bool plus = Text.Ends(name, "Plus") && name.Length > 4, minus = Text.Ends(name, "Minus") && name.Length > 5;
+                if (plus || minus)
+                {
+                    Control axis = Lookup(name.Substring(0, name.Length - (minus ? 5 : 4)));
+                    if (axis != null && axis.Kind == 'a')
+                    {
+                        double v = (double)Read(axis.Name);
+                        double part = axis.Stick ? (minus ? -v : v) : (minus ? (50 - v) * 2 : (v - 50) * 2);
+                        return Math.Max(0, part);
+                    }
+                }
                 HotkeyItem d = Direction(name);
                 if (d == null) return base.Read(name);
                 string set;
@@ -1996,9 +2205,18 @@ namespace PadForgeAutomation
             if (c.Kind == 'h')
             {
                 if (wire.Length == 0 || wire == "-1") return -1.0;
-                return Text.Ends(wire, "deg") ? (object)Text.Real(wire.Substring(0, wire.Length - 3)) : wire;
+                return Text.Ends(wire, "deg") ? Text.Real(wire.Substring(0, wire.Length - 3)) : Text.DirectionDegrees(Text.HatWords(wire));
             }
-            return wire.Length == 0 ? 0.0 : Text.Real(wire.TrimEnd('%'));
+            return wire.Length == 0 || wire == "rest" ? RestOf(c) : Text.Real(wire.TrimEnd('%'));
+        }
+
+        // What an axis reads at its rest: 0 on a stick, its rest's share of
+        // the travel on a trigger, a slider or a pedal.
+        private double RestOf(Control c)
+        {
+            double rest;
+            if (c.Stick || !_rests.TryGetValue(c.Index, out rest)) return 0.0;
+            return rest;
         }
 
         private static bool Extra(string name)
@@ -2035,10 +2253,16 @@ namespace PadForgeAutomation
                 Send(Turn(d, value));
                 return;
             }
-            string wire = Text.IsEmpty(value) ? (c.Kind == 'b' ? "0" : c.Kind == 'h' ? "-1" : "0%") : Text.Wire(c.Kind, value);
-            if (wire == "rest") wire = "0%";
+            string wire = Text.IsEmpty(value) ? RestWire(c) : Text.Wire(c.Kind, value);
             _set[c.Name] = wire;
             Send(c.Name + "=" + wire);
+        }
+
+        // A control's rest as the s line takes it. An axis rests at the rest
+        // it was declared with, which PadForge reads for the word rest.
+        private static string RestWire(Control c)
+        {
+            return c.Kind == 'b' || c.Kind == 'd' ? "0" : c.Kind == 'h' ? "-1" : "rest";
         }
 
         // The name of the hat a direction is of.
@@ -2091,8 +2315,7 @@ namespace PadForgeAutomation
                 }
                 // $null puts the control at rest, as setting it to $null
                 // does.
-                string wire = Text.IsEmpty(pair.Value) ? (c.Kind == 'b' ? "0" : c.Kind == 'h' ? "-1" : "0%") : Text.Wire(c.Kind, pair.Value);
-                if (wire == "rest") wire = "0%";
+                string wire = Text.IsEmpty(pair.Value) ? RestWire(c) : Text.Wire(c.Kind, pair.Value);
                 _set[c.Name] = wire;
                 line.Add(c.Name + "=" + wire);
             }
@@ -2124,22 +2347,23 @@ namespace PadForgeAutomation
             Control c = Target(name);
             if (c == null) throw new ArgumentException("No such control: " + name);
             if (Text.IsEmpty(value)) value = c.Kind == 'b' || c.Kind == 'd' ? (object)true : c.Kind == 'h' ? 0.0 : 100.0;
-            string rest = c.Kind == 'b' || c.Kind == 'd' ? "0" : c.Kind == 'h' ? "-1" : "0%";
             if (!_pf.Send("s " + _id + " " + c.Name + "=" + Text.Wire(c.Kind, value))) throw Absent("tap");
-            Send(c.Name + "=" + rest + " in=" + ms.ToString(Text.Invariant));
+            Send(c.Name + "=" + RestWire(c) + " in=" + ms.ToString(Text.Invariant));
         }
 
         internal override void Sequence(object[] steps)
         {
             if (_id.Length == 0 || !_pf.Connected) throw Absent("sequence");
+            // Each step is timed from now, as a device's Sequence is.
             List<string> lines = new List<string>();
+            int at = 0;
             foreach (KeyValuePair<Control, int> step in Steps(steps))
             {
                 Control c = step.Key;
                 string on = c.Kind == 'b' || c.Kind == 'd' ? "1" : c.Kind == 'h' ? "0deg" : "100%";
-                string off = c.Kind == 'b' || c.Kind == 'd' ? "0" : c.Kind == 'h' ? "-1" : "0%";
-                lines.Add(c.Name + "=" + on + (lines.Count == 0 ? string.Empty : " after=0"));
-                lines.Add(c.Name + "=" + off + " after=" + step.Value.ToString(Text.Invariant));
+                lines.Add(c.Name + "=" + on + " in=" + at.ToString(Text.Invariant));
+                at += step.Value;
+                lines.Add(c.Name + "=" + RestWire(c) + " in=" + at.ToString(Text.Invariant));
             }
             for (int i = 0; i < lines.Count; i++)
                 if (!_pf.Send("s " + _id + " " + lines[i]) && i == 0) throw Absent("sequence");
@@ -2177,13 +2401,28 @@ namespace PadForgeAutomation
                 case "ontriggereffects": return On("trigfx", a);
                 // scriptBlock('rrggbb').
                 case "onlight": return On("led", a);
-                // scriptBlock(number), from 1.
+                // scriptBlock(number), from 1, and 0 once no virtual
+                // controller holds it.
                 case "onplayer": return On("player", a);
-                // Takes the controller off PadForge's device list.
+                // Takes the controller off PadForge's device list. It is not
+                // connected from then on, OnConnect hears it go, and a set
+                // sends nothing.
                 case "remove":
+                {
                     _pf.Mine.Remove(_key);
-                    if (_id.Length > 0) _pf.Ask("gone " + _id);
+                    string gone = _id;
+                    if (gone.Length == 0) return null;
+                    Device mapped;
+                    if (_pf.ById.TryGetValue(gone, out mapped) && mapped == this) _pf.ById.Remove(gone);
+                    _id = string.Empty;
+                    if (_connected)
+                    {
+                        _connected = false;
+                        Changed(string.Empty, false);
+                    }
+                    if (_pf.Connected) _pf.Ask("gone " + gone);
                     return null;
+                }
             }
             return base.Invoke(method, a, out known);
         }
@@ -2251,6 +2490,10 @@ namespace PadForgeAutomation
         private volatile bool _ready;
         private volatile bool _ended;
         private volatile bool _waiting;
+        // The hello said PadForge asks the user: the level the answer gives
+        // is heard as one e level, and what the script asked for meanwhile
+        // was held, not dropped.
+        private volatile bool _consentPending;
         private long _nextTry;
         private int _opening;
         private int _dispatching;
@@ -2408,6 +2651,7 @@ namespace PadForgeAutomation
             Level = answer.Get("level", string.Empty);
             Session = Text.Int(answer.Get("session", "0"));
             _waiting = answer.Get("consent", string.Empty) == "waiting";
+            _consentPending = _waiting;
             Why = _waiting ? "PadForge asks you whether this script may work with it." : string.Empty;
             _ready = true;
             if (_token == null)
@@ -2447,6 +2691,18 @@ namespace PadForgeAutomation
             }
         }
 
+        // The level rose from below Read or Send Inputs, where PadForge let
+        // go of what the script followed, held and claimed and took its
+        // controllers offline: all of it is put back as a new connection
+        // puts it back, from a clean slate.
+        private void Rise()
+        {
+            Try(delegate { Ask("unsub all"); });
+            foreach (Device pad in ById.Values.ToArray())
+                if (!(pad is Controller)) pad._followed = false;
+            Restore();
+        }
+
         private void Try(Action step)
         {
             try { step(); }
@@ -2470,6 +2726,9 @@ namespace PadForgeAutomation
         private void OnLinkEvent(object sender, LineEventArgs e)
         {
             if (sender != _link) return;
+            // The user answered PadForge's question card: a line no longer
+            // waits for it, the restore's own next line included.
+            if (e.Line.StartsWith("e level ", StringComparison.Ordinal)) _waiting = false;
             try { _events.Add(e.Line); }
             catch (InvalidOperationException) { }
         }
@@ -2518,11 +2777,18 @@ namespace PadForgeAutomation
         // first connection waits as long as PadForge's question card does.
         internal Answer Ask(string line)
         {
+            return Ask(line, 10000);
+        }
+
+        // waitMs is how long the answer may take once nothing waits for the
+        // user's answer to the first connection.
+        internal Answer Ask(string line, int waitMs)
+        {
             Connection link = _link;
             if (_closed || link == null || (!_ready && !line.StartsWith("hello ", StringComparison.Ordinal)))
                 throw new InvalidOperationException("PadForge is not connected: " + Why);
             string[] all;
-            try { all = link.Request(line, _waiting ? 150000 : 10000); }
+            try { all = link.Request(line, _waiting ? 150000 : waitMs); }
             catch (IOException) { all = null; }
             if (all == null) throw new IOException("PadForge is not connected: the pipe closed.");
             string final = all[all.Length - 1];
@@ -2535,14 +2801,18 @@ namespace PadForgeAutomation
         }
 
         // PadForge's refusal of a request, in words, the request named by
-        // verb.
+        // verb. A line past the program's level carries PadForge's default
+        // words, and is told as the level the program works at: the user's
+        // cap, or what the user allowed it on the question card.
         private Exception Refusal(string verb, string final)
         {
             string[] parts = final.Split(new[] { ' ' }, 3);
             string code = parts.Length > 1 ? parts[1] : "internal";
-            if (code == "not-allowed")
-                return new InvalidOperationException("PadForge refused " + verb + ": Automation's level is " + Level + ", too low for it. Raise it in Extras, Automation.");
-            return new InvalidOperationException("PadForge refused " + verb + ": " + (parts.Length > 2 ? parts[2] : string.Empty) + " (" + code + ").");
+            string words = parts.Length > 2 ? parts[2] : string.Empty;
+            string level = Text.LevelName(Level);
+            if (code == "not-allowed" && (words.Length == 0 || words == Text.LevelRefusal) && level != null)
+                return new InvalidOperationException("PadForge refused " + verb + ": this program works at the " + level + " level, which does not allow it.");
+            return new InvalidOperationException("PadForge refused " + verb + ": " + words + " (" + code + ").");
         }
 
         // A Tap's or a Sequence's lines, written one after the other with no
@@ -2618,17 +2888,25 @@ namespace PadForgeAutomation
                     Device listed;
                     if (ById.TryGetValue(w[2], out listed)) listed._online = online;
                     Call("dev", w[2], online);
+                    // A wanted device not found, or found and not connected,
+                    // is looked for again: an unplugged pad follows a
+                    // matching one that connects.
                     if (online)
                         foreach (Device wanted in Wanting.Values.ToArray())
-                            if (wanted.Id.Length == 0 || !wanted._followed) Try(wanted.Locate);
+                            if (wanted.Id.Length == 0 || !wanted._followed || !wanted.Connected) Try(wanted.Locate);
                     break;
                 }
                 case "profile": Call("profile", w.Length > 2 ? w[2] : "default"); break;
                 case "engine": Call("engine", w.Length > 2 ? w[2] : string.Empty); break;
                 case "level":
+                {
+                    string was = Level;
                     Level = w.Length > 2 ? w[2] : string.Empty;
+                    if (_consentPending) _consentPending = false;
+                    else if (Text.Rank(Level) > Text.Rank(was) && Text.Rank(was) < Text.Rank("send-inputs")) Rise();
                     Call("level", Level);
                     break;
+                }
                 case "rumble":
                 case "trigrumble":
                 case "trigfx":
@@ -2732,11 +3010,13 @@ namespace PadForgeAutomation
                 if (ById.TryGetValue(key, out pad) && !(pad is Controller) && pad._what.ToLowerInvariant() == key)
                 {
                     Wanting[key] = pad;
+                    pad._wanted = true;
                     if (Connected && !pad._followed) pad.Locate();
                     return pad;
                 }
                 pad = new Device(this, what);
                 Wanting[key] = pad;
+                pad._wanted = true;
                 if (Connected) pad.Locate();
                 return pad;
             }
@@ -2861,7 +3141,9 @@ namespace PadForgeAutomation
         public void Controller(int number, bool on) { Request("slot " + number.ToString(Text.Invariant) + " " + (on ? "on" : "off")); }
         public void Show() { Request("show"); }
         public void Hide() { Request("hide"); }
-        public Hashtable Snapshot() { return Request("snapshot").Pairs; }
+        // What PadForge says of the snapshot: waiting-for-review, the word it
+        // gives while the snapshot waits for the user's review.
+        public string Snapshot() { return string.Join(" ", Request("snapshot").Words); }
 
         // What runs now, as JSON text.
         public string State() { return Request("state").Json; }
@@ -2870,10 +3152,15 @@ namespace PadForgeAutomation
         public Hashtable Outputs(int number) { return Request("outputs " + number.ToString(Text.Invariant)).Pairs; }
 
         // Runs an assistant tool, at the tool's own level. Returns JSON
-        // text.
+        // text. A tool that asks the user waits for the card's answer, up to
+        // 45 seconds in PadForge, so its line waits 60. JSON written over
+        // several lines goes as one: a line break is a space between JSON's
+        // tokens.
         public string Tool(string name, string json)
         {
-            return Request("call " + name + " " + (string.IsNullOrEmpty(json) ? "{}" : json)).Json;
+            Pump();
+            string text = string.IsNullOrEmpty(json) ? "{}" : json.Replace("\r", " ").Replace("\n", " ");
+            return Ask("call " + Text.Word(name) + " " + text, 60000).Json;
         }
 
         // Closes the connection for good.
@@ -2958,14 +3245,14 @@ function Invoke-PadForgeCall([scriptblock]$Do) {
 
 function Connect-PadForge {
     <# Makes the script's connection with a name and the level it asks for:
-       read, send-inputs (the default) or change-settings. With -Reach own
+       commands, read, send-inputs (the default) or change-settings. With -Reach own
        the script asks to drive and change only the devices it adds and the
        ones the user picks for it, and it still reads every device. Call it
        before anything else to choose them. It does not wait for
        PadForge. #>
     param(
         [Parameter(Position = 0)][string]$Name,
-        [ValidateSet('read', 'send-inputs', 'change-settings')][string]$Level = 'send-inputs',
+        [ValidateSet('commands', 'read', 'send-inputs', 'change-settings')][string]$Level = 'send-inputs',
         [string]$Pipe,
         [ValidateSet('own', 'all')][string]$Reach
     )

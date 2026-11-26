@@ -9,7 +9,7 @@ namespace PadForge.Services
     /// <summary>
     /// The folder the single-file host unpacked this process's native
     /// libraries into, and the clean-up of the protected folder's old ones
-    /// (#597).
+    /// (#600).
     ///
     /// <para>The host unpacks into
     /// <c>&lt;base&gt;\&lt;exe name&gt;\&lt;bundle ID&gt;</c> (extractor.cpp,
@@ -17,7 +17,7 @@ namespace PadForge.Services
     /// <see cref="ProtectedStart"/> sets for every start with rights, or the
     /// temp folder's <c>.net</c> when it is not set. The folder is the one a
     /// loaded module sits in directly below <c>&lt;base&gt;\&lt;exe name&gt;</c>.
-    /// Nothing else is ever taken for it: before #597 the app fell back to the
+    /// Nothing else is ever taken for it: before #600 the app fell back to the
     /// newest folder in the user's temp folder that held an xinput1_4.dll and
     /// put it on the DLL search path, and any program of the user can make
     /// such a folder.</para>
@@ -75,11 +75,16 @@ namespace PadForge.Services
         /// another build that still runs keeps its libraries. Only below the
         /// protected folder, never in the user's temp folder. Best effort.
         /// </summary>
-        internal static void CleanUp(string current)
+        internal static void CleanUp(string current) => CleanUp(current, BaseFolder());
+
+        /// <summary>The same, for a process unpacked under
+        /// <paramref name="baseFolder"/>. A test gives the protected folder
+        /// of its own (ProtectedFolder.RootSeam).</summary>
+        internal static void CleanUp(string current, string baseFolder)
         {
             string natives = ProtectedFolder.Natives, root = ProtectedFolder.Root;
-            if (natives.Length == 0 || current == null) return;
-            if (!SameFolder(BaseFolder(), natives)) return;
+            if (natives.Length == 0 || current == null || baseFolder == null) return;
+            if (!SameFolder(baseFolder, natives)) return;
             // Natives\<exe name>\<bundle ID>, for every name the exe had.
             foreach (string exeFolder in SafeFolders(natives))
             {
@@ -92,12 +97,29 @@ namespace PadForge.Services
                 catch { }
             }
             foreach (string folder in SafeFolders(root))
-                if (Path.GetFileName(folder).Contains(".untrusted-", StringComparison.Ordinal)) RemoveUnused(folder);
+                if (IsSetAside(Path.GetFileName(folder), null)) RemoveUnused(folder);
+            // In %ProgramData%, where any account can make a folder, only the
+            // names MakeSound gives the root's set-aside folders are touched.
             string parent = Path.GetDirectoryName(root);
             if (parent != null)
                 foreach (string folder in SafeFolders(parent))
-                    if (Path.GetFileName(folder).StartsWith(Path.GetFileName(root) + ".untrusted-", StringComparison.OrdinalIgnoreCase))
+                    if (IsSetAside(Path.GetFileName(folder), Path.GetFileName(root)))
                         RemoveUnused(folder);
+        }
+
+        private static readonly System.Text.RegularExpressions.Regex SetAside = new(
+            @"^(?<name>[^\\/]+)\.untrusted-[0-9a-f]{1,16}-[0-9a-f]{1,16}-[0-9a-f]{1,16}(\.removing-[0-9]{1,10})?$",
+            System.Text.RegularExpressions.RegexOptions.CultureInvariant | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+        /// <summary>Whether a folder's name is one ProtectedFolder.MakeSound
+        /// gives a folder it moves aside (ProtectedFolder.AsideName), with
+        /// the name this clean-up gives it while it is deleted, for a folder
+        /// of the name <paramref name="of"/>, or of any name when that is
+        /// null.</summary>
+        internal static bool IsSetAside(string name, string of)
+        {
+            var match = SetAside.Match(name ?? string.Empty);
+            return match.Success && (of == null || string.Equals(match.Groups["name"].Value, of, StringComparison.OrdinalIgnoreCase));
         }
 
         private static bool SameFolder(string a, string b)
@@ -109,9 +131,11 @@ namespace PadForge.Services
             catch { return Array.Empty<string>(); }
         }
 
-        /// <summary>Renames a folder aside and deletes it. A link is deleted
-        /// as the link, never followed (Directory.Delete leaves what a link
-        /// points at alone).</summary>
+        /// <summary>Renames a folder aside and deletes it by handles
+        /// (<see cref="HandleTree.Delete"/>): another account may change a
+        /// set-aside folder while it is deleted, and a link anywhere in it,
+        /// one swapped in during the delete included, is deleted as the link
+        /// and never followed.</summary>
         private static void RemoveUnused(string folder)
         {
             string aside = folder + ".removing-" + Environment.ProcessId.ToString(System.Globalization.CultureInfo.InvariantCulture);
@@ -124,8 +148,7 @@ namespace PadForge.Services
             {
                 return;
             }
-            try { Directory.Delete(aside, recursive: true); }
-            catch { }
+            HandleTree.Delete(aside);
         }
     }
 }

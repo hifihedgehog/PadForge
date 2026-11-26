@@ -1346,8 +1346,11 @@ namespace PadForge.Tests
         {
             Assert.Contains("SourceCoercion.GamepadPlacementProvider = InputManager.GamepadPlacementFor;",
                 AuditDelta20261002Tests.RepoText("PadForge.App", "Services", "InputService.cs"));
-            Assert.Contains("BlissBoxRuntime.Ports.Length == 0 ? null : BlissBoxRuntime.GamepadMapFor(LookupUserDevice(deviceGuid))",
-                AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs"));
+            // A PC with no port open raw and no row of the user's laying out a
+            // device skips the lookup (#600 widened the lookup to those rows).
+            string eval = AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs");
+            Assert.Contains("if (!ports && !rows) return null;", eval);
+            Assert.Contains("if (ports && BlissBoxRuntime.GamepadMapFor(ud) is { } port) return port;", eval);
         }
     }
 }

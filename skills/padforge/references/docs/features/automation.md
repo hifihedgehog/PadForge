@@ -35,7 +35,7 @@ The **What Programs May Do** card holds one setting, **Level**. It caps every pr
 
 | Level | What a program may do |
 |---|---|
-| **Commands** | Switch profiles and release them, start and stop the engine, turn virtual controllers on and off, show and hide the window, close PadForge, save a diagnostics snapshot and ask what is running. The default. |
+| **Commands** | Switch profiles and release them, start and stop the engine, turn virtual controllers on and off, show and hide the window, close PadForge, ask what is running, save a diagnostics snapshot, and start, stop and mark a problem recording. The default. |
 | **Read** | See devices, virtual controllers, mappings, profiles and settings, follow the inputs of every device as they happen, and show you a place in PadForge. |
 | **Send Inputs** | Add devices of its own and drive them, hold a control of any device, and hand named values to macro triggers. |
 | **Change Settings** | Change what you can change on the pages. Some changes always ask you first on PadForge's question card. |
@@ -52,12 +52,15 @@ A program that asks for **Commands** gets it at once. A program that asks for **
 
 The card names the program the way Windows knows it, never by the name the program gives itself:
 
-- a script by its interpreter and its script file, as **python.exe running bot.py**,
-- an assistant's helper or PadForge's own command line by the program that started it, as **Started by …**,
+- a script by its interpreter and its script file as the command line names it, as **python.exe running bot.py**, or by the module it runs, as **python.exe running -m bot**,
+- a script run with no file, through `-c`, `-Command` or `-EncodedCommand`, by the words of its command line, shortened past 200 characters, so each command is a program of its own,
+- an assistant's helper or PadForge's own command line by the program that started it, as **Started by …**, or as **Started by a program PadForge could not identify.** when that program has ended or Windows will not name it,
 - any other program by its path,
 - with its signer, **Signed by …** or **Not signed.**
 
-**Allow** grants the level it asked for and adds the program to **Allowed Programs**. **Don’t Allow** refuses it until PadForge starts again. With no answer in two minutes the card counts as no, and the program waits ten minutes before it may ask again. A program that connects twice while its card is up waits on the one answer. Adding an assistant on its row of the [Assistants](assistants.md) card is your answer for that assistant, and no card asks.
+**Allow** adds the program to **Allowed Programs** at the level the card names. Each of its connections open then works at that level or the level it asked for, whichever is lower. **Don’t Allow** refuses it until PadForge starts again. With no answer in two minutes the card counts as no, and the program waits ten minutes before it may ask again.
+
+A program PadForge could not identify is never added to **Allowed Programs**, and no answer to its card is kept, since PadForge cannot tell it from another program. **Allow** holds for its connections open then, and its next connection asks again. A program that connects twice while its card is up waits on the one answer. Adding an assistant on its row of the [Assistants](assistants.md) card is your answer for that assistant, and no card asks.
 
 Consent tells you which program is asking. It is no barrier against software already running as you, which could start an allowed program itself.
 

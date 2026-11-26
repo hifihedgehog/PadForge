@@ -386,7 +386,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("030000004c050000c405000000000000", (int)ReaderClass.DirectInput, null)]
         [InlineData("030000004c050000c405000000006800", (int)ReaderClass.Hidapi, null)]
-        [InlineData("050057564c050000e60c000000006800", (int)ReaderClass.None, "SDL's driver numbers its controls its own way")]
+        [InlineData("050057564c050000e60c000000006800", (int)ReaderClass.None, "the comparison is proven on its USB reports only")]
         [InlineData("030000007e0500000920000000006800", (int)ReaderClass.None, "SDL's driver numbers its controls its own way")]
         [InlineData("03000000de2800000312000000006700", (int)ReaderClass.None, "SDL reads it through GameInput")]
         [InlineData("05000000de2800000312000000006c00", (int)ReaderClass.None, "SDL reads it over Bluetooth LE")]

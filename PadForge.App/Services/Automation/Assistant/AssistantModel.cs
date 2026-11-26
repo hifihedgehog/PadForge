@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace PadForge.Services.Automation
 {
     // The shapes PadForge's own things take in an assistant's results
-    // (#597). Names are lowercase words joined by underscores on the wire
+    // (#600). Names are lowercase words joined by underscores on the wire
     // (AssistantJson). Every name or text that came from outside PadForge is
     // an OutsideText.
 

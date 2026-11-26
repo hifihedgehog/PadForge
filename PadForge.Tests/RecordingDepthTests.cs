@@ -150,7 +150,7 @@ namespace PadForge.Tests
             Assert.Null(recorder.Health(System.Diagnostics.Stopwatch.GetTimestamp()));
             string line = recorder.Health(System.Diagnostics.Stopwatch.GetTimestamp() + System.Diagnostics.Stopwatch.Frequency);
             Assert.StartsWith("health: PadForge ", line);
-            foreach (string word in new[] { " MB in use", " handles, ", " window objects, ", " drawing objects, ", " threads, .NET collections ", "PC memory" })
+            foreach (string word in new[] { " MB in use", " MB its own", " handles, ", " window objects, ", " drawing objects, ", ", .NET collections ", "PC memory" })
                 Assert.Contains(word, line);
             Assert.DoesNotContain(RecorderTestHost.User, line);
         }
@@ -303,7 +303,7 @@ namespace PadForge.Tests
         // ── XInput read back, and a second reader ──
 
         [Fact]
-        public void WhatAGameReadsBack_IsWritten_AndThePlaceAVirtualControllerGot()
+        public void WhatPadForgesOwnXInputReads_IsWritten_ByItsOwnNumber_AndNoVirtualControllerIsGivenAPlace()
         {
             var before = XInputReadBack.ReadSeam;
             // A place read empty is asked again a second later, so the
@@ -320,8 +320,11 @@ namespace PadForge.Tests
                 recorder.WaitForFlush();
                 string path = recorder.Stop(wait: true).Path;
                 var events = RecorderTestKit.Events(path);
-                Assert.Contains(events, e => e.Layer == 'X' && e.Payload == "place=2 Buttons=A LeftTrigger=0 RightTrigger=0 LeftX=1200 LeftY=0 RightX=0 RightY=0");
-                Assert.Contains(events, e => e.Layer == 'X' && e.Subject == "C1" && e.Payload == "reads at XInput place 2");
+                Assert.Contains(events, e => e.Layer == 'X' && e.Payload == "xinput=2 Buttons=A LeftTrigger=0 RightTrigger=0 LeftX=1200 LeftY=0 RightX=0 RightY=0");
+                // The library PadForge reads XInput with gives no virtual
+                // controller a number, so no line says where one is read.
+                Assert.DoesNotContain(events, e => e.Layer == 'X' && e.Subject == "C1");
+                Assert.DoesNotContain(events, e => e.Payload.Contains("XInput place", StringComparison.Ordinal));
             }
             finally { XInputReadBack.ReadSeam = before; }
         }
@@ -506,6 +509,127 @@ namespace PadForge.Tests
                 NativeCrashRecord.RecordsSeam = before;
                 Directory.Delete(folder, recursive: true);
             }
+        }
+
+        private static void WithCrashLog(Func<IReadOnlyList<NativeCrash>> records, Action<string> body)
+        {
+            string folder = Path.Combine(Path.GetTempPath(), "PadForge.RecorderTests", Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(folder);
+            var before = NativeCrashRecord.RecordsSeam;
+            NativeCrashRecord.RecordsSeam = records;
+            try { body(Path.Combine(folder, "crash.log")); }
+            finally
+            {
+                NativeCrashRecord.RecordsSeam = before;
+                Directory.Delete(folder, recursive: true);
+            }
+        }
+
+        private static readonly DateTime CrashTime = new(2026, 11, 23, 21, 4, 5);
+
+        /// <summary>An unhandled .NET exception ends the process with the
+        /// runtime's own code, e0434352, and crash.log already has the
+        /// runtime's block for it: that record is no crash in native code. A
+        /// native one beside it is copied.</summary>
+        [Fact]
+        public void AManagedCrashsRecord_IsNotCopiedAsANativeCrash()
+        {
+            WithCrashLog(() => new[]
+            {
+                new NativeCrash(5101, CrashTime, "PadForge.exe", "6.1.0.0", "KERNELBASE.dll", "10.0.26100.7309", NativeCrashRecord.Hex("e0434352"), NativeCrashRecord.Hex("00000000000c408a")),
+                new NativeCrash(5102, CrashTime, "PadForge.exe", "6.1.0.0", "SDL3.dll", "3.5.0.0", "0xC0000005", "0x0000000000012A4F"),
+            }, crashLog =>
+            {
+                Assert.Equal(1, NativeCrashRecord.CopyNew(crashLog));
+                string text = File.ReadAllText(crashLog);
+                Assert.DoesNotContain("record 5101", text);
+                Assert.Contains("record 5102: PadForge.exe 6.1.0.0 stopped in native code.", text);
+            });
+        }
+
+        /// <summary>Any program can write an Application Error event, so a
+        /// record whose fields are not the shapes Windows writes is left out
+        /// whole: a version with a line break and ten thousand characters, a
+        /// code that is not hex, a module that is no file name. The record
+        /// beside them is copied.</summary>
+        [Fact]
+        public void ARecordOfAnyOtherShape_LeavesNothingInCrashLog()
+        {
+            string planted = "6.1\r\nplanted" + new string('x', 10000);
+            WithCrashLog(() => new[]
+            {
+                new NativeCrash(6101, CrashTime, "PadForge.exe", planted, "SDL3.dll", "3.5.0.0", "0xC0000005", "0x1"),
+                new NativeCrash(6102, CrashTime, "PadForge.exe", "6.1.0.0", "SDL3.dll", "3.5.0.0", NativeCrashRecord.Hex("planted text"), "0x1"),
+                new NativeCrash(6103, CrashTime, "PadForge.exe", "6.1.0.0", "SDL3.dll\r\nplanted", "3.5.0.0", "0xC0000005", "0x1"),
+                new NativeCrash(6104, CrashTime, "PadForge.exe", "6.1.0.0", "SDL3.dll", "3.5.0.0", "0xC0000005", "0x" + new string('1', 17)),
+                new NativeCrash(6105, CrashTime, "PadForge.exe", "6.1.0.0", "SDL3.dll", "3.5.0.0", "0xC0000005", "0x0000000000012A4F"),
+            }, crashLog =>
+            {
+                Assert.Equal(1, NativeCrashRecord.CopyNew(crashLog));
+                string text = File.ReadAllText(crashLog);
+                Assert.DoesNotContain("planted", text);
+                Assert.DoesNotContain("xxxx", text);
+                Assert.DoesNotContain("record 610", text.Replace("record 6105", string.Empty));
+                Assert.Contains("record 6105: PadForge.exe 6.1.0.0 stopped in native code.", text);
+            });
+        }
+
+        /// <summary>The log gives a record's time in the PC's own zone. After
+        /// the zone changes, a record crash.log holds reads hours apart from
+        /// its block there, and is still the one copied: nothing is copied a
+        /// second time.</summary>
+        [Fact]
+        public void ARecordCopiedBefore_ReadInAnotherTimeZone_IsNotCopiedAgain()
+        {
+            var copied = new NativeCrash(7, CrashTime, "PadForge.exe", "6.1.0.0", "SDL3.dll", "3.5.0.0", "0xC0000005", "0x10");
+            foreach (int hours in new[] { -12, -1, 9, 14 })
+            {
+                WithCrashLog(() => new[] { copied with { Time = CrashTime.AddHours(hours) } }, crashLog =>
+                {
+                    File.WriteAllText(crashLog, NativeCrashRecord.Lines(copied));
+                    Assert.Equal(0, NativeCrashRecord.CopyNew(crashLog));
+                });
+            }
+        }
+
+        /// <summary>A cleared Application log numbers its records from the
+        /// start again, so a record crash.log holds is known by its time and
+        /// its number together: a new record of an old number is
+        /// copied.</summary>
+        [Fact]
+        public void ARecordOfANumberCopiedBefore_AtAnotherTime_IsCopied()
+        {
+            var old = new NativeCrash(5, CrashTime, "PadForge.exe", "6.0.0.0", "SDL3.dll", "3.4.0.0", "0xC0000005", "0x10");
+            var again = old with { Time = CrashTime.AddDays(3), ProgramVersion = "6.1.0.0" };
+            WithCrashLog(() => new[] { old, again }, crashLog =>
+            {
+                File.WriteAllText(crashLog, NativeCrashRecord.Lines(old));
+                Assert.Equal(1, NativeCrashRecord.CopyNew(crashLog));
+                string text = File.ReadAllText(crashLog);
+                Assert.Contains("record 5: PadForge.exe 6.1.0.0 stopped in native code.", text);
+                // The one crash.log held is not copied twice.
+                Assert.Single(System.Text.RegularExpressions.Regex.Matches(text, "record 5: PadForge.exe 6.0.0.0 "));
+                Assert.Equal(0, NativeCrashRecord.CopyNew(crashLog));
+            });
+        }
+
+        /// <summary>WCT_OBJECT_STATUS (wct.h): only Running is said as
+        /// running and only Blocked as blocked. Any other status a thread
+        /// node can carry, Unknown, NoAccess, Error, PidOnly, says Windows did
+        /// not tell.</summary>
+        [Theory]
+        [InlineData(2, "Windows sees it running")]
+        [InlineData(3, "Windows sees it blocked on nothing it can name (a .NET lock or event)")]
+        [InlineData(1, "Windows does not say whether it runs or waits")]
+        [InlineData(4, "Windows does not say whether it runs or waits")]
+        [InlineData(9, "Windows does not say whether it runs or waits")]
+        [InlineData(10, "Windows does not say whether it runs or waits")]
+        public void TheWaitChain_SaysRunningOnlyWhenWindowsSaysSo(int status, string words)
+        {
+            var nodes = new WindowWatch.WaitNode[16];
+            nodes[0].ObjectType = 8;
+            nodes[0].ObjectStatus = status;
+            Assert.Equal(words, WindowWatch.ChainText(nodes, 1, cycle: false, self: 4321));
         }
     }
 }

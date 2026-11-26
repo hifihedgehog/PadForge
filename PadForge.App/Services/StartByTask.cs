@@ -8,7 +8,7 @@ namespace PadForge.Services
     /// A start of PadForge without rights while Start at Login is on (#600
     /// item 44): it runs the Start at Login task, which starts PadForge with
     /// rights and no prompt, as at logon, and hands the started copy its
-    /// start switches over the signal window.
+    /// start switches over the signal pipe of its signal window.
     ///
     /// <para>The task's access list lets the user it starts PadForge for run
     /// it (<see cref="StartupHelper.RunRight"/>). Any program of that user
@@ -52,7 +52,7 @@ namespace PadForge.Services
             public Func<bool> RunTask = StartupHelper.RunTask;
             public Func<bool> WaitForCopy = () => RunningCopy.WaitForStartedCopy(StartWithRights.AppWindowWaitMs);
             public Func<IReadOnlyList<string>, bool> Hand = words => RunningCopy.HandStartSwitches(words, HandMs);
-            public Func<Func<int?>> Watch = () => RunningCopy.Watch();
+            public Func<RunningCopy.Hold<int?>> Watch = () => RunningCopy.Watch();
             public Action<string> SayError = CallerConsole.SayError;
         }
 
@@ -91,7 +91,10 @@ namespace PadForge.Services
                 }
             }
             if (CommandLineSwitches.Parse(args).Wait)
-                exitCode = seams.Watch()?.Invoke() ?? StartWithRights.NotStarted;
+            {
+                using var watch = seams.Watch();
+                exitCode = watch?.Wait() ?? StartWithRights.NotStarted;
+            }
             return true;
         }
 

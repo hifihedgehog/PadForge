@@ -8,7 +8,7 @@ using PadForge.Common;
 namespace PadForge.Services
 {
     /// <summary>
-    /// The logon start (#597). The Start at Login task runs as SYSTEM, whose
+    /// The logon start (#600). The Start at Login task runs as SYSTEM, whose
     /// environment Task Scheduler builds from SYSTEM's own profile, and starts
     /// PadForge.exe with <see cref="Switch"/> and the SID of the user who
     /// turned the setting on. This run, before any of WPF loads, finds that
@@ -17,7 +17,7 @@ namespace PadForge.Services
     /// at logon, builds the variables the app gets itself, and starts
     /// PadForge in that session on the interactive desktop.
     ///
-    /// <para>Before #597 the task ran PadForge as the user, with rights, and
+    /// <para>Before #600 the task ran PadForge as the user, with rights, and
     /// Task Scheduler gave it the variables of the user's profile. Every
     /// program of the user can write those (HKCU\Environment), and the .NET
     /// runtime loads the library CORECLR_PROFILER_PATH names before Main when

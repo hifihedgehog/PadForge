@@ -18,8 +18,8 @@ namespace PadForge.Services.Plugins
         Waiting,
         /// <summary>Its process runs.</summary>
         Running,
-        /// <summary>It exited while it should run, and starts again after
-        /// a pause.</summary>
+        /// <summary>It exited, or could not be started, while it should
+        /// run, and starts again after a pause.</summary>
         Restarting,
         /// <summary>Its file is not the one the user approved, so it was not
         /// started.</summary>
@@ -173,8 +173,6 @@ namespace PadForge.Services.Plugins
         /// plugin's hello, which a later look compares.</summary>
         internal (long Length, DateTime Written)? Stamp;
         internal bool HashPending;
-        /// <summary>Its devices went offline for its silence.</summary>
-        internal bool SilentOffline;
 
         internal PluginData Save() => new()
         {
@@ -191,7 +189,7 @@ namespace PadForge.Services.Plugins
     }
 
     /// <summary>
-    /// Runs the plugins the user added and approved (#597). A plugin is a
+    /// Runs the plugins the user added and approved (#600). A plugin is a
     /// program PadForge starts with the user's ordinary rights through
     /// <see cref="IPluginLauncher"/>, never inside PadForge and never with
     /// its rights. It connects to <c>PadForge.Automation</c> with the
@@ -199,16 +197,18 @@ namespace PadForge.Services.Plugins
     /// devices are like any program's.
     ///
     /// <para>Approval is for the exact bytes. Before each start the file is
-    /// opened so nothing can change it, hashed again, and held open while
-    /// the plugin runs: the handle that was hashed is the one held, and it
-    /// shares reading only. The open and the hash run off the interface's
+    /// opened so nothing can change it, hashed again, and held open until
+    /// the plugin's hello: the handle that was hashed is the one held, and
+    /// it shares reading only. After the hello the file is free to change,
+    /// and a change shows Approve and Restart
+    /// (<see cref="CheckFiles"/>). The open and the hash run off the interface's
     /// thread and outside the lock, so a large file holds neither the page
     /// nor the other plugins. A file whose hash is not the approved one is
     /// not started.</para>
     ///
     /// <para>Plugins whose switch is on run while Plugins is on and the
     /// engine runs. One that exits while it should run starts again after
-    /// 1 s, 2 s, 4 s and so on up to 30 s. Five failures in a row stop it,
+    /// 1 s, then 2 s, 4 s and 8 s. The fifth failure in a row stops it,
     /// and a run that said hello and lasted a minute clears the count. Each
     /// keeps its last
     /// <see cref="LogLines"/> log lines.</para>
@@ -222,7 +222,6 @@ namespace PadForge.Services.Plugins
     {
         internal const int MostFailures = 5;
         internal const int FirstPauseMs = 1000;
-        internal const int LongestPauseMs = 30000;
         internal const int SteadyRunMs = 60000;
         internal const int LogLines = 200;
         internal const int MostPlugins = 16;
@@ -247,7 +246,10 @@ namespace PadForge.Services.Plugins
         private readonly string _pipeName;
         private readonly Func<long> _nowMs;
         private readonly Func<DateTimeOffset> _clock;
-        private readonly Func<string, PluginCommand> _commandFor;
+        /// <summary>How a file runs: the approved path, whose extension
+        /// picks the kind of start, and the path its held handle reached,
+        /// which the command runs.</summary>
+        private readonly Func<string, string, PluginCommand> _commandFor;
         private readonly Action<Action> _runCheck;
         private readonly Func<string, (FileStream Held, string Sha256)> _openHeld;
         private readonly Func<string, FileStream, AuthenticodeSignature> _signatureOf;
@@ -290,7 +292,9 @@ namespace PadForge.Services.Plugins
             _pipeName = pipeName ?? AutomationPipe.PipeName;
             _nowMs = nowMs ?? (() => Environment.TickCount64);
             _clock = clock ?? (() => DateTimeOffset.Now);
-            _commandFor = commandFor ?? (path => PluginFile.CommandFor(path));
+            _commandFor = commandFor != null
+                ? (_, final) => commandFor(final)
+                : (approved, final) => PluginFile.CommandFor(final, kindOf: approved);
             if (timer) _timer = new Timer(_ => Tick(), null, Timeout.Infinite, Timeout.Infinite);
         }
 
@@ -598,9 +602,12 @@ namespace PadForge.Services.Plugins
         private void StopRun(PluginRun run)
         {
             // Switched off, or Plugins is: stopped. Waiting for the engine:
-            // a plugin held back for a reason keeps saying it.
+            // a plugin held back for a reason keeps saying it. With the
+            // engine running it is stopped to start again (Approve and
+            // Restart, a trusted new version), and keeps its state until
+            // its exit starts it (OnExited).
             if (!run.Enabled || !_pluginsOn) run.Status = PluginStatus.Stopped;
-            else if (run.Status is not (PluginStatus.Changed or PluginStatus.Failed or PluginStatus.Refused))
+            else if (!_engine && run.Status is not (PluginStatus.Changed or PluginStatus.Failed or PluginStatus.Refused))
                 run.Status = PluginStatus.Waiting;
             run.DueAtMs = 0;
             run.NeverConnected = false;
@@ -652,6 +659,18 @@ namespace PadForge.Services.Plugins
             catch { (held, sha) = (null, null); }
             var trusted = Trusted(run, held, sha);
             string key = KeyToKeep(run, held, sha);
+            string final = null;
+            int finalError = 0;
+            try { final = PluginFile.FinalPath(held, out finalError); }
+            catch (Exception ex) when (ex is IOException or ObjectDisposedException) { finalError = ex.HResult; }
+            // How the file runs is read here, with no lock held: the read of
+            // the desktop user's registry holds no page.
+            PluginCommand command = null;
+            if (final != null)
+            {
+                try { command = _commandFor(run.Path, final); }
+                catch { command = null; }
+            }
             bool changed = true, adopted = false;
             lock (_sync)
             {
@@ -671,7 +690,7 @@ namespace PadForge.Services.Plugins
                         if (run.Status == PluginStatus.Checking) run.Status = PluginStatus.Stopped;
                         if (_runs.Contains(run)) Evaluate(run);
                     }
-                    else adopted = Launch(run, held, sha, trusted, key);
+                    else adopted = Launch(run, held, sha, trusted, key, final, finalError, command);
                 }
             }
             RunChecks();
@@ -741,8 +760,12 @@ namespace PadForge.Services.Plugins
         /// <summary>Under the lock: the rest of a start, from the hash just
         /// read to the running process. True when what PadForge.xml keeps of
         /// it changed: it took a new version signed with the trusted key, or
-        /// kept the key of an approval from before keys were kept.</summary>
-        private bool Launch(PluginRun run, FileStream held, string sha, AuthenticodeSignature trusted, string key)
+        /// kept the key of an approval from before keys were kept. The start
+        /// is made from <paramref name="final"/>, the path the held handle
+        /// reached (<see cref="PluginFile.FinalPath"/>), with the
+        /// <paramref name="command"/> read for it.</summary>
+        private bool Launch(PluginRun run, FileStream held, string sha, AuthenticodeSignature trusted, string key,
+            string final, int finalError, PluginCommand command)
         {
             if (held == null)
             {
@@ -767,13 +790,16 @@ namespace PadForge.Services.Plugins
                 run.SignerKey = key.ToUpperInvariant();
                 adopted = true;
             }
-            PluginCommand command;
-            try { command = _commandFor(run.Path); }
-            catch { command = null; }
-            if (command == null)
+            if (final == null)
             {
                 held.Dispose();
-                Refuse(run, PluginRefusal.NoProgram, 0, retry: false);
+                Refuse(run, PluginRefusal.Failed, finalError, retry: false);
+                return adopted;
+            }
+            if (command?.Program == null)
+            {
+                held.Dispose();
+                Refuse(run, command?.Refusal is { } why and not PluginRefusal.None ? why : PluginRefusal.NoProgram, 0, retry: false);
                 return adopted;
             }
 
@@ -795,9 +821,10 @@ namespace PadForge.Services.Plugins
             {
                 held.Dispose();
                 var why = launch?.Refusal ?? PluginRefusal.Failed;
-                // No shell yet, as at sign-in, or a start Windows refused
-                // this once: tried again after the pause. The rest stays
-                // as it is until the user acts.
+                // No shell yet, as at sign-in: tried again each second
+                // (Refuse). A start Windows refused this once: tried again
+                // after the pause. The rest stays as it is until the user
+                // acts.
                 Refuse(run, why == PluginRefusal.None ? PluginRefusal.Failed : why, launch?.Error ?? 0,
                     retry: why is PluginRefusal.NoShell or PluginRefusal.Failed or PluginRefusal.None);
                 return adopted;
@@ -819,19 +846,32 @@ namespace PadForge.Services.Plugins
             return adopted;
         }
 
-        /// <summary>Under the lock.</summary>
+        /// <summary>Under the lock. A start before the desktop shell exists,
+        /// as at sign-in, is no failure of the plugin's: it is tried again
+        /// each second for as long as the shell takes, with one log line
+        /// for the wait. Only the plugin's exits and Windows' refusals count
+        /// toward the five.</summary>
         private void Refuse(PluginRun run, PluginRefusal why, int error, bool retry)
         {
+            bool waitForShell = retry && why == PluginRefusal.NoShell;
+            bool stillWaiting = waitForShell && run.Refusal == PluginRefusal.NoShell;
             run.Refusal = why;
             run.Error = error;
-            AddLog(run, new PluginLogLine(_clock(), PluginLogKind.NotStarted, Code: error, Refusal: why));
-            if (retry) Failed(run);
+            if (!stillWaiting) AddLog(run, new PluginLogLine(_clock(), PluginLogKind.NotStarted, Code: error, Refusal: why));
+            if (waitForShell)
+            {
+                run.PauseMs = FirstPauseMs;
+                run.DueAtMs = _nowMs() + FirstPauseMs;
+                run.Status = PluginStatus.Restarting;
+                EnsureTimer();
+            }
+            else if (retry) Failed(run);
             else run.Status = PluginStatus.Refused;
         }
 
         /// <summary>Under the lock: one more failure in a row. The fifth
         /// stops the plugin. Before it, the next start waits 1 s, then 2 s,
-        /// 4 s and so on, never more than 30 s.</summary>
+        /// 4 s and 8 s.</summary>
         private void Failed(PluginRun run)
         {
             run.Failures++;
@@ -849,13 +889,10 @@ namespace PadForge.Services.Plugins
         }
 
         /// <summary>The pause before the start that follows
-        /// <paramref name="failures"/> failures in a row.</summary>
+        /// <paramref name="failures"/> failures in a row, which
+        /// <see cref="Failed"/> asks for one to four: 1, 2, 4 and 8 s.</summary>
         internal static int PauseAfter(int failures)
-        {
-            if (failures <= 1) return FirstPauseMs;
-            long pause = (long)FirstPauseMs << Math.Min(failures - 1, 16);
-            return (int)Math.Min(pause, LongestPauseMs);
-        }
+            => FirstPauseMs << (Math.Clamp(failures, 1, MostFailures - 1) - 1);
 
         private void OnExited(PluginRun run, IPluginProcess process, int code)
         {
@@ -871,7 +908,6 @@ namespace PadForge.Services.Plugins
                     run.Token = null;
                     run.Grant = null;
                     run.Stamp = null;
-                    run.SilentOffline = false;
                     run.FileChanged = false;
                     run.Settings.EndRun();
                     run.ExitCode = code;
@@ -1067,68 +1103,85 @@ namespace PadForge.Services.Plugins
         };
 
         /// <summary>
-        /// Looks at the file of each plugin that runs past its hello: when
-        /// its size or write time moved, it is hashed again off the
-        /// interface's thread, and a hash that is not the approved one marks
-        /// the run <see cref="PluginRun.FileChanged"/>. A new version signed
-        /// with the key the user trusts restarts it instead, as Approve and
-        /// Restart does, and its start hashes and checks the file again.
-        /// While the user trusts the signer, a marked file is looked at again
-        /// when it moves, so a version still being written when it was first
-        /// read is taken once it is whole. The page's tick calls it once a
-        /// second.
+        /// Looks at the file of each plugin that runs past its hello, off
+        /// the interface's thread, so a share that stops answering holds no
+        /// window: when its size or write time moved, it is hashed again,
+        /// and a hash that is not the approved one marks the run
+        /// <see cref="PluginRun.FileChanged"/>. A new version signed with the
+        /// key the user trusts restarts it instead, as Approve and Restart
+        /// does, and its start hashes and checks the file again. A marked
+        /// file is looked at again when it moves: one that is the approved
+        /// bytes again, an edit taken back or a write read before it ended,
+        /// is no longer marked, and a trusted version still being written
+        /// when it was first read is taken once it is whole. One look per
+        /// plugin is out at a time. The page's tick calls it once a second.
         /// </summary>
         public void CheckFiles()
         {
             var due = new List<PluginRun>();
             lock (_sync)
                 foreach (var run in _runs)
-                    if (run.Process != null && run.Held == null && run.Stamp != null && (!run.FileChanged || run.TrustSigner) && !run.HashPending)
+                    if (run.Process != null && run.Held == null && run.Stamp != null && !run.HashPending)
+                    {
+                        run.HashPending = true;
                         due.Add(run);
-            foreach (var run in due)
+                    }
+            foreach (var run in due) _runCheck(() => LookAtFile(run));
+        }
+
+        /// <summary>Off the interface's thread: one plugin's look of
+        /// <see cref="CheckFiles"/>.</summary>
+        private void LookAtFile(PluginRun run)
+        {
+            var now = StatFile(run.Path);
+            lock (_sync)
             {
-                var now = StatFile(run.Path);
-                (long, DateTime)? stamp;
-                lock (_sync) stamp = run.Stamp;
-                if (now == stamp) continue;
-                lock (_sync) run.HashPending = true;
-                _runCheck(() =>
+                if (now == run.Stamp)
                 {
-                    string sha = null;
-                    FileStream held = null;
-                    AuthenticodeSignature trusted = null;
-                    try
-                    {
-                        (held, sha) = _openHeld(run.Path);
-                        trusted = Trusted(run, held, sha);
-                    }
-                    catch { sha = null; }
-                    finally { held?.Dispose(); }
-                    bool changed, adopted = false;
-                    lock (_sync)
-                    {
-                        run.HashPending = false;
-                        run.Stamp = now;
-                        changed = run.Process != null && !string.Equals(sha, run.Sha256, StringComparison.OrdinalIgnoreCase);
-                        if (changed && sha != null && TakesTrusted(run, trusted))
-                        {
-                            // The run of the old bytes ends, and its end
-                            // starts the new ones (OnExited).
-                            TakeTrusted(run, sha, trusted);
-                            StopRun(run);
-                            adopted = true;
-                        }
-                        else if (changed && !run.FileChanged)
-                        {
-                            run.FileChanged = true;
-                            AddLog(run, new PluginLogLine(_clock(), PluginLogKind.ChangedWhileRunning));
-                        }
-                    }
-                    RunChecks();
-                    if (adopted) SavedChanged?.Invoke();
-                    if (changed) Changed?.Invoke();
-                });
+                    run.HashPending = false;
+                    return;
+                }
             }
+            string sha = null;
+            FileStream held = null;
+            AuthenticodeSignature trusted = null;
+            try
+            {
+                (held, sha) = _openHeld(run.Path);
+                trusted = Trusted(run, held, sha);
+            }
+            catch { sha = null; }
+            finally { held?.Dispose(); }
+            bool changed = false, adopted = false;
+            lock (_sync)
+            {
+                run.HashPending = false;
+                if (run.Process == null) return;
+                run.Stamp = now;
+                if (sha != null && string.Equals(sha, run.Sha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    // The approved bytes again.
+                    changed = run.FileChanged;
+                    run.FileChanged = false;
+                }
+                else if (sha != null && TakesTrusted(run, trusted))
+                {
+                    // The run of the old bytes ends, and its end starts the
+                    // new ones (OnExited).
+                    TakeTrusted(run, sha, trusted);
+                    StopRun(run);
+                    changed = adopted = true;
+                }
+                else if (!run.FileChanged)
+                {
+                    run.FileChanged = true;
+                    AddLog(run, new PluginLogLine(_clock(), PluginLogKind.ChangedWhileRunning));
+                    changed = true;
+                }
+            }
+            RunChecks();
+            if (adopted) SavedChanged?.Invoke();
+            if (changed) Changed?.Invoke();
         }
 
         /// <summary>

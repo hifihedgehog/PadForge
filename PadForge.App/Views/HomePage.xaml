@@ -836,7 +836,7 @@
 
             <!-- ═══ The shared folder ═══
                  PadForge runs with administrator rights from a folder other
-                 programs can change (#597, Services/ExeFolderState.cs), so
+                 programs can change (#600, Services/ExeFolderState.cs), so
                  they can change PadForge.xml there, and PadForge acts on it
                  with its rights. The card stands until the move, or until the
                  folder is PadForge's own. It is the offer's band, with the

@@ -831,6 +831,12 @@ namespace PadForge.ViewModels
             // a live language switch, so the dropdowns kept the old language
             // (owner report 2026-07-16, found alongside the Menus tab twin).
             OnPropertyChanged(nameof(PrimaryKindOptions));
+            // The mouse pickers' entries copy their words when the list is
+            // built, and the counts' unit is read once, so both are built
+            // again in the new language.
+            OnPropertyChanged(nameof(ParamTravelCenteringChoices));
+            OnPropertyChanged(nameof(ParamTravelSteerChoices));
+            OnPropertyChanged(nameof(TravelCountsUnit));
             PrimaryKindSource?.RaiseModeChoices();
             foreach (var src in ExtraSources)
                 src.RefreshCulture();
@@ -969,7 +975,7 @@ namespace PadForge.ViewModels
             _suppressSelectionSync = false;
             SyncSelectedInputFromDescriptor();
             // The Steer Input picker of a "Mouse Travel" source lists the
-            // slot's on/off inputs of the source's device (#597).
+            // slot's on/off inputs of the source's device (#600).
             RaiseTravelSteerInput();
         }
 
@@ -1628,7 +1634,7 @@ namespace PadForge.ViewModels
         /// <summary>Mirrors <see cref="MappingSourceItem.IsParamAccelApplicable"/>:
         /// the Acceleration slider hides on gravity-tilt primaries because
         /// the engine's lean/tilt path never applies ParamAccel (#292), and
-        /// on a "Mouse Travel" primary, whose wheel takes none (#597).</summary>
+        /// on a "Mouse Travel" primary, whose wheel takes none (#600).</summary>
         public bool IsParamAccelApplicable => IsHalfAxisApplicable
             && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(StripLegacyPrefix(_sourceDescriptor ?? ""))
             && !IsMouseTravelSource;
@@ -1775,7 +1781,7 @@ namespace PadForge.ViewModels
                     return true;
 
                 // A mouse's travel is a wheel's position on either side of
-                // center (#597): Half picks one side and Invert which.
+                // center (#600): Half picks one side and Invert which.
                 if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(desc))
                     return true;
 

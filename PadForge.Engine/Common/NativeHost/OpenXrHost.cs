@@ -6,7 +6,7 @@ using static PadForge.Engine.Common.OpenXr.OpenXrInterop;
 
 namespace PadForge.Engine.Common.NativeHost
 {
-    /// <summary>The OpenXR link's calls over the host's channel (#597), one
+    /// <summary>The OpenXR link's calls over the host's channel (#600), one
     /// per <see cref="IOpenXrLink"/> member. Every answer ends with the
     /// link's properties and the lines the runtime's code logged during the
     /// call.</summary>
@@ -198,8 +198,9 @@ namespace PadForge.Engine.Common.NativeHost
     /// <summary>
     /// PadForge's side of OpenXR: <see cref="IOpenXrLink"/> over the host,
     /// for <see cref="OpenXrHeadPoseSource"/>'s sampling thread. A host that
-    /// ended reads as a lost instance, which the source answers as it
-    /// answers a runtime's: it retires the link and asks for a new one.
+    /// ended reads as a lost instance with <see cref="HostEnded"/> set, which
+    /// the source answers by retiring the link and asking for a new one,
+    /// except on a runtime that is an OpenVR client library.
     /// </summary>
     internal sealed class RemoteOpenXrLink : IOpenXrLink
     {
@@ -218,6 +219,7 @@ namespace PadForge.Engine.Common.NativeHost
         public bool HasControllers { get; private set; }
         public bool SharesOpenVrClient { get; private set; }
         public long InstanceLossWaitMs { get; private set; }
+        public bool HostEnded => _channel.Broken;
 
         /// <summary>The source's opener: a channel to the host, and the
         /// runtime negotiated with there.</summary>

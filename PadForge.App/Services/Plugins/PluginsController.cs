@@ -14,7 +14,7 @@ using PadForge.Engine.Common;
 namespace PadForge.Services.Plugins
 {
     /// <summary>
-    /// The plugins' part of the app (#597, #600 items 17 to 19), made by the
+    /// The plugins' part of the app (#600 items 17 to 19), made by the
     /// window once the Automation host is: it runs the plugin manager and
     /// the two built-in plugins, gives the host the plugins' key check,
     /// starts and stops them with the Plugins switch and the engine, and
@@ -26,7 +26,7 @@ namespace PadForge.Services.Plugins
     /// <para>Once a second while Plugins is on it looks after the plugins
     /// past their hello: a file that changed shows Approve and Restart, a
     /// plugin silent for <see cref="OfflineAfterSilenceMs"/> has its devices
-    /// taken offline at rest, and one silent for
+    /// taken offline at rest until it speaks again, and one silent for
     /// <see cref="EndAfterSilenceMs"/> is ended and started again with the
     /// back-off unless a debugger is attached to it. A plugin that has not
     /// said hello by <see cref="PluginManager.HelloDeadlineMs"/> is ended
@@ -194,8 +194,10 @@ namespace PadForge.Services.Plugins
         /// Each plugin's session that holds devices or declared settings
         /// and has said nothing: after <see cref="OfflineAfterSilenceMs"/>
         /// its devices go offline at rest (the lease has rested them
-        /// already), and after <see cref="EndAfterSilenceMs"/> the plugin is
-        /// ended and started again with the back-off.
+        /// already) and stay the plugin's, as a silent script's do
+        /// (AutomationSessions.TickOnce), so its next line brings them back
+        /// (AutomationSessions.Woke). After <see cref="EndAfterSilenceMs"/>
+        /// the plugin is ended and started again with the back-off.
         /// </summary>
         internal void CheckSilence()
         {
@@ -206,14 +208,23 @@ namespace PadForge.Services.Plugins
                 var run = Manager.RunOf(session.Grant);
                 if (run == null) continue;
                 var owned = _host.Sessions.Devices.OwnedBy(session);
-                // A plugin with nothing to answer for is not watched. One
-                // whose devices this look took offline still is.
-                if (owned.Count == 0 && !run.Settings.HasDeclarations && !run.SilentOffline) continue;
+                // A plugin with nothing to answer for is not watched. Its
+                // devices stay its own while they are offline.
+                if (owned.Count == 0 && !run.Settings.HasDeclarations) continue;
                 long silent = now - session.LastHeardMs;
-                if (silent >= OfflineAfterSilenceMs && owned.Count > 0)
+                if (silent >= OfflineAfterSilenceMs && owned.Count > 0 && !session.Asleep)
                 {
-                    foreach (var entry in owned) _host.Sessions.Devices.Gone(session, entry.Id);
-                    run.SilentOffline = true;
+                    // Under the session's own gate, which its next line's
+                    // wake takes too: a line that came since the look above
+                    // keeps the devices.
+                    lock (session.SleepGate)
+                    {
+                        if (!session.Asleep && _nowMs() - session.LastHeardMs >= OfflineAfterSilenceMs)
+                        {
+                            session.Asleep = true;
+                            _host.Sessions.Devices.Sleep(session);
+                        }
+                    }
                 }
                 if (silent >= EndAfterSilenceMs) Manager.EndSilent(run);
             }
@@ -372,8 +383,8 @@ namespace PadForge.Services.Plugins
         internal string StateLine(PluginRun run)
         {
             var s = Strings.Instance;
-            var parts = new List<string> { Sentence(StateOf(run)) };
-            if (run.FileChanged) parts.Add(Sentence(s.Plugins_State_Changed));
+            var parts = new List<string> { StateSentence(run) };
+            if (run.FileChanged) parts.Add(RowSentence(s.Plugins_State_Changed));
             var names = DeviceNames(run);
             if (names.Count > 0)
                 parts.Add(string.Format(CultureInfo.CurrentCulture, s.Plugins_Row_Added_Format, string.Join(", ", names)));
@@ -381,8 +392,16 @@ namespace PadForge.Services.Plugins
             return string.Join(" ", parts);
         }
 
-        private static string Sentence(string text)
-            => string.IsNullOrEmpty(text) || text.EndsWith('.') ? text : text + ".";
+        /// <summary>The state as the card's line says it. A state its string
+        /// writes as whole sentences, the pause after an exit or a refused
+        /// start, stands as it is. A state of a few words takes the row's
+        /// sentence end (<c>Plugins_Row_State_Format</c>), which each language
+        /// writes as its own.</summary>
+        internal static string StateSentence(PluginRun run)
+            => run.Status == PluginStatus.Restarting ? StateOf(run) : RowSentence(StateOf(run));
+
+        private static string RowSentence(string words)
+            => string.Format(CultureInfo.CurrentCulture, Strings.Instance.Plugins_Row_State_Format, words);
 
         /// <summary>The names of the devices a plugin added and PadForge
         /// keeps now, live or waiting.</summary>
@@ -482,8 +501,13 @@ namespace PadForge.Services.Plugins
             {
                 PluginRefusal.Missing => s.Plugins_Refused_Missing,
                 PluginRefusal.NoProgram => s.Plugins_Refused_NoProgram,
+                PluginRefusal.NoPython => s.Plugins_Refused_NoPython,
+                PluginRefusal.ProgramMissing => s.Plugins_Refused_ProgramMissing,
+                PluginRefusal.ProgramUnreadable => s.Plugins_Refused_ProgramUnreadable,
                 PluginRefusal.NoShell => s.Plugins_Refused_NoShell,
                 PluginRefusal.ShellElevated => s.Plugins_Refused_ShellElevated,
+                PluginRefusal.RightsUnknown => s.Plugins_Refused_RightsUnknown,
+                PluginRefusal.StartedElevated => s.Plugins_Refused_StartedElevated,
                 PluginRefusal.NeedsAdministrator => s.Plugins_Refused_NeedsAdministrator,
                 PluginRefusal.Failed when error != 0 => string.Format(CultureInfo.CurrentCulture, s.Plugins_Refused_Failed_Format, error),
                 _ => s.Plugins_Refused_Other,
@@ -664,13 +688,18 @@ namespace PadForge.Services.Plugins
             string full;
             try { full = System.IO.Path.GetFullPath(path); }
             catch { return null; }
-            // The key is read on the handle that was hashed, so it is the key
-            // of the bytes the user approves, as the confirmation reads the
-            // signer: with no revocation check and nothing fetched.
-            string sha, key;
+            // The signer and the key are read on the handle that was hashed,
+            // so they are those of the bytes the user approves: with no
+            // revocation check and nothing fetched. The signer is read as
+            // AuthenticodeSigner.Of reads it, catalogs included, with nothing
+            // kept, so no answer for other bytes at the same path is taken.
+            string sha, key, signer;
             using (var held = PluginFile.OpenHeld(full, out sha))
+            {
                 key = PluginFile.KeyOf(full, held);
-            return sha == null ? null : new PluginApproval(full, AuthenticodeSigner.Of(full), sha, key);
+                signer = held == null ? null : AuthenticodeSigner.OfHeld(full, held.SafeFileHandle);
+            }
+            return sha == null ? null : new PluginApproval(full, signer, sha, key);
         }
 
         public bool Has(string path) => Manager.Has(path);
@@ -706,11 +735,17 @@ namespace PadForge.Services.Plugins
             if (row?.Run is PluginRun run) Manager.StartAgain(run);
         }
 
-        public string OpenRecording(string path)
+        public RecordingRead ReadRecording(string path)
         {
-            string error = BuiltIns.Open(path);
+            var file = ReplayFile.Read(path, out string error);
+            return new RecordingRead(file, file == null ? error ?? "unreadable" : null);
+        }
+
+        public string OpenRecording(RecordingRead read)
+        {
+            if (read?.File != null) BuiltIns.Open(read.File);
             Refresh();
-            return error;
+            return read?.File != null ? null : read?.Error ?? "unreadable";
         }
 
         public void Play()
@@ -725,7 +760,7 @@ namespace PadForge.Services.Plugins
             Refresh();
         }
 
-        public string SaveKit(string parent) => PluginKit.Save(parent);
+        public System.Threading.Tasks.Task<string> SaveKitAsync(string parent) => UserSave.KitAsync(parent);
 
         public void Dispose()
         {
@@ -753,24 +788,34 @@ namespace PadForge.Services.Plugins
     /// <summary>
     /// The device panel's card for a device a plugin added (#600 items 17
     /// and 18): the plugin that added it, its help, and its own settings
-    /// with Reset All. A built-in's device has no settings of its own.
+    /// with Reset All. A built-in's device has no settings of its own. Its
+    /// two lines are read in the language in use, and follow a change of
+    /// it while the panel shows the card.
     /// </summary>
-    public sealed class PluginDeviceCard
+    public sealed class PluginDeviceCard : INotifyPropertyChanged
     {
         internal PluginDeviceCard(string plugin, PluginSettingsHost settings)
         {
             Plugin = plugin;
             Settings = settings;
-            var s = Strings.Instance;
-            AddedBy = string.Format(CultureInfo.CurrentCulture, s.Plugins_Device_AddedBy_Format, plugin);
-            Title = string.Format(CultureInfo.CurrentCulture, s.Plugins_Device_Settings_Format, plugin);
+            // Held weakly (Strings.CultureChanged keeps an instance's
+            // handler by a weak reference): the panel makes a card each
+            // time it shows a device.
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnCultureChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddedBy)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Title)));
         }
 
         public string Plugin { get; }
-        public string AddedBy { get; }
-        public string Title { get; }
+        public string AddedBy => string.Format(CultureInfo.CurrentCulture, Strings.Instance.Plugins_Device_AddedBy_Format, Plugin);
+        public string Title => string.Format(CultureInfo.CurrentCulture, Strings.Instance.Plugins_Device_Settings_Format, Plugin);
         public PluginSettingsHost Settings { get; }
-        public bool HasSettings => Settings != null && Settings.HasRows;
     }
 
     /// <summary>The device panel's way to its plugin card: the selected

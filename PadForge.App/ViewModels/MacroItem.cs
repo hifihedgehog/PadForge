@@ -445,14 +445,14 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Resolves a device GUID to a human-readable name via SettingsManager.
+        /// Resolves a device GUID to the name the Devices page shows: a
+        /// merged row and a built-in plugin's device in the language in use.
         /// Returns null if the device is not found.
         /// </summary>
         private static string ResolveDeviceName(Guid deviceGuid)
         {
             if (deviceGuid == Guid.Empty) return null;
-            var ud = SettingsManager.FindDeviceByInstanceGuid(deviceGuid);
-            return ud?.ResolvedName;
+            return InputService.LocalizedDeviceName(SettingsManager.FindDeviceByInstanceGuid(deviceGuid));
         }
 
         private static DeviceObjectItem[] ResolveDeviceObjects(Guid deviceGuid)
@@ -1069,6 +1069,15 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Whether the device is a program's whose shape declares
+        /// button 16 beside a touchpad, so its first pad's click is not
+        /// button 16 (ProgramDevice.OwnsButtonSixteen). False for a device
+        /// that is not online.</summary>
+        private static bool ButtonSixteenIsOwn(Guid device)
+            => device != Guid.Empty
+               && PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(device)?.Device is PadForge.Engine.ProgramDevice program
+               && PadForge.Engine.ProgramDevice.OwnsButtonSixteen(program.Shape);
+
         /// <summary>Converts a picker <see cref="InputChoice"/> into a
         /// <see cref="TriggerInputEntry"/> for the macro trigger dropdown
         /// (#177). Returns false for descriptors the trigger engine has
@@ -1157,7 +1166,9 @@ namespace PadForge.ViewModels
                     // which evaluates through the same touchpad bool
                     // read a mapping row gets (quiet today, live when
                     // the multi-touchpad click extension lands there).
-                    if (tpPad == 0)
+                    // A program's device whose button 16 is a button of
+                    // its own rides the descriptor too (#600).
+                    if (tpPad == 0 && !ButtonSixteenIsOwn(g))
                     {
                         entry = new TriggerInputEntry { DeviceGuid = g, RawButton = 16 };
                         return true;
@@ -1170,7 +1181,8 @@ namespace PadForge.ViewModels
                     // Windowed clicks (v19, M8): "Click {window}" is the
                     // pad's click AND finger 0 inside the window, a bool
                     // SourceCoercion.ReadTouchpadBool answers for every
-                    // pad index (pad 0 reads Buttons[16] inside it), so
+                    // pad index (pad 0 reads its click where the state keeps it,
+                    // CustomInputState.FirstPadClicked), so
                     // the whole family rides a descriptor entry. The old
                     // Equals("Click") test let these fall through to the
                     // gesture catch-all, building a trigger the gesture
@@ -3228,7 +3240,7 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsGyroRecenterType => _type == MacroActionType.GyroRecenter;
 
-        /// <summary>True when Type is CenterMouseSteering (#597). Gates the
+        /// <summary>True when Type is CenterMouseSteering (#600). Gates the
         /// parameter-less info card in the macro editor, the GyroRecenter
         /// card shape.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -3381,7 +3393,7 @@ namespace PadForge.ViewModels
         /// <summary>True when the shortcut names one profile.</summary>
         public bool ShowsProfileShortcutName => IsProfileShortcutType && _profileShortcutMode == PadForge.Services.SwitchProfileMode.Specific;
 
-        /// <summary>True when Type is Problem Recording (#597).</summary>
+        /// <summary>True when Type is Problem Recording (#600).</summary>
         public bool IsProblemRecordingType => _type == MacroActionType.ProblemRecording;
 
         /// <summary>True when Type is TextBlock (#201). Gates the multiline
@@ -4884,7 +4896,7 @@ namespace PadForge.ViewModels
                 : string.Format(Strings.Instance.MacroAction_ProfileShortcut_Format, _profileShortcutName),
         };
 
-        // ── Problem Recording (for MacroActionType.ProblemRecording, #597) ──
+        // ── Problem Recording (for MacroActionType.ProblemRecording, #600) ──
 
         private ProblemRecordingMode _problemRecordingMode = ProblemRecordingMode.Toggle;
 
@@ -7086,7 +7098,7 @@ namespace PadForge.ViewModels
         GameTelemetry,
 
         /// <summary>A Custom Expression variable that reads a value a
-        /// program set over the Automation pipe by name (#597,
+        /// program set over the Automation pipe by name (#600,
         /// ScriptValues). Only variables offer it. Appended for the same
         /// reason.</summary>
         ScriptValue,
@@ -7652,7 +7664,7 @@ namespace PadForge.ViewModels
         MagnifierWhileHeld = 70,
 
         /// <summary>Puts the wheels of the slot's "Mouse Travel" inputs back
-        /// at center (#597), as <see cref="GyroRecenter"/> re-references the
+        /// at center (#600), as <see cref="GyroRecenter"/> re-references the
         /// slot's gyro state: every position those inputs hold goes to 0,
         /// with its smoothed output, and a Toggle keeps the state its input
         /// last set (SourceKindRuntime.CenterMouseTravel). One-shot. Ordinal
@@ -7660,14 +7672,14 @@ namespace PadForge.ViewModels
         CenterMouseSteering = 71,
 
         /// <summary>Starts or stops a problem recording, marks the one that
-        /// runs, or saves the last minute kept (#597), from the controller,
+        /// runs, or saves the last minute kept (#600), from the controller,
         /// so nobody has to leave the game to do it. One-shot. Ordinal
         /// pinned.</summary>
         ProblemRecording = 72
     }
 
     /// <summary>What a <see cref="MacroActionType.ProblemRecording"/> step
-    /// does (#597). Saved by name. New members go at the end.</summary>
+    /// does (#600). Saved by name. New members go at the end.</summary>
     public enum ProblemRecordingMode
     {
         /// <summary>Starts a recording, or stops the one that runs.</summary>
@@ -8043,9 +8055,17 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Whether a program fed this variable when the macro was
+        /// last evaluated, through the script value it set or the program
+        /// device whose connection it reads, and that program's cause.
+        /// InputManager.MacroTriggerCause keeps them past the program, so the
+        /// edge its leaving makes is its own. Poll thread only.</summary>
+        internal bool ProgramFed;
+        internal Common.Input.OutputCause ProgramFedCause;
+
         private string _scriptValue = string.Empty;
         /// <summary>The name of the value read when Source is ScriptValue
-        /// (#597): what a program's <c>var name=value</c> line sets.</summary>
+        /// (#600): what a program's <c>var name=value</c> line sets.</summary>
         public string ScriptValue
         {
             get => _scriptValue;
@@ -8158,7 +8178,7 @@ namespace PadForge.ViewModels
         /// <summary>Compact tagged form used for XML round-tripping.
         /// "in:GUID:btn:N", "in:GUID:pov:idx:cd", "in:GUID:ax:Target",
         /// "out:Channel", "tel:Channel", "tel:var:Name" (issue #531),
-        /// "val:Name" (#597), "con:GUID" (#600 item 43). Empty for unbound. A variable's name never
+        /// "val:Name" (#600), "con:GUID" (#600 item 43). Empty for unbound. A variable's name never
         /// holds ':' or '|', which the custom format editor and
         /// ScriptValues.IsName refuse.</summary>
         public string Spec
@@ -8328,8 +8348,7 @@ namespace PadForge.ViewModels
         private string ResolveDeviceName()
         {
             if (_deviceGuid == Guid.Empty) return null;
-            var ud = SettingsManager.FindDeviceByInstanceGuid(_deviceGuid);
-            return ud?.ResolvedName;
+            return InputService.LocalizedDeviceName(SettingsManager.FindDeviceByInstanceGuid(_deviceGuid));
         }
 
         private DeviceObjectItem[] ResolveDeviceObjects()

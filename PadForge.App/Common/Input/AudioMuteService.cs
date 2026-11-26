@@ -78,7 +78,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// The friendly names of every active input and output endpoint, as
         /// the privacy scrubber searches every read and recording for them
-        /// (#597). They are read once and kept until Windows reports an
+        /// (#600). They are read once and kept until Windows reports an
         /// endpoint added, removed, changed in state or changed in a
         /// property, a rename among them, through the endpoint notification
         /// AudioBassDetector takes as well (IMMNotificationClient). A read

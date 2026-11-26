@@ -62,10 +62,17 @@ namespace PadForge.Tests
             return new AssistantProfileDetail { Id = p.Id, Name = p.Name, Active = p.Active, Default = p.Default };
         }
         public List<AssistantController> ListControllers() { Note("controllers"); return Controllers.ToList(); }
-        public Dictionary<string, string> Outputs(int number) => new() { ["type"] = "xbox" };
+        /// <summary>What a controller sends now, as the pipe's outputs line
+        /// words it, which a test sets.</summary>
+        public Func<int, Dictionary<string, string>> OutputsOf = _ => new() { ["type"] = "xbox" };
+        public Dictionary<string, string> Outputs(int number) => OutputsOf(number);
         public List<AssistantPreset> Presets(string type) => new() { new AssistantPreset { Id = type + "-1", Name = type } };
+        /// <summary>The rows of controllers past the first, which a test
+        /// adds.</summary>
+        public readonly Dictionary<int, List<AssistantMappingRow>> RowsOf = new();
         public List<AssistantMappingRow> ReadMappings(int number)
         {
+            if (RowsOf.TryGetValue(number, out var rows)) return rows.ToList();
             if (number != 1) throw new AssistantRefusal("unknown-slot", "No virtual controller has the number " + number + ".");
             return new() { new AssistantMappingRow { Target = "ButtonA", Label = "A", Source = "Button 0" } };
         }
@@ -86,7 +93,7 @@ namespace PadForge.Tests
         }
         public void RenameProfile(string profile, string name) { Note("rename " + profile + " " + name); State++; }
         public void DeleteProfile(string profile) { Note("delete " + profile); State++; }
-        public AssistantImport ReadProfileFile(string path) => new AssistantImport { Name = "Imported", Profile = path, Asks = new() { "Runs x.exe" } };
+        public AssistantImport ReadProfileFile(string fileName, byte[] bytes) => new AssistantImport { Name = "Imported", Profile = bytes, Asks = new() { "Runs x.exe" } };
         public (string Id, string Name) AddProfile(AssistantImport import) { Note("import"); return ("i1", "Imported"); }
         public (byte[] Bytes, string FileName) ExportProfile(string profile) => (new byte[] { 1, 2, 3 }, "p.pfprofile");
         public int AddController(string type, string preset)
@@ -104,8 +111,8 @@ namespace PadForge.Tests
             Note("assign " + device + " " + number + " " + assigned);
             State++;
         }
-        public void SetMappings(int number, IReadOnlyList<AssistantMappingEdit> rows) { Note("map " + number + " " + string.Join(",", rows.Select(r => r.Target + "=" + r.Source))); State++; }
-        public void ClearMappings(int number, IReadOnlyList<string> targets) { Note("clear " + number); State++; }
+        public void SetMappings(int number, IReadOnlyList<AssistantMappingEdit> rows) { Note("map " + number + " " + string.Join(",", rows.Select(r => r.Target + "=" + r.Source + (r.NegativeSource == null ? string.Empty : "/" + r.NegativeSource)))); State++; }
+        public void ClearMappings(int number) { Note("clear " + number); State++; }
         public void AutoMap(int number) { Note("automap " + number); State++; }
         public int SaveMacro(int number, int? index, JsonElement macro) { Note("macro " + number); State++; return 0; }
         public void DeleteMacro(int number, int index) { Note("unmacro " + number); State++; }
@@ -183,6 +190,10 @@ namespace PadForge.Tests
                 Number = v;
             }
             else if (s.Takes == "switch") Switch = value.GetBoolean();
+            else if (!s.Choices.Contains(value.GetString()))
+                // A picker's refusal lists its choices, which can name a
+                // private value, as a headset's name its owner gave it.
+                throw new AssistantRefusal("out-of-range", "This takes one of: \"Low\", \"High\", \"zelda's Headset\". " + id + " lists them.");
             else Choice = value.GetString();
             return Make(id);
         }
@@ -894,7 +905,10 @@ namespace PadForge.Tests
             public Assistant(string pipeName, Func<bool> runs = null, Func<Microsoft.Win32.SafeHandles.SafePipeHandle, bool> trust = null,
                 Func<AutomationFileSettings> file = null)
             {
-                Mirror = new AssistantMirror(pipeName, runs ?? (() => false), trust ?? (_ => true), "host.exe", file ?? (() => AutomationFileSettings.None));
+                // A copy that runs is past its start here: the ready window
+                // of the PadForge on this PC is not the test's to read.
+                Mirror = new AssistantMirror(pipeName, runs ?? (() => false), trust ?? (_ => true), "host.exe", file ?? (() => AutomationFileSettings.None),
+                    padForgeReady: () => true);
             }
 
             public async Task StartAsync(string version = null)

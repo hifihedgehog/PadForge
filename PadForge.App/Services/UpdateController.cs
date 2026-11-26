@@ -87,7 +87,7 @@ namespace PadForge.Services
 
         /// <summary>What the updated copy is started with: how this copy was
         /// started, and nothing it was told to do once, which it has done
-        /// (#597). A profile, the engine's and the controllers' state and
+        /// (#600). A profile, the engine's and the controllers' state and
         /// where the window is come back. A recording asked for on the
         /// command line is not started a second time.</summary>
         internal IReadOnlyList<string> RelaunchArgs()
@@ -687,9 +687,9 @@ namespace PadForge.Services
             string url = ReleaseNotesUrl(_offer);
             if (url == null) return;
             // Through the desktop shell, so the browser runs with the user's
-            // rights and never PadForge's (#597). The test host opens nothing.
-            try { PadForge.Common.ShellLaunch.Start(new ProcessStartInfo(url) { UseShellExecute = true }); }
-            catch { /* no browser registered */ }
+            // rights and never PadForge's (#600). The test host opens nothing,
+            // and the shell's start throws nothing.
+            PadForge.Common.ShellLaunch.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
 
         private void SetBusy(bool busy) => Settings.IsUpdateBusy = busy;

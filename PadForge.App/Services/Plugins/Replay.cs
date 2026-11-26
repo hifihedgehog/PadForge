@@ -16,7 +16,7 @@ namespace PadForge.Services.Plugins
     internal sealed record ReplayDevice(int Number, string Name, string Key, ProgramDeviceShape Shape);
 
     /// <summary>
-    /// A problem recording opened for Replay (#597): its devices and how
+    /// A problem recording opened for Replay (#600): its devices and how
     /// long its events run, read once through <see cref="RecordingReader"/>
     /// (a .zip or a .log). A recording made on another PC opens the same,
     /// since its devices part carries each device's shape.
@@ -200,13 +200,20 @@ namespace PadForge.Services.Plugins
                 axisList.Add(new ProgramAxis(i, "Axis " + i, gamepad && i is TestControllerPattern.LeftTrigger or TestControllerPattern.RightTrigger ? 0 : TestControllerPattern.Center));
             for (int i = 0; i < sliders; i++)
                 axisList.Add(new ProgramAxis(ProgramAxis.FirstSlider + i, "Slider " + i, 0));
+            int pads = Math.Clamp(d.Count("touchpads"), 0, 4);
+            // A touchpad device's first click rides button 16 in its frames
+            // (SDL_GAMEPAD_BUTTON_TOUCHPAD, and a web pad's alone), so button
+            // 16 stays out of its shape and the frame's click is read there
+            // (ProgramDevice.OwnsButtonSixteen). Only a recorded program's
+            // device keeps button 16 as a button of its own.
+            bool clickOnSixteen = pads > 0 && type != InputDeviceType.Program;
             var buttonList = new List<(int, string)>();
-            for (int i = 0; i < buttons; i++) buttonList.Add((i, "Button " + i));
+            for (int i = 0; i < buttons; i++)
+                if (!(clickOnSixteen && i == 16)) buttonList.Add((i, "Button " + i));
             var hatList = new List<string>();
             for (int i = 0; i < hats; i++) hatList.Add("Hat " + i);
 
             var fingers = new List<int>();
-            int pads = Math.Clamp(d.Count("touchpads"), 0, 4);
             string[] counts = d.Fact("fingers").Split(',', StringSplitOptions.RemoveEmptyEntries);
             for (int p = 0; p < pads; p++)
                 fingers.Add(p < counts.Length && int.TryParse(counts[p], NumberStyles.None, CultureInfo.InvariantCulture, out int f) && f is > 0 and <= 10 ? f : 2);
@@ -256,7 +263,7 @@ namespace PadForge.Services.Plugins
     }
 
     /// <summary>
-    /// Plays a recording back as the devices that made it (#597): each
+    /// Plays a recording back as the devices that made it (#600): each
     /// input line of the file becomes its device's next state at the time
     /// it had, from the first event on. Lines whose time has passed are
     /// given at once, so a slow moment catches up instead of drifting.

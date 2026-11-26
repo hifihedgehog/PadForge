@@ -530,10 +530,16 @@ namespace PadForge.Tests
             string contain = OffLimitsSource.Member(source, "public static bool ContainOwnedSteamVrDataPaths()");
             int guard = contain.IndexOf("if (OffLimitsForTest) return false;", StringComparison.Ordinal);
             Assert.True(guard > 0);
-            foreach (string write in new[] { "Directory.CreateDirectory(wantConfig)", "Directory.CreateDirectory(wantLog)", "File.WriteAllBytes(" })
+            Assert.True(contain.IndexOf("ContainSteamVrDataPaths(dir, reg, ShellUser.AsTheUser)", StringComparison.Ordinal) > guard);
+            // Every read and write of the user's file and folders runs as
+            // the user, inside the runner's work.
+            string inner = OffLimitsSource.Member(source, "internal static bool ContainSteamVrDataPaths(string ownedDir, string reg, Func<Action, bool> asUser)");
+            int run = inner.IndexOf("asUser(", StringComparison.Ordinal);
+            Assert.True(run > 0);
+            foreach (string write in new[] { "File.ReadAllText(reg)", "Directory.CreateDirectory(wantConfig)", "Directory.CreateDirectory(wantLog)", "File.WriteAllBytes(" })
             {
-                int at = contain.IndexOf(write, StringComparison.Ordinal);
-                Assert.True(at > guard, write);
+                int at = inner.IndexOf(write, StringComparison.Ordinal);
+                Assert.True(at > run, write);
             }
             Assert.Single(OffLimitsSource.Calls(source, "File.WriteAllBytes("));
             Assert.Empty(OffLimitsSource.Calls(source, "File.WriteAllText("));

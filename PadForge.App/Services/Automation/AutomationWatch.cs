@@ -9,7 +9,7 @@ using PadForge.Engine.Data;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// What programs follow on devices (#597), and the poll thread's side of
+    /// What programs follow on devices (#600), and the poll thread's side of
     /// it. After Step 2 republishes the devices' states on each pass,
     /// <see cref="OnPass"/> compares what sessions watch against the last
     /// pass and queues event lines to each session's writer. It runs only
@@ -39,8 +39,24 @@ namespace PadForge.Services.Automation
 
             /// <summary>Whether the entry holds a pass to compare against.
             /// The first pass, and the first after the device comes back,
-            /// only takes the state.</summary>
+            /// only takes the state, unless <see cref="Rested"/>.</summary>
             public bool Primed;
+
+            /// <summary>Set by a <see cref="Gone"/> that told the session
+            /// the device's controls at rest: the next pass compares against
+            /// that rest, so what is held when the device comes back is
+            /// told.</summary>
+            public bool Rested;
+
+            /// <summary>The first pass of a stretch takes the state only, and
+            /// one after a rest told compares against it.</summary>
+            protected bool TakesStateOnly()
+            {
+                bool only = !Primed && !Rested;
+                Primed = true;
+                Rested = false;
+                return only;
+            }
 
             /// <summary>What a <c>sub</c> line names, for <c>unsub</c>.</summary>
             public abstract string What { get; }
@@ -53,7 +69,11 @@ namespace PadForge.Services.Automation
             public abstract void Pass(CustomInputState s, long now);
 
             /// <summary>The device is missing from a pass that had it
-            /// before: offline, or no longer read.</summary>
+            /// before: offline, or no longer read. An entry that follows
+            /// controls tells the session each one it last told off its rest
+            /// as at rest, so a program never holds a press that ended (#600).
+            /// Called on the poll thread, or by the engine's stop while no
+            /// pass runs.</summary>
             public virtual void Gone() { }
         }
 
@@ -68,10 +88,9 @@ namespace PadForge.Services.Automation
             public override void Pass(CustomInputState s, long now)
             {
                 var buttons = s.Buttons;
-                if (!Primed)
+                if (TakesStateOnly())
                 {
                     Array.Copy(buttons, _last, CustomInputState.MaxButtons);
-                    Primed = true;
                     return;
                 }
                 var outbox = Session.Outbox;
@@ -82,6 +101,17 @@ namespace PadForge.Services.Automation
                     _last[i] = down;
                     outbox.Button(DeviceId, i, down);
                 }
+            }
+
+            public override void Gone()
+            {
+                for (int i = 0; i < CustomInputState.MaxButtons; i++)
+                {
+                    if (!_last[i]) continue;
+                    _last[i] = false;
+                    Session.Outbox.Button(DeviceId, i, false);
+                }
+                Rested = true;
             }
         }
 
@@ -95,10 +125,9 @@ namespace PadForge.Services.Automation
 
             public override void Pass(CustomInputState s, long now)
             {
-                if (!Primed)
+                if (TakesStateOnly())
                 {
                     Array.Copy(s.Povs, _last, CustomInputState.MaxPovs);
-                    Primed = true;
                     return;
                 }
                 for (int i = 0; i < CustomInputState.MaxPovs; i++)
@@ -108,6 +137,18 @@ namespace PadForge.Services.Automation
                     _last[i] = value;
                     Session.Outbox.Hat(DeviceId, i, value);
                 }
+            }
+
+            /// <summary>A centered hat reads -1.</summary>
+            public override void Gone()
+            {
+                for (int i = 0; i < CustomInputState.MaxPovs; i++)
+                {
+                    if (_last[i] == -1) continue;
+                    _last[i] = -1;
+                    Session.Outbox.Hat(DeviceId, i, -1);
+                }
+                Rested = true;
             }
         }
 
@@ -136,10 +177,9 @@ namespace PadForge.Services.Automation
 
             public override void Pass(CustomInputState s, long now)
             {
-                if (!Primed)
+                if (TakesStateOnly())
                 {
                     for (int i = 0; i < ProgramAxis.End; i++) _last[i] = Value(s, i);
-                    Primed = true;
                     _due = now;
                     return;
                 }
@@ -156,6 +196,21 @@ namespace PadForge.Services.Automation
                 // The rate counts from a change sent, so the first change
                 // after a quiet spell goes out on its own pass.
                 if (sent) _due = now + _period;
+            }
+
+            /// <summary>Each axis at its rest, whatever the rate, and the
+            /// first pass back goes out on its own.</summary>
+            public override void Gone()
+            {
+                var rests = Slots.Rests;
+                for (int i = 0; i < ProgramAxis.End; i++)
+                {
+                    if (_last[i] == rests[i]) continue;
+                    _last[i] = rests[i];
+                    Session.Outbox.Axis(Slots, i, rests[i]);
+                }
+                _due = 0;
+                Rested = true;
             }
         }
 
@@ -204,11 +259,10 @@ namespace PadForge.Services.Automation
             public override void Pass(CustomInputState s, long now)
             {
                 int value = Axis < CustomInputState.MaxAxis ? s.Axis[Axis] : s.Sliders[Axis - CustomInputState.MaxAxis];
-                if (!Primed)
+                if (TakesStateOnly())
                 {
                     _state?.Send(Session, s);
                     _past = IsPast(value);
-                    Primed = true;
                     return;
                 }
                 if (!_past && IsPast(value))
@@ -223,7 +277,23 @@ namespace PadForge.Services.Automation
                 }
             }
 
-            public override void Gone() => _state?.Gone(Session);
+            /// <summary>A numbered line tells the device offline, and its
+            /// return the whole state. A line of the <c>axis=</c> form tells a
+            /// line past as back.</summary>
+            public override void Gone()
+            {
+                if (_state != null)
+                {
+                    _state.Gone(Session);
+                    return;
+                }
+                if (_past)
+                {
+                    _past = false;
+                    Session.Outbox.Crossing(DeviceId, Axis, false, Line);
+                }
+                Rested = true;
+            }
         }
 
         /// <summary>The whole state of a device, told when a named
@@ -369,7 +439,12 @@ namespace PadForge.Services.Automation
         private HashSet<Guid> _online = new(), _next = new();
         private bool _onlinePrimed;
         private Baseline _baselineTold;
-        private readonly Action<UserDevice[], int> _hook;
+        private readonly Action<UserDevice[], int, InputManager.AutomationPassRun> _hook;
+
+        // Held by a pass and by the engine's stop. A pass that finds it held
+        // goes by at once, so the poll thread never waits on it.
+        private readonly object _passing = new object();
+        private InputManager.AutomationPassRun _lastRun, _retired;
 
         public AutomationWatch()
         {
@@ -430,9 +505,26 @@ namespace PadForge.Services.Automation
 
         /// <summary>
         /// The poll thread, at the end of Step 2: the devices read on this
-        /// pass and their count.
+        /// pass, their count and the run the pass belongs to. A pass of a
+        /// run the engine's stop retired changes nothing: the followers were
+        /// told every device offline at the stop.
         /// </summary>
-        internal void OnPass(UserDevice[] devices, int count)
+        internal void OnPass(UserDevice[] devices, int count, InputManager.AutomationPassRun run)
+        {
+            if (!Monitor.TryEnter(_passing)) return;
+            try
+            {
+                if (_retired.Engine != null && ReferenceEquals(run.Engine, _retired.Engine) && run.Generation <= _retired.Generation) return;
+                _lastRun = run;
+                PassLocked(devices, count);
+            }
+            finally
+            {
+                Monitor.Exit(_passing);
+            }
+        }
+
+        private void PassLocked(UserDevice[] devices, int count)
         {
             var table = Volatile.Read(ref _table);
             var entries = table.Entries;
@@ -527,8 +619,19 @@ namespace PadForge.Services.Automation
         /// again from the next pass. The followers then know of no device
         /// online, so the first pass of the next start tells each device
         /// online then as come back (#600). Called by the sessions, never by
-        /// the poll thread.</summary>
+        /// the poll thread. The run of the last pass is retired here, so a
+        /// pass of it that comes late, past the stop's wait for the poll
+        /// thread, changes nothing.</summary>
         internal void EngineStopped()
+        {
+            lock (_passing)
+            {
+                _retired = _lastRun;
+                StopLocked();
+            }
+        }
+
+        private void StopLocked()
         {
             var table = Volatile.Read(ref _table);
             var followers = table.DeviceFollowers;

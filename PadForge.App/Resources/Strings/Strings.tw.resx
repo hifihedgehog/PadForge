@@ -140,6 +140,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Service nhyehyɛe</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Nyiyi anammɔn</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Service</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>File</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Upper filter</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registry value</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardware ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Scheduled task</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Installed apps entry</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP device</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Yi BthPS3 fi hɔ</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Yɛrekenkan nea BthPS3 gyaw wɔ PC yi so…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 annyaw biribiara wɔ PC yi so a wobɛyi.</value></data>
@@ -753,6 +761,7 @@
   <data name="Devices_Filter_All" xml:space="preserve"><value>Ne nyinaa</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Nhyehyɛe</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, button ne sensor biara</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Ne controls wɔ din a scripts de frɛ wɔn no so</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sesa</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>sɛ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>wɔ</value></data>
@@ -892,8 +901,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Program no ka version bi a PadForge nnim</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge mmaa plugin key no</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge annye program yi nkitahodi</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge anyɛ device biara, efisɛ Windows amma program no file din</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Wɔsan bisaa ntɛm dodo</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Eyi bi bio nni hɔ kosi sɛ PadForge bɛsan afi ase</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Eyinom a programs ama retwɛn sɛ wohwɛ wɔ Home no dodow dodo</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nni adwinnade a ɛte saa</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program no kenkanee tebea dedaw bi</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Biribiara nni hɔ a ɛwɔ ID no</value></data>
@@ -901,6 +911,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Wommaa kwan</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Obiara annye so bere mu</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ɛretwɛn wo mmuae</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Na wonnya mmuae</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Abisade a ɛte saa nni hɔ</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Biribiara nni hɔ a wobɛsan ayi</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Wo nko ara na wubetumi asesa eyi</value></data>
@@ -1015,7 +1026,6 @@
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fael: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ɛsesa programs a wobetumi akenkan device no, denam Use Only in PadForge so.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mpɛn {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, nea etwa to wɔ {1} a ɛte saa mu</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Ma Kwan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Mma Kwan</value></data>
   <data name="Automation_Request_NotNow" xml:space="preserve"><value>Ɛnyɛ Seesei</value></data>
@@ -1029,9 +1039,9 @@
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sɛ mmuae biara amma wɔ {0} mu a, ɛyɛ daabi.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Daa</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Button a ɛma mouse no kanyan steering no, wɔ device koro a source no wɔ so no ara so. Sɛ wompaw biara a, mouse no kanyan steering no daa.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Button a ɛma mouse no kanyan steering no, wɔ device biara a ɛwɔ slot yi mu so. Sɛ wompaw biara a, mouse no kanyan steering no daa.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol server ne client a ɛwɔ assistant nkitahodi ne PadForge.exe --mcp akyi, a Model Context Protocol a Series of LF Projects na wɔyɛe.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol server ne client a ɛwɔ assistant nkitahodi ne PadForge.exe --mcp akyi, a Model Context Protocol a Series of LF Projects, LLC na wɔyɛe.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ne DependencyInjection.Abstractions, a wɔde MCP C# SDK no si so, a Microsoft na ɔyɛe.</value></data>
   <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Ɛreyɛ adwuma.</value></data>
@@ -1082,6 +1092,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge kenkan no sɛnea ɛte, enti wɔmfa SDL mapping no nni dwuma.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick a wo row ahyehyɛ no sɛ gamepad.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL kenkan devices bere a engine no reyɛ adwuma.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Device no nni nkitahodi mu. SDL bɛkenkan no sɛ ɛba nkitahodi mu a.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL amma PadForge device yi ho nkenkanmu biara.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Community copy a ɛwɔ mu, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Wɔtwee bae {0}</value></data>
@@ -1119,6 +1131,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggles ne actions foforo</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ne {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Biribiara nni hɔ a wobɛkɔpi: SDL nni mapping ma device yi, na ɛnni controller biara so.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Biribiara nni hɔ a wobɛkɔpi: PadForge ntumi nkenkan SDL mapping ma device yi, na ne controllers no row biara mma binding a SDL form no gye.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Biribiara nni hɔ a wobɛkɔpi: SDL nni mapping ma device yi, na {0} row biara nkenkan ne buttons, axes anaa hats no mu biako wɔ ɔkwan a SDL form no gye so.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Biribiara nni hɔ a wobɛkɔpi: SDL nni mapping ma device yi, na {0} rows no kenkan no ma {1} nko ara, a SDL form no ntumi nkura.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Biribiara nni hɔ a wobɛkɔpi: PadForge ntumi nkenkan SDL mapping ma device yi seesei, na ɛnni controller biara so.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Biribiara nni hɔ a wobɛkɔpi: PadForge ntumi nkenkan SDL mapping ma device yi seesei, na {0} row biara mma binding a SDL form no gye.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Program foforo de clipboard no redi dwuma. Wɔankɔpi biribiara.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Wɔayi wo row no. Device no kenkan sɛnea na ɛyɛ kan no.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Wɔasan ahyehyɛ fi SDL layout mu: {0}.</value></data>
@@ -1139,6 +1156,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rows a PadForge kura</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Row biara nhyia.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Wɔde row a wopaw no di dwuma ma {0} wɔ ne ankasa ID ase, nam nhwehwɛmu koro ne paw koro a ɛwɔ Fa Hyɛ Mu so.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Engine no agyae, enti list no nkyerɛ rows a SDL kura, ne de ankasa ne community copy a ɛwɔ mu no. Wɔbɛkyerɛ wɔn sɛ engine no reyɛ adwuma a.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL amma mmuae ntɛm, enti list no nkyerɛ rows a ɛkura, ne de ankasa ne community copy a ɛwɔ mu no.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL mapping row</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Row ma device yi.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Layout a wɔasusu.</value></data>
@@ -1151,14 +1170,14 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, field {0}, efi vendor ne product koro no ara so wɔ bus anaa version foforo so. Wɔkora no wɔ device yi ankasa ID ase.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, field {0}, device foforo row. Wɔkora no wɔ device yi ankasa ID ase.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Field {0}. SDL nkenkan device yi, enti PadForge de row no hyehyɛ ne inputs.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge nni button anaa axis kɛkɛ ma fields yi, enti ɛgyaw wɔn: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Field {0}, efi device no axes, buttons ne hats mu. Hwɛ no wɔ Test Inputs mu, na afei kora no anaa sesa no wɔ ha.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Eyi sesa sɛnea wɔkenkan {0}. Wɔsan hyehyɛ ne rows a ɛwɔ {1} mu fi layout foforo no mu.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Eyi sesa sɛnea wɔkenkan {0}. Ɛnni controller biara so, enti rows biara nsesa.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profile shortcuts a ɛkenkan {0} kora inputs a wɔde hyehyɛɛ wɔn.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Wɔkora row no sɛ wo de wɔ PadForge.xml mu na ɛdi kan sen fibea foforo biara ma device yi. Yi Me De san de row dedaw ne rows dedaw no ba.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Wɔkora rows no sɛ wo de wɔ PadForge.xml mu na ɛdi kan ma wɔn devices sen fibea foforo biara. Clear, wɔ Controller Database row no More ase, yi wɔn fi hɔ.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Rows ma Windows: {0}. Wɔatwa nea ɛwɔ systems foforo so no ho: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Row {0} ma Windows. Wɔatwa nea ɛwɔ systems foforo so no ho: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Rows ma Windows: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Wɔde {0:N0} nyinaa bɛka ho. PadForge kora wo rows kosi {1:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Wɔde bɛka ho. PadForge kora wo rows kosi {1:N0}.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Wo rows dodow a wɔakora seesei: {0:N0}. Enti wɔde eyinom mu {1:N0} bɛka ho, na wɔremfa {2:N0} nka ho.</value></data>
@@ -1168,7 +1187,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Text no nyɛ SDL controller database row: ID a ɛyɛ hex digits 32, din, na afei fields te sɛ a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Rows no wɔ systems foforo. PadForge kenkan rows a ɛwɔ Windows, anaa nea ɛnyɛ system pɔtee biara de.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Row no ID nyɛ device de. Ɛhia hex digits 32.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Row no din yɛ hunu, ɛboro characters 128, anaa ɛkura character bi a SDL kenkan no sɛ field.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Row no din mu nni hwee, ɛboro characters 128, ɛkura field marker a SDL kenkan te sɛ “type:”, anaa ɛkura character bi a ɛnyɛ letters, digits, punctuation, symbols ne space kɛkɛ.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Row no kura hint anaa Android field, a PadForge nnye.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Row no wɔ field bi a SDL nnim.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Binding bi nni SDL nhyehyɛe mu, te sɛ b3, a2, +a2, a2~ anaa h0.4.</value></data>
@@ -1177,13 +1196,20 @@
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Row no mfa control biara nhyɛ.</value></data>
   <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Baabi a ɛde download fi, wo rows ankasa</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Sɔ</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Wɔde ahyɛ mu. PadForge yi wɔ copy foforo.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Wɔde ahyɛ mu ma {0}. PadForge yi wɔ copy foforo.</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Ne script ID</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Kyerɛ wɔ Folder mu</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} fii ase, nanso ɛne PadForge ankɔka abom da.</value></data>
   <data name="Net_Add_Make" xml:space="preserve"><value>Yɛ Key</value></data>
   <data name="Reach_Line_Format" xml:space="preserve"><value>Ɛdi ne devices ankasa ne {0} so. Ɛda so kenkan device biara.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Ɛdi ne devices ankasa nko ara so. Ɛda so kenkan device biara.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Commands a efi command line so da so du PadForge, sɛnea ɛyɛ ma program biara.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Dwumadi {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ahu ne library na ɛmfaa no nhyɛɛ mu, efisɛ PadForge antumi anhu sɛ administrators nko ara na wobetumi asesa no ne sɛ Logitech de ne nsa ahyɛ ase</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ahu ne library na antumi amfa anni dwuma, na diagnostics log no ka nea enti</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge entry ne ne skill no tena hɔ, efisɛ {0} kenkan settings file ne skill folder koro no ara.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge entry no tena hɔ, efisɛ {0} kenkan settings file koro no ara.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>Wɔayi PadForge afi program yi mu. Ne skill no tena hɔ, efisɛ {0} kenkan skills fi folder koro no ara mu.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ntumi nkenkan settings a ɛwɔ {0} mu, enti onnim sɛ wɔde PadForge aka ho anaa.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Wɔde aka ho. PadForge antumi ankenkan ne skill folder no.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Rows ma systems foforo a wɔbu ani gu so: {0:N0}.</value></data>
 </root>

@@ -18,7 +18,7 @@ namespace PadForge.Engine.Common.Mapping
     /// RapidTrigger: the Direct read of the same input, released and
     /// pressed again by small moves past the deadzone through
     /// <see cref="SourceKindRuntime.TickRapidTrigger"/>.
-    /// A "Mouse Travel" input (#597) is read through
+    /// A "Mouse Travel" input (#600) is read through
     /// <see cref="SourceKindRuntime.TickMouseTravel"/> on every lane, where
     /// those three kinds take their Direct read.
     /// </para>
@@ -67,7 +67,7 @@ namespace PadForge.Engine.Common.Mapping
         public static bool UsesUpDownKeys(MappingSource source)
             => source != null && source.Kind is "Incremental" or "Ramped";
 
-        /// <summary>True for a source of the travel family (#597, #600):
+        /// <summary>True for a source of the travel family (#600):
         /// "Mouse Travel X" or "Y", "Wheel Travel", "Wheel Travel Sideways",
         /// or an axis or slider marked as moving relatively, read by a kind
         /// that reads its own input. Such a source keeps a wheel's position
@@ -142,66 +142,105 @@ namespace PadForge.Engine.Common.Mapping
         /// wheel: let go, the wheel stays where it is or comes back, so the
         /// gate is read here and handed to the wheel, where any other source
         /// reads nothing while its gate is open. A read with no runtime (a
-        /// preview) has no wheel and answers center.</summary>
+        /// preview) has no wheel and answers center. <paramref name="forceSign"/>
+        /// and <paramref name="forceFolds"/> are the sign From the Game's Force
+        /// works in (SourceKindRuntime.TickMouseTravel), given by the lane that
+        /// writes an axis and null on the others. With no runtime the app's
+        /// wheel for a reader that keeps none answers
+        /// (SourceCoercion.TravelPositionProvider), center where it takes no
+        /// read.</summary>
         private static double MouseTravel(CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
-            => runtime == null ? 0
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid,
+            string layer, double? forceSign = null, bool forceFolds = false)
+            => runtime == null ? SourceCoercion.TravelPosition(state, src, slotIndex, evaluatedDeviceGuid) ?? 0
                 : runtime.TickMouseTravel(slotIndex, target, sourceIndex, src, state, frameDeltaSeconds,
-                    GateHeld(state, src, slotIndex, evaluatedDeviceGuid),
-                    SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid));
+                    SteerHeld(state, src, slotIndex, evaluatedDeviceGuid),
+                    SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid),
+                    forceSign, forceFolds, layer);
+
+        /// <summary>A travel-family source's position from -1 to 1 on
+        /// <paramref name="runtime"/> under <paramref name="target"/>, its
+        /// Steer input read as a row's is: the app's wheel for a reader that
+        /// keeps none (SourceCoercion.TravelPositionProvider).</summary>
+        public static double ReadTravel(CustomInputState state, MappingSource src, int slotIndex, string target,
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
+        {
+            if (src == null || runtime == null || !IsMouseTravel(src)) return 0;
+            using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
+            return MouseTravel(state, src, slotIndex, target, 0, runtime, frameDeltaSeconds, evaluatedDeviceGuid, null);
+        }
 
         /// <summary>Advances a Mouse Speed or Mouse Position source that
         /// steers by its own settings and answers its stick from -1 to 1.
         /// A read with no runtime answers center.</summary>
         private static double MouseSteer(MouseSteerFamily family, bool y, CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid, string layer)
         {
             if (runtime == null) return 0;
-            bool held = GateHeld(state, src, slotIndex, evaluatedDeviceGuid);
+            bool held = SteerHeld(state, src, slotIndex, evaluatedDeviceGuid);
             return family == MouseSteerFamily.Speed
-                ? runtime.TickMouseSpeed(slotIndex, target, sourceIndex, src, state, frameDeltaSeconds, held, y)
-                : runtime.TickMousePosition(slotIndex, target, sourceIndex, src, frameDeltaSeconds, held, y);
+                ? runtime.TickMouseSpeed(slotIndex, target, sourceIndex, src, state, frameDeltaSeconds, held, y, layer)
+                : runtime.TickMousePosition(slotIndex, target, sourceIndex, src, frameDeltaSeconds, held, y, layer: layer);
         }
 
         /// <summary>A mouse source's own answer from -1 to 1 before the row
         /// reads it, for the travel family and for Mouse Speed and Mouse
         /// Position steering by their own settings, or null for any other
-        /// source.</summary>
+        /// source. <paramref name="family"/> says which, None for the travel
+        /// family. Mouse Speed's answer is the speed before the source's
+        /// Acceleration, which each lane takes where the plain read of an
+        /// axis takes it.</summary>
         private static double? MousePosition(CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid,
+            string layer, out MouseSteerFamily family, double? forceSign = null, bool forceFolds = false)
         {
+            family = MouseSteerFamily.None;
             if (IsMouseTravel(src))
-                return MouseTravel(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
-            var family = MouseSteerOf(src, evaluatedDeviceGuid, out bool y);
+                return MouseTravel(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid,
+                    layer, forceSign, forceFolds);
+            family = MouseSteerOf(src, evaluatedDeviceGuid, out bool y);
             if (family == MouseSteerFamily.None) return null;
-            double v = MouseSteer(family, y, state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
-            // Mouse Speed is an axis, whose read takes the source's
-            // Acceleration before its curve (SourceCoercion's axis tail), so
-            // it does here too.
-            return family == MouseSteerFamily.Speed ? SourceCoercion.ApplyPerSourceAccel(src, (float)v) : v;
+            return MouseSteer(family, y, state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer);
         }
 
         /// <summary>The Direct read of a source as a button: a mouse
         /// source's own answer past the deadzone, the input's own read for
-        /// any other.</summary>
+        /// any other. Mouse Speed and Mouse Position keep the shape the
+        /// plain read of their input gives a button.</summary>
         private static bool DirectButton(CustomInputState state, MappingSource src, int thresholdPercent,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
-            => MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid) is double v
-                ? SourceCoercion.MouseTravelAsButton(v, src, thresholdPercent)
-                : SourceCoercion.EvaluateForButtonTarget(state, src, thresholdPercent, slotIndex, evaluatedDeviceGuid);
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid, string layer)
+        {
+            if (MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid,
+                    layer, out var family) is not double v)
+                return SourceCoercion.EvaluateForButtonTarget(state, src, thresholdPercent, slotIndex, evaluatedDeviceGuid);
+            return family switch
+            {
+                MouseSteerFamily.Speed => SourceCoercion.MouseSpeedAsButton(v, src, thresholdPercent),
+                MouseSteerFamily.Position => SourceCoercion.MousePositionAsButton(v, src, thresholdPercent),
+                _ => SourceCoercion.MouseTravelAsButton(v, src, thresholdPercent),
+            };
+        }
 
         /// <summary>The Direct read of a source as a trigger's pull, by the
         /// rule of <see cref="DirectButton"/>.</summary>
         private static float DirectTrigger(CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
-            => MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid) is double v
-                ? SourceCoercion.MouseTravelAsTrigger(v, src)
-                : SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid, string layer)
+        {
+            if (MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid,
+                    layer, out var family) is not double v)
+                return SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
+            return family switch
+            {
+                MouseSteerFamily.Speed => SourceCoercion.MouseSpeedAsTrigger(v, src, state),
+                MouseSteerFamily.Position => SourceCoercion.MousePositionAsTrigger(v, src),
+                _ => SourceCoercion.MouseTravelAsTrigger(v, src),
+            };
+        }
 
         /// <summary>The Rapid Trigger distance as a fraction of full travel.</summary>
         private static double RapidTriggerDistance(MappingSource src)
@@ -213,6 +252,31 @@ namespace PadForge.Engine.Common.Mapping
         /// button lane reaches the same rule through SourceCoercion.</summary>
         private static float TogglePressLevel(MappingSource src)
             => SourceCoercion.EffectiveThresholdPercent(src, 50) / 100f;
+
+        /// <summary>A mouse source's Steer input (#600), its gate, read on the
+        /// device the source names for it
+        /// (<see cref="MappingSource.ParamTravelSteerDeviceGuid"/>) as an Up or
+        /// Down key reads the controller it names
+        /// (<see cref="SourceKindRuntime.ReadKey"/>): a keyboard's key, another
+        /// pad's button, or any device of the slot. A source that names none
+        /// reads it on its own device, as every gate is read
+        /// (<see cref="GateHeld"/>). The second gate an import writes is read
+        /// there too.</summary>
+        /// <para>The lanes read the gate of a source that does not steer by
+        /// its own settings through this too, so a Mouse Speed or Mouse
+        /// Position source at its defaults reads its Steer input on the
+        /// device the line picked for it.</para>
+        private static bool SteerHeld(CustomInputState state, MappingSource src,
+            int slotIndex, string evaluatedDeviceGuid, int thresholdPercent = 50)
+        {
+            string device = src.ParamTravelSteerDeviceGuid;
+            if (device == null) return GateHeld(state, src, slotIndex, evaluatedDeviceGuid, thresholdPercent);
+            string gate = src.GateDescriptor;
+            if (!string.IsNullOrEmpty(gate)
+                && !SourceKindRuntime.ReadKey(state, gate, device, src, evaluatedDeviceGuid, slotIndex))
+                return false;
+            return Gate2Held(state, src, slotIndex, evaluatedDeviceGuid, thresholdPercent);
+        }
 
         /// <summary>Per-source AND gate (v18): when
         /// <see cref="MappingSource.GateDescriptor"/> is set, the source
@@ -256,6 +320,13 @@ namespace PadForge.Engine.Common.Mapping
                         slotIndex, evaluatedDeviceGuid))
                     return false;
             }
+            return Gate2Held(state, src, slotIndex, evaluatedDeviceGuid, thresholdPercent);
+        }
+
+        /// <summary>The second leg of <see cref="GateHeld"/>.</summary>
+        private static bool Gate2Held(CustomInputState state, MappingSource src,
+            int slotIndex, string evaluatedDeviceGuid, int thresholdPercent)
+        {
             // Second AND companion (v26): a chord partner beside a spent
             // primary gate (the single-pad wedge chord). Same synthetic-
             // source cache contract as the first leg.
@@ -292,7 +363,7 @@ namespace PadForge.Engine.Common.Mapping
             using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
             // A mouse source that steers reads its gate as its Steer input (MousePosition).
             if (!ReadsOwnGate(src, evaluatedDeviceGuid)
-                && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid, globalThresholdPercent)) return false;
+                && !SteerHeld(state, src, slotIndex, evaluatedDeviceGuid, globalThresholdPercent)) return false;
 
             switch (src.Kind ?? "Direct")
             {
@@ -310,7 +381,7 @@ namespace PadForge.Engine.Common.Mapping
                     // press flips the button, which holds between presses.
                     if (runtime == null) return false;
                     bool pressed = DirectButton(state, src, globalThresholdPercent,
-                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer);
                     return runtime.TickToggle(slotIndex, target, sourceIndex, pressed, 1.0, layer) != 0;
                 }
                 case "RapidTrigger":
@@ -319,12 +390,15 @@ namespace PadForge.Engine.Common.Mapping
                     // where a Direct row presses, and the trigger lane's pull of
                     // the same input is the travel inside it. With no runtime
                     // (a preview) or an input with no depth, the Direct read.
+                    // A mouse source's depth is its own answer, as its zone
+                    // is, so its wheel and its Steer input decide both.
                     bool past = DirectButton(state, src, globalThresholdPercent,
-                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer);
                     if (runtime == null || !SourceCoercion.IsRapidTriggerSource(src.Descriptor))
                         return past;
-                    float depth = SourceCoercion.EvaluateForTriggerTarget(state, src,
-                        slotIndex, evaluatedDeviceGuid);
+                    float depth = ReadsOwnGate(src, evaluatedDeviceGuid)
+                        ? DirectTrigger(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer)
+                        : SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
                     return runtime.TickRapidTrigger(slotIndex, target, sourceIndex,
                         past, depth, RapidTriggerDistance(src), layer);
                 }
@@ -335,27 +409,34 @@ namespace PadForge.Engine.Common.Mapping
                     return false;
                 default: // Direct
                     return DirectButton(state, src, globalThresholdPercent,
-                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer);
             }
         }
 
+        /// <param name="rowSign">The sign the caller puts on the answer
+        /// before it reaches the target: -1 for a row whose Invert on Hold is
+        /// held, times -1 for a stick's Y, which the gamepad writer negates.
+        /// From the Game's Force on a travel source works in it.</param>
         public static float EvaluateForBipolarAxisTarget(
             CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds,
-            string evaluatedDeviceGuid = null, string layer = null)
+            string evaluatedDeviceGuid = null, string layer = null, double rowSign = 1.0)
         {
             if (src == null || IsUnmappedDirect(src)) return 0f;
             using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
             // A mouse source that steers reads its gate as its Steer input (MousePosition).
-            if (!ReadsOwnGate(src, evaluatedDeviceGuid) && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
+            if (!ReadsOwnGate(src, evaluatedDeviceGuid) && !SteerHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             // The Motion Pitch, Yaw and Roll rows (#475) read a source that
             // rests at zero one way: read centered, a released trigger sits
             // at full deflection and turns the controller with nothing
             // touched, the shape #443 fixed for activators. A half the user
-            // picked keeps its own read.
+            // picked keeps its own read. So does a mouse source that steers
+            // (ReadsOwnGate), whose answer is its wheel or its own speed or
+            // position, whatever the input rests at.
             bool oneWay = !src.HalfAxis && MappingSetMigrator.IsMotionAxisTarget(target)
+                && !ReadsOwnGate(src, evaluatedDeviceGuid)
                 && (SourceCoercion.SourceRestsAtZeroProvider?.Invoke(src.Descriptor,
                     SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid)) ?? false);
 
@@ -366,13 +447,13 @@ namespace PadForge.Engine.Common.Mapping
             if (kind == "RapidTrigger") kind = "Direct";
             if (kind != "Toggle")
                 return EvaluateBipolarKind(kind, state, src, slotIndex, target, sourceIndex,
-                    runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay);
+                    runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay, layer, rowSign);
 
             // Toggle latches the Direct read of the same input at full
             // scale, in the direction the latching press pointed.
             if (runtime == null) return 0f;
             float direct = EvaluateBipolarKind("Direct", state, src, slotIndex, target, sourceIndex,
-                runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay);
+                runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay, layer, rowSign);
             return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
                 Math.Abs(direct) >= TogglePressLevel(src), direct < 0 ? -1.0 : 1.0, layer);
         }
@@ -381,7 +462,7 @@ namespace PadForge.Engine.Common.Mapping
             CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds,
-            string evaluatedDeviceGuid, bool oneWay = false)
+            string evaluatedDeviceGuid, bool oneWay, string layer, double rowSign)
         {
             if (oneWay && kind == "Direct")
             {
@@ -413,7 +494,7 @@ namespace PadForge.Engine.Common.Mapping
                 kind = "MotionShake";
             else if (kind == "Direct" && SourceCoercion.IsMotionShakeAuxDescriptor(src.Descriptor))
                 kind = "MotionShakeAux";
-            // The travel family (#597, #600) is an input too, and its wheel
+            // The travel family (#600) is an input too, and its wheel
             // is the runtime's (IsMouseTravel), and so is a Mouse Speed or
             // Mouse Position source steering by its own settings. An empty
             // kind reads as Direct there, so it does here.
@@ -424,10 +505,19 @@ namespace PadForge.Engine.Common.Mapping
             switch (kind)
             {
                 case "MouseTravel":
+                {
                     // Invert, Half and Flip Output are read with the wheel.
-                    return SourceCoercion.MouseTravelAsBipolar(
-                        MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid) ?? 0,
-                        src);
+                    // The sign from the wheel to the axis this row writes is
+                    // the one From the Game's Force works in.
+                    double forceSign = SourceCoercion.MouseTravelBipolarSign(src, out bool forceFolds) * rowSign;
+                    double v = MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds,
+                        evaluatedDeviceGuid, layer, out var family, forceSign, forceFolds) ?? 0;
+                    // Mouse Speed is an axis, whose read takes the source's
+                    // Acceleration before its curve (SourceCoercion's axis
+                    // tail), so it does here too.
+                    if (family == MouseSteerFamily.Speed) v = SourceCoercion.ApplyPerSourceAccel(src, (float)v);
+                    return SourceCoercion.MouseTravelAsBipolar(v, src);
+                }
                 case "Incremental":
                 {
                     if (runtime == null) return 0f;
@@ -602,7 +692,7 @@ namespace PadForge.Engine.Common.Mapping
             if (src == null || IsUnmappedDirect(src)) return 0f;
             using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
             // A mouse source that steers reads its gate as its Steer input (MousePosition).
-            if (!ReadsOwnGate(src, evaluatedDeviceGuid) && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
+            if (!ReadsOwnGate(src, evaluatedDeviceGuid) && !SteerHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             switch (src.Kind ?? "Direct")
             {
@@ -620,7 +710,7 @@ namespace PadForge.Engine.Common.Mapping
                     // The Direct pull of the same input, latched at full.
                     if (runtime == null) return 0f;
                     float pull = DirectTrigger(state, src,
-                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer);
                     return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
                         pull >= TogglePressLevel(src), 1.0, layer);
                 }
@@ -631,15 +721,20 @@ namespace PadForge.Engine.Common.Mapping
                     // source's own deadzone, 50 percent unless the row sets
                     // another, the default Toggle's trigger lane uses. With no
                     // runtime (the Triggers group preview) it reads as its first
-                    // press, and an input with no depth reads as Direct.
+                    // press, and an input with no depth reads as Direct. A
+                    // mouse source's zone and depth are its own answer, so
+                    // its wheel and its Steer input decide both.
                     if (!SourceCoercion.IsRapidTriggerSource(src.Descriptor))
                         return DirectTrigger(state, src,
-                            slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
-                    bool past = SourceCoercion.EvaluateForButtonTarget(state, src,
-                        50, slotIndex, evaluatedDeviceGuid);
+                            slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer);
+                    bool own = ReadsOwnGate(src, evaluatedDeviceGuid);
+                    bool past = own
+                        ? DirectButton(state, src, 50, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer)
+                        : SourceCoercion.EvaluateForButtonTarget(state, src, 50, slotIndex, evaluatedDeviceGuid);
                     if (runtime == null) return past ? 1f : 0f;
-                    float depth = SourceCoercion.EvaluateForTriggerTarget(state, src,
-                        slotIndex, evaluatedDeviceGuid);
+                    float depth = own
+                        ? DirectTrigger(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer)
+                        : SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
                     return runtime.TickRapidTrigger(slotIndex, target, sourceIndex,
                         past, depth, RapidTriggerDistance(src), layer) ? 1f : 0f;
                 }
@@ -657,7 +752,7 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 default:
                     return DirectTrigger(state, src,
-                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+                        slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid, layer);
             }
         }
     }

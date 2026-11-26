@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Win32;
 
 namespace PadForge.Engine.Common.Logitech
 {
@@ -32,7 +31,6 @@ namespace PadForge.Engine.Common.Logitech
         public enum Reason
         {
             Found = 0,
-            NoRegistryEntry,
             RegistryPathMissing,
             NotInstalled,
         }
@@ -65,12 +63,10 @@ namespace PadForge.Engine.Common.Logitech
         {
             var list = new List<string>();
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            bool sawRegistry = false;
             bool registryPathMissing = false;
 
             foreach (string path in RegistryCandidates())
             {
-                sawRegistry = true;
                 if (File.Exists(path))
                 {
                     if (seen.Add(path)) list.Add(path);
@@ -89,7 +85,6 @@ namespace PadForge.Engine.Common.Logitech
             // rather than to install.
             reason = list.Count > 0 ? Reason.Found
                    : registryPathMissing ? Reason.RegistryPathMissing
-                   : sawRegistry ? Reason.NoRegistryEntry
                    : Reason.NotInstalled;
             return list;
         }
@@ -97,19 +92,22 @@ namespace PadForge.Engine.Common.Logitech
         /// <summary>
         /// Paths the registered class points at.
         ///
-        /// <para>Both views are read rather than only the one matching this
-        /// process. A 64-bit process reads the class under Wow6432Node because
-        /// that is where a 32-bit registration lands, and the SDK registers
-        /// itself there. Reading both costs one key open and covers a machine
-        /// that has only the other.</para>
-        /// </summary>
+        /// <para>The three machine views of the class are read rather than
+        /// only the one matching this process: the 32-bit registration's two
+        /// spellings under Wow6432Node, where the SDK registers itself, and
+        /// the 64-bit one, so a machine that has only one of them is
+        /// covered.</para>
         ///
         /// <para>Only the machine's own registration is read, under
-        /// HKEY_LOCAL_MACHINE (#597). HKEY_CLASSES_ROOT lays the user's
+        /// HKEY_LOCAL_MACHINE (#600). HKEY_CLASSES_ROOT lays the user's
         /// classes over it, and the user's programs can write those, so a
         /// registration there would choose the library PadForge loads with
         /// its rights. The SDK's installer runs with rights and registers
-        /// under the machine.</para>
+        /// under the machine. Each value is read by the rule the LCD and Arx
+        /// libraries' are read by (<see cref="LogitechServerCatalog.ReadPath"/>):
+        /// its quotes taken off and its variables filled in from the
+        /// machine's own environment.</para>
+        /// </summary>
         private static IEnumerable<string> RegistryCandidates()
         {
             foreach (string subKey in new[]
@@ -119,18 +117,8 @@ namespace PadForge.Engine.Common.Logitech
                          @"SOFTWARE\Classes\CLSID\" + ClassId + @"\" + ServerBinary,
                      })
             {
-                string value = null;
-                try
-                {
-                    using var key = Registry.LocalMachine.OpenSubKey(subKey);
-                    value = key?.GetValue(string.Empty) as string;
-                }
-                catch (Exception)
-                {
-                    // A registry the process cannot read is the same outcome
-                    // as one with nothing in it: try the next candidate.
-                }
-                if (!string.IsNullOrWhiteSpace(value)) yield return value.Trim();
+                string path = LogitechServerCatalog.ReadPath(subKey);
+                if (path != null) yield return path;
             }
         }
 

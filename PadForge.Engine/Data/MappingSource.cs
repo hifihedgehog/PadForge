@@ -531,9 +531,11 @@ namespace PadForge.Engine.Data
         /// can create quirky behaviors on transition").</summary>
         [XmlAttribute] public bool ParamFlickOnEngage { get; set; } = false;
 
-        // ─── Mouse Travel (#597, descriptor family "Mouse Travel X" /
-        // "Mouse Travel Y"). A mouse's raw counts are added up and held as
-        // a position from -1 to 1, the way a hand holds a wheel
+        // ─── Mouse Travel (#600): the travel family, "Mouse Travel
+        // X" and "Mouse Travel Y", "Wheel Travel", "Wheel Travel Sideways"
+        // and an axis or slider marked as moving relatively
+        // (SourceEvaluator.IsMouseTravel). Its counts are added up and held
+        // as a position from -1 to 1, the way a hand holds a wheel
         // (SourceKindRuntime.TickMouseTravel). The input that Steer waits
         // on is the source's own gate (GateDescriptor). Each field below
         // is left out of the file while it holds its default, so a source
@@ -586,17 +588,31 @@ namespace PadForge.Engine.Data
         private double _paramTravelReturnTime = DefaultTravelReturnTime;
         public bool ShouldSerializeParamTravelReturnTime() => _paramTravelReturnTime != DefaultTravelReturnTime;
 
-        /// <summary>Steer: when the mouse turns the wheel. "Always", "Held"
-        /// (only while the gate's input is held) or "Toggle" (each press of
-        /// the gate's input turns steering on or off). With no gate picked
-        /// the mouse always steers. A gate beside "Always" holds the mouse
-        /// as it does beside "Held", the way a gate holds any source, and
-        /// the editor shows such a source as While Held and keeps no gate
-        /// under Always. A value this build does not know reads as Always
+        /// <summary>Steer: when the mouse turns the wheel. One of five
+        /// stored values: "Always", "HeldCenter" (only while the gate's
+        /// input is held, and back to center when it is let go),
+        /// "HeldStay" (only while it is held, and the wheel stays where it
+        /// was let go), "Toggle" (each press of the gate's input turns
+        /// steering on or off), and "Held", the one While Held a build
+        /// before the two wrote. With no gate picked the mouse always
+        /// steers. "Held", and a gate beside "Always", read as While Held
+        /// and Center or While Held and Stay by the source's Centering
+        /// (<see cref="EffectiveMouseSteer"/>), and the editor shows such a
+        /// source as that mode and keeps no gate under Always. A value this
+        /// build does not know reads as Always
         /// (<see cref="EffectiveTravelSteer"/>).</summary>
         [XmlAttribute] public string ParamTravelSteer { get; set; } = TravelSteerAlways;
         public bool ShouldSerializeParamTravelSteer()
             => !string.IsNullOrEmpty(ParamTravelSteer) && ParamTravelSteer != TravelSteerAlways;
+
+        /// <summary>The device a mouse source's Steer input, its
+        /// <see cref="GateDescriptor"/>, is read on (#600): a keyboard for a
+        /// key, another pad for its button, any device of the slot for
+        /// empty. Null, the form a build before it wrote, reads it on the
+        /// source's own device, where every gate is read. The editor writes
+        /// it only beside a gate on a mouse source.</summary>
+        [XmlAttribute] public string ParamTravelSteerDeviceGuid { get; set; }
+        public bool ShouldSerializeParamTravelSteerDeviceGuid() => ParamTravelSteerDeviceGuid != null;
 
         /// <summary>Smoothing in milliseconds, 0 to
         /// <see cref="MaxTravelSmoothingMs"/>: the time constant the output
@@ -772,6 +788,10 @@ namespace PadForge.Engine.Data
             (ParamDown, ParamDownDeviceGuid, bool downGone) = RetargetKey(ParamDown, ParamDownDeviceGuid, retarget);
             (ParamModifier, ParamModifierDeviceGuid, bool modifierGone) =
                 RetargetKey(ParamModifier, ParamModifierDeviceGuid, retarget);
+            // A mouse source's Steer input on a device of its own moves as a
+            // key does, and goes with a device that has no counterpart.
+            (GateDescriptor, ParamTravelSteerDeviceGuid, _) =
+                RetargetKey(GateDescriptor, ParamTravelSteerDeviceGuid, retarget);
             int dropped = (upDown && upGone ? 1 : 0) + (upDown && downGone ? 1 : 0)
                 + (modifier && modifierGone ? 1 : 0);
             RetargetDescriptorDevice(retarget, keptOnly: upDown || modifier);

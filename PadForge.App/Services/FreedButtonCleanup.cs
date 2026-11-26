@@ -220,7 +220,13 @@ namespace PadForge.Services
         private static bool ClearSource(MappingSource s, NamesButton names, ref bool changed)
         {
             if (s == null) return false;
-            if (names(s.DeviceGuid, s.GateDescriptor)) { s.GateDescriptor = ""; changed = true; }
+            // A mouse source's Steer input reads the device it names.
+            if (names(s.ParamTravelSteerDeviceGuid ?? s.DeviceGuid, s.GateDescriptor))
+            {
+                s.GateDescriptor = "";
+                s.ParamTravelSteerDeviceGuid = null;
+                changed = true;
+            }
             bool upDown = s.Kind is "Incremental" or "Ramped";
             bool modifier = s.Kind == "InvertOnHold";
             if (!upDown && !modifier) return names(s.DeviceGuid, s.Descriptor);

@@ -292,13 +292,18 @@ The pipe takes more commands than these, for the engine, the virtual controllers
 the window and diagnostics. [Command Line](../reference/command-line.md#the-padforgecontrol-pipe)
 lists them all.
 
-These replies cover the failures:
+A command that fails answers with one of these. [Command Line](../reference/command-line.md#the-padforgecontrol-pipe)
+gives the answers of the pipe's other commands.
 
 | Reply | Cause |
 |---|---|
 | `error unknown-profile` | No profile matches that name or id. |
 | `error unknown-command` | The verb is not one the pipe knows. |
 | `error empty` | The line was blank, or `activate` arrived with no name. |
+| `error not-allowed` | Automation is off. |
+| `error refused` | The program runs outside your Windows session or below medium integrity. |
+| `error waiting` | The switch would turn on an extra that listens on the network and is off now. PadForge asks you on its question card first and makes the switch if you allow it. |
+| `error too-many-questions` | The question card holds too many questions to put this one. Nothing changed. |
 | `error internal` | The command threw. |
 
 PadForge answers every connection, a blank line included, so a client waiting on

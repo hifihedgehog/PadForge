@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// The Automation pipe, <c>PadForge.Automation</c> (#597): one long-lived
+    /// The Automation pipe, <c>PadForge.Automation</c> (#600): one long-lived
     /// duplex connection per program, served while Automation is on (and
     /// while Plugins is on). It has the control pipe's access list: the
     /// desktop's user, administrators and the system are let in, and whoever
-    /// comes in over the network is refused. Its first instance is made as
-    /// the first of its name, so a program that took the name first is found
-    /// out and nothing is served beside it.
+    /// comes in over the network is refused. While no connection it handed
+    /// out is open, an instance it makes is made as the first of its name,
+    /// so a program that took the name first is found out and nothing is
+    /// served beside it. While one is open the name is PadForge's own, and
+    /// Windows refuses a first instance of it, so a new one is made as a
+    /// further instance (#600).
     ///
     /// <para>The access list only lets a program open the pipe. Who it is
     /// is decided from the token Windows hands the server for the
@@ -51,6 +54,15 @@ namespace PadForge.Services.Automation
         private Task _loop;
         private volatile ExternalControlService.PipeState _state;
         private int _disposed;
+
+        // The handles of the connections handed to the sessions, kept until
+        // the serve ends. A session closes its stream itself (its Close
+        // disposes it) before its end runs, so a handed instance is open
+        // while its handle is not closed, and a first instance is asked for
+        // once every handed handle is. Read as an instance is made, under one
+        // lock. It outlives a stop, since a session outlives the pipe's stop.
+        private readonly object _instances = new object();
+        private readonly System.Collections.Generic.List<Microsoft.Win32.SafeHandles.SafePipeHandle> _handed = new();
 
         /// <param name="serve">Runs one connection, already taken, to its
         /// end. It owns the stream and the process.</param>
@@ -111,7 +123,7 @@ namespace PadForge.Services.Automation
             NamedPipeServerStream first;
             try
             {
-                first = CreateServer(_pipeName, firstOfItsName: true);
+                first = NewInstance();
             }
             catch (UnauthorizedAccessException)
             {
@@ -173,7 +185,7 @@ namespace PadForge.Services.Automation
                         if (token.IsCancellationRequested) break;
 
                         try { waiting = CreateServer(_pipeName, firstOfItsName: false); }
-                        catch { /* made again below, as the first of its name */ }
+                        catch { /* made again below */ }
 
                         handed = Take(connected);
                     }
@@ -187,7 +199,7 @@ namespace PadForge.Services.Automation
                         }
                     }
 
-                    if (waiting == null) waiting = CreateServer(_pipeName, firstOfItsName: true);
+                    if (waiting == null) waiting = NewInstance();
                 }
             }
             catch (UnauthorizedAccessException)
@@ -216,6 +228,11 @@ namespace PadForge.Services.Automation
             // connections, so the sessions list those that wait for their
             // hello in that order (#600). The rest runs off this loop: the
             // serve goes on from the thread pool at its first wait.
+            // The handle is read before the serve runs: a stream closed by
+            // then holds no instance and is not kept.
+            Microsoft.Win32.SafeHandles.SafePipeHandle handle = null;
+            try { handle = connected.SafePipeHandle; } catch (Exception ex) when (ex is ObjectDisposedException or InvalidOperationException) { }
+            if (handle != null) lock (_instances) _handed.Add(handle);
             Task served;
             try { served = _serve(connected, process, CancellationToken.None) ?? Task.CompletedTask; }
             catch (Exception ex) { served = Task.FromException(ex); }
@@ -223,6 +240,7 @@ namespace PadForge.Services.Automation
             {
                 _ = done.Exception; // a session's failure is its own
                 try { connected.Dispose(); } catch { }
+                if (handle != null) lock (_instances) _handed.Remove(handle);
                 process.Dispose();
             }, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
             return true;
@@ -233,6 +251,19 @@ namespace PadForge.Services.Automation
             if (token.IsCancellationRequested) return;
             _state = state;
             try { StateChanged?.Invoke(); } catch { }
+        }
+
+        /// <summary>An instance to wait on: the first of its name while no
+        /// connection handed out is open, else a further one.</summary>
+        private NamedPipeServerStream NewInstance()
+        {
+            lock (_instances)
+            {
+                bool anyOpen = false;
+                foreach (var handle in _handed)
+                    if (!handle.IsClosed) { anyOpen = true; break; }
+                return CreateServer(_pipeName, firstOfItsName: !anyOpen);
+            }
         }
 
         private static NamedPipeServerStream CreateServer(string pipeName, bool firstOfItsName)

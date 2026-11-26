@@ -25,7 +25,8 @@ namespace PadForge.Services.Catalog
     /// <c>plugin/&lt;short ID&gt;/&lt;key&gt;</c>, and what it declares for
     /// one of its devices <c>device/&lt;short ID&gt;/&lt;key&gt;</c>, under
     /// that device's own ID. Its name is the one the interface shows, which
-    /// a program reads through the scrubber.
+    /// a program reads through the scrubber, but a device's, which is its
+    /// product's as list_devices names it (<see cref="LiveCatalog.DeviceName"/>).
     /// </summary>
     internal sealed record LiveEntry(string Id, LiveKind Kind, string Name, string Where, object Payload);
 
@@ -140,6 +141,16 @@ namespace PadForge.Services.Catalog
             return items;
         }
 
+        /// <summary>A device row's name as an assistant reads it: its
+        /// device's product name, else the product name or kind its row
+        /// shows.</summary>
+        internal static string DeviceName(DeviceRowViewModel row)
+        {
+            if (SettingsManager.FindDeviceByInstanceGuid(row.InstanceGuid) is { } ud) return AssistantTools.DeviceName(ud);
+            if (!string.IsNullOrWhiteSpace(row.ProductName)) return row.ProductName.Trim();
+            return string.IsNullOrWhiteSpace(row.DeviceType) ? "Device" : row.DeviceType;
+        }
+
         /// <summary>A short, stable ID made from text that is not to be
         /// shown, such as a plugin's path: the first eight hex digits of
         /// its SHA-256, without regard to case.</summary>
@@ -168,9 +179,12 @@ namespace PadForge.Services.Catalog
                          ("Extras", s.Extras_Title), ("Settings", s.Settings_Title), ("About", s.About_Title),
                      })
                 list.Add(new LiveEntry("page/" + tag, LiveKind.Page, words, string.Empty, tag));
+            // A device is named as list_devices names it, by its product
+            // (AssistantTools.DeviceName), never by the name the user gave
+            // it, which its row shows.
             if (vm.Devices?.Devices != null)
                 foreach (var row in vm.Devices.Devices)
-                    list.Add(new LiveEntry("device/" + AutomationDevices.IdOf(row.InstanceGuid), LiveKind.Device, row.DeviceName, s.Devices_Title, row));
+                    list.Add(new LiveEntry("device/" + AutomationDevices.IdOf(row.InstanceGuid), LiveKind.Device, DeviceName(row), s.Devices_Title, row));
             for (int i = 0; i < InputManager.MaxPads && i < vm.Pads.Count; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
@@ -210,12 +224,21 @@ namespace PadForge.Services.Catalog
     {
         internal static readonly IReadOnlyList<TrayItem> Items = new[]
         {
-            new TrayItem("Show", "Main_ShowPadForge", ReachClass.Free, Bold: true, SeparatorBefore: false),
+            // Brings PadForge's window forward, which only the user does
+            // (#438): the user's alone, on the menu and in the catalog.
+            new TrayItem("Show", "Main_ShowPadForge", ReachClass.UsersOwn, Bold: true, SeparatorBefore: false),
             // Puts a mark into the problem recording that runs, or the last
             // minute kept (#600). Shown while one is being captured.
             new TrayItem("Mark", "Tray_MarkRecording", ReachClass.Free, Bold: false, SeparatorBefore: true),
             new TrayItem("Exit", "Tray_Exit", ReachClass.Free, Bold: false, SeparatorBefore: true),
         };
+
+        /// <summary>Whether the tray menu shows an item now: Mark the
+        /// Recording while a problem recording is captured.</summary>
+        internal static bool Shows(string key) => key != "Mark" || MarkShows();
+
+        /// <summary>Whether a recording is captured, which a test gives.</summary>
+        internal static Func<bool> MarkShows = () => PadForge.Services.ProblemRecorder.Instance.IsCapturing;
 
         /// <summary>The items as catalog entries of the window, with stable
         /// IDs such as <c>window.menuitem/Tray/Tray_Exit</c>.</summary>

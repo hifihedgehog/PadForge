@@ -89,11 +89,26 @@ namespace PadForge.Tests
             Assert.NotNull(reports);
             Assert.False(reports.UsesReportIds);
             // Left down, five right, five up, one notch away from the user,
-            // and AC Pan, which has no axis on a mouse row.
+            // and AC Pan, the sideways wheel, which this read leaves out.
             var read = Read(reports, new byte[] { 0x01, 0x05, 0xFB, 0x01, 0x7F });
             Assert.Equal((true, 5, -5, 1, 0x01), read);
             // The buttons are a state, so a release clears them.
             Assert.Equal((true, 0, 0, 0, 0), Read(reports, new byte[] { 0x00, 0, 0, 0, 0 }, buttons: 0x01));
+        }
+
+        /// <summary>AC Pan on the Consumer page is the sideways wheel, as
+        /// Linux reads it (hid-input.c:1282-1284, REL_HWHEEL), right
+        /// positive, for Wheel Travel Sideways (#600).</summary>
+        [Fact]
+        public void ACPan_IsTheSidewaysWheel()
+        {
+            var reports = HidMouseReports.Parse(BootMouse);
+            int dx = 0, dy = 0, wheel = 0, pan = 0, buttons = 0;
+            Assert.True(reports.Decode(new byte[] { 0x00, 0, 0, 0, 0x02 }, ref dx, ref dy, ref wheel, ref pan, ref buttons));
+            Assert.Equal(2, pan);
+            Assert.True(reports.Decode(new byte[] { 0x00, 0, 0, 0, 0xFF }, ref dx, ref dy, ref wheel, ref pan, ref buttons));
+            Assert.Equal(1, pan);
+            Assert.Equal(0, wheel);
         }
 
         /// <summary>Linux gives Button page usage n the code BTN_MOUSE + n - 1

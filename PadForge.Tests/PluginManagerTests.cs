@@ -47,10 +47,14 @@ namespace PadForge.Tests
                 _exited?.Invoke(code);
             }
 
+            /// <summary>Its Stop ends nothing yet: the exit comes when the
+            /// test calls <see cref="Exit"/>, as a process slow to end.</summary>
+            public bool Hangs;
+
             public void Stop()
             {
                 Stopped = true;
-                Exit(1);
+                if (!Hangs) Exit(1);
             }
 
             public void Dispose() => Disposed = true;
@@ -189,10 +193,7 @@ namespace PadForge.Tests
         [InlineData(2, 2000)]
         [InlineData(3, 4000)]
         [InlineData(4, 8000)]
-        [InlineData(5, 16000)]
-        [InlineData(6, 30000)]
-        [InlineData(40, 30000)]
-        public void ThePause_Grows_FromASecondToThirty(int failures, int pauseMs)
+        public void ThePause_Grows_FromASecondToEight(int failures, int pauseMs)
             => Assert.Equal(pauseMs, PluginManager.PauseAfter(failures));
 
         [Fact]
@@ -677,7 +678,7 @@ namespace PadForge.Tests
             _manager.SetEngine(true);
             Assert.Equal(PluginStatus.Restarting, run.Status);
             Assert.Equal(PluginRefusal.NoShell, run.Refusal);
-            Assert.Equal(1, run.Failures);
+            Assert.Equal(0, run.Failures);
 
             _launcher.Refuse = PluginRefusal.ShellElevated;
             _now += run.PauseMs;
@@ -694,6 +695,171 @@ namespace PadForge.Tests
             Assert.Empty(_launcher.Starts);
             _manager.StartAgain(run);
             Assert.Single(_launcher.Starts);
+        }
+
+        /// <summary>A start before the desktop shell exists, as at sign-in,
+        /// is tried again each second for as long as the shell takes, and
+        /// counts no failure: only the plugin's exits and Windows' refusals
+        /// count toward the five.</summary>
+        [Fact]
+        public void NoShellYet_IsTriedAgainEachSecond_AndCountsNoFailure()
+        {
+            string path = NewFile();
+            var run = _manager.Add(path, PluginFile.Sha256(path));
+            _launcher.Refuse = PluginRefusal.NoShell;
+            _manager.SetPluginsOn(true);
+            _manager.SetEngine(true);
+            for (int i = 0; i < 6; i++)
+            {
+                Assert.Equal(PluginStatus.Restarting, run.Status);
+                Assert.Equal(0, run.Failures);
+                Assert.Equal(PluginManager.FirstPauseMs, run.PauseMs);
+                _now += run.PauseMs;
+                _manager.Tick();
+            }
+            // One log line for the wait, not one a second.
+            Assert.Single(_manager.LogOf(run), l => l.Kind == PluginLogKind.NotStarted);
+            _launcher.Refuse = PluginRefusal.None;
+            _now += run.PauseMs;
+            _manager.Tick();
+            Assert.Equal(PluginStatus.Running, run.Status);
+            Assert.Equal(0, run.Failures);
+            Assert.Single(_launcher.Starts);
+        }
+
+        /// <summary>Approve and Restart with the engine running keeps the
+        /// plugin's state until the old run's exit starts the new one: the
+        /// card never says it waits for the engine.</summary>
+        [Fact]
+        public void ApproveAndRestart_WithTheEngineOn_NeverSaysItWaitsForTheEngine()
+        {
+            var run = AddRunning();
+            Assert.NotNull(_manager.AcceptToken(_launcher.Starts[0].Variables[PluginManager.TokenVariable], _launcher.Last.Id));
+            File.WriteAllText(run.Path, "rebuilt");
+            File.SetLastWriteTimeUtc(run.Path, DateTime.UtcNow.AddMinutes(1));
+            _manager.CheckFiles();
+            Assert.True(run.FileChanged);
+            var first = _launcher.Last;
+            first.Hangs = true;
+            _manager.Approve(run, PluginFile.Sha256(run.Path));
+            Assert.True(first.Stopped);
+            Assert.NotEqual(PluginStatus.Waiting, run.Status);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            first.Exit(1);
+            Assert.Equal(2, _launcher.Starts.Count);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            Assert.Equal(0, run.Failures);
+        }
+
+        /// <summary>A file that changed while its plugin ran and then went
+        /// back to the approved bytes is read again when its stamp moves, and
+        /// the card no longer offers Approve and Restart.</summary>
+        [Fact]
+        public void AChangedFile_ThatIsTheApprovedBytesAgain_IsNoLongerMarked()
+        {
+            var run = AddRunning();
+            Assert.NotNull(_manager.AcceptToken(_launcher.Starts[0].Variables[PluginManager.TokenVariable], _launcher.Last.Id));
+            File.WriteAllText(run.Path, "rebuilt");
+            File.SetLastWriteTimeUtc(run.Path, DateTime.UtcNow.AddMinutes(1));
+            _manager.CheckFiles();
+            Assert.True(run.FileChanged);
+            File.WriteAllText(run.Path, "plugin bytes");
+            File.SetLastWriteTimeUtc(run.Path, DateTime.UtcNow.AddMinutes(2));
+            _manager.CheckFiles();
+            Assert.False(run.FileChanged);
+            Assert.Equal(PluginStatus.Running, run.Status);
+        }
+
+        /// <summary>The once-a-second look reads each file's size and write
+        /// time where it hashes it, off the caller's thread, so a share that
+        /// stops answering holds no window.</summary>
+        [Fact]
+        public void TheFileLook_StatsOffTheCallersThread()
+        {
+            var threads = new System.Collections.Concurrent.ConcurrentBag<int>();
+            using var manager = new PluginManager(_launcher, "PadForge.Tests.Pipe", () => _now,
+                commandFor: path => new PluginCommand(path, "\"" + path + "\"", Path.GetDirectoryName(path)), timer: false,
+                runCheck: work =>
+                {
+                    var worker = new Thread(() => work());
+                    worker.Start();
+                    worker.Join();
+                });
+            string path = NewFile("share.exe");
+            var run = manager.Add(path, PluginFile.Sha256(path));
+            manager.SetPluginsOn(true);
+            manager.SetEngine(true);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            Assert.NotNull(manager.AcceptToken(_launcher.Starts[^1].Variables[PluginManager.TokenVariable], _launcher.Last.Id));
+            manager.StatFile = p =>
+            {
+                threads.Add(Environment.CurrentManagedThreadId);
+                return (1, DateTime.MinValue);
+            };
+            manager.CheckFiles();
+            Assert.NotEmpty(threads);
+            Assert.DoesNotContain(Environment.CurrentManagedThreadId, threads);
+        }
+
+        /// <summary>A start runs the file the held handle reached, every
+        /// junction and link on its path followed, so a junction pointed
+        /// elsewhere after the hash does not change what starts.</summary>
+        [Fact]
+        public void TheStart_RunsTheFileTheHeldHandleReached()
+        {
+            string approved = NewFile("bridge.exe");
+            string real = Path.Combine(_dir, "real");
+            Directory.CreateDirectory(real);
+            string reached = Path.Combine(real, "bridge.exe");
+            File.WriteAllText(reached, "plugin bytes");
+            var asked = new List<string>();
+            using var manager = new PluginManager(_launcher, "PadForge.Tests.Pipe", () => _now,
+                commandFor: path =>
+                {
+                    asked.Add(path);
+                    return new PluginCommand(path, "\"" + path + "\"", Path.GetDirectoryName(path));
+                },
+                timer: false, runCheck: work => work(),
+                openHeld: path =>
+                {
+                    // The approved path reaches the file in "real", as a
+                    // junction above it would.
+                    var held = PluginFile.OpenHeld(reached, out string sha);
+                    return (held, sha);
+                });
+            var run = manager.Add(approved, PluginFile.Sha256(approved));
+            manager.SetPluginsOn(true);
+            manager.SetEngine(true);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            string started = Assert.Single(asked);
+            Assert.EndsWith(@"\real\bridge.exe", started, StringComparison.OrdinalIgnoreCase);
+            Assert.True(File.Exists(started), started);
+        }
+
+        /// <summary>The kind of start is the approved file's: a plugin
+        /// approved as a PowerShell script whose path reaches a program
+        /// (a link with another extension) runs in PowerShell with the
+        /// file it reached, never as that program.</summary>
+        [Fact]
+        public void TheKindOfStart_IsTheApprovedFilesKind_WhereverItsPathLeads()
+        {
+            string approved = NewFile("pad.ps1");
+            string tool = NewFile("tool.exe", "plugin bytes");
+            using var manager = new PluginManager(_launcher, "PadForge.Tests.Pipe", () => _now, timer: false, runCheck: work => work(),
+                openHeld: path =>
+                {
+                    // The approved path reaches tool.exe, as a symbolic link
+                    // named pad.ps1 would.
+                    var held = PluginFile.OpenHeld(tool, out string sha);
+                    return (held, sha);
+                });
+            var run = manager.Add(approved, PluginFile.Sha256(tool));
+            manager.SetPluginsOn(true);
+            manager.SetEngine(true);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            var command = _launcher.Starts.Single().Command;
+            Assert.EndsWith(@"\powershell.exe", command.Program, StringComparison.OrdinalIgnoreCase);
+            Assert.EndsWith("-File " + PluginFile.Quote(tool), command.CommandLine);
         }
 
         // ── The key ──

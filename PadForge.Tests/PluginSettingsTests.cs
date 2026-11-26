@@ -90,6 +90,112 @@ namespace PadForge.Tests
             Assert.Null(run.Settings.Refused);
         }
 
+        /// <summary>A choice's list on the line refuses a value given twice,
+        /// as its JSON list does, and two values cut to the same 64
+        /// characters are the same value.</summary>
+        [Fact]
+        public void AFlatChoiceList_RefusesAValueGivenTwice()
+        {
+            var set = new PluginSettingSet();
+            Assert.StartsWith("err bad-argument the choice a is given twice", Answer(set, "setting key=c kind=choice choices=a,b,a"));
+            string longer = new string('x', PluginDeclarations.LongestChoice);
+            Assert.StartsWith("err bad-argument the choice " + longer + " is given twice",
+                Answer(set, "setting key=c kind=choice choices=" + longer + "1," + longer + "2"));
+            Assert.Empty(set.Declarations());
+            Assert.Equal("ok key=c value=a", Answer(set, "setting key=c kind=choice choices=a,b"));
+        }
+
+        /// <summary>A number declared with no default starts on its own
+        /// steps, as a given default does, so moving it back to where it
+        /// started keeps nothing.</summary>
+        [Fact]
+        public void ANumbersFallbackDefault_IsOnItsSteps()
+        {
+            var set = new PluginSettingSet();
+            Assert.Equal("ok key=n value=-1", Answer(set, "setting key=n kind=number min=-5 max=5 step=2"));
+            var d = set.Find(null, "n");
+            Assert.Equal(PluginValues.Normalize(d, d.Default, out _), d.Default);
+            Assert.Null(set.Set(null, "n", "1"));
+            Assert.Null(set.Set(null, "n", "0"));
+            Assert.False(set.Keeps(null, "n"));
+        }
+
+        /// <summary>A number whose min has more decimals than its step keeps
+        /// every point of its grid, and minus zero is written as 0.</summary>
+        [Fact]
+        public void ANumbersSteps_KeepTheDecimalsOfItsMin()
+        {
+            var d = new PluginDeclaration { Key = "n", Name = "n", Kind = PluginSettingKind.Number, Min = -0.5, Max = 10, Step = 1 };
+            Assert.Equal(1.5, PluginValues.OnStep(d, 1.5));
+            Assert.Equal(2.5, PluginValues.OnStep(d, 2.5));
+            Assert.Equal(-0.5, PluginValues.OnStep(d, -0.5));
+            Assert.Equal("0.5", PluginValues.Normalize(d, "0.5", out _));
+            Assert.Equal("0", PluginValues.FormatNumber(-0.0));
+            // The row's number reads the same decimals.
+            var set = new PluginSettingSet();
+            Assert.Equal("ok key=n value=0.5", Answer(set, "setting key=n kind=number min=-0.5 max=10 step=1 default=0.5"));
+            var host = new PluginSettingsHost(set, null, "Test", Dispatcher.CurrentDispatcher);
+            Assert.Equal((1.5).ToString("N1", System.Globalization.CultureInfo.CurrentCulture), Item(host, "n", 1.5).NumberText);
+        }
+
+        private static PluginSettingItem Item(PluginSettingsHost host, string key, double number)
+        {
+            var item = host.Item(key);
+            item.Number = number;
+            item.Read(host.Set.Find(null, key));
+            return item;
+        }
+
+        /// <summary>A step finer than the ten decimals a number is written
+        /// with is refused: every value would round to a whole one.</summary>
+        [Fact]
+        public void AStepFinerThanTenDecimals_IsRefused()
+        {
+            var set = new PluginSettingSet();
+            Assert.StartsWith("err bad-argument a number's step", Answer(set, "setting key=n kind=number min=0 max=1 step=0.00000000001"));
+            Assert.Empty(set.Declarations());
+            Assert.Equal("ok key=n value=0", Answer(set, "setting key=n kind=number min=0 max=1 step=0.0000000001"));
+            Assert.Null(set.Set(null, "n", "0.3"));
+            Assert.Equal("0.3", set.ValueOf(null, "n"));
+        }
+
+        /// <summary>A plugin's new list of choices that no longer holds the
+        /// kept value gives way to the default, as a new declaration's
+        /// does, and PadForge.xml hears of it.</summary>
+        [Fact]
+        public void ANewChoiceList_DropsAKeptValueItNoLongerHolds()
+        {
+            var set = new PluginSettingSet();
+            Assert.Equal("ok key=port value=COM1", Answer(set, "setting key=port kind=choice {\"choices\":[\"COM1\",\"COM3\"]}"));
+            Assert.Null(set.Set(null, "port", "COM3"));
+            Assert.True(set.Keeps(null, "port"));
+            int kept = 0;
+            set.KeptChanged += () => kept++;
+            var heard = new List<string>();
+            set.Send = heard.Add;
+            // The list again with the value: nothing moves.
+            Assert.Equal("ok", Answer(set, "setting key=port {\"choices\":[\"COM1\",\"COM3\",\"COM4\"]}"));
+            Assert.Equal(0, kept);
+            Assert.Equal("COM3", set.ValueOf(null, "port"));
+            // COM3 unplugged.
+            Assert.Equal("ok", Answer(set, "setting key=port {\"choices\":[\"COM1\",\"COM4\"]}"));
+            Assert.Equal("COM1", set.ValueOf(null, "port"));
+            Assert.False(set.Keeps(null, "port"));
+            Assert.Equal(1, kept);
+            Assert.Null(set.Save());
+            // The plugin hears the value in force.
+            Assert.Equal(new[] { "e setting key=port value=COM1" }, heard);
+
+            // COM1, the default, unplugged with nothing kept: the first entry
+            // is in force, as for a choice declared with no default.
+            heard.Clear();
+            Assert.Equal("ok", Answer(set, "setting key=port {\"choices\":[\"COM4\",\"COM5\"]}"));
+            Assert.Equal("COM4", set.ValueOf(null, "port"));
+            Assert.Contains(set.Find(null, "port").Choices, c => c.Value == set.ValueOf(null, "port"));
+            Assert.False(set.Keeps(null, "port"));
+            Assert.Equal(new[] { "e setting key=port value=COM4" }, heard);
+        }
+
         [Fact]
         public void TheLimits_Hold_64Settings_1KBAValue_16KBAPlugin()
         {
@@ -533,11 +639,12 @@ namespace PadForge.Tests
             Assert.Equal("clutch", ((PluginSettingItem)Assert.Single(card.Settings.Rows)).Key);
             Assert.Equal(new[] { "Pedal Box Pedals" }, rig.Controller.DeviceNames(run));
 
-            // Silent: at 5 s its device goes offline at rest, at 60 s it is
-            // ended.
+            // Silent: at 5 s its device goes offline at rest and stays the
+            // plugin's, at 60 s it is ended.
             offset = PluginsController.OfflineAfterSilenceMs + 500;
             rig.Controller.CheckSilence();
-            Assert.Null(pipe.Host.Sessions.Devices.Find(device)?.Owner);
+            Assert.False(pipe.Host.Sessions.Devices.Find(device).Device.IsAttached);
+            Assert.NotNull(pipe.Host.Sessions.Devices.Find(device).Owner);
             Assert.False(rig.Launcher.Last.Stopped);
             offset = PluginsController.EndAfterSilenceMs + 500;
             rig.Controller.CheckSilence();
@@ -561,13 +668,41 @@ namespace PadForge.Tests
             Assert.False(run.Settings.HasDeclarations);
             offset = PluginsController.OfflineAfterSilenceMs + 500;
             rig.Controller.CheckSilence();
-            Assert.Null(pipe.Host.Sessions.Devices.Find(device)?.Owner);
+            Assert.False(pipe.Host.Sessions.Devices.Find(device).Device.IsAttached);
             // Its devices are offline and it declared no setting: it is
             // still watched, and ended at 60 s.
             offset = PluginsController.EndAfterSilenceMs + 500;
             rig.Controller.CheckSilence();
             Assert.True(rig.Launcher.Starts[0].Process.Stopped);
             await AutomationPipeRig.Until(() => run.Status == PluginStatus.Restarting);
+        }
+
+        /// <summary>A plugin silent past 5 s and back before 60 s finds its
+        /// devices its own again: offline while it was silent, and online
+        /// with its next line, as a script's are.</summary>
+        [Fact]
+        public void ASilentPluginThatSpeaksAgain_DrivesItsDevicesAgain()
+        {
+            using var pipe = new AutomationPipeRig(AutomationLevel.Commands);
+            long offset = 0;
+            using var rig = new ControllerRig(pipe.Host, () => Environment.TickCount64 + offset);
+            rig.Vm.EnablePlugins = true;
+            var run = rig.AddRunning("wheel.exe");
+            for (int id = 100001; id < 100200; id++) rig.Launcher.Last.Children.Add(id);
+            rig.Launcher.Last.Children.Add(Environment.ProcessId);
+            using var plugin = pipe.Connect();
+            Assert.StartsWith("ok padforge=", plugin.Final("hello name=Wheel kind=plugin token=" + rig.Launcher.Starts[0].Variables[PluginManager.TokenVariable]));
+            string device = Regex.Match(plugin.Final("declare key=wheel name=Wheel {\"axes\":[\"Steer\"]}"), @"id=(\S+)").Groups[1].Value;
+            offset = PluginsController.OfflineAfterSilenceMs + 500;
+            rig.Controller.CheckSilence();
+            var entry = pipe.Host.Sessions.Devices.Find(device);
+            Assert.False(entry.Device.IsAttached);
+
+            string answer = plugin.Final("@1 s " + device + " a0=40000");
+            Assert.Equal("@1 ok", answer);
+            Assert.True(entry.Device.IsAttached);
+            Assert.Equal(40000, entry.Device.PeekState().Axis[0]);
+            Assert.False(rig.Launcher.Last.Stopped);
         }
 
         [Fact]
@@ -596,7 +731,7 @@ namespace PadForge.Tests
             Assert.Contains(ProgramDevices.TriggerEffectsLine(entry.Id, left, right), ProgramDevices.Replay(entry));
             // The poll pass hands a program's device the slot's effects.
             string pass = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
-            Assert.Contains("programFx.SetTriggerEffects(atLeftBlock, atRightBlock);", pass);
+            Assert.Contains("PassTriggerEffects(programFx, _instanceGuidBuffer, slotCount, atLeftBlock, atRightBlock);", pass);
         }
 
         [Fact]
@@ -652,6 +787,27 @@ namespace PadForge.Tests
             Assert.Equal("POV 0", PluginInputPick.Changed(before, after));
         }
 
+        /// <summary>A stick resting at its center and pushed fully right, or
+        /// fully down, is picked, at the recorder's threshold.</summary>
+        [Fact]
+        public void TheInputPick_TakesAStickPushedFromItsCenter()
+        {
+            var before = new CustomInputState();
+            before.Axis[0] = before.Axis[1] = TestControllerPattern.Center;
+            var after = before.Clone();
+            after.Axis[0] = 65535;
+            Assert.Equal("Axis 0", PluginInputPick.Changed(before, after));
+            after = before.Clone();
+            after.Axis[1] = TestControllerPattern.Center + 16385;
+            Assert.Equal("Axis 1", PluginInputPick.Changed(before, after));
+            after = before.Clone();
+            after.Axis[1] = TestControllerPattern.Center + 16384;
+            Assert.Null(PluginInputPick.Changed(before, after));
+            after = before.Clone();
+            after.Sliders[2] = 20000;
+            Assert.Equal("Slider 2", PluginInputPick.Changed(before, after));
+        }
+
         // ── The kit ──
 
         [Fact]
@@ -688,6 +844,7 @@ namespace PadForge.Tests
                 Assert.Equal(0, PluginKit.RunFromCommandLine(dir, said.Add, errors.Add));
                 Assert.Empty(errors);
                 Assert.Contains("build.ps1", said.Single());
+                Assert.Contains("press Add a Plugin\u2026 and pick its file", said.Single());
                 foreach (var (name, _) in PluginKit.Files) Assert.True(File.Exists(Path.Combine(dir, name)), name);
                 foreach (var library in AutomationLibraries.All) Assert.True(File.Exists(Path.Combine(dir, library.FileName)));
                 string project = File.ReadAllText(Path.Combine(dir, "PadForgePlugin.csproj"));

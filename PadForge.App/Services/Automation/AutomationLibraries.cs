@@ -5,7 +5,7 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.Services.Automation
 {
-    /// <summary>A library PadForge carries for scripts (#597).</summary>
+    /// <summary>A library PadForge carries for scripts (#600).</summary>
     internal enum AutomationLibraryKind
     {
         AutoHotkey,
@@ -35,7 +35,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// The script libraries embedded in PadForge (#597): AutoHotkey v2,
+    /// The script libraries embedded in PadForge (#600): AutoHotkey v2,
     /// Python and PowerShell, each one file that speaks protocol 1 of the
     /// Automation pipe. The Scripts card (#600 item 26) installs each where
     /// its language finds it, and its Save a Library… lists
@@ -45,8 +45,8 @@ namespace PadForge.Services.Automation
     /// </summary>
     internal sealed class AutomationLibraries : IAutomationLibraries
     {
-        /// <summary>The libraries as the host and the Automation page reach
-        /// them.</summary>
+        /// <summary>The libraries as the Automation page's Save a Library
+        /// reaches them.</summary>
         internal static AutomationLibraries Instance { get; } = new AutomationLibraries();
 
         private AutomationLibraries() { }
@@ -93,18 +93,6 @@ namespace PadForge.Services.Automation
             using var copy = new MemoryStream();
             stream.CopyTo(copy);
             return copy.ToArray();
-        }
-
-        /// <summary>Writes the library to <paramref name="path"/>, a file or
-        /// a folder, in this process, through the install's own writer
-        /// (<see cref="Install.UserInstall"/>). Throws for a path that cannot
-        /// be written.</summary>
-        internal static void Save(AutomationLibraryKind kind, string path)
-        {
-            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("No file was named.", nameof(path));
-            string error = null;
-            int code = Install.UserInstall.Run(new Install.InstallRequest(WhatOf(kind), path), _ => { }, e => error = e);
-            if (code != Install.UserInstall.Done) throw new IOException(error ?? "The library was not written.");
         }
     }
 }

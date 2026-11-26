@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Hiện hoặc ẩn PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Bật hoặc tắt các tay cầm ảo</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Bất kỳ thiết bị nào đã kết nối</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (chưa kết nối)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Một thiết bị không có trên trang Thiết bị</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Đang ghi…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} giây)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>khi</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Đọc</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Gửi đầu vào</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Đổi thiết lập</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Chương trình có thể chuyển hồ sơ và thả chúng ra, khởi động và dừng bộ máy, bật và tắt các tay cầm ảo, hiện và ẩn cửa sổ, đóng PadForge, lưu ảnh chụp nhanh chẩn đoán và hỏi xem đang chạy gì.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Chương trình có thể chuyển hồ sơ và thả chúng ra, khởi động và dừng bộ máy, bật và tắt các tay cầm ảo, hiện và ẩn cửa sổ, đóng PadForge, hỏi xem đang chạy gì, lưu ảnh chụp nhanh chẩn đoán, và bắt đầu, dừng cũng như đánh dấu một bản ghi sự cố.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Mọi thứ ở mức Lệnh, và chương trình có thể xem thiết bị, tay cầm ảo, ánh xạ, hồ sơ và thiết lập, theo dõi đầu vào của mọi thiết bị khi chúng xảy ra, và chỉ cho bạn một nơi trong PadForge. Chương trình ở mức Đọc thấy mọi phím được nhấn trên mọi thiết bị, kể cả phím gõ vào các cửa sổ chạy với quyền quản trị.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Mọi thứ ở mức Đọc, và chương trình có thể thêm thiết bị riêng của nó rồi điều khiển, giữ một điều khiển của bất kỳ thiết bị nào và chuyển các giá trị có tên cho bộ kích hoạt macro.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Mọi thứ ở mức Gửi đầu vào, và chương trình có thể đổi những gì bạn đổi được trên các trang. Một số thay đổi luôn hỏi bạn trước trên thẻ câu hỏi của PadForge.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Đang chờ bạn</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Hoạt động</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Hoàn tác</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge không lưu được: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge không lưu được tệp.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge không lưu được bộ công cụ plugin.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Hoạt động {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>ÂmThanh{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>BiểuTượng{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Khi một chương trình ở mức Đọc trở lên đang kết nối, nó thấy mọi thứ được nhấn trên mọi thiết bị, kể cả bàn phím.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Chạy plugin</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} trên {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (Phát lại)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Bản ghi sự cố|*.zip;*.log|Tất cả tệp|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge không phát được {0}. Nó không phải bản ghi sự cố, hoặc không chứa đầu vào của thiết bị nào.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge không phát được {0}. Đây không phải bản ghi sự cố mà PadForge đọc được.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge không phát được {0}. Tệp chứa hơn {1} thiết bị, còn Phát lại chỉ phát tối đa {1} thiết bị.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge không phát được {0}. Tệp không chứa dữ liệu đầu vào của thiết bị nào.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge không đọc được {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Plugin của bạn</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Thêm một plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Chương trình và tập lệnh|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tất cả tệp|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Đã dừng sau năm lần lỗi liên tiếp</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Chưa khởi động: tệp không còn</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Chưa khởi động: Windows không có chương trình nào cho loại tệp này</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Chưa khởi động: không có chương trình nào mở tệp Python cho bạn, và PadForge không tìm thấy trình khởi chạy py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Chưa khởi động: PadForge không đọc được chương trình nào mở loại tệp này cho bạn</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Chưa khởi động: chương trình mở loại tệp này cho bạn không có trên PC này</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Chưa khởi động: không có shell màn hình nào đang chạy để khởi động nó</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Chưa khởi động: shell màn hình có quyền quản trị, nên plugin cũng sẽ có quyền đó</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Chưa khởi động: PadForge không đọc được liệu nó có quyền quản trị hay không</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Chưa khởi động: Windows đã cấp cho nó quyền quản trị, nên PadForge đã kết thúc nó trước khi nó chạy</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Chưa khởi động: nó đòi quyền quản trị</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Chưa khởi động: Windows từ chối với lỗi {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Chưa khởi động</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Đã thêm {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Được ký bởi {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Chưa được ký.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Thiết lập của nó hiện ở đây khi nó chạy.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Nó không khai báo thiết lập nào.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Thiết lập của nó hiện ở đây khi nó kết nối với PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Chương trình dùng một phiên bản mà PadForge không biết</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge đã không cấp khóa plugin đó</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge đã không nhận kết nối của chương trình này</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge không tạo thiết bị nào, vì Windows không cho biết tên tệp của chương trình</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Hỏi lại quá sớm</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Không còn thêm loại này cho đến khi PadForge khởi động lại</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Quá nhiều mục như vậy do chương trình tạo ra đang chờ bạn xem lại trên Trang chủ</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge không có công cụ như vậy</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Chương trình đã đọc một trạng thái cũ hơn</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Không có gì mang ID đó</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Bạn đã không cho phép</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Không ai trả lời kịp lúc</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Đang chờ câu trả lời của bạn</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Bạn chưa trả lời</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Không có yêu cầu như vậy</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Không có gì để hoàn tác</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Chỉ bạn mới đổi được mục này</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Chưa được ký.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Ở mức Đọc trở lên, nó thấy mọi phím được nhấn trên mọi thiết bị, kể cả bàn phím.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Nó chỉ hỏi một lần. Bạn có thể gỡ nó trên trang Tự động hóa.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Được khởi động bởi một chương trình mà PadForge không nhận ra được.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge không phân biệt được chương trình này với chương trình khác, nên sẽ hỏi lại ở lần kết nối kế tiếp.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>dòng lệnh của PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Đặt {0} thành {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lắng nghe trên mạng, nên các thiết bị khác có thể truy cập PC này.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Đưa một hồ sơ sang</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Nhập một tệp hồ sơ từ chương trình khác, rồi xem những gì đã được đưa sang.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} lần</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, lần cuối trong {1} yêu cầu tương tự</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Tập lệnh AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Máy này không có Logitech G-key SDK. SDK này được cài cùng Logitech Gaming Software 8.55 trở lên.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK đã được đăng ký nhưng tệp của nó không còn. Hãy cài đặt lại Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Đã tìm thấy G-key SDK nhưng không tải được.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Đã tìm thấy G-key SDK nhưng không tải, vì PadForge không xác nhận được rằng chỉ quản trị viên mới đổi được nó và Logitech đã ký nó.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Thư viện đó không phải là G-key SDK mà chương trình cần.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK từ chối khởi động. Thường là do Logitech Gaming Software không chạy.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Đã kết nối, chưa thấy phím nào. Trong Logitech Gaming Software, hãy kéo lệnh G-key vào từng phím trong hồ sơ PadForge và đặt hồ sơ đó ở chế độ cố định (persistent). Chuột G600 hoặc G300 còn phải thoát khỏi chế độ bộ nhớ tích hợp.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tự động khởi động PadForge khi bạn đăng nhập Windows. Khi mục này bật, PadForge cũng khởi động mà không có lời nhắc của Windows từ một lối tắt, một tập lệnh hoặc chương trình khác.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge chạy từ {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Việc này cần PadForge nằm trong thư mục riêng. Thư mục của nó đang chứa các tệp khác, nên PadForge không thể ngăn các chương trình khác thay đổi nó.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Việc này cần PadForge nằm trong thư mục mà các chương trình khác không thể thay đổi. PadForge không ngăn được các chương trình khác thay đổi thư mục của nó.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Chuyển PadForge vào thư mục riêng</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Sao chép PadForge và thiết lập của nó vào Program Files, trỏ các tác vụ của nó đến đó và khởi động nó từ đó. Bản sao ở đây vẫn giữ nguyên.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0} đang chứa các tệp không phải của PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì nó chạy PadForge từ một thư mục chứa các tệp khác.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge đã không chuyển: Windows không có thư mục Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge đã không chuyển: nó không đọc được PadForge đang chạy.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge đã không chuyển: nó không tạo được {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge đã không chuyển: nó không đọc được những gì {0} đang chứa.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge đã không chuyển: nó không ngăn được các chương trình khác thay đổi {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge đã không chuyển: bản sao của nó trong {0} không khớp với PadForge đang chạy.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge đã không chuyển: sau khi sao chép, {0} chứa các tệp không phải của PadForge, hoặc các chương trình khác có thể thay đổi nó.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge mà nó từng chạy không còn ở đó nữa.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge không ngăn được các chương trình khác thay đổi thư mục mà nó chạy PadForge từ đó.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge không đọc được nó đã chạy PadForge nào.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge không đọc được thư mục của PadForge mà nó đã chạy.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge không tạo được thư mục bảo vệ của nó, {0}. PadForge giữ các thư viện nó chạy với quyền quản trị ở đó, và không thể khởi động an toàn nếu thiếu nó.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge không tự khởi động lại được từ thư mục bảo vệ của nó, {0}. PadForge chỉ chạy với quyền quản trị từ đó, nên nó đã không khởi động.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge không tạo được khóa để chỉ cho một bản chạy duy nhất, nên đã không khởi động.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge đang chạy với quyền quản trị từ {0}, một thư mục mà các chương trình khác có thể thay đổi. Chúng có thể đổi thiết lập của PadForge ở đó, và PadForge hành động theo chúng bằng quyền của mình.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge đang chạy với quyền quản trị từ {0}, một thư mục chứa các tệp khác. PadForge không ngăn được các chương trình khác thay đổi thiết lập của nó ở đó, và nó hành động theo chúng bằng quyền của mình.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge đang chạy với quyền quản trị từ {0}, một thư mục mà nó không đọc được. PadForge không ngăn được các chương trình khác thay đổi thiết lập của nó ở đó, và nó hành động theo chúng bằng quyền của mình.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Luôn hiện trong khay hệ thống</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Giữ biểu tượng khay luôn hiển thị khi cửa sổ đang mở, để lệnh Thoát trong menu của nó luôn chỉ cách một cú nhấp.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cập nhật</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Cài đặt và khởi động lại</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Ghi chú phát hành</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Cơ sở dữ liệu tay cầm</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cập nhật ngay tải cơ sở dữ liệu tay cầm của cộng đồng (SDL_GameControllerDB) từ GitHub, hoặc từ địa chỉ đặt trong Thêm, và giữ lại trong tệp thiết lập các ánh xạ mà phiên bản PadForge này còn thiếu. Chúng được dùng ngay. Từ địa chỉ khác, nó chỉ giữ các ánh xạ mới. Một ánh xạ mới chỉ được dùng cho tay cầm mà không gì khác nhận là gamepad, chưa được gán và không ở chế độ Buộc dùng chế độ joystick thô (bỏ qua ánh xạ lại tay cầm). Nút đặt lại xóa mọi ánh xạ đã tải và tải lại từ GitHub. Các hàng của riêng bạn, dưới Thêm, vẫn còn.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cập nhật ngay tải cơ sở dữ liệu tay cầm của cộng đồng (SDL_GameControllerDB) từ GitHub, hoặc từ địa chỉ đặt trong Thêm, và giữ lại trong tệp thiết lập các ánh xạ mà phiên bản PadForge này còn thiếu. Chúng được dùng ngay. Từ địa chỉ khác, nó chỉ giữ các ánh xạ mới. Một ánh xạ mới lúc đầu chỉ được dùng cho tay cầm mà SDL báo là gamepad hoặc không thuộc loại cụ thể nào, mà không gì khác nhận là gamepad, chưa được gán và không ở chế độ Buộc dùng chế độ joystick thô (bỏ qua ánh xạ lại tay cầm). Khi đã được dùng, nó vẫn được dùng sau khi tay cầm được gán. Nút đặt lại xóa các ánh xạ đã tải và đặt Tải từ về lại tệp của cộng đồng, mà lần Cập nhật ngay kế tiếp sẽ tải. Các hàng của riêng bạn, dưới Thêm, vẫn còn.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Cập nhật ngay</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Đang cập nhật…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Đang kiểm tra cập nhật…</value></data>
@@ -1126,9 +1160,12 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Có sẵn: {1} ánh xạ, bản sao cộng đồng ngày {2}. Đã tải {3} từ {4}: {0} hàng mới.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Có sẵn: {1} ánh xạ, bản sao cộng đồng ngày {2}. Đã tải {3} từ {4}: {0} hàng mới.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Cơ sở dữ liệu cộng đồng không thay đổi kể từ lần cập nhật trước.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Tệp tại {0} không thay đổi kể từ lần cập nhật trước.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Không kết nối được GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Không kết nối được {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge đã từ chối bản tải xuống vì nó không phải cơ sở dữ liệu tay cầm mà PadForge mong đợi. Không có gì thay đổi.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge đã từ chối phản hồi của GitHub. Không có gì thay đổi.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge đã từ chối phản hồi từ {0}. Không có gì thay đổi.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Khởi động thu nhỏ</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Khởi động khi đăng nhập</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Thư mục</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Cài đặt dịch vụ</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Bước gỡ cài đặt</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Dịch vụ</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Tệp</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Bộ lọc trên</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Giá trị registry</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID phần cứng</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Tác vụ đã lên lịch</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Mục ứng dụng đã cài đặt</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Thiết bị USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Cho phép tay cầm PlayStation 3, PlayStation Move và tay cầm Navigation kết nối qua Bluetooth. Được nhúng trong PadForge và cài đặt vào lần đầu ghép đôi một trong số đó.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Kết nối tay cầm PlayStation 3 qua Bluetooth.</value></data>
@@ -1239,6 +1284,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Đã lưu {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Việc ghi đã không bắt đầu. Một phép kiểm tra thấy một giá trị riêng tư của PC này sẽ không được giữ ra khỏi tệp.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Việc ghi đã không bắt đầu. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge không tìm thấy thư mục tạm của người dùng đang đăng nhập nằm trong hồ sơ người dùng và không đi qua liên kết nào, để ghi bản ghi vào.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Thư mục bản ghi là một liên kết đến nơi khác, và PadForge không đi theo liên kết.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Bản ghi trước vẫn đang được hoàn tất.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Giữ 60 giây gần nhất đang tắt, nên không có gì để lưu.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Một bản ghi mà PadForge chưa dừng đang chờ bạn đọc trên Trang chủ: {0}</value></data>
@@ -1252,7 +1299,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, các thiết bị và thiết lập của bạn như hiện tại, qua cùng bước xem lại.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log cạnh PadForge.exe, bạn có thể đọc nó ở đó.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ghi những gì</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Tất cả đang bật. Một phần bị tắt sẽ bị bỏ khỏi bản ghi tiếp theo, và tệp cho biết nó chứa những phần nào.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Mọi phần đều bật theo mặc định. Một phần bị tắt sẽ bị bỏ khỏi bản ghi tiếp theo, và tệp cho biết nó chứa những phần nào.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Cho sự cố chỉ xảy ra mỗi buổi tối một lần.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Bản ghi đang chờ bạn đọc trên Trang chủ.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Tóm tắt</value></data>
@@ -1291,8 +1338,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 giá trị</value></data>
   <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} loại riêng tư</value></data>
   <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 loại riêng tư</value></data>
-  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Kiểm tra làm sạch: {0} giá trị riêng của PC này vẫn còn trong các phần bạn giữ. Hãy tắt các phần đó hoặc xóa bản ghi. Nút Lưu… vẫn tắt cho đến lúc đó.</value></data>
-  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Kiểm tra làm sạch: một giá trị riêng của PC này vẫn còn trong các phần bạn giữ. Hãy tắt các phần đó hoặc xóa bản ghi. Nút Lưu… vẫn tắt cho đến lúc đó.</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Kiểm tra làm sạch: {0} giá trị riêng của PC này vẫn còn trong các phần bạn giữ. Hãy tắt các phần đó hoặc xóa bản ghi. Nút Lưu vẫn tắt cho đến lúc đó.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Kiểm tra làm sạch: một giá trị riêng của PC này vẫn còn trong các phần bạn giữ. Hãy tắt các phần đó hoặc xóa bản ghi. Nút Lưu vẫn tắt cho đến lúc đó.</value></data>
   <data name="Review_Empty" xml:space="preserve"><value>Không có gì của phần này xảy ra trong lúc ghi.</value></data>
   <data name="Review_Delete" xml:space="preserve"><value>Xóa</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Sao chép tóm tắt</value></data>
@@ -1303,6 +1350,17 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Review_SaveTitle" xml:space="preserve"><value>Lưu bản ghi</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Tệp zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Chưa lưu. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Kiểm tra làm sạch: đang kiểm tra các phần bạn giữ…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Kiểm tra làm sạch: PadForge không đọc được các phần bạn giữ, nên nút Lưu vẫn tắt.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Việc lưu bằng quyền của bạn đã không bắt đầu.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Việc lưu bằng quyền của bạn đã không bắt đầu: không có shell màn hình nào chạy để khởi động nó.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Việc lưu bằng quyền của bạn đã không bắt đầu: Windows từ chối với lỗi {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Việc lưu đã không kết thúc trong {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows không cho phép ghi tệp vào đó.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge không nhận tệp này là bản ghi của chính nó.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Việc lưu kết thúc với mã {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Được lưu dưới tên bạn, vào thư mục Tải xuống lần đầu, sau đó vào nơi bạn lưu lần gần nhất, và hiện trong File Explorer. Một bản ghi dừng khi không ai ở trang (do giới hạn, một macro, một chương trình, công cụ của trợ lý hoặc --record stop) sẽ chờ bước xem lại này trên Trang chủ, và bị xóa sau 7 ngày nếu chưa lưu. Chương trình được báo là nó đang chờ, không bao giờ được báo nó ở đâu.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Một bản ghi sự cố từ {0} đang chờ bạn đọc.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Xem lại</value></data>
@@ -1653,6 +1711,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Tay cầm mới</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Thiết lập</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Mọi trục, nút và cảm biến</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Các điều khiển của nó theo tên mà tập lệnh dùng</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Đang nhấn: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, đường dẫn, khả năng, Buộc dùng chế độ joystick thô</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, đường dẫn, khả năng</value></data>
@@ -2154,9 +2213,18 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Đọc thất bại: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro đã từ chối cấu hình sẵn này tại {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Cấu hình sẵn này không có bộ mô tả HID, nên không thể tạo tay cầm từ nó.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge không kiểm tra được cấu hình sẵn này: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Đang kiểm tra cấu hình sẵn…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Không có gì được nhập. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Nhập</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(thiết bị HID không tên)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Chuột</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Tay cầm</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Bàn phím</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Bộ điều khiển nhiều trục</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Đã tìm thấy {0} giao diện HID.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Đã tìm thấy 1 giao diện HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Liệt kê thất bại: {0}</value></data>
@@ -3288,7 +3356,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Khi đang giữ và về tâm</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Bật/tắt</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Đầu vào lái</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Nút cho phép chuột lái, trên cùng thiết bị với nguồn. Khi không chọn nút nào, chuột luôn lái.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Nút cho phép chuột lái, trên bất kỳ thiết bị nào của khe này. Khi không chọn nút nào, chuột luôn lái.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Làm mượt</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Làm đều một con chuột báo không đều. Cần analog chậm sau tay chừng này thời gian. 0 là tắt.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Khóa theo tốc độ</value></data>
@@ -3309,7 +3377,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Bắt đầu từ chỗ bắt đầu lái</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Với một Đầu vào lái, cần analog đo từ chỗ con trỏ ở lúc bắt đầu lái, như cần analog trên màn hình điện thoại bắt đầu ở chỗ ngón tay chạm. Khi tắt, nó đo từ tâm màn hình của con trỏ.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Trục này di chuyển tương đối</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Cho bi xoay hoặc núm xoay báo nó đã xoay bao xa. Khi bật, trục giữ một vị trí như Hành trình chuột và dùng các thiết lập hành trình. Windows không cho biết trục nào di chuyển kiểu này.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Cho bi xoay hoặc núm xoay báo nó đã xoay bao xa. Khi bật, trục giữ một vị trí như Hành trình chuột và dùng các thiết lập hành trình. SDL đọc một tay cầm thông thường qua DirectInput, vốn đọc mọi trục như một vị trí, nên công tắc này cho biết trục nào di chuyển kiểu này.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Xem trước</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Cho thấy họ này theo chuột của chính bạn ra sao. Không có gì được ánh xạ cho đến khi bạn chọn nó.</value></data>
@@ -3502,6 +3570,13 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
 {0}
 
 PadForge đã ghi chi tiết vào crash.log cạnh PadForge.exe. Để báo lỗi này, hãy mở một thảo luận tại {2} và thả crash.log lên đó.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Đã xảy ra lỗi không mong đợi:
+
+{0}
+
+PadForge không ghi được chi tiết vào crash.log cạnh PadForge.exe. Để báo lỗi này, hãy mở một thảo luận tại {2}, nhấn Ctrl+C tại đây để sao chép thông báo này rồi dán vào đó.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(đã ẩn thêm {0} lỗi)</value></data>
@@ -4430,7 +4505,7 @@ PadForge đã ghi chi tiết vào crash.log cạnh PadForge.exe. Để báo lỗ
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Bộ giải nén Zstandard mà SteamKit2 dùng cho các khối depot của Steam, một bản chuyển sang C# của thư viện zstd do Oleg Stepanischev thực hiện.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Máy chủ và máy khách Model Context Protocol đằng sau kết nối trợ lý và PadForge.exe --mcp, bởi Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Máy chủ và máy khách Model Context Protocol đằng sau kết nối trợ lý và PadForge.exe --mcp, bởi Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions và DependencyInjection.Abstractions, nền tảng mà MCP C# SDK được xây dựng trên đó, bởi Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>đang gắn WinUSB vào màn hình của G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>màn hình của G19 đang dùng trình điều khiển khác ({0}), hãy khởi động Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>màn hình của G19 đang dùng trình điều khiển của chương trình khác ({0}), PadForge không can thiệp vào</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Đang kiểm tra trình điều khiển Bluetooth PlayStation của PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Đang đọc bộ thu phát Bluetooth của PC này…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Đang mở tay cầm qua cáp USB…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Đang ghi địa chỉ Bluetooth của PC này vào tay cầm…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Đang đăng ký tay cầm với Bluetooth của Windows…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Đang khởi động lại Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Ghép đôi đã dừng: Windows từ chối cho PadForge truy cập tay cầm hoặc thiết lập Bluetooth. Nhật ký chẩn đoán có chi tiết.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Ghép đôi đã dừng: việc đọc hoặc ghi tay cầm hay bộ thu phát Bluetooth đã thất bại. Nhật ký chẩn đoán có chi tiết.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Ghép đôi đã dừng vì một lỗi mà PadForge không lường trước. Nhật ký chẩn đoán có chi tiết.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>cần Logitech Gaming Software 8.52 trở lên</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>đã tìm thấy thư viện của nó nhưng không tải, vì PadForge không xác nhận được rằng chỉ quản trị viên mới đổi được nó và Logitech đã ký nó</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>đã tìm thấy thư viện của nó nhưng không dùng được, và nhật ký chẩn đoán cho biết lý do</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>hãy khởi động Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>đang chờ điện thoại có Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>trên điện thoại</value></data>
@@ -5938,6 +6024,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Chọn dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Tải bản sao thư viện của Force Dimension này thay cho mọi bản khác. Falcon đang mở trên bản khác sẽ đóng rồi mở lại trên bản này. Các bản do SDK cài đặt vẫn được tìm thấy mà không cần bước này.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Thư viện (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Trang tải Falcon SDK đã không mở được: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Trang tải Falcon SDK chưa mở được: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Cài đặt trình điều khiển Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Cài trình điều khiển của Force Dimension, từ thư mục SDK, cho Falcon chưa có trình điều khiển. Windows có thể hỏi trước xem có tin cậy Force Dimension không.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Lấy SDK của Force Dimension</value></data>
@@ -6604,12 +6692,17 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Đang gỡ…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Đang cập nhật…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nó chưa hoàn tất: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Mục và kỹ năng của PadForge vẫn còn, vì {0} đọc cùng tệp thiết lập và thư mục kỹ năng đó.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Mục của PadForge vẫn còn, vì {0} đọc cùng tệp thiết lập đó.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge đã được gỡ khỏi chương trình này. Kỹ năng của nó vẫn còn, vì {0} đọc kỹ năng từ cùng thư mục đó.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge không đọc được thiết lập trong {0}, nên không biết PadForge đã được thêm hay chưa.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Đã thêm. PadForge không đọc được thư mục kỹ năng của nó.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Trợ lý khác</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Cho trợ lý không có trong danh sách trên: Sao chép thiết lập đưa mục cho thiết lập MCP của nó, và Sao chép một tin nhắn đưa một đoạn văn bản ngắn cho bất kỳ cuộc trò chuyện nào, nói cách kết nối và nên hỏi gì trước.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Sao chép thiết lập</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Sao chép một tin nhắn</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Đã sao chép.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Chưa sao chép: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Chưa sao chép. Windows không cho PadForge dùng bảng nhớ tạm.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Hãy kết nối với PadForge, trình ánh xạ tay cầm trên PC của tôi. Đó là một máy chủ MCP cục bộ chạy qua stdio: lệnh là {0}, với đối số --mcp. Dưới dạng thiết lập JSON: {1} Khi đã kết nối, hãy gọi công cụ status của nó trước, rồi hỏi tôi muốn thiết lập gì, ví dụ: “Chỉ cho tôi nơi ánh xạ các cò của tay cầm.”</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Tự động hóa của PadForge đang tắt: hãy bật nó trong PadForge ở Tiện ích, Tự động hóa, trước.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Chương trình được cho phép</value></data>
@@ -6630,6 +6723,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Một joystick. PadForge đọc nó thô, nên ánh xạ của SDL không được dùng.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Một joystick, được bố trí như gamepad theo hàng của bạn.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL đọc thiết bị khi bộ máy chạy.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Thiết bị chưa được kết nối. SDL sẽ đọc nó khi nó được kết nối.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL không cung cấp cho PadForge kết quả đọc nào của thiết bị này.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Bản sao cộng đồng có sẵn, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Đã tải {0}</value></data>
@@ -6667,6 +6762,11 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, bật/tắt và các thao tác khác</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} và {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Không có gì để sao chép: SDL không có ánh xạ cho thiết bị này, và nó không ở trên tay cầm nào.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Không có gì để sao chép: PadForge không đọc được ánh xạ SDL của thiết bị này, và không có hàng nào của các tay cầm của nó cho ra một liên kết mà dạng của SDL nhận.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Không có gì để sao chép: SDL không có ánh xạ cho thiết bị này, và không có hàng nào của {0} đọc nút, trục hay hat của nó theo cách dạng của SDL nhận.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Không có gì để sao chép: SDL không có ánh xạ cho thiết bị này, và các hàng của {0} chỉ đọc nó cho {1}, thứ mà dạng của SDL không chứa được.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Không có gì để sao chép: PadForge hiện không đọc được ánh xạ SDL của thiết bị này, và nó không ở trên tay cầm nào.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Không có gì để sao chép: PadForge hiện không đọc được ánh xạ SDL của thiết bị này, và không có hàng nào của {0} cho ra một liên kết mà dạng của SDL nhận.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Một chương trình khác đang dùng bảng nhớ tạm. Chưa sao chép gì.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Hàng của bạn đã được gỡ. Thiết bị được đọc như trước đó.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Đã ánh xạ lại từ bố cục của SDL: {0}.</value></data>
@@ -6687,6 +6787,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Các hàng PadForge có</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Không có hàng nào khớp.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Hàng được chọn được áp dụng cho {0} theo ID riêng của nó, qua cùng bước kiểm tra và cùng lựa chọn như Dán.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Bộ máy đang dừng, nên danh sách bỏ qua các hàng mà SDL giữ, gồm hàng của riêng nó và bản sao cộng đồng tích hợp sẵn. Chúng sẽ được liệt kê khi bộ máy chạy.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL không trả lời kịp, nên danh sách bỏ qua các hàng mà nó giữ, gồm hàng của riêng nó và bản sao cộng đồng tích hợp sẵn.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Hàng ánh xạ SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Một hàng cho thiết bị này.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Một bố cục đã đoán.</value></data>
@@ -6699,14 +6801,17 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} trường, từ cùng nhà sản xuất và sản phẩm trên bus hoặc phiên bản khác. Nó được giữ theo ID riêng của thiết bị này.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} trường, hàng của một thiết bị khác. Nó được giữ theo ID riêng của thiết bị này.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} trường. SDL không đọc thiết bị này, nên PadForge bố trí các đầu vào của nó theo hàng.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge không có nút hay trục thường cho các trường này và bỏ qua chúng: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} trường, từ các trục, nút và hat của thiết bị. Kiểm tra trong Kiểm tra đầu vào, rồi giữ hoặc đổi nó tại đây.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Việc này đổi cách {0} được đọc. Các hàng của nó trong {1} được ánh xạ lại từ bố cục mới.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Việc này đổi cách {0} được đọc. Nó không ở trên tay cầm nào, nên không hàng nào đổi.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Các phím tắt hồ sơ đọc {0} giữ các đầu vào chúng đã được đặt.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Hàng được giữ làm của bạn trong PadForge.xml và thắng mọi nguồn khác cho thiết bị này. Gỡ hàng của tôi trả lại hàng cũ và các hàng cũ.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Các hàng được giữ làm của bạn trong PadForge.xml và thắng mọi nguồn khác cho thiết bị của chúng. Xóa, dưới Thêm của hàng Cơ sở dữ liệu tay cầm, sẽ xóa chúng.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} hàng cho Windows. {1} hàng cho hệ thống khác bị bỏ qua.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} hàng cho Windows. {1} hàng cho hệ thống khác bị bỏ qua.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>{0:N0} hàng cho Windows.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} hàng cho Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} hàng cho các hệ thống khác bị bỏ qua.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} hàng cho một hệ thống khác bị bỏ qua.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Cả {0:N0} hàng sẽ được thêm. PadForge giữ tối đa {1:N0} hàng của bạn.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Hàng này sẽ được thêm. PadForge giữ tối đa {1:N0} hàng của bạn.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Hiện đang giữ {0:N0} hàng của bạn, nên {1:N0} hàng trong số này sẽ được thêm và {2:N0} hàng sẽ không.</value></data>
@@ -6716,7 +6821,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Văn bản này không phải một hàng của cơ sở dữ liệu tay cầm SDL: một ID gồm 32 chữ số hex, một tên, rồi các trường như a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Các hàng này dành cho hệ thống khác. PadForge đọc các hàng cho Windows, hoặc không dành riêng cho hệ thống nào.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID của hàng không phải của một thiết bị. Nó cần 32 chữ số hex.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Tên của hàng trống, dài quá 128 ký tự, hoặc chứa một ký tự mà SDL đọc là trường.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Tên của hàng bị trống, dài quá 128 ký tự, chứa một dấu hiệu trường mà SDL đọc, như “type:”, hoặc chứa ký tự không phải chữ cái, chữ số, dấu câu, ký hiệu và dấu cách thường.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Hàng có một gợi ý hoặc một trường Android, mà PadForge không nhận.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Hàng có một trường mà SDL không biết.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Một liên kết không đúng dạng của SDL, như b3, a2, +a2, a2~ hoặc h0.4.</value></data>
@@ -6727,8 +6832,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Các hàng của bạn</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Các hàng bạn thêm tại đây, hoặc dán trên thẻ Ánh xạ SDL của một thiết bị, thắng mọi nguồn khác cho thiết bị của chúng và vẫn còn sau khi đặt lại.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Thêm các hàng từ một tệp hoặc bảng nhớ tạm…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} hàng cho {0} thiết bị, của bạn thắng mọi nguồn khác.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} hàng cho {0} thiết bị, của bạn thắng mọi nguồn khác.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} hàng, hàng của bạn được ưu tiên hơn mọi nguồn khác.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} hàng, hàng của bạn được ưu tiên hơn mọi nguồn khác.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Chưa có.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Biến SDL_GAMECONTROLLERCONFIG của bạn chứa {0} hàng mà PadForge không giữ. Thêm các hàng từ một tệp hoặc bảng nhớ tạm mở ra cùng với chúng.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Biến SDL_GAMECONTROLLERCONFIG của bạn chứa {0} hàng mà PadForge không giữ. Thêm các hàng từ một tệp hoặc bảng nhớ tạm mở ra cùng với nó.</value></data>
@@ -6738,7 +6843,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Thay đổi…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Dùng tệp của cộng đồng</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Địa chỉ</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge nhận địa chỉ bắt đầu bằng https:// và nêu tên một máy chủ, ở cổng mặc định, không có tên người dùng hay mật khẩu.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge nhận địa chỉ dài tối đa 2.048 ký tự, bắt đầu bằng https:// và nêu tên một máy chủ, trên cổng mặc định, không có tên người dùng, mật khẩu hay phần sau #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Truy cập PadForge từ web</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Một trợ lý chạy trên một trang web truy cập PadForge qua một chương trình đường hầm trên PC này. Bật mục này sẽ hỏi bạn trước.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Truy cập PadForge từ web?</value></data>
@@ -6755,7 +6860,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Đã dừng. Những lời cuối của nó: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Không khởi động được.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Nó không còn trên PC này nữa.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Không tìm thấy chương trình đường hầm nào trên PC này. PadForge làm việc với cloudflared, devtunnel, ngrok và Tailscale Funnel, hoặc với địa chỉ đường hầm của riêng bạn.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge không tìm thấy cloudflared, devtunnel, ngrok hay Tailscale Funnel nào trên PC này. Hãy chọn ChatGPT Secure MCP Tunnel, mục mà PadForge tải về, hoặc nhập địa chỉ đường hầm của riêng bạn.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Chọn một đường hầm để cấp cho PadForge một địa chỉ công khai.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Cũng có trên PC này: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, có địa chỉ giữ nguyên</value></data>
@@ -6763,7 +6868,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Hãy chạy đường hầm của riêng bạn tới http://127.0.0.1:{0} và dán địa chỉ https của nó. Một đường hầm Cloudflare có tên, một dev tunnel cố định, Tailscale Funnel và tên miền riêng của ngrok giữ nguyên địa chỉ.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Hãy dán một địa chỉ https không có đường dẫn nào ngoài /mcp, như đường hầm của bạn cấp.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Đang khởi động trình hỗ trợ web của PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Trình hỗ trợ web của PadForge đã dừng ({0}). Hãy tắt rồi bật lại Truy cập PadForge từ web để khởi động lại nó.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Trình hỗ trợ web của PadForge đã dừng ({0}). PadForge vẫn tiếp tục thử khởi động nó.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Địa chỉ</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Chưa có địa chỉ công khai.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Thêm vào Claude</value></data>
@@ -6802,11 +6907,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>nó kết thúc với mã {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Tự động hóa đang tắt, nên không trợ lý web nào truy cập được PadForge. Trình hỗ trợ web khởi động khi Tự động hóa bật.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Đang kiểm tra…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Chưa cài đặt.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Đã cài đặt và mới nhất. Một tập lệnh bắt đầu bằng {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Đã cài đặt cho {0} và mới nhất. Một tập lệnh bắt đầu bằng {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Đã cài đặt. PadForge này có bản mới hơn.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Đã cài đặt cho {0}. PadForge này có bản mới hơn.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Đang cài đặt…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge không kiểm tra được: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Cài đặt đặt thư viện của PadForge vào nơi ngôn ngữ đó tìm thấy. Một tập lệnh nạp nó sẽ đọc thiết bị và điều khiển ánh xạ ở mức nêu trên.</value></data>
@@ -6814,8 +6914,27 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Các bản đã cài đặt</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Gỡ tất cả</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Đã gỡ.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Thư viện của PadForge đã được cài cho {0} và là bản mới nhất. Một tập lệnh bắt đầu bằng {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Thư viện của PadForge cho {0} khác với bản sao của PadForge này.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Thư viện của PadForge chưa được cài cho {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>Thư viện của PadForge là bản mới nhất cho {0}. Bản sao cho {1} khác với bản của PadForge này.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>Thư viện của PadForge là bản mới nhất cho {0} và chưa được cài cho {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>Thư viện của PadForge cho {0} khác với bản sao của PadForge này, và chưa được cài cho {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>Thư viện của PadForge là bản mới nhất cho {0}. Bản sao cho {1} khác với bản của PadForge này, và chưa được cài cho {2}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows không khởi động nó bằng quyền của riêng bạn.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Nó không kết thúc trong {0} giây.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Nó kết thúc với mã {0} và không đưa ra lý do.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge không đọc được thiết lập trong {0}, nên đã để nguyên tệp.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge không ghi {0}, nên đã để nguyên nó.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows không có thư mục Tài liệu nào của bạn.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge không tìm thấy thư mục nào của bạn cho {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Lệnh riêng của {0} kết thúc với mã {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Lệnh của {0} không có trên PC này.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows không cho PadForge đọc hoặc ghi một tệp mà nó cần.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge không tìm thấy Python nào: không có bản nào được đăng ký, cài từ Microsoft Store, được trình khởi chạy py liệt kê hay nằm trong PATH của bạn.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Không có Python nào mà PadForge tìm thấy trả lời trong vòng {0} giây.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Lần chạy không đưa ra lý do nào mà PadForge biết.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID tập lệnh</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID tập lệnh của nó</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Tập lệnh gọi các điều khiển của nó là {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Tập lệnh gọi các phím của nó là KeyA, KeySpace, KeyLeftShift và tương tự, và mọi phím theo mã của nó, Vk0 đến Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} trên mạng này từ {1}</value></data>
@@ -6827,11 +6946,11 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Trình hỗ trợ của PadForge, chạy không có quyền quản trị, lắng nghe trên các địa chỉ mạng của PC này, và PadForge chỉ cho cổng của nó vào trên mạng riêng. Một trợ lý trên PC khác chỉ vào được bằng khóa bạn tạo ở đây. Các cuộc gọi và khóa của chúng đi qua mạng không được mã hóa.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Cổng</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Thay đổi…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Các cuộc gọi và khóa của chúng đi qua mạng này không được mã hóa. Windows chỉ cho chúng vào trên mạng riêng.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Các lệnh gọi và khóa của chúng đi qua mạng này mà không được mã hóa. Quy tắc Tường lửa Windows mà PadForge tạo cho cổng này chỉ nêu các mạng riêng tư.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Cổng {0} đang được một chương trình khác dùng. Hãy đổi cổng để truy cập PadForge từ mạng này.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows không cho trình hỗ trợ của PadForge lắng nghe trên cổng {0}. PadForge cho phép điều đó khi có quyền quản trị, nên hãy khởi động PadForge với quyền ấy rồi tắt và bật lại mục này.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows không giữ chỗ nào cho trình hỗ trợ của PadForge trên cổng {0}. Hãy tắt rồi bật lại mục này, và PadForge sẽ tạo lại.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Trình hỗ trợ của PadForge không lắng nghe được trên cổng {0}. Hãy đổi cổng, hoặc tắt rồi bật lại mục này.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Trình hỗ trợ của PadForge đã dừng ({0}). Hãy tắt rồi bật lại Truy cập PadForge từ mạng này để khởi động lại nó.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Trình hỗ trợ của PadForge đã dừng ({0}). PadForge vẫn tiếp tục thử khởi động nó.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Tự động hóa đang tắt, nên không trợ lý nào trên mạng này truy cập được PadForge. Trình hỗ trợ khởi động khi Tự động hóa bật.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>PC này hiện không có địa chỉ trên mạng riêng.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Trợ lý trên mạng này</value></data>
@@ -6875,11 +6994,12 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Chọn thiết bị</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} được điều khiển thiết bị của chính nó và những thiết bị bạn đánh dấu. Nó vẫn đọc mọi thiết bị.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Không có thiết bị nào trên trang Thiết bị.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Đang chạy, với quyền của bạn, và đã sẵn sàng. ChatGPT truy cập PadForge qua đường hầm này mà không cần đăng nhập riêng, và chỉ từ tổ chức OpenAI của bạn. Nó khởi động lại cùng PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Đang chạy, với quyền của bạn. Nó chờ OpenAI báo đường hầm đã sẵn sàng.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Đang chạy, với quyền của bạn, và tunnel-client báo là đã sẵn sàng. Nó sẽ khởi động lại cùng PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Đang chạy, với quyền của bạn. tunnel-client hiện không báo là đã sẵn sàng.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Đang tải tunnel-client của OpenAI và đối chiếu với tổng kiểm SHA-256 của bản phát hành.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>Không tải được tunnel-client: {0}. Hãy chọn lại đường hầm để thử lại.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Hãy dán khóa chạy và ID đường hầm bên dưới, rồi đường hầm sẽ khởi động.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>tunnel-client của OpenAI chưa có trên PC này. Hãy chọn lại đường hầm để tải nó.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Khóa chạy</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Bị hạn chế, với Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Tạo một khóa</value></data>
@@ -6888,6 +7008,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Mở ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge giữ khóa được mã hóa chỉ cho riêng bạn. Để trống ô sẽ xóa khóa. ChatGPT làm việc ở mức nêu trên.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Khóa chưa được giữ: trình hỗ trợ web của PadForge không chạy, và chỉ nó mới mã hóa được khóa cho bạn.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Khóa chưa được giữ: trình hỗ trợ web của PadForge đã kết thúc trước khi mã hóa khóa. Hãy dán lại.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Khóa chưa được giữ: Windows không mã hóa được nó cho bạn. Hãy dán lại.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Trả lời từ thiết bị khác</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Trả lời các câu hỏi của PadForge từ điện thoại hoặc PC khác khi bạn không ở chỗ PC này.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Chỉ dùng được trên mạng này, qua địa chỉ của bộ điều khiển web.</value></data>
@@ -6905,9 +7027,10 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Mã dùng được một lần, đến {0}. Nhập sai năm lần thì mã đóng lại, còn mã QR vẫn dùng được.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Đang khởi động địa chỉ của bộ điều khiển web…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Không mở được trang: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>PC này không có địa chỉ trên mạng riêng tư.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows không ẩn cửa sổ này khỏi ảnh chụp màn hình, nên nó không hiện mã.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Mã đã nhập bị đóng sau năm lần sai. Mã QR vẫn dùng được đến {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Mã đã hết hạn. Ghép nối thiết bị… sẽ tạo mã mới.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Mã đã hết hạn. Ghép nối thiết bị sẽ tạo mã mới.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge giữ tối đa {0} khóa mạng. Hãy Thu hồi nó trước.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Các màu thay đổi, như màu chuyển vòng hoặc màu theo âm thanh, sẽ không đến được thiết bị. Màu giữ nguyên thì vẫn đến.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Tất cả tệp (*.*)|*.*</value></data>

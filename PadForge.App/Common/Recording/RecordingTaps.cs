@@ -10,7 +10,7 @@ namespace PadForge.Common.Recording
 {
     /// <summary>
     /// The problem recorder's taps on threads other than the poll thread
-    /// (#597): what a game writes to a virtual controller, and the rumble
+    /// (#600): what a game writes to a virtual controller, and the rumble
     /// PadForge's own writer sends a Sony pad. Each does nothing while
     /// nothing is being captured, and otherwise queues one line when what it
     /// saw differs from the last time, so a game that repeats one report
@@ -23,26 +23,15 @@ namespace PadForge.Common.Recording
         private const int MostLinesASecond = 100;
 
         private static readonly object s_sync = new();
-        private static readonly int[] s_keys = new int[Slots * KindsPerSlot];
-        private static readonly ulong[] s_hashes = new ulong[Slots * KindsPerSlot];
-        private static readonly long[] s_second = new long[Slots];
-        private static readonly int[] s_lines = new int[Slots];
-        private static readonly int[] s_dropped = new int[Slots];
+        private static readonly GameReports s_reports = new();
         private static readonly Dictionary<string, int> s_written = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Forgets what was last seen, so the first report and the
         /// first write of a new capture are in it.</summary>
         internal static void Reset()
         {
-            lock (s_sync)
-            {
-                Array.Clear(s_keys);
-                Array.Clear(s_hashes);
-                Array.Clear(s_second);
-                Array.Clear(s_lines);
-                Array.Clear(s_dropped);
-                s_written.Clear();
-            }
+            s_reports.Reset();
+            lock (s_sync) s_written.Clear();
         }
 
         /// <summary>
@@ -54,61 +43,105 @@ namespace PadForge.Common.Recording
         /// </summary>
         internal static void GameReport(int slot, HMOutputSource source, byte reportId, ReadOnlySpan<byte> data)
         {
-            if (RecordingCapture.Active == null || (uint)slot >= Slots) return;
-
-            ulong hash = 14695981039346656037UL;
-            hash = (hash ^ (uint)data.Length) * 1099511628211UL;
-            int hashed = Math.Min(data.Length, MostBytes);
-            for (int i = 0; i < hashed; i++) hash = (hash ^ data[i]) * 1099511628211UL;
-
-            int key = (((int)source + 1) << 8) | reportId;
-            int dropped;
-            lock (s_sync)
-            {
-                int from = slot * KindsPerSlot, at = -1;
-                for (int i = from; i < from + KindsPerSlot; i++)
-                {
-                    if (s_keys[i] == key) { at = i; break; }
-                    if (s_keys[i] == 0 && at < 0) at = i;
-                }
-                // More kinds than places: the first place is taken over.
-                if (at < 0) at = from;
-                if (s_keys[at] == key && s_hashes[at] == hash) return;
-                s_keys[at] = key;
-                s_hashes[at] = hash;
-
-                long second = Environment.TickCount64 / 1000;
-                if (second != s_second[slot])
-                {
-                    s_second[slot] = second;
-                    s_lines[slot] = 0;
-                }
-                if (++s_lines[slot] > MostLinesASecond)
-                {
-                    s_dropped[slot]++;
-                    return;
-                }
-                dropped = s_dropped[slot];
-                s_dropped[slot] = 0;
-            }
-
-            var sb = new StringBuilder(48 + hashed * 3);
-            sb.Append("report src=").Append(source.ToString())
-              .Append(" id=0x").Append(reportId.ToString("X2", CultureInfo.InvariantCulture))
-              .Append(" len=").Append(data.Length.ToString(CultureInfo.InvariantCulture));
-            if (dropped > 0) sb.Append(" unwritten=").Append(dropped.ToString(CultureInfo.InvariantCulture));
-            sb.Append(" bytes=");
-            for (int i = 0; i < hashed; i++)
-            {
-                if (i > 0) sb.Append(' ');
-                sb.Append(data[i].ToString("X2", CultureInfo.InvariantCulture));
-            }
-            ProblemRecorder.Instance.TakeTyped(RecordingCodec.LayerFeedback, slot, sb.ToString());
+            if (RecordingCapture.Active == null) return;
+            string line = s_reports.Line(slot, source, reportId, data, Environment.TickCount64 / 1000);
+            if (line != null) ProblemRecorder.Instance.TakeTyped(RecordingCodec.LayerFeedback, slot, line);
         }
 
-        /// <summary>The rumble PadForge's own writer just sent a DualSense or
-        /// a DualShock 4, which SDL does not write for. Written when the two
-        /// motors differ from the last write to that pad.</summary>
+        /// <summary>
+        /// What the game reports of each controller came to, and the cap on
+        /// their lines. The last report of each kind is kept with whether it
+        /// went unwritten: a report the cap dropped is kept apart from the
+        /// one the file shows, so the first report after the cap lifts that
+        /// differs from the file's is written, the dropped one coming again
+        /// among them, and the file ends on the report the game last sent.
+        /// </summary>
+        internal sealed class GameReports
+        {
+            private readonly object _sync = new();
+            private readonly int[] _keys = new int[Slots * KindsPerSlot];
+            private readonly ulong[] _hashes = new ulong[Slots * KindsPerSlot];
+            private readonly bool[] _unwritten = new bool[Slots * KindsPerSlot];
+            private readonly long[] _second = new long[Slots];
+            private readonly int[] _lines = new int[Slots];
+            private readonly int[] _dropped = new int[Slots];
+
+            internal void Reset()
+            {
+                lock (_sync)
+                {
+                    Array.Clear(_keys);
+                    Array.Clear(_hashes);
+                    Array.Clear(_unwritten);
+                    Array.Clear(_second);
+                    Array.Clear(_lines);
+                    Array.Clear(_dropped);
+                }
+            }
+
+            /// <summary>The line a report sent in the second
+            /// <paramref name="second"/> gets, or null when it gets
+            /// none.</summary>
+            internal string Line(int slot, HMOutputSource source, byte reportId, ReadOnlySpan<byte> data, long second)
+            {
+                if ((uint)slot >= Slots) return null;
+
+                ulong hash = 14695981039346656037UL;
+                hash = (hash ^ (uint)data.Length) * 1099511628211UL;
+                int hashed = Math.Min(data.Length, MostBytes);
+                for (int i = 0; i < hashed; i++) hash = (hash ^ data[i]) * 1099511628211UL;
+
+                int key = (((int)source + 1) << 8) | reportId;
+                int dropped;
+                lock (_sync)
+                {
+                    int from = slot * KindsPerSlot, at = -1;
+                    for (int i = from; i < from + KindsPerSlot; i++)
+                    {
+                        if (_keys[i] == key) { at = i; break; }
+                        if (_keys[i] == 0 && at < 0) at = i;
+                    }
+                    // More kinds than places: the first place is taken over.
+                    if (at < 0) at = from;
+                    bool repeat = _keys[at] == key && _hashes[at] == hash;
+                    // The report the file shows, again.
+                    if (repeat && !_unwritten[at]) return null;
+                    _keys[at] = key;
+                    _hashes[at] = hash;
+
+                    if (second != _second[slot])
+                    {
+                        _second[slot] = second;
+                        _lines[slot] = 0;
+                    }
+                    if (++_lines[slot] > MostLinesASecond)
+                    {
+                        // A report left unwritten counts once, however often
+                        // it comes while the cap holds.
+                        if (!repeat) _dropped[slot]++;
+                        _unwritten[at] = true;
+                        return null;
+                    }
+                    _unwritten[at] = false;
+                    dropped = _dropped[slot];
+                    _dropped[slot] = 0;
+                }
+
+                var sb = new StringBuilder(48 + hashed * 3);
+                sb.Append("report src=").Append(source.ToString())
+                  .Append(" id=0x").Append(reportId.ToString("X2", CultureInfo.InvariantCulture))
+                  .Append(" len=").Append(data.Length.ToString(CultureInfo.InvariantCulture));
+                if (dropped > 0) sb.Append(" unwritten=").Append(dropped.ToString(CultureInfo.InvariantCulture));
+                sb.Append(" bytes=");
+                for (int i = 0; i < hashed; i++)
+                {
+                    if (i > 0) sb.Append(' ');
+                    sb.Append(data[i].ToString("X2", CultureInfo.InvariantCulture));
+                }
+                return sb.ToString();
+            }
+        }
+
         /// <summary>A write to a device on a thread of its own, watched for
         /// a recording (#600): the capture it began in and its slot, or a slot
         /// of 0 for a write that is not watched.</summary>
@@ -143,6 +176,9 @@ namespace PadForge.Common.Recording
             if (track >= 0) recorder.TakeSlowCall(capture.DeviceOfTrack(track), kind, ms);
         }
 
+        /// <summary>The rumble PadForge's own writer just sent a DualSense or
+        /// a DualShock 4, which SDL does not write for. Written when the two
+        /// motors differ from the last write to that pad.</summary>
         internal static void SonyWrite(string devicePath, IReadOnlyDictionary<string, object> fields)
         {
             if (RecordingCapture.Active == null || string.IsNullOrEmpty(devicePath) || fields == null) return;

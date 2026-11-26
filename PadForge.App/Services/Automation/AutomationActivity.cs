@@ -10,7 +10,7 @@ namespace PadForge.Services.Automation
 {
     /// <summary>
     /// A program that reached PadForge from outside, as the user is shown it
-    /// (#597). The process ID and the image name are what Windows says of the
+    /// (#600). The process ID and the image name are what Windows says of the
     /// other end of a pipe. They are for the user's eyes and decide nothing: a
     /// program can stage both.
     /// </summary>
@@ -87,7 +87,7 @@ namespace PadForge.Services.Automation
         Version,
         State,
 
-        // The Automation pipe's verbs (#597).
+        // The Automation pipe's verbs (#600).
         Connected,
         Disconnected,
         Devices,
@@ -105,7 +105,7 @@ namespace PadForge.Services.Automation
         Call,
 
         /// <summary>A tool an assistant or a script's <c>call</c> line ran
-        /// (#597): the argument is the tool's name and the detail what it
+        /// (#600): the argument is the tool's name and the detail what it
         /// named.</summary>
         Tool,
 
@@ -134,11 +134,9 @@ namespace PadForge.Services.Automation
     /// <param name="Count">How many times the program asked it, as a stream
     /// of lines on the Automation pipe and refused lines of one kind are one
     /// entry.</param>
-    /// <param name="Mixed">Whether the asks counted named different things,
-    /// of which <paramref name="Argument"/> is the last.</param>
     /// <param name="Detail">For a tool, what the call named: a profile, a
     /// setting, a controller. Null for none.</param>
-    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null, int Count = 1, bool Mixed = false, string Detail = null)
+    internal readonly record struct AutomationAsk(AutomationAskKind Kind, string Argument = null, int Count = 1, string Detail = null)
     {
         /// <summary>The longest stretch of a program's own text a sentence
         /// carries.</summary>
@@ -148,7 +146,6 @@ namespace PadForge.Services.Automation
         /// than once.</summary>
         public string Text
             => Count <= 1 ? Once
-                : Mixed ? string.Format(Strings.Instance.Automation_Asked_RepeatedLast_Format, Once, Count)
                 : string.Format(Strings.Instance.Automation_Asked_Repeated_Format, Once, Count);
 
         /// <summary>The ask once, in plain words.</summary>
@@ -160,8 +157,10 @@ namespace PadForge.Services.Automation
                 // A program's own text, with no character that could make it
                 // read as something else.
                 string argument = ShownText.Clean(Argument ?? string.Empty);
-                // The one-character ellipsis the interface's strings use.
-                if (argument.Length > LongestArgument) argument = argument.Substring(0, LongestArgument) + "…";
+                // The one-character ellipsis the interface's strings use. A
+                // cut never leaves half of a character of two units.
+                if (argument.Length > LongestArgument)
+                    argument = argument.Substring(0, char.IsHighSurrogate(argument[LongestArgument - 1]) ? LongestArgument - 1 : LongestArgument) + "…";
                 return Kind switch
                 {
                     AutomationAskKind.ActivateProfile => string.Format(s.Automation_Asked_Activate_Format, argument),
@@ -235,12 +234,12 @@ namespace PadForge.Services.Automation
 
         /// <summary>The undo journal's entry a tool's change joined, which
         /// the Activity card's Undo restores, or 0 for a call that changed
-        /// nothing (#597).</summary>
+        /// nothing (#600).</summary>
         public int Spell { get; init; }
     }
 
     /// <summary>
-    /// The record of what outside programs asked of PadForge (#597, #600),
+    /// The record of what outside programs asked of PadForge (#600),
     /// oldest first. Every call is kept for the session, up to
     /// <see cref="Capacity"/>. Past that the oldest go, and
     /// <see cref="Dropped"/> counts them. Kept in memory and never written

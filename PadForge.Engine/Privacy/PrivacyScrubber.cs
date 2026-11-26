@@ -109,6 +109,8 @@ namespace PadForge.Engine.Privacy
         {
             public PrivateKind Kind;
             public string StandIn;
+            /// <summary>One of this PC's own values (<see cref="KnowLive"/>).</summary>
+            public bool Live;
         }
 
         // The values the scrubber knows, by kind and folded value.
@@ -127,6 +129,7 @@ namespace PadForge.Engine.Privacy
         private readonly int[] _foundLate = new int[KindCount];
         private int _tooShort;
         private int _linesLeftOut;
+        private int _foundLive;
 
         private readonly Dictionary<string, string> _deviceAliases = new(StringComparer.OrdinalIgnoreCase);
 
@@ -241,6 +244,10 @@ namespace PadForge.Engine.Privacy
             var m = StandIns.Match(text);
             return m.Success && m.Index == 0 && m.Length == text.Length;
         }
+
+        /// <summary>True when <paramref name="text"/> holds a stand-in this
+        /// class writes anywhere in it.</summary>
+        public static bool HoldsStandIn(string text) => !string.IsNullOrEmpty(text) && StandIns.IsMatch(text);
 
         // ─────────────────────────────────────────────
         //  Stage 1: typed fields
@@ -698,6 +705,14 @@ namespace PadForge.Engine.Privacy
             @"(?:Web Controller|Browser Gamepad): (?<phone>.+?)(?=\s+[A-Za-z]+=|["")\],]|$)",
             RegexOptions.CultureInvariant | RegexOptions.Compiled, SearchLimit);
 
+        // Remote Link's relay lines name a key by its first 16 hex digits:
+        // this PC's identity relay, a paired PC's, a caller's, a code's.
+        // Each is a fixed identifier of a PC, and a run that short is no key
+        // to the hex rule, so every such run of a relay line is one.
+        private static readonly Regex RelayLine = new(@"^RELAY\b", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex RelayKey = new(@"(?<![0-9A-Za-z])[0-9A-Fa-f]{16}(?![0-9A-Za-z])",
+            RegexOptions.CultureInvariant | RegexOptions.Compiled, SearchLimit);
+
         /// <summary>The name a web controller's viewer typed, from the name
         /// PadForge gives the device ("... Web Controller: name" or "Browser
         /// Gamepad: name"), or null when it carries none.</summary>
@@ -710,17 +725,12 @@ namespace PadForge.Engine.Privacy
 
         private string ReplaceRulesLocked(string text, Counting counting)
         {
-            void Counted(PrivateKind kind)
-            {
-                if (counting == Counting.Late) _foundLate[(int)kind]++;
-                else if (counting == Counting.Place) _places[(int)kind]++;
-            }
             string Named(PrivateKind kind, string value)
             {
                 string trimmed = value.Trim();
                 if (trimmed.Length == 0 || IsStandIn(trimmed)) return value;
                 var known = KnowLocked(kind, trimmed, null);
-                Counted(known.Kind);
+                CountedLocked(known, counting);
                 return known.StandIn;
             }
 
@@ -738,14 +748,17 @@ namespace PadForge.Engine.Privacy
                     if (said.Trim().Length == 0 || IsStandIn(said)) return m.Value;
                     if (_forms.TryGetValue(Fold(said.Trim()), out var phrase))
                     {
-                        Counted(phrase.Kind);
+                        CountedLocked(phrase, counting);
                         return "\"" + phrase.StandIn + "\"";
                     }
-                    Counted(PrivateKind.Speech);
+                    if (counting == Counting.Late) _foundLate[(int)PrivateKind.Speech]++;
+                    else if (counting == Counting.Place) _places[(int)PrivateKind.Speech]++;
                     if (counting != Counting.None) _values[(int)PrivateKind.Speech]++;
                     return "\"" + SpeechLength(said) + "\"";
                 });
             }
+            if (RelayLine.IsMatch(text))
+                text = RelayKey.Replace(text, m => Named(PrivateKind.Key, m.Value));
             return WebViewer.Replace(text, m => m.Value.Substring(0, m.Groups["phone"].Index - m.Index)
                 + Named(PrivateKind.Phone, m.Groups["phone"].Value));
         }
@@ -766,6 +779,9 @@ namespace PadForge.Engine.Privacy
                     // written the long way is left for the path pass, which
                     // reads a folder's name across a space.
                     string line = DevicePathShape.Replace(text, m => LongFilePath(m.Value) != null ? m.Value : DevicePathLocked(m.Value));
+                    // A phone's known name goes before the rules, which end
+                    // a viewer's name at a comma that name can hold.
+                    line = ReplaceKnownLocked(line, Counting.Place, PrivateKind.Phone);
                     line = ReplaceRulesLocked(line, Counting.Place);
                     line = ReplaceKnownLocked(line, Counting.Place);
                     line = UrlOrPath.Replace(line, UrlOrPathEvaluator);
@@ -792,7 +808,7 @@ namespace PadForge.Engine.Privacy
         {
             for (int again = 0; ; again++)
             {
-                int speech = _values[(int)PrivateKind.Speech];
+                int speech = _values[(int)PrivateKind.Speech], live = _foundLive;
                 int[] places = (int[])_places.Clone(), late = (int[])_foundLate.Clone();
                 long cpu = ThreadProcessorTime();
                 try
@@ -808,6 +824,7 @@ namespace PadForge.Engine.Privacy
                         return LineLeftOut;
                     }
                     _values[(int)PrivateKind.Speech] = speech;
+                    _foundLive = live;
                     Array.Copy(places, _places, places.Length);
                     Array.Copy(late, _foundLate, late.Length);
                 }
@@ -973,7 +990,9 @@ namespace PadForge.Engine.Privacy
 
         private enum Counting { Place, Late, None }
 
-        private string ReplaceKnownLocked(string text, Counting counting)
+        /// <summary>Replaces the values the scrubber knows, or with
+        /// <paramref name="only"/> the values of that kind alone.</summary>
+        private string ReplaceKnownLocked(string text, Counting counting, PrivateKind? only = null)
         {
             if (_knownDirty) RebuildKnownLocked();
             if (_knownRegex == null || string.IsNullOrEmpty(text)) return text;
@@ -981,10 +1000,22 @@ namespace PadForge.Engine.Privacy
             {
                 if (m.Groups["skip"].Success) return m.Value;
                 if (!_forms.TryGetValue(Fold(m.Value), out var known)) return m.Value;
-                if (counting == Counting.Late) _foundLate[(int)known.Kind]++;
-                else if (counting == Counting.Place) _places[(int)known.Kind]++;
+                // A value known under the kind asked for, whatever kind
+                // named it first.
+                if (only is { } kind && !_known.ContainsKey((kind, Fold(m.Value)))) return m.Value;
+                CountedLocked(known, counting);
                 return known.StandIn;
             });
+        }
+
+        private void CountedLocked(Known known, Counting counting)
+        {
+            if (counting == Counting.Late)
+            {
+                _foundLate[(int)known.Kind]++;
+                if (known.Live) _foundLive++;
+            }
+            else if (counting == Counting.Place) _places[(int)known.Kind]++;
         }
 
         /// <summary>The search of finished text: replaces every value the
@@ -1000,12 +1031,47 @@ namespace PadForge.Engine.Privacy
             lock (_sync)
             {
                 var counting = count ? Counting.Late : Counting.None;
-                return SearchLocked(() => ReplaceKnownLocked(ReplaceRulesLocked(text, counting), counting));
+                return SearchLocked(() => ReplaceKnownLocked(ReplaceRulesLocked(ReplaceKnownLocked(text, counting, PrivateKind.Phone), counting), counting));
             }
         }
 
-        /// <summary>How many values the scrubber knows and searches for.</summary>
-        public int KnownValues { get { lock (_sync) return _known.Count - _tooShort; } }
+        /// <summary>Remembers this PC's own values as <see cref="Know"/> does
+        /// and marks each as one, so <see cref="FoundLateLive"/> counts their
+        /// finds. Returns how many values of them are searched for: a value
+        /// of one character is not, and one text listed twice, as a PC name
+        /// and its domain can be, is one value.</summary>
+        public int KnowLive(IEnumerable<(PrivateKind Kind, string Value)> values)
+        {
+            lock (_sync)
+            {
+                var searched = new HashSet<Known>();
+                foreach (var (kind, value) in values)
+                {
+                    if (string.IsNullOrWhiteSpace(value)) continue;
+                    string trimmed = value.Trim();
+                    if (IsStandIn(trimmed)) continue;
+                    var known = KnowLocked(kind, trimmed, null);
+                    known.Live = true;
+                    if (trimmed.Length >= ShortestSearched) searched.Add(known);
+                }
+                return searched.Count;
+            }
+        }
+
+        /// <summary>Text with the values the scrubber knows replaced and
+        /// nothing else, counted nowhere: for lines the recorder wrote around
+        /// values, such as a summary's, where a rule would read the
+        /// recorder's own words as a name.</summary>
+        public string KnownOnly(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return text;
+            lock (_sync) return SearchLocked(() => ReplaceKnownLocked(text, Counting.None));
+        }
+
+        /// <summary>How many places the search of finished text found one of
+        /// this PC's own values in (<see cref="KnowLive"/>).</summary>
+        public int FoundLateLive { get { lock (_sync) return _foundLive; } }
+
 
         /// <summary>How many places the search of finished text found a value
         /// in, over every kind.</summary>
@@ -1120,8 +1186,9 @@ namespace PadForge.Engine.Privacy
         }
 
         /// <summary>Lines in the shapes the free-text rules read, each with a
-        /// planted name or sentence: a microphone named after a person, a
-        /// phone named after a person, and a sentence said aloud.</summary>
+        /// planted name, sentence or key: a microphone named after a person,
+        /// a phone named after a person, a sentence said aloud, and the first
+        /// digits of a key a relay line names.</summary>
         private static readonly (PrivateKind Kind, string Line, string Planted)[] ShapeCanaries =
         {
             (PrivateKind.AudioDevice, "VOICE [Headset Microphone (Quillon Ashby's AirPods Pro)] listening", "Quillon Ashby"),
@@ -1130,6 +1197,7 @@ namespace PadForge.Engine.Privacy
             (PrivateKind.Phone, "DEV - Browser Gamepad: Ysolde Varga's Pixel", "Ysolde Varga"),
             (PrivateKind.Speech, "VOICE [Mic] heard \"meet me by the north gate at nine\" conf=0.91 gate=1 fires=0", "north gate"),
             (PrivateKind.Speech, "VOICE [Mic] alternates: \"meet me by the north gate\" 0.41 | \"meat me by the north gait\" 0.22", "north g"),
+            (PrivateKind.Key, "RELAY identity-connected: relay.example.net as 5E1C0FA27B39D486", "5E1C0FA27B39D486"),
         };
 
         /// <summary>The check of the free-text rules a file's start runs

@@ -8,7 +8,7 @@ namespace PadForge.Engine.Common
 {
     /// <summary>
     /// A vendor library PadForge loads into its own process, which runs with
-    /// administrator rights (#597). Only one that only administrators could
+    /// administrator rights (#600). Only one that only administrators could
     /// have put in place is loaded: it sits in a folder no other account can
     /// add a file to, and that folder and every folder above it give no
     /// other account the right to delete or rename what they hold or to
@@ -82,6 +82,50 @@ namespace PadForge.Engine.Common
             if (module == IntPtr.Zero) reason = "load";
             return module;
         }
+
+        /// <summary>
+        /// What a loader that tries its candidates in turn reports once one
+        /// more did not end in a library: <paramref name="reason"/> so far,
+        /// "missing" before any, and <paramref name="why"/> for this one, the
+        /// reason <see cref="Load"/> gave or "exports" for a library that
+        /// loaded and is not the one wanted. A candidate is a file that
+        /// exists, so one that could not be opened ("missing") or loaded is
+        /// "load", and one the checks refused is "refused". The worse stands:
+        /// "exports" over "load" over "refused" over "missing", so the words
+        /// for the reason are true of at least one candidate.
+        /// </summary>
+        /// <summary>The diagnostics log's line for a candidate that did not
+        /// load, as <paramref name="who"/> names the library: the reason
+        /// <see cref="Load"/> gave, a reason of "missing" as could not be
+        /// opened (a candidate is a file that exists) and "load" as would
+        /// not load. Every such candidate is written, so a status line that
+        /// sends the user to the log finds it there.</summary>
+        public static string NotLoadedLine(string who, string candidate, string why)
+            => who + " " + candidate + " not loaded: " + why switch
+            {
+                null or "missing" => "could not be opened",
+                "load" => "would not load",
+                _ => why,
+            };
+
+        public static string Outcome(string reason, string why)
+        {
+            string now = why switch
+            {
+                null or "missing" or "load" => "load",
+                "exports" => "exports",
+                _ => "refused",
+            };
+            return Rank(now) > Rank(reason) ? now : reason ?? "missing";
+        }
+
+        private static int Rank(string reason) => reason switch
+        {
+            "exports" => 3,
+            "load" => 2,
+            "refused" => 1,
+            _ => 0,
+        };
 
         private static string Check(string full, FileStream hold, IReadOnlyList<string> signers)
         {

@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Прикажи или сакриј PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Укључи или искључи виртуелне контролере</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Било који повезани уређај</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (није повезан)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Уређај којег нема на страници Уређаји</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Снимање…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} с)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>када</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Читање</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Слање улаза</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Промена подешавања</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програми могу да мењају профиле и да их отпуштају, покрећу и заустављају механизам, укључују и искључују виртуелне контролере, приказују и сакривају прозор, затварају PadForge, чувају снимак дијагностике и питају шта ради.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програми могу да мењају профиле и да их отпуштају, покрећу и заустављају механизам, укључују и искључују виртуелне контролере, приказују и сакривају прозор, затварају PadForge, питају шта ради, чувају снимак дијагностике и покрећу, заустављају и означавају снимак проблема.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Све што и на нивоу Команде, а програми могу да виде уређаје, виртуелне контролере, мапирања, профиле и подешавања, да прате улазе сваког уређаја док се дешавају и да вам покажу неко место у програму PadForge. Програм на нивоу Читање види сваки притиснут тастер на сваком уређају, укључујући тастере укуцане у прозоре који раде као администратор.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Све што и на нивоу Читање, а програми могу да додају сопствене уређаје и њима управљају, да држе контролу било ког уређаја и да макро окидачима дају именоване вредности.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Све као на нивоу Слање улаза, а програми могу да мењају оно што и ви можете да мењате на страницама. Нека мењања увек прво питају вас на PadForge картици са питањем.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Чека вас</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Активност</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Опозови</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge није могао да је сачува: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge није могао да сачува датотеку.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge није могао да сачува комплет за плагине.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Активност {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Звуци{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Иконе{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Док је повезан програм на нивоу Читање или вишем, он види шта се притиска на сваком уређају, укључујући тастатуре.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Плагини</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Покрени плагине</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} од {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (репризирање)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Снимци проблема|*.zip;*.log|Све датотеке|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge не може да пусти {0}. То није снимак проблема или не садржи улаз ниједног уређаја.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge не може да репродукује {0}. То није снимак проблема који PadForge може да прочита.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge не може да репродукује {0}. Садржи више од {1} уређаја, а Репризирање репродукује највише {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge не може да репродукује {0}. Не садржи улаз ниједног уређаја.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge није могао да прочита {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Ваши плагини</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Додај плагин…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програми и скрипте|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Све датотеке|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Заустављен после пет узастопних неуспеха</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Није покренут: датотека више не постоји</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Није покренут: Windows нема програм за ову врсту датотеке</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Није покренут: ниједан програм не отвара Python датотеке уместо вас, а PadForge не налази py покретач</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Није покренут: PadForge не може да прочита који програм отвара ову врсту датотеке уместо вас</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Није покренут: програма који отвара ову врсту датотеке уместо вас нема на овом рачунару</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Није покренут: не ради ниједна шкољка радне површине под којом би се покренуо</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Није покренут: шкољка радне површине има администраторска права, па би их имао и плагин</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Није покренут: PadForge не може да прочита да ли би имао администраторска права</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Није покренут: Windows му је дао администраторска права, па га је PadForge окончао пре покретања</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Није покренут: тражи администраторска права</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Није покренут: Windows је одбио са грешком {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Није покренут</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Додато: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Потписник: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Није потписан.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Његова подешавања се приказују овде док ради.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Не декларише ниједно подешавање.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Његова подешавања се приказују овде када се повеже са програмом PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програм користи верзију коју PadForge не познаје</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge није дао тај кључ плагина</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge није прихватио везу овог програма</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge није направио уређај, јер Windows није дао име датотеке програма</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Поновљен захтев пребрзо</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Више оваквих нема док се PadForge поново не покрене</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Превише оваквих ствари које су програми направили чека на ваш преглед на страници Почетна</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge нема такав алат</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Програм је прочитао старије стање</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ништа нема тај ИД</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Нисте дозволили</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Нико није одговорио на време</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Чека се ваш одговор</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Још нисте одговорили</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Нема таквог захтева</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Нема шта да се опозове</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ово можете променити само ви</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Није потписан.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>На нивоу Читање и изнад види сваки притиснут тастер на сваком уређају, укључујући тастатуре.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Пита само једном. Можете га уклонити на страници Аутоматизација.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Покренуо га је програм који PadForge није могао да препозна.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge не може да разликује овај програм од другог, па пита поново при следећем повезивању.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>командна линија програма PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Поставља {0} на {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Слуша на мрежи, па други уређаји могу да досегну овај рачунар.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Пренеси профил</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Увези датотеку профила из другог програма, па погледај шта је пренето.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, пута: {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, последњи од {1} оваквих</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 скрипте (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>На овом рачунару нема пакета Logitech G-key SDK. Инсталира се уз Logitech Gaming Software 8.55 или новији.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK је регистрован, али његова датотека више не постоји. Поново инсталирајте Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK је пронађен, али није могао да се учита.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK је пронађен, али није учитан, јер PadForge није могао да потврди да га само администратори могу мењати и да га је потписао Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Та библиотека није G-key SDK који се очекује.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK је одбио да се покрене. Обично то значи да Logitech Gaming Software није покренут.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Повезано, још није уочен ниједан тастер. У програму Logitech Gaming Software превуците команду G-key на сваки тастер у профилу PadForge и подесите тај профил као трајни. Миш G600 или G300 такође мора бити изван режима уграђене меморије.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се аутоматски покреће када се пријавите у Windows. Док је ово укључено, PadForge се покреће и без Windows упита из пречице, скрипте или другог програма.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ради из {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ово захтева да PadForge буде у сопственој фасцикли. Његова фасцикла садржи друге датотеке, па PadForge не може да спречи друге програме да је мењају.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Ово захтева да PadForge буде у фасцикли коју други програми не могу да мењају. PadForge није могао да спречи друге програме да мењају његову фасциклу.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Премести PadForge у сопствену фасциклу</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копира PadForge и његова подешавања у Program Files, усмерава његове задатке тамо и покреће га одатле. Копија овде остаје као што је.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge се није преместио: {0} садржи датотеке које нису од програма PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge се није преместио: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Покретање при пријављивању је искључено, јер је покретало PadForge из фасцикле која садржи друге датотеке.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge се није преместио: Windows не именује фасциклу Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge се није преместио: није могао да прочита PadForge који ради.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge се није преместио: није могао да направи {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge се није преместио: није могао да прочита шта садржи {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge се није преместио: није могао да спречи друге програме да мењају {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge се није преместио: његова копија у {0} није се поклапала са PadForge који ради.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge се није преместио: након копирања {0} је садржао датотеке које нису од програма PadForge, или су га други програми могли мењати.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge који је радио више не постоји.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge није могао да спречи друге програме да мењају фасциклу из које је покренуо PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge није могао да прочита који PadForge је покренуо.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge није могао да прочита фасциклу из које је радио PadForge који је покренут.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge није могао да направи своју заштићену фасциклу {0}. PadForge у њој чува библиотеке које покреће са администраторским правима и без ње не може безбедно да се покрене.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge није могао поново да се покрене из своје заштићене фасцикле {0}. PadForge ради са администраторским правима само одатле, па се није покренуо.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge није могао да направи браву која га држи на једној покренутој копији, па се није покренуо.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ради са администраторским правима из {0}, фасцикле коју други програми могу да мењају. Они тамо могу да мењају подешавања програма PadForge, а PadForge поступа по њима са својим правима.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ради са администраторским правима из {0}, фасцикле која садржи друге датотеке. PadForge не може да спречи друге програме да тамо мењају његова подешавања, а он поступа по њима са својим правима.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ради са администраторским правима из {0}, фасцикле коју није могао да прочита. PadForge не може да спречи друге програме да тамо мењају његова подешавања, а он поступа по њима са својим правима.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Увек прикажи у системској палети</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Икона у системској палети остаје видљива док је прозор отворен, па је „Изађи“ у њеном менију увек на један клик.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ажурирања</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Инсталирај и поново покрени</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Белешке о издању</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>База контролера</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ажурирај одмах преузима базу контролера заједнице (SDL_GameControllerDB) са сајта GitHub, или са адресе постављене под Више, и у датотеци подешавања чува мапирања која овој верзији програма PadForge недостају. Одмах су у употреби. Са друге адресе чува само нова мапирања. Ново мапирање користи се само за контролер који ништа друго не чита као гејмпед, који није додељен и који није у Принудни сирови режим џојстика (заобилази мапирање гејмпеда). Ресетовање уклања свако преузето мапирање и поново преузима са сајта GitHub. Ваши редови, под Више, остају.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ажурирај одмах преузима базу контролера заједнице (SDL_GameControllerDB) са сајта GitHub, или са адресе постављене под Више, и у датотеци подешавања чува мапирања која овој верзији програма PadForge недостају. Одмах су у употреби. Са друге адресе чува само нова мапирања. Ново мапирање се прво користи само за контролер који SDL пријављује као гејмпед или као без одређеног типа, који ништа друго не чита као гејмпед, који није додељен и који није у Принудни сирови режим џојстика (заобилази мапирање гејмпеда). Када је једном у употреби, остаје у употреби и након што се контролер додели. Ресетовање уклања преузета мапирања и враћа Преузми са на датотеку заједнице, коју следеће Ажурирај одмах преузима. Ваши редови, под Више, остају.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Ажурирај одмах</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ажурирање…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Провера ажурирања…</value></data>
@@ -1126,9 +1160,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Уграђено: мапирања: {1}, копија заједнице од {2}. Преузето {3} са {4}: нових редова: {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Уграђено: мапирања: {1}, копија заједнице од {2}. Преузето {3} са {4}: нови ред: {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>База заједнице се није променила од последњег ажурирања.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Датотека на {0} није се променила од последњег ажурирања.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub није доступан: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} није доступан: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge је одбио преузимање јер то није база контролера коју очекује. Ништа није промењено.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge је одбацио одговор са сајта GitHub. Ништа није промењено.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge је одбацио одговор са {0}. Ништа није промењено.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Покрени минимизовано</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Покрени при пријављивању</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Фасцикла</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Подешавање услуге</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Корак уклањања</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Услуга</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Датотека</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Горњи филтер</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Вредност регистра</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ИД хардвера</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Заказани задатак</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Ставка инсталираних апликација</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP уређај</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Омогућава да се PlayStation 3 контролери, PlayStation Move и Navigation контролер повежу преко Bluetooth-а. Уграђен је у PadForge и инсталира се када се први од њих упари.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Повезује PlayStation 3 контролере преко Bluetooth-а.</value></data>
@@ -1239,6 +1284,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Сачувано: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Снимање није почело. Провера је открила приватну вредност овог PC која не би била изостављена из датотеке.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Снимање није почело. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge није пронашао привремену фасциклу пријављеног корисника унутар корисничког профила, до које се долази без икакве везе, у коју би уписао снимак.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Фасцикла снимака је веза ка другом месту, коју PadForge не прати.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Последњи снимак се још завршава.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Чувај последњих 60 секунди је искључено, па нема шта да се сачува.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Снимак који PadForge није зауставио чека да га прочитате на страници Почетна: {0}</value></data>
@@ -1252,7 +1299,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, ваши уређаји и подешавања какви су сада, кроз исти преглед.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log поред PadForge.exe, који тамо можете прочитати.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Шта снимити</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Све је укључено. Део који искључите изоставља се из следећег снимка, а датотека каже које делове садржи.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Сваки део је подразумевано укључен. Део који искључите изоставља се из следећег снимка, а датотека каже које делове садржи.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>За проблем који се јави једном у вечери.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Снимак чека да га прочитате на страници Почетна.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Сажетак</value></data>
@@ -1303,6 +1350,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>Сачувај снимак</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Зип датотеке</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Није сачувано. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} КБ</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} МБ</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Провера чишћења: проверавају се делови које задржавате…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Провера чишћења: PadForge није могао да прочита делове које задржавате, па Сачувај остаје искључено.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Чување са вашим правима није започето.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Чување са вашим правима није започето: не ради шкољка радне површине под којом би се покренуло.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Чување са вашим правима није започето: Windows је одбио са грешком {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Чување није завршено за {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows није дозволио да се датотека тамо упише.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge није прихватио ову датотеку као свој снимак.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Чување је завршено кодом {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Чува се под вашим именом, први пут у фасцикли Преузимања, а затим тамо где сте последњи пут сачували, и приказује се у Истраживачу датотека. Снимак који се заустави док нико није на страници (због ограничења, макроа, програма, алата асистента или --record stop) чека овај преглед на страници Почетна и брише се после 7 дана ако није сачуван. Програм сазнаје да чека, али никада где.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Снимак проблема из {0} чека да га прочитате.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Преглед</value></data>
@@ -1653,6 +1711,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Нови контролер</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Подешавања</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Свака оса, дугме и сензор</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Његове контроле под називима које користе скрипте</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Притиснуто: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ИД, путања, могућности, принудни сирови режим џојстика</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ИД, путања, могућности</value></data>
@@ -2154,9 +2213,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Читање није успело: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro је одбио овај шаблон на {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Овај шаблон нема HID дескриптор, па се од њега не може направити контролер.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge није могао да провери овај шаблон: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Провера шаблона…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ништа није увезено. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Увези</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID уређај без имена)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Миш</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Џојстик</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Гејмпед</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Тастатура</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Контролер са више оса</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Пронађено HID интерфејса: {0}.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Пронађен је 1 HID интерфејс.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Набрајање није успело: {0}</value></data>
@@ -3288,7 +3356,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Док је притиснуто, па центар</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Прекидач</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Улаз за управљање</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Дугме које омогућава мишу да управља, на истом уређају као и извор. Ако ниједно није изабрано, миш увек управља.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Дугме које омогућава мишу да управља, на било ком уређају овог слота. Ако ниједно није изабрано, миш увек управља.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Изглађивање</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Изглађује миш који пријављује неравномерно. Палица касни за руком отприлике толико. 0 је искључено.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Угао при брзини</value></data>
@@ -3309,7 +3377,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Почни где је управљање почело</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Уз Улаз за управљање, стик мери од места где је био показивач када је управљање почело, као што стик на екрану телефона почиње тамо где прст додирне. Када је искључено, мери од центра монитора показивача.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ова оса се помера релативно</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>За тракбол или спинер који пријављује колико се окренуо. Када је укључено, оса држи положај као Mouse Travel и користи подешавања помака. Windows не каже које осе се тако крећу.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>За тракбол или спинер који пријављује колико се окренуо. Када је укључено, оса држи положај као Помак миша и користи подешавања помака. SDL чита општи контролер преко DirectInput, који сваку осу чита као положај, па овај прекидач каже које осе се тако крећу.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Преглед</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Показује како ова породица прати ваш миш. Ништа није мапирано док је не изаберете.</value></data>
@@ -3502,6 +3570,13 @@
 {0}
 
 PadForge је записао детаље у crash.log поред PadForge.exe. Да бисте ово пријавили, покрените дискусију на {2} и превуците crash.log на њу.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Дошло је до неочекиване грешке:
+
+{0}
+
+PadForge није могао да упише детаље у crash.log поред PadForge.exe. Да бисте ово пријавили, покрените дискусију на {2}, притисните Ctrl+C овде да копирате ову поруку и налепите је тамо.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(потиснуто додатних грешака: {0})</value></data>
@@ -4430,7 +4505,7 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard декомпресија коју SteamKit2 користи за делове Steam депоа, C# порт библиотеке zstd, аутор Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol сервер и клијент иза везе са асистентима и PadForge.exe --mcp, аутор Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol сервер и клијент иза везе са асистентима и PadForge.exe --mcp, аутор Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions и DependencyInjection.Abstractions, на којима је изграђен MCP C# SDK, аутор Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>WinUSB се повезује са екраном G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>екран G19 користи други драјвер ({0}), зато покрените Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>екран G19 користи драјвер другог програма ({0}), који PadForge не дира</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Проверавају се PlayStation Bluetooth драјвери програма PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Чита се Bluetooth радио овог рачунара…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Отвара се контролер на свом USB каблу…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Bluetooth адреса овог рачунара уписује се у контролер…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Контролер се региструје у Windows Bluetooth…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Поново се покреће Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Упаривање је заустављено: Windows је ускратио програму PadForge приступ контролеру или Bluetooth подешавањима. Детаљи су у дневнику дијагностике.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Упаривање је заустављено: читање или писање контролера или Bluetooth радија није успело. Детаљи су у дневнику дијагностике.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Упаривање је заустављено због грешке коју PadForge није очекивао. Детаљи су у дневнику дијагностике.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>потребан је Logitech Gaming Software 8.52 или новији</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>библиотека је пронађена, али није учитана, јер PadForge није могао да потврди да је само администратори могу мењати и да ју је потписао Logitech</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>библиотека је пронађена, али не може да се користи, а дневник дијагностике каже зашто</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>покрените Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>чека се телефон са Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>на телефону</value></data>
@@ -5938,6 +6024,8 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Изабери dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Учитава ову копију библиотеке компаније Force Dimension уместо свих осталих. Falcon отворен на другој копији затвара се и поново отвара на овој. Копије које инсталира SDK проналазе се и без овога.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Библиотеке (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Страница за преузимање за Falcon SDK није отворена: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Страница за преузимање за Falcon SDK још није отворена: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Инсталирај Falcon драјвер</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Инсталира драјвер компаније Force Dimension, из фолдера SDK, на Falcon који га нема. Windows може прво да упита да ли верујете компанији Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Преузми Force Dimension SDK</value></data>
@@ -6604,12 +6692,17 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Уклањање…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ажурирање…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Није завршено: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Унос и вештина програма PadForge остају, јер {0} чита исту датотеку подешавања и исту фасциклу вештина.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Унос програма PadForge остаје, јер {0} чита исту датотеку подешавања.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge је уклоњен из овог програма. Његова вештина остаје, јер {0} чита вештине из исте фасцикле.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge не може да прочита подешавања у {0}, па не зна да ли је PadForge додат.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Додато. PadForge није могао да прочита фасциклу своје вештине.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Остали асистенти</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>За асистента који није наведен изнад: Копирај подешавања даје ставку за његова MCP подешавања, а Копирај поруку даје кратак текст за било који разговор који каже како да се повеже и шта прво да се тражи.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Копирај подешавања</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Копирај поруку</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Копирано.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Није копирано: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Није копирано. Windows није дозволио да PadForge користи клипборд.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Повежи се са програмом PadForge, мапером контролера на мом рачунару. То је локални MCP сервер који ради преко stdio: команда је {0}, са аргументом --mcp. Као JSON подешавања: {1} Када се повежеш, прво позови његов алат status, а затим ме питај шта желим да подесим, на пример: „Покажи ми где да мапирам окидаче мог контролера.“</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Аутоматизација програма PadForge је сада искључена: прво је укључите у програму PadForge под Додаци, Аутоматизација.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Дозвољени програми</value></data>
@@ -6630,6 +6723,8 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Џојстик. PadForge га чита сирово, па се SDL мапирање не користи.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Џојстик, распоређен као гејмпед по вашем реду.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL чита уређаје док механизам ради.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Уређај није повезан. SDL га чита чим се повеже.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL није дао PadForge очитавање овог уређаја.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Уграђена копија заједнице, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Преузето {0}</value></data>
@@ -6667,6 +6762,11 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>турбо, прекидачи и остале радње</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} и {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Нема шта да се копира: SDL нема мапирање за овај уређај, а он није на ниједном контролеру.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Нема шта да се копира: PadForge не може да прочита SDL мапирање за овај уређај, а ниједан ред његових контролера не даје повезивање које SDL облик прихвата.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Нема шта да се копира: SDL нема мапирање за овај уређај, а ниједан ред контролера {0} не чита његова дугмад, осе или хатове на начин који SDL облик прихвата.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Нема шта да се копира: SDL нема мапирање за овај уређај, а редови контролера {0} читају га само за {1}, што SDL облик не може да садржи.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Нема шта да се копира: PadForge сада не може да прочита SDL мапирање за овај уређај, а он није на ниједном контролеру.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Нема шта да се копира: PadForge сада не може да прочита SDL мапирање за овај уређај, а ниједан ред контролера {0} не даје повезивање које SDL облик прихвата.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Други програм користи клипборд. Ништа није копирано.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Ваш ред је уклоњен. Уређај се чита као пре њега.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Поново мапирано из SDL распореда: {0}.</value></data>
@@ -6687,6 +6787,8 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Редови које носи PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ниједан ред се не поклапа.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Изабрани ред примењује се на {0} под његовим ИД, кроз исту проверу и исти избор као код Налепи.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Механизам је заустављен, па списак изоставља редове које SDL држи, његове сопствене и уграђену копију заједнице. Биће наведени када ради.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL није одговорио на време, па списак изоставља редове које држи, његове сопствене и уграђену копију заједнице.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL ред мапирања</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ред за овај уређај.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Погођен распоред.</value></data>
@@ -6699,14 +6801,17 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} поље, од истог произвођача и производа на другој магистрали или верзији. Чува се под ИД овог уређаја.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} поље, ред другог уређаја. Чува се под ИД овог уређаја.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} поље. SDL не чита овај уређај, па PadForge распоређује његове улазе по реду.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge нема обично дугме или осу за ова поља и изоставља их: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} поље, из оса, дугмади и хет прекидача уређаја. Проверите у Тестирај улазе, па га задржите или овде измените.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ово мења начин на који се чита {0}. Његови редови у {1} мапирају се поново из новог распореда.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ово мења начин на који се чита {0}. Није на ниједном контролеру, па се ниједан ред не мења.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Пречице профила које читају {0} задржавају улазе на које су подешене.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Ред се чува као ваш у PadForge.xml и важи за овај уређај пре сваког другог извора. Уклони моје враћа стари ред и старе редове.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Редови се чувају као ваши у PadForge.xml и важе за своје уређаје пре сваког другог извора. Обриши, под Више у реду База контролера, уклања их.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Редова за Windows: {0}. Редова за друге системе који се прескачу: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ред за Windows. Редова за друге системе који се прескачу: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Редова за Windows: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} ред за Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Прескочених редова за друге системе: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} ред за други систем је прескочен.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Све ће бити додато (редова: {0:N0}). PadForge чува до {1:N0} ваших редова.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Биће додат један ред. PadForge чува до {1:N0} ваших редова.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Сада је задржано ваших редова: {0:N0}. Биће додато: {1:N0}, а неће бити додато: {2:N0}.</value></data>
@@ -6716,7 +6821,7 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Текст није ред SDL базе контролера: ИД од 32 хексадецималне цифре, назив, па поља као што је a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Редови су за друге системе. PadForge чита редове за Windows или за ниједан одређени систем.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ИД реда није ИД уређаја. Потребно је 32 хексадецималне цифре.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Назив реда је празан, дужи од 128 знакова или садржи знак који SDL чита као поље.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Назив реда је празан, дужи од 128 знакова, садржи маркер поља који SDL чита, као што је „type:“, или садржи знак који није слово, цифра, интерпункција, симбол или обичан размак.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Ред носи савет или поље за Android, које PadForge не прихвата.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Ред има поље које SDL не познаје.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Веза није у SDL облику, као што су b3, a2, +a2, a2~ или h0.4.</value></data>
@@ -6727,8 +6832,8 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ваши редови</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Редови које овде додате или налепите на картици SDL мапирање уређаја важе за своје уређаје пре сваког другог извора и остају после ресетовања.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Додај редове из датотеке или са клипборда…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Редова: {0} за уређаје: {0}, ваши пре сваког другог извора.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ред за {0} уређај, ваш пре сваког другог извора.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Редова: {0:N0}, ваши имају предност над сваким другим извором.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} ред, ваш има предност над сваким другим извором.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Још нема.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Ваша променљива SDL_GAMECONTROLLERCONFIG садржи редова које PadForge не чува: {0}. Додај редове из датотеке или са клипборда се отвара са њима.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Ваша променљива SDL_GAMECONTROLLERCONFIG садржи ред који PadForge не чува: {0}. Додај редове из датотеке или са клипборда се отвара са њим.</value></data>
@@ -6738,7 +6843,7 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Промени…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Користи датотеку заједнице</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Адреса</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge прихвата адресу која почиње са https:// и садржи име хоста, на подразумеваном порту, без корисничког имена или лозинке.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge прихвата адресу до 2.048 знакова која почиње са https:// и именује хост, на подразумеваном порту, без корисничког имена, лозинке или дела после #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Приступ програму PadForge са веба</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Асистент који ради на веб сајту досеже PadForge преко програма за тунел на овом рачунару. Укључивање прво тражи ваше одобрење.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Приступ програму PadForge са веба?</value></data>
@@ -6755,7 +6860,7 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Заустављено. Његове последње речи: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Није могао да се покрене.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Више није на овом рачунару.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>На овом рачунару није нађен ниједан програм за тунел. PadForge ради са cloudflared, devtunnel, ngrok и Tailscale Funnel, или са адресом вашег тунела.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge на овом рачунару није пронашао ниједан од програма cloudflared, devtunnel, ngrok или Tailscale Funnel. Изаберите ChatGPT Secure MCP Tunnel, који PadForge преузима, или наведите адресу сопственог тунела.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Изаберите тунел да би PadForge добио јавну адресу.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Такође на овом рачунару: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, чија адреса остаје иста</value></data>
@@ -6763,7 +6868,7 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Покрените свој тунел ка http://127.0.0.1:{0} и налепите његову https адресу. Именовани Cloudflare тунел, трајни dev тунел, Tailscale Funnel и ngrok-ов сопствени домен задржавају своју адресу.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Налепите https адресу без путање осим /mcp, какву даје ваш тунел.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Покреће се веб помоћник програма PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Веб помоћник програма PadForge је стао ({0}). Искључите па поново укључите Приступ програму PadForge са веба да га покренете поново.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Веб помоћник програма PadForge је стао ({0}). PadForge покушава да га поново покрене.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Адреса</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Још нема јавне адресе.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Додај у Claude</value></data>
@@ -6802,11 +6907,6 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>завршио је са кодом {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Аутоматизација је искључена, па ниједан веб асистент не досеже PadForge. Веб помоћник се покреће када се Аутоматизација укључи.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Провера…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Није инсталирано.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Инсталирано и актуелно. Скрипта почиње са {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Инсталирано за {0} и актуелно. Скрипта почиње са {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Инсталирано. Овај PadForge има новију копију.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Инсталирано за {0}. Овај PadForge има новију копију.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Инсталирање…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge није могао да га провери: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Инсталирај ставља библиотеку програма PadForge тамо где је тај језик налази. Скрипта која је учита чита уређаје и управља мапирањима на нивоу изнад.</value></data>
@@ -6814,8 +6914,27 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Инсталиране копије</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Уклони све</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Уклоњено.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Библиотека програма PadForge је инсталирана за {0} и актуелна. Скрипта почиње са {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Библиотека програма PadForge за {0} разликује се од копије у овом PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Библиотека програма PadForge није инсталирана за {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>Библиотека програма PadForge је актуелна за {0}. Копија за {1} разликује се од оне у овом PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>Библиотека програма PadForge је актуелна за {0} и није инсталирана за {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>Библиотека програма PadForge за {0} разликује се од копије у овом PadForge и није инсталирана за {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>Библиотека програма PadForge је актуелна за {0}. Копија за {1} разликује се од оне у овом PadForge, а није инсталирана за {2}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows га није покренуо са вашим сопственим правима.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Није завршено за {0} секунди.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Завршено је кодом {0} без навођења разлога.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge не може да прочита подешавања у {0}, па је датотеку оставио какву јесте.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge није написао {0}, па га је оставио какав јесте.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows за вас не именује фасциклу Документи.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge не налази вашу фасциклу за {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Сопствена команда програма {0} завршена је кодом {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Команде програма {0} нема на овом рачунару.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows није дозволио да PadForge прочита или упише датотеку која му је потребна.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge не налази Python: ниједан није регистрован, инсталиран из Microsoft Store, наведен у py покретачу или на вашем PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Ниједан Python који је PadForge пронашао није одговорио за {0} секунди.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Покретање није дало разлог који PadForge зна.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ИД скрипте</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Његов ИД скрипте</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скрипте називају његове контроле {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скрипте називају његове тастере KeyA, KeySpace, KeyLeftShift и слично, а сваки тастер његовим кодом, од Vk0 до Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} на овој мрежи са адресе {1}</value></data>
@@ -6827,11 +6946,11 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Помоћни програм програма PadForge, који ради без администраторских права, слуша на мрежним адресама овог рачунара, а PadForge пушта његов порт само на приватним мрежама. Асистент на другом рачунару улази само са кључем који направите овде. Позиви и њихов кључ путују мрежом без шифровања.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Порт</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Промени…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Позиви и њихов кључ путују овом мрежом без шифровања. Windows их пушта само на приватним мрежама.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Позиви и њихов кључ прелазе ову мрежу нешифровани. Правило Windows заштитног зида које PadForge прави за овај порт именује само приватне мреже.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Порт {0} користи други програм. Промените га да бисте приступили програму PadForge са ове мреже.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows није дозволио помоћном програму програма PadForge да слуша на порту {0}. PadForge то дозвољава са администраторским правима, па покрените PadForge са њима и искључите па поново укључите ово.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows не држи резервацију за помоћни програм програма PadForge на порту {0}. Искључите па поново укључите ово и PadForge ће је поново направити.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Помоћни програм програма PadForge није могао да слуша на порту {0}. Промените порт или искључите па поново укључите ово.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Помоћни програм програма PadForge је стао ({0}). Искључите па поново укључите Приступ програму PadForge са ове мреже да га покренете поново.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Помоћни програм програма PadForge је стао ({0}). PadForge покушава да га поново покрене.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Аутоматизација је искључена, па ниједан асистент на овој мрежи не досеже PadForge. Помоћни програм се покреће када се Аутоматизација укључи.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Овај рачунар тренутно нема адресу на приватној мрежи.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Асистенти на овој мрежи</value></data>
@@ -6875,11 +6994,12 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Избор уређаја</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} сме да управља својим уређајима и онима које означите. И даље чита сваки уређај.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>На страници Уређаји нема уређаја.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Ради, са вашим правима, и спреман је. ChatGPT досеже PadForge преко овог тунела без сопствене пријаве, и то само из ваше OpenAI организације. Поново се покреће са програмом PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Ради, са вашим правима. Чека да OpenAI јави да је тунел спреман.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Ради, са вашим правима, а tunnel-client јавља да је спреман. Поново се покреће са програмом PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Ради, са вашим правима. tunnel-client сада не јавља да је спреман.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Преузима се OpenAI tunnel-client и проверава према SHA-256 збировима његовог издања.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client није могао да се преузме: {0}. Поново изаберите тунел да покушате опет.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Налепите кључ за извршавање и ID тунела испод и тунел се покреће.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>OpenAI tunnel-client још није на овом рачунару. Изаберите тунел поново да бисте га преузели.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Кључ за извршавање</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Ограничено, са дозволама Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Направи један</value></data>
@@ -6888,6 +7008,8 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Отвори ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge чува кључ шифрован само за вас. Празно поље га брише. ChatGPT ради на нивоу изнад.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Кључ није сачуван: веб помоћник програма PadForge не ради, а само он може да шифрује кључ за вас.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Кључ није сачуван: веб помоћник програма PadForge је стао пре него што је шифровао кључ. Налепите га поново.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Кључ није сачуван: Windows није могао да га шифрује за вас. Налепите га поново.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Одговарање са другог уређаја</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Одговарајте на питања програма PadForge са телефона или другог рачунара док сте далеко од овог.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Ради само на овој мрежи, преко адресе веб контролера.</value></data>
@@ -6905,9 +7027,10 @@ PadForge је записао детаље у crash.log поред PadForge.exe. 
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Код важи једном, до {0}. Пет погрешних покушаја га затварају, а QR код и даље ради.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Покреће се адреса веб контролера…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Страница не може да се отвори: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Овај рачунар нема адресу на приватној мрежи.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows није хтео да сакрије овај прозор од снимања екрана, па не приказује код.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Унети код је затворен после пет погрешних покушаја. QR код и даље ради до {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Код је истекао. Упари уређај… прави нови.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Код је истекао. Упари уређај прави нови.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge чува највише {0} мрежни кључ. Прво га опозовите помоћу Опозови.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Боје се шаљу директно на {0}. Променљиве боје, као што су циклус боја или боје које прате звук, не стижу до њега. Боја која се не мења стиже.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Све датотеке (*.*)|*.*</value></data>

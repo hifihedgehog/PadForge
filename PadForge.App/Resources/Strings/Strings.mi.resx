@@ -212,8 +212,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Ka kōrero te hōtaka i tētahi putanga kāore a PadForge e mōhio</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>Kāore a PadForge i hoatu i taua kī monomai</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>Kāore a PadForge i whakaae ki te hononga o tēnei hōtaka</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Kāore a PadForge i hanga pūrere, nō te mea kāore a Windows i whakaingoa i te kōnae o te hōtaka</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>I tono anō wawe rawa</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Kāore he atu o ēnei kia tīmata anō rā a PadForge</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>He maha rawa ēnei i whakatāria e ngā hōtaka kia arotakehia e koe i Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Kāore he utauta pērā i a PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>I pānui te hōtaka i tētahi tūnga tawhito ake</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Kāore he mea e mau ana i taua ID</value></data>
@@ -221,6 +222,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Kāore koe i whakaae</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Kāore tētahi i whakautu i te wā</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>E tatari ana ki tō whakautu</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Kāore anō koe kia whakautu</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Kāore he tono pērā</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Kāore he mea hei wetekina</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Māu anake tēnei e huri</value></data>
@@ -343,7 +345,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Kawea mai he kōtaha</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Kawemaitia he kōnae kōtaha mai i tētahi atu hōtaka, kātahi ka tiro he aha i kawea mai.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, e {1} ngā wā</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, te whakamutunga o ngā mea e {1} pērā</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Tūhono</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Kua tūhono</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Whakakāhore</value></data>
@@ -381,14 +382,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ka tīmata aunoa a PadForge ina takiuru koe ki Windows. I te wā e kā ana tēnei, ka tīmata hoki a PadForge me te kore pātai a Windows mai i tētahi pokatata, tētahi hōtuhi, tētahi atu hōtaka rānei.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Ka rere a PadForge mai i {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Me noho a PadForge ki tōna ake kōpaki. Kei tōna kōpaki ētahi atu kōnae, nō reira kāore e taea e PadForge te ārai i ētahi atu hōtaka kia kaua e huri i a ia.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Me noho a PadForge ki tētahi kōpaki e kore e taea e ētahi atu hōtaka te huri. Kāore i taea e PadForge te ārai i a rātou kia kaua e huri i tōna kōpaki.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Nekehia a PadForge ki tōna ake kōpaki</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Ka tārua i a PadForge me ōna tautuhinga ki Program Files, ka tohu i ōna mahi ki reira, ā, ka tīmata i a ia i reira. Ka noho tonu te tārua i konei kia pērā tonu.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Kāore a PadForge i neke: kei {0} ētahi kōnae ehara nō PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Kāore a PadForge i neke: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Kua whakawetongia te Tīmata i te takiuru, nā te mea i whakarewaina e ia a PadForge mai i tētahi kōpaki kei reira ētahi atu kōnae.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>Kāore a PadForge i neke: kāore a Windows e tautohu ana i tētahi kōpaki Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>Kāore a PadForge i neke: kāore i taea e ia te pānui i te PadForge e rere ana.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>Kāore a PadForge i neke: kāore i taea e ia te hanga i {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>Kāore a PadForge i neke: kāore i taea e ia te pānui i ngā mea kei roto i {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>Kāore a PadForge i neke: kāore i taea e ia te ārai i ētahi atu hōtaka kia kaua e huri i {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>Kāore a PadForge i neke: kāore tōna tārua i {0} i ōrite ki te PadForge e rere ana.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>Kāore a PadForge i neke: i muri i te tārua, kei {0} ētahi kōnae ehara nō PadForge, ka taea rānei e ētahi atu hōtaka te huri i a ia.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>I whakawetohia a Start at Login, nō te mea kua kore i reira te PadForge i whakarewaina e ia.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>I whakawetohia a Start at Login, nō te mea kāore i taea e PadForge te ārai i ētahi atu hōtaka kia kaua e huri i te kōpaki i whakarewaina ai e ia a PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>I whakawetohia a Start at Login, nō te mea kāore i taea e PadForge te pānui ko tēhea PadForge i whakarewaina e ia.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>I whakawetohia a Start at Login, nō te mea kāore i taea e PadForge te pānui i te kōpaki o te PadForge i whakarewaina e ia.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Kāore i taea e PadForge te hanga i tōna kōpaki tiaki, {0}. Ka puritia e PadForge ki reira ngā puna e whakahaerehia ana e ia me ngā mana kaiwhakahaere, ā, kāore e taea e ia te tīmata haumaru ki te kore.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Kāore i taea e PadForge te tīmata anō i a ia mai i tōna kōpaki tiaki, {0}. Ka rere a PadForge me ngā mana kaiwhakahaere mai i reira anake, nō reira kāore ia i tīmata.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>Kāore i taea e PadForge te hanga i te raka e mau ai ia ki tētahi tārua kotahi e rere ana, nō reira kāore ia i tīmata.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>E rere ana a PadForge me ngā mana kaiwhakahaere mai i {0}, he kōpaki ka taea e ētahi atu hōtaka te huri. Ka taea e rātou te huri i ngā tautuhinga o PadForge ki reira, ā, ka mahi a PadForge i runga i aua tautuhinga me ōna mana.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>E rere ana a PadForge me ngā mana kaiwhakahaere mai i {0}, he kōpaki kei roto ētahi atu kōnae. Kāore e taea e PadForge te ārai i ētahi atu hōtaka kia kaua e huri i ōna tautuhinga ki reira, ā, ka mahi ia i runga i aua tautuhinga me ōna mana.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>E rere ana a PadForge me ngā mana kaiwhakahaere mai i {0}, he kōpaki kāore i taea e ia te pānui. Kāore e taea e PadForge te ārai i ētahi atu hōtaka kia kaua e huri i ōna tautuhinga ki reira, ā, ka mahi ia i runga i aua tautuhinga me ōna mana.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Whakahōunga</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Tāuta aunoa i ngā whakahōunga</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Tirohia ināianei</value></data>
@@ -404,9 +420,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Kua whakaurua: e {1} ngā mahere, he tārua hapori nō {2}. I tikiakehia {3} mai i {4}: e {0} ngā rārangi hou.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Kua whakaurua: e {1} ngā mahere, he tārua hapori nō {2}. I tikiakehia {3} mai i {4}: {0} rārangi hou.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Kāore te pātengi raraunga hapori i huri mai i te whakahōunga whakamutunga.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Kāore te kōnae i {0} i huri mai i te whakahōunga whakamutunga.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Kāore i taea te tae ki GitHub: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Kāore i taea te tae ki {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>I whakakāhore a PadForge i te tikiake nā te mea ehara i te pātengi raraunga controller e tūmanakohia ana e ia. Kāore he mea i huri.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>I whakakāhoretia e PadForge te whakautu a GitHub. Kāore he mea i huri.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>I whakakāhoretia e PadForge te whakautu mai i {0}. Kāore he mea i huri.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Tāpiri…</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Wetetāuta i HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Koinei ngā mea ka tangohia i tēnei PC. Ka tāuta anō a PadForge i a HIDMaestro ā tōna controller mariko e whai ake nei.</value></data>
@@ -438,6 +457,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Kōpaki</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Tautuhinga ratonga</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Hipanga tangohanga</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Ratonga</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Kōnae</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Tātari runga</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Uara rēhita</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID pūmārō</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Mahi kua whakaritea</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Tāurunga taupānga kua tāutahia</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Pūrere USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ka taea e ngā controller PlayStation 3, te PlayStation Move me te Navigation controller te hono mā te Bluetooth. Kua whakaurua ki roto i a PadForge, ā, ka tāutahia i te wā tuatahi ka honoa tētahi o rātou.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ka hono i ngā controller PlayStation 3 mā te Bluetooth.</value></data>
@@ -686,9 +713,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>I rahua te pānui: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>I whakakāhoretia e HIDMaestro tēnei tautuhinga i {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Kāore he HID descriptor o tēnei tautuhinga, nō reira kāore e taea te hanga controller i a ia.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>Kāore i taea e PadForge te tirotiro i tēnei tautuhinga: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>E tirotiro ana i te tautuhinga…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Kāore he mea i kawemaitia. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Kawemai</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(pūrere HID kāore he ingoa)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Kiore</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Papapātuhi</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Controller tuaka maha</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPort" xml:space="preserve"><value>Port putanga</value></data>
@@ -1226,6 +1262,13 @@
 {0}
 
 I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei pūrongo i tēnei, tīmatahia he matapaki ki {2}, ā, tukuna a crash.log ki reira.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>I puta tētahi hapa ohorere:
+
+{0}
+
+Kāore i taea e PadForge te tuhi i ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei pūrongo i tēnei, tīmatahia he matapaki ki {2}, pēhia te Ctrl+C i konei hei tārua i tēnei karere, ā, whakapiria ki reira.
 
 {1}</value></data>
 
@@ -1877,6 +1920,8 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>kei tētahi atu taraiwa te mata o te G19 ({0}), nō reira tīmatahia a Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>kei te taraiwa o tētahi atu hōtaka te mata o te G19 ({0}), ā, kāore a PadForge e raweke i taua taraiwa</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>e hiahia ana ki Logitech Gaming Software 8.52, ki tētahi putanga hou ake rānei</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>i kitea tōna pātaka, ā, kāore i utaina, nō te mea kāore i taea e PadForge te whakaū ko ngā kaiwhakahaere anake e āhei ana te huri i a ia, ā, nā Logitech i waitohu</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>i kitea tōna pātaka, engari kāore i taea te whakamahi, ā, kei te rangitaki tātaritanga te take</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>tīmatahia a Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>e tatari ana ki tētahi waea me Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>kei tētahi waea</value></data>
@@ -2135,6 +2180,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Devices_UsedBy" xml:space="preserve"><value>Whakamahia e</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Tautuhinga</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Ia tuaka, ia pātene, ia pūoko</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Ōna pūmana mā ngā ingoa e whakamahia ana e ngā hōtuhi</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Tāruatia ngā taipitopito</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Hua</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Momo</value></data>
@@ -2355,7 +2401,6 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>E tatari ana ki a koe</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ngā mahi</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Wetekina</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Kāore i taea e PadForge te tiaki: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Whakahaerehia ngā monomai</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kāore he monomai e rere ana.</value></data>
   <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, {1} te roa</value></data>
@@ -2387,7 +2432,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ki te kore he whakautu i roto i te {0}, ka kīia he kāore.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Pātengi raraunga controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ka tikiake a Whakahōu ināianei i te pātengi raraunga controller a te hapori (SDL_GameControllerDB) mai i GitHub, mai i te wāhitau rānei kua tautuhia i raro i More, ā, ka puritia ki te kōnae tautuhinga ngā mahere kāore i tēnei putanga o PadForge. Ka whakamahia tonutia. Mai i tētahi atu wāhitau, ka puritia ngā mahere hou anake. Ka whakamahia he mahere hou mō tētahi controller anake e kore e pānuitia hei gamepad e tētahi atu mea, kāore i tautapatia, ā, kāore i te Force Raw Joystick Mode (Bypass Gamepad Remapping). Ka tangohia e Tautuhi anō ngā mahere katoa i tikiakehia, ā, ka tikiake anō mai i GitHub. Ka noho tonu ō ake rārangi, i raro i More.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ka tikiake a Whakahōu ināianei i te pātengi raraunga controller a te hapori (SDL_GameControllerDB) mai i GitHub, mai i te wāhitau rānei kua tautuhia i raro i More, ā, ka puritia ki te kōnae tautuhinga ngā mahere kāore i tēnei putanga o PadForge. Ka whakamahia tonutia. Mai i tētahi atu wāhitau, ka puritia ngā mahere hou anake. Ka whakamahia tuatahitia he mahere hou mō tētahi controller anake e pūrongotia ana e SDL hei gamepad, kāore rānei he momo motuhake, e kore e pānuitia hei gamepad e tētahi atu mea, kāore i tautapatia, ā, kāore i te Force Raw Joystick Mode. Ina whakamahia, ka whakamahia tonutia i muri i te tautapatanga o te controller. Ka tangohia e Tautuhi anō ngā mahere i tikiakehia, ā, ka whakahokia a Tikiake mai i ki te kōnae a te hapori, ka tikiakehia e te Whakahōu ināianei e whai ake nei. Ka noho tonu ō ake rārangi, i raro i More.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Whakahōu ināianei</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>E whakahōu ana…</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Nekenga kiore X</value></data>
@@ -2410,7 +2455,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>I te wā e puritia ana, ka hoki ki te pokapū</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Whakawhiti</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Tāuru urungi</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ko te pātene e taea ai e te kiore te urungi, i te pūrere kotahi me te puna. Ki te kore he mea i kōwhiria, ka urungi te kiore i ngā wā katoa.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ko te pātene e taea ai e te kiore te urungi, i tētahi pūrere o tēnei tūranga. Ki te kore he mea i kōwhiria, ka urungi te kiore i ngā wā katoa.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Whakamāeneene</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ka whakamāeneene i tētahi kiore e pūrongo kōtiti ana. Ka whai te stick i te ringa i muri tata i tēnei roa. Ko te 0 he weto.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Mutunga urungi i te tere</value></data>
@@ -2431,7 +2476,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Tīmata i te wāhi i tīmata ai te urungi</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Mā tētahi Tāuru urungi, ka ine te stick mai i te wāhi o te pūtohu i te tīmatanga o te urungi, pērā i te stick i te mata o te waea ka tīmata ki te wāhi ka pā te matimati. Ina weto, ka ine mai i te pokapū o te aroturuki o te pūtohu.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ka neke whanaunga tēnei tuaka</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Mō tētahi trackball, spinner rānei e pūrongo ana i te tawhiti i huri ai. Ina kā, ka pupuri te tuaka i tētahi tūranga pērā i a Nekenga kiore, ā, ka whai i ngā tautuhinga nekenga. Kāore a Windows e kī ana ko ēhea tuaka e neke pēnei.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Mō tētahi trackball, spinner rānei e pūrongo ana i te tawhiti i huri ai. Ina kā, ka pupuri te tuaka i tētahi tūranga pērā i a Nekenga kiore, ā, ka whai i ngā tautuhinga nekenga. Ka pānui a SDL i tētahi controller noa mā DirectInput, e pānui ana i ia tuaka hei tūranga, nō reira mā tēnei pana e kī ko ēhea tuaka e neke pēnei.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Arokite</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ka whakaatu i te whai a tēnei whānau i tō ake kiore. Kāore he mea e maheretia kia kōwhiria rā anō e koe.</value></data>
@@ -2448,7 +2493,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Ngā tatau e pūrongo ai tēnei kiore mō ia īnihi e neke ai, pērā i tā te pūmanawa a tōna kaihanga i tautuhi ai.</value></data>
   <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Ina tautuhia te DPI, ka whakaatu anō a Nekenga kiore i tōna nekenga i ngā henimita. Ko te 0, kāore anō kia tautuhia.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Te tūmau me te kiritaki Model Context Protocol kei muri i te hononga kaiāwhina me PadForge.exe --mcp, nā Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Te tūmau me te kiritaki Model Context Protocol kei muri i te hononga kaiāwhina me PadForge.exe --mcp, nā Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions me DependencyInjection.Abstractions, ko ngā mea i hangaia ai te MCP C# SDK, nā Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Hōtaka</value></data>
@@ -2491,8 +2536,13 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>E tango ana…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>E whakahōu ana…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Kāore i oti: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Ka noho tonu te tāurunga me te pūkenga o PadForge, nō te mea ka pānui a {0} i te kōnae tautuhinga me te kōpaki pūkenga ōrite.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Ka noho tonu te tāurunga o PadForge, nō te mea ka pānui a {0} i te kōnae tautuhinga ōrite.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>Kua tangohia a PadForge i tēnei hōtaka. Ka noho tonu tōna pūkenga, nō te mea ka pānui a {0} i ngā pūkenga mai i te kōpaki ōrite.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>Kāore e taea e PadForge te pānui i ngā tautuhinga i {0}, nō reira kāore ia e mōhio mēnā kua tāpiria a PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Kua tāpiria. Kāore i taea e PadForge te pānui i tōna kōpaki pūkenga.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kua tāruatia.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Kāore i tāruatia: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Kāore i tāruatia. Kāore a Windows i tuku i a PadForge kia whakamahi i te papatopenga.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Ngā hōtaka kua whakaaetia</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ka pātai kotahi tētahi hōtaka e hiahia ana ki Read, ki runga ake rānei, i te wā tuatahi e hono ai, ā, ka whiwhi i te taumata e tonoa ana e ia, tae noa ki te taumata i runga ake. Ka whakaaetia e tērā tētahi kaiāwhina ka tāpirihia e koe i runga ake.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -2505,6 +2555,8 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>He joystick. Ka pānui mata a PadForge i a ia, nō reira kāore te mahere a SDL e whakamahia.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>He joystick, kua whakatakotoria hei gamepad e tō rārangi.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>Ka pānui a SDL i ngā pūrere i te wā e rere ana te pūkaha.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Kāore te pūrere i te hono. Ka pānui a SDL i a ia ina hono.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Kāore a SDL i hoatu he pānuitanga o tēnei pūrere ki a PadForge.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Te tārua hapori kua whakaurua, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>I tikiakehia {0}</value></data>
@@ -2542,6 +2594,11 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>te turbo, ngā whakawhiti me ētahi atu mahi</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} me {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Kāore he mea hei tārua: kāore he mahere a SDL mō tēnei pūrere, ā, kāore ia i tētahi controller.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Kāore he mea hei tārua: kāore e taea e PadForge te pānui i te mahere a SDL mō tēnei pūrere, ā, kāore he rārangi o ōna controller e hoatu ana i tētahi here e tangohia ana e te hanga a SDL.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Kāore he mea hei tārua: kāore he mahere a SDL mō tēnei pūrere, ā, kāore he rārangi o {0} e pānui ana i tētahi o ōna pātene, tuaka, pōtae rānei i tētahi ara e tangohia ana e te hanga a SDL.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Kāore he mea hei tārua: kāore he mahere a SDL mō tēnei pūrere, ā, ka pānui ngā rārangi o {0} i a ia mō {1} anake, kāore e taea e te hanga a SDL te pupuri.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Kāore he mea hei tārua: kāore e taea e PadForge te pānui i te mahere a SDL mō tēnei pūrere ināianei, ā, kāore ia i tētahi controller.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Kāore he mea hei tārua: kāore e taea e PadForge te pānui i te mahere a SDL mō tēnei pūrere ināianei, ā, kāore he rārangi o {0} e hoatu ana i tētahi here e tangohia ana e te hanga a SDL.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Kei te whakamahi tētahi atu hōtaka i te papatopenga. Kāore he mea i tāruatia.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Kua tangohia tō rārangi. Ka pānuitia te pūrere pērā i mua.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Kua maheretia anō mai i te whakatakotoranga a SDL: {0}.</value></data>
@@ -2562,6 +2619,8 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Ngā rārangi e mau ana i a PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Kāore he rārangi e ōrite ana.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ka whakahāngaitia te rārangi i kōwhiria ki {0} i raro i tōna ake ID, mā te tirotiro ōrite me te kōwhiringa ōrite ki a Whakapiri.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Kua mutu te pūkaha, nō reira ka mahue i te rārangi ngā rārangi kei a SDL, ōna ake me te tārua hapori kua hangaia ki roto. Ka whakaaturia ina rere ia.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>Kāore a SDL i whakautu i te wā tika, nō reira ka mahue i te rārangi ngā rārangi kei a ia, ōna ake me te tārua hapori kua hangaia ki roto.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Rārangi mahere SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>He rārangi mō tēnei pūrere.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>He whakatakotoranga i matapaetia.</value></data>
@@ -2574,14 +2633,14 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} āpure, nō te kamupene me te hua ōrite i tētahi atu pahi, putanga rānei. Ka puritia i raro i te ID ake o tēnei pūrere.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} āpure, he rārangi nō tētahi atu pūrere. Ka puritia i raro i te ID ake o tēnei pūrere.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} āpure. Kāore a SDL e pānui i tēnei pūrere, nō reira ka whakatakotoria e PadForge ōna tāuru e ai ki te rārangi.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>Kāore he pātene, tuaka māmā rānei a PadForge mō ēnei āpure, ā, ka waiho e ia: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} āpure, mai i ngā tuaka, ngā pātene me ngā hat o te pūrere. Tirohia i Test Inputs, kātahi ka pupuri, ka huri rānei i konei.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ka huri tēnei i te pānuitanga o {0}. Ka maheretia anō ōna rārangi i {1} mai i te whakatakotoranga hou.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ka huri tēnei i te pānuitanga o {0}. Kāore ia i tētahi controller, nō reira kāore he rārangi e huri.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Ka pupuri ngā pokatata kōtaha e pānui ana i {0} i ngā tāuru i tautuhia ai rātou.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Ka puritia te rārangi hei mea nāu i PadForge.xml, ā, ko ia te mātāmua i ētahi atu puna katoa mō tēnei pūrere. Ka whakahokia e Tangohia tāku te rārangi tawhito me ngā rārangi tawhito.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ka puritia ngā rārangi hei mea nāu i PadForge.xml, ā, ko rātou te mātāmua mō ō rātou pūrere i ētahi atu puna katoa. Ka tangohia rātou e Ūkui, i raro i te More o te rārangi Pātengi raraunga controller.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>E {0} ngā rārangi mō Windows. E {1} mō ētahi atu pūnaha kua hipaina.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rārangi mō Windows. E {1} mō ētahi atu pūnaha kua hipaina.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Ngā rārangi mō Windows: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Ka tāpirihia ngā {0:N0} katoa. Ka puritia e PadForge kia {1:N0} ō rārangi te nui rawa.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ka tāpirihia. Ka puritia e PadForge kia {1:N0} ō rārangi te nui rawa.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>E {0:N0} ō rārangi kua puritia ināianei, nō reira ka tāpirihia e {1:N0} o ēnei, ā, e {2:N0} kāore.</value></data>
@@ -2591,7 +2650,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ehara te kupu i te rārangi o te pātengi raraunga controller a SDL: he ID o ngā mati hex 32, he ingoa, kātahi ngā āpure pērā i a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Mō ētahi atu pūnaha ngā rārangi. Ka pānui a PadForge i ngā rārangi mō Windows, mō te kore pūnaha motuhake rānei.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Ehara te ID o te rārangi i tā tētahi pūrere. E 32 ngā mati hex e hiahiatia ana.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Kei te kau te ingoa o te rārangi, neke atu i ngā pūāhua 128, kei roto rānei tētahi pūāhua e pānuitia ana e SDL hei āpure.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Kei te kau te ingoa o te rārangi, he nui ake i ngā pūāhua 128, kei roto tētahi tohu āpure e pānuitia ana e SDL, pērā i a “type:”, kei roto rānei tētahi pūāhua ehara i te reta, i te mati, i te tohu tuhi, i te tohu, i te mokowā noa rānei.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Kei te rārangi tētahi tohu, tētahi āpure Android rānei, kāore e tangohia e PadForge.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>He āpure kei te rārangi kāore e mōhiotia e SDL.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Kāore tētahi here i te āhua o SDL, pērā i b3, a2, +a2, a2~, h0.4 rānei.</value></data>
@@ -2602,8 +2661,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ō rārangi</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ko ngā rārangi ka tāpirihia e koe ki konei, ka whakapirihia rānei ki te kāri Mahere SDL o tētahi pūrere, te mātāmua mō ō rātou pūrere i ētahi atu puna katoa, ā, ka noho tonu i muri i te tautuhi anō.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Tāpirihia he rārangi mai i tētahi kōnae, i te papatopenga rānei…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>E {0} ngā rārangi, kotahi mō ia pūrere, nāu, ko rātou te mātāmua i ētahi atu puna katoa.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rārangi mō tētahi pūrere kotahi, nāu, ko ia te mātāmua i ētahi atu puna katoa.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Ngā rārangi: {0:N0}, ka mana ake ōu i ia atu puna.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Kāore anō.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>E {0} ngā rārangi kei tō taurangi SDL_GAMECONTROLLERCONFIG kāore e puritia e PadForge. Ka tuwhera a Tāpirihia he rārangi mai i tētahi kōnae, i te papatopenga rānei me ērā rārangi.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>{0} rārangi kei tō taurangi SDL_GAMECONTROLLERCONFIG kāore e puritia e PadForge. Ka tuwhera a Tāpirihia he rārangi mai i tētahi kōnae, i te papatopenga rānei me taua rārangi.</value></data>
@@ -2622,7 +2680,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Kua mutu. Ōna kupu whakamutunga: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Kāore i taea te tīmata.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Kua kore kē i tēnei PC.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Kāore he hōtaka kauhanga i kitea i tēnei PC. Ka mahi a PadForge me cloudflared, devtunnel, ngrok me Tailscale Funnel, me te wāhitau rānei o tō ake kauhanga.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>Kāore i kitea e PadForge tētahi o cloudflared, devtunnel, ngrok, Tailscale Funnel rānei i tēnei PC. Kōwhiria te ChatGPT Secure MCP Tunnel, ka tikiakehia e PadForge, hoatu rānei te wāhitau o tō ake kauhanga.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Kōwhiria he kauhanga hei hoatu wāhitau tūmatanui ki a PadForge.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Kei tēnei PC anō: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ka ōrite tonu tōna wāhitau</value></data>
@@ -2630,7 +2688,7 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Whakahaerehia tō ake kauhanga ki http://127.0.0.1:{0}, ā, whakapirihia tōna wāhitau https. Ka pupuri tētahi kauhanga Cloudflare whai ingoa, tētahi dev tunnel pūmau, Tailscale Funnel me te rohe ake o ngrok i ō rātou wāhitau.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Whakapirihia he wāhitau https kāore he ara engari ko /mcp, pērā i tā tō kauhanga i hoatu ai.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>E tīmata ana te hōtaka āwhina tukutuku o PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Kua mutu te hōtaka āwhina tukutuku o PadForge ({0}). Whakawetohia, whakakāngia anō a Reach PadForge From the Web kia tīmata anō.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Kua mutu te hōtaka āwhina tukutuku o PadForge ({0}). Ka ngana tonu a PadForge ki te tīmata i a ia.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Wāhitau</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Kāore anō he wāhitau tūmatanui.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Tāpiri ki Claude</value></data>
@@ -2668,11 +2726,6 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>i mutu me te waehere {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Kua weto a Automation, nō reira kāore he kaiāwhina tukutuku e tae ki PadForge. Ka tīmata te hōtaka āwhina tukutuku ina kā a Automation.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>E tirotiro ana…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Kāore i tāutaina.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Kua tāutaina, kua hou. Ka tīmata te hōtuhi ki {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Kua tāutaina mō {0}, kua hou. Ka tīmata te hōtuhi ki {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Kua tāutaina. He tārua hou ake kei tēnei PadForge.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Kua tāutaina mō {0}. He tārua hou ake kei tēnei PadForge.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>E tāuta ana…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>Kāore i taea e PadForge te tirotiro: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Ka waiho e Tāuta te puna o PadForge ki te wāhi e kitea ai e taua reo. Ka pānui te hōtuhi e uta ana i a ia i ngā pūrere, ā, ka whakahaere i ngā mahere i te taumata i runga ake.</value></data>
@@ -2680,22 +2733,24 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Ngā tārua kua tāutaina</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Tango katoa</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Kua tangohia.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Kua tāutahia te pātaka a PadForge mō {0}, ā, he hou. Ka tīmata te hōtuhi ki {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>He rerekē te pātaka a PadForge mō {0} i te tārua a tēnei PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Kāore te pātaka a PadForge i tāutahia mō {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID hōtuhi</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Tōna ID hōtuhi</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Ka tapaina e ngā hōtuhi ōna control ko {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Ka tapaina e ngā hōtuhi ōna kī ko KeyA, KeySpace, KeyLeftShift me ērā atu, ā, ia kī mā tōna waehere, Vk0 ki Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} i tēnei whatunga mai i {1}</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Whakaatu i te kōpaki</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>I tīmata a {0}, engari kāore rawa i hono ki PadForge.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Wāhitau</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>Ka tango a PadForge i tētahi wāhitau e tīmata ana ki https://, e tapa ana i tētahi kaihautū, i te tauranga taunoa, kāore he ingoa kaiwhakamahi, kupuhipa rānei.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>Ka tango a PadForge i tētahi wāhitau ā noa ki ngā pūāhua 2,048 e tīmata ana ki https://, e tautohu ana i tētahi tūmau, i te tauranga taunoa, kāore he ingoa kaiwhakamahi, he kupuhipa, he wāhanga rānei i muri i te #.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Tauranga</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Huri…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Ka whakawhiti ngā waea me tō rātou kī i tēnei whatunga me te kore whakamuna. Ka tukuna e Windows ki roto i ngā whatunga tūmataiti anake.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Ka whakawhiti ngā karanga me ō rātou kī i tēnei whatunga kāore i whakamunatia. Ko te ture Pātūahi Windows ka hangaia e PadForge mō tēnei tauranga, mō ngā whatunga tūmataiti anake.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Kei te whakamahia te tauranga {0} e tētahi atu hōtaka. Hurihia kia tae ki PadForge mai i tēnei whatunga.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Kāore a Windows i tuku i te hōtaka āwhina o PadForge kia whakarongo ki te tauranga {0}. Ka whakaaetia e PadForge mā ngā mana kaiwhakahaere, nō reira tīmatahia a PadForge me aua mana, ā, whakawetohia, whakakāngia anō tēnei.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Kāore a Windows e pupuri ana i tētahi tāpui mō te hōtaka āwhina o PadForge i te tauranga {0}. Whakawetohia, whakakāngia anō tēnei, ā, ka hanga anō a PadForge i taua tāpui.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Kāore i taea e te hōtaka āwhina o PadForge te whakarongo ki te tauranga {0}. Hurihia te tauranga, whakawetohia, whakakāngia anō rānei tēnei.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Kua mutu te hōtaka āwhina o PadForge ({0}). Whakawetohia, whakakāngia anō a Reach PadForge From This Network kia tīmata anō.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Kua mutu te hōtaka āwhina o PadForge ({0}). Ka ngana tonu a PadForge ki te tīmata i a ia.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Kua weto a Automation, nō reira kāore he kaiāwhina i tēnei whatunga e tae ki PadForge. Ka tīmata te hōtaka āwhina ina kā a Automation.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Kāore he wāhitau o tēnei PC i tētahi whatunga tūmataiti ināianei.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Ngā kaiāwhina i tēnei whatunga</value></data>
@@ -2710,7 +2765,24 @@ I tuhia e PadForge ngā taipitopito ki crash.log i te taha o PadForge.exe. Hei p
   <data name="Reach_Line_Format" xml:space="preserve"><value>Ka whakahaere i ōna ake pūrere me {0}. Ka pānui tonu i ngā pūrere katoa.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Ka whakahaere i ōna ake pūrere anake. Ka pānui tonu i ngā pūrere katoa.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Ka tae tonu ngā tohutohu mai i te rārangi tohutohu ki PadForge, pērā i ngā hōtaka katoa.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>E rere ana, me ōu mana, ā, kua rite. Ka tae a ChatGPT ki PadForge mā tēnei kauhanga, kāore ōna ake takiuru, ā, mai i tō whakahaere OpenAI anake. Ka tīmata anō me PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>E rere ana, me ōu mana. E tatari ana kia kī a OpenAI kua rite te kauhanga.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Ka puritia e PadForge te kī kua whakamunatia mōu anake. Ka wareware tētahi pouaka kau i te kī. Ka mahi a ChatGPT i te taumata i runga ake.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>Kāore i taea e PadForge te tiaki i te kete monomai.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Ngā mahi {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Kāore te whārangi tikiake o te Falcon SDK i tuwhera: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Kāore anō te whārangi tikiake o te Falcon SDK kia tuwhera: {0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Ka hipa ngā rārangi mō ētahi atu pūnaha: {0:N0}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Kāore a Windows i tīmata i a ia me ō ake mana.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Kāore i mutu i roto i ngā hēkona {0}.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>I mutu me te waehere {0}, kāore he take i hoatu.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>Kāore e taea e PadForge te pānui i ngā tautuhinga i {0}, nō reira i waiho e ia te kōnae kia pērā tonu.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>Kāore a PadForge i tuhi i {0}, nō reira i waiho e ia kia pērā tonu.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Kāore a Windows e tautohu ana i tētahi kōpaki Tuhinga mōu.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>Kāore e kitea e PadForge tētahi kōpaki ōu mō {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>I mutu te tohutohu ake a {0} me te waehere {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Kāore te tohutohu a {0} i tēnei PC.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Kāore a Windows i tuku i a PadForge kia pānui, kia tuhi rānei i tētahi kōnae e hiahiatia ana e ia.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>Kāore e kitea e PadForge he Python: kāore tētahi i rēhitatia, i tāutahia mai i te Microsoft Store, i whakarārangitia e tētahi kaiwhakarewa py, i tō PATH rānei.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Kāore he Python i kitea e PadForge i whakautu i roto i ngā hēkona {0}.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Kāore te whakahaere i hoatu he take e mōhiotia ana e PadForge.</value></data>
 </root>

@@ -182,6 +182,26 @@ public class WindowSettingsTests
         Assert.Single(System.Text.RegularExpressions.Regex.Matches(restore, @"_notifyIcon\.Visible\b"));
     }
 
+    /// <summary>A window in its shutdown is never hidden to the tray, and a
+    /// hide reads the tray icon only while there is one. The shutdown lets
+    /// go of the icon and shows the window under its overlay, where a
+    /// minimize of the window, or the window hotkey's, hid it and threw on
+    /// the gone icon.</summary>
+    [Fact]
+    public void AWindowInItsShutdown_IsNeverHiddenToTheTray_AndAHideNeedsNoTrayIcon()
+    {
+        string window = Read("PadForge.App/MainWindow.xaml.cs");
+        string state = Between(window, "private void OnStateChanged(", "private void OnLocationOrSizeChanged(");
+        string toggle = Between(window, "_inputService.ToggleMainWindow = () =>", "_inputService.ToggleVCsDisabled =");
+        Assert.Contains("if (WindowState == WindowState.Minimized && _viewModel.Settings.MinimizeToTray && !_shutdownStarted)", state);
+        Assert.Contains("if (_viewModel.Settings.MinimizeToTray && !_shutdownStarted)", toggle);
+        foreach (string part in new[] { state, toggle })
+        {
+            Assert.Single(System.Text.RegularExpressions.Regex.Matches(part, @"_notifyIcon\.Visible\b"));
+            Assert.Contains("if (_notifyIcon != null) _notifyIcon.Visible = true;", part);
+        }
+    }
+
     private static string Root()
     {
         var root = new DirectoryInfo(AppContext.BaseDirectory);

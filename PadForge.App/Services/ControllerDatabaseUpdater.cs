@@ -35,7 +35,7 @@ namespace PadForge.Services
 
     /// <summary>
     /// Fetches the controller database for Settings, Updates, Controller
-    /// Database (#597): the community's own file on
+    /// Database (#600): the community's own file on
     /// raw.githubusercontent.com, or the HTTPS address the user set under
     /// Download From (#600), asked only when the user presses Update Now.
     /// Nothing is written to disk here: the bytes go to

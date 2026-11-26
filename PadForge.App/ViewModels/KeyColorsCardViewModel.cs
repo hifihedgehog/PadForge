@@ -414,6 +414,9 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(BackgroundGreen));
             OnPropertyChanged(nameof(BackgroundBlue));
             OnPropertyChanged(nameof(BackgroundHex));
+            // The selection stays across a change of layer, and the one
+            // light picked shows the color of the layer now colored.
+            ShowOneLightsColor();
             LightsChanged?.Invoke();
         }
 
@@ -494,18 +497,24 @@ namespace PadForge.ViewModels
 
         private void SelectionMoved()
         {
-            // One light picked shows its color in the picker, as OpenRGB's
-            // device page does for a single LED. A selection of several
-            // keeps the color chosen, so it can be applied to them.
+            ShowOneLightsColor();
+            OnPropertyChanged(nameof(HasSelection));
+            OnPropertyChanged(nameof(SelectionSummary));
+            LightsChanged?.Invoke();
+        }
+
+        /// <summary>One light picked shows its color on the layer being
+        /// colored in the picker, as OpenRGB's device page does for a single
+        /// LED. A selection of several keeps the color chosen, so it can be
+        /// applied to them.</summary>
+        private void ShowOneLightsColor()
+        {
             if (_selection.Count == 1 && (OwnColorOf(_selection.First()) ?? BaseColorOf(_selection.First())) is int shown
                 && shown != _paint)
             {
                 _paint = shown;
                 RaisePaint();
             }
-            OnPropertyChanged(nameof(HasSelection));
-            OnPropertyChanged(nameof(SelectionSummary));
-            LightsChanged?.Invoke();
         }
 
         // ─────────────────────────────────────────────

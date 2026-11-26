@@ -67,6 +67,14 @@ namespace PadForge.Tests
 
         // ── Test Controller (#600 item 19) ──
 
+        /// <summary>A recording as Open a Recording… reads it.</summary>
+        private static ReplayFile Read(string path)
+        {
+            var file = ReplayFile.Read(path, out string error);
+            Assert.True(file != null, error);
+            return file;
+        }
+
         private static TestControllerConfig Config(Action<PluginSettingSet> set = null)
         {
             var settings = new PluginSettingSet();
@@ -263,12 +271,120 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A program at Read, or any reader off the poll thread,
+        /// reads the Test Controller as it is, not at rest.</summary>
+        [Fact]
+        public void AReaderOffThePollThread_ReadsTheTestControllerAsItIs()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Commands);
+            using var builtIns = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n);
+            builtIns.TestSettings.Set(null, TestControllerPattern.KeyHand, "true");
+            builtIns.TestSettings.Set(null, TestControllerPattern.KeyLeftStick, "50,0");
+            builtIns.TestControllerOn = true;
+            builtIns.SetPluginsOn(true);
+            var device = builtIns.TestControllerDevice;
+            // The poll thread's reads.
+            for (int i = 0; i < 3; i++) device.GetCurrentState();
+            Assert.Equal(TestControllerPattern.Stick(50), device.PeekState().Axis[0]);
+            // A program at Read copies it through this.
+            Assert.Equal(TestControllerPattern.Stick(50), AutomationDevices.CopyState(new UserDevice { Device = device }).Axis[0]);
+        }
+
+        /// <summary>The engine lists a new Test Controller with its motion
+        /// already set, as ProgramDevice.Live's contract asks.</summary>
+        [Fact]
+        public void TheTestControllersMotion_IsSetBeforeTheEngineListsIt()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Commands);
+            var engine = new LiveAtRegister();
+            rig.Host.Sessions.Devices.Attach(engine);
+            using var builtIns = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n);
+            builtIns.TestSettings.Set(null, TestControllerPattern.KeyControllers, "2");
+            builtIns.TestControllerOn = true;
+            builtIns.SetPluginsOn(true);
+            Assert.Equal(new[] { true, true }, engine.LiveSet);
+        }
+
+        private sealed class LiveAtRegister : IAutomationEngine
+        {
+            public readonly List<bool> LiveSet = new();
+            public void Register(ProgramDevice device) => LiveSet.Add(device.Live != null);
+            public void Unregister(ProgramDevice device) { }
+            public string Outputs(int number) => null;
+        }
+
+        /// <summary>The motion's read on the poll thread allocates nothing,
+        /// however long it runs.</summary>
+        [Fact]
+        public void TheMotionsRead_AllocatesNothing()
+        {
+            long now = 0;
+            var c = Config();
+            var motion = new TestControllerMotion(() => c, () => now);
+            motion.Read();
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            for (int i = 0; i < 1000; i++)
+            {
+                now += 20;
+                motion.Read();
+            }
+            Assert.Equal(before, GC.GetAllocatedBytesForCurrentThread());
+        }
+
+        /// <summary>A recording someone sent plays inside the replayed
+        /// device's shape and ranges, as a program's change lands.</summary>
+        [Fact]
+        public void AReplayedFrame_IsBroughtInsideTheDevicesRanges()
+        {
+            using var recording = new TestRecording(1, 3, 0.01, (d, f) =>
+            {
+                var s = RecorderTestKit.Rest();
+                s.Axis[0] = 999999;
+                s.Axis[1] = -5;
+                s.Povs[0] = 50000;
+                s.Gyro[0] = float.NaN;
+                s.Accel[1] = float.PositiveInfinity;
+                return s;
+            });
+            var file = ReplayFile.Read(recording.Path, out _);
+            var devices = file.Devices.ToDictionary(d => d.Number, d => new ProgramDevice(Guid.NewGuid(), Guid.NewGuid(), "program://b" + d.Number, d.Name, d.Shape));
+            using var player = new ReplayPlayer(file, devices);
+            CustomInputState seen = null;
+            var ended = new ManualResetEventSlim();
+            player.Sent += (d, at, left) => { if (seen == null) seen = devices[d].PeekState().Clone(); };
+            player.Ended += ended.Set;
+            player.Play();
+            Assert.True(ended.Wait(10000), "playback did not end");
+            Assert.NotNull(seen);
+            Assert.Equal(65535, seen.Axis[0]);
+            Assert.Equal(0, seen.Axis[1]);
+            Assert.Equal(-1, seen.Povs[0]);
+            Assert.Equal(0f, seen.Gyro[0]);
+            Assert.Equal(0f, seen.Accel[1]);
+
+            // A frame keeps every part it carries: a mouse's deltas, an analog
+            // key, a finite sensor value, in range.
+            var mouse = new ProgramDevice(Guid.NewGuid(), Guid.NewGuid(), "program://m", "Mouse", new ProgramDeviceShape());
+            var frame = new CustomInputState { MouseRawDX = 7, MouseRawDY = -3, RingConStrain = float.NaN, BatteryPercent = 140 };
+            frame.AnalogKeys = new AnalogKeyInputState();
+            frame.AnalogKeys.Set(4, 0.5f);
+            frame.Axis[9] = 40000;
+            mouse.Publish(frame);
+            var published = mouse.PeekState();
+            Assert.Equal(7, published.MouseRawDX);
+            Assert.Equal(-3, published.MouseRawDY);
+            Assert.Equal(0.5f, published.AnalogKeys.Get(4));
+            Assert.Equal(40000, published.Axis[9]);
+            Assert.Equal(0f, published.RingConStrain);
+            Assert.Equal(100, published.BatteryPercent);
+        }
+
         [Fact]
         public void TheMotion_IsWorkedOutAtEachRead_SoItIsAsFineAsThePollingRate()
         {
             long now = 0;
             var c = Config(s => s.Set(null, TestControllerPattern.KeyPattern, "circle"));
-            var motion = new TestControllerMotion(null, () => c, () => now);
+            var motion = new TestControllerMotion(() => c, () => now);
             var seen = new HashSet<int>();
             // A read every millisecond, as at 1,000 Hz: each read is a new
             // place on the circle.
@@ -457,7 +573,7 @@ namespace PadForge.Tests
             using var builtIns = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n + " (Replay)");
             builtIns.SetPluginsOn(true);
             builtIns.ReplayOn = true;
-            Assert.Null(builtIns.Open(recording.Path));
+            builtIns.Open(Read(recording.Path));
             Assert.Equal(2, builtIns.ReplayDeviceCount);
             Assert.Contains("register Test Pad 1 (Replay)", rig.Engine.Calls);
             Assert.Contains("register Test Pad 2 (Replay)", rig.Engine.Calls);
@@ -491,7 +607,7 @@ namespace PadForge.Tests
                 builtIns.SetPluginsOn(true);
                 builtIns.TestControllerOn = true;
                 builtIns.ReplayOn = true;
-                Assert.Null(builtIns.Open(recording.Path));
+                builtIns.Open(Read(recording.Path));
                 var test = builtIns.TestControllerDevice;
                 Assert.Equal(BuiltInPlugins.TestControllerGuid, test.InstanceGuid);
                 var replayed = rig.Host.Sessions.Devices.All().Where(e => e.Program == BuiltInPlugins.ReplayProgram).OrderBy(e => e.Device.Name).ToList();
@@ -554,7 +670,7 @@ namespace PadForge.Tests
             {
                 builtIns.SetPluginsOn(true);
                 builtIns.ReplayOn = true;
-                Assert.Null(builtIns.Open(recording.Path));
+                builtIns.Open(Read(recording.Path));
                 var entry = Assert.Single(rig.Host.Sessions.Devices.All(), e => e.Program == BuiltInPlugins.ReplayProgram);
                 Assert.Equal("Test Pad 1 (Replay)", entry.Device.Name);
                 Assert.Equal("Test Pad 1", entry.Device.ProductName);

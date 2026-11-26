@@ -301,6 +301,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge の表示と非表示</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>仮想コントローラーのオンとオフ</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>接続中の任意のデバイス</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (未接続)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>デバイスページにないデバイス</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>記録中…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} 秒)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>で、ボタン</value></data>
@@ -417,8 +419,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>プログラムが PadForge の認識しないバージョンで通信しています</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge はそのプラグインキーを発行しませんでした</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge はこのプログラムの接続を受け付けませんでした</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>Windows がプログラムのファイル名を示さなかったため、PadForge はデバイスを作成しませんでした</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>間隔が短すぎる再リクエスト</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge を再起動するまで、これ以上は作成できません</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>プログラムが作成した、ホームで確認待ちのこの種類のものが多すぎます</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge にそのようなツールはありません</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>プログラムが古い状態を読み取りました</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>その ID のものはありません</value></data>
@@ -426,6 +429,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>あなたが許可しませんでした</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>時間内に応答がありませんでした</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>あなたの応答を待っています</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>まだ回答していませんでした</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>そのようなリクエストはありません</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>元に戻す操作はありません</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>変更できるのはあなただけです</value></data>
@@ -541,6 +545,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>署名なし。</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>読み取り以上では、キーボードを含むすべてのデバイスで押されたすべてのキーが見えます。</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>確認は 1 回だけです。オートメーションページで削除できます。</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>PadForge が特定できなかったプログラムから起動されました。</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge はこのプログラムをほかのプログラムと区別できないため、次に接続したときに再度確認します。</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge のコマンドライン</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} を {1} に設定</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ネットワークで待ち受けるため、他のデバイスからこの PC にアクセスできます。</value></data>
@@ -556,7 +562,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>プロファイルを移行</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>別のプログラムのプロファイルファイルをインポートし、取り込まれた内容を確認します。</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}、{1} 回</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}、同様のリクエスト {1} 件のうち最後</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>AutoHotkey v2 スクリプト (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -586,6 +591,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>この PC に Logitech G-key SDK がありません。Logitech Gaming Software 8.55 以降と一緒にインストールされます。</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK は登録されていますがファイルがありません。Logitech Gaming Software を再インストールしてください。</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK は見つかりましたが読み込めませんでした。</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK は見つかりましたが、管理者だけが変更できることと Logitech の署名があることを PadForge が確認できなかったため、読み込みませんでした。</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>そのライブラリは想定している G-key SDK ではありません。</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK を開始できませんでした。通常は Logitech Gaming Software が実行されていません。</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>接続済み、キーはまだ検出されていません。Logitech Gaming Software で、PadForge プロファイルの各キーに G-key コマンドをドラッグし、そのプロファイルを常設に設定してください。また、G600 または G300 マウスはオンボードモードを解除しておく必要があります。</value></data>
@@ -696,14 +702,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows にサインインしたときに PadForge を自動で起動します。オンの間は、ショートカット、スクリプト、ほかのプログラムからの起動でも、PadForge は Windows の確認画面なしで起動します。</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge は {0} から実行されています。</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>これには PadForge 専用のフォルダーが必要です。現在のフォルダーには他のファイルがあるため、PadForge は他のプログラムによる変更を防げません。</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>これには、ほかのプログラムが変更できないフォルダーに PadForge が必要です。PadForge は、ほかのプログラムによるフォルダーの変更を防げませんでした。</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge を専用フォルダーに移動</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge とその設定を Program Files にコピーし、タスクの参照先をそこに変更して、そこから起動します。ここにあるコピーはそのまま残ります。</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0} に PadForge 以外のファイルがあります。</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>他のファイルがあるフォルダーから PadForge を実行していたため、ログイン時に起動する設定をオフにしました。</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge は移動しませんでした: Windows に Program Files フォルダーがありません。</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge は移動しませんでした: 実行中の PadForge を読み取れませんでした。</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0} を作成できませんでした。</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0} の内容を読み取れませんでした。</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge は移動しませんでした: ほかのプログラムによる {0} の変更を防げませんでした。</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge は移動しませんでした: {0} にあるコピーが、実行中の PadForge と一致しませんでした。</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge は移動しませんでした: コピーの後、{0} に PadForge 以外のファイルがあったか、ほかのプログラムが変更できる状態でした。</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>実行していた PadForge がなくなったため、「ログイン時に起動する」をオフにしました。</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>PadForge を実行していたフォルダーをほかのプログラムによる変更から守れなかったため、「ログイン時に起動する」をオフにしました。</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>実行していた PadForge がどれかを読み取れなかったため、「ログイン時に起動する」をオフにしました。</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>実行していた PadForge のフォルダーを読み取れなかったため、「ログイン時に起動する」をオフにしました。</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge は保護されたフォルダー {0} を作成できませんでした。PadForge は管理者権限で実行するライブラリをそこに保存するため、これがないと安全に起動できません。</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge は保護されたフォルダー {0} から自身を再起動できませんでした。PadForge は管理者権限ではそこからのみ実行されるため、起動しませんでした。</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge は、同時に 1 つだけ実行するためのロックを作成できなかったため、起動しませんでした。</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge は、他のプログラムが変更できるフォルダー {0} から管理者権限で実行されています。他のプログラムがそこにある PadForge の設定を変更でき、PadForge はその権限で動作してしまいます。</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge は、ほかのファイルがあるフォルダー {0} から管理者権限で実行されています。PadForge は、そこにある設定をほかのプログラムが変更するのを防げず、その権限で動作してしまいます。</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge は、読み取れなかったフォルダー {0} から管理者権限で実行されています。PadForge は、そこにある設定をほかのプログラムが変更するのを防げず、その権限で動作してしまいます。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>常にシステムトレイに表示する</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ウィンドウを開いている間もシステムトレイのアイコンを表示し、いつでもそのメニューから「終了」を選択できるようにします。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>アップデート</value></data>
@@ -718,7 +739,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>インストールして再起動</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>リリースノート</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>コントローラーデータベース</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>「今すぐ更新」を押すと、コミュニティのコントローラーデータベース (SDL_GameControllerDB) を GitHub から、または「その他」で設定したアドレスからダウンロードし、このバージョンの PadForge にないマッピングを設定ファイルに保存します。それらはすぐに使われます。ほかのアドレスからは新しいマッピングだけを保存します。新しいマッピングが使われるのは、ほかにゲームパッドとして認識されておらず、割り当てられておらず、強制 Raw ジョイスティックモード (ゲームパッドリマッピングをバイパス) でもないコントローラーだけです。リセットすると、ダウンロードしたマッピングはすべて削除され、GitHub から再びダウンロードします。「その他」にある自分の行は残ります。</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>「今すぐ更新」を押すと、コミュニティのコントローラーデータベース (SDL_GameControllerDB) を GitHub から、または「その他」で設定したアドレスからダウンロードし、このバージョンの PadForge にないマッピングを設定ファイルに保存します。それらはすぐに使われます。ほかのアドレスからは新しいマッピングだけを保存します。新しいマッピングは、最初は、SDL がゲームパッドまたは特定の種類なしと報告し、ほかにゲームパッドとして認識されておらず、割り当てられておらず、強制 Raw ジョイスティックモード (ゲームパッドリマッピングをバイパス) でもないコントローラーにだけ使われます。使われ始めた後は、コントローラーが割り当てられても使われ続けます。リセットすると、ダウンロードしたマッピングが削除され、「ダウンロード元」がコミュニティのファイルに戻り、次の「今すぐ更新」でそれをダウンロードします。「その他」にある自分の行は残ります。</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>今すぐ更新</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>更新中…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>アップデートを確認しています…</value></data>
@@ -751,9 +772,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>組み込み: {1} 件のマッピング、{2} 時点のコミュニティ版。{3} に {4} からダウンロード: 新規の行 {0} 件。</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>組み込み: {1} 件のマッピング、{2} 時点のコミュニティ版。{3} に {4} からダウンロード: 新規の行 {0} 件。</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>コミュニティデータベースは前回の更新から変更されていません。</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>{0} にあるファイルは前回の更新から変更されていません。</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub に接続できませんでした: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} に接続できませんでした: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge が想定するコントローラーデータベースではないため、ダウンロードを拒否しました。変更はありません。</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge は GitHub からの応答を受け付けませんでした。何も変更されていません。</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge は {0} からの応答を受け付けませんでした。何も変更されていません。</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>最小化状態で起動する</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ログイン時に起動する</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -796,6 +820,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>フォルダー</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>サービスの設定</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>削除の手順</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>サービス</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>ファイル</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>上位フィルター</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>レジストリ値</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ハードウェア ID</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>スケジュールされたタスク</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>インストールされているアプリのエントリ</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP デバイス</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 コントローラー、PlayStation Move、Navigation コントローラーを Bluetooth で接続できるようにします。PadForge に組み込まれており、これらのいずれかを初めてペアリングするときにインストールされます。</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 コントローラーを Bluetooth で接続します。</value></data>
@@ -864,6 +896,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} を保存しました</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>記録を開始できませんでした。この PC の非公開の値がファイルに残る可能性があることが、チェックで見つかりました。</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>記録を開始できませんでした。{0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge は、サインインしているユーザーのプロファイル内に、リンクを経由せずに記録を書き込める一時フォルダーを見つけられませんでした。</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>記録フォルダーは別の場所へのリンクで、PadForge はリンクをたどりません。</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>前回の記録をまだ仕上げています。</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>「直近 60 秒を保持」がオフのため、保存するものがありません。</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge が停止していなかった記録が、ホームで読まれるのを待っています: {0}</value></data>
@@ -877,7 +911,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge、Windows、デバイス、設定の現在の状態を、同じ確認を通して保存します。</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log は PadForge.exe の横にあり、そこで読めます。</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>記録する内容</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>すべてオン。オフにした部分は次の記録から除かれ、ファイルには含まれる部分が記されます。</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>既定ではすべての部分がオンです。オフにした部分は次の記録から除かれ、ファイルには含まれる部分が記されます。</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>夜に一度だけ起きるような問題に備えます。</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>記録は、ホームで読まれるのを待っています。</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>概要</value></data>
@@ -928,6 +962,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>記録を保存</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ファイル</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>保存できませんでした。{0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>置き換えチェック: 保持する部分を確認しています…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>置き換えチェック: PadForge は保持する部分を読み取れなかったため、保存はできません。</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>ユーザー自身の権限での保存が開始されませんでした。</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>ユーザー自身の権限での保存が開始されませんでした。開始の元になるデスクトップシェルが実行されていません。</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>ユーザー自身の権限での保存が開始されませんでした。Windows がエラー {0} で拒否しました。</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>{0} 以内に保存が終了しませんでした。</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows がそこへのファイルの書き込みを許可しませんでした。</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge はこのファイルを自分の記録として受け付けませんでした。</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>保存はコード {0} で終了しました。</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>あなたとして保存され、初回は Downloads フォルダー、2 回目以降は前回保存した場所に保存され、Explorer で表示されます。ページを誰も見ていないときに停止した記録(上限、マクロ、プログラム、アシスタントツール、--record stop による停止)は、ホームでのこの確認を待ち、保存しない限り 7 日後に削除されます。プログラムには待機中であることだけが伝えられ、場所は伝えられません。</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} の問題の記録が、読まれるのを待っています。</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>確認</value></data>
@@ -1038,6 +1083,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>新しいコントローラー</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>設定</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>すべての軸、ボタン、センサー</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>スクリプトが使う名前での各コントロール</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>押下中: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID、パス、対応機能、強制 Raw ジョイスティックモード</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID、パス、対応機能</value></data>
@@ -1198,9 +1244,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>読み込みに失敗しました: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro はこのプリセットを {1} で拒否しました: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>このプリセットには HID ディスクリプタがないため、コントローラーを作成できません。</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge はこのプリセットを確認できませんでした: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>プリセットを確認しています…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>何もインポートされませんでした。{0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>インポート</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(名前なしの HID デバイス)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}、{1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}、{1}、{2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>マウス</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>ジョイスティック</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>ゲームパッド</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>キーボード</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>多軸コントローラー</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} 個の HID インターフェースが見つかりました。</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>HID インターフェースが 1 個見つかりました。</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>列挙に失敗しました: {0}</value></data>
@@ -1748,6 +1803,13 @@
 {0}
 
 PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込みました。報告するには、{2} でディスカッションを開始し、crash.log をドロップしてください。
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>予期しないエラーが発生しました:
+
+{0}
+
+PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込めませんでした。報告するには、{2} でディスカッションを開始し、ここで Ctrl+C を押してこのメッセージをコピーし、そこに貼り付けてください。
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(追加のエラーが {0} 件抑制されました)</value></data>
@@ -2393,7 +2455,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>押している間と中央へ</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>トグル</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>ステア入力</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>マウスによる操舵を有効にするボタンです。ソースと同じデバイスのボタンを選びます。何も選ばない場合、マウスは常に操舵します。</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>マウスによる操舵を有効にするボタンです。このスロットのどのデバイスのボタンでも選べます。何も選ばない場合、マウスは常に操舵します。</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>スムージング</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>報告が不均一なマウスを滑らかにします。スティックは手の動きより、この時間ほど遅れて追従します。0 でオフです。</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>高速時のロック</value></data>
@@ -2414,7 +2476,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>操舵を始めた位置から開始</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>ステア入力がある場合、スティックは操舵を始めたときのポインター位置から測ります。スマートフォンの画面で、指が触れた位置から始まるスティックと同じです。オフの場合は、ポインターのあるモニターの中心から測ります。</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>この軸は相対的に動きます</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>回した量を報告するトラックボールやスピナー向けです。オンにすると、軸はマウス移動量と同じように位置を保持し、移動量の設定が使われます。Windows は、どの軸がこのように動くかを教えてくれません。</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>回した量を報告するトラックボールやスピナー向けです。オンにすると、軸はマウス移動量と同じように位置を保持し、移動量の設定が使われます。SDL は汎用コントローラーを DirectInput 経由で読み取り、DirectInput はすべての軸を位置として読み取るため、このスイッチでどの軸がこのように動くかを指定します。</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}、{1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>プレビュー</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>このファミリーが実際のマウスにどう追従するかを表示します。選ぶまでは何もマッピングされません。</value></data>
@@ -3390,7 +3452,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>アイコンを選択</value></data>
   <data name="IconPicker_Emoji" xml:space="preserve"><value>絵文字</value></data>
   <data name="IconPicker_Images" xml:space="preserve"><value>画像</value></data>
-  <data name="IconPicker_NoPackages" xml:space="preserve"><value>アイコンパックはまだ追加されていません。「ファイルを参照…」から画像またはアイコンパックを選択できます。</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>アイコンパックはまだ追加されていません。「ファイルを参照」から画像またはアイコンパックを選択できます。</value></data>
   <data name="Emoji_Category_Smileys" xml:space="preserve"><value>顔</value></data>
   <data name="Emoji_Category_Hands" xml:space="preserve"><value>手</value></data>
   <data name="Emoji_Category_Animals" xml:space="preserve"><value>動物</value></data>
@@ -4218,7 +4280,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>読み取り</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>入力送信</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>設定変更</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>プログラムは、プロファイルの切り替えと解除、エンジンの開始と停止、仮想コントローラーのオンとオフ、ウィンドウの表示と非表示、PadForge の終了、診断スナップショットの保存、実行中の内容の問い合わせができます。</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>プログラムは、プロファイルの切り替えと解除、エンジンの開始と停止、仮想コントローラーのオンとオフ、ウィンドウの表示と非表示、PadForge の終了、実行中の内容の問い合わせ、診断スナップショットの保存、問題の記録の開始、停止、マーク付けができます。</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>コマンドの操作に加えて、プログラムはデバイス、仮想コントローラー、マッピング、プロファイル、設定を確認し、すべてのデバイスの入力をリアルタイムで追跡し、PadForge 内の場所をあなたに表示できます。読み取りレベルのプログラムは、管理者として実行中のウィンドウに入力したキーを含め、すべてのデバイスで押されたすべてのキーを見ることができます。</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>読み取りの操作に加えて、プログラムは独自のデバイスを追加して操作し、任意のデバイスのコントロールを押したままにし、名前付きの値をマクロのトリガーに渡せます。</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>「入力送信」の操作に加えて、プログラムは各ページで変更できる内容を変更できます。一部の変更は、PadForge の確認カードで必ず先に確認します。</value></data>
@@ -4231,7 +4293,11 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>確認待ち</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>アクティビティ</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>元に戻す</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge は保存できませんでした: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge はファイルを保存できませんでした。</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge はプラグインキットを保存できませんでした。</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge アクティビティ {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>サウンド{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>アイコン{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>読み取り以上のレベルのプログラムが接続されている間、プログラムはキーボードを含むすべてのデバイスで押された内容を見ることができます。</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>プラグイン</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>プラグインを実行</value></data>
@@ -4251,7 +4317,10 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (リプレイ)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>問題の記録|*.zip;*.log|すべてのファイル|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge は {0} を再生できません。問題の記録ではないか、デバイスの入力が含まれていません。</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge は {0} を再生できません。PadForge が読み取れる問題の記録ではありません。</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge は {0} を再生できません。デバイスが {1} 台を超えていますが、リプレイで再生できるのは最大 {1} 台です。</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge は {0} を再生できません。どのデバイスの入力も含まれていません。</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge は {0} を読み取れませんでした。</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>あなたのプラグイン</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>プラグインを追加…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>プログラムとスクリプト|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|すべてのファイル|*.*</value></data>
@@ -4268,8 +4337,13 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Plugins_State_Failed" xml:space="preserve"><value>5 回連続で失敗したため停止しました</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>起動していません: ファイルが見つかりません</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>起動していません: Windows にこの種類のファイルを開くプログラムがありません</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>起動していません: Python ファイルを開くプログラムがなく、PadForge は py ランチャーも見つけられません</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>起動していません: この種類のファイルを開くプログラムを PadForge が読み取れません</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>起動していません: この種類のファイルを開くプログラムがこの PC にありません</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>起動していません: 起動元となるデスクトップシェルが動いていません</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>起動していません: デスクトップシェルが管理者権限を持っているため、プラグインも管理者権限を持ってしまいます</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>起動していません: 管理者権限を持つことになるかどうかを PadForge が読み取れません</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>起動していません: Windows が管理者権限を与えたため、PadForge は実行前に終了させました</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>起動していません: 管理者権限を要求しています</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>起動していません: Windows がエラー {0} で拒否しました</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>起動していません</value></data>
@@ -4297,6 +4371,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} を追加しました。</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>署名者: {0}。</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>署名なし。</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}。</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>実行中は、ここに設定が表示されます。</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>設定は宣言されていません。</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>PadForge に接続すると、ここに設定が表示されます。</value></data>
@@ -4762,7 +4837,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 が Steam デポチャンクに使用する Zstandard 展開処理。Oleg Stepanischev による zstd ライブラリの C# 移植。</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>アシスタント接続と PadForge.exe --mcp の基盤となる Model Context Protocol のサーバーとクライアント。提供元は Model Context Protocol a Series of LF Projects。</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>アシスタント接続と PadForge.exe --mcp の基盤となる Model Context Protocol のサーバーとクライアント。提供元は Model Context Protocol a Series of LF Projects, LLC。</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>MCP C# SDK の基盤となる Microsoft.Extensions.AI.Abstractions、Logging.Abstractions、DependencyInjection.Abstractions。提供元は Microsoft。</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(任意のデバイス)</value></data>
@@ -5790,7 +5865,18 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>G19 の画面に WinUSB をバインド中</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>G19 の画面は別のドライバー ({0}) を使用しています。Logitech Gaming Software を起動してください</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>G19 の画面は別のプログラムのドライバー ({0}) を使用しており、PadForge はそのままにします</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>PadForge の PlayStation Bluetooth ドライバーを確認しています…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>この PC の Bluetooth ラジオを読み取っています…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>USB ケーブルでコントローラーを開いています…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>この PC の Bluetooth アドレスをコントローラーに書き込んでいます…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>コントローラーを Windows の Bluetooth に登録しています…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Bluetooth を再起動しています…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>ペアリングが停止しました: Windows がコントローラーまたは Bluetooth 設定への PadForge のアクセスを拒否しました。詳細は診断ログにあります。</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>ペアリングが停止しました: コントローラーまたは Bluetooth ラジオの読み取りか書き込みに失敗しました。詳細は診断ログにあります。</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>PadForge が予期しないエラーでペアリングが停止しました。詳細は診断ログにあります。</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 以降が必要です</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ライブラリは見つかりましたが、管理者だけが変更できることと Logitech の署名があることを PadForge が確認できなかったため、読み込みませんでした</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ライブラリは見つかりましたが使用できず、理由は診断ログに記録されています</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software を起動してください</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control を使用するスマートフォンを待機中</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>スマートフォンに表示中</value></data>
@@ -5893,6 +5979,8 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>dhd64.dll を選択…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension のこのライブラリを、他のコピーに代えて読み込みます。別のコピーで開いている Falcon は、いったん閉じてこのコピーで開き直します。SDK がインストールするコピーは、この設定がなくても見つかります。</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|ライブラリ (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK のダウンロードページを開けませんでした: {0}。</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK のダウンロードページはまだ開いていません: {0}。</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon ドライバーをインストール</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>ドライバーのない Falcon に、SDK フォルダー内の Force Dimension のドライバーをインストールします。先に Windows が Force Dimension を信頼するか確認する場合があります。</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension の SDK を入手</value></data>
@@ -6559,12 +6647,17 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>削除中…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>更新中…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>完了しませんでした: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>{0} が同じ設定ファイルとスキルフォルダーを読み取るため、PadForge のエントリとスキルは残ります。</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>{0} が同じ設定ファイルを読み取るため、PadForge のエントリは残ります。</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge はこのプログラムから削除されました。{0} が同じフォルダーからスキルを読み取るため、スキルは残ります。</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge は {0} の設定を読み取れないため、PadForge が追加されているかどうかがわかりません。</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>追加済み。PadForge はスキルフォルダーを読み取れませんでした。</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>その他のアシスタント</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>上に表示されないアシスタント向け: 「設定をコピー」は MCP 設定用のエントリを、「メッセージをコピー」は接続方法と最初に尋ねることを伝える、どのチャットでも使える短い文章を渡します。</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>設定をコピー</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>メッセージをコピー</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>コピーしました。</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>コピーできませんでした: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>コピーできませんでした。Windows が PadForge にクリップボードの使用を許可しませんでした。</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>私の PC のコントローラーマッパー、PadForge に接続してください。stdio で動作するローカルの MCP サーバーで、コマンドは {0}、引数は --mcp です。JSON 設定では次のとおりです: {1} 接続したら、まず status ツールを呼び出し、次に何を設定したいか私に尋ねてください。例: 「コントローラーのトリガーをマッピングする場所を見せて。」</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge のオートメーションは現在オフです。先に PadForge の 追加機能、オートメーションでオンにしてください。</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>許可したプログラム</value></data>
@@ -6585,6 +6678,8 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ジョイスティック。PadForge は Raw で読み取るため、SDL のマッピングは使われません。</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>ジョイスティック。あなたの行によってゲームパッドとして配置されています。</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL はエンジンの実行中にデバイスを読み取ります。</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>デバイスが接続されていません。接続されると SDL が読み取ります。</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL はこのデバイスの読み取り結果を PadForge に返しませんでした。</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>組み込みのコミュニティ版、{0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} にダウンロード</value></data>
@@ -6622,6 +6717,11 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>ターボ、トグル、その他のアクション</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} と {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>コピーするものがありません: このデバイスには SDL のマッピングがなく、どのコントローラーにも載っていません。</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>コピーするものがありません: PadForge はこのデバイスの SDL のマッピングを読み取れず、どのコントローラーの行にも SDL の形式で使えるバインドがありません。</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>コピーするものがありません: このデバイスには SDL のマッピングがなく、{0} のどの行にも、SDL の形式で使える方法でそのボタン、軸、ハットを読み取るものがありません。</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>コピーするものがありません: このデバイスには SDL のマッピングがなく、{0} の行がこのデバイスを読み取るのは {1} だけで、SDL の形式では扱えません。</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>コピーするものがありません: PadForge は現在このデバイスの SDL のマッピングを読み取れず、どのコントローラーにも載っていません。</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>コピーするものがありません: PadForge は現在このデバイスの SDL のマッピングを読み取れず、{0} のどの行にも SDL の形式で使えるバインドがありません。</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>別のプログラムがクリップボードを使用中です。何もコピーされませんでした。</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>自分の行を削除しました。デバイスは以前の状態で認識されます。</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL のレイアウトから再マッピングしました: {0}。</value></data>
@@ -6642,6 +6742,8 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge が持つ行</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>一致する行はありません。</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>選んだ行は、「貼り付け」と同じ確認と選択を経て、{0} にそのデバイス自身の ID で適用されます。</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>エンジンが停止しているため、一覧には SDL が保持する行(SDL 自身のものと、組み込みのコミュニティ版)が含まれません。エンジンが実行されると一覧に表示されます。</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL が時間内に応答しなかったため、一覧には SDL が保持する行(SDL 自身のものと、組み込みのコミュニティ版)が含まれません。</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL マッピングの行</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>このデバイス用の行です。</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>推測したレイアウトです。</value></data>
@@ -6654,14 +6756,17 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows、{0} フィールド、別のバスまたはバージョンの同じベンダーと製品のものです。このデバイス自身の ID で保持されます。</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows、{0} フィールド、別のデバイスの行です。このデバイス自身の ID で保持されます。</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} フィールド。SDL はこのデバイスを読み取らないため、PadForge が行に従って入力を配置します。</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge には次のフィールドに対応する通常のボタンや軸がないため、除外されます: {0}。</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} フィールド、デバイスの軸、ボタン、ハットから作成。「入力テスト」で確認してから、ここで保持または変更してください。</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>これにより {0} の認識のされ方が変わります。{1} のその行は、新しいレイアウトから再マッピングされます。</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>これにより {0} の認識のされ方が変わります。どのコントローラーにも載っていないため、変わる行はありません。</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} を読み取るプロファイルショートカットは、設定済みの入力のままです。</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>この行は PadForge.xml に自分の行として保持され、このデバイスでは他のどのソースより優先されます。「自分の行を削除」で、以前の行が元に戻ります。</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>これらの行は PadForge.xml に自分の行として保持され、それぞれのデバイスでは他のどのソースより優先されます。コントローラーデータベースの行の「その他」にある「クリア」で削除できます。</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows 向けの行が {0} 件。他のシステム向けの {1} 件は除外されます。</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows 向けの行が {0} 件。他のシステム向けの {1} 件は除外されます。</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Windows 用の行は {0:N0} 行です。</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>Windows 用の行は {0:N0} 行です。</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>ほかのシステム用の {0:N0} 行は除外されます。</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>ほかのシステム用の {0:N0} 行は除外されます。</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>{0:N0} 件すべてが追加されます。PadForge が保持する自分の行は最大 {1:N0} 件です。</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>この行が追加されます。PadForge が保持する自分の行は最大 {1:N0} 件です。</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>自分の行は現在 {0:N0} 件保持されているため、これらのうち {1:N0} 件が追加され、{2:N0} 件は追加されません。</value></data>
@@ -6671,7 +6776,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>このテキストは SDL のコントローラーデータベースの行ではありません。16 進数 32 桁の ID、名前、そして a:b0 のようなフィールドが必要です。</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>これらの行は他のシステム向けです。PadForge は Windows 向け、または特定のシステムを指定しない行を読み取ります。</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>行の ID がデバイスのものではありません。16 進数 32 桁が必要です。</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>行の名前が空か、128 文字を超えているか、SDL がフィールドとして読む文字を含んでいます。</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>行の名前が空か、128 文字を超えているか、SDL が読み取るフィールドマーカー(「type:」など)を含むか、文字、数字、句読点、記号、通常のスペース以外の文字を含んでいます。</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>この行にはヒントまたは Android のフィールドがあり、PadForge は受け付けません。</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>この行には SDL が知らないフィールドがあります。</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>バインドが SDL の形式ではありません。b3、a2、+a2、a2~、h0.4 などの形式が必要です。</value></data>
@@ -6682,8 +6787,8 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>自分の行</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>ここで追加した行、またはデバイスの SDL マッピングカードに貼り付けた行は、それぞれのデバイスで他のどのソースより優先され、リセットしても残ります。</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ファイルまたはクリップボードから行を追加…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} 件。デバイスごとに 1 件で、他のどのソースより優先されます。</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} 件。そのデバイスで、他のどのソースより優先されます。</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>{0:N0} 行。自分の行がほかのどのソースよりも優先されます。</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} 行。自分の行がほかのどのソースよりも優先されます。</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>まだありません。</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 変数には、PadForge が保持しない行が {0} 件あります。「ファイルまたはクリップボードから行を追加」はそれらを入れた状態で開きます。</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 変数には、PadForge が保持しない行が {0} 件あります。「ファイルまたはクリップボードから行を追加」はその行を入れた状態で開きます。</value></data>
@@ -6693,7 +6798,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>変更…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>コミュニティのファイルを使う</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>アドレス</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge が受け付けるのは、https:// で始まり、ホストを指定した、既定のポートのアドレスで、ユーザー名とパスワードを含まないものです。</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge が受け付けるアドレスは、https:// で始まり、ホスト名を含み、既定のポートを使い、ユーザー名、パスワード、# 以降の部分を含まない、2,048 文字以内のものです。</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Web から PadForge にアクセス</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Web サイト上で動くアシスタントは、この PC のトンネルプログラムを通じて PadForge にアクセスします。オンにする前に確認します。</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Web から PadForge にアクセスしますか？</value></data>
@@ -6710,7 +6815,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>停止しました。最後のメッセージ: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>起動できませんでした。</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>この PC にはもうありません。</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>この PC にトンネルプログラムが見つかりませんでした。PadForge は cloudflared、devtunnel、ngrok、Tailscale Funnel、または独自のトンネルのアドレスで動作します。</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge はこの PC で cloudflared、devtunnel、ngrok、Tailscale Funnel のいずれも見つけられませんでした。PadForge がダウンロードする ChatGPT Secure MCP Tunnel を選ぶか、ご自分のトンネルのアドレスを指定してください。</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge に公開アドレスを与えるトンネルを選んでください。</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>この PC にあるその他: {0}。</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}(アドレスは変わりません)</value></data>
@@ -6718,7 +6823,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>独自のトンネルを http://127.0.0.1:{0} に向けて実行し、その https アドレスを貼り付けてください。名前付きの Cloudflare トンネル、永続的な開発トンネル、Tailscale Funnel、ngrok の独自ドメインではアドレスが変わりません。</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>トンネルが示すとおり、/mcp 以外のパスがない https アドレスを貼り付けてください。</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge の Web ヘルパーを起動しています。</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge の Web ヘルパーが停止しました ({0})。もう一度起動するには、「Web から PadForge にアクセス」をオフにしてからオンにしてください。</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge の Web ヘルパーが停止しました ({0})。PadForge は起動を試み続けます。</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>アドレス</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>公開アドレスはまだありません。</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude に追加</value></data>
@@ -6757,11 +6862,6 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>コード {0} で終了しました</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>オートメーションがオフのため、Web アシスタントは PadForge にアクセスできません。Web ヘルパーは オートメーションをオンにすると起動します。</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>確認中…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>未インストール。</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>インストール済みで最新です。スクリプトは {0} で始まります。</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} 用にインストール済みで最新です。スクリプトは {1} で始まります。</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>インストール済み。この PadForge にはより新しいコピーがあります。</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} 用にインストール済み。この PadForge にはより新しいコピーがあります。</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>インストール中…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge は確認できませんでした: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>インストールすると、その言語が見つける場所に PadForge のライブラリが置かれます。これを読み込んだスクリプトは、上のレベルでデバイスを読み取り、マッピングを操作します。</value></data>
@@ -6769,8 +6869,27 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>インストール済みのコピー</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>すべて削除</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>削除しました。</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge のライブラリは {0} 向けにインストールされており、最新です。スクリプトは {1} で始まります。</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>{0} 向けの PadForge のライブラリは、この PadForge のコピーと異なります。</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge のライブラリは {0} 向けにインストールされていません。</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>PadForge のライブラリは {0} 向けが最新です。{1} 向けのコピーは、この PadForge のものと異なります。</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>PadForge のライブラリは {0} 向けが最新で、{1} 向けにはインストールされていません。</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>{0} 向けの PadForge のライブラリは、この PadForge のコピーと異なり、{1} 向けにはインストールされていません。</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>PadForge のライブラリは {0} 向けが最新です。{1} 向けのコピーは、この PadForge のものと異なり、{2} 向けにはインストールされていません。</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows がユーザー自身の権限でそれを起動しませんでした。</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>{0} 秒以内に終了しませんでした。</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>理由を示さずにコード {0} で終了しました。</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge は {0} の設定を読み取れないため、ファイルをそのままにしました。</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge は {0} を書き込んでいないため、そのままにしました。</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows にユーザーのドキュメントフォルダーがありません。</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge は {0} 用のユーザーのフォルダーを見つけられません。</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0} 自身のコマンドがコード {1} で終了しました。</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0} のコマンドがこの PC にありません。</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows が、PadForge に必要なファイルの読み取りまたは書き込みを許可しませんでした。</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge は Python を見つけられません。登録されているもの、Microsoft Store からインストールされたもの、py ランチャーが一覧にしているもの、PATH にあるもののいずれもありません。</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge が見つけた Python は、{0} 秒以内に応答しませんでした。</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>実行は、PadForge が把握している理由を示しませんでした。</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>スクリプト ID</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>スクリプト ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>スクリプトはコントロールを {0} と呼びます。</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>スクリプトはキーを KeyA、KeySpace、KeyLeftShift などと呼び、すべてのキーをコードで Vk0 から Vk255 まで呼びます。</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{1} からこのネットワーク上の {0}</value></data>
@@ -6782,11 +6901,11 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>管理者権限なしで動く PadForge のヘルパーがこの PC のネットワークアドレスで待ち受け、PadForge はそのポートをプライベートネットワークに限って許可します。別の PC にあるアシスタントは、ここで作るキーがあるときだけ接続できます。呼び出しとキーは暗号化されずにネットワークを通ります。</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>ポート</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>変更…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>呼び出しとキーは暗号化されずにこのネットワークを通ります。Windows はプライベートネットワークに限って許可します。</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>呼び出しとそのキーは、暗号化されずにこのネットワークを通ります。PadForge がこのポート用に作成する Windows Defender ファイアウォールの規則は、プライベートネットワークだけを対象にしています。</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>ポート {0} は別のプログラムが使用中です。このネットワークから PadForge にアクセスするには、ポートを変更してください。</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows は PadForge のヘルパーがポート {0} で待ち受けることを許可しませんでした。PadForge は管理者権限があれば許可できるので、管理者権限で PadForge を起動し、これをオフにしてからオンにしてください。</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows には、ポート {0} での PadForge のヘルパー用の予約がありません。これをオフにしてからオンにすると、PadForge が再び作成します。</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge のヘルパーはポート {0} で待ち受けられませんでした。ポートを変更するか、これをオフにしてからオンにしてください。</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge のヘルパーが停止しました ({0})。もう一度起動するには、「このネットワークから PadForge にアクセス」をオフにしてからオンにしてください。</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge のヘルパーが停止しました ({0})。PadForge は起動を試み続けます。</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>オートメーションがオフのため、このネットワーク上のアシスタントは PadForge にアクセスできません。ヘルパーはオートメーションをオンにすると起動します。</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>この PC には現在、プライベートネットワーク上のアドレスがありません。</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>このネットワーク上のアシスタント</value></data>
@@ -6820,7 +6939,7 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Net_Port_Wrong" xml:space="preserve"><value>1024 から 49151 までのポートを入力してください。</value></data>
   <data name="Reach_Label" xml:space="preserve"><value>アクセス範囲</value></data>
   <data name="Reach_All" xml:space="preserve"><value>PadForge 全体</value></data>
-  <data name="Reach_Own" xml:space="preserve"><value>自分が追加したデバイスと「デバイスを選択…」で選んだデバイスのみ</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>自分が追加したデバイスと「デバイスを選択」で選んだデバイスのみ</value></data>
   <data name="Reach_Pick" xml:space="preserve"><value>デバイスを選択…</value></data>
   <data name="Reach_Line_Format" xml:space="preserve"><value>自分が追加したデバイスと {0} を操作します。すべてのデバイスの読み取りはできます。</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>自分が追加したデバイスだけを操作します。すべてのデバイスの読み取りはできます。</value></data>
@@ -6830,11 +6949,12 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Reach_Pick_Title" xml:space="preserve"><value>デバイスを選択</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} は、自分が追加したデバイスと、チェックを付けたデバイスを操作できます。すべてのデバイスの読み取りはできます。</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>デバイスページにデバイスがありません。</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>実行中、あなたの権限で実行されており、準備完了です。ChatGPT はこのトンネルを通じて、独自のサインインなしで、お使いの OpenAI 組織からのみ PadForge にアクセスします。PadForge と一緒に再び起動します。</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>実行中、あなたの権限で実行されています。OpenAI がトンネルの準備完了を知らせるのを待っています。</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>ユーザー自身の権限で実行中で、tunnel-client が準備完了を報告しています。PadForge と一緒に再び起動します。</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>ユーザー自身の権限で実行中です。tunnel-client は現在、準備完了を報告していません。</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>OpenAI の tunnel-client をダウンロードし、そのリリースの SHA-256 サムと照合しています。</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client をダウンロードできませんでした: {0}。もう一度試すには、トンネルを選び直してください。</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>下にランタイムキーとトンネル ID を貼り付けると、トンネルが起動します。</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>OpenAI の tunnel-client がまだこの PC にありません。もう一度トンネルを選ぶとダウンロードします。</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>ランタイムキー</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>制限付き、権限は Tunnels Read and Use。</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>作成</value></data>
@@ -6843,6 +6963,8 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>ChatGPT を開く</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge はキーを、あなただけが使えるよう暗号化して保持します。ボックスを空にすると削除されます。ChatGPT は上のレベルで動作します。</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>キーは保持されませんでした。PadForge の Web ヘルパーが実行されておらず、あなた用にキーを暗号化できるのはヘルパーだけです。</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>キーは保持されませんでした。キーを暗号化する前に PadForge の Web ヘルパーが終了しました。もう一度貼り付けてください。</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>キーは保持されませんでした。Windows があなた用にキーを暗号化できませんでした。もう一度貼り付けてください。</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>別のデバイスから回答</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>この PC から離れているときに、スマートフォンや別の PC から PadForge の確認に回答できます。</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>このネットワーク内でのみ動作し、Web コントローラーのアドレスを使います。</value></data>
@@ -6860,9 +6982,10 @@ PadForge は詳細を PadForge.exe と同じ場所の crash.log に書き込み�
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>コードは 1 回だけ使え、{0} まで有効です。5 回間違えると無効になりますが、QR コードは引き続き使えます。</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Web コントローラーのアドレスを起動しています…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>ページを開けません: {0}。</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>この PC にはプライベートネットワーク上のアドレスがありません。</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows がこのウィンドウを画面キャプチャから隠せなかったため、コードは表示されません。</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>入力するコードは 5 回間違えたため無効になりました。QR コードは {0} まで使えます。</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>コードの有効期限が切れました。「デバイスをペアリング…」で新しいコードを作成してください。</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>コードの有効期限が切れました。「デバイスをペアリング」で新しいコードを作成してください。</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge が保持するネットワークキーは最大 {0} 個です。先に「取り消す」でそれを取り消してください。</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>色は {0} に直接送られます。カラーサイクルや音に追従する色のような変化する色は届きません。変化しない色は届きます。</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>すべてのファイル (*.*)|*.*</value></data>

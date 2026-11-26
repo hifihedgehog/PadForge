@@ -20,9 +20,9 @@ namespace PadForge.Search
         internal static string ResourceName(SearchPage page) => "PadForge.SearchSources." + FileNames[page];
 
         /// <summary>The prefix of the catalog's own markup in the app's
-        /// resources (#600): every DialogWindow, the request card, the two
-        /// dialogs the window shows inside itself (Add Controller and
-        /// Search), Home, About and the window itself.</summary>
+        /// resources (#600): every DialogWindow, the request card, the three
+        /// dialogs the window shows inside itself (Add Controller, Search and
+        /// Read Your Recording), Home, About and the window itself.</summary>
         internal const string DialogPrefix = "PadForge.CatalogSources.";
 
         /// <summary>Each source's markup by its name, read from the app's

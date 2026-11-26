@@ -86,6 +86,15 @@ namespace PadForge.Common.Recording
         /// <summary>Test seam: the readers a test feeds.</summary>
         internal static IReaderSource Seam;
 
+        /// <summary>Test seam: the Raw Input collection at a path and its
+        /// usage, in place of <see cref="FindCollection"/>, for a layout
+        /// <see cref="WindowsReaders.Make"/> makes.</summary>
+        internal static Func<string, (IntPtr Handle, ushort Usage)> CollectionSeam;
+
+        /// <summary>Test seam: SDL's mapping text for a joystick, in place of
+        /// the engine's answer, for <see cref="WindowsReaders.Make"/>.</summary>
+        internal static Func<uint, string> MappingSeam;
+
         private static readonly WindowsReaders Windows = new();
 
         /// <summary>The readers the comparison asks.</summary>
@@ -101,17 +110,40 @@ namespace PadForge.Common.Recording
         internal static string SecondFact(UserDevice device)
         {
             if (device == null) return null;
-            if (device.IsKeyboard || device.IsMouse || device.IsTouchpad) return "none, Windows opens it for itself alone";
-            // A peer's device is read on the peer's PC, whatever its GUID.
+            // A peer's device is read on the peer's PC, whatever its GUID or
+            // its type.
             if (device.Device is PadForge.Engine.RemoteLink.RemotePeerDevice) return "none, it is read on another PC";
+            // A keyboard, mouse or touchpad Windows holds: one Raw Input's
+            // keyboard and mouse readers hand over, or one saved and not
+            // connected now. A program's or a replay's keyboard is
+            // PadForge's own reader, and no Windows driver holds it.
+            if ((device.IsKeyboard || device.IsMouse || device.IsTouchpad) && device.Device is null or SdlKeyboardWrapper or SdlMouseWrapper)
+                return "none, Windows opens it for itself alone";
             // An SDL device's GUID, from its open wrapper or as it was saved.
             // PadForge's own readers give none.
             string guid = device.Device != null ? device.Device.SdlGuid : device.SdlGuid;
             if (RecorderReaderPlan.Signature(guid) < 0) return "none, PadForge reads it itself";
             var (cls, reason) = RecorderReaderPlan.Classify(guid, false, IsSpaceMouse(device, guid), device.VendorId, device.ProdId,
                 RecordingKinds.Of(device) == PadForge.Engine.Recording.RecordingControlKind.Gamepad);
-            return cls is ReaderClass.DirectInput or ReaderClass.Hidapi or ReaderClass.SpaceMouse ? "rawinput" : "none, " + reason;
+            if (cls == ReaderClass.None) return "none, " + reason;
+            // The rule Make applies, so the header and the reader line agree.
+            if (MergeReason(device.VendorId, device.ProdId, device.Device) is { } merged) return "none, " + merged;
+            return "rawinput";
         }
+
+        /// <summary>
+        /// Why a Bliss-Box port has no second reader, or null for any other
+        /// device and for a port nothing merges into: while Read Bliss-Box
+        /// Adapters is on, PadForge merges the adapter's own state into the
+        /// reading of a port's row SDL reads raw (BlissBoxRuntime.Merge, which
+        /// takes no row SDL opened as a gamepad, BlissBoxRuntime.OpenedRaw),
+        /// so that reading is not the reports Raw Input hands over.
+        /// </summary>
+        internal static string MergeReason(ushort vendor, ushort product, ISdlInputDevice live)
+            => PadForge.Engine.Common.BlissBox.BlissBoxApi.ReadsRaw(vendor, product)
+               && live is SdlDeviceWrapper wrapper && wrapper.GamepadHandle == IntPtr.Zero
+                ? "PadForge merges its adapter's own state into its reading"
+                : null;
 
         /// <summary>Whether a device is PadForge's SpaceMouse reader's
         /// virtual joystick: SDL's virtual signature, a 3Dconnexion or
@@ -167,10 +199,10 @@ namespace PadForge.Common.Recording
         /// <summary>
         /// The Raw Input handle of the game controller collection at a path,
         /// as Raw Input names it (RIDI_DEVICENAME, case ignored, as
-        /// RelativeHidAxes.cs:194-216 pairs one), with its usage, vendor and
+        /// RelativeHidAxes's DeviceName pairs one), with its usage, vendor and
         /// product, or zero. Only a joystick, game pad or multi-axis
         /// controller, the collections PadForge's listener holds
-        /// (RawInputListener.cs:1366-1392).
+        /// (the joystick, game pad and multi-axis entries RawInputListener registers).
         /// </summary>
         internal static IntPtr FindCollection(string path, out ushort usage, out ushort vendor, out ushort product)
         {
@@ -248,7 +280,7 @@ namespace PadForge.Common.Recording
         /// The input controls preparsed data declares, one per usage, with
         /// their data indices, and the input report's length. HIDP_CAPS,
         /// HIDP_BUTTON_CAPS and HIDP_VALUE_CAPS as hidpi.h lays them out, the
-        /// offsets RelativeHidAxes.cs:310-341 reads too.
+        /// offsets RelativeHidAxes.LayoutOf reads too.
         /// </summary>
         internal static List<HidControl> ControlsOf(IntPtr preparsed, out int reportLength, out int maxData)
         {
@@ -518,14 +550,26 @@ namespace PadForge.Common.Recording
 
         /// <summary>A device as its layout is made from it, taken on the
         /// recorder's thread.</summary>
-        private sealed record Facts(UserDevice Device, ISdlInputDevice Live, string Guid, string Path, ushort Vendor, ushort Product,
+        internal sealed record Facts(UserDevice Device, ISdlInputDevice Live, string Guid, string Path, ushort Vendor, ushort Product,
             bool GamepadLayout, bool GamepadOpened, bool ExtraAxes, bool Touchpad, int RawAxes, int RawButtons, int NumAxes, int NumHats,
             int NumButtons, uint InstanceId, bool Hidden);
+
+        /// <summary>Why a device whose path Raw Input lists no collection
+        /// at has no second reader. HidHide cannot block Raw Input
+        /// (docs.nefarius.at, docs/projects/HidHide/FAQ.md:11), so the reason
+        /// is Raw Input's for a hidden device too, and its hidden setting is
+        /// a fact beside it.</summary>
+        internal static string NoCollectionReason(bool hidden)
+            => "Raw Input lists no game controller at its path" + (hidden ? HiddenFact : string.Empty);
+
+        /// <summary>The fact a line about a device's Raw Input reads ends
+        /// with when PadForge's setting hides the device with HidHide.</summary>
+        internal const string HiddenFact = ", and it is set to be hidden by HidHide";
 
         /// <summary>The comparison's readers of this PC: layouts made one at
         /// a time on a thread of their own, reports parsed on the recorder's
         /// thread.</summary>
-        private sealed class WindowsReaders : IReaderSource
+        internal sealed class WindowsReaders : IReaderSource
         {
             private readonly object _sync = new();
             private readonly Dictionary<UserDevice, (ISdlInputDevice Live, ReaderLayout Layout)> _made = new();
@@ -598,17 +642,39 @@ namespace PadForge.Common.Recording
                 }
             }
 
-            private static ReaderLayout Make(Facts f)
+            internal static ReaderLayout Make(Facts f)
             {
-                IntPtr handle = FindCollection(f.Path, out ushort usage, out _, out _);
+                // A DirectInput device is known by its GUID alone, so what
+                // needs no walk of Raw Input's devices is settled first: the
+                // adapter's merge, and SDL's mapping, which the engine gives
+                // as no answer at once while it does not run
+                // (ControllerDatabaseEngine.Post). A look that finds the
+                // engine stopped walks nothing, however often it comes.
+                string mapping = null;
+                if (RecorderReaderPlan.Signature(f.Guid) == 0)
+                {
+                    if (MergeReason(f.Vendor, f.Product, f.Live) is { } merged) return new ReaderLayout { Reason = merged };
+                    if (f.GamepadLayout)
+                    {
+                        mapping = MappingOf(f.InstanceId);
+                        // No answer in time is no fact about SDL: no
+                        // layout yet, and the next look asks again.
+                        if (ReferenceEquals(mapping, NoAnswer)) return null;
+                        if (string.IsNullOrEmpty(mapping)) return new ReaderLayout { Reason = "SDL has no DirectInput mapping for it" };
+                    }
+                }
+
+                IntPtr handle;
+                ushort usage;
+                var collection = CollectionSeam;
+                if (collection != null) (handle, usage) = collection(f.Path);
+                else handle = FindCollection(f.Path, out usage, out _, out _);
                 bool spaceMouse = RecorderReaderPlan.Signature(f.Guid) == 'v' && handle != IntPtr.Zero && usage == 0x08
                     && f.Vendor is 0x256F or 0x046D;
                 var (cls, reason) = RecorderReaderPlan.Classify(f.Guid, false, spaceMouse, f.Vendor, f.Product, f.GamepadLayout);
                 if (cls == ReaderClass.None) return new ReaderLayout { Reason = reason };
-                if (PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(f.Vendor, f.Product))
-                    return new ReaderLayout { Reason = "PadForge merges its adapter's own state into its reading" };
                 if (handle == IntPtr.Zero)
-                    return new ReaderLayout { Reason = f.Hidden ? "hidden by HidHide" : "Raw Input lists no game controller at its path" };
+                    return new ReaderLayout { Reason = NoCollectionReason(f.Hidden) };
 
                 IntPtr preparsed = PreparsedOf(handle);
                 if (preparsed == IntPtr.Zero) return new ReaderLayout { Reason = "Raw Input gives no report layout for it" };
@@ -621,15 +687,6 @@ namespace PadForge.Common.Recording
                     ReaderPlan plan;
                     if (cls == ReaderClass.DirectInput)
                     {
-                        string mapping = null;
-                        if (f.GamepadLayout)
-                        {
-                            mapping = MappingOf(f.InstanceId);
-                            // No answer in time is no fact about SDL: no
-                            // layout yet, and the next look asks again.
-                            if (ReferenceEquals(mapping, NoAnswer)) return null;
-                            if (string.IsNullOrEmpty(mapping)) return new ReaderLayout { Reason = "SDL has no DirectInput mapping for it" };
-                        }
                         var objects = ReadObjects(f.Path);
                         if (objects == null) return new ReaderLayout { Reason = "DirectInput lists no game controller at its path" };
                         plan = RecorderReaderPlan.DirectInputPlan(objects, controls, mapping, f.GamepadLayout, f.ExtraAxes, f.Touchpad,
@@ -680,7 +737,7 @@ namespace PadForge.Common.Recording
 
             /// <summary>What <see cref="MappingOf"/> gives when the engine does
             /// not answer: this one instance, told apart by reference.</summary>
-            private static readonly string NoAnswer = new('?', 1);
+            internal static readonly string NoAnswer = new('?', 1);
 
             /// <summary>SDL's mapping text for a joystick, asked on the poll
             /// thread, the only thread that asks SDL for it
@@ -689,7 +746,7 @@ namespace PadForge.Common.Recording
             /// <see cref="NoAnswer"/> when the engine does not answer in
             /// time.</summary>
             private static string MappingOf(uint instanceId)
-                => ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForId(instanceId), NoAnswer).GetAwaiter().GetResult();
+                => MappingSeam is { } seam ? seam(instanceId) : ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForId(instanceId), NoAnswer).GetAwaiter().GetResult();
 
             public bool Read(ReaderLayout layout, ReaderReading into)
             {

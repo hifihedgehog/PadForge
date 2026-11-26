@@ -7,7 +7,7 @@ namespace PadForge.ViewModels
 {
     public partial class MappingSourceItem : IMouseDpiListener
     {
-        // ── Mouse steering (#597, #600) ──
+        // ── Mouse steering (#600) ──
         // The settings of a mouse source, on the source's line where Mouse
         // Position has its sensitivity: the travel family's (Mouse Travel X
         // and Y, Wheel Travel, Wheel Travel Sideways and an axis marked as
@@ -15,8 +15,9 @@ namespace PadForge.ViewModels
         // MappingSource's ParamTravel* and ParamMouse* fields and
         // ParamAxisRelative, read by SourceKindRuntime. The Steer input is
         // the source's own gate (GateDescriptor), which the engine reads on
-        // the source's device. MappingItem carries the same members for a
-        // row's first source, so one template draws either.
+        // the device the line names for it (TravelSteerDeviceGuid), the
+        // source's own when it names none. MappingItem carries the same
+        // members for a row's first source, so one template draws either.
 
         /// <summary>True when the source reads the travel family through its
         /// own input, the engine's rule (SourceEvaluator.IsMouseTravel): a
@@ -141,15 +142,17 @@ namespace PadForge.ViewModels
             && _paramTravelCentering is MappingSource.TravelCenteringSpring or MappingSource.TravelCenteringTelemetry;
 
         private string _paramTravelSteer = MappingSource.TravelSteerAlways;
-        // The Steer input a change to Always took out of the gate, for a
-        // change back to a mode that reads one. Kept for the session only.
-        private string _travelSteerInputPutBy = string.Empty;
+        // The Steer input a change to Always took out of the gates, with the
+        // device it was read on, for a change back to a mode that reads one.
+        // Kept for the session only.
+        private string _travelSteerInputPutBy = string.Empty, _travelSteerInput2PutBy = string.Empty;
+        private string _travelSteerDevicePutBy;
 
         /// <summary>Steer: when the mouse moves the source, one of Always,
         /// While Held and Center, While Held and Stay, and Toggle. Always has
-        /// no input, so a change to it empties the gate, and the engine never
-        /// holds the mouse on an input the line does not show. The input
-        /// comes back with a change to a mode that reads one.</summary>
+        /// no input, so a change to it empties both gates, and the engine
+        /// never holds the mouse on an input the line does not show. The
+        /// input comes back with a change to a mode that reads one.</summary>
         public string ParamTravelSteer
         {
             get => _paramTravelSteer;
@@ -162,16 +165,22 @@ namespace PadForge.ViewModels
                 {
                     if (steer == MappingSource.TravelSteerAlways)
                     {
-                        if (HasGate)
+                        if (HasGate || HasGate2)
                         {
                             _travelSteerInputPutBy = _gateDescriptor;
+                            _travelSteerInput2PutBy = _gate2Descriptor;
+                            _travelSteerDevicePutBy = _travelSteerDeviceGuid;
                             GateDescriptor = string.Empty;
+                            Gate2Descriptor = string.Empty;
                         }
                     }
-                    else if (!HasGate && _travelSteerInputPutBy.Length > 0)
+                    else if (!HasGate && !HasGate2 && (_travelSteerInputPutBy.Length > 0 || _travelSteerInput2PutBy.Length > 0))
                     {
+                        Gate2Descriptor = _travelSteerInput2PutBy;
                         GateDescriptor = _travelSteerInputPutBy;
-                        _travelSteerInputPutBy = string.Empty;
+                        TravelSteerDeviceGuid = _travelSteerInputPutBy.Length > 0 ? _travelSteerDevicePutBy : null;
+                        _travelSteerInputPutBy = _travelSteerInput2PutBy = string.Empty;
+                        _travelSteerDevicePutBy = null;
                     }
                 }
                 OnPropertyChanged(nameof(IsTravelSteerInputShown));
@@ -192,20 +201,45 @@ namespace PadForge.ViewModels
         /// picker first asks and again after what it is built from
         /// changes.</summary>
         public IReadOnlyList<InputChoice> TravelSteerInputs => _travelSteerInputs ??= MouseTravelLine.SteerInputs(
-            ParentMappingItem?.KeyInputs, _deviceGuid, LineDeviceLabel, _gateDescriptor, GateText);
+            ParentMappingItem?.KeyInputs, SteerDevice, _travelSteerDeviceGuid == null ? LineDeviceLabel : string.Empty,
+            _gateDescriptor, GateText);
+
+        private string _travelSteerDeviceGuid;
+        /// <summary>The device the Steer input is read on (#600): null for
+        /// the source's own, the form a gate always had, empty for any
+        /// device of the slot, or another device, a keyboard for a key. A
+        /// pick in the Steer Input picker writes it with the gate, and a
+        /// gate taken away takes it too.</summary>
+        public string TravelSteerDeviceGuid
+        {
+            get => _travelSteerDeviceGuid;
+            internal set
+            {
+                if (SetProperty(ref _travelSteerDeviceGuid, value)) RaiseTravelSteerInput();
+            }
+        }
+
+        /// <summary>The device the Steer input is read on, the source's own
+        /// for none named.</summary>
+        private string SteerDevice => _travelSteerDeviceGuid ?? _deviceGuid ?? string.Empty;
 
         /// <summary>The Steer input as its picker holds it: the entry for
-        /// the gate on the source's device. A pick writes the gate.</summary>
+        /// the gate on the device it is read on. A pick writes the gate and
+        /// that device.</summary>
         public InputChoice TravelSteerInputChoice
         {
             get => PadForge.Common.MappingDisplayResolver.FindChoiceOnDevice(
-                TravelSteerInputs, _gateDescriptor, _deviceGuid);
+                TravelSteerInputs, _gateDescriptor, SteerDevice);
             set
             {
                 // A null write is a picker that lost its entry to a rebuilt
                 // list, never a choice: the input stays (#160).
-                if (value == null || string.Equals(value.Descriptor ?? string.Empty, _gateDescriptor, StringComparison.Ordinal)) return;
+                if (value == null) return;
+                string device = MouseTravelLine.SteerDeviceOf(value, _deviceGuid);
+                if (string.Equals(value.Descriptor ?? string.Empty, _gateDescriptor, StringComparison.Ordinal)
+                    && string.Equals(device, _travelSteerDeviceGuid, StringComparison.OrdinalIgnoreCase)) return;
                 GateDescriptor = value.Descriptor ?? string.Empty;
+                TravelSteerDeviceGuid = device;
             }
         }
 
@@ -274,7 +308,7 @@ namespace PadForge.ViewModels
         /// change of the input to a mouse family both come here.</summary>
         private void SettleTravelSteer()
         {
-            if (!IsMouseSteerSource || !HasGate || _paramTravelSteer != MappingSource.TravelSteerAlways) return;
+            if (!IsMouseSteerSource || (!HasGate && !HasGate2) || _paramTravelSteer != MappingSource.TravelSteerAlways) return;
             _paramTravelSteer = MappingSource.EffectiveMouseSteer(MappingSource.TravelSteerAlways,
                 _paramTravelCentering, hasInput: true, holdsPosition: IsMouseTravelSource);
             OnPropertyChanged(nameof(ParamTravelSteer));
@@ -339,7 +373,9 @@ namespace PadForge.ViewModels
                 ? MappingSource.EffectiveTravelReturnTime(src.ParamTravelReturnTime) : MappingSource.DefaultTravelReturnTime;
             // Past the setter: a load puts no input by and takes none out
             // of the gate it has just read.
-            _travelSteerInputPutBy = string.Empty;
+            _travelSteerInputPutBy = _travelSteerInput2PutBy = string.Empty;
+            _travelSteerDevicePutBy = null;
+            TravelSteerDeviceGuid = string.IsNullOrEmpty(src?.GateDescriptor) ? null : src.ParamTravelSteerDeviceGuid;
             if (SetProperty(ref _paramTravelSteer, MouseTravelLine.SteerOf(src?.ParamTravelSteer, _paramTravelCentering, IsMouseTravelSource),
                     nameof(ParamTravelSteer)))
                 OnPropertyChanged(nameof(IsTravelSteerInputShown));
@@ -355,10 +391,14 @@ namespace PadForge.ViewModels
 
         /// <summary>Writes them onto <paramref name="dst"/>. The Steer
         /// input is the gate, which <see cref="StoreShapingAndGates"/>
-        /// writes.</summary>
+        /// writes, and its device goes beside the line's gate on a mouse
+        /// source.</summary>
         internal void StoreMouseTravel(MappingSource dst)
         {
             if (dst == null) return;
+            dst.ParamTravelSteerDeviceGuid = IsMouseSteerSource && HasGate
+                && string.Equals(dst.GateDescriptor ?? string.Empty, _gateDescriptor, StringComparison.Ordinal)
+                ? _travelSteerDeviceGuid : null;
             dst.ParamTravelCounts = _paramTravelCounts;
             dst.ParamTravelCentering = _paramTravelCentering;
             dst.ParamTravelReturnTime = _paramTravelReturnTime;

@@ -96,7 +96,7 @@ namespace PadForge.Tests
         {
             string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.Scripts." + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(Path.Combine(dir, "Lib"));
-            AutomationLibraries.Save(AutomationLibraryKind.AutoHotkey, Path.Combine(dir, "Lib", "PadForge.ahk"));
+            LibraryFiles.Write(AutomationLibraryKind.AutoHotkey, Path.Combine(dir, "Lib", "PadForge.ahk"));
             return dir;
         }
 
@@ -1141,6 +1141,34 @@ namespace PadForge.Tests
                 await Eventually(() => pad.InputState.Buttons[2], dir, run, 15000);
                 await Task.Delay(200);
                 Assert.False(pad.InputState.Buttons[1] || pad.InputState.Buttons[3], "a Set is put once, not again after a restart");
+            }
+        }
+
+        /// <summary>A declared controller's names are the server's own: a
+        /// slider declared with no name keeps the numbered name Slider0, and
+        /// a button declared "DPad Up" beside a hat "DPad" keeps Button0,
+        /// since DPadUp is the hat's up (ScriptNames.Declared).</summary>
+        [InterpreterFact("autohotkey")]
+        public void ADeclaredControllersNames_AreTheServersOwn()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    ctl := PadForge.AddController("names", "Names Pad", {Buttons: ["DPad Up", "Fire"], Axes: [{name: "Steer"}], Sliders: [{rest: 0}], Hats: ["DPad"]})
+                    names := ""
+                    for name, c in ctl.Controls
+                        names .= " " c.Name
+                    Log("names" names)
+                    ExitApp
+                    """);
+                using var run = Start(dir, script, pipe);
+                Assert.Equal("names Button0 DPad Fire Slider0 Steer", run.Expect("names "));
+            }
+            finally
+            {
+                TryDelete(dir);
             }
         }
 

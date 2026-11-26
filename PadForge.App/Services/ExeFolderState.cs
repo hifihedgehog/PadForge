@@ -8,7 +8,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.Services
 {
     /// <summary>
-    /// What the interface says about the folder PadForge runs from (#597):
+    /// What the interface says about the folder PadForge runs from (#600):
     /// where it runs from, whether that folder is shared, and the move to a
     /// folder of its own. Start at Login and Use Only in PadForge show the
     /// shared folder's line and the move on their rows, Settings shows where
@@ -23,6 +23,25 @@ namespace PadForge.Services
     {
         public static ExeFolderState Instance { get; } = new();
 
+        /// <summary>The lines this state formats in code follow a language
+        /// change (Strings.CultureChanged, which holds this weakly).</summary>
+        public ExeFolderState()
+        {
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(RunsFromText));
+            OnPropertyChanged(nameof(HomeCardText));
+            OnPropertyChanged(nameof(StartAtLoginTurnedOffText));
+            if (_moveResult != null)
+            {
+                _moveError = ErrorFor(_moveResult);
+                OnPropertyChanged(nameof(MoveError));
+            }
+        }
+
         /// <summary>Test seam: the judgment of a folder in place of
         /// <see cref="ExeFolder.Check"/>. Null in production.</summary>
         internal static Func<string, ExeFolder.Standing> CheckSeam;
@@ -36,10 +55,12 @@ namespace PadForge.Services
         private readonly object _watchSync = new();
 
         private string _exePath = string.Empty;
+        private ExeFolder.Standing _standing = ExeFolder.Standing.Own;
         private bool _isShared;
         private bool _startAtLoginTurnedOff;
         private bool _moving;
         private string _moveError;
+        private ExeFolder.MoveResult _moveResult;
 
         /// <summary>Asked for by the move's button. MainWindow saves the
         /// settings, copies, points the tasks at the copy and closes.</summary>
@@ -62,9 +83,9 @@ namespace PadForge.Services
         /// <summary>"PadForge runs from …", shown in Settings.</summary>
         public string RunsFromText => ExePath.Length == 0 ? string.Empty : string.Format(Strings.Instance.ExeFolder_RunsFrom_Format, ExePath);
 
-        /// <summary>Whether the folder holds other files, or could not be
-        /// protected, so no task with rights may run PadForge from
-        /// it.</summary>
+        /// <summary>Whether the folder holds other files, could not be
+        /// protected or could not be read, so no task with rights may run
+        /// PadForge from it.</summary>
         public bool IsShared
         {
             get => _isShared;
@@ -74,22 +95,70 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Home's card while the folder is shared: PadForge runs
-        /// with administrator rights from a folder other programs can change,
-        /// so they can change its settings there.</summary>
+        /// <summary>The folder's last judgment. Each line the interface shows
+        /// for a folder that is not safe states only what this one read: a
+        /// folder that holds other files, or one PadForge could not keep
+        /// other programs from changing.</summary>
+        private ExeFolder.Standing Standing
+        {
+            get => _standing;
+            set
+            {
+                if (_standing == value) return;
+                _standing = value;
+                IsShared = value != ExeFolder.Standing.Own;
+                OnPropertyChanged(nameof(HomeCardText));
+                OnPropertyChanged(nameof(HoldsOtherFiles));
+                OnPropertyChanged(nameof(CouldNotProtect));
+            }
+        }
+
+        /// <summary>Whether the folder holds files that are not
+        /// PadForge's.</summary>
+        public bool HoldsOtherFiles => _standing == ExeFolder.Standing.Shared;
+
+        /// <summary>Whether the folder is PadForge's own but its access list
+        /// could not be made sound, or the folder could not be read.</summary>
+        public bool CouldNotProtect => _standing is ExeFolder.Standing.Unprotected or ExeFolder.Standing.Unread;
+
+        /// <summary>Home's card while the folder is not safe, in the words
+        /// of what its judgment read: a folder that holds other files, one of
+        /// PadForge's own that other accounts may change, or one PadForge
+        /// could not read.</summary>
         public string HomeCardText
-            => string.Format(Strings.Instance.Home_SharedFolder_Format, System.IO.Path.GetDirectoryName(ExePath) ?? ExePath);
+            => string.Format(_standing switch
+            {
+                ExeFolder.Standing.Shared => Strings.Instance.Home_SharedFolderOthers_Format,
+                ExeFolder.Standing.Unread => Strings.Instance.Home_SharedFolderUnread_Format,
+                _ => Strings.Instance.Home_SharedFolder_Format,
+            }, System.IO.Path.GetDirectoryName(ExePath) ?? ExePath);
 
         /// <summary>Whether the move's button can be pressed now.</summary>
         public bool CanMove => _isShared && !_moving;
 
-        /// <summary>Whether this start removed the logon task, because the
-        /// exe it ran sat in a shared folder.</summary>
+        /// <summary>Whether this start removed the logon task
+        /// (<see cref="StartupHelper.AuditTask"/>).</summary>
         public bool StartAtLoginTurnedOff
         {
             get => _startAtLoginTurnedOff;
             private set => SetProperty(ref _startAtLoginTurnedOff, value);
         }
+
+        private StartupHelper.TaskRemoval _removal;
+
+        /// <summary>Settings' line under Start at Login once this start
+        /// removed the logon task: why it did.</summary>
+        public string StartAtLoginTurnedOffText => LineFor(_removal);
+
+        /// <summary>The line for a removal's cause.</summary>
+        internal static string LineFor(StartupHelper.TaskRemoval removal) => removal switch
+        {
+            StartupHelper.TaskRemoval.ExeGone => Strings.Instance.ExeFolder_StartAtLoginTurnedOff_ExeGone,
+            StartupHelper.TaskRemoval.Unprotected => Strings.Instance.ExeFolder_StartAtLoginTurnedOff_Unprotected,
+            StartupHelper.TaskRemoval.Unreadable => Strings.Instance.ExeFolder_StartAtLoginTurnedOff_Unreadable,
+            StartupHelper.TaskRemoval.FolderUnread => Strings.Instance.ExeFolder_StartAtLoginTurnedOff_FolderUnread,
+            _ => Strings.Instance.ExeFolder_StartAtLoginTurnedOff,
+        };
 
         /// <summary>Why the last move did not happen, or null.</summary>
         public string MoveError
@@ -108,18 +177,26 @@ namespace PadForge.Services
         /// the start's path.</summary>
         internal void Start(string exe)
         {
+            // The move copies the bytes that run, read from this hold.
+            ExeFolder.HoldRunningImage();
             ExePath = exe;
-            IsShared = Judge(exe) != ExeFolder.Standing.Own;
+            Standing = Judge(exe);
             if (IsShared && CheckSeam == null) Watch(exe);
             var dispatcher = Application.Current?.Dispatcher;
             Task.Run(() =>
             {
-                bool removed = false;
+                var removed = StartupHelper.TaskRemoval.None;
                 try { removed = StartupHelper.AuditTask(); }
                 catch { }
                 try { GiveBackTask.AuditTasks(line => PadForge.Engine.SdlDiagLog.WriteLine("GIVEBACK " + line)); }
                 catch { }
-                if (removed) dispatcher?.BeginInvoke(new Action(() => StartAtLoginTurnedOff = true));
+                if (removed != StartupHelper.TaskRemoval.None)
+                    dispatcher?.BeginInvoke(new Action(() =>
+                    {
+                        _removal = removed;
+                        OnPropertyChanged(nameof(StartAtLoginTurnedOffText));
+                        StartAtLoginTurnedOff = true;
+                    }));
             });
         }
 
@@ -170,19 +247,19 @@ namespace PadForge.Services
 
         /// <summary>Judges the folder again. One that has become PadForge's
         /// own is protected by the judgment, its card goes, and the watch
-        /// ends.</summary>
+        /// ends. One that is still not safe keeps the line of its new
+        /// judgment.</summary>
         internal void Recheck()
         {
             string exe = ExePath;
             if (exe.Length == 0 || !IsShared) return;
-            bool shared;
-            try { shared = Judge(exe) != ExeFolder.Standing.Own; }
+            ExeFolder.Standing standing;
+            try { standing = Judge(exe); }
             catch { return; }
-            if (shared) return;
-            StopWatching();
+            if (standing == ExeFolder.Standing.Own) StopWatching();
             var dispatcher = Application.Current?.Dispatcher;
-            if (dispatcher == null || dispatcher.CheckAccess()) IsShared = false;
-            else dispatcher.BeginInvoke(new Action(() => IsShared = false));
+            if (dispatcher == null || dispatcher.CheckAccess()) Standing = standing;
+            else dispatcher.BeginInvoke(new Action(() => Standing = standing));
         }
 
         /// <summary>The move's button.</summary>
@@ -198,8 +275,32 @@ namespace PadForge.Services
             OnPropertyChanged(nameof(CanMove));
         }
 
+        /// <summary>A move that did not happen: its line, which follows a
+        /// language change.</summary>
         internal void MoveFailed(ExeFolder.MoveResult result)
-            => MoveError = string.Format(result.TargetTaken ? Strings.Instance.ExeFolder_TargetTaken_Format : Strings.Instance.ExeFolder_MoveFailed_Format,
-                result.Error);
+        {
+            _moveResult = result;
+            MoveError = ErrorFor(result);
+        }
+
+        /// <summary>One whole sentence for each reason a move did not
+        /// happen.</summary>
+        internal static string ErrorFor(ExeFolder.MoveResult result)
+        {
+            if (result == null) return null;
+            var s = Strings.Instance;
+            return result.Why switch
+            {
+                ExeFolder.MoveRefusal.NoProgramFiles => s.ExeFolder_NoProgramFiles,
+                ExeFolder.MoveRefusal.NoImage => s.ExeFolder_NoImage,
+                ExeFolder.MoveRefusal.NotMade => string.Format(s.ExeFolder_NotMade_Format, result.Error),
+                ExeFolder.MoveRefusal.Unreadable => string.Format(s.ExeFolder_Unreadable_Format, result.Error),
+                ExeFolder.MoveRefusal.TargetTaken => string.Format(s.ExeFolder_TargetTaken_Format, result.Error),
+                ExeFolder.MoveRefusal.NotProtected => string.Format(s.ExeFolder_NotProtected_Format, result.Error),
+                ExeFolder.MoveRefusal.CopyDiffers => string.Format(s.ExeFolder_CopyDiffers_Format, result.Error),
+                ExeFolder.MoveRefusal.NotSound => string.Format(s.ExeFolder_NotSound_Format, result.Error),
+                _ => string.Format(s.ExeFolder_MoveFailed_Format, result.Error),
+            };
+        }
     }
 }

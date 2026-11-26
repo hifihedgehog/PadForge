@@ -33,7 +33,7 @@ A dropdown at the top of the page lists each language under its own name, with i
 
 With no language picked, PadForge follows the Windows display language: its own translation, else the one its speakers read. Austrian German reads German, Taiwanese Chinese reads Traditional Chinese, and Norwegian Bokmål and Nynorsk read Norwegian. English reads British English in the regions whose English follows British conventions, such as the United Kingdom, Ireland, Australia, New Zealand, India and South Africa, and American English everywhere else. A language with no translation shows American English.
 
-The interface comes in 109 languages, 42 of them complete. A partial translation shows English wherever it has no string: its translator left out what could not be worded correctly rather than make it up. British English holds only the strings it writes differently and reads the American text for the rest. No native speaker has reviewed the translations.
+The interface comes in 112 languages, 45 of them complete. A partial translation shows English wherever it has no string: its translator left out what could not be worded correctly rather than make it up. British English holds only the strings it writes differently and reads the American text for the rest. Galactic Basic is the American text drawn in the Aurebesh alphabet. No native speaker has reviewed the translations.
 
 Arabic, Central Kurdish, Persian and Urdu lay the interface out right to left. Controller drawings, curves and other pictures keep their left-to-right layout, so a left stick stays on the left. The touchpad overlay, the on-screen menus and the light gun's calibration window stay left to right whole.
 
@@ -41,115 +41,118 @@ Arabic, Central Kurdish, Persian and Urdu lay the interface out right to left. C
 
 | Language | Own name | Tag | Strings |
 |---|---|---|---|
-| Afrikaans | Afrikaans | `af` | 4689 of 5470 |
-| Albanian | Shqip | `sq` | 4806 of 5470 |
-| Amharic | አማርኛ | `am` | 4832 of 5470 |
-| Arabic | العربية | `ar` | 4871 of 5470, right to left |
-| Armenian | Հայերեն | `hy` | 4823 of 5470 |
-| Basque | Euskara | `eu` | 4855 of 5470 |
+| Afrikaans | Afrikaans | `af` | 5712 of 6620 |
+| Albanian | Shqip | `sq` | 5829 of 6620 |
+| Amharic | አማርኛ | `am` | 5855 of 6620 |
+| Arabic | العربية | `ar` | 5893 of 6620, right to left |
+| Armenian | Հայերեն | `hy` | 5845 of 6620 |
+| Basque | Euskara | `eu` | 5877 of 6620 |
 | Belarusian | Беларуская | `be` | all |
 | Bengali | বাংলা | `bn` | all |
-| Bikol | Bikol | `bik` | 1158 of 5470 |
-| Bislama | Bislama | `bi` | 1605 of 5470 |
+| Bikol | Bikol | `bik` | 1626 of 6620 |
+| Bislama | Bislama | `bi` | 2199 of 6620 |
 | Bulgarian | Български | `bg` | all |
-| Burmese | မြန်မာ | `my` | 4851 of 5470 |
+| Burmese | မြန်မာ | `my` | 5874 of 6620 |
 | Cantonese (Traditional) | 廣東話（繁體） | `zh-HK` | all |
-| Cape Verdean Creole | Kabuverdianu | `kea` | 2945 of 5470 |
-| Catalan | Català | `ca` | 4870 of 5470 |
-| Cebuano | Cebuano | `ceb` | 3810 of 5470 |
-| Central Kurdish | کوردیی ناوەندی | `ckb` | 4855 of 5470, right to left |
-| Chichewa | Chichewa | `ny` | 1302 of 5470 |
-| Chinese (Pinyin) | Hànyǔ Pīnyīn | `zh-Latn` | 4780 of 5470 |
+| Cape Verdean Creole | Kabuverdianu | `kea` | 3639 of 6620 |
+| Catalan | Català | `ca` | 5892 of 6620 |
+| Cebuano | Cebuano | `ceb` | 4702 of 6620 |
+| Central Kurdish | کوردیی ناوەندی | `ckb` | 5877 of 6620, right to left |
+| Chichewa | Chichewa | `ny` | 1887 of 6620 |
+| Chinese (Pinyin) | Hànyǔ Pīnyīn | `zh-Latn` | 5802 of 6620 |
 | Chinese (Simplified) | 中文（简体） | `zh-Hans` | all |
 | Chinese (Traditional) | 中文（繁體） | `zh-Hant` | all |
-| Chuukese | Fosun Chuuk | `chk` | 529 of 5470 |
-| Croatian | Hrvatski | `hr` | 4862 of 5470 |
+| Chuukese | Fosun Chuuk | `chk` | 1004 of 6620 |
+| Croatian | Hrvatski | `hr` | 5884 of 6620 |
 | Czech | Čeština | `cs` | all |
 | Danish | Dansk | `da` | all |
 | Dutch | Nederlands | `nl` | all |
 | English (United Kingdom) | English (United Kingdom) | `en-GB` | all |
 | English (United States) | English (United States) | `en-US` | all |
-| Estonian | Eesti | `et` | 4861 of 5470 |
-| Fiji Hindi | Fiji Hindi | `hif` | 965 of 5470 |
-| Fijian | Vosa Vakaviti | `fj` | 644 of 5470 |
+| Estonian | Eesti | `et` | 5883 of 6620 |
+| Fiji Hindi | Fiji Hindi | `hif` | 1520 of 6620 |
+| Fijian | Vosa Vakaviti | `fj` | 826 of 6620 |
 | Finnish | Suomi | `fi` | all |
 | French | Français | `fr` | all |
-| Georgian | ქართული | `ka` | 4844 of 5470 |
+| Galactic Basic (Aurebesh) | Galactic Basic | `en-Qaaa` | all |
+| Georgian | ქართული | `ka` | 5866 of 6620 |
 | German | Deutsch | `de` | all |
 | Greek | Ελληνικά | `el` | all |
-| Guarani | Avañeʼẽ | `gn` | 1101 of 5470 |
-| Gujarati | ગુજરાતી | `gu` | 4853 of 5470 |
-| Haitian Creole | Kreyòl ayisyen | `ht` | 4223 of 5470 |
-| Hawaiian | ʻŌlelo Hawaiʻi | `haw` | 933 of 5470 |
-| Hiligaynon | Hiligaynon | `hil` | 1522 of 5470 |
+| Guarani | Avañeʼẽ | `gn` | 1626 of 6620 |
+| Gujarati | ગુજરાતી | `gu` | 5875 of 6620 |
+| Haitian Creole | Kreyòl ayisyen | `ht` | 5212 of 6620 |
+| Hawaiian | ʻŌlelo Hawaiʻi | `haw` | 1521 of 6620 |
+| Hiligaynon | Hiligaynon | `hil` | 2147 of 6620 |
 | Hindi | हिन्दी | `hi` | all |
-| Hmong | Hmoob | `hmn` | 1371 of 5470 |
+| Hmong | Hmoob | `hmn` | 1999 of 6620 |
 | Hungarian | Magyar | `hu` | all |
 | Icelandic | Íslenska | `is` | all |
-| Igbo | Igbo | `ig` | 1274 of 5470 |
-| Ilocano | Ilokano | `ilo` | 1165 of 5470 |
+| Igbo | Igbo | `ig` | 1859 of 6620 |
+| Ilocano | Ilokano | `ilo` | 1730 of 6620 |
 | Indonesian | Bahasa Indonesia | `id` | all |
 | Italian | Italiano | `it` | all |
 | Japanese | 日本語 | `ja` | all |
-| Kannada | ಕನ್ನಡ | `kn` | 4828 of 5470 |
-| Kazakh | Қазақша | `kk` | 4858 of 5470 |
-| Khmer | ភាសាខ្មែរ | `km` | 4857 of 5470 |
-| Kinyarwanda | Ikinyarwanda | `rw` | 1721 of 5470 |
+| Kannada | ಕನ್ನಡ | `kn` | 5848 of 6620 |
+| Kazakh | Қазақша | `kk` | 5880 of 6620 |
+| Khmer | ភាសាខ្មែរ | `km` | 5880 of 6620 |
+| Kinyarwanda | Ikinyarwanda | `rw` | 2279 of 6620 |
+| Klingon | tlhIngan Hol | `tlh` | all |
 | Korean | 한국어 | `ko` | all |
-| Lao | ລາວ | `lo` | 4843 of 5470 |
+| Lao | ລາວ | `lo` | 5865 of 6620 |
 | Latvian | Latviešu | `lv` | all |
-| Lingala | Lingála | `ln` | 1800 of 5470 |
-| Lithuanian | Lietuvių | `lt` | 4858 of 5470 |
-| Luganda | Luganda | `lg` | 632 of 5470 |
-| Luxembourgish | Lëtzebuergesch | `lb` | 4835 of 5470 |
+| Lingala | Lingála | `ln` | 2399 of 6620 |
+| Lithuanian | Lietuvių | `lt` | 5880 of 6620 |
+| Luganda | Luganda | `lg` | 1124 of 6620 |
+| Luxembourgish | Lëtzebuergesch | `lb` | 5841 of 6620 |
 | Macedonian | Македонски | `mk` | all |
-| Malagasy | Malagasy | `mg` | 2039 of 5470 |
-| Malay | Bahasa Melayu | `ms` | 4859 of 5470 |
-| Malayalam | മലയാളം | `ml` | 4828 of 5470 |
-| Maltese | Malti | `mt` | 4792 of 5470 |
-| Marathi | मराठी | `mr` | 4843 of 5470 |
-| Mongolian | Монгол | `mn` | 4844 of 5470 |
-| Māori | Te Reo Māori | `mi` | 1849 of 5470 |
+| Malagasy | Malagasy | `mg` | 2676 of 6620 |
+| Malay | Bahasa Melayu | `ms` | 5881 of 6620 |
+| Malayalam | മലയാളം | `ml` | 5850 of 6620 |
+| Maltese | Malti | `mt` | 5814 of 6620 |
+| Marathi | मराठी | `mr` | 5865 of 6620 |
+| Mongolian | Монгол | `mn` | 5866 of 6620 |
+| Māori | Te Reo Māori | `mi` | 2531 of 6620 |
 | Nepali | नेपाली | `ne` | all |
-| Northern Sotho | Sepedi | `nso` | 1128 of 5470 |
+| Northern Sotho | Sepedi | `nso` | 1682 of 6620 |
 | Norwegian | Norsk | `no` | all |
-| Oromo | Afaan Oromoo | `om` | 1878 of 5470 |
-| Papiamento | Papiamentu | `pap` | 2622 of 5470 |
+| Oromo | Afaan Oromoo | `om` | 2514 of 6620 |
+| Papiamento | Papiamentu | `pap` | 3339 of 6620 |
 | Persian | فارسی | `fa` | all, right to left |
 | Polish | Polski | `pl` | all |
 | Portuguese (Brazil) | Português (Brasil) | `pt-BR` | all |
-| Portuguese (Portugal) | Português (Portugal) | `pt-PT` | 4863 of 5470 |
-| Quechua (Bolivia) | Qhichwa (Bolivia) | `quh` | 1445 of 5470 |
+| Portuguese (Portugal) | Português (Portugal) | `pt-PT` | 5885 of 6620 |
+| Quechua (Bolivia) | Qhichwa (Bolivia) | `quh` | 1986 of 6620 |
 | Romanian | Română | `ro` | all |
 | Russian | Русский | `ru` | all |
-| Samoan | Gagana Sāmoa | `sm` | 1075 of 5470 |
+| Samoan | Gagana Sāmoa | `sm` | 1540 of 6620 |
 | Serbian | Српски | `sr` | all |
-| Sesotho | Sesotho | `st` | 991 of 5470 |
-| Shona | ChiShona | `sn` | 1269 of 5470 |
-| Sinhala | සිංහල | `si` | 4819 of 5470 |
+| Sesotho | Sesotho | `st` | 1544 of 6620 |
+| Shona | ChiShona | `sn` | 1865 of 6620 |
+| Sindarin (Elvish) | Eglathrin | `sjn` | all |
+| Sinhala | සිංහල | `si` | 5841 of 6620 |
 | Slovak | Slovenčina | `sk` | all |
 | Slovenian | Slovenščina | `sl` | all |
 | Spanish | Español | `es` | all |
-| Swahili | Kiswahili | `sw` | 4793 of 5470 |
+| Swahili | Kiswahili | `sw` | 5815 of 6620 |
 | Swedish | Svenska | `sv` | all |
-| Tagalog | Tagalog | `fil` | 4673 of 5470 |
+| Tagalog | Tagalog | `fil` | 5691 of 6620 |
 | Tamil | தமிழ் | `ta` | all |
 | Telugu | తెలుగు | `te` | all |
 | Thai | ไทย | `th` | all |
-| Tok Pisin | Tok Pisin | `tpi` | 1897 of 5470 |
-| Tongan | Lea faka-Tonga | `to` | 627 of 5470 |
-| Tswana | Setswana | `tn` | 975 of 5470 |
+| Tok Pisin | Tok Pisin | `tpi` | 2539 of 6620 |
+| Tongan | Lea faka-Tonga | `to` | 850 of 6620 |
+| Tswana | Setswana | `tn` | 1518 of 6620 |
 | Turkish | Türkçe | `tr` | all |
-| Twi | Twi | `tw` | 613 of 5470 |
-| Ukrainian | Українська | `uk` | 4859 of 5470 |
+| Twi | Twi | `tw` | 994 of 6620 |
+| Ukrainian | Українська | `uk` | 5881 of 6620 |
 | Urdu | اردو | `ur` | all, right to left |
 | Vietnamese | Tiếng Việt | `vi` | all |
-| Waray | Winaray | `war` | 1350 of 5470 |
-| Welsh | Cymraeg | `cy` | 4832 of 5470 |
-| Western Armenian | Արեւմտահայերէն | `hyw` | 4815 of 5470 |
-| Xhosa | IsiXhosa | `xh` | 1680 of 5470 |
-| Yoruba | Èdè Yorùbá | `yo` | 1870 of 5470 |
-| Zulu | IsiZulu | `zu` | 2561 of 5470 |
+| Waray | Winaray | `war` | 1907 of 6620 |
+| Welsh | Cymraeg | `cy` | 5852 of 6620 |
+| Western Armenian | Արեւմտահայերէն | `hyw` | 5837 of 6620 |
+| Xhosa | IsiXhosa | `xh` | 2259 of 6620 |
+| Yoruba | Èdè Yorùbá | `yo` | 2487 of 6620 |
+| Zulu | IsiZulu | `zu` | 3396 of 6620 |
 
 Corrections and new translations land as pull requests. `tools/l10n/check_translation.py` checks a translation against the rules every file in the tree passes: placeholders, line breaks, digits, the names that stay in Latin letters, and decimal numbers written with a period.
 

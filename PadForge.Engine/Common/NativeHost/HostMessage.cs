@@ -13,11 +13,12 @@ namespace PadForge.Engine.Common.NativeHost
     }
 
     /// <summary>
-    /// Writes one message of the host's protocol (#597): little-endian
+    /// Writes one message of the host's protocol (#600): little-endian
     /// numbers and length-prefixed UTF-16 text, after four bytes the
     /// connection fills with the length. One writer is reused for every
-    /// message of a connection, so a call at the Falcon's rate allocates
-    /// nothing.
+    /// message of a connection, so a message's bytes take no new buffer once
+    /// the writer has grown to fit them. The delegates a call passes are the
+    /// caller's to allocate.
     /// </summary>
     public sealed class MessageWriter
     {

@@ -634,6 +634,240 @@ namespace PadForge.Tests
             Assert.Contains(reader.Summary, l => l.StartsWith("Marker at ", StringComparison.Ordinal));
         }
 
+        // ── What the summary and the scrub check say ──
+
+        private static UserDevice Web(string name)
+        {
+            var web = RecorderTestKit.Pad(name, 0, 0);
+            web.SerialNumber = string.Empty;
+            web.DevicePath = ProblemRecorder.WebDevicePrefix + Guid.NewGuid().ToString("N");
+            return web;
+        }
+
+        private static UserDevice LatePad(string name = "Late Pad")
+        {
+            var late = RecorderTestKit.Pad(name, 0x045E, 0x0B13);
+            late.DevicePath = @"\\?\hid#vid_045e&pid_0b13#9&5e6f7a8b&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+            return late;
+        }
+
+        [Fact]
+        public void TheSummary_HoldsNoValueTheSearchAtTheStopFound_AndKeepsItsOwnWords()
+        {
+            using var host = new RecorderTestHost();
+            var pad = RecorderTestKit.Pad();
+            var web = Web("Browser Gamepad");
+            host.DeviceList.Add(pad);
+            host.DeviceList.Add(web);
+            var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+            Assert.True(recorder.Start().Ok);
+            var capture = recorder.CaptureForTest;
+            capture.Input(pad, RecorderTestKit.Rest());
+            capture.Input(web, RecorderTestKit.Rest());
+            // An error names a serial number before its device is in the list.
+            recorder.TakeLine(capture.Ticks(), "ERROR pad serial QX7-LATE-0042 stopped answering");
+            capture.Advance(1);
+            var moved = RecorderTestKit.Rest();
+            moved.Axis[0] = 1000;
+            capture.Input(web, moved);
+            var late = LatePad();
+            late.SerialNumber = "QX7-LATE-0042";
+            host.DeviceList.Add(late);
+            string path = recorder.Stop(wait: true).Path;
+
+            Assert.DoesNotContain("QX7-LATE-0042", RecorderTestKit.Text(path));
+            using var reader = RecordingReader.Open(path);
+            Assert.Contains(reader.Summary, l => l.StartsWith("  error at ", StringComparison.Ordinal) && l.Contains("ERROR pad serial <serial ", StringComparison.Ordinal));
+            // The summary's own words around a device's name stay as written.
+            Assert.Contains(reader.Summary, l => l.StartsWith("D2 Browser Gamepad: online 1.000 s, ", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void AWebControllerThatComesAndGoesWhileRecording_LeavesNoNameItsUsersTyped()
+        {
+            using var host = new RecorderTestHost();
+            var pad = RecorderTestKit.Pad();
+            host.DeviceList.Add(pad);
+            var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+            Assert.True(recorder.Start().Ok);
+            var capture = recorder.CaptureForTest;
+            capture.Input(pad, RecorderTestKit.Rest());
+            capture.Advance(0.5);
+            // A custom layout the user named, on a phone its viewer named.
+            var web = Web("Gloria Layout: Smith, Jane");
+            host.DeviceList.Add(web);
+            capture.Input(web, RecorderTestKit.Rest());
+            recorder.WaitForFlush();
+            // The phone leaves before the stop, so the search at the stop
+            // no longer knows its names.
+            host.DeviceList.Remove(web);
+            capture.Advance(0.5);
+            recorder.TakeLine(capture.Ticks(), "DEV - Gloria Layout: Smith, Jane");
+            string path = recorder.Stop(wait: true).Path;
+
+            string text = RecorderTestKit.Text(path);
+            Assert.DoesNotContain("Gloria", text);
+            Assert.DoesNotContain("Jane", text);
+        }
+
+        [Fact]
+        public void TheScrubCheck_CountsTheValuesItSearchedFor_AndTheFindsOfThoseValuesAlone()
+        {
+            (string Start, string Stop) Run(bool oneCharacter, bool typedName)
+            {
+                using var host = new RecorderTestHost();
+                var pad = RecorderTestKit.Pad();
+                host.DeviceList.Add(pad);
+                if (oneCharacter) host.Live.Add((PrivateKind.SerialNumber, "J"));
+                var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+                Assert.True(recorder.Start().Ok);
+                var capture = recorder.CaptureForTest;
+                capture.Input(pad, RecorderTestKit.Rest());
+                if (typedName)
+                {
+                    // A name the user typed, learned after a line held it.
+                    recorder.TakeLine(capture.Ticks(), "renamed a pad to Gloria Pad");
+                    capture.Advance(0.1);
+                    var named = LatePad("Named Pad");
+                    named.SerialNumber = string.Empty;
+                    named.DisplayName = "Gloria Pad";
+                    capture.Input(named, RecorderTestKit.Rest());
+                }
+                string path = recorder.Stop(wait: true).Path;
+                Assert.DoesNotContain("Gloria", RecorderTestKit.Text(path));
+                using var reader = RecordingReader.Open(path);
+                return (Assert.Single(reader.ScrubCheck, l => l.StartsWith("At the start, ", StringComparison.Ordinal)),
+                    Assert.Single(reader.ScrubCheck, l => l.StartsWith("At the stop, ", StringComparison.Ordinal)));
+            }
+
+            var plain = Run(oneCharacter: false, typedName: false);
+            // The same values at the start and the stop are the same count.
+            static string Number(string line) => new string(line.SkipWhile(c => !char.IsAsciiDigit(c)).TakeWhile(char.IsAsciiDigit).ToArray());
+            Assert.Equal(Number(plain.Start), Number(plain.Stop));
+            // A value of one character is not searched for, so it is in
+            // neither count.
+            Assert.Equal(plain, Run(oneCharacter: true, typedName: false));
+            // The stop's line counts the finds of this PC's values, and a
+            // name learned while the file ran is none.
+            var typed = Run(oneCharacter: false, typedName: true);
+            Assert.EndsWith(": none found.", typed.Stop);
+        }
+
+        // ── A file PadForge finishes at the next start ──
+
+        [Fact]
+        public void ALeftOverFileWithALineLongerThanAnyRecordingHas_IsLeftAsItIs_AndTheStartGoesOn()
+        {
+            using var host = new RecorderTestHost();
+            string left = Path.Combine(host.Dir, ProblemRecorder.FilePrefix + "20261123-100000" + ProblemRecorder.PartialSuffix);
+            File.WriteAllText(left, RecordingCodec.FirstLine + "\r\n" + RecordingCodec.StatusRecording + "\r\n"
+                + new string('x', BoundedLineReader.LongestLine + 1) + "\r\n");
+            var recorder = new ProblemRecorder(host);
+            Assert.Empty(recorder.FinishLeftOver());
+            Assert.Equal(new[] { left }, Directory.GetFiles(host.Dir));
+        }
+
+        [Fact]
+        public void AWebDevicesTypedNames_AreKnownBeforeAnyLineNamesIt_ThisFileAndTheNext()
+        {
+            using var host = new RecorderTestHost();
+            var pad = RecorderTestKit.Pad();
+            host.DeviceList.Add(pad);
+            var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+            Assert.True(recorder.Start().Ok);
+            var capture = recorder.CaptureForTest;
+            capture.Input(pad, RecorderTestKit.Rest());
+            // The web controller names the device as a phone joins, before
+            // the device reports anything or reaches the list.
+            recorder.KnowTypedNames("Browser Gamepad: Smith, Jane");
+            recorder.KnowTypedNames("Gloria Layout: Okafor, Ruth");
+            recorder.TakeLine(capture.Ticks(), "WEBGP caps Browser Gamepad: Smith, Jane mapping=\"standard\" buttons=17 axes=4 vibrate=False");
+            recorder.TakeLine(capture.Ticks(), "WEBGP deadline Gloria Layout: Okafor, Ruth idle=900ms neutralized");
+            string first = recorder.Stop(wait: true).Path;
+            Assert.True(recorder.Start().Ok);
+            capture = recorder.CaptureForTest;
+            capture.Input(pad, RecorderTestKit.Rest());
+            recorder.TakeLine(capture.Ticks(), "WEBGP caps Browser Gamepad: Smith, Jane mapping=\"standard\" buttons=17 axes=4 vibrate=False");
+            string second = recorder.Stop(wait: true).Path;
+
+            foreach (string path in new[] { first, second })
+            {
+                string text = RecorderTestKit.Text(path);
+                Assert.DoesNotContain("Jane", text);
+                Assert.DoesNotContain("Ruth", text);
+                Assert.DoesNotContain("Gloria", text);
+            }
+        }
+
+        [Fact]
+        public void ALineLongerThanAReaderTakes_IsCutInTheFile_AndTheFileFinishes()
+        {
+            using var host = new RecorderTestHost();
+            var pad = RecorderTestKit.Pad();
+            host.DeviceList.Add(pad);
+            var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+            Assert.True(recorder.Start().Ok);
+            var capture = recorder.CaptureForTest;
+            capture.Input(pad, RecorderTestKit.Rest());
+            recorder.TakeLine(capture.Ticks(), "SDL said " + new string('x', BoundedLineReader.LongestLine + 100));
+            string path = recorder.Stop(wait: true).Path;
+
+            Assert.True(File.Exists(path), "the recording was not finished");
+            Assert.All(RecorderTestKit.Lines(path), l => Assert.True(l.Length <= BoundedLineReader.LongestLine, "a line of " + l.Length));
+            var said = Assert.Single(RecorderTestKit.Events(path), e => e.Payload.StartsWith("SDL said x", StringComparison.Ordinal));
+            Assert.EndsWith("...", said.Payload);
+        }
+
+        [Fact]
+        public void AFolderTheRecorderCannotUse_IsRefusedInTheWordsOfTheUsersLanguage()
+        {
+            using var host = new RecorderTestHost { FolderOverride = string.Empty };
+            host.DeviceList.Add(RecorderTestKit.Pad());
+            var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+            var result = recorder.Start();
+            Assert.False(result.Ok);
+            Assert.Equal(RecorderRefusal.File, result.Refusal);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Settings_RecordProblem_NoTempFolder, result.UserDetail);
+            // A program is told in the protocol's own words.
+            Assert.Equal(ProblemRecorder.NoTempFolderText, result.Detail);
+        }
+
+        [Fact]
+        public void EveryFile_NamesTheProgramInFrontFromItsStart()
+        {
+            using var host = new RecorderTestHost();
+            var pad = RecorderTestKit.Pad();
+            host.DeviceList.Add(pad);
+            host.FrontPath = @"C:\Games\Quarry\quarry.exe";
+            var recorder = new ProblemRecorder(host) { FrozenClock = Stopwatch.GetTimestamp() };
+            try
+            {
+                recorder.KeepLastMinute = true;
+                recorder.WaitForFlush();
+                // The window's beat sees the game while the minute is kept.
+                recorder.UiTick();
+                recorder.WaitForFlush();
+                Assert.True(recorder.Start().Ok);
+                recorder.UiTick();
+                string path = recorder.Stop(wait: true).Path;
+                Assert.Single(RecorderTestKit.Events(path), e => e.Layer == RecordingCodec.LayerWindow && e.Payload == "front=quarry.exe");
+
+                // The minute kept names it too once its line is older than
+                // the minute.
+                var capture = recorder.CaptureForTest;
+                capture.Advance(70);
+                capture.Input(pad, RecorderTestKit.Rest());
+                recorder.WaitForFlush();
+                var saved = recorder.SaveLastMinute(wait: true);
+                Assert.True(saved.Ok);
+                Assert.Single(RecorderTestKit.Events(saved.Path), e => e.Layer == RecordingCodec.LayerWindow && e.Payload == "front=quarry.exe");
+            }
+            finally
+            {
+                recorder.KeepLastMinute = false;
+            }
+        }
+
         // ── The Diagnostics card ──
 
         [Fact]

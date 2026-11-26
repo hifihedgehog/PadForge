@@ -5,7 +5,7 @@ using PadForge.Common;
 namespace PadForge.Services
 {
     /// <summary>
-    /// The first step of every start (#597). A start with rights runs on only
+    /// The first step of every start (#600). A start with rights runs on only
     /// when the host unpacked its native libraries into a folder no program
     /// without rights can change. Otherwise it makes that folder sound and
     /// starts this exe once more, with the same command line and the same
@@ -39,8 +39,15 @@ namespace PadForge.Services
     /// helper's starter and a script that reads a client run's exit code see
     /// what they saw before. Only when it goes on to be the app does this
     /// process leave at once, with <see cref="HandedOver"/>: the copy sets an
-    /// event this process made and handed to it, whose handle value it finds
-    /// in <see cref="HandoverVariable"/>. Until then the copy sits in a job
+    /// event this process made under a name of its own in the private
+    /// namespace whose boundary is the Administrators group (InstanceLock's),
+    /// and finds that name in <see cref="HandoverVariable"/>. Every program
+    /// of the user can set a variable for a start through Windows' prompt
+    /// (HKCU\Environment), so the variable carries a name, never a handle:
+    /// a name such a program writes names nothing it could make, since only
+    /// a token with administrator rights can open that namespace, and the
+    /// copy sets and closes only an event it opened itself. Until then the
+    /// copy sits in a job
     /// that ends it when this process ends, so stopping this start stops the
     /// copy, as stopping the start stopped the process before.</para>
     ///
@@ -52,10 +59,18 @@ namespace PadForge.Services
     {
         internal const string BaseVariable = "DOTNET_BUNDLE_EXTRACT_BASE_DIR";
 
-        /// <summary>The handover event's handle, in hex, as the restarted copy
-        /// finds it. Removed from that copy's variables at once, so nothing it
-        /// starts sees it.</summary>
+        /// <summary>The handover event's name in the Administrators namespace,
+        /// as the restarted copy finds it. Removed from that copy's variables
+        /// at once, so nothing it starts sees it.</summary>
         internal const string HandoverVariable = "PADFORGE_HANDOVER_EVENT";
+
+        /// <summary>The namespace the handover event is made in: the one of
+        /// the single-instance lock (InstanceLock.NamespaceName), whose
+        /// boundary is the Administrators group.</summary>
+        internal const string HandoverNamespace = InstanceLock.NamespaceName;
+
+        /// <summary>The start of every handover event's name.</summary>
+        internal const string HandoverPrefix = "Handover-";
 
         /// <summary>The exit code of a start that handed over to a copy that
         /// went on to be the app.</summary>
@@ -118,7 +133,7 @@ namespace PadForge.Services
         internal static void Run()
         {
             System32Calls.SetDefaultDllDirectories(System32Calls.SearchDefaultDirs);
-            TakeHandover();
+            TakeHandover(System32Calls.GetVariable(HandoverVariable), HandoverNamespace);
 
             // Without System32's calls nothing can be checked. A start without
             // rights loses nothing by going on.
@@ -190,18 +205,51 @@ namespace PadForge.Services
             return (drop, set);
         }
 
-        /// <summary>Takes the handover event a restarting start handed this
-        /// process, if any: it is kept from this process's children and its
-        /// variable removed.</summary>
-        private static void TakeHandover()
+        /// <summary>Takes the handover event a restarting start named for
+        /// this process in <paramref name="value"/>, the variable's, if any:
+        /// the variable is removed, and an event of that name in the
+        /// Administrators namespace <paramref name="namespaceName"/> is opened
+        /// by this process itself, so a value a program without rights wrote
+        /// names nothing this process sets or closes but an event it opened.
+        /// Only a token with administrator rights opens the namespace.</summary>
+        internal static void TakeHandover(string value, string namespaceName)
         {
-            string value = System32Calls.GetVariable(HandoverVariable);
             if (value == null) return;
             System32Calls.SetVariable(HandoverVariable, null);
-            if (!TryParseHex(value, out ulong handle) || handle == 0) return;
-            s_handover = unchecked((IntPtr)(long)handle);
-            System32Calls.StopHandingOn(s_handover);
+            if (!IsHandoverName(value)) return;
+            IntPtr ns = System32Calls.OpenAdministratorsNamespace(namespaceName, create: false, out IntPtr boundary);
+            if (ns == IntPtr.Zero) return;
+            try
+            {
+                IntPtr opened = System32Calls.OpenNamedEvent(namespaceName + "\\" + value);
+                if (opened == IntPtr.Zero) return;
+                System32Calls.Close(s_handover);
+                s_handover = opened;
+            }
+            finally
+            {
+                System32Calls.CloseNamespace(ns, boundary);
+            }
         }
+
+        /// <summary>Whether a value has the shape of a handover event's name:
+        /// <see cref="HandoverPrefix"/> and two numbers in hex digits, the
+        /// restarting start's process and a tick of its clock.</summary>
+        internal static bool IsHandoverName(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length > HandoverPrefix.Length + 33
+                || !value.StartsWith(HandoverPrefix, StringComparison.Ordinal))
+                return false;
+            string rest = value.Substring(HandoverPrefix.Length);
+            int dash = rest.IndexOf('-');
+            return dash > 0 && dash < rest.Length - 1 && rest.IndexOf('-', dash + 1) < 0
+                && TryParseHex(rest.Substring(0, dash), out _) && TryParseHex(rest.Substring(dash + 1), out _);
+        }
+
+        /// <summary>The handover event's name for this start: its process
+        /// and a tick of its clock.</summary>
+        internal static string HandoverName()
+            => HandoverPrefix + ProtectedFolder.Hex(System32Calls.ProcessId()) + "-" + ProtectedFolder.Hex(System32Calls.TickCount());
 
         /// <summary>Called by the copy that is the app, once it holds the
         /// single-instance lock (App.OnStartup): the start that restarted it
@@ -237,12 +285,22 @@ namespace PadForge.Services
             if (slash <= 0) return NoSoundFolder;
             string folder = exe.Substring(0, slash + 1);
 
-            IntPtr handover = System32Calls.NewEvent(inheritable: true);
-            if (handover == IntPtr.Zero) return NoSoundFolder;
+            // The handover event, under a name of this start's own in the
+            // Administrators namespace, held open by this process until the
+            // copy hands over or ends.
+            IntPtr ns = System32Calls.OpenAdministratorsNamespace(HandoverNamespace, create: true, out IntPtr boundary);
+            if (ns == IntPtr.Zero) return NoSoundFolder;
+            string name = HandoverName();
+            IntPtr handover = System32Calls.NewNamedEvent(HandoverNamespace + "\\" + name);
+            if (handover == IntPtr.Zero)
+            {
+                System32Calls.CloseNamespace(ns, boundary);
+                return NoSoundFolder;
+            }
             IntPtr job = IntPtr.Zero;
             try
             {
-                string block = CopyBlock(System32Calls.MachineVariables(), variables, natives, ProtectedFolder.Hex(unchecked((ulong)(long)handover)));
+                string block = CopyBlock(System32Calls.MachineVariables(), variables, natives, name);
 
                 // A client run writes to the console of the process that
                 // started it, and the copy's parent is this process.
@@ -292,6 +350,7 @@ namespace PadForge.Services
             {
                 System32Calls.Close(job);
                 System32Calls.Close(handover);
+                System32Calls.CloseNamespace(ns, boundary);
             }
         }
 
@@ -301,13 +360,13 @@ namespace PadForge.Services
         /// <paramref name="machine"/> and the user's and PadForge's from
         /// <paramref name="own"/>, this process's, with
         /// DOTNET_BUNDLE_EXTRACT_BASE_DIR set to <paramref name="natives"/>
-        /// and the handover event's handle in <see cref="HandoverVariable"/>.
+        /// and the handover event's name in <see cref="HandoverVariable"/>.
         /// No variable that loads code into the copy is handed on, whatever
         /// this process was started with. The block ends in two null
         /// characters.
         /// </summary>
-        internal static string CopyBlock(IReadOnlyList<string> machine, IReadOnlyList<string> own, string natives, string handoverHex)
-            => RightsVariables.ToBlock(RightsVariables.Build(machine, own, natives, HandoverVariable + "=" + handoverHex));
+        internal static string CopyBlock(IReadOnlyList<string> machine, IReadOnlyList<string> own, string natives, string handoverName)
+            => RightsVariables.ToBlock(RightsVariables.Build(machine, own, natives, HandoverVariable + "=" + handoverName));
 
         /// <summary>A line's name. The drive lines Windows keeps start with
         /// '=' (<c>=C:=C:\</c>), whose name runs to the second '='.</summary>

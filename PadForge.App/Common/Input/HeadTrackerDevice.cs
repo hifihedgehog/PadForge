@@ -284,7 +284,7 @@ namespace PadForge.Common.Input
                     },
                     () => HeadTrackingRuntime.RecenterRequests);
                 // The runtime's library loads in the library host, with the
-                // user's rights (#597): the manifest names a library in the
+                // user's rights (#600): the manifest names a library in the
                 // runtime's own folder, which other accounts can change.
                 _openXr.UseLibraryHost(PadForge.Services.NativeHost.NativeHost.Shared.Open);
                 _openXr.Start();

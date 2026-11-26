@@ -16,7 +16,9 @@
 //
 // Usage:  dotnet run --project tools/PersonaVerify -- [diagLogPath]
 // PadForge should be running with PADFORGE_DIAG pointed at that same path
-// for the log-backed checks; without it the audio checks still run.
+// for the log-backed checks; without it the audio checks still run. PadForge
+// runs with administrator rights, and then takes PADFORGE_DIAG only when it
+// names diag.log beside PadForge.exe, the default here.
 
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,7 @@ internal static class Program
 
     private static int Main(string[] args)
     {
-        string diagPath = args.Length > 0 ? args[0] : @"C:\PadForge\persona-diag.log";
+        string diagPath = args.Length > 0 ? args[0] : @"C:\PadForge\diag.log";
         Console.WriteLine("PersonaVerify: composite USB persona, consumer-side checks");
         Console.WriteLine($"diag log: {diagPath}{(File.Exists(diagPath) ? "" : "  (absent, log checks skipped)")}\n");
 

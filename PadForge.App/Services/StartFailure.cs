@@ -8,7 +8,7 @@ namespace PadForge.Services
 {
     /// <summary>
     /// The message a start with rights shows when it cannot go on safely
-    /// (#597): it could not make its protected folder, or could not start
+    /// (#600): it could not make its protected folder, or could not start
     /// itself again from it (<see cref="ProtectedStart"/>). Before, such a
     /// start left with its exit code alone and no word.
     ///

@@ -454,6 +454,7 @@ namespace PadForge.Tests
                 dash.AssistantInstallSeam = request => System.Threading.Tasks.Task.FromResult(new PadForge.Services.Install.InstallRun(0, null,
                     System.Text.Json.JsonSerializer.Serialize(checks.Select(c => new { key = c.Key, program = c.Program, entry = c.Entry, skill = c.Skill, settings = c.Settings }))));
                 dash.AssistantIconSeam = program => StandInIcon(program);
+                dash.AssistantFindSeam = key => checks.FirstOrDefault(c => c.Key == key)?.Program;
                 Found("claude-code", "missing", "missing");
                 Found("vscode", "missing", "missing");
                 var page = new ExtrasPage { DataContext = dash };
@@ -791,7 +792,7 @@ namespace PadForge.Tests
                     {
                         vm.SetControllerDatabaseStatus(() => "Built in: 602 mappings, community copy of 2026-09-24. Downloaded 2026-11-24: 64 new rows, 0 changed.");
                         vm.SetControllerDatabaseResult(() => PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_InUseAtOnce);
-                        vm.SetControllerDatabaseMine(() => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_Mine_Format, 3),
+                        vm.SetControllerDatabaseMine(() => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_Rows_Format, 3),
                             () => System.Threading.Tasks.Task.CompletedTask, _ => System.Threading.Tasks.Task.FromResult(0));
                         databaseMore.IsExpanded = true;
                     });
@@ -1113,11 +1114,15 @@ namespace PadForge.Tests
                     frame.SetResourceReference(Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
                     frame.SetResourceReference(Border.BorderBrushProperty, "SteelLineBrush");
                     var ground = drawing.Ground(new Border { Padding = new Thickness(24), Child = frame });
-                    drawing.Picture(ground, "review.png", 1148, 980);
+                    // The scrub check runs on a worker: each picture waits for
+                    // its answer, so it shows the answer and never the line
+                    // that says the check runs.
+                    drawing.Picture(ground, "review.png", 1148, 980, () => drawing.Wait(model.Checked));
                     drawing.Picture(ground, "review-input.png", 1148, 980, () =>
                     {
                         model.Parts.Single(p => p.Info.Part == PadForge.Engine.Recording.RecordingParts.Activity).Keep = false;
                         model.Select(model.Parts.Single(p => p.Info.Part == PadForge.Engine.Recording.RecordingParts.Input));
+                        drawing.Wait(model.Checked);
                     });
                 }
                 finally { model.Close(); }
@@ -2419,6 +2424,21 @@ namespace PadForge.Tests
                 ground.SetResourceReference(TextElement.ForegroundProperty, "TextFillColorPrimaryBrush");
                 ground.SetResourceReference(TextElement.FontFamilyProperty, "BodyFontFamily");
                 return ground;
+            }
+
+            /// <summary>Runs the window's thread until <paramref name="task"/>
+            /// is done, so what it answers on that thread is in before a
+            /// picture. Throws when it is not done within 30 seconds.</summary>
+            internal void Wait(System.Threading.Tasks.Task task)
+            {
+                var frame = new DispatcherFrame();
+                task.ContinueWith(_ => _dispatcher.BeginInvoke(new Action(() => frame.Continue = false)), System.Threading.Tasks.TaskScheduler.Default);
+                var limit = new DispatcherTimer(TimeSpan.FromSeconds(30), DispatcherPriority.Normal, (_, _) => frame.Continue = false, _dispatcher);
+                limit.Start();
+                if (!task.IsCompleted) Dispatcher.PushFrame(frame);
+                limit.Stop();
+                if (!task.IsCompleted) throw new TimeoutException("the review's scrub check did not answer in 30 seconds");
+                task.GetAwaiter().GetResult();
             }
 
             /// <summary>Shows a state, lets it settle, and pictures the page

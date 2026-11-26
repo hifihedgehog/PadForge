@@ -190,7 +190,6 @@ namespace PadForge.Services
         [JsonPropertyName("tag_name")] public string TagName { get; set; }
         [JsonPropertyName("name")] public string Name { get; set; }
         [JsonPropertyName("draft")] public bool Draft { get; set; }
-        [JsonPropertyName("prerelease")] public bool PreRelease { get; set; }
         [JsonPropertyName("html_url")] public string HtmlUrl { get; set; }
         [JsonPropertyName("assets")] public List<GitHubAsset> Assets { get; set; } = new();
     }
@@ -344,7 +343,7 @@ namespace PadForge.Services
             $"https://api.github.com/repos/{Repo}/commits?sha={sha}&per_page={HistoryDepth.ToString(CultureInfo.InvariantCulture)}";
 
         /// <summary>
-        /// The protected folder's Update folder (#597). The copy with rights
+        /// The protected folder's Update folder (#600). The copy with rights
         /// downloads there and later starts the downloaded exe from there,
         /// and a pending install can wait there between sessions. Only
         /// Administrators and SYSTEM can change what is in it
@@ -355,7 +354,7 @@ namespace PadForge.Services
         /// </summary>
         internal static string StagingRoot => ProtectedFolder.Updates is { Length: > 0 } updates ? updates : LegacyStagingRoot;
 
-        /// <summary>Where updates were staged before #597: the user's temp
+        /// <summary>Where updates were staged before #600: the user's temp
         /// folder, which every program of the user can write. Whatever is
         /// left there is removed and never started.</summary>
         internal static string LegacyStagingRoot => Path.Combine(Path.GetTempPath(), "PadForge_Update");
@@ -1444,7 +1443,7 @@ namespace PadForge.Services
         internal static string LeaseName(string targetExe) => @"Global\PadForge_UpdateLease_" + InstallKey(targetExe);
 
         /// <summary>
-        /// The lease's access list (#597): Administrators and SYSTEM may do
+        /// The lease's access list (#600): Administrators and SYSTEM may do
         /// anything with it, and every signed-in account may read who owns it,
         /// so a start without rights can still tell a real lease from
         /// another's. Nobody else may wait on it, change it or take it. The
@@ -1511,7 +1510,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// The same, counting a name as a lease only when its owner passes
-        /// <paramref name="trustedOwner"/> (#597). Any account can make a
+        /// <paramref name="trustedOwner"/> (#600). Any account can make a
         /// mutex of that name, and before this a name made by any account
         /// kept every start of PadForge away. One whose owner cannot be read
         /// is not a lease either: the real lease lets every signed-in account
@@ -2058,10 +2057,12 @@ namespace PadForge.Services
         }
 
         /// <summary>Removes the staging folder in the user's temp folder that
-        /// came before the protected one (#597): a program without rights
+        /// came before the protected one (#600): a program without rights
         /// could have changed anything in it, so nothing there is started or
-        /// kept. A copy that runs from inside it, the helper an older version
-        /// started, leaves it alone. True when it is gone.</summary>
+        /// kept, and it is deleted by handles, so a link in it is deleted as
+        /// the link and never followed (HandleTree). A copy that runs from
+        /// inside it, the helper an older version started, leaves it alone.
+        /// True when it is gone.</summary>
         internal static bool CleanLegacyStaging(string self) => CleanLegacyStaging(self, StagingRoot, LegacyStagingRoot);
 
         internal static bool CleanLegacyStaging(string self, string staging, string legacy)
@@ -2069,7 +2070,15 @@ namespace PadForge.Services
             if (SamePath(staging, legacy) || !Directory.Exists(legacy)) return true;
             if (!string.IsNullOrEmpty(self) && NormalizePath(self).StartsWith(NormalizePath(legacy), StringComparison.Ordinal))
                 return true;
-            return TryDeleteDirectory(legacy);
+            try
+            {
+                ThrowIfWriteOffLimits(legacy);
+                return PadForge.Common.HandleTree.Delete(legacy);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static bool CleanInstallDir(string dir)

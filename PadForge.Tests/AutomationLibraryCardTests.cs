@@ -62,11 +62,11 @@ namespace PadForge.Tests
                     if (!request.Check) return Task.FromResult(new InstallRun(UserInstall.Done, null, "Installed."));
                     return Task.FromResult(request.What switch
                     {
-                        InstallWhat.AutoHotkey => new InstallRun(UserInstall.Done, null, "current\r\nplace current C:\\Users\\u\\Documents\\AutoHotkey\\Lib\\PadForge.ahk\r\n"),
+                        InstallWhat.AutoHotkey => new InstallRun(UserInstall.Done, null, "current\r\nplace current autohotkey C:\\Users\\u\\Documents\\AutoHotkey\\Lib\\PadForge.ahk\r\n"),
                         InstallWhat.Python => new InstallRun(UserInstall.IsOlder, null,
-                            "older\r\nplace older C:\\Users\\u\\AppData\\Roaming\\Python\\Python314\\site-packages\\padforge.py\r\n"
-                            + "place missing C:\\Users\\u\\AppData\\Roaming\\Python\\Python313\\site-packages\\padforge.py\r\n"),
-                        _ => new InstallRun(UserInstall.IsMissing, null, "not installed\r\nplace missing C:\\Users\\u\\Documents\\PowerShell\\Modules\\PadForge\\PadForge.psm1\r\n"),
+                            "older\r\nplace older python:3.14 C:\\Users\\u\\AppData\\Roaming\\Python\\Python314\\site-packages\\padforge.py\r\n"
+                            + "place missing python:3.13 C:\\Users\\u\\AppData\\Roaming\\Python\\Python313\\site-packages\\padforge.py\r\n"),
+                        _ => new InstallRun(UserInstall.IsMissing, null, "not installed\r\nplace missing pwsh C:\\Users\\u\\Documents\\PowerShell\\Modules\\PadForge\\PadForge.psm1\r\n"),
                     });
                 };
                 var ground = new System.Windows.Controls.Border { Child = page };
@@ -86,11 +86,11 @@ namespace PadForge.Tests
                 var s = PadForge.Resources.Strings.Strings.Instance;
                 var rows = model.Rows;
                 Assert.Equal(new[] { AutomationLibraryKind.AutoHotkey, AutomationLibraryKind.Python, AutomationLibraryKind.PowerShell }, rows.Select(r => r.Kind));
-                Assert.Equal(string.Format(s.Extras_Automation_Scripts_Current_Format, "#Include <PadForge>"), rows[0].Line);
+                Assert.Equal(string.Format(s.Extras_Automation_Scripts_State_Current_Format, "AutoHotkey v2", "#Include <PadForge>"), rows[0].Line);
                 Assert.Equal(ScriptLibraryButton.OpenFolder, rows[0].Button);
-                Assert.Equal(string.Format(s.Extras_Automation_Scripts_OlderFor_Format, "Python 3.14"), rows[1].Line);
+                Assert.Equal(string.Format(s.Extras_Automation_Scripts_State_OlderMissing_Format, "Python 3.14", "Python 3.13"), rows[1].Line);
                 Assert.Equal(ScriptLibraryButton.Update, rows[1].Button);
-                Assert.Equal(s.Extras_Automation_Scripts_NotInstalled, rows[2].Line);
+                Assert.Equal(string.Format(s.Extras_Automation_Scripts_State_Missing_Format, "PowerShell 7"), rows[2].Line);
                 Assert.Equal(ScriptLibraryButton.Install, rows[2].Button);
                 Assert.True(model.AnyInstalled);
 
@@ -114,7 +114,7 @@ namespace PadForge.Tests
                 Directory.CreateDirectory(dir);
                 try
                 {
-                    rows[0].Places = new[] { ("current", Path.Combine(dir, "PadForge.ahk")) };
+                    rows[0].Places = new[] { new ScriptLibraryPlace("current", "autohotkey", Path.Combine(dir, "PadForge.ahk")) };
                     rows[0].PressCommand.Execute(null);
                     PageRenderDump.Settle(dispatcher);
                     Assert.Equal(dir, opened);
@@ -212,18 +212,20 @@ namespace PadForge.Tests
                 var request = new InstallRequest(InstallWhat.AutoHotkey, null, Check: true);
                 Assert.Equal(UserInstall.IsMissing, UserInstall.Run(request, said.Add, said.Add));
                 string file = Path.Combine(root, "Documents", "AutoHotkey", "Lib", "PadForge.ahk");
-                Assert.Equal(new[] { "not installed", "place missing " + file }, said);
+                Assert.Equal(new[] { "not installed", "place missing autohotkey " + file }, said);
                 Assert.Equal(UserInstall.Done, UserInstall.Run(request with { Check = false }, _ => { }, _ => { }));
                 said.Clear();
                 Assert.Equal(UserInstall.Done, UserInstall.Run(request, said.Add, said.Add));
-                Assert.Equal(new[] { "current", "place current " + file }, said);
-                Assert.Equal(new[] { ("current", file) }, ScriptLibraryRows.Places(string.Join("\r\n", said)));
-                Assert.Equal("Python 3.14, Python 3.13", ScriptLibraryRows.Pythons(new[]
+                Assert.Equal(new[] { "current", "place current autohotkey " + file }, said);
+                Assert.Equal(new[] { new ScriptLibraryPlace("current", "autohotkey", file) }, ScriptLibraryRows.Places(string.Join("\r\n", said)));
+                var places = new[]
                 {
-                    ("current", @"C:\Users\u\AppData\Roaming\Python\Python314\site-packages\padforge.py"),
-                    ("older", @"C:\Users\u\AppData\Roaming\Python\Python313-32\site-packages\padforge.py"),
-                    ("missing", @"C:\Users\u\AppData\Roaming\Python\Python312\site-packages\padforge.py"),
-                }));
+                    new ScriptLibraryPlace("current", "python:3.14", @"C:\Users\u\AppData\Roaming\Python\Python314\site-packages\padforge.py"),
+                    new ScriptLibraryPlace("current", "python:3.13-32", @"C:\Users\u\AppData\Roaming\Python\Python313-32\site-packages\padforge.py"),
+                    new ScriptLibraryPlace("missing", "python:3.12", @"C:\Users\u\AppData\Roaming\Python\Python312\site-packages\padforge.py"),
+                };
+                Assert.Equal("Python 3.14, Python 3.13-32", ScriptLibraryRows.Names(places, "current"));
+                Assert.Equal("Python 3.12", ScriptLibraryRows.Names(places, "missing"));
             }
             finally
             {

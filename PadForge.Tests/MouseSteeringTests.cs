@@ -183,7 +183,7 @@ namespace PadForge.Tests
         // ── Item 34: a relative axis from the device's own HID reports ──
 
         private static RelativeHidAxes.Value Hid(ushort page, ushort usage, bool relative, int bits = 8, int min = -127)
-            => new(page, usage, 1, 0, bits, min, relative);
+            => new(page, usage, 0, bits, min, relative);
 
         [Fact]
         public void TheHidReader_NumbersAxesAsSdlsDirectInputDoes()

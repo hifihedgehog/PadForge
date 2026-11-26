@@ -23,7 +23,10 @@ namespace PadForge.Common.Recording
     /// trip to the Event Viewer.
     ///
     /// <para>Only file names and numbers are copied: the record's folders
-    /// stay out, as everything PadForge writes for a report does.</para>
+    /// stay out, as everything PadForge writes for a report does. Any
+    /// program can write an Application Error event, so a record whose
+    /// fields are not the file names, versions and hex numbers Windows
+    /// writes is left out whole (<see cref="Copies"/>).</para>
     ///
     /// <para>The test host reads no log of the machine's: with
     /// <see cref="OffLimitsForTest"/> set, records come from
@@ -41,12 +44,25 @@ namespace PadForge.Common.Recording
         /// <summary>How far back a start looks: two weeks.</summary>
         internal static readonly TimeSpan LooksBack = TimeSpan.FromDays(14);
 
-        /// <summary>The words that open a record's lines in crash.log, with
-        /// its record number, by which a later start knows it copied it.</summary>
+        /// <summary>The words that open a record's lines in crash.log, after
+        /// its time and before its record number. A later start knows a
+        /// record it copied by the time and the number together
+        /// (<see cref="Key"/>), since a cleared log numbers its records
+        /// from the start again.</summary>
         internal const string Opening = "Windows Application Error record ";
 
         /// <summary>The program whose records are copied.</summary>
         internal const string Program = "PadForge.exe";
+
+        /// <summary>The exception code the .NET runtime ends a process with
+        /// when an exception goes unhandled (e0434352 in this PC's log). That
+        /// crash is in managed code, and crash.log has the runtime's own
+        /// block for it, so its record is not copied.</summary>
+        internal const ulong ManagedCode = 0xE0434352;
+
+        /// <summary>The longest version and file name a record copied may
+        /// carry.</summary>
+        private const int LongestVersion = 32, LongestName = 255;
 
         /// <summary>PadForge.exe's records of the last two weeks, newest
         /// last. None when the log cannot be read.</summary>
@@ -94,7 +110,8 @@ namespace PadForge.Common.Recording
 
         /// <summary>A code or an offset as the log writes it, hex digits
         /// with no prefix (e0434352, 00000000000c408a, read from this PC's
-        /// log), with 0x before it.</summary>
+        /// log), with 0x before it. Anything else comes back as it is, which
+        /// <see cref="Copies"/> then refuses.</summary>
         internal static string Hex(string value)
         {
             if (string.IsNullOrEmpty(value)) return string.Empty;
@@ -104,12 +121,55 @@ namespace PadForge.Common.Recording
             return "0x" + value.ToUpperInvariant();
         }
 
+        /// <summary>
+        /// Whether a record is copied: a crash of PadForge.exe in native
+        /// code whose fields have the shapes Windows writes, the module a
+        /// file name, the two versions digits and dots, and the code and the
+        /// offset hex of at most 16 digits. A record of the .NET runtime's
+        /// own code (<see cref="ManagedCode"/>) is a crash in managed code.
+        /// </summary>
+        internal static bool Copies(NativeCrash crash)
+            => crash != null
+               && string.Equals(crash.Program, Program, StringComparison.OrdinalIgnoreCase)
+               && IsFileName(crash.Module)
+               && IsVersion(crash.ProgramVersion) && IsVersion(crash.ModuleVersion)
+               && HexValue(crash.ExceptionCode) is ulong code && code != ManagedCode
+               && HexValue(crash.Offset) != null;
+
+        private static bool IsVersion(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length > LongestVersion) return false;
+            foreach (char c in value)
+                if (!char.IsAsciiDigit(c) && c != '.') return false;
+            return true;
+        }
+
+        private static bool IsFileName(string value)
+            => !string.IsNullOrEmpty(value) && value.Length <= LongestName && value.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+
+        /// <summary>The number a "0x" and 1 to 16 hex digits give, or null
+        /// for any other text.</summary>
+        private static ulong? HexValue(string value)
+        {
+            if (string.IsNullOrEmpty(value) || !value.StartsWith("0x", StringComparison.Ordinal) || value.Length < 3 || value.Length > 18) return null;
+            for (int i = 2; i < value.Length; i++)
+                if (!char.IsAsciiHexDigit(value[i])) return null;
+            return ulong.Parse(value.AsSpan(2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>How crash.log names a record: its time and its record
+        /// number, the opening of its first line. The time is the PC's
+        /// local time as the log gives it, so a later start in another time
+        /// zone reads the same record hours apart (<see cref="Holds"/>).</summary>
+        internal static string Key(NativeCrash crash)
+            => "[" + crash.Time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) + "] "
+               + Opening + crash.RecordId.ToString(CultureInfo.InvariantCulture) + ":";
+
         /// <summary>The lines crash.log gets for one record.</summary>
         internal static string Lines(NativeCrash crash)
         {
             var sb = new StringBuilder();
-            sb.Append('[').Append(crash.Time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)).Append("] ")
-              .Append(Opening).Append(crash.RecordId.ToString(CultureInfo.InvariantCulture)).Append(": ")
+            sb.Append(Key(crash)).Append(' ')
               .Append(crash.Program).Append(' ').Append(crash.ProgramVersion).Append(" stopped in native code.\n")
               .Append("  Faulting module: ").Append(crash.Module).Append(' ').Append(crash.ModuleVersion).Append('\n')
               .Append("  Exception code: ").Append(crash.ExceptionCode).Append('\n')
@@ -117,9 +177,45 @@ namespace PadForge.Common.Recording
             return sb.ToString();
         }
 
+        /// <summary>The widest a change of time zone moves a local time: from
+        /// UTC-12 to UTC+14.</summary>
+        internal static readonly TimeSpan ZonesApart = TimeSpan.FromHours(26);
+
+        private static readonly System.Text.RegularExpressions.Regex HeldBlock = new(
+            @"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] " + System.Text.RegularExpressions.Regex.Escape(Opening) + @"(\d+):",
+            System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
+        /// <summary>The records crash.log holds, by number, with the local
+        /// times its blocks give them.</summary>
+        private static Dictionary<long, List<DateTime>> HeldRecords(string held)
+        {
+            var records = new Dictionary<long, List<DateTime>>();
+            foreach (System.Text.RegularExpressions.Match m in HeldBlock.Matches(held))
+            {
+                if (!long.TryParse(m.Groups[2].Value, NumberStyles.None, CultureInfo.InvariantCulture, out long id)
+                    || !DateTime.TryParseExact(m.Groups[1].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var time)) continue;
+                if (!records.TryGetValue(id, out var times)) records[id] = times = new List<DateTime>();
+                times.Add(time);
+            }
+            return records;
+        }
+
+        /// <summary>Whether crash.log holds a record: a block of its number
+        /// whose time is no further from its own than a change of time zone
+        /// moves it. A cleared log hands a number out again, and a crash days
+        /// later of an old number is a record of its own.</summary>
+        private static bool Holds(Dictionary<long, List<DateTime>> held, NativeCrash crash)
+        {
+            if (!held.TryGetValue(crash.RecordId, out var times)) return false;
+            foreach (var time in times)
+                if ((time - crash.Time).Duration() <= ZonesApart) return true;
+            return false;
+        }
+
         /// <summary>
-        /// Copies into <paramref name="crashLog"/> each record crash.log does
-        /// not hold yet, by its record number. Gives how many were copied.
+        /// Copies into <paramref name="crashLog"/> each record it takes
+        /// (<see cref="Copies"/>) that crash.log does not hold yet
+        /// (<see cref="Holds"/>). Gives how many were copied.
         /// </summary>
         internal static int CopyNew(string crashLog)
         {
@@ -131,11 +227,12 @@ namespace PadForge.Common.Recording
                 if (File.Exists(crashLog)) held = File.ReadAllText(crashLog);
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { return 0; }
+            var holds = HeldRecords(held);
             var sb = new StringBuilder();
             int copied = 0;
             foreach (var crash in records)
             {
-                if (held.Contains(Opening + crash.RecordId.ToString(CultureInfo.InvariantCulture) + ":", StringComparison.Ordinal)) continue;
+                if (!Copies(crash) || Holds(holds, crash)) continue;
                 sb.Append(Lines(crash));
                 copied++;
             }

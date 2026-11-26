@@ -7,9 +7,9 @@
 # three tabs (realizing the Workshop search results when the community
 # config lookup is on) and Map Key Lights (the 1o coverage rule: page
 # navigation alone never realizes dialogs). Then it relaunches clean with
-# the mirror off. Acceptance bar: the harvest at
-# C:\tmp\pfdiag-verify.log contains no error-class lines (BINDERR,
-# FAILED, exception). Progress notes: C:\tmp\pf-sweep-out.txt
+# the mirror off. Acceptance bar: the harvest at -Harvest
+# (C:\tmp\pfdiag-verify.log) contains no error-class lines (BINDERR,
+# FAILED, exception). Progress notes: -Notes (C:\tmp\pf-sweep-out.txt).
 param(
     # The owner's answer to a run that stopped over a settings backup an
     # earlier run left (settings_guard.ps1). Ask, the default, is that
@@ -17,10 +17,19 @@ param(
     # the backup back over the settings file. A run with nothing to ask
     # refuses File and Backup.
     [ValidateSet('Ask', 'File', 'Backup')]
-    [string]$KeepSettingsFrom = 'Ask'
+    [string]$KeepSettingsFrom = 'Ask',
+    # The deployed exe, its settings file beside it, and the mirror beside it.
+    [string]$Exe = 'C:\PadForge\PadForge.exe',
+    # The build copied over -Exe. Empty takes the published build of this
+    # checkout.
+    [string]$Source = '',
+    [string]$Harvest = 'C:\tmp\pfdiag-verify.log',
+    [string]$Notes = 'C:\tmp\pf-sweep-out.txt',
+    # Arms, launches, harvests and judges with no walk of the window.
+    [switch]$NoWalk
 )
 $ErrorActionPreference = 'Continue'
-$out = 'C:\tmp\pf-sweep-out.txt'
+$out = $Notes
 Set-Content $out "sweep start $(Get-Date -Format o)" -Encoding utf8
 function Note($m) { Add-Content $out $m -Encoding utf8 }
 
@@ -34,9 +43,14 @@ function Note($m) { Add-Content $out $m -Encoding utf8 }
 $appDir = Join-Path (Split-Path -Parent $PSScriptRoot) 'PadForge.App'
 $tfm = (Read-SettingsXml -Path (Join-Path $appDir 'PadForge.App.csproj')).Project.PropertyGroup |
     ForEach-Object { $_.TargetFramework } | Where-Object { $_ } | Select-Object -First 1
-$src = Join-Path $appDir "bin\Release\$tfm\win-x64\publish\PadForge.exe"
-$dst = 'C:\PadForge\PadForge.exe'
-$diag = 'C:\tmp\pfdiag-verify.log'
+$src = if ($Source) { $Source } else { Join-Path $appDir "bin\Release\$tfm\win-x64\publish\PadForge.exe" }
+$dst = $Exe
+$diag = $Harvest
+# PadForge with rights takes PADFORGE_DIAG only when it names diag.log
+# directly in its own folder (SdlDiagLog.MirrorPathWithRights), so the mirror is
+# diag.log beside the exe, and the harvest is its copy, made once the app is
+# stopped.
+$mirror = Join-Path (Split-Path -Parent $Exe) 'diag.log'
 Remove-Item $diag -Force -ErrorAction SilentlyContinue
 
 # --- Owner settings guard -----------------------------------------------
@@ -55,7 +69,7 @@ Remove-Item $diag -Force -ErrorAction SilentlyContinue
 # without its word the run stops and the owner decides. The sweep runs with
 # ErrorActionPreference Continue, and this part does not: a backup that could
 # not be taken ends the run before the sweep writes anything.
-$pfXml = 'C:\PadForge\PadForge.xml'
+$pfXml = Join-Path (Split-Path -Parent $dst) 'PadForge.xml'
 $pfBak = Join-Path $env:TEMP 'PadForge.xml.diagsweep.bak'
 $ErrorActionPreference = 'Stop'
 $doubt = Get-BackupDoubt $pfXml $pfBak 'Ask'
@@ -130,11 +144,16 @@ if (Test-Path $pfXml) {
     Note "forced StartMinimized=false and MinimizeToTray=false for this run (the file before it is kept as $kept)"
 }
 
-# Launch with the mirror armed
-$env:PADFORGE_DIAG = $diag
+# Launch with the mirror armed, on a mirror of this run alone
+Remove-Item -LiteralPath $mirror -Force -ErrorAction SilentlyContinue
+$env:PADFORGE_DIAG = $mirror
 Start-Process -FilePath $dst
 Start-Sleep 15
 
+$walkSaw = 0
+$notReached = @()
+if ($NoWalk) { Note 'walk skipped (-NoWalk)' }
+else {
 # UIA navigation
 Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes
@@ -527,11 +546,19 @@ public static class W {
 
     Go 'Dashboard' 'Home' | Out-Null
 }
+}
 
 # Evaluate the acceptance bar this script's own header states. It used to
 # stop at "sweep done", so the harness gathered the evidence and left the
 # verdict to whoever remembered to grep the log. A bar nobody evaluates is a
 # bar nobody fails.
+# The app is stopped first, so the mirror is whole when it is copied.
+taskkill /F /IM PadForge.exe 2>$null | Out-Null
+Start-Sleep 3
+if (Test-Path $mirror) {
+    Copy-Item -LiteralPath $mirror -Destination $diag -Force
+    Remove-Item -LiteralPath $mirror -Force -ErrorAction SilentlyContinue
+}
 $verdict = 'NO HARVEST'
 if (Test-Path $diag) {
     # BINDERR and FAILED are matched CASE-SENSITIVELY on purpose. The ring

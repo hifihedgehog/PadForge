@@ -621,13 +621,13 @@ namespace PadForge.Tests
             Guid device = Guid.NewGuid();
             Assert.False(vm.PictureIsFor(device, 0x054C, 0x0CE6, true));
             Assert.True(vm.ShowSelectedKind);
-            Assert.False(vm.HasSelectedPicture);
+            Assert.Null(vm.SelectedPicture);
 
             // A still on its way: nothing shows for the moment, not the kind.
             vm.SetPicture(device, 0x054C, 0x0CE6, true, null, null, coming: true);
             Assert.True(vm.PictureIsFor(device, 0x054C, 0x0CE6, true));
             Assert.False(vm.ShowSelectedKind);
-            Assert.False(vm.HasSelectedPicture);
+            Assert.Null(vm.SelectedPicture);
             Assert.Contains(nameof(DevicesViewModel.ShowSelectedKind), raised);
 
             // The still is ready: the page asks again and gets it.
@@ -639,11 +639,9 @@ namespace PadForge.Tests
             vm.SetPicture(device, 0x054C, 0x0CE6, true, color, gray);
             Assert.Same(color, vm.SelectedPicture);
             Assert.Same(gray, vm.SelectedPictureGray);
-            Assert.True(vm.HasSelectedPicture);
             Assert.False(vm.ShowSelectedKind);
             Assert.Contains(nameof(DevicesViewModel.SelectedPicture), raised);
             Assert.Contains(nameof(DevicesViewModel.SelectedPictureGray), raised);
-            Assert.Contains(nameof(DevicesViewModel.HasSelectedPicture), raised);
 
             // The same picture set again raises nothing.
             raised.Clear();

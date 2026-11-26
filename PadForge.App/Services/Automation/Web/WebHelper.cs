@@ -40,9 +40,10 @@ namespace PadForge.Services.Automation.Web
     /// <para>While Reach PadForge From This Network is on (#600 item 53) it
     /// also listens on <c>http://+:port/</c> at the network door's own port,
     /// a second listener, so a port another program holds never takes the
-    /// loopback door down. PadForge makes the URL reservation for this
-    /// helper's user, whose SID the helper tells it, and says when it is
-    /// made. A port that is taken is reported and never moved.</para>
+    /// loopback door down. PadForge makes the URL reservation for the
+    /// desktop shell's user, whom the launcher starts this helper as, once
+    /// the helper names the same user, and says when it is made. A port
+    /// that is taken is reported, tried again, and never moved.</para>
     /// </summary>
     internal static class WebHelper
     {
@@ -55,6 +56,23 @@ namespace PadForge.Services.Automation.Web
         internal const string PipeVariable = "PADFORGE_PIPE";
 
         internal const int Done = 0, Refused = 1, NotRunning = 4;
+
+        /// <summary>The helper's own hello on PadForge's pipe.</summary>
+        internal static string HelperHello(string key) => "hello kind=web-helper token=" + key + " protocol=" + AutomationLine.Protocol;
+
+        /// <summary>The hello of the copy that stands behind one web
+        /// assistant or network key.</summary>
+        internal static string MirrorHello(WebGrant grant, string key)
+            => (grant.Network
+                ? "hello kind=web token=" + key + " net=" + grant.Id + " from=" + grant.From
+                : "hello kind=web token=" + key + " grant=" + grant.Id) + " protocol=" + AutomationLine.Protocol;
+
+        /// <summary>The grants and keys whose copies stay open: a web
+        /// assistant's while the web row is on, a network key's while the
+        /// network row is.</summary>
+        internal static IEnumerable<string> AllowedIds(WebLink link)
+            => (link.WebOn ? link.Grants.Select(g => g.Id) : Enumerable.Empty<string>())
+                .Concat(link.Network.On ? link.Network.Keys.Select(k => k.Id) : Enumerable.Empty<string>());
 
         /// <summary>The whole run.</summary>
         internal static int Run()
@@ -77,7 +95,7 @@ namespace PadForge.Services.Automation.Web
         /// <paramref name="stopping"/>. A test runs it with its own pipe.</summary>
         internal static async Task<int> RunAsync(string key, string pipeName, CancellationToken stopping,
             Func<string, CancellationToken, Task<string>> fetchDocument = null, Action<int> listening = null, Action<WebRequest, WebReply> answered = null,
-            Func<int, string> networkPrefix = null, WebNetworkSide network = null)
+            Func<int, string> networkPrefix = null, WebNetworkSide network = null, TimeSpan? networkRetry = null)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -90,7 +108,7 @@ namespace PadForge.Services.Automation.Web
             catch (Exception error) when (error is TimeoutException or IOException) { return NotRunning; }
             if (!PipeOwner.IsServer(pipe.SafePipeHandle, pipeName)) return Refused;
 
-            byte[] hello = Encoding.UTF8.GetBytes("hello kind=web-helper token=" + key + "\n");
+            byte[] hello = Encoding.UTF8.GetBytes(HelperHello(key) + "\n");
             await pipe.WriteAsync(hello, stopping).ConfigureAwait(false);
             await pipe.FlushAsync(stopping).ConfigureAwait(false);
             string answer = await WebLink.ReadLineAsync(pipe, stopping).ConfigureAwait(false);
@@ -113,15 +131,11 @@ namespace PadForge.Services.Automation.Web
             using var listener = Listen(link.WantedPort, out int port);
             if (listener == null) return Refused;
             link.Say(new JsonObject { ["t"] = "port", ["port"] = port });
-            // The user the network door's reservation is made for: this
-            // helper's own.
+            // This helper's user. PadForge makes the network door's
+            // reservation for the desktop's user when this names it.
             link.Say(new JsonObject { ["t"] = "who", ["sid"] = System.Security.Principal.WindowsIdentity.GetCurrent().User?.Value });
             listening?.Invoke(port);
-            link.Say(new JsonObject
-            {
-                ["t"] = "found",
-                ["tunnels"] = new JsonArray(WebTunnels.Find().Select(f => (JsonNode)new JsonObject { ["key"] = f.Key, ["path"] = f.Path }).ToArray()),
-            });
+            link.SayFound();
 
             var auth = new WebAuth(link, fetchDocument);
             await using var mcp = new WebMcp(grant => new AssistantMirror(pipeName, padForgeRuns: () => true, host: "web",
@@ -130,16 +144,15 @@ namespace PadForge.Services.Automation.Web
                 // A network key's copy names the key and the address it
                 // calls from. PadForge takes its name and level from its own
                 // list by that key.
-                HelloLine = () => grant.Network
-                    ? "hello kind=web token=" + key + " net=" + grant.Id + " from=" + grant.From
-                    : "hello kind=web token=" + key + " grant=" + grant.Id,
+                HelloLine = () => MirrorHello(grant, key),
                 LocalFiles = false,
                 ListChanges = false,
                 StartPadForge = () => false,
             });
             var front = new WebFront(port, auth, mcp, link, () => link.PublicBase, network: link.Network, webOn: () => link.WebOn);
-            IEnumerable<string> Allowed() => link.Grants.Select(g => g.Id).Concat(link.Network.Keys.Select(k => k.Id));
-            using var door = new NetworkListening(link, front, networkPrefix ?? NetworkDoor.Prefix, answered, stop.Token);
+            IEnumerable<string> Allowed() => AllowedIds(link);
+            using var door = new NetworkListening(link, front, networkPrefix ?? NetworkDoor.Prefix, answered, stop.Token,
+                networkRetry ?? NetworkListening.RetryAfter);
             link.Changed += () =>
             {
                 mcp.Sweep(Allowed());
@@ -184,14 +197,23 @@ namespace PadForge.Services.Automation.Web
             private CancellationTokenSource _serving;
             private int _port;
             private string _said;
+            private readonly TimeSpan _retryAfter;
+            private Timer _retry;
+            private bool _disposed;
 
-            public NetworkListening(WebLink link, WebFront front, Func<int, string> prefix, Action<WebRequest, WebReply> answered, CancellationToken stopping)
+            /// <summary>How long a port another program holds waits before
+            /// it is tried again.</summary>
+            internal static readonly TimeSpan RetryAfter = TimeSpan.FromSeconds(10);
+
+            public NetworkListening(WebLink link, WebFront front, Func<int, string> prefix, Action<WebRequest, WebReply> answered, CancellationToken stopping,
+                TimeSpan retryAfter)
             {
                 _link = link;
                 _front = front;
                 _prefix = prefix;
                 _answered = answered;
                 _stopping = stopping;
+                _retryAfter = retryAfter;
             }
 
             public void Apply()
@@ -200,6 +222,7 @@ namespace PadForge.Services.Automation.Web
                 int want = net.On && _link.NetworkReady && NetworkDoor.IsPort(net.Port) ? net.Port : 0;
                 lock (_sync)
                 {
+                    if (_disposed) return;
                     if (want == _port && (want == 0 || _listener != null)) return;
                     CloseLocked();
                     _port = want;
@@ -220,8 +243,16 @@ namespace PadForge.Services.Automation.Web
                     {
                         listener.Close();
                         // 5: Windows holds no reservation for this user. 32
-                        // and 183: another program holds the port.
-                        Say(error.ErrorCode switch { 5 => "denied", 32 or 183 => "taken", _ => "failed" }, want);
+                        // and 183: another program holds the port, which is
+                        // tried again while the row is on, so the door opens
+                        // once that program lets go.
+                        string state = error.ErrorCode switch { 5 => "denied", 32 or 183 => "taken", _ => "failed" };
+                        Say(state, want);
+                        if (state == "taken" && !_stopping.IsCancellationRequested)
+                        {
+                            _retry ??= new Timer(_ => { try { Apply(); } catch (ObjectDisposedException) { } });
+                            _retry.Change(_retryAfter, Timeout.InfiniteTimeSpan);
+                        }
                         return;
                     }
                     _listener = listener;
@@ -250,7 +281,14 @@ namespace PadForge.Services.Automation.Web
 
             public void Dispose()
             {
-                lock (_sync) CloseLocked();
+                lock (_sync)
+                {
+                    _disposed = true;
+                    _retry?.Dispose();
+                    _retry = null;
+                    _port = 0;
+                    CloseLocked();
+                }
             }
         }
 
@@ -394,7 +432,11 @@ namespace PadForge.Services.Automation.Web
     internal sealed class WebLink : IWebAppSide, IAsyncDisposable
     {
         private readonly Stream _stream;
-        private readonly SemaphoreSlim _write = new(1, 1);
+        /// <summary>The lines to PadForge, written by one task in the order
+        /// they were said.</summary>
+        private readonly System.Threading.Channels.Channel<byte[]> _out =
+            System.Threading.Channels.Channel.CreateUnbounded<byte[]>(new System.Threading.Channels.UnboundedChannelOptions { SingleReader = true });
+        private readonly Task _writing;
         private readonly ConcurrentDictionary<string, WebGrant> _grants = new(StringComparer.Ordinal);
         private readonly ConcurrentDictionary<string, TaskCompletionSource<string>> _asking = new(StringComparer.Ordinal);
         private readonly TaskCompletionSource<bool> _first = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -409,6 +451,20 @@ namespace PadForge.Services.Automation.Web
         {
             _stream = stream;
             Network = network ?? new WebNetworkSide();
+            _writing = Task.Run(WriteAsync);
+        }
+
+        private async Task WriteAsync()
+        {
+            await foreach (byte[] bytes in _out.Reader.ReadAllAsync().ConfigureAwait(false))
+            {
+                try
+                {
+                    await _stream.WriteAsync(bytes).ConfigureAwait(false);
+                    await _stream.FlushAsync().ConfigureAwait(false);
+                }
+                catch (Exception error) when (error is IOException or ObjectDisposedException) { }
+            }
         }
 
         public event Action Changed;
@@ -483,23 +539,18 @@ namespace PadForge.Services.Automation.Web
 
         public void Used(string grantId) => Say(new JsonObject { ["t"] = "used", ["id"] = grantId });
 
-        /// <summary>Sends one line to PadForge. A pipe that broke ends the
-        /// run through the reader.</summary>
+        /// <summary>Sends one line to PadForge, after every line said before
+        /// it. A pipe that broke ends the run through the reader.</summary>
         internal void Say(JsonObject message)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(message.ToJsonString() + "\n");
-            _ = Task.Run(async () =>
+            => _out.Writer.TryWrite(Encoding.UTF8.GetBytes(message.ToJsonString() + "\n"));
+
+        /// <summary>Says which tunnel programs this PC has now.</summary>
+        internal void SayFound()
+            => Say(new JsonObject
             {
-                await _write.WaitAsync().ConfigureAwait(false);
-                try
-                {
-                    await _stream.WriteAsync(bytes).ConfigureAwait(false);
-                    await _stream.FlushAsync().ConfigureAwait(false);
-                }
-                catch (Exception error) when (error is IOException or ObjectDisposedException) { }
-                finally { _write.Release(); }
+                ["t"] = "found",
+                ["tunnels"] = new JsonArray(WebTunnels.Find().Select(f => (JsonNode)new JsonObject { ["key"] = f.Key, ["path"] = f.Path }).ToArray()),
             });
-        }
 
         /// <summary>Reads PadForge's lines until the pipe closes.</summary>
         internal async Task RunAsync(CancellationToken stopping)
@@ -561,8 +612,6 @@ namespace PadForge.Services.Automation.Web
                         _words = words.Where(w => w.Value is JsonValue v && v.GetValueKind() == System.Text.Json.JsonValueKind.String)
                             .ToDictionary(w => w.Key, w => w.Value.GetValue<string>(), StringComparer.Ordinal);
                     _first.TrySetResult(true);
-                    // PadForge hears which armed window the helper now holds.
-                    Say(new JsonObject { ["t"] = "seen", ["armedUntil"] = Interlocked.Read(ref _armedUntil) });
                     WebOn = message["web"] is not JsonValue webOn || !webOn.TryGetValue(out bool on) || on;
                     if (message["network"] is JsonObject network)
                     {
@@ -603,6 +652,11 @@ namespace PadForge.Services.Automation.Web
                         catch (System.Security.Cryptography.CryptographicException) { }
                         Say(new JsonObject { ["t"] = "protected", ["blob"] = blob });
                     }
+                    break;
+                case "find":
+                    // PadForge asks again, as when its page shows: a program
+                    // installed or removed since is seen.
+                    SayFound();
                     break;
                 case "answer":
                     string sid = message["sid"]?.GetValue<string>();
@@ -666,27 +720,39 @@ namespace PadForge.Services.Automation.Web
                 }
                 Report(key, "starting", null, null);
                 started = WebTunnels.Start(kind, path, _port,
-                    address =>
-                    {
-                        lock (_tunnelSync) if (_tunnelKey == key) _tunnelAddress = address;
-                        Report(key, "running", address, null);
-                        try { Changed?.Invoke(); } catch { }
-                    },
+                    address => TunnelAddress(key, started, address),
                     line => last = line,
-                    code =>
-                    {
-                        lock (_tunnelSync)
-                        {
-                            if (_tunnelKey != key || !ReferenceEquals(_tunnel, started)) return;
-                            _tunnel = null;
-                            _tunnelAddress = null;
-                        }
-                        Report(key, "stopped", null, Last(last));
-                        try { Changed?.Invoke(); } catch { }
-                    });
+                    code => TunnelExited(key, started, last));
                 _tunnel = started;
                 if (_tunnel == null) Report(key, "failed", null, null);
             }
+        }
+
+        /// <summary>A tunnel program gave its address. A line read after the
+        /// program ended carries none: Process raises Exited without waiting
+        /// for its streams' end.</summary>
+        internal void TunnelAddress(string key, System.Diagnostics.Process started, string address)
+        {
+            lock (_tunnelSync)
+            {
+                if (_tunnelKey != key || !ReferenceEquals(_tunnel, started)) return;
+                _tunnelAddress = address;
+            }
+            Report(key, "running", address, null);
+            try { Changed?.Invoke(); } catch { }
+        }
+
+        /// <summary>A tunnel program ended.</summary>
+        internal void TunnelExited(string key, System.Diagnostics.Process started, string last)
+        {
+            lock (_tunnelSync)
+            {
+                if (_tunnelKey != key || !ReferenceEquals(_tunnel, started)) return;
+                _tunnel = null;
+                _tunnelAddress = null;
+            }
+            Report(key, "stopped", null, Last(last));
+            try { Changed?.Invoke(); } catch { }
         }
 
         /// <summary>The program's last line as the page shows it: cleaned
@@ -731,11 +797,14 @@ namespace PadForge.Services.Automation.Web
             return null;
         }
 
-        public ValueTask DisposeAsync()
+        public async ValueTask DisposeAsync()
         {
             StopTunnel();
             foreach (var waiting in _asking.Values) waiting.TrySetResult(null);
-            return ValueTask.CompletedTask;
+            // The last lines go out, for at most a second: a pipe PadForge
+            // no longer reads never holds the helper's end.
+            _out.Writer.TryComplete();
+            await Task.WhenAny(_writing, Task.Delay(1000)).ConfigureAwait(false);
         }
     }
 

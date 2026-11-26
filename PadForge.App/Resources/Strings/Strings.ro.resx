@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Afișare sau ascundere PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Pornire sau oprire controlere virtuale</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Orice dispozitiv conectat</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (neconectat)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Un dispozitiv care nu se află în pagina Dispozitive</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Se înregistrează…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>când</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Citire</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Trimitere intrări</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Modificare setări</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programele pot comuta și elibera profiluri, porni și opri motorul, activa și dezactiva controlerele virtuale, afișa și ascunde fereastra, închide PadForge, salva un instantaneu de diagnosticare și întreba ce rulează.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programele pot comuta și elibera profiluri, porni și opri motorul, activa și dezactiva controlerele virtuale, afișa și ascunde fereastra, închide PadForge, întreba ce rulează, salva un instantaneu de diagnosticare și porni, opri și marca o înregistrare de problemă.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Tot ce permite nivelul Comenzi, iar programele pot vedea dispozitivele, controlerele virtuale, mapările, profilurile și setările, pot urmări intrările fiecărui dispozitiv pe măsură ce apar și vă pot arăta un loc din PadForge. Un program de la nivelul Citire vede fiecare tastă apăsată pe fiecare dispozitiv, inclusiv tastele scrise în ferestre care rulează ca administrator.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Tot ce permite nivelul Citire, iar programele pot adăuga dispozitive proprii și le pot comanda, pot ține apăsat un control al oricărui dispozitiv și pot transmite valori cu nume către declanșatoarele de macrocomenzi.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tot ce permite nivelul Trimitere intrări, iar programele pot schimba ce puteți schimba dumneavoastră în pagini. Unele modificări vă întreabă mereu mai întâi pe cardul de întrebare al PadForge.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Așteaptă răspunsul dumneavoastră</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activitate</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Anulare modificare</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge nu a putut salva: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge nu a putut salva fișierul.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge nu a putut salva kitul pentru pluginuri.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Activitate {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Sunete{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Pictograme{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Cât timp este conectat un program de la nivelul Citire sau mai sus, acesta vede ce se apasă pe fiecare dispozitiv, tastaturile incluse.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pluginuri</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Rulare pluginuri</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} din {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (redare)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Înregistrări de probleme|*.zip;*.log|Toate fișierele|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nu poate reda {0}. Nu este o înregistrare de problemă sau nu conține intrările niciunui dispozitiv.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge nu poate reda {0}. Nu este o înregistrare de problemă pe care PadForge o poate citi.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge nu poate reda {0}. Conține mai mult de {1} dispozitive, iar Redare înregistrare redă cel mult {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge nu poate reda {0}. Nu conține intrări de la niciun dispozitiv.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge nu a putut citi {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Pluginurile dumneavoastră</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Adăugare plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programe și scripturi|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Toate fișierele|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Oprit după cinci eșecuri la rând</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Nu a pornit: fișierul lipsește</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Nu a pornit: Windows nu are niciun program pentru acest tip de fișier</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nu a pornit: niciun program nu deschide pentru dumneavoastră fișierele Python, iar PadForge nu găsește niciun launcher py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nu a pornit: PadForge nu poate citi ce program deschide pentru dumneavoastră acest tip de fișier</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nu a pornit: programul care deschide pentru dumneavoastră acest tip de fișier nu se află pe acest PC</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nu a pornit: nu rulează niciun shell de desktop sub care să fie pornit</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nu a pornit: shellul de desktop are drepturi de administrator, deci pluginul le-ar avea și el</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nu a pornit: PadForge nu poate citi dacă ar avea drepturi de administrator</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nu a pornit: Windows i-a dat drepturi de administrator, deci PadForge l-a oprit înainte să ruleze</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nu a pornit: cere drepturi de administrator</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nu a pornit: Windows a refuzat cu eroarea {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nu a pornit</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Adăugat: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Semnat de {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nesemnat.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Setările sale apar aici cât timp rulează.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Nu declară nicio setare.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Setările sale apar aici după ce se conectează la PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programul folosește o versiune pe care PadForge nu o cunoaște</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge nu a dat cheia pentru plugin</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge nu a acceptat conexiunea acestui program</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge nu a creat niciun dispozitiv, deoarece Windows nu a dat numele fișierului programului</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Solicitat din nou prea devreme</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nu se mai fac astfel de lucruri până la repornirea PadForge</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Prea multe asemenea elemente create de programe așteaptă verificarea dumneavoastră în Acasă</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nu are un astfel de instrument</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programul a citit o stare mai veche</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Niciun element nu are acest ID</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Nu ați permis</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nimeni nu a răspuns la timp</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Se așteaptă răspunsul dumneavoastră</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Încă nu răspunsese</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Solicitare inexistentă</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nimic de anulat</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Doar dumneavoastră puteți schimba aceasta</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Nesemnat.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>La nivelul Citire și peste, vede fiecare tastă apăsată pe fiecare dispozitiv, tastaturile incluse.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Întreabă o singură dată. Îl puteți elimina din pagina Automatizare.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Pornit de un program pe care PadForge nu l-a putut identifica.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge nu poate deosebi acest program de altul, deci întreabă din nou la următoarea sa conectare.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>linia de comandă a PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setează {0} la {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ascultă în rețea, deci alte dispozitive pot ajunge la acest PC.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Aducere profil</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Importați un fișier de profil din alt program, apoi vedeți ce a ajuns aici.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, repetări: {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ultima dintre solicitările asemănătoare: {1}</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Scripturi AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Logitech G-key SDK nu este instalat pe acest computer. Se instalează odată cu Logitech Gaming Software 8.55 sau o versiune ulterioară.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK este înregistrat, dar fișierul său lipsește. Reinstalați Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK a fost găsit, dar nu a putut fi încărcat.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK a fost găsit, dar nu a fost încărcat, deoarece PadForge nu a putut confirma că doar administratorii îl pot modifica și că Logitech l-a semnat.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Biblioteca respectivă nu este G-key SDK-ul așteptat.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK a refuzat să pornească. De obicei, cauza este că Logitech Gaming Software nu rulează.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Conectat, nicio tastă detectată încă. În Logitech Gaming Software, trageți comanda G-key pe fiecare tastă din profilul PadForge și setați acel profil ca persistent. Un mouse G600 sau G300 trebuie, de asemenea, scos din modul de memorie integrată.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Pornește PadForge automat când vă conectați la Windows. Cât timp este activat, PadForge pornește și fără solicitarea Windows dintr-o scurtătură, un script sau alt program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge rulează din {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Acest lucru cere ca PadForge să fie într-un folder propriu. Folderul lui conține alte fișiere, deci PadForge nu poate împiedica alte programe să îl modifice.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Acest lucru cere ca PadForge să fie într-un folder pe care alte programe nu îl pot modifica. PadForge nu a putut împiedica alte programe să îi modifice folderul.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Mutare PadForge în folderul propriu</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copiază PadForge și setările lui în Program Files, îi îndreaptă sarcinile acolo și îl pornește de acolo. Copia de aici rămâne neschimbată.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge nu s-a mutat: {0} conține fișiere care nu sunt ale PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge nu s-a mutat: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Pornirea la conectare a fost dezactivată, deoarece rula PadForge dintr-un folder care conține alte fișiere.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge nu s-a mutat: Windows nu indică niciun folder Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut citi PadForge care rulează.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut crea {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut citi ce conține {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut împiedica alte programe să modifice {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge nu s-a mutat: copia sa din {0} nu s-a potrivit cu PadForge care rulează.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge nu s-a mutat: după copiere, {0} conținea fișiere care nu sunt ale PadForge sau alte programe îl puteau modifica.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge din care rula nu mai există.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge nu a putut împiedica alte programe să modifice folderul din care a rulat PadForge.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge nu a putut citi din ce PadForge a rulat.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge nu a putut citi folderul PadForge-ului din care a rulat.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nu a putut crea folderul său protejat, {0}. PadForge își păstrează acolo bibliotecile pe care le rulează cu drepturi de administrator și nu poate porni în siguranță fără el.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge nu s-a putut porni din nou din folderul său protejat, {0}. PadForge rulează cu drepturi de administrator doar de acolo, deci nu a pornit.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge nu a putut crea blocajul care îl limitează la o singură copie în execuție, deci nu a pornit.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge rulează cu drepturi de administrator din {0}, un folder pe care alte programe îl pot modifica. Ele pot schimba acolo setările PadForge, iar PadForge acționează pe baza lor cu drepturile sale.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge rulează cu drepturi de administrator din {0}, un folder care conține alte fișiere. PadForge nu poate împiedica alte programe să îi modifice acolo setările, iar el acționează pe baza lor cu drepturile sale.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge rulează cu drepturi de administrator din {0}, un folder pe care nu l-a putut citi. PadForge nu poate împiedica alte programe să îi modifice acolo setările, iar el acționează pe baza lor cu drepturile sale.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Afișare permanentă în zona de notificare</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Păstrează pictograma vizibilă în zona de notificare cât timp fereastra este deschisă, astfel încât Ieșire din meniul ei să fie mereu la un clic distanță.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualizări</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalare și repornire</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Note de lansare</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Bază de date de controlere</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualizare acum descarcă de pe GitHub, sau de la adresa setată sub Mai multe, baza de date comunitară de controlere (SDL_GameControllerDB) și păstrează, în fișierul de setări, mapările pe care această versiune de PadForge nu le are. Ele sunt în uz imediat. De la altă adresă păstrează doar mapări noi. O mapare nouă se folosește doar pentru un controler pe care nimic altceva nu îl citește ca gamepad, care nu este atribuit și care nu este în modul Forțare mod joystick brut (fără remaparea de gamepad). Resetarea șterge toate mapările descărcate și descarcă din nou de pe GitHub. Rândurile dumneavoastră, sub Mai multe, rămân.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualizare acum descarcă de pe GitHub, sau de la adresa setată sub Mai multe, baza de date comunitară de controlere (SDL_GameControllerDB) și păstrează, în fișierul de setări, mapările pe care această versiune de PadForge nu le are. Ele sunt în uz imediat. De la altă adresă păstrează doar mapări noi. O mapare nouă se folosește mai întâi doar pentru un controler pe care SDL îl raportează ca gamepad sau ca fără un tip anume, pe care nimic altceva nu îl citește ca gamepad, care nu este atribuit și care nu este în modul Forțare mod joystick brut. Odată în uz, rămâne în uz și după ce controlerul este atribuit. Resetarea șterge mapările descărcate și readuce Descărcare de la la fișierul comunității, pe care îl descarcă următoarea Actualizare acum. Rândurile dumneavoastră, sub Mai multe, rămân.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Actualizare acum</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Se actualizează…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Se caută actualizări…</value></data>
@@ -1126,9 +1160,12 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Încorporate, mapări: {1}. Copia comunității din {2}. Descărcat la {3} de la {4}. Rânduri noi: {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Încorporate, mapări: {1}. Copia comunității din {2}. Descărcat la {3} de la {4}. Rând nou: {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Baza de date comunitară nu s-a schimbat de la ultima actualizare.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Fișierul de la {0} nu s-a schimbat de la ultima actualizare.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub nu a putut fi contactat: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} nu a putut fi contactat: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge a refuzat descărcarea, deoarece nu este baza de date de controlere așteptată. Nimic nu s-a schimbat.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge a refuzat răspunsul de la GitHub. Nu s-a schimbat nimic.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge a refuzat răspunsul de la {0}. Nu s-a schimbat nimic.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Pornire minimizată</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Pornire la conectare</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Dosar</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Setare de serviciu</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Pas de eliminare</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Serviciu</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Fișier</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Filtru superior</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Valoare de registry</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID hardware</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Activitate programată</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Intrare în Aplicații instalate</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Dispozitiv USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Permite controlerelor PlayStation 3, PlayStation Move și controlerului Navigation să se conecteze prin Bluetooth. Inclus în PadForge și instalat la prima asociere a unuia dintre ele.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Conectează controlerele PlayStation 3 prin Bluetooth.</value></data>
@@ -1239,6 +1284,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvat: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Înregistrarea nu a pornit. O verificare a găsit o valoare privată a acestui PC care nu ar fi fost ținută în afara fișierului.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Înregistrarea nu a pornit. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge nu a găsit, în profilul utilizatorului conectat, un folder temporar al acestuia, accesibil fără nicio legătură, în care să scrie înregistrarea.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Folderul de înregistrări este o legătură către alt loc, pe care PadForge nu o urmează.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Ultima înregistrare este încă în curs de finalizare.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Păstrare ultimele 60 de secunde este dezactivat, deci nu există nimic de salvat.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>O înregistrare pe care PadForge nu o oprise așteaptă să o citiți în Acasă: {0}</value></data>
@@ -1252,7 +1299,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, dispozitivele și setările dumneavoastră așa cum sunt acum, prin aceeași verificare.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log lângă PadForge.exe, pe care îl puteți citi acolo.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ce se înregistrează</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Totul activat. O parte dezactivată rămâne în afara următoarei înregistrări, iar fișierul spune ce părți conține.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Fiecare parte este activată implicit. O parte dezactivată rămâne în afara următoarei înregistrări, iar fișierul spune ce părți conține.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Pentru o problemă care apare o dată pe seară.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Înregistrarea așteaptă să o citiți în Acasă.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Rezumat</value></data>
@@ -1303,6 +1350,17 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Salvarea înregistrării</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Fișiere zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nesalvat. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Verificare de curățare: se verifică părțile păstrate…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Verificare de curățare: PadForge nu a putut citi părțile păstrate, deci Salvarea rămâne dezactivată.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Salvarea cu drepturile dumneavoastră nu a pornit.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Salvarea cu drepturile dumneavoastră nu a pornit: nu rulează niciun shell de desktop în care să pornească.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Salvarea cu drepturile dumneavoastră nu a pornit: Windows a refuzat cu eroarea {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Salvarea nu s-a încheiat în {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows nu a permis scrierea fișierului acolo.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge nu a recunoscut acest fișier ca înregistrare proprie.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Salvarea s-a încheiat cu codul {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Salvat ca dumneavoastră, prima dată în folderul Descărcări, apoi acolo unde ați salvat ultima dată, și afișat în File Explorer. O înregistrare care se oprește cât timp nimeni nu e la pagină (limita ei, o macrocomandă, un program, instrumentul asistentului sau --record stop) așteaptă această citire în Acasă și se șterge după 7 zile dacă nu este salvată. Unui program i se spune că așteaptă, niciodată unde.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>O înregistrare de problemă din {0} așteaptă să o citiți.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Citire</value></data>
@@ -1653,6 +1711,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Controler nou</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Setări</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Fiecare axă, buton și senzor</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Controalele sale după numele folosite de scripturi</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Apăsate: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID-uri, cale, capabilități, Forțare mod joystick brut</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID-uri, cale, capabilități</value></data>
@@ -2154,9 +2213,18 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Citirea a eșuat: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro a refuzat această presetare la {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Această presetare nu are descriptor HID, deci nu se poate crea niciun controler din ea.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge nu a putut verifica această presetare: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Se verifică presetarea…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nu s-a importat nimic. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importare</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dispozitiv HID fără nume)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Joystick</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Gamepad</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Tastatură</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Controler multiax</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Interfețe HID găsite: {0}.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Interfețe HID găsite: 1.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumerarea a eșuat: {0}</value></data>
@@ -3288,7 +3356,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Cât timp este ținut apăsat și centrare</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Comutare</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Intrare de direcție</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butonul care permite mouse-ului să conducă, de pe același dispozitiv cu sursa. Dacă nu este ales niciunul, mouse-ul conduce întotdeauna.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butonul care permite mouse-ului să conducă, de pe orice dispozitiv al acestui slot. Dacă nu este ales niciunul, mouse-ul conduce întotdeauna.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Netezire</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Netezește un mouse care raportează neuniform. Stickul rămâne în urma mâinii cam cât această durată. 0 înseamnă dezactivat.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limită la viteză</value></data>
@@ -3309,7 +3377,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Pornire de unde a început conducerea</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Cu o Intrare de direcție, stickul măsoară de la locul în care era pointerul când a început conducerea, ca un stick pe ecranul unui telefon, care pornește de unde aterizează degetul. Dezactivat, măsoară de la centrul monitorului pointerului.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Această axă se mișcă relativ</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pentru un trackball sau un spinner care raportează cât s-a rotit. Activat, axa ține o poziție ca Cursa mouse-ului și folosește setările de cursă. Windows nu spune care axe se mișcă astfel.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pentru un trackball sau un spinner care raportează cât s-a rotit. Activat, axa ține o poziție ca Cursă mouse și folosește setările de cursă. SDL citește un controler generic prin DirectInput, care citește fiecare axă ca poziție, deci acest comutator spune care axe se mișcă astfel.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Previzualizare</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Arată cum urmărește această familie propriul dumneavoastră mouse. Nimic nu este mapat până nu o alegeți.</value></data>
@@ -3502,6 +3570,13 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
 {0}
 
 PadForge a scris detaliile în crash.log, lângă PadForge.exe. Ca să raportați aceasta, începeți o discuție la {2} și trageți crash.log pe ea.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>A apărut o eroare neașteptată:
+
+{0}
+
+PadForge nu a putut scrie detaliile în crash.log, lângă PadForge.exe. Ca să raportați aceasta, începeți o discuție la {2}, apăsați aici Ctrl+C ca să copiați acest mesaj și lipiți-l acolo.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(erori suplimentare suprimate: {0})</value></data>
@@ -4430,7 +4505,7 @@ PadForge a scris detaliile în crash.log, lângă PadForge.exe. Ca să raportaț
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Decompresie Zstandard folosită de SteamKit2 pentru fragmentele depozitelor Steam, un port C# al bibliotecii zstd de Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Serverul și clientul Model Context Protocol din spatele conexiunii cu asistenții și al PadForge.exe --mcp, de Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Serverul și clientul Model Context Protocol din spatele conexiunii cu asistenții și al PadForge.exe --mcp, de Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions și DependencyInjection.Abstractions, pe care este construit MCP C# SDK, de Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>se leagă WinUSB de ecranul lui G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>ecranul lui G19 folosește alt driver ({0}), așa că porniți Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>ecranul lui G19 folosește driverul altui program ({0}), pe care PadForge îl lasă neatins</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Se verifică driverele PlayStation Bluetooth ale PadForge…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Se citește radioul Bluetooth al acestui PC…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Se deschide controlerul pe cablul său USB…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Se scrie adresa Bluetooth a acestui PC în controler…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Se înregistrează controlerul în Bluetooth Windows…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Se repornește Bluetooth…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Asocierea s-a oprit: Windows a refuzat accesul PadForge la controler sau la setările Bluetooth. Jurnalul de diagnosticare conține detaliile.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Asocierea s-a oprit: citirea sau scrierea în controler sau în radioul Bluetooth a eșuat. Jurnalul de diagnosticare conține detaliile.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Asocierea s-a oprit la o eroare pe care PadForge nu a așteptat-o. Jurnalul de diagnosticare conține detaliile.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>necesită Logitech Gaming Software 8.52 sau o versiune ulterioară</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>a găsit biblioteca sa, dar nu a încărcat-o, deoarece PadForge nu a putut confirma că doar administratorii o pot modifica și că Logitech a semnat-o</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>a găsit biblioteca sa, dar nu a putut-o folosi, iar jurnalul de diagnosticare spune de ce</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>porniți Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>se așteaptă un telefon cu Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>pe un telefon</value></data>
@@ -5938,6 +6024,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Alegere dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Încarcă această copie a bibliotecii Force Dimension în locul oricărei alte copii. Un Falcon deschis pe altă copie se închide și se deschide din nou pe aceasta. Copiile instalate de SDK sunt găsite și fără ea.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Biblioteci (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Pagina de descărcare Falcon SDK nu s-a deschis: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Pagina de descărcare Falcon SDK nu s-a deschis încă: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalare driver Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Instalează driverul Force Dimension, din folderul SDK, pe un Falcon care nu are driver. Windows poate întreba mai întâi dacă aveți încredere în Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Descărcare Force Dimension SDK</value></data>
@@ -6604,12 +6692,17 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Se elimină…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Se actualizează…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nu s-a terminat: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Intrarea și abilitatea PadForge rămân, deoarece {0} citește același fișier de setări și același folder de abilități.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Intrarea PadForge rămâne, deoarece {0} citește același fișier de setări.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge este eliminat din acest program. Abilitatea sa rămâne, deoarece {0} citește abilități din același folder.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nu poate citi setările din {0}, deci nu știe dacă PadForge este adăugat.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Adăugat. PadForge nu a putut citi folderul abilității sale.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Alți asistenți</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Pentru un asistent care nu apare mai sus: Copiere setări dă intrarea pentru setările sale MCP, iar Copiere mesaj dă un text scurt pentru orice conversație, care spune cum să vă conectați și ce să cereți mai întâi.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Copiere setări</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Copiere mesaj</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Copiat.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Necopiat: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Necopiat. Windows nu a permis PadForge să folosească clipboardul.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Conectează-te la PadForge, programul de mapare a controlerelor de pe PC-ul meu. Este un server MCP local care rulează prin stdio: comanda este {0}, cu argumentul --mcp. Ca setări JSON: {1} După conectare, apelează mai întâi instrumentul său status, apoi întreabă-mă ce vreau să configurez, de exemplu: „Arată-mi unde mapez trăgaciile controlerului meu.”</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Automatizarea din PadForge este dezactivată acum: activați-o mai întâi în PadForge, la Extra, Automatizare.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programe permise</value></data>
@@ -6630,6 +6723,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Un joystick. PadForge îl citește brut, deci maparea SDL nu este folosită.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Un joystick, aranjat ca gamepad de rândul dumneavoastră.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL citește dispozitivele cât timp rulează motorul.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Dispozitivul nu este conectat. SDL îl citește după ce se conectează.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nu a dat PadForge nicio citire a acestui dispozitiv.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Copia comunității încorporată, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Descărcat {0}</value></data>
@@ -6667,6 +6762,11 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, comutări și alte acțiuni</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} și {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nimic de copiat: SDL nu are nicio mapare pentru acest dispozitiv, iar el nu se află pe niciun controler.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Nimic de copiat: PadForge nu poate citi maparea SDL pentru acest dispozitiv, iar niciun rând al controlerelor sale nu dă o asociere pe care forma SDL o acceptă.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Nimic de copiat: SDL nu are nicio mapare pentru acest dispozitiv, iar niciun rând al {0} nu citește unul dintre butoanele, axele sau hat-urile lui într-un fel pe care forma SDL îl acceptă.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Nimic de copiat: SDL nu are nicio mapare pentru acest dispozitiv, iar rândurile {0} îl citesc doar pentru {1}, ceea ce forma SDL nu poate reține.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Nimic de copiat: PadForge nu poate citi acum maparea SDL pentru acest dispozitiv, iar el nu se află pe niciun controler.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Nimic de copiat: PadForge nu poate citi acum maparea SDL pentru acest dispozitiv, iar niciun rând al {0} nu dă o asociere pe care forma SDL o acceptă.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Alt program folosește clipboardul. Nu s-a copiat nimic.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Rândul dumneavoastră este eliminat. Dispozitivul este citit ca înainte de el.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mapat din nou din aranjamentul SDL: {0}.</value></data>
@@ -6687,6 +6787,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rândurile purtate de PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Niciun rând nu se potrivește.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Rândul ales se aplică pentru {0} sub propriul ID, prin aceeași verificare și aceeași alegere ca la Lipire.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Motorul este oprit, deci lista omite rândurile pe care le deține SDL, cele proprii și copia comunitară integrată. Ele sunt listate după ce motorul rulează.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL nu a răspuns la timp, deci lista omite rândurile pe care le deține, cele proprii și copia comunitară integrată.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Rând de mapare SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Un rând pentru acest dispozitiv.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Un aranjament estimat.</value></data>
@@ -6699,14 +6801,17 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} câmp, de la același producător și produs pe altă magistrală sau versiune. Este păstrat sub ID-ul propriu al acestui dispozitiv.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} câmp, rândul altui dispozitiv. Este păstrat sub ID-ul propriu al acestui dispozitiv.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} câmp. SDL nu citește acest dispozitiv, deci PadForge își aranjează intrările după rând.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge nu are un buton sau o axă simplă pentru aceste câmpuri și le omite: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} câmp, din axele, butoanele și hat-urile dispozitivului. Verificați-l în Testare intrări, apoi păstrați-l sau schimbați-l aici.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Aceasta schimbă modul în care este citit {0}. Rândurile sale din {1} sunt mapate din nou din noul aranjament.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Aceasta schimbă modul în care este citit {0}. Nu se află pe niciun controler, deci niciun rând nu se schimbă.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Comenzile rapide de profil care citesc {0} își păstrează intrările la care au fost setate.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Rândul este păstrat ca al dumneavoastră în PadForge.xml și are prioritate față de orice altă sursă pentru acest dispozitiv. Eliminare rând propriu readuce vechiul rând și vechile rânduri.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rândurile sunt păstrate ca ale dumneavoastră în PadForge.xml și au prioritate pentru dispozitivele lor față de orice altă sursă. Golire, sub Mai multe la rândul Bază de date de controlere, le elimină.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Rânduri pentru Windows: {0}. Rânduri pentru alte sisteme, omise: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rând pentru Windows. Rânduri pentru alte sisteme, omise: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Rânduri pentru Windows: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} rând pentru Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Rânduri pentru alte sisteme, ignorate: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} rând pentru alt sistem este ignorat.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Se vor adăuga toate cele {0:N0}. Numărul maxim de rânduri ale dumneavoastră păstrate de PadForge este {1:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Se va adăuga. Numărul maxim de rânduri ale dumneavoastră păstrate de PadForge este {1:N0}.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Rânduri ale dumneavoastră păstrate acum: {0:N0}. Din text se adaugă: {1:N0}. Nu se adaugă: {2:N0}.</value></data>
@@ -6716,7 +6821,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Textul nu este un rând al bazei de date de controlere SDL: un ID de 32 de cifre hexazecimale, un nume, apoi câmpuri precum a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Rândurile sunt pentru alte sisteme. PadForge citește rânduri pentru Windows sau pentru niciun sistem anume.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID-ul rândului nu aparține unui dispozitiv. Are nevoie de 32 de cifre hexazecimale.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Numele rândului este gol, are peste 128 de caractere sau conține un caracter pe care SDL îl citește ca pe un câmp.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Numele rândului este gol, are peste 128 de caractere, conține un marcaj de câmp pe care SDL îl citește, precum „type:”, sau conține un caracter altul decât litere, cifre, semne de punctuație, simboluri și spațiul simplu.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Rândul poartă un hint sau un câmp Android, pe care PadForge nu le preia.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Rândul are un câmp pe care SDL nu îl cunoaște.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>O legătură nu este în forma SDL, precum b3, a2, +a2, a2~ sau h0.4.</value></data>
@@ -6727,8 +6832,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Rândurile dumneavoastră</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rândurile pe care le adăugați aici sau le lipiți pe cardul Mapare SDL al unui dispozitiv au prioritate pentru dispozitivele lor față de orice altă sursă și rămân după resetare.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Adăugare rânduri dintr-un fișier sau de pe clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Rânduri: {0}, pentru dispozitive: {0}, ale dumneavoastră în fața oricărei alte surse.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rând pentru {0} dispozitiv, al dumneavoastră în fața oricărei alte surse.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Rânduri: {0:N0}, cele ale dumneavoastră au prioritate față de orice altă sursă.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} rând, cel al dumneavoastră are prioritate față de orice altă sursă.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Încă niciunul.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Variabila dumneavoastră SDL_GAMECONTROLLERCONFIG conține rânduri pe care PadForge nu le păstrează, număr: {0}. Adăugare rânduri dintr-un fișier sau de pe clipboard se deschide cu ele.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Variabila dumneavoastră SDL_GAMECONTROLLERCONFIG conține {0} rând pe care PadForge nu îl păstrează. Adăugare rânduri dintr-un fișier sau de pe clipboard se deschide cu el.</value></data>
@@ -6738,7 +6843,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Modificare…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Folosirea fișierului comunității</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adresă</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge acceptă o adresă care începe cu https:// și numește o gazdă, pe portul implicit, fără nume de utilizator sau parolă.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge acceptă o adresă de cel mult 2.048 de caractere, care începe cu https://, indică o gazdă, folosește portul implicit și nu conține nume de utilizator, parolă sau o parte după #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Acces la PadForge de pe web</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Un asistent care rulează pe un site ajunge la PadForge printr-un program de tunel de pe acest PC. Activarea vă întreabă mai întâi.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Acces la PadForge de pe web?</value></data>
@@ -6755,7 +6860,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Oprit. Ultimele sale cuvinte: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nu a putut fi pornit.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Nu mai este pe acest PC.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Pe acest PC nu s-a găsit niciun program de tunel. PadForge funcționează cu cloudflared, devtunnel, ngrok și Tailscale Funnel sau cu adresa propriului tunel.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge nu a găsit pe acest PC niciunul dintre cloudflared, devtunnel, ngrok sau Tailscale Funnel. Alegeți ChatGPT Secure MCP Tunnel, pe care PadForge îl descarcă, sau dați adresa propriului tunel.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Alegeți un tunel care să dea PadForge o adresă publică.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Tot pe acest PC: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, a cărui adresă rămâne aceeași</value></data>
@@ -6763,7 +6868,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Porniți propriul tunel către http://127.0.0.1:{0} și lipiți adresa lui https. Un tunel Cloudflare cu nume, un tunel de dezvoltare persistent, Tailscale Funnel și domeniul propriu al ngrok își păstrează adresa.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Lipiți o adresă https fără altă cale decât /mcp, așa cum o dă tunelul dumneavoastră.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Pornire ajutor web al PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Ajutorul web al PadForge s-a oprit ({0}). Dezactivați și activați din nou Acces la PadForge de pe web ca să îl porniți iar.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Ajutorul web al PadForge s-a oprit ({0}). PadForge continuă să încerce să îl pornească.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adresă</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Încă nicio adresă publică.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Adăugare la Claude</value></data>
@@ -6802,11 +6907,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>s-a încheiat cu codul {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatizarea este dezactivată, deci niciun asistent web nu ajunge la PadForge. Ajutorul web pornește după ce Automatizarea este activată.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Se verifică…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Neinstalată.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Instalată și la zi. Un script începe cu {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Instalată pentru {0} și la zi. Un script începe cu {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Instalată. Acest PadForge are o copie mai nouă.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Instalată pentru {0}. Acest PadForge are o copie mai nouă.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Se instalează…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge nu a putut verifica: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instalarea pune biblioteca PadForge acolo unde o găsește acel limbaj. Un script care o încarcă citește dispozitivele și comandă mapările la nivelul de mai sus.</value></data>
@@ -6814,8 +6914,27 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Copii instalate</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Eliminare totală</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Eliminat.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Biblioteca PadForge este instalată pentru {0} și la zi. Un script începe cu {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Biblioteca PadForge pentru {0} diferă de copia acestui PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Biblioteca PadForge nu este instalată pentru {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>Biblioteca PadForge este la zi pentru {0}. Copia pentru {1} diferă de cea a acestui PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>Biblioteca PadForge este la zi pentru {0} și neinstalată pentru {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>Biblioteca PadForge pentru {0} diferă de copia acestui PadForge și nu este instalată pentru {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>Biblioteca PadForge este la zi pentru {0}. Copia pentru {1} diferă de cea a acestui PadForge, iar pentru {2} biblioteca nu este instalată.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows nu l-a pornit cu drepturile dumneavoastră.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Nu s-a încheiat în timp util (secunde: {0}).</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>S-a încheiat cu codul {0} și nu a dat niciun motiv.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nu poate citi setările din {0}, deci a lăsat fișierul așa cum este.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge nu a scris {0}, deci l-a lăsat așa cum este.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows nu indică pentru dumneavoastră niciun folder Documente.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge nu găsește niciun folder al dumneavoastră pentru {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Comanda proprie a programului {0} s-a încheiat cu codul {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Comanda programului {0} nu se află pe acest PC.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows nu a permis PadForge să citească sau să scrie un fișier de care are nevoie.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge nu găsește Python: niciunul nu este înregistrat, instalat din Microsoft Store, listat de un launcher py sau în PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Niciun Python găsit de PadForge nu a răspuns în timp util (secunde: {0}).</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Rularea nu a dat niciun motiv cunoscut de PadForge.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID script</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID-ul său de script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scripturile își numesc controalele {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scripturile își numesc tastele KeyA, KeySpace, KeyLeftShift și altele asemenea, iar fiecare tastă după codul ei, Vk0 până la Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} din această rețea, de la {1}</value></data>
@@ -6827,11 +6946,11 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Ajutorul PadForge, care rulează fără drepturi de administrator, ascultă pe adresele de rețea ale acestui PC, iar PadForge permite portul său doar în rețelele private. Un asistent de pe alt PC intră doar cu o cheie pe care o creați aici. Apelurile și cheia lor traversează rețeaua necriptate.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Modificare…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Apelurile și cheia lor traversează această rețea necriptate. Windows le permite doar în rețelele private.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Apelurile și cheia lor trec necriptate prin această rețea. Regula Paravanului de protecție Windows pe care o creează PadForge pentru acest port vizează doar rețelele private.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Portul {0} este folosit de alt program. Modificați-l ca să ajungeți la PadForge din această rețea.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows nu a permis ajutorului PadForge să asculte pe portul {0}. PadForge îl permite cu drepturi de administrator, deci porniți PadForge cu ele și dezactivați, apoi activați din nou această opțiune.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows nu păstrează nicio rezervare pentru ajutorul PadForge pe portul {0}. Dezactivați, apoi activați din nou această opțiune, iar PadForge o creează din nou.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Ajutorul PadForge nu a putut asculta pe portul {0}. Modificați portul sau dezactivați, apoi activați din nou această opțiune.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ajutorul PadForge s-a oprit ({0}). Dezactivați și activați din nou Acces la PadForge din această rețea ca să îl porniți iar.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Ajutorul PadForge s-a oprit ({0}). PadForge continuă să încerce să îl pornească.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatizarea este dezactivată, deci niciun asistent din această rețea nu ajunge la PadForge. Ajutorul pornește după ce Automatizarea este activată.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Acest PC nu are acum nicio adresă într-o rețea privată.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Asistenți din această rețea</value></data>
@@ -6875,11 +6994,12 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Alegere dispozitive</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} poate controla propriile dispozitive și pe cele pe care le bifați. Citește în continuare fiecare dispozitiv.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>Nu există dispozitive în pagina Dispozitive.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>În execuție, cu drepturile dumneavoastră, și pregătit. ChatGPT ajunge la PadForge prin acest tunel fără autentificare proprie, și doar din organizația dumneavoastră OpenAI. Pornește din nou odată cu PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>În execuție, cu drepturile dumneavoastră. Așteaptă ca OpenAI să spună că tunelul este pregătit.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Rulează, cu drepturile dumneavoastră, iar tunnel-client se raportează pregătit. Pornește din nou odată cu PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Rulează, cu drepturile dumneavoastră. tunnel-client nu se raportează pregătit acum.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Se descarcă tunnel-client de la OpenAI și se verifică după sumele SHA-256 ale versiunii sale.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client nu a putut fi descărcat: {0}. Alegeți din nou tunelul ca să încercați iar.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Lipiți mai jos o cheie de execuție și un ID de tunel, iar tunelul pornește.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>tunnel-client de la OpenAI nu se află încă pe acest PC. Alegeți din nou tunelul ca să îl descărcați.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Cheie de execuție</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Restricționată, cu Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Creați una</value></data>
@@ -6888,6 +7008,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Deschidere ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge păstrează cheia criptată doar pentru dumneavoastră. O casetă goală o uită. ChatGPT lucrează la nivelul de mai sus.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Cheia nu a fost păstrată: ajutorul web al PadForge nu rulează, iar doar el poate cripta cheia pentru dumneavoastră.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Cheia nu a fost păstrată: ajutorul web al PadForge s-a oprit înainte să cripteze cheia. Lipiți-o din nou.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Cheia nu a fost păstrată: Windows nu a putut-o cripta pentru dumneavoastră. Lipiți-o din nou.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Răspuns de pe alt dispozitiv</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Răspundeți la întrebările PadForge de pe un telefon sau de pe alt PC cât timp sunteți departe de acesta.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Funcționează doar în această rețea, prin adresa controlerului web.</value></data>
@@ -6905,9 +7027,10 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Codul funcționează o singură dată, până la {0}. Cinci încercări greșite îl închid, iar codul QR funcționează în continuare.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Se pornește adresa controlerului web…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Pagina nu se poate deschide: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Acest PC nu are nicio adresă într-o rețea privată.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows nu a ascuns această fereastră de captura de ecran, deci nu arată niciun cod.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Codul introdus este închis după cinci încercări greșite. Codul QR funcționează în continuare până la {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Codul a expirat. Asociere dispozitiv… creează unul nou.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Codul a expirat. Asociere dispozitiv creează unul nou.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge păstrează cel mult {0} cheie de rețea. Folosiți mai întâi Revocare pentru ea.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Culorile ajung direct la {0}. Culorile care se schimbă, cum ar fi un ciclu de culori sau culorile care urmează sunetul, nu ajung la el. O culoare fixă ajunge.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Toate fișierele (*.*)|*.*</value></data>

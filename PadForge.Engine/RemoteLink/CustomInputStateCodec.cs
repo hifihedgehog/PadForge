@@ -111,6 +111,12 @@ namespace PadForge.Engine.RemoteLink
             /// (#600): Wheel Travel reads them. Presence inferred from the
             /// state: both 0 omits the block, the neutral it decodes to.</summary>
             MouseWheel = 1 << 4,
+            /// <summary>Button 16 is a button of the device's own and its
+            /// first pad's click rides the pad alone (#600,
+            /// CustomInputState.OwnButtonSixteen): a program's device that
+            /// declared both. The bit alone carries it, with no payload, and
+            /// a frame without it reads as every other device's.</summary>
+            OwnButtonSixteen = 1 << 5,
         }
 
         /// <summary>Capsense channels carried on the wire (one byte,
@@ -378,6 +384,7 @@ namespace PadForge.Engine.RemoteLink
             if (analogKeys != null && analogKeys.Count > 0) ext |= BlockExt.AnalogKeys;
             if (state.Ir.Detected && state.Ir.Calibrated) ext |= BlockExt.IrCalibrated;
             if (state.MouseRawWheel != 0 || state.MouseRawWheelH != 0) ext |= BlockExt.MouseWheel;
+            if (state.OwnButtonSixteen) ext |= BlockExt.OwnButtonSixteen;
             if (ext != BlockExt.None)
             {
                 destination[o++] = ExtMagic;
@@ -432,7 +439,7 @@ namespace PadForge.Engine.RemoteLink
             if (caps.AccelAux) size += 12;
             if (caps.GyroAux) size += 3 + 12; // ext magic + ext mask + 3 floats
             size += 3 + 4; // Ring-Con flex (1 float) with its own ext header: 3 bytes over when GyroAux opened the tail.
-                           // The IR calibrated bit (#485) has no payload, and this header also covers a tail it opens alone.
+                           // The IR calibrated bit (#485) and the own button 16 bit (#600) have no payload, and this header also covers a tail either opens alone.
             size += 2; // battery
             if (state?.Touchpads != null)
             {
@@ -665,6 +672,7 @@ namespace PadForge.Engine.RemoteLink
                 // byte is the next thing in the frame. A peer that predates
                 // the tail simply never writes one, and a frame that ends here
                 // is complete, so this is a "maybe" read, never a required one.
+                target.OwnButtonSixteen = false;
                 if (o + 3 <= payload.Length && payload[o] == ExtMagic)
                 {
                     o++;
@@ -701,6 +709,8 @@ namespace PadForge.Engine.RemoteLink
                     }
                     if ((ext & BlockExt.IrCalibrated) != 0 && target.Ir.Detected)
                         target.Ir.Calibrated = true;
+                    if ((ext & BlockExt.OwnButtonSixteen) != 0)
+                        target.OwnButtonSixteen = true;
                     if ((ext & BlockExt.MouseWheel) != 0)
                     {
                         target.MouseRawWheel = BinaryPrimitives.ReadInt32LittleEndian(payload.Slice(o, 4)); o += 4;
@@ -734,6 +744,7 @@ namespace PadForge.Engine.RemoteLink
             Array.Clear(s.GyroAux);
             s.BatteryPercent = -1;
             s.BatteryCharging = false;
+            s.OwnButtonSixteen = false;
             s.Ir = default;
             s.JoyConIrIntensity = 0f;
             s.RingConStrain = 0f;

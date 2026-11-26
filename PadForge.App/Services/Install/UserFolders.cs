@@ -75,25 +75,19 @@ namespace PadForge.Services.Install
         }
 
         /// <summary>
-        /// Where a packaged app whose package family starts with
-        /// <paramref name="familyPrefix"/> keeps its roaming data:
+        /// Where the packaged app of the package family
+        /// <paramref name="family"/> (its name and publisher ID, as Windows
+        /// names it) keeps its roaming data:
         /// %LOCALAPPDATA%\Packages\&lt;family&gt;\LocalCache\Roaming, or null
-        /// when no such package wrote any. The family is matched by its
-        /// name and the underscore before its publisher ID, so Claude_ never
-        /// matches ClaudeTools_.
+        /// when that package wrote none. Another publisher's package of the
+        /// same name is another family.
         /// </summary>
-        internal static string PackagedRoaming(string familyPrefix)
+        internal static string PackagedRoaming(string family)
         {
             string local = Of(UserFolder.LocalData);
-            if (string.IsNullOrEmpty(local) || string.IsNullOrEmpty(familyPrefix)) return null;
-            string packages = Path.Combine(local, "Packages");
-            if (!Directory.Exists(packages)) return null;
-            foreach (string family in Directory.EnumerateDirectories(packages, familyPrefix + "_*"))
-            {
-                string roaming = Path.Combine(family, "LocalCache", "Roaming");
-                if (Directory.Exists(roaming)) return roaming;
-            }
-            return null;
+            if (string.IsNullOrEmpty(local) || string.IsNullOrEmpty(family)) return null;
+            string roaming = Path.Combine(local, "Packages", family, "LocalCache", "Roaming");
+            return Directory.Exists(roaming) ? roaming : null;
         }
     }
 }

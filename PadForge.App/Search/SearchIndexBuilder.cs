@@ -56,6 +56,12 @@ namespace PadForge.Search
 
         private static readonly HashSet<string> ResetStyles = new(StringComparer.Ordinal)
             { "ResetButton", "ResetButtonTight", "QuietResetButton", "SettingResetButton" };
+        // The Reset All buttons the catalog keeps under the Reset All look: a
+        // plugin's declared settings are a program's to change (#600 items 17
+        // and 19), and so is their Reset All. Every other Reset All says
+        // nothing alone and is left out.
+        private static readonly HashSet<string> ListedResetAlls = new(StringComparer.Ordinal)
+            { "Plugins_TestController_ResetAll", "Devices_PluginResetAll" };
         // EndsLabel is the label of a row whose switch stands at its end
         // (SettingRow.Ends, the sections pass of #574).
         private static readonly HashSet<string> LabelStyles = new(StringComparer.Ordinal) { "DzLabel", "DzSubLabel", "RowOptionLabel", "EndsLabel", "LineLabel" };
@@ -348,14 +354,18 @@ namespace PadForge.Search
             private static string PlainAttr(XElement e, string attribute)
                 => Attr(e, attribute) is { } v && !v.StartsWith("{", StringComparison.Ordinal) ? v : null;
 
-            /// <summary>The class an element carries: its own, else the one on
-            /// the way down.</summary>
+            /// <summary>The class an element carries: its own when it is as
+            /// strict as the one on the way down or stricter, else that
+            /// one.</summary>
             private static PadForge.Common.ReachClass ReachOf(XElement e, Ctx ctx)
-                => e != null && Enum.TryParse(Attr(e, "Reach.Class"), out PadForge.Common.ReachClass own) && own > ctx.Reach ? own : ctx.Reach;
+                => e != null && Enum.TryParse(Attr(e, "Reach.Class"), out PadForge.Common.ReachClass own) && own >= ctx.Reach ? own : ctx.Reach;
 
+            /// <summary>The reason an element asks with: its own at a class as
+            /// strict as the one on the way down or stricter, as Reach.Of
+            /// takes the nearest of the strictest.</summary>
             private static PadForge.Common.ReachReason WhyOf(XElement e, Ctx ctx)
             {
-                if (e != null && Enum.TryParse(Attr(e, "Reach.Class"), out PadForge.Common.ReachClass own) && own > ctx.Reach)
+                if (e != null && Enum.TryParse(Attr(e, "Reach.Class"), out PadForge.Common.ReachClass own) && own >= ctx.Reach)
                     return Enum.TryParse(Attr(e, "Reach.Why"), out PadForge.Common.ReachReason why) ? why : PadForge.Common.ReachReason.None;
                 return ctx.Why;
             }
@@ -370,10 +380,11 @@ namespace PadForge.Search
             private Ctx Enter(XElement e, Ctx ctx)
             {
                 // The reach class on the way down (#600): the strictest so
-                // far, as Reach.Of reads it. A stricter class takes its own
-                // reason or none.
+                // far, and of those the nearest, as Reach.Of reads it. A
+                // class as strict or stricter takes its own reason or none,
+                // so an item that asks for less than its section says so.
                 string reach = Attr(e, "Reach.Class");
-                if (reach != null && Enum.TryParse(reach, out PadForge.Common.ReachClass cls) && cls > ctx.Reach)
+                if (reach != null && Enum.TryParse(reach, out PadForge.Common.ReachClass cls) && cls >= ctx.Reach)
                     ctx = ctx with
                     {
                         Reach = cls,
@@ -591,7 +602,8 @@ namespace PadForge.Search
             }
 
             /// <summary>A section button of the header, or a part button of
-            /// Buttons or Macros &amp; Menus.</summary>
+            /// Buttons or Macros &amp; Menus: an entry of that button, with its
+            /// words, AutomationId and handler.</summary>
             private bool StripEntry(XElement e, Ctx ctx)
             {
                 if (!int.TryParse(Attr(e, "Tag"), out int tag)) return false;
@@ -600,13 +612,13 @@ namespace PadForge.Search
                 if (label == null) return false;
                 if (StyleOf(e) == "SectionStripButton")
                 {
-                    Add(ctx with { Section = tag, Tab = -1, ScopeName = null }, SearchKind.Section, label, null, SearchLabelSource.Strip);
+                    Add(ctx with { Section = tag, Tab = -1, ScopeName = null }, SearchKind.Section, label, null, SearchLabelSource.Strip, element: e);
                     return true;
                 }
                 string group = Attr(e, "GroupName");
                 if (group is "PadButtonsPart" or "PadMacrosPart")
                 {
-                    Add(ctx with { Section = ViewModels.PadViewModel.SectionOfTab(tag), Tab = tag, ScopeName = null, Card = null }, SearchKind.Part, label, null, SearchLabelSource.Strip);
+                    Add(ctx with { Section = ViewModels.PadViewModel.SectionOfTab(tag), Tab = tag, ScopeName = null, Card = null }, SearchKind.Part, label, null, SearchLabelSource.Strip, element: e);
                     return true;
                 }
                 return false;
@@ -637,9 +649,6 @@ namespace PadForge.Search
                 }
             }
 
-            /// <summary>A button's words when they are a string: its Content, or
-            /// the first Content setter of its own style. Shared verbs, Reset
-            /// All and the Extras pages' Back say nothing alone.</summary>
             /// <summary>The words a button's context menu is read under: its
             /// own words, its screen-reader name or its tooltip.</summary>
             private static SearchLabel MenuOwnerOf(XElement e)
@@ -650,9 +659,17 @@ namespace PadForge.Search
                 return null;
             }
 
+            /// <summary>A button's words when they are a string: its Content, or
+            /// the first Content setter of its own style. Reset All and the
+            /// Extras pages' Back say nothing alone. On a page, the shared
+            /// verbs (the Common_ words) say nothing alone either. In a source
+            /// of the catalog alone (<paramref name="inDialog"/>), they are
+            /// entries, a dialog's OK and Cancel among them, and an icon
+            /// button with no words is named by its screen-reader
+            /// name.</summary>
             private static string ActionKey(XElement e, bool inDialog = false)
             {
-                if (StyleOf(e) == "ResetAllButton") return null;
+                if (StyleOf(e) == "ResetAllButton" && !ListedResetAlls.Contains(Attr(e, "AutomationProperties.AutomationId") ?? string.Empty)) return null;
                 if ((Attr(e, "AutomationProperties.AutomationId") ?? string.Empty).StartsWith("Extras_Back_", StringComparison.Ordinal)) return null;
                 string key = KeyIn(Attr(e, "Content"));
                 if (key == null)
@@ -772,7 +789,7 @@ namespace PadForge.Search
                     if (unitText != null && unitText.StartsWith("{", StringComparison.Ordinal)) unitText = null;
                     return new SearchValueSource(b.Path, b.StringFormat, b.ConverterKey, unitKey, unitText, SearchValueKind.Number);
                 }
-                // A number box holds its number itself (#597: the settings
+                // A number box holds its number itself (#600: the settings
                 // catalog reads and writes it, and Search shows it).
                 var numberBox = kids.FirstOrDefault(k => Local(k) == "NumberBox");
                 if (numberBox != null && Binding.Parse(Attr(numberBox, "Value")) is { } n && n.IsPlainPath)

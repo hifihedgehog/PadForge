@@ -42,7 +42,7 @@ namespace PadForge.Tests
         {
             string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.PowerShell." + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(Path.Combine(dir, "Modules", "PadForge"));
-            AutomationLibraries.Save(AutomationLibraryKind.PowerShell, ModulePath(dir));
+            LibraryFiles.Write(AutomationLibraryKind.PowerShell, ModulePath(dir));
             return dir;
         }
 
@@ -93,6 +93,31 @@ namespace PadForge.Tests
             pad.ReadInputState.Povs[0] = -1;
             pad.InputState = pad.ReadInputState;
             return pad;
+        }
+
+        /// <summary>A declared controller's names are the server's own
+        /// (ScriptNames.Declared): a button declared "DPad Up" beside a hat
+        /// "DPad" keeps Button0, since DPadUp is the hat's up.</summary>
+        [InterpreterFact("powershell")]
+        public void ADeclaredControllersNames_AreTheServersOwn()
+        {
+            string dir = NewFolder();
+            string pipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            try
+            {
+                string script = Script(dir, """
+                    $ctl = Add-PadForgeController names 'Names Pad' -Buttons 'DPad Up', Fire -Axes @{ name = 'Steer' } -Hats DPad
+                    Log ('names ' + (($ctl.Controls.Keys | Sort-Object) -join ' '))
+                    exit 0
+                    """);
+                using var run = Start(dir, script, pipe);
+                ExpectModule(run, dir);
+                Assert.Equal("names Button0 DPad Fire Steer", run.Expect("names ", 60000));
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
         }
 
         // ── Items 21 to 25: the object model ──
@@ -828,8 +853,8 @@ namespace PadForge.Tests
                 using var run = Start(dir, script, rig.PipeName);
                 ExpectModule(run, dir);
                 Assert.Equal("level commands 1", run.Expect("level "));
-                Assert.Equal("refused PadForge refused devices: Automation's level is commands, too low for it. Raise it in Extras, Automation.", run.Expect("refused "));
-                Assert.Equal("refused PadForge refused var: Automation's level is commands, too low for it. Raise it in Extras, Automation.", run.Expect("refused "));
+                Assert.Equal("refused PadForge refused devices: this program works at the Commands level, which does not allow it.", run.Expect("refused "));
+                Assert.Equal("refused PadForge refused var: this program works at the Commands level, which does not allow it.", run.Expect("refused "));
                 run.Expect("done");
             }
             finally

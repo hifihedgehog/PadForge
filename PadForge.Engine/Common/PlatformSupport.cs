@@ -40,23 +40,14 @@ namespace PadForge.Engine
 
         // ── Kernel drivers: the machine decides ──────────────────────────
 
-        /// <summary>HidHide is a kernel filter driver, and upstream publishes
-        /// a Microsoft-signed package for each of two machines: the x64 MSI,
-        /// and <c>drivers/HidHide_ARM64.zip</c> (driver 1.6.280.0) with a
-        /// documented manual install, which HidHideArm64Installer performs.
-        /// Upstream's SETUP is x64 only (nefarius/HidHide#57 tracks that).
-        /// The driver is not. 4.5.1 read that issue as "no ARM64 HidHide" and
-        /// switched the feature off on ARM64, which was wrong.
-        ///
-        /// <para>Every rule here names the architectures that HAVE the native
-        /// half, rather than the one known to lack it. "Anything but ARM64"
-        /// answered true for x86, where none of it is usable.</para>
-        /// </summary>
-        public static bool HidHideAvailableOn(Architecture machine)
-            => machine == Architecture.X64 || machine == Architecture.Arm64;
-
-        /// <inheritdoc cref="HidHideAvailableOn"/>
-        public static bool HidHideAvailable => HidHideAvailableOn(MachineArchitecture);
+        // HidHide is a kernel filter driver, and upstream publishes a
+        // Microsoft-signed package for each of the two machines PadForge
+        // builds for (win-x64 and win-arm64, PadForge.App.csproj): the x64
+        // MSI, and drivers/HidHide_ARM64.zip (driver 1.6.280.0) with a
+        // documented manual install, which HidHideArm64Installer performs.
+        // Upstream's SETUP is x64 only (nefarius/HidHide#57 tracks that).
+        // The driver is not. So HidHide needs no availability rule, and
+        // IsArm64Machine picks the package.
 
         // ── In-process libraries: the process decides ────────────────────
 

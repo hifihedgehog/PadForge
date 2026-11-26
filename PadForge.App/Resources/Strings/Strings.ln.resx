@@ -192,8 +192,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programme ezali koloba version oyo PadForge eyebi te</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge epesaki clé wana ya plugin te</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge endimaki connexion ya programme oyo te</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge esalaki appareil moko te, mpo Windows epesaki nkombo ya fichier ya programme te</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Esengami lisusu noki mingi</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Lisusu te kino PadForge ebanda lisusu</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Ba programme batiki mingi mingi ya ndenge oyo ezela botali na yo na Home</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ezali na esaleli ya boye te</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programme etangaki état ya kala</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Eloko moko te ezali na ID wana</value></data>
@@ -201,6 +202,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ondimaki yango te</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Moto moko te ayanolaki na ntango</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Ezali kozela eyano na yo</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Ozalaki naino koyanola te</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Bosenga ya boye ezali te</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Eloko te ya kozongisa sima</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Kaka yo nde okoki kobongola oyo</value></data>
@@ -323,7 +325,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Komema profil awa</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Kotisa fichier ya profil uta na programme mosusu, sima tala nini eyei.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, mbala {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ya suka kati na {1} ya ndenge wana</value></data>
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Window" xml:space="preserve"><value>Lininisa</value></data>
@@ -353,6 +354,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Dossier</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Paramètre ya service</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Étape ya kolongola</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Service</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Fichier</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Filtre supérieur</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Valeur ya registre</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>ID ya matériel</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Tâche planifiée</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Entrée ya Applications installées</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>Appareil USB/IP</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Epesaka nzela na ba manette ya PlayStation 3, PlayStation Move mpe manette Navigation kokangana na nzela ya Bluetooth. Ezali kati na PadForge mpe etiamaka na PC mbala ya liboso oyo moko na yango ekangani na Bluetooth.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ekangisaka ba manette PlayStation 3 na Bluetooth.</value></data>
@@ -1042,6 +1051,13 @@
 {0}
 
 PadForge ekomaki ba détail na crash.log pembeni ya PadForge.exe. Mpo na koyebisa yango, banda discussion na {2} mpe tia crash.log kuna.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Libunga moko ebimi oyo tozelaki te:
+
+{0}
+
+PadForge ekokaki kokoma ba détail na crash.log pembeni ya PadForge.exe te. Mpo na koyebisa yango, banda discussion na {2}, nyata Ctrl+C awa mpo na kokopia message oyo, mpe tia yango kuna.
 
 {1}</value></data>
 
@@ -1829,6 +1845,8 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Pona dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Ezwaka copie oyo ya bibliothèque ya Force Dimension na esika ya mosusu nyonso. Falcon oyo efungwami na copie mosusu ekokangama mpe ekofungwama lisusu na oyo. Ba copie oyo SDK ekotisaka ezwamaka kozanga yango.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Ba bibliothèque (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Lokasa ya kokitisa SDK ya Falcon efungwamaki te: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Lokasa ya kokitisa SDK ya Falcon efungwami naino te: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installer pilote ya Falcon</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Zwa SDK ya Force Dimension</value></data>
   <data name="Falcon_Calibrate_Done_Format" xml:space="preserve"><value>Calibrage esili. {0}</value></data>
@@ -2031,6 +2049,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>batterie {0}, ezali kochargé</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Manette ya sika</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axe nyonso, bouton nyonso mpe capteur nyonso</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Ba contrôle na yango na ba nkombo oyo ba script basalelaka</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Efinami: {0}</value></data>
   <data name="Devices_CopyDetails" xml:space="preserve"><value>Kokopia ba détail</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Makoki</value></data>
@@ -2281,7 +2300,9 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} na {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Soki eyano te na {0}, ezali te.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ezali kotambola na ba droit ya administrateur uta na {0}, dossier oyo ba programme mosusu bakoki kobongola. Bakoki kobongola ba paramètre ya PadForge kuna, mpe PadForge esalaka na yango na ba droit na yango.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kosala mise à jour sikoyo ekitisaka base ya ba manette ya communauté (SDL_GameControllerDB) uta na GitHub, to uta na adresse oyo etiami na nse ya More, mpe ebombaka, na fichier ya ba paramètre, ba assignation oyo version oyo ya PadForge ezangi. Esalelamaka kaka sika. Uta na adresse mosusu, ebombaka kaka ba assignation ya sika. Assignation ya sika esalelamaka kaka mpo na manette oyo eloko mosusu te etangaka lokola gamepad, oyo ezali na assignation te mpe oyo ezali na Force Raw Joystick Mode (Bypass Gamepad Remapping) te. Kozongisa elongolaka ba assignation nyonso oyo ekitisami mpe ekitisaka lisusu uta na GitHub. Ba ligne na yo moko, na nse ya More, etikalaka.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ezali kotambola na ba droit ya administrateur uta na {0}, dossier oyo ezali na ba fichier mosusu. PadForge ekoki kopekisa ba programme mosusu te kobongola ba paramètre na yango kuna, mpe PadForge esalaka na yango na ba droit na yango.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ezali kotambola na ba droit ya administrateur uta na {0}, dossier oyo ekokaki kotanga te. PadForge ekoki kopekisa ba programme mosusu te kobongola ba paramètre na yango kuna, mpe PadForge esalaka na yango na ba droit na yango.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kosala mise à jour sikoyo ekitisaka base ya ba manette ya communauté (SDL_GameControllerDB) uta na GitHub, to uta na adresse oyo etiami na nse ya More, mpe ebombaka, na fichier ya ba paramètre, ba assignation oyo version oyo ya PadForge ezangi. Esalelamaka kaka sika. Uta na adresse mosusu, ebombaka kaka ba assignation ya sika. Assignation ya sika esalelamaka liboso kaka mpo na manette oyo SDL eyebisi lokola gamepad to lokola type moko te ya sikisiki, oyo eloko mosusu te etangaka lokola gamepad, oyo ezali na assignation te mpe oyo ezali na Force Raw Joystick Mode (Bypass Gamepad Remapping) te. Soki ebandi kosalelama, etikalaka kosalelama ata sima manette ezwi assignation. Kozongisa elongolaka ba assignation oyo ekitisami mpe ezongisaka Download From na fichier ya communauté, oyo Kosala mise à jour sikoyo oyo ekolanda ekokitisa. Ba ligne na yo moko, na nse ya More, etikalaka.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Kosala mise à jour sikoyo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Mise à jour…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ya kati: ba assignation {0}, copie ya communauté ya {1}.</value></data>
@@ -2289,6 +2310,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Ya kati: ba assignation {1}, copie ya communauté ya {2}. Ekitisami {3} uta na {4}: ba ligne ya sika {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Ya kati: ba assignation {1}, copie ya communauté ya {2}. Ekitisami {3} uta na {4}: ligne ya sika {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Base ya communauté ebongwani te banda mise à jour ya suka.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Fichier oyo ezali na {0} ebongwani te banda mise à jour ya suka.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Mobembo ya souris X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Mobembo ya souris Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Mobembo kino na lock mobimba</value></data>
@@ -2309,7 +2331,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Ntango esimbami mpe kozonga na katikati</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Basculer</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Bouton ya kotambwisa</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton oyo etikaka souris etambwisa volant, na appareil moko na source. Soki moko te eponami, souris etambwisaka ntango nyonso.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton oyo etikaka souris etambwisa volant, na appareil nyonso ya slot oyo. Soki moko te eponami, souris etambwisaka ntango nyonso.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Kolembisa</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ebongisaka souris oyo eyebisaka na ndenge ekokani te. Stick elandaka loboko na sima pene na ntango oyo. 0 ezali ezimi.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock na vitesse</value></data>
@@ -2330,7 +2352,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Kobanda esika kotambwisa ebandaki</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Na Bouton ya kotambwisa, stick emekaka uta esika pointeur ezalaki ntango kotambwisa ebandaki, lokola stick na écran ya téléphone ebandaka esika mosapi etiami. Soki ezimi, emekaka uta na katikati ya écran ya pointeur.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Axe oyo etambolaka na ndenge relative</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Mpo na trackball to spinner oyo eyebisaka ndenge ebaluki mosika. Soki epeli, axe esimbaka esika lokola Mobembo ya souris esalaka mpe ezwaka ba paramètre ya mobembo. Windows eyebisaka te ba axe nini etambolaka boye.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Mpo na trackball to spinner oyo eyebisaka ndenge ebaluki mosika. Soki epeli, axe esimbaka esika lokola Mobembo ya souris esalaka mpe ezwaka ba paramètre ya mobembo. SDL etangaka manette ya générique na nzela ya DirectInput, oyo etangaka axe nyonso lokola esika, yango wana commutateur oyo eyebisaka ba axe nini etambolaka boye.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Kotala liboso</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Elakisaka ndenge libota oyo elandaka souris na yo. Eloko moko te etiami na assignation kino oponi yango.</value></data>
@@ -2344,7 +2366,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Mapping_Preview_Center" xml:space="preserve"><value>katikati</value></data>
   <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Etambolaka ntango {0} esimbami.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Serveur mpe client ya Model Context Protocol oyo esalaka connexion ya assistant mpe PadForge.exe --mcp, na Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Serveur mpe client ya Model Context Protocol oyo esalaka connexion ya assistant mpe PadForge.exe --mcp, na Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions mpe DependencyInjection.Abstractions, oyo MCP C# SDK etongami likolo na yango, na Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Programme</value></data>
@@ -2389,8 +2411,13 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Kolongola…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Kosala mise à jour…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Esilisaki te: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Entrée mpe skill ya PadForge etikali, mpo {0} etangaka fichier ya ba paramètre mpe dossier ya skill ndenge moko.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Entrée ya PadForge etikali, mpo {0} etangaka fichier ya ba paramètre ndenge moko.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge elongolami na programme oyo. Skill na yango etikali, mpo {0} etangaka ba skill uta na dossier ndenge moko.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ekoki kotanga ba paramètre na {0} te, yango wana eyebi te soki PadForge ebakisami.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Ebakisami. PadForge ekokaki kotanga dossier ya skill na yango te.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Ekopiami.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ekopiami te: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Ekopiami te. Windows etikaki te PadForge esalela presse-papiers.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Ba programme oyo endimami</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Programme oyo elingi Read to koleka etunaka mbala moko, mbala ya liboso ekangani, mpe ezwaka niveau oyo esengi, kino na niveau oyo ezali likolo. Assistant oyo obakisi likolo endimami na yango.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -2402,6 +2429,8 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge etangaka yango brut, yango wana assignation ya SDL esalelamaka te.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, etiami lokola gamepad na ligne na yo.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL etangaka ba appareil ntango moteur ezali kotambola.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Appareil ekangami te. SDL ekotanga yango soki ekangami.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL epesaki PadForge botangi moko te ya appareil oyo.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Copie ya communauté oyo ezali kati, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ekitisami {0}</value></data>
@@ -2439,6 +2468,11 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, ba bascule mpe ba action mosusu</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} mpe {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Eloko moko te ya kokopia: SDL ezali na assignation mpo na appareil oyo te, mpe ezali na manette moko te.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Eloko moko te ya kokopia: PadForge ekoki kotanga assignation ya SDL mpo na appareil oyo te, mpe ligne moko te ya ba manette na yango epesi liaison oyo forme ya SDL endimaka.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Eloko moko te ya kokopia: SDL ezali na assignation mpo na appareil oyo te, mpe ligne moko te ya {0} etangaka bouton, axe to hat na yango na ndenge oyo forme ya SDL endimaka.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Eloko moko te ya kokopia: SDL ezali na assignation mpo na appareil oyo te, mpe ba ligne ya {0} etangaka yango kaka mpo na {1}, oyo forme ya SDL ekoki kosimba te.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Eloko moko te ya kokopia: PadForge ekoki kotanga assignation ya SDL mpo na appareil oyo sikoyo te, mpe ezali na manette moko te.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Eloko moko te ya kokopia: PadForge ekoki kotanga assignation ya SDL mpo na appareil oyo sikoyo te, mpe ligne moko te ya {0} epesi liaison oyo forme ya SDL endimaka.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Programme mosusu ezali kosalela presse-papiers. Eloko moko te ekopiami.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Ligne na yo elongolami. Appareil etangamaka ndenge ezalaki liboso na yango.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Etiami lisusu uta na disposition ya SDL: {0}.</value></data>
@@ -2459,6 +2493,8 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Ba ligne oyo PadForge ezali na yango</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ligne moko te ekokani.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ligne oyo eponami etiamaka na {0} na nse ya ID na yango moko, na botali moko mpe na liponi moko lokola Kotia.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Moteur etelemi, yango wana liste ezangi ba ligne oyo SDL esimbi, oyo na yango moko mpe kopi ya communauté oyo ezali kati na yango. Ekomonana soki moteur ebandi kotambola.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL eyanolaki na ntango te, yango wana liste ezangi ba ligne oyo esimbi, oyo na yango moko mpe kopi ya communauté oyo ezali kati na yango.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Ligne ya assignation SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ligne mpo na appareil oyo.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Disposition oyo ekanisami.</value></data>
@@ -2471,14 +2507,14 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, champ {0}, uta na vendeur mpe produit moko na bus to version mosusu. Ebombami na nse ya ID ya appareil oyo yango moko.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, champ {0}, ligne ya appareil mosusu. Ebombami na nse ya ID ya appareil oyo yango moko.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Champ {0}. SDL etangaka appareil oyo te, yango wana PadForge etiaka ba entrée na yango na kolanda ligne.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge ezali na bouton to axe ya mpamba te mpo na ba champ oyo mpe etiki yango: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Champ {0}, uta na ba axe, ba bouton mpe ba hat ya appareil. Tala yango na Test Inputs, sima bomba yango to bongola yango awa.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Oyo ebongolaka ndenge {0} etangamaka. Ba ligne na yango na {1} etiamaka lisusu uta na disposition ya sika.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Oyo ebongolaka ndenge {0} etangamaka. Ezali na manette moko te, yango wana ligne moko te ebongwanaka.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Ba raccourci ya profil oyo etangaka {0} ebombaka ba entrée oyo etiamaki na yango.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Ligne ebombami lokola ya yo na PadForge.xml mpe elekaka source nyonso mosusu mpo na appareil oyo. Kolongola oyo ya ngai ezongisaka ligne ya kala mpe ba ligne ya kala.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ba ligne ebombami lokola ya yo na PadForge.xml mpe elekaka source nyonso mosusu mpo na ba appareil na yango. Clear, na nse ya More ya ligne Controller Database, elongolaka yango.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Ba ligne {0} mpo na Windows. Ba {1} mpo na ba système mosusu etikami.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Ligne {0} mpo na Windows. Ba {1} mpo na ba système mosusu etikami.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Ba ligne mpo na Windows: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Nyonso {0:N0} ekobakisama. PadForge ebombaka kino ligne {1:N0} na yo.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ekobakisama. PadForge ebombaka kino ligne {1:N0} na yo.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Ligne na yo ebombami sikoyo: {0:N0}. Yango wana {1:N0} kati na oyo ekobakisama mpe {2:N0} ekobakisama te.</value></data>
@@ -2488,7 +2524,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Texte ezali ligne ya base ya ba manette ya SDL te: ID ya ba chiffre hex 32, nkombo, sima ba champ lokola a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ba ligne ezali mpo na ba système mosusu. PadForge etangaka ba ligne mpo na Windows, to mpo na système moko te.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID ya ligne ezali ya appareil te. Esengeli ba chiffre hex 32.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Nkombo ya ligne ezali mpamba, eleki ba caractère 128, to ezali na caractère oyo SDL etangaka lokola champ.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Nkombo ya ligne ezali mpamba, eleki ba caractère 128, ezali na elembo ya champ oyo SDL etangaka, lokola “type:”, to ezali na caractère mosusu longola ba lettre, ba chiffre, ba ponctuation, ba symbole mpe espace ya pamba.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Ligne ezali na hint to champ ya Android, oyo PadForge endimaka te.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Ligne ezali na champ oyo SDL eyebi te.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Binding moko ezali na ndenge ya SDL te, lokola b3, a2, +a2, a2~ to h0.4.</value></data>
@@ -2509,7 +2545,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Etelemi. Maloba na yango ya suka: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ekokaki kobanda te.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ezali lisusu na PC oyo te.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Programme ya tunnel moko te emonani na PC oyo. PadForge esalaka na cloudflared, devtunnel, ngrok mpe Tailscale Funnel, to na adresse ya tunnel na yo moko.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge emoni moko te kati na cloudflared, devtunnel, ngrok to Tailscale Funnel na PC oyo. Pona ChatGPT Secure MCP Tunnel, oyo PadForge ekitisaka, to pesa adresse ya tunnel na yo moko.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Pona tunnel mpo na kopesa PadForge adresse ya bato nyonso.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Ezali mpe na PC oyo: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, oyo adresse na yango ebongwanaka te</value></data>
@@ -2517,7 +2553,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Tambwisa tunnel na yo moko kino http://127.0.0.1:{0} mpe tia adresse na yango ya https. Tunnel ya Cloudflare oyo ezali na nkombo, dev tunnel ya ntango nyonso, Tailscale Funnel mpe domaine ya ngrok yango moko ebombaka adresse na bango.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Tia adresse https oyo ezali na nzela mosusu te longola /mcp, ndenge tunnel na yo epesaka yango.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Ezali kobanda mosalisi ya web ya PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Mosalisi ya web ya PadForge etelemi ({0}). Zimisa mpe pelisa Reach PadForge From the Web mpo na kobanda yango lisusu.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Mosalisi ya web ya PadForge etelemaki ({0}). PadForge ezali kaka komeka kobandisa yango.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Adresse</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Adresse ya bato nyonso naino te.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Kobakisa na Claude</value></data>
@@ -2554,16 +2590,16 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows ebandisaki yango te</value></data>
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>esilaki na code {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation ezimi, yango wana assistant ya web moko te ekomaka na PadForge. Mosalisi ya web ebandaka ntango Automation epeli.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Etiami. PadForge oyo ezali na copie ya sika koleka.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Etiami mpo na {0}. PadForge oyo ezali na copie ya sika koleka.</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ekokaki kotala yango te: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Install etiaka bibliothèque ya PadForge esika monoko yango ya programmation ezwaka yango. Script oyo efungoli yango etangaka ba appareil mpe etambwisaka ba assignation na niveau oyo ezali likolo.</value></data>
   <data name="Extras_More_Scripts" xml:space="preserve"><value>Kobomba bibliothèque esika nyonso</value></data>
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Ba copie oyo etiami</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Kolongola nyonso</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Elongolami.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Bibliothèque ya PadForge etiami mpo na {0} mpe ezali à jour. Script ebandaka na {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Bibliothèque ya PadForge mpo na {0} ekeseni na kopi ya PadForge oyo.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Bibliothèque ya PadForge etiami te mpo na {0}.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID ya script</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID na yango ya script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Ba script ebengaka ba commande na yango {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Ba script ebengaka ba touche na yango KeyA, KeySpace, KeyLeftShift mpe mosusu lokola yango, mpe touche nyonso na code na yango, Vk0 kino Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} na réseau oyo uta na {1}</value></data>
@@ -2571,11 +2607,11 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} ebandaki kasi ekangani na PadForge ata mbala moko te.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Kobongola…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Ba appel mpe clé na yango ekatisaka réseau oyo kozanga chiffrement. Windows endimaka yango kaka na ba réseau privé.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Ba appel mpe clé na yango ekatisaka réseau oyo kozanga chiffrement. Règle ya Pare-feu Windows oyo PadForge esalaka mpo na port oyo etangi kaka ba réseau privé.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} ezali kosalelama na programme mosusu. Bongola yango mpo na kokoma na PadForge uta na réseau oyo.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows endimaki te ete mosalisi ya PadForge eyoka na port {0}. PadForge endimaka yango na ba droit ya administrateur, yango wana banda PadForge na ba droit yango mpe zimisa mpe pelisa oyo.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows esimbi réservation moko te mpo na mosalisi ya PadForge na port {0}. Zimisa mpe pelisa oyo, mpe PadForge ekosala yango lisusu.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Mosalisi ya PadForge ekokaki koyoka na port {0} te. Bongola port, to zimisa mpe pelisa oyo.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Mosalisi ya PadForge etelemi ({0}). Zimisa mpe pelisa Reach PadForge From This Network mpo na kobanda yango lisusu.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Mosalisi ya PadForge etelemaki ({0}). PadForge ezali kaka komeka kobandisa yango.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation ezimi, yango wana assistant moko te na réseau oyo ekomaka na PadForge. Mosalisi ebandaka ntango Automation epeli.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>PC oyo ezali na adresse te na réseau privé sikoyo.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Ba assistant na réseau oyo</value></data>
@@ -2590,7 +2626,27 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Reach_Line_Format" xml:space="preserve"><value>Etambwisaka ba appareil na yango moko mpe {0}. Kasi etangaka ba appareil nyonso.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Etambwisaka kaka ba appareil na yango moko. Kasi etangaka ba appareil nyonso.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Ba commande uta na ligne de commande ekomaka ntango nyonso na PadForge, lokola mpo na ba programme nyonso.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Ezali kotambola, na ba droit na yo, mpe ebongami. ChatGPT ekomaka na PadForge na nzela ya tunnel oyo kozanga kokota na yango moko, mpe kaka uta na organisation na yo ya OpenAI. Ebandaka lisusu elongo na PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Ezali kotambola, na ba droit na yo. Ezali kozela ete OpenAI eloba ete tunnel ebongami.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge ebombaka clé na chiffrement mpo na yo kaka. Boîte ya pamba ebosanaka yango. ChatGPT esalaka na niveau oyo ezali likolo.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge ekokaki kobomba kit ya ba plugin te.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Misala {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge ekokaki kosala serrure oyo endimaka kaka kopi moko ezala kotambola te, yango wana ebandaki te.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge eboyaki eyano ya GitHub. Eloko moko ebongwani te.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge eboyaki eyano uta na {0}. Eloko moko ebongwani te.</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>emoni bibliothèque na yango mpe etiaki yango te, mpo PadForge ekokaki kondimisa te ete kaka ba administrateur bakoki kobongola yango mpe ete Logitech asinyaki yango</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>emoni bibliothèque na yango mpe ekokaki kosalela yango te, mpe journal ya diagnostic elobi mpo na nini</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Ba ligne mpo na ba système mosusu oyo etikami: {0:N0}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ebandisaki yango te na ba droit na yo moko.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Esilaki te na {0} s.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Esilaki na code {0} mpe epesaki ntina moko te.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge ekoki kotanga ba paramètre na {0} te, yango wana etikaki fichier ndenge ezali.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge ekomaki {0} te, yango wana etikaki yango ndenge ezali.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows emonisi dossier Documents moko te mpo na yo.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge emoni dossier moko te ya yo mpo na {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Commande ya {0} yango moko esilaki na code {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Commande ya {0} ezali na PC oyo te.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows etikaki te PadForge etanga to ekoma fichier oyo esengeli na yango.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge emoni Python te: moko te ekomami, etiami uta na Microsoft Store, emonisami na launcher py to ezali na PATH na yo.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Python moko te oyo PadForge emoni eyanolaki na {0} s.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Bosali yango epesaki ntina moko te oyo PadForge eyebi.</value></data>
 </root>

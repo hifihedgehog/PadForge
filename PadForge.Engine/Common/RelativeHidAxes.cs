@@ -29,13 +29,19 @@ namespace PadForge.Engine.Common
     /// and throttle, Wine's object_usage_to_guid), SDL gives each an offset in
     /// DIJOYSTATE2 by that name and sorts the axes by offset
     /// (SortDevObjects).</para>
-    /// <para>The pump thread of RawInputListener is the only writer. Totals
-    /// are read on the polling thread with Interlocked.</para>
+    /// <para>The pump thread of RawInputListener builds every layout: for each
+    /// game controller present when it starts listening, for each one that
+    /// arrives after (WM_INPUT_DEVICE_CHANGE), and for a handle whose report
+    /// comes first. A removal drops the handle's layout and frees its
+    /// preparsed data. A controller with no relative value is kept as known,
+    /// so it is looked at once. The polling thread only reads what the pump
+    /// built: the totals, with Interlocked, and the layouts by path, and it
+    /// never lists a device (<see cref="LeftOutRelative"/>).</para>
     /// </summary>
     public static class RelativeHidAxes
     {
         /// <summary>One value of a report.</summary>
-        internal readonly record struct Value(ushort Page, ushort Usage, byte ReportId, ushort LinkCollection,
+        internal readonly record struct Value(ushort Page, ushort Usage, ushort LinkCollection,
             int BitSize, int LogicalMin, bool Relative);
 
         /// <summary>A controller's values, the SDL axis each is, and the
@@ -51,13 +57,40 @@ namespace PadForge.Engine.Common
             /// <summary>The same order without the relative values, for a
             /// DirectInput that does not keep them.</summary>
             public int[] OrderWithoutRelative;
+            /// <summary>The relative values in SDL's order, the axes
+            /// PadForge adds after SDL's own when DirectInput left them out.
+            /// Built once, so a read on the polling thread allocates
+            /// nothing.</summary>
+            public int[] LeftOutOrder;
             public IntPtr Preparsed;
         }
 
         // Each Raw Input handle's layout, or null for a handle that is no
-        // game controller or has no relative value.
+        // game controller or has no relative value. Built under s_build, so
+        // one handle is built once and its path names the layout it keeps.
         private static readonly ConcurrentDictionary<IntPtr, Layout> s_byHandle = new();
+        // Each game controller's path: its layout, or null for one known to
+        // have no relative value.
         private static readonly ConcurrentDictionary<string, Layout> s_byPath = new(StringComparer.OrdinalIgnoreCase);
+        // The path each handle was built with, a controller with no
+        // relative value's included, so a removal takes its path entry out.
+        // Under s_build.
+        private static readonly System.Collections.Generic.Dictionary<IntPtr, string> s_pathOf = new();
+        private static readonly object s_build = new();
+
+        /// <summary>Builds the layout of a handle in place of reading the
+        /// device, for a test: the layout, or null with the path of a game
+        /// controller that has no relative value, or null and null for a
+        /// handle that is no game controller.</summary>
+        internal static Func<IntPtr, (Layout layout, string path)> BuildSeam { get; set; }
+
+        /// <summary>Lists the HID handles in place of
+        /// GetRawInputDeviceList, for a test.</summary>
+        internal static Func<IntPtr[]> HandlesSeam { get; set; }
+
+        /// <summary>Frees a preparsed block in place of FreeHGlobal, for a
+        /// test.</summary>
+        internal static Action<IntPtr> FreeSeam { get; set; }
 
         /// <summary>The DIJOYSTATE2 slot SDL sorts a value into: 0 to 5 for
         /// X, Y, Z, Rx, Ry and Rz, 6 for a slider, and -1 for a value SDL
@@ -163,56 +196,136 @@ namespace PadForge.Engine.Common
                 && sdlAxisCount == layout.OrderWithoutRelative.Length;
             if (!leftOut) return axis < layout.Order.Length ? layout.Order[axis] : -1;
             if (axis < layout.OrderWithoutRelative.Length) return layout.OrderWithoutRelative[axis];
-            var extra = LeftOut(layout);
             int j = axis - layout.OrderWithoutRelative.Length;
-            return j < extra.Count ? extra[j] : -1;
+            return j < layout.LeftOutOrder.Length ? layout.LeftOutOrder[j] : -1;
         }
 
-        private static List<int> LeftOut(Layout layout)
+        /// <summary>The relative values of an order, in that order.</summary>
+        private static int[] LeftOutOf(int[] order, Value[] values)
         {
-            var extra = new List<int>();
-            foreach (int v in layout.Order)
-                if (layout.Values[v].Relative) extra.Add(v);
+            int n = 0;
+            foreach (int v in order) if (values[v].Relative) n++;
+            var extra = new int[n];
+            n = 0;
+            foreach (int v in order) if (values[v].Relative) extra[n++] = v;
             return extra;
         }
 
         /// <summary>How many relative values of the controller at
         /// <paramref name="devicePath"/> SDL's DirectInput left out, which
         /// PadForge lists as axes after SDL's own (SdlDeviceWrapper's device
-        /// objects), or 0. Reads the device's report descriptor through Raw
-        /// Input when no report has come yet.</summary>
-        public static int LeftOutRelative(string devicePath, int sdlAxisCount)
+        /// objects), or 0. Reads only what the pump built, so the polling
+        /// thread that opens a device lists none: false while the pump has
+        /// not read the controller yet, and the device's objects are then
+        /// read again once it has (<see cref="IsKnown"/>).</summary>
+        public static bool TryLeftOutRelative(string devicePath, int sdlAxisCount, out int leftOut)
         {
-            var layout = LayoutForPath(devicePath);
-            if (layout == null || sdlAxisCount == layout.Order.Length
-                || sdlAxisCount != layout.OrderWithoutRelative.Length) return 0;
-            return LeftOut(layout).Count;
+            leftOut = 0;
+            if (string.IsNullOrEmpty(devicePath) || !s_byPath.TryGetValue(devicePath, out var layout)) return false;
+            if (layout != null && sdlAxisCount != layout.Order.Length && sdlAxisCount == layout.OrderWithoutRelative.Length)
+                leftOut = layout.LeftOutOrder.Length;
+            return true;
         }
 
-        /// <summary>The layout of the controller at a path, built from the
-        /// Raw Input device list when no report of it has come yet.</summary>
-        private static Layout LayoutForPath(string devicePath)
+        /// <summary><see cref="TryLeftOutRelative"/>'s count, 0 while the
+        /// controller is not read yet.</summary>
+        public static int LeftOutRelative(string devicePath, int sdlAxisCount)
+            => TryLeftOutRelative(devicePath, sdlAxisCount, out int leftOut) ? leftOut : 0;
+
+        /// <summary>True once the pump has read the controller at
+        /// <paramref name="devicePath"/>, with relative values or none.</summary>
+        public static bool IsKnown(string devicePath)
+            => !string.IsNullOrEmpty(devicePath) && s_byPath.ContainsKey(devicePath);
+
+        /// <summary>The layout of a Raw Input handle, built once under one
+        /// lock: two threads that ask for a new handle build it once, and the
+        /// path names the layout the handle keeps. Pump thread.</summary>
+        internal static Layout LayoutFor(IntPtr hDevice)
         {
-            if (string.IsNullOrEmpty(devicePath)) return null;
-            if (s_byPath.TryGetValue(devicePath, out var known)) return known;
+            if (s_byHandle.TryGetValue(hDevice, out var known)) return known;
+            lock (s_build)
+            {
+                if (s_byHandle.TryGetValue(hDevice, out known)) return known;
+                var seam = BuildSeam;
+                (Layout layout, string path) built;
+                try { built = seam != null ? seam(hDevice) : (LayoutOf(hDevice, out string p), p); }
+                catch { built = (null, null); }
+                s_byHandle[hDevice] = built.layout;
+                string path = built.layout?.Path ?? built.path;
+                if (!string.IsNullOrEmpty(path))
+                {
+                    s_byPath[path] = built.layout;
+                    s_pathOf[hDevice] = path;
+                }
+                return built.layout;
+            }
+        }
+
+        /// <summary>Reads every game controller present: the pump's first
+        /// pass when it starts listening, as SDL's raw input reader lists
+        /// its devices once at its start and takes the rest as they arrive
+        /// (SDL_rawinputjoystick.c, RAWINPUT_DetectDevices and
+        /// RAWINPUT_WindowProc's GIDC_ARRIVAL). Pump thread.</summary>
+        internal static void LearnPresent()
+        {
+            foreach (IntPtr handle in HidHandles())
+                LayoutFor(handle);
+        }
+
+        /// <summary>A removed handle's layout leaves with it, and its
+        /// preparsed data is freed, as SDL deletes a removed device
+        /// (RAWINPUT_WindowProc, GIDC_REMOVAL). The path keeps no layout, so
+        /// the controller is read again when it comes back. Pump
+        /// thread.</summary>
+        internal static void Forget(IntPtr hDevice)
+        {
+            lock (s_build)
+            {
+                s_byHandle.TryRemove(hDevice, out var layout);
+                // The path goes whether the controller had a relative value
+                // or none, unless another handle has built it since.
+                if (s_pathOf.Remove(hDevice, out string path)
+                    && s_byPath.TryGetValue(path, out var atPath) && ReferenceEquals(atPath, layout))
+                    s_byPath.TryRemove(path, out _);
+                if (layout != null) Free(layout);
+            }
+        }
+
+        /// <summary>True while a handle has an entry, for a test.</summary>
+        internal static bool KnowsHandleForTest(IntPtr hDevice) => s_byHandle.ContainsKey(hDevice);
+
+        private static void Free(Layout layout)
+        {
+            IntPtr p = layout.Preparsed;
+            layout.Preparsed = IntPtr.Zero;
+            if (p == IntPtr.Zero) return;
+            var free = FreeSeam;
+            if (free != null) free(p);
+            else Marshal.FreeHGlobal(p);
+        }
+
+        /// <summary>The HID handles Raw Input lists, the seam's in a
+        /// test.</summary>
+        private static IntPtr[] HidHandles()
+        {
+            var seam = HandlesSeam;
+            if (seam != null) return seam() ?? Array.Empty<IntPtr>();
             try
             {
                 uint count = 0;
                 uint size = (uint)Marshal.SizeOf<RawDeviceListEntry>();
-                if (GetRawInputDeviceList(null, ref count, size) != 0 || count == 0) return null;
+                if (GetRawInputDeviceList(null, ref count, size) != 0 || count == 0) return Array.Empty<IntPtr>();
                 var list = new RawDeviceListEntry[count];
-                if (GetRawInputDeviceList(list, ref count, size) == unchecked((uint)-1)) return null;
+                if (GetRawInputDeviceList(list, ref count, size) == unchecked((uint)-1)) return Array.Empty<IntPtr>();
+                var handles = new List<IntPtr>();
                 for (int i = 0; i < count; i++)
-                {
-                    if (list[i].Type != RIM_TYPEHID) continue;
-                    if (!string.Equals(DeviceName(list[i].Handle), devicePath, StringComparison.OrdinalIgnoreCase)) continue;
-                    return s_byHandle.GetOrAdd(list[i].Handle, LayoutOf);
-                }
+                    if (list[i].Type == RIM_TYPEHID) handles.Add(list[i].Handle);
+                return handles.ToArray();
             }
             catch
             {
+                return Array.Empty<IntPtr>();
             }
-            return null;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -244,14 +357,19 @@ namespace PadForge.Engine.Common
 
         /// <summary>A layout built from values, for a test and for
         /// <see cref="LayoutOf"/>.</summary>
-        internal static Layout Build(string path, Value[] values) => new()
+        internal static Layout Build(string path, Value[] values)
         {
-            Path = path,
-            Values = values,
-            Totals = new long[values.Length],
-            Order = SdlOrder(values, withoutRelative: false),
-            OrderWithoutRelative = SdlOrder(values, withoutRelative: true),
-        };
+            var order = SdlOrder(values, withoutRelative: false);
+            return new()
+            {
+                Path = path,
+                Values = values,
+                Totals = new long[values.Length],
+                Order = order,
+                OrderWithoutRelative = SdlOrder(values, withoutRelative: true),
+                LeftOutOrder = LeftOutOf(order, values),
+            };
+        }
 
         /// <summary>Registers a layout by its path, for a test.</summary>
         internal static void RegisterForTest(Layout layout) => s_byPath[layout.Path] = layout;
@@ -264,7 +382,7 @@ namespace PadForge.Engine.Common
         /// totals. Pump thread only.</summary>
         internal static void Process(IntPtr hDevice, IntPtr rawHid)
         {
-            var layout = s_byHandle.GetOrAdd(hDevice, LayoutOf);
+            var layout = LayoutFor(hDevice);
             if (layout == null) return;
             int sizeHid = Marshal.ReadInt32(rawHid);
             int count = Marshal.ReadInt32(rawHid, 4);
@@ -286,23 +404,29 @@ namespace PadForge.Engine.Common
         /// its pump has left.</summary>
         internal static void Clear(bool freeBuffers)
         {
-            foreach (var layout in s_byHandle.Values)
-                if (freeBuffers && layout?.Preparsed is IntPtr p && p != IntPtr.Zero)
-                    Marshal.FreeHGlobal(p);
-            s_byHandle.Clear();
-            s_byPath.Clear();
+            lock (s_build)
+            {
+                foreach (var layout in s_byHandle.Values)
+                    if (freeBuffers && layout != null) Free(layout);
+                s_byHandle.Clear();
+                s_byPath.Clear();
+                s_pathOf.Clear();
+            }
         }
 
         /// <summary>The layout of a Raw Input handle: its path, its input
         /// values from its preparsed data, or null when it is no joystick,
-        /// game pad or multi-axis controller or has no relative value.</summary>
-        private static Layout LayoutOf(IntPtr hDevice)
+        /// game pad or multi-axis controller or has no relative value.
+        /// <paramref name="path"/> is a game controller's path, so one with no
+        /// relative value is known too.</summary>
+        private static Layout LayoutOf(IntPtr hDevice, out string path)
         {
             IntPtr preparsed = IntPtr.Zero;
+            path = null;
             try
             {
                 if (!IsGameController(hDevice)) return null;
-                string path = DeviceName(hDevice);
+                path = DeviceName(hDevice);
                 if (string.IsNullOrEmpty(path)) return null;
                 preparsed = Preparsed(hDevice);
                 if (preparsed == IntPtr.Zero) return null;
@@ -325,7 +449,6 @@ namespace PadForge.Engine.Common
                 {
                     int o = i * ValueCapsSize;
                     ushort page = BitConverter.ToUInt16(buffer, o);
-                    byte reportId = buffer[o + 2];
                     ushort link = BitConverter.ToUInt16(buffer, o + 6);
                     bool isRange = buffer[o + 12] != 0;
                     bool absolute = buffer[o + 15] != 0;
@@ -335,14 +458,13 @@ namespace PadForge.Engine.Common
                     ushort usageMax = isRange ? BitConverter.ToUInt16(buffer, o + 58) : usageMin;
                     for (int u = usageMin; u <= usageMax; u++)
                     {
-                        values.Add(new Value(page, (ushort)u, reportId, link, bitSize, logicalMin, !absolute));
+                        values.Add(new Value(page, (ushort)u, link, bitSize, logicalMin, !absolute));
                         anyRelative |= !absolute;
                     }
                 }
                 if (!anyRelative) { Marshal.FreeHGlobal(preparsed); return null; }
                 var layout = Build(path, values.ToArray());
                 layout.Preparsed = preparsed;
-                s_byPath[path] = layout;
                 return layout;
             }
             catch

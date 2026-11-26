@@ -78,8 +78,10 @@ namespace PadForge.Tests
             var a = new StringBuilder();
             RecordingControlNames.AppendXInputButtons(a, Gamepad.A | Gamepad.START | 0x0800);
             Assert.Equal("Start+Touchpad+A", a.ToString());
-            Assert.True(RecordingControlNames.TryXInputButtons("Bit11", out int bit));
+            Assert.True(RecordingControlNames.TryXInputButtons("Touchpad", out int bit));
             Assert.Equal(0x0800, bit);
+            // Every bit has its name, so no writer wrote a bit by number.
+            Assert.False(RecordingControlNames.TryXInputButtons("Bit11", out _));
             Assert.True(RecordingControlNames.TryXInputButtons("0x1010", out int old));
             Assert.Equal(Gamepad.A | Gamepad.START, old);
         }

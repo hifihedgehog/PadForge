@@ -71,8 +71,10 @@ namespace PadForge.Engine.Common.Logitech
 
         /// <summary>The library, or null with <paramref name="reason"/>
         /// saying why: "gate" in the test host, "missing" with no
-        /// registration, "load" when no registered path loaded, "exports"
-        /// when a DLL loaded but is not this library.</summary>
+        /// registration, "refused" when PadForge's checks refused each path
+        /// (TrustedLibrary), "load" when a registered path would not load,
+        /// "exports" when a DLL loaded but is not this library
+        /// (<see cref="TrustedLibrary.Outcome"/>).</summary>
         public static LogitechLcdLibrary TryLoad(out string reason)
         {
             reason = "missing";
@@ -83,15 +85,15 @@ namespace PadForge.Engine.Common.Logitech
             }
             foreach (string candidate in LogitechServerCatalog.LcdCandidates())
             {
-                if (reason == "missing") reason = "load";
                 // Loaded into PadForge only when only administrators could have put it
                 // in place and Logitech signed it, held open from the check
-                // through the load (#597, TrustedLibrary).
+                // through the load (#600, TrustedLibrary).
                 IntPtr module = TrustedLibrary.Load(candidate, TrustedLibrary.Logitech,
                     p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
                 if (module == IntPtr.Zero)
                 {
-                    if (why != "load" && why != "missing") SdlDiagLog.WriteLine("LOGITECH LCD " + candidate + " not loaded: " + why);
+                    SdlDiagLog.WriteLine(TrustedLibrary.NotLoadedLine("LOGITECH LCD", candidate, why));
+                    reason = TrustedLibrary.Outcome(reason, why);
                     continue;
                 }
                 var lib = new LogitechLcdLibrary { Path = candidate };
@@ -99,7 +101,7 @@ namespace PadForge.Engine.Common.Logitech
                 // Loaded, but not the library the header describes. The next
                 // candidate may be. The module stays mapped, which costs
                 // nothing and is safer than unmapping code that ran.
-                reason = "exports";
+                reason = TrustedLibrary.Outcome(reason, "exports");
             }
             return null;
         }

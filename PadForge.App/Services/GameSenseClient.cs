@@ -205,6 +205,10 @@ namespace PadForge.Services
             // server is never called. A test hands the client a file of its
             // own.
             if (PadForge.Engine.Common.VendorProgramGate.Refuses && IsGgsOwnFile(_corePropsPath)) return false;
+            // GG's own file is read only while GG is installed: any program
+            // may write that folder, and the address it names is posted to
+            // with PadForge's rights.
+            if (IsGgsOwnFile(_corePropsPath) && !PadForge.Common.Input.Peripherals.PeripheralPresence.SteelSeriesGGInstalled()) return false;
             string address = ReadAddress(_corePropsPath);
             if (address == null) return false;
             string url = "http://" + address;
@@ -412,7 +416,12 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>The "address" key, "host:port".</summary>
+        /// <summary>The "address" key, "host:port", taken only with a
+        /// loopback host and a port: the engine's own, "e.g.
+        /// 127.0.0.1:51248" (gamesense-sdk
+        /// doc/api/sending-game-events.md:19-25). The file sits where any
+        /// program may write, and PadForge posts its game's events to the
+        /// address with its rights, so another host is refused.</summary>
         internal static bool TryReadAddress(string json, out string address)
         {
             address = null;
@@ -424,7 +433,7 @@ namespace PadForge.Services
                     || prop.ValueKind != JsonValueKind.String)
                     return false;
                 string value = prop.GetString()?.Trim();
-                if (string.IsNullOrEmpty(value) || value.IndexOf(':') <= 0) return false;
+                if (string.IsNullOrEmpty(value) || !IsLoopbackAddress(value)) return false;
                 address = value;
                 return true;
             }
@@ -432,6 +441,19 @@ namespace PadForge.Services
             {
                 return false;
             }
+        }
+
+        /// <summary>127.0.0.1, localhost or [::1], a colon, and a port of 1
+        /// to 65535 in digits, with nothing else.</summary>
+        internal static bool IsLoopbackAddress(string value)
+        {
+            int colon = value.LastIndexOf(':');
+            if (colon <= 0 || colon == value.Length - 1) return false;
+            string host = value.Substring(0, colon), port = value.Substring(colon + 1);
+            if (!int.TryParse(port, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int number)
+                || number < 1 || number > 65535)
+                return false;
+            return host == "127.0.0.1" || host == "[::1]" || host.Equals("localhost", StringComparison.OrdinalIgnoreCase);
         }
 
         public void Dispose()

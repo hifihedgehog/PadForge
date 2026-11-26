@@ -7,7 +7,7 @@ using PadForge.Engine.Common;
 
 namespace PadForge.Services.NativeHost
 {
-    /// <summary>The OpenVR client's calls over the host's channel (#597):
+    /// <summary>The OpenVR client's calls over the host's channel (#600):
     /// a start, a frame per tick of the consumer, a device's properties when
     /// it attaches, the quit handshake and the shutdown.</summary>
     internal static class OpenVrOps
@@ -35,12 +35,28 @@ namespace PadForge.Services.NativeHost
     {
         internal const string Name = "openvr";
 
+        /// <summary>Test seams, set together: OpenVR's start, which gives the
+        /// start's error, and its end, in place of the binding's. Null in
+        /// production.</summary>
+        internal static Func<EVRInitError> InitSeam;
+        internal static Action ShutdownSeam;
+
+        // OpenVR's session is the process's: VR_InitInternal2 and
+        // VR_ShutdownInternal (openvr_api_public.cpp) start and end one
+        // g_pHmdSystem whoever calls them, so every channel of the host shares
+        // it. The channel whose start opened the session that runs owns it,
+        // and only that channel ends it. A start ends the session that runs
+        // first, as a channel's second start always did. Every use of the
+        // session holds this lock, so no channel reads one another ended.
+        private static readonly object s_session = new();
+        private static OpenVrHostService s_owner;
+
         private readonly TrackedDevicePose_t[] _poses = new TrackedDevicePose_t[OpenVrOps.Devices];
+        private CVRSystem _system;
 
         public void Serve(HostConnection channel)
         {
-            OpenVrConsumerService.EnsureResolver();
-            CVRSystem system = null;
+            if (InitSeam == null) OpenVrConsumerService.EnsureResolver();
             try
             {
                 while (channel.Receive(out var r))
@@ -53,19 +69,8 @@ namespace PadForge.Services.NativeHost
                         {
                             r.End();
                             var error = EVRInitError.None;
-                            string failure = null;
-                            if (system != null) Shut(ref system);
-                            try { system = OpenVR.Init(ref error, EVRApplicationType.VRApplication_Background); }
-                            catch (DllNotFoundException) { failure = "dll"; }
-                            catch (Exception ex)
-                            {
-                                // The binding can throw after the native init
-                                // went through, so its session is shut here.
-                                try { OpenVR.Shutdown(); } catch (Exception) { }
-                                failure = "threw: " + ex.Message;
-                                system = null;
-                            }
-                            if (error != EVRInitError.None) system = null;
+                            string failure;
+                            lock (s_session) failure = Start(ref error);
                             string why = failure;
                             int code = (int)error;
                             sent = channel.Send(w => w.Int(code).Text(why));
@@ -73,7 +78,14 @@ namespace PadForge.Services.NativeHost
                         }
                         case OpenVrOps.Frame:
                             r.End();
-                            sent = system != null ? channel.Send(w => WriteFrame(system, w)) : channel.Send(w => w.Bool(true));
+                            sent = channel.Send(w =>
+                            {
+                                lock (s_session)
+                                {
+                                    if (_system != null) WriteFrame(_system, w);
+                                    else w.Bool(true);
+                                }
+                            });
                             break;
                         case OpenVrOps.DeviceInfo:
                         {
@@ -82,19 +94,23 @@ namespace PadForge.Services.NativeHost
                             var error = ETrackedPropertyError.TrackedProp_Success;
                             string manufacturer = string.Empty;
                             var types = new int[5];
-                            if (system != null)
+                            lock (s_session)
                             {
-                                var text = new System.Text.StringBuilder(OpenVrOps.MaxManufacturer);
-                                system.GetStringTrackedDeviceProperty(index, ETrackedDeviceProperty.Prop_ManufacturerName_String, text, OpenVrOps.MaxManufacturer, ref error);
-                                manufacturer = text.ToString();
-                                for (int a = 0; a < 5; a++)
+                                var system = _system;
+                                if (system != null)
                                 {
-                                    var axisError = ETrackedPropertyError.TrackedProp_Success;
-                                    types[a] = system.GetInt32TrackedDeviceProperty(index,
-                                        (ETrackedDeviceProperty)((int)ETrackedDeviceProperty.Prop_Axis0Type_Int32 + a), ref axisError);
+                                    var text = new System.Text.StringBuilder(OpenVrOps.MaxManufacturer);
+                                    system.GetStringTrackedDeviceProperty(index, ETrackedDeviceProperty.Prop_ManufacturerName_String, text, OpenVrOps.MaxManufacturer, ref error);
+                                    manufacturer = text.ToString();
+                                    for (int a = 0; a < 5; a++)
+                                    {
+                                        var axisError = ETrackedPropertyError.TrackedProp_Success;
+                                        types[a] = system.GetInt32TrackedDeviceProperty(index,
+                                            (ETrackedDeviceProperty)((int)ETrackedDeviceProperty.Prop_Axis0Type_Int32 + a), ref axisError);
+                                    }
                                 }
+                                else error = ETrackedPropertyError.TrackedProp_InvalidDevice;
                             }
-                            else error = ETrackedPropertyError.TrackedProp_InvalidDevice;
                             int code = (int)error;
                             sent = channel.Send(w =>
                             {
@@ -105,12 +121,15 @@ namespace PadForge.Services.NativeHost
                         }
                         case OpenVrOps.AcknowledgeQuit:
                             r.End();
-                            try { system?.AcknowledgeQuit_Exiting(); } catch (Exception) { }
+                            lock (s_session)
+                            {
+                                try { _system?.AcknowledgeQuit_Exiting(); } catch (Exception) { }
+                            }
                             sent = channel.Send(w => { });
                             break;
                         case OpenVrOps.Shutdown:
                             r.End();
-                            Shut(ref system);
+                            LetGo();
                             sent = channel.Send(w => { });
                             break;
                         default:
@@ -121,16 +140,72 @@ namespace PadForge.Services.NativeHost
             }
             finally
             {
-                // A PadForge that went away leaves no session behind.
-                Shut(ref system);
+                // A PadForge that went away leaves no session of this
+                // channel's behind.
+                LetGo();
             }
         }
 
-        private static void Shut(ref CVRSystem system)
+        /// <summary>Starts the process's session for this channel: null, or
+        /// why the binding failed. Caller holds the session's lock.</summary>
+        private string Start(ref EVRInitError error)
         {
-            if (system == null) return;
-            system = null;
-            try { OpenVR.Shutdown(); } catch (Exception) { }
+            if (s_owner != null) s_owner.EndSession();
+            string failure = null;
+            CVRSystem system = null;
+            bool opened;
+            if (InitSeam != null)
+            {
+                error = InitSeam();
+                opened = error == EVRInitError.None;
+            }
+            else
+            {
+                try { system = OpenVR.Init(ref error, EVRApplicationType.VRApplication_Background); }
+                catch (DllNotFoundException) { failure = "dll"; }
+                catch (Exception ex)
+                {
+                    // The binding can throw after the native init went
+                    // through, so its session is shut here.
+                    try { OpenVR.Shutdown(); } catch (Exception) { }
+                    failure = "threw: " + ex.Message;
+                    system = null;
+                }
+                if (error != EVRInitError.None) system = null;
+                opened = system != null;
+            }
+            if (opened)
+            {
+                _system = system;
+                s_owner = this;
+            }
+            return failure;
+        }
+
+        /// <summary>Ends the process's session, which this channel owns.
+        /// Caller holds the session's lock.</summary>
+        private void EndSession()
+        {
+            _system = null;
+            s_owner = null;
+            var seam = ShutdownSeam;
+            if (seam != null) seam();
+            else
+            {
+                try { OpenVR.Shutdown(); } catch (Exception) { }
+            }
+        }
+
+        /// <summary>This channel is done with the session: it ends when this
+        /// channel owns it, and stays for the channel that does
+        /// otherwise.</summary>
+        private void LetGo()
+        {
+            lock (s_session)
+            {
+                if (ReferenceEquals(s_owner, this)) EndSession();
+                else _system = null;
+            }
         }
 
         /// <summary>One frame: whether a quit came, then for each device

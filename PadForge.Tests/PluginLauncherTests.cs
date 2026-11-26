@@ -171,6 +171,44 @@ namespace PadForge.Tests
         [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
         private static extern SafeProcessHandle OpenProcess(uint access, bool inherit, uint processId);
 
+        /// <summary>A process made under the shell whose token cannot be read
+        /// is ended before it runs, and the refusal says the rights could
+        /// not be read: never that the shell has administrator rights.</summary>
+        [Fact]
+        public void AStartedProcessWhoseRightsCannotBeRead_IsRefusedAsUnknown()
+        {
+            Assert.True(File.Exists(ProbeExe), "the helper was not built beside the tests: " + ProbeExe);
+            var take = typeof(PluginLauncher).GetConstructor(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic,
+                new[] { typeof(PluginLauncher.VariablesReader), typeof(Func<SafeProcessHandle, bool, bool?>) });
+            Assert.True(take != null, "PluginLauncher takes no reader of a process's rights");
+            string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.PluginRights." + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            string report = Path.Combine(dir, "report.txt");
+            try
+            {
+                var asked = new List<bool>();
+                Func<SafeProcessHandle, bool, bool?> rights = (process, shell) =>
+                {
+                    asked.Add(shell);
+                    return shell ? false : null;
+                };
+                var launcher = (PluginLauncher)take.Invoke(new object[] { null, rights });
+                var launch = launcher.Start(
+                    new PluginCommand(ProbeExe, PluginFile.Quote(ProbeExe) + " rights", Path.GetDirectoryName(ProbeExe)),
+                    new Dictionary<string, string> { ["PADFORGE_PROBE_REPORT"] = report });
+                Assert.Null(launch.Process);
+                Assert.Equal(new[] { true, false }, asked);
+                Assert.NotEqual(PluginRefusal.ShellElevated, launch.Refusal);
+                Assert.Equal("RightsUnknown", launch.Refusal.ToString());
+                Thread.Sleep(1500);
+                Assert.False(File.Exists(report), "the helper ran");
+            }
+            finally
+            {
+                try { Directory.Delete(dir, true); } catch (IOException) { }
+            }
+        }
+
         // ── What a file runs as ──
 
         [Fact]
@@ -191,15 +229,35 @@ namespace PadForge.Tests
             Assert.EndsWith(" -File \"C:\\Plugins\\pad.ps1\"", command.CommandLine);
         }
 
+        /// <summary>A registry of the test's own: the desktop user's hive and
+        /// the machine's, by key and value name (null for a key's
+        /// default).</summary>
+        private static PluginPrograms Programs(Dictionary<string, string> user, Dictionary<string, string> machine = null,
+            params string[] files)
+            => new PluginPrograms((inUser, subKey, name) =>
+                (inUser ? user : machine ?? new Dictionary<string, string>()).TryGetValue(subKey + "|" + name, out var v) ? v : null,
+                path => Array.IndexOf(files, path) >= 0, name => name == "SystemRoot" ? @"C:\Windows" : null);
+
         [Fact]
         public void AScript_RunsInTheProgramWindowsOpensItsKindWith()
         {
-            var command = PluginFile.CommandFor(@"C:\Plugins\pad.py", ext => ext == ".py" ? @"C:\Python\python.exe" : null);
+            var programs = Programs(new Dictionary<string, string>
+            {
+                [@"Software\Classes\.py|"] = "Python.File",
+                [@"Software\Classes\Python.File\shell\open\command|"] = "\"C:\\Python\\python.exe\" \"%1\" %*",
+            }, null, @"C:\Python\python.exe");
+            var command = PluginFile.CommandFor(@"C:\Plugins\pad.py", programs);
             Assert.Equal(@"C:\Python\python.exe", command.Program);
             Assert.Equal("\"C:\\Python\\python.exe\" \"C:\\Plugins\\pad.py\"", command.CommandLine);
-            Assert.Null(PluginFile.CommandFor(@"C:\Plugins\pad.xyz", _ => null));
+            Assert.Equal(PluginRefusal.NoProgram, PluginFile.CommandFor(@"C:\Plugins\pad.xyz", programs).Refusal);
+            Assert.Null(PluginFile.CommandFor(@"C:\Plugins\pad.xyz", programs).Program);
             // A kind of file whose program is itself has none for a script.
-            Assert.Null(PluginFile.CommandFor(@"C:\Plugins\pad.xyz", _ => @"C:\Plugins\pad.xyz"));
+            var itself = Programs(new Dictionary<string, string>
+            {
+                [@"Software\Classes\.xyz|"] = "x",
+                [@"Software\Classes\x\shell\open\command|"] = "\"%1\" %*",
+            });
+            Assert.Null(PluginFile.CommandFor(@"C:\Plugins\pad.xyz", itself).Program);
             var batch = PluginFile.CommandFor(@"C:\Plugins\pad.cmd");
             Assert.EndsWith(@"\cmd.exe", batch.Program, StringComparison.OrdinalIgnoreCase);
             Assert.EndsWith(" /d /c \"\"C:\\Plugins\\pad.cmd\"\"", batch.CommandLine);
@@ -212,13 +270,138 @@ namespace PadForge.Tests
         public void AnArgument_IsQuotedAsWindowsReadsItBack(string argument, string quoted)
             => Assert.Equal(quoted, PluginFile.Quote(argument));
 
+        /// <summary>AutoHotkey v2's installer opens a script through
+        /// launcher.ahk (AutoHotkeyUX install.ahk, CmdStr('UX\launcher.ahk',
+        /// '"%1" %*')), which exits once it has started the interpreter when
+        /// its parent is explorer.exe, a plugin's parent (launcher.ahk,
+        /// LaunchScript). The start runs the interpreter the command names
+        /// with the script, so the process PadForge watches is the one that
+        /// runs it.</summary>
         [Fact]
-        public void WindowsFindsAProgramForAPowerShellModuleOrNone_AndNeverAScriptForItself()
+        public void AnAutoHotkeyScript_RunsInTheInterpreterItsCommandNames()
         {
-            // A kind every Windows knows: a .txt file opens in a program.
-            string program = PluginFile.AssociatedProgram(".txt");
-            if (program != null) Assert.True(File.Exists(program), program);
-            Assert.Null(PluginFile.AssociatedProgram(".padforge-no-such-kind"));
+            const string ux = @"C:\Program Files\AutoHotkey\UX\AutoHotkeyUX.exe";
+            var programs = Programs(new Dictionary<string, string>(), new Dictionary<string, string>
+            {
+                [@"Software\Classes\.ahk|"] = "AutoHotkeyScript",
+                [@"Software\Classes\AutoHotkeyScript\shell\open\command|"] =
+                    "\"" + ux + "\" \"C:\\Program Files\\AutoHotkey\\UX\\launcher.ahk\" \"%1\" %*",
+            }, ux);
+            var command = PluginFile.CommandFor(@"C:\Plugins\pad.ahk", programs);
+            Assert.Equal(ux, command.Program);
+            Assert.Equal("\"" + ux + "\" \"C:\\Plugins\\pad.ahk\"", command.CommandLine);
+            // A java-style command keeps its own words before the file.
+            const string javaw = @"C:\Java\bin\javaw.exe";
+            var jar = Programs(new Dictionary<string, string>
+            {
+                [@"Software\Classes\.jar|"] = "jarfile",
+                [@"Software\Classes\jarfile\shell\open\command|"] = "\"" + javaw + "\" -jar \"%1\" %*",
+            }, null, javaw);
+            Assert.Equal("\"" + javaw + "\" -jar \"C:\\Plugins\\pad.jar\"", PluginFile.CommandFor(@"C:\Plugins\pad.jar", jar).CommandLine);
+            // A command whose program is not on this PC is said as such.
+            var gone = Programs(new Dictionary<string, string>
+            {
+                [@"Software\Classes\.jar|"] = "jarfile",
+                [@"Software\Classes\jarfile\shell\open\command|"] = "\"" + javaw + "\" -jar \"%1\" %*",
+            });
+            Assert.Equal(PluginRefusal.ProgramMissing, PluginFile.CommandFor(@"C:\Plugins\pad.jar", gone).Refusal);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Plugins_Refused_ProgramMissing, PluginsController.RefusalText(PluginRefusal.ProgramMissing, 0));
+        }
+
+        /// <summary>A Python script runs with the py launcher when no program
+        /// opens .py files, as the Python install manager leaves a PC, and
+        /// the card says which was missing when neither is there.</summary>
+        [Fact]
+        public void APythonScriptWithNoProgram_RunsInThePyLauncher()
+        {
+            const string alias = @"C:\Users\u\AppData\Local\Microsoft\WindowsApps\py.exe";
+            var user = new Dictionary<string, string> { [@"Volatile Environment|LOCALAPPDATA"] = @"C:\Users\u\AppData\Local" };
+            var command = PluginFile.CommandFor(@"C:\Plugins\pad.py", Programs(user, null, alias));
+            Assert.Equal(alias, command.Program);
+            Assert.Equal("\"" + alias + "\" \"C:\\Plugins\\pad.py\"", command.CommandLine);
+            // The legacy launcher for every user.
+            Assert.Equal(@"C:\Windows\pyw.exe", PluginFile.CommandFor(@"C:\Plugins\pad.pyw", Programs(user, null, @"C:\Windows\pyw.exe")).Program);
+            var none = PluginFile.CommandFor(@"C:\Plugins\pad.py", Programs(user));
+            Assert.Null(none.Program);
+            Assert.Equal(PluginRefusal.NoPython, none.Refusal);
+            // A registry that cannot be read is said as such.
+            var unread = new PluginPrograms((_, _, _) => throw new System.Security.SecurityException());
+            Assert.Equal(PluginRefusal.ProgramUnreadable, PluginFile.CommandFor(@"C:\Plugins\pad.py", unread).Refusal);
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            Assert.Equal(s.Plugins_Refused_NoPython, PluginsController.RefusalText(PluginRefusal.NoPython, 0));
+            Assert.Equal(s.Plugins_Refused_ProgramUnreadable, PluginsController.RefusalText(PluginRefusal.ProgramUnreadable, 0));
+        }
+
+        /// <summary>The program is the desktop user's: the user's own choice
+        /// first, then the user's classes, then the machine's, read in the
+        /// shell user's hive, never PadForge's own account's.</summary>
+        [Fact]
+        public void TheProgram_IsTheDesktopUsersOwn()
+        {
+            const string mine = @"C:\Users\u\AppData\Local\Programs\Python\Python313\python.exe";
+            const string machines = @"C:\Python311\python.exe";
+            var machine = new Dictionary<string, string>
+            {
+                [@"Software\Classes\.py|"] = "Python.File",
+                [@"Software\Classes\Python.File\shell\open\command|"] = "\"" + machines + "\" \"%1\" %*",
+            };
+            var user = new Dictionary<string, string>
+            {
+                [@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.py\UserChoice|ProgId"] = "Mine.py",
+                [@"Software\Classes\Mine.py\shell\open\command|"] = "%LOCALAPPDATA%\\Programs\\Python\\Python313\\python.exe \"%1\"",
+                [@"Volatile Environment|LOCALAPPDATA"] = @"C:\Users\u\AppData\Local",
+            };
+            Assert.Equal(mine, PluginFile.CommandFor(@"C:\Plugins\pad.py", Programs(user, machine, mine, machines)).Program);
+            Assert.Equal(machines, PluginFile.CommandFor(@"C:\Plugins\pad.py", Programs(new Dictionary<string, string>(), machine, mine, machines)).Program);
+            // The start reads it for the desktop's user.
+            string file = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginFile.cs");
+            Assert.Contains("programs ??= PluginPrograms.OfShellUser();", file);
+            string programsSource = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginPrograms.cs");
+            Assert.Contains("WindowsLightingState.ShellUserSid()", programsSource);
+            Assert.Contains("Registry.Users.OpenSubKey(sid)", programsSource);
+            Assert.DoesNotContain("AssocQueryString", file);
+        }
+
+        /// <summary>With rights, as PadForge runs, the py launcher is looked
+        /// for in the desktop user's own folder, read in that user's hive by
+        /// the shell's SID, never from this process's variables.</summary>
+        [ElevatedFact]
+        public void WithRights_ThePyLauncher_IsLookedForInTheDesktopUsersFolder()
+        {
+            string sid = PadForge.Common.Input.Peripherals.WindowsLightingState.ShellUserSid();
+            Assert.NotNull(sid);
+            using var volatileEnvironment = Microsoft.Win32.Registry.Users.OpenSubKey(sid + @"\Volatile Environment");
+            string local = volatileEnvironment?.GetValue("LOCALAPPDATA") as string;
+            Assert.False(string.IsNullOrEmpty(local));
+            string alias = Path.Combine(local, "Microsoft", "WindowsApps", "py.exe");
+            string found = PluginPrograms.OfShellUser().PyLauncher(windowed: false);
+            if (File.Exists(alias)) Assert.Equal(alias, found, ignoreCase: true);
+            else if (found != null) Assert.StartsWith(local, found, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>On this PC, the bench: the Python install manager leaves
+        /// .py with no default program and puts the py launcher in the
+        /// user's WindowsApps folder, so a Python plugin starts here through
+        /// it.</summary>
+        [Fact]
+        public void OnThisPc_APythonPlugin_FindsItsProgram()
+        {
+            string alias = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft", "WindowsApps", "py.exe");
+            if (!File.Exists(alias)) return;
+            var command = PluginFile.CommandFor(Path.Combine(Path.GetTempPath(), "bench.py"));
+            Assert.True(command?.Program != null, "no program for a .py plugin on a PC with " + alias);
+            Assert.True(File.Exists(command.Program), command.Program);
+        }
+
+        /// <summary>The program a script plugin runs in is read for the
+        /// desktop's user, in that user's hive by the shell's SID, never
+        /// through this process's own HKEY_CURRENT_USER.</summary>
+        [Fact]
+        public void ThePluginsProgram_IsReadForTheDesktopsUser()
+        {
+            string file = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginFile.cs");
+            Assert.DoesNotContain("AssocQueryString", file);
+            Assert.Contains("programs ??= PluginPrograms.OfShellUser();", file);
         }
 
         // ── The fence ──
@@ -247,8 +430,9 @@ namespace PadForge.Tests
             // A plugin is never started in its place: the launcher has no
             // other route than the shell's process as the parent.
             string source = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginLauncher.cs");
-            Assert.Contains("if (HasAdministratorRights(shellProcess) != false) return PluginLaunch.Refused(PluginRefusal.ShellElevated);", source);
-            Assert.Contains("else if (HasAdministratorRights(process) != false) refusal = \"rights\";", source);
+            Assert.Contains("switch (_rightsOf(shellProcess, true))", source);
+            Assert.Contains("switch (_rightsOf(process, false))", source);
+            Assert.Contains("_rightsOf = rightsOf ?? ((process, _) => HasAdministratorRights(process));", source);
             Assert.Single(Regex.Matches(source, @"\bCreateProcessW\(command"));
             Assert.DoesNotContain("Process.Start", source);
             Assert.DoesNotContain("ShellExecute", source);
@@ -282,27 +466,44 @@ namespace PadForge.Tests
                 {
                     string line = raw.Trim();
                     if (line.StartsWith("//", StringComparison.Ordinal) || line.StartsWith("internal static", StringComparison.Ordinal)) continue;
-                    if (line.Contains("ThisProcessHasAdministratorRights()", StringComparison.Ordinal)) own.Add(name + ": " + line);
+                    // A call, or the method named as a seam's default.
+                    if (OwnRightsRead.IsMatch(line)) own.Add(name + ": " + line);
                     foreach (Match m in GivenRights.Matches(line)) given.Add(name + ": " + m.Groups[1].Value);
                 }
             }
             Assert.Equal(new[]
             {
+                "GameModPortFiles.cs: public Func<bool?> OwnRights = Plugins.PluginLauncher.ThisProcessHasAdministratorRights;",
                 "RecordingFolder.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
                 "RecordingFolder.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
-                "RecordingSave.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() == false) return false;",
+                "RecordingSave.cs: if ((OwnRightsSeam?.Invoke() ?? PluginLauncher.ThisProcessHasAdministratorRights()) == false) return false;",
+                "ShellUser.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
+                "ShellUser.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() == false)",
                 "UserInstall.cs: return PluginLauncher.ThisProcessHasAdministratorRights() == true;",
+                "UserSave.cs: bool rights = seam != null ? seam() : PluginLauncher.ThisProcessHasAdministratorRights() != false;",
+                "UserSave.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() == false) return false;",
             }, own.OrderBy(s => s, StringComparer.Ordinal));
+            // The launcher's one call is its rights reader's default, which
+            // Start gives the shell and the child it made.
+            Assert.Contains("_rightsOf = rightsOf ?? ((process, _) => HasAdministratorRights(process));", launcher);
+            Assert.Contains("switch (_rightsOf(shellProcess, true))", launcher);
+            Assert.Contains("switch (_rightsOf(process, false))", launcher);
+            Assert.Equal(2, Regex.Matches(launcher, @"\b_rightsOf\(").Count);
             Assert.Equal(new[]
             {
                 "PluginLauncher.cs: process",
-                "PluginLauncher.cs: shellProcess",
                 "RecordingFolder.cs: shell",
                 "RecordingFolder.cs: shell",
-                "RecordingSave.cs: shell",
-                "UserInstall.cs: shell",
+                "ShellUser.cs: shell",
+                "ShellUser.cs: shell",
+                "UserSave.cs: shell",
             }, given.OrderBy(s => s, StringComparer.Ordinal));
         }
+
+        /// <summary>A read of this process's rights: a call of
+        /// ThisProcessHasAdministratorRights, or the method named as a
+        /// seam's default.</summary>
+        private static readonly Regex OwnRightsRead = new(@"\bThisProcessHasAdministratorRights\b");
 
         /// <summary>A call of HasAdministratorRights and what it is
         /// given.</summary>

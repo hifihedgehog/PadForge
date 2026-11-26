@@ -212,14 +212,16 @@ namespace PadForge.Common.Input
                 while (!lost && !feed.Retired && feed.RouteGeneration == generation && !feed.BtMicStop && feed.BtMicGen == gen)
                 {
                     PersonaReadBoundary?.Invoke(feed, true, true, report, 0);
-                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got);
+                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got, out int error);
+                    read = ReadOrFault(pad, read, ref error);
                     PersonaReadBoundary?.Invoke(feed, true, false, report, got);
-                    lock (feed.CallbackGate)
                     lock (feed.HidLaneLock)
+                    lock (feed.CallbackGate)
                         if (feed.Retired || feed.RouteGeneration != generation || feed.BtMicGen != gen) break;
                     if (!read || got < Ds4BtAudio.ControlReportSize)
                     {
                         if (feed.BtMicStop || feed.BtMicGen != gen) break;
+                        if (!read && ReadEndsReader(error)) { NoteBtMicLost(feed, gen, generation, "ds4mic", error); break; }
                         System.Threading.Thread.Sleep(50);
                         continue;
                     }
@@ -343,10 +345,10 @@ namespace PadForge.Common.Input
                 int offset = 0;
                 while (_pendingBytes - offset >= blockBytes)
                 {
-                    if (MicRingFits(mic, blockBytes))
+                    if (MicTakesBlock(mic, blockBytes))
                     {
-                        lock (feed.CallbackGate)
                         lock (feed.HidLaneLock)
+                        lock (feed.CallbackGate)
                         {
                             if (feed.Retired || feed.RouteGeneration != generation || feed.BtMicGen != gen) return false;
                             mic.Submit(_pending.AsSpan(offset, blockBytes));
@@ -464,10 +466,38 @@ namespace PadForge.Common.Input
         internal static bool MicRingFits(int ringBytes, int bufferedBytes, int blockBytes)
             => ringBytes - 1 - bufferedBytes >= blockBytes;
 
-        /// <summary>Whole-block guard for any persona microphone, sized from
-        /// the endpoint's own format by <see cref="MicRingBytes(int, int)"/>.</summary>
-        internal static bool MicRingFits(HIDMaestro.HMMicrophoneInput mic, int blockBytes)
-            => MicRingFits(MicRingBytes(mic), mic.BufferedBytes, blockBytes);
+        /// <summary>A 10 ms block in the endpoint's own format, in bytes.</summary>
+        internal static int MicBlockBytes(HIDMaestro.HMMicrophoneInput mic)
+            => (mic.SampleRateHz > 0 ? mic.SampleRateHz : Rate) / 100 * Math.Max(1, mic.Channels) * 2;
+
+        /// <summary>Whether a block goes into the microphone ring now: the
+        /// whole block fits, and while the host holds no stream the ring
+        /// counts as full once it holds a block. HIDMaestro keeps a full
+        /// ring's oldest bytes (SubmitMicSamples copies only what fits) and
+        /// moves no read index when the host opens the stream, so a ring
+        /// filled while nobody listened gave the opening host about a quarter
+        /// second of audio from before it opened, and that lag stayed. One
+        /// block still serves the host at once.</summary>
+        internal static bool MicTakesBlock(int ringBytes, int bufferedBytes, int blockBytes, bool streaming)
+            => MicRingFits(ringBytes, bufferedBytes, blockBytes) && (streaming || bufferedBytes < blockBytes);
+
+        internal static bool MicTakesBlock(HIDMaestro.HMMicrophoneInput mic, int blockBytes)
+            => MicTakesBlock(MicRingBytes(mic), mic.BufferedBytes, blockBytes, mic.IsStreaming);
+
+        /// <summary>Whether the Bluetooth DualSense lane skips a frame's
+        /// decode: the ring takes no block now, and either the host holds no
+        /// stream or the ring has not drained since the previous frame. The
+        /// skip follows the drain the ring shows, so a host that holds a
+        /// stream and reads nothing costs no decodes, and a host that reads
+        /// gets every frame it has room for. <paramref name="lastBuffered"/>
+        /// carries the previous frame's count.</summary>
+        internal static bool MicSkipsDecode(int ringBytes, int bufferedBytes, int blockBytes, bool streaming, ref int lastBuffered)
+        {
+            int before = lastBuffered;
+            lastBuffered = bufferedBytes;
+            if (MicTakesBlock(ringBytes, bufferedBytes, blockBytes, streaming)) return false;
+            return !streaming || bufferedBytes >= before;
+        }
 
         // ── Voice-macro microphone lane ─────────────────────────────────
 
@@ -549,10 +579,22 @@ namespace PadForge.Common.Input
             {
                 while (!lane.Stop)
                 {
-                    if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got)
-                        || got < Ds4BtAudio.ControlReportSize)
+                    bool read = NativeMethods.ReadFileSync(h, report, report.Length, out int got, out int error);
+                    read = ReadOrFault(lane.Pad, read, ref error);
+                    if (!read || got < Ds4BtAudio.ControlReportSize)
                     {
                         if (lane.Stop) break;
+                        // The pad left its node: open it again in place
+                        // (ReopenVoiceLane). The pad that comes back is not
+                        // armed, so the arming report goes out again.
+                        if (!read && ReadEndsReader(error))
+                        {
+                            if (!ReopenVoiceLane(lane, ref h, "ds4mic", error)) break;
+                            wasArmed = false;
+                            stream.Reset();
+                            up.Reset();
+                            continue;
+                        }
                         System.Threading.Thread.Sleep(50);
                         continue;
                     }
@@ -585,9 +627,9 @@ namespace PadForge.Common.Input
                 ClearDs4MicWant(lane.Pad, persona: false);
                 // Leaving with the microphone armed returns the pad to 0xA0,
                 // unless the persona lane still holds it armed.
-                if (wasArmed && !IsDs4MicArmed(lane.Pad))
+                if (h != IntPtr.Zero && wasArmed && !IsDs4MicArmed(lane.Pad))
                     NativeMethods.WriteFileSyncBestEffort(h, disarmReport, disarmReport.Length);
-                NativeMethods.CloseHandle(h);
+                if (h != IntPtr.Zero) NativeMethods.CloseHandle(h);
                 _voiceMicLanes.TryRemove(new System.Collections.Generic.KeyValuePair<Guid, VoiceMicLane>(lane.Pad, lane));
             }
         }

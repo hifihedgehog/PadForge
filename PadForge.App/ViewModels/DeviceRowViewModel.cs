@@ -965,7 +965,7 @@ namespace PadForge.ViewModels
              || devicePath.StartsWith("telemetry://", StringComparison.Ordinal)
              // The Twitch Chat row (#555) is fed by a channel's chat.
              || devicePath.StartsWith("twitch://", StringComparison.Ordinal)
-             // A device a program adds over the Automation pipe (#597) is
+             // A device a program adds over the Automation pipe (#600) is
              // fed by that program, with no HID instance behind it.
              || devicePath.StartsWith("program://", StringComparison.Ordinal)
              // An analog keyboard row (#468) reads the keyboard's vendor
@@ -1006,8 +1006,16 @@ namespace PadForge.ViewModels
         /// offered there anyway, took the tick, saved it, and hid nothing.
         /// Consume Input is a separate route that does work on a merged
         /// keyboard or mouse row, so it keeps its own rule.</summary>
-        public bool ShowHidHideToggle => !IsInternalVirtual && !IsAggregate && !IsPadForgeDriverRow
+        public bool ShowHidHideToggle => HidHideCanCloakPath(_devicePath) && !IsPadForgeDriverRow
             && !IsTouchpadRow && !_isTouchpadMouse;
+
+        /// <summary>Whether a path can name a HID instance for HidHide to
+        /// cloak: false for a merged row's and for a device PadForge or a
+        /// program feeds (IsInternalVirtualPath). The settings load clears
+        /// Hide from Games on a saved device of such a path, since its row
+        /// has no switch to turn it off.</summary>
+        internal static bool HidHideCanCloakPath(string devicePath) =>
+            !IsInternalVirtualPath(devicePath) && !IsAggregatePath(devicePath);
 
         /// <summary>True for a precision touchpad's own row. Its Input Hiding
         /// is Use Only in PadForge (UserDevice.TouchpadOnlyInPadForge): hidden
@@ -1457,6 +1465,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowMouseDpi));
                     OnPropertyChanged(nameof(IsPadForgeDriverRow));
                     OnPropertyChanged(nameof(ShowHidHideToggle));
+                    OnPropertyChanged(nameof(ShowSubmitMapping));
                     OnPropertyChanged(nameof(ShowTabletCaptureStatus));
                     OnPropertyChanged(nameof(IsTouchpadRow));
                     OnPropertyChanged(nameof(ShowTouchpadCaptureStatus));
@@ -1539,7 +1548,14 @@ namespace PadForge.ViewModels
         /// a row has nothing to submit. A device on a linked PC is hardware
         /// and keeps the button: its row carries the remote device's own
         /// vendor id, product id and SDL GUID.</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys" && DeviceTypeKey != "AnalogKeyboard" && DeviceTypeKey != "WebMenus" && DeviceTypeKey != "PeripheralLighting" && DeviceTypeKey != "PeripheralHaptics" && DeviceTypeKey != "KeyboardScreenKeys" && DeviceTypeKey != "NovintFalcon" && DeviceTypeKey != "GameTelemetry" && DeviceTypeKey != "TwitchChat" && DeviceTypeKey != "Program";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys" && DeviceTypeKey != "AnalogKeyboard" && DeviceTypeKey != "WebMenus" && DeviceTypeKey != "PeripheralLighting" && DeviceTypeKey != "PeripheralHaptics" && DeviceTypeKey != "KeyboardScreenKeys" && DeviceTypeKey != "NovintFalcon" && DeviceTypeKey != "GameTelemetry" && DeviceTypeKey != "TwitchChat" && DeviceTypeKey != "Program"
+            && !IsProgramPath(_devicePath);
+
+        /// <summary>Whether a program feeds the device (#600): one declared on
+        /// the pipe, the Test Controller or a replay. A replay's device takes
+        /// the type its recording names, so the type alone does not tell.</summary>
+        internal static bool IsProgramPath(string devicePath) =>
+            devicePath?.StartsWith("program://", StringComparison.Ordinal) == true;
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.

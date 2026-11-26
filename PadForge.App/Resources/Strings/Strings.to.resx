@@ -757,6 +757,7 @@
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Kumi naunau</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Kotoa</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, button mo e sensor kotoa pē</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Hono ngaahi meʻa puleʻi ʻaki e ngaahi hingoa ʻoku ngāueʻaki ʻe he ngaahi script</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Hala</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Fika serial</value></data>
   <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID ʻo e App</value></data>
@@ -900,7 +901,7 @@
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>lau</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Maʻu pē</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ko e sēvā mo e kalaieni Model Context Protocol ʻoku ʻi he fakafehokotaki ki he polokalama tokoni mo e PadForge.exe --mcp, ʻe Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Ko e sēvā mo e kalaieni Model Context Protocol ʻoku ʻi he fakafehokotaki ki he polokalama tokoni mo e PadForge.exe --mcp, ʻe Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions mo DependencyInjection.Abstractions, ʻa ia kuo langa ai ʻa e MCP C# SDK, ʻe Microsoft.</value></data>
   <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>ʻOku lele.</value></data>
@@ -942,6 +943,8 @@
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Ko ha joystick. ʻOku lau tonu ia ʻe he PadForge, ko ia ʻoku ʻikai ngāueʻaki ai ʻa e mape ʻa e SDL.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Ko ha joystick, kuo fokotuʻutuʻu ko ha gamepad ʻe hoʻo laine.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>ʻOku lau ʻe he SDL ʻa e ngaahi naunau lolotonga ʻoku lele ʻa e misini.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>ʻOku ʻikai fakafehokotaki ʻa e naunau. ʻE lau ia ʻe SDL ʻo ka fakafehokotaki.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Naʻe ʻikai ʻoatu ʻe SDL ki he PadForge ha lau ʻo e naunau ko ʻeni.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ko e tatau ʻa e kominiuti kuo fakakau, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Naʻe hiki mai ʻi he {0}</value></data>
@@ -979,6 +982,11 @@
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle mo e ngaahi ngāue kehe</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} mo {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>ʻOku ʻikai ha meʻa ke kopi: ʻoku ʻikai ha mape ʻa e SDL ki he naunau ko ʻeni, pea ʻoku ʻikai ʻi ha controller.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>ʻOku ʻikai ha meʻa ke kopi: ʻoku ʻikai lava ʻe PadForge ʻo lau ʻa e mape ʻa e SDL ki he naunau ko ʻeni, pea ʻoku ʻikai ha laine ʻo hono ngaahi controller ʻoku ne ʻoatu ha fakafehokotaki ʻoku tali ʻe he fōmu ʻa e SDL.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>ʻOku ʻikai ha meʻa ke kopi: ʻoku ʻikai ha mape ʻa e SDL ki he naunau ko ʻeni, pea ʻoku ʻikai ha laine ʻo e {0} ʻoku ne lau ha taha ʻo hono ngaahi button, axis pe hat ʻi ha founga ʻoku tali ʻe he fōmu ʻa e SDL.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>ʻOku ʻikai ha meʻa ke kopi: ʻoku ʻikai ha mape ʻa e SDL ki he naunau ko ʻeni, pea ʻoku lau ia ʻe he ngaahi laine ʻo e {0} maʻa {1} pē, ʻa ia ʻoku ʻikai lava ʻe he fōmu ʻa e SDL ʻo tauhi.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>ʻOku ʻikai ha meʻa ke kopi: ʻoku ʻikai lava ʻe PadForge ʻo lau ʻa e mape ʻa e SDL ki he naunau ko ʻeni ʻi he taimí ni, pea ʻoku ʻikai ʻi ha controller.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>ʻOku ʻikai ha meʻa ke kopi: ʻoku ʻikai lava ʻe PadForge ʻo lau ʻa e mape ʻa e SDL ki he naunau ko ʻeni ʻi he taimí ni, pea ʻoku ʻikai ha laine ʻo e {0} ʻoku ne ʻoatu ha fakafehokotaki ʻoku tali ʻe he fōmu ʻa e SDL.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>ʻOku ngāueʻaki ʻe ha polokalama kehe ʻa e clipboard. Naʻe ʻikai kopi ha meʻa.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Kuo toʻo hoʻo laine. ʻOku lau ʻa e naunau ʻo hangē ko ia naʻe ʻi muʻa.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Kuo toe mape mei he fokotuʻutuʻu ʻa e SDL: {0}.</value></data>
@@ -998,6 +1006,8 @@
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Ngaahi laine ʻoku ʻave ʻe he PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>ʻOku ʻikai ha laine ʻoku tatau.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>ʻOku fakaʻaongaʻi ʻa e laine kuo fili ki he {0} ʻi lalo ʻi hono ID pē ʻoʻona, ʻo fou ʻi he siviʻi tatau mo e fili tatau mo e Paste.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Kuo tuʻu ʻa e misini, ko ia ʻoku ʻikai ʻi he lisi ʻa e ngaahi laine ʻoku tauhi ʻe SDL, ʻa ʻene ngaahi laine pē ʻaʻana mo e tatau ʻa e kominiuti ʻoku ʻi loto. ʻE lisi ia ʻo ka lele ʻa e misini.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>Naʻe ʻikai tali ʻe SDL ʻi he taimi, ko ia ʻoku ʻikai ʻi he lisi ʻa e ngaahi laine ʻoku ne tauhi, ʻa ʻene ngaahi laine pē ʻaʻana mo e tatau ʻa e kominiuti ʻoku ʻi loto.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Laine mape SDL</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ko ha laine ki he naunau ko ʻeni.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Ko ha fokotuʻutuʻu kuo fakafuofua.</value></data>
@@ -1010,14 +1020,14 @@
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, konga ʻe {0}, mei he kautaha mo e koloa tatau ʻi ha bus pe version kehe. ʻOku tauhi ia ʻi lalo ʻi he ID pē ʻa e naunau ko ʻeni.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, konga ʻe {0}, ko e laine ʻa ha naunau kehe. ʻOku tauhi ia ʻi lalo ʻi he ID pē ʻa e naunau ko ʻeni.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Konga ʻe {0}. ʻOku ʻikai lau ʻe he SDL ʻa e naunau ko ʻeni, ko ia ʻoku fokotuʻutuʻu ʻe he PadForge hono ngaahi input ʻo fakatatau ki he laine.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>ʻOku ʻikai ha button pe axis faingofua ʻa PadForge ki he ngaahi konga ko ʻeni, pea ʻoku ne tuku ia: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Konga ʻe {0}, mei he ngaahi axis, button mo e hat ʻa e naunau. Siviʻi ia ʻi he Test Inputs, pea tauhi pe liliu ia ʻi heni.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>ʻOku liliu ʻe he meʻa ni ʻa e founga hono lau ʻo e {0}. ʻOku toe mape hono ngaahi laine ʻi he {1} mei he fokotuʻutuʻu foʻou.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>ʻOku liliu ʻe he meʻa ni ʻa e founga hono lau ʻo e {0}. ʻOku ʻikai ʻi ha controller, ko ia ʻoku ʻikai liliu ha laine.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Ko e ngaahi shortcut ʻo e palofaile ʻoku lau ʻa e {0} ʻoku nau tauhi ʻa e ngaahi input naʻe fokotuʻu ki ai.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>ʻOku tauhi ʻa e laine ko hoʻo meʻa ʻi he PadForge.xml pea ʻoku muʻomuʻa ia ʻi he maʻuʻanga kotoa pē kehe ki he naunau ko ʻeni. ʻOku fakafoki ʻe Toʻo ʻoʻoku ʻa e laine motuʻa mo e ngaahi laine motuʻa.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>ʻOku tauhi ʻa e ngaahi laine ko hoʻo meʻa ʻi he PadForge.xml pea ʻoku nau muʻomuʻa ki honau ngaahi naunau ʻi he maʻuʻanga kotoa pē kehe. ʻOku toʻo kinautolu ʻe Clear, ʻi lalo ʻi he More ʻo e laine Controller Database.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Laine ʻe {0} ki he Windows. ʻOku liʻaki ʻa e {1} ki he ngaahi sisitemi kehe.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Laine ʻe {0} ki he Windows. ʻOku liʻaki ʻa e {1} ki he ngaahi sisitemi kehe.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Ngaahi laine maʻa Windows: {0:N0}.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>ʻE tānaki kotoa ʻa e {0:N0}. ʻOku tauhi ʻe he PadForge ʻa e aʻu ki he {1:N0} ʻo hoʻo ngaahi laine.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>ʻE tānaki ia. ʻOku tauhi ʻe he PadForge ʻa e aʻu ki he {1:N0} ʻo hoʻo ngaahi laine.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>ʻOku tauhi he taimi ni ʻa e {0:N0} ʻo hoʻo ngaahi laine, ko ia ʻe tānaki ʻa e {1:N0} ʻo ʻeni pea ʻe ʻikai tānaki ʻa e {2:N0}.</value></data>
@@ -1027,7 +1037,7 @@
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ʻOku ʻikai ko ha laine ʻa e tohi ni ʻo e database controller ʻa e SDL: ko ha ID ʻo e mataʻifika hex ʻe 32, ko ha hingoa, pea ko e ngaahi konga hangē ko e a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ko e ngaahi laine ki he ngaahi sisitemi kehe. ʻOku lau ʻe he PadForge ʻa e ngaahi laine ki he Windows, pe ʻikai ki ha sisitemi pau.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ʻOku ʻikai ko e ID ʻo e laine ha ID ʻo ha naunau. ʻOku fiemaʻu ki ai ha mataʻifika hex ʻe 32.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>ʻOku maha ʻa e hingoa ʻo e laine, laka hake ʻi he mataʻitohi ʻe 128, pe ʻoku ʻi ai ha mataʻitohi ʻoku lau ʻe he SDL ko ha konga.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>ʻOku ʻatā ʻa e hingoa ʻo e laine, ʻoku laka hake ʻi he mataʻitohi ʻe 128, ʻoku ʻi ai ha fakaʻilonga konga ʻoku lau ʻe SDL, hangē ko e “type:”, pe ʻoku ʻi ai ha mataʻitohi ʻoku ʻikai ko ha ʻalafapeti, mataʻifika, fakaʻilonga tohi, fakaʻilonga pe ko e vahaʻa angamaheni.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>ʻOku ʻi he laine ha hint pe ha konga Android, ʻa ia ʻoku ʻikai tali ʻe he PadForge.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>ʻOku ʻi he laine ha konga ʻoku ʻikai ʻiloʻi ʻe he SDL.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>ʻOku ʻikai ʻi he fōmu ʻa e SDL ha binding, hangē ko e b3, a2, +a2, a2~ pe h0.4.</value></data>
@@ -1035,9 +1045,15 @@
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>ʻOku laka hake ʻa e laine ʻi he mataʻitohi ʻe 1,024.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>ʻOku ʻikai haʻi ʻe he laine ha control.</value></data>
   <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Feituʻu ʻoku hiki mai mei ai, hoʻo ngaahi laine</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Kuo fakanofo. ʻOku ʻi he PadForge ko ʻeni ha tatau foʻou ange.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Kuo fakanofo ki he {0}. ʻOku ʻi he PadForge ko ʻeni ha tatau foʻou ange.</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Hono ID script</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Fakahā ʻi he Fōlota</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Naʻe kamata ʻa e {0} ka naʻe ʻikai teitei fakafehokotaki ia ki he PadForge.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>naʻe maʻu hono library pea naʻe ʻikai fakahū ia, he naʻe ʻikai lava ʻe PadForge ʻo fakapapauʻi ʻoku lava pē ʻe he kau pule ʻo liliu ia pea naʻe fakamoʻoni ia ʻe Logitech</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>naʻe maʻu hono library pea naʻe ʻikai lava ʻo ngāueʻaki ia, pea ʻoku hā ʻi he log fakaʻekiʻeki ʻa e ʻuhinga</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>ʻOku nofo pē ʻa e hū mo e taukei ʻa PadForge, he ʻoku lau ʻe {0} ʻa e faile fokotuʻutuʻu tatau mo e folder taukei tatau.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>ʻOku nofo pē ʻa e hū ʻa PadForge, he ʻoku lau ʻe {0} ʻa e faile fokotuʻutuʻu tatau.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>Kuo toʻo ʻa PadForge mei he polokalama ko ʻeni. ʻOku nofo pē hono taukei, he ʻoku lau ʻe {0} ʻa e ngaahi taukei mei he folder tatau.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>ʻOku ʻikai lava ʻe PadForge ʻo lau ʻa e ngaahi fokotuʻutuʻu ʻi {0}, ko ia ʻoku ʻikai ʻilo pe kuo tānaki ʻa PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Kuo tānaki. Naʻe ʻikai lava ʻe PadForge ʻo lau hono folder taukei.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Ngaahi laine maʻa e ngaahi sisitemi kehe ʻoku ʻikai tānaki: {0:N0}.</value></data>
 </root>

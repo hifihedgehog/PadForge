@@ -90,7 +90,7 @@ Position is measured on the monitor the pointer is on. Mouse Position also takes
 
 ## A trackball or a spinner
 
-Windows does not say which axes move relatively, so a trackball or spinner that shows up as a joystick reads as a plain axis. On the source's line of that axis, turn on **This axis moves relatively**. The axis then holds a position as Mouse Travel does and takes the travel settings above. The switch shows on an axis or slider of any device that is not a mouse or a keyboard.
+SDL reads a generic controller through DirectInput, which reads every axis as a position, so a trackball or spinner that shows up as a joystick reads as a plain axis. On the source's line of that axis, turn on **This axis moves relatively** to tell PadForge the axis moves this way. The axis then holds a position as Mouse Travel does and takes the travel settings above. The switch shows on an axis or slider of any device that is not a mouse or a keyboard.
 
 ## Centimeters
 

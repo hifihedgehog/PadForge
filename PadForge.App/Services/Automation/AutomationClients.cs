@@ -53,7 +53,7 @@ namespace PadForge.Services.Automation
         string ClientName = null, string HostPath = null, string HostScript = null);
 
     /// <summary>
-    /// The programs connected over the long-lived pipe (#597), in the order
+    /// The programs connected over the long-lived pipe (#600), in the order
     /// they connected. Any thread may change and read it.
     /// </summary>
     internal sealed class AutomationClients

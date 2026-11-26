@@ -17,6 +17,16 @@ namespace PadForge
         /// card sends a user with no SDK (issue #521).</summary>
         internal const string FalconSdkDownloadUrl = "https://www.forcedimension.com/software/sdk";
 
+        /// <summary>The SDK's download page in the browser, through the
+        /// desktop shell, and the shell's reason on the status line when it
+        /// did not take the page. The shell's start throws nothing.</summary>
+        internal static void OpenFalconDownload(Action<string> setStatus)
+        {
+            if (ShellLaunch.AsTheUser(new ProcessStartInfo { FileName = FalconSdkDownloadUrl, UseShellExecute = true }, out string why)) return;
+            setStatus(string.Format(CultureInfo.CurrentCulture,
+                why == ShellLaunch.NotAnswered ? Strings.Instance.Falcon_DownloadNotAnswered_Format : Strings.Instance.Falcon_DownloadNotOpened_Format, why));
+        }
+
         /// <summary>The Novint Falcon card's buttons and a Falcon row's
         /// Calibrate Reach on the Devices page (issue #521), the Keyboard
         /// Screens card's shape: a dhd64.dll the user has, Force Dimension's
@@ -45,17 +55,7 @@ namespace PadForge
                     () => { });
             };
 
-            settings.OpenFalconDownloadRequested += (_, _) =>
-            {
-                try
-                {
-                    ShellLaunch.Start(new ProcessStartInfo { FileName = FalconSdkDownloadUrl, UseShellExecute = true });
-                }
-                catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException)
-                {
-                    _viewModel.SetStatus(ex.Message);
-                }
-            };
+            settings.OpenFalconDownloadRequested += (_, _) => OpenFalconDownload(text => _viewModel.SetStatus(text));
 
             _viewModel.Devices.FalconCalibrateRequested += (_, _) =>
             {

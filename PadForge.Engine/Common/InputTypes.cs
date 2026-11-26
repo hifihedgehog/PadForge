@@ -163,7 +163,7 @@ namespace PadForge.Engine
         // is a button at the index it was given.
         public const int TwitchChat = 45;
 
-        // A device a program adds over the Automation pipe (#597): a script,
+        // A device a program adds over the Automation pipe (#600): a script,
         // an assistant or a plugin declares its buttons, axes, sliders, hats,
         // sensors and touchpads by name, and drives them.
         public const int Program = 46;
@@ -194,7 +194,7 @@ namespace PadForge.Engine
         /// their buttons from 0, the G-keys' reason (#555). A program's
         /// device numbers its own controls from 0 in whatever shape the
         /// program declared, and its axes rest where the program says, so it
-        /// stays out for the head tracker's reason (#597).</summary>
+        /// stays out for the head tracker's reason (#600).</summary>
         public static bool AnswersAnyDeviceSources(int capType) => capType switch
         {
             HeadTracker or Nfc or Microphone or HandheldButtons or ConsumerControl or Tablet

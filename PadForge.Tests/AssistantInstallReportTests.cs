@@ -231,6 +231,24 @@ namespace PadForge.Tests
             Assert.Equal("missing", checks.Single(x => x.Key == "gemini-cli").Entry);
         }
 
+        /// <summary>A program whose settings file PadForge cannot read keeps
+        /// its row, and its entry reads unreadable, never missing.</summary>
+        [Fact]
+        public void ASettingsFilePadForgeCannotRead_KeepsItsProgram_AndReadsUnreadable()
+        {
+            string gemini = Touch("bin", "gemini.exe");
+            UserInstall.FindSeam = name => name == "gemini" ? gemini : null;
+            string json = At("Profile", ".gemini", "settings.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(json));
+            File.WriteAllText(json, "{ \"mcpServers\": { \"padforge\": {");
+            var said = new List<string>();
+            var c = UserInstall.ReadChecks(UserInstall.CheckAll(said.Add)).Single(x => x.Key == "gemini-cli");
+            Assert.Equal(gemini, c.Program);
+            Assert.Equal("unreadable", c.Entry);
+            Assert.Equal(json, c.Settings);
+            Assert.Contains(said, l => l.StartsWith("gemini-cli: " + gemini + ", entry unreadable", StringComparison.Ordinal));
+        }
+
         /// <summary>A skill whose SKILL.md names a newer version than this
         /// PadForge's is newer, not older, and gets no Update.</summary>
         [Fact]

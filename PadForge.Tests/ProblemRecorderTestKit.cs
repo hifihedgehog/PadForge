@@ -37,7 +37,10 @@ namespace PadForge.Tests
 
         internal RecorderTestHost() => Directory.CreateDirectory(Dir);
 
-        public override string Folder => Dir;
+        /// <summary>The folder the host names in place of <see cref="Dir"/>,
+        /// when set.</summary>
+        internal string FolderOverride;
+        public override string Folder => FolderOverride ?? Dir;
         public override bool AttachesToEngine => false;
 
         public override PrivacyEnvironment Environment() => new()
@@ -50,17 +53,31 @@ namespace PadForge.Tests
         };
 
         public override List<UserDevice> Devices() => new(DeviceList);
-        public override void LiveValues(List<(PrivateKind Kind, string Value)> into) => into.AddRange(Live);
+        /// <summary>Makes the list of this PC's values throw, as a read the
+        /// recorder's filters do not name.</summary>
+        internal bool LiveValuesThrow;
+        public override void LiveValues(List<(PrivateKind Kind, string Value)> into)
+        {
+            if (LiveValuesThrow) throw new InvalidOperationException("the list changed under the read");
+            into.AddRange(Live);
+        }
         public override void SystemLines(PrivacyScrubber scrubber, List<string> into) => into.AddRange(System);
+
+        /// <summary>The names the user typed, told to a scrubber as a
+        /// recording's own system part tells them.</summary>
+        internal void LearnTypedNames(PrivacyScrubber scrubber) => KnowNames(scrubber);
         public override void ControllerLines(PrivacyScrubber scrubber, List<string> into) => into.AddRange(Controllers);
         public override void SettingsLines(PrivacyScrubber scrubber, List<string> into) => into.AddRange(SettingsPart);
         public override ulong[] KeysRead(UserDevice keyboard) => Read.TryGetValue(keyboard.InstanceGuid, out var bits) ? bits : new ulong[4];
         public override List<(long Ticks, string Line)> History() => Lines;
+        /// <summary>The program in front, or null for none known.</summary>
+        internal string FrontPath;
         public override bool Front(out string path, out bool named, out string profile)
         {
-            path = profile = null;
+            path = FrontPath;
+            profile = null;
             named = false;
-            return false;
+            return path != null;
         }
 
         protected override string MappingOf(ISdlInputDevice device) => null;

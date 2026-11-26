@@ -10,7 +10,7 @@ using PadForge.ViewModels;
 namespace PadForge.Services
 {
     /// <summary>
-    /// The device notes (#597): the flyout names a mapped device when it
+    /// The device notes (#600): the flyout names a mapped device when it
     /// disconnects and when it connects, each behind its own switch under
     /// Extras, Overlays. This part reads the mapped rows, hands them to
     /// <see cref="DeviceNoteDirector"/>, which holds every rule, and shows
@@ -213,11 +213,12 @@ namespace PadForge.Services
 
         /// <summary>An engine start: the rows of the new run say nothing
         /// until they have settled, so a device that was connected all along
-        /// raises no note. Windows' sleep is listened for from here to the
-        /// stop.</summary>
+        /// raises no note, and nothing of an earlier run is kept. Windows'
+        /// sleep is listened for from here to the stop.</summary>
         private void StartDeviceNotes()
         {
             _lastDeviceNoteWalk = 0;
+            _deviceNotes.Reset();
             _deviceNotes.Mark(Environment.TickCount64);
             SystemEvents.PowerModeChanged -= OnDeviceNotePowerMode;
             SystemEvents.PowerModeChanged += OnDeviceNotePowerMode;

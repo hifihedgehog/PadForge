@@ -9,7 +9,7 @@ using Microsoft.Extensions.AI;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// Text that came from outside PadForge (#597): a device's product name,
+    /// Text that came from outside PadForge (#600): a device's product name,
     /// a profile's name, a macro's name, a game's file name. Every result
     /// gives such text in this one shape, an object whose only property is
     /// <c>outside_text</c>, so an assistant reads it as data and never as an
@@ -34,7 +34,7 @@ namespace PadForge.Services.Automation
     }
 
     /// <summary>
-    /// The JSON every tool reads and writes (#597): property names in
+    /// The JSON every tool reads and writes (#600): property names in
     /// lowercase words joined by underscores, enums as such words, and no
     /// property for a value that is not there. The schemas a tool publishes
     /// are made from the same types with the same options, so what a tool
@@ -80,10 +80,6 @@ namespace PadForge.Services.Automation
                 throw new InvalidOperationException(type.Name + " does not make an object schema.");
             return schema;
         }
-
-        /// <summary>A value as the JSON element a result carries.</summary>
-        internal static JsonElement ToElement(object value, Type type)
-            => JsonSerializer.SerializeToElement(value, type ?? value?.GetType() ?? typeof(object), Options);
 
         /// <summary>A value as one line of JSON text.</summary>
         internal static string ToText(object value, Type type = null)

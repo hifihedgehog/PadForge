@@ -312,6 +312,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Показване или скриване на PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Включване или изключване на виртуалните контролери</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Всяко свързано устройство</value></data>
+  <data name="Profiles_ShortcutDevice_NotConnected_Format" xml:space="preserve"><value>{0} (не е свързано)</value></data>
+  <data name="Profiles_ShortcutDevice_Removed" xml:space="preserve"><value>Устройство, което не е на страницата Устройства</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Записване…</value></data>
   <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} с)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>когато</value></data>
@@ -578,7 +580,7 @@
   <data name="Extras_Automation_Level_Read" xml:space="preserve"><value>Четене</value></data>
   <data name="Extras_Automation_Level_SendInputs" xml:space="preserve"><value>Изпращане на входове</value></data>
   <data name="Extras_Automation_Level_ChangeSettings" xml:space="preserve"><value>Промяна на настройки</value></data>
-  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програмите могат да превключват профили и да ги освобождават, да стартират и спират двигателя, да включват и изключват виртуалните контролери, да показват и скриват прозореца, да затварят PadForge, да записват моментна снимка за диагностика и да питат какво работи.</value></data>
+  <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програмите могат да превключват профили и да ги освобождават, да стартират и спират двигателя, да включват и изключват виртуалните контролери, да показват и скриват прозореца, да затварят PadForge, да питат какво работи, да записват моментна снимка за диагностика и да стартират, спират и отбелязват запис на проблем.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Всичко от ниво „Команди“ и още: програмите могат да виждат устройствата, виртуалните контролери, съпоставянията, профилите и настройките, да следят входовете на всяко устройство в реално време и да ви показват място в PadForge. Програма на ниво „Четене“ вижда всеки натиснат клавиш на всяко устройство, включително клавишите, въведени в прозорци, работещи като администратор.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Всичко от ниво „Четене“ и още: програмите могат да добавят собствени устройства и да ги управляват, да задържат контрол на всяко устройство и да подават именувани стойности към тригерите на макроси.</value></data>
   <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Всичко от ниво Изпращане на входове и още: програмите могат да променят всичко, което можете да променяте на страниците. Някои промени винаги ви питат първо в картата с въпрос на PadForge.</value></data>
@@ -591,7 +593,11 @@
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Чака ви</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Дейност</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Отмени</value></data>
-  <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge не можа да го запише: {0}</value></data>
+  <data name="Extras_Automation_NotSaved" xml:space="preserve"><value>PadForge не можа да запази файла.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge не можа да запази комплекта за приставки.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Дейност {0}.txt</value></data>
+  <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Звуци{0}</value></data>
+  <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Икони{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Докато е свързана програма на ниво „Четене“ или по-високо, тя вижда какво се натиска на всяко устройство, включително клавиатурите.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Приставки</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Изпълнение на приставки</value></data>
@@ -611,7 +617,10 @@
   <data name="Plugins_Replay_Position_Format" xml:space="preserve"><value>{0} от {1}</value></data>
   <data name="Plugins_Replay_DeviceName_Format" xml:space="preserve"><value>{0} (повторно възпроизвеждане)</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Записи на проблеми|*.zip;*.log|Всички файлове|*.*</value></data>
-  <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge не може да възпроизведе {0}. Това не е запис на проблем или не съдържа вход на устройство.</value></data>
+  <data name="Plugins_Replay_NotARecording_Format" xml:space="preserve"><value>PadForge не може да възпроизведе {0}. Това не е запис на проблем, който PadForge може да прочете.</value></data>
+  <data name="Plugins_Replay_TooManyDevices_Format" xml:space="preserve"><value>PadForge не може да възпроизведе {0}. Съдържа повече от {1} устройства, а Повторно възпроизвеждане възпроизвежда най-много {1}.</value></data>
+  <data name="Plugins_Replay_NoInput_Format" xml:space="preserve"><value>PadForge не може да възпроизведе {0}. Не съдържа входни данни от никакво устройство.</value></data>
+  <data name="Plugins_Replay_Unreadable_Format" xml:space="preserve"><value>PadForge не можа да прочете {0}.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Вашите приставки</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Добави приставка…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програми и скриптове|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Всички файлове|*.*</value></data>
@@ -628,8 +637,13 @@
   <data name="Plugins_State_Failed" xml:space="preserve"><value>Спряна след пет поредни неуспеха</value></data>
   <data name="Plugins_Refused_Missing" xml:space="preserve"><value>Не е стартирана: файлът го няма</value></data>
   <data name="Plugins_Refused_NoProgram" xml:space="preserve"><value>Не е стартирана: Windows няма програма за този вид файл</value></data>
+  <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Не е стартирана: никоя програма не отваря файлове на Python вместо вас и PadForge не намира стартера py</value></data>
+  <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Не е стартирана: PadForge не може да прочете коя програма отваря вместо вас този вид файл</value></data>
+  <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Не е стартирана: програмата, която отваря вместо вас този вид файл, не е на този компютър</value></data>
   <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Не е стартирана: няма работеща обвивка на работния плот, под която да се стартира</value></data>
   <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Не е стартирана: обвивката на работния плот има права на администратор, така че и приставката би ги имала</value></data>
+  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Не е стартирана: PadForge не може да прочете дали би имала права на администратор</value></data>
+  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Не е стартирана: Windows ѝ даде права на администратор, затова PadForge я спря, преди да се изпълни</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Не е стартирана: иска права на администратор</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Не е стартирана: Windows отказа с грешка {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Не е стартирана</value></data>
@@ -657,6 +671,7 @@
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Добавени: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Подписан от {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Неподписан.</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Настройките ѝ се показват тук, докато работи.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Не декларира настройки.</value></data>
   <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Настройките ѝ се показват тук, щом се свърже с PadForge.</value></data>
@@ -760,8 +775,9 @@
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Програмата говори версия, която PadForge не познава</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge не даде този ключ за приставка</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge не прие връзката на тази програма</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge не създаде устройство, тъй като Windows не даде името на файла на програмата</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Поискано отново твърде скоро</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Не повече от тях, докато PadForge не стартира отново</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Твърде много от тези, които програмите създадоха, чакат вашия преглед в Начало</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge няма такъв инструмент</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Програмата прочете по-старо състояние</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Нищо няма този ID</value></data>
@@ -769,6 +785,7 @@
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Не го разрешихте</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Никой не отговори навреме</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Чака се вашият отговор</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Още не бяхте отговорили</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Няма такава заявка</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Няма какво да се отмени</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Само вие можете да промените това</value></data>
@@ -884,6 +901,8 @@
   <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Неподписана.</value></data>
   <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>При ниво Четене и по-горе вижда всеки натиснат клавиш на всяко устройство, включително клавиатури.</value></data>
   <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Пита веднъж. Можете да я премахнете на страницата Автоматизация.</value></data>
+  <data name="Automation_Consent_StartedByUnknown" xml:space="preserve"><value>Стартирано от програма, която PadForge не можа да определи.</value></data>
+  <data name="Automation_Consent_AsksEachTime" xml:space="preserve"><value>PadForge не може да различи тази програма от друга, затова пита отново при следващата ѝ връзка.</value></data>
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>командния ред на PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Задава {0} на {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Слуша в мрежата, затова други устройства могат да стигнат до този компютър.</value></data>
@@ -899,7 +918,6 @@
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Пренасяне на профил</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Импортирайте файл с профил от друга програма, после вижте какво е пренесено.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, {1} пъти</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, последното от {1} такива</value></data>
   <data name="Automation_Library_AutoHotkey" xml:space="preserve"><value>AutoHotkey v2</value></data>
   <data name="Automation_Library_AutoHotkey_Filter" xml:space="preserve"><value>Скриптове за AutoHotkey v2 (*.ahk)|*.ahk</value></data>
   <data name="Automation_Library_Python" xml:space="preserve"><value>Python</value></data>
@@ -929,6 +947,7 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>На този компютър няма Logitech G-key SDK. Той се инсталира с Logitech Gaming Software 8.55 или по-нова версия.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK е регистриран, но файлът му липсва. Инсталирайте отново Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK е намерен, но не може да бъде зареден.</value></data>
+  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK е намерен, но не е зареден, тъй като PadForge не можа да потвърди, че само администратори могат да го променят и че е подписан от Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Тази библиотека не е очакваният G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK отказа да стартира. Обикновено причината е, че Logitech Gaming Software не работи.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Свързано, но все още не е засечен клавиш. В Logitech Gaming Software плъзнете командата G-key върху всеки клавиш в профила на PadForge и направете този профил постоянен. Мишка G600 или G300 също трябва да е извън режима на вградена памет.</value></data>
@@ -1071,14 +1090,29 @@
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се стартира автоматично, когато влезете в Windows. Докато това е включено, PadForge се стартира и без подканата на Windows от пряк път, скрипт или друга програма.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge се изпълнява от {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Това изисква PadForge да е в отделна папка. Папката му съдържа други файлове, затова PadForge не може да попречи на други програми да я променят.</value></data>
+  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Това изисква PadForge да е в папка, която други програми не могат да променят. PadForge не можа да им попречи да променят папката си.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Премести PadForge в отделна папка</value></data>
   <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копира PadForge и настройките му в Program Files, насочва задачите му натам и го стартира оттам. Копието тук остава непроменено.</value></data>
   <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge не се премести: {0} съдържа файлове, които не са на PadForge.</value></data>
   <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge не се премести: {0}</value></data>
   <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>„Стартиране при влизане“ беше изключено, защото стартираше PadForge от папка, която съдържа други файлове.</value></data>
+  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge не се премести: Windows не посочва папка Program Files.</value></data>
+  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge не се премести: не можа да прочете работещия PadForge.</value></data>
+  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge не се премести: не можа да създаде {0}.</value></data>
+  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge не се премести: не можа да прочете какво съдържа {0}.</value></data>
+  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge не се премести: не можа да попречи на други програми да променят {0}.</value></data>
+  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge не се премести: копието му в {0} не съвпадна с работещия PadForge.</value></data>
+  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge не се премести: след копирането {0} съдържаше файлове, които не са на PadForge, или други програми можеха да я променят.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Стартиране при влизане е изключено, тъй като PadForge, който е бил стартиран, вече го няма.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Стартиране при влизане е изключено, тъй като PadForge не можа да попречи на други програми да променят папката, от която е стартиран.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Стартиране при влизане е изключено, тъй като PadForge не можа да прочете кой PadForge е бил стартиран.</value></data>
+  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Стартиране при влизане е изключено, тъй като PadForge не можа да прочете папката на PadForge, който е бил стартиран.</value></data>
   <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge не можа да създаде защитената си папка {0}. PadForge пази там библиотеките, с които работи с права на администратор, и не може да стартира безопасно без нея.</value></data>
   <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge не можа да се стартира отново от защитената си папка {0}. PadForge работи с права на администратор само оттам, затова не стартира.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge не можа да създаде заключването, което позволява работа само на едно копие, затова не стартира.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge работи с права на администратор от {0}, папка, която други програми могат да променят. Те могат да променят настройките на PadForge там, а PadForge действа по тях със своите права.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge работи с права на администратор от {0}, папка, която съдържа други файлове. PadForge не може да попречи на други програми да променят настройките му там и действа по тях със своите права.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge работи с права на администратор от {0}, папка, която не можа да прочете. PadForge не може да попречи на други програми да променят настройките му там и действа по тях със своите права.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Винаги показвай в областта за уведомяване</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Иконата в областта за уведомяване остава видима, докато прозорецът е отворен, така че „Изход“ в менюто ѝ е винаги на едно щракване разстояние.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Актуализации</value></data>
@@ -1093,7 +1127,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Инсталирай и рестартирай</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Бележки по версията</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>База данни на контролерите</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Актуализирай сега изтегля общностната база данни на контролерите (SDL_GameControllerDB) от GitHub или от адреса, зададен под „Още“, и пази във файла с настройки съпоставянията, които тази версия на PadForge няма. Те са в употреба веднага. От друг адрес пази само нови съпоставяния. Ново съпоставяне се използва само за контролер, който нищо друго не чете като геймпад, който не е назначен и не е в Принудителен суров режим на джойстик (без пренасочване на геймпада). Нулирането премахва всяко изтеглено съпоставяне и изтегля отново от GitHub. Вашите собствени редове, под „Още“, остават.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Актуализирай сега изтегля общностната база данни на контролерите (SDL_GameControllerDB) от GitHub или от адреса, зададен под „Още“, и пази във файла с настройки съпоставянията, които тази версия на PadForge няма. Те са в употреба веднага. От друг адрес пази само нови съпоставяния. Ново съпоставяне първо се използва само за контролер, който SDL отчита като геймпад или без определен тип, който нищо друго не чете като геймпад, който не е назначен и не е в Принудителен суров режим на джойстик (без пренасочване на геймпада). Щом е в употреба, остава в употреба и след като контролерът бъде назначен. Нулирането премахва изтеглените съпоставяния и връща „Изтегляне от“ към файла на общността, който следващото Актуализирай сега изтегля. Вашите собствени редове, под „Още“, остават.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Актуализирай сега</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Актуализиране…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Проверка за актуализации…</value></data>
@@ -1126,9 +1160,12 @@
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Вградени: {1} съпоставяния, общностно копие от {2}. Изтеглени на {3} от {4}: {0} нови реда.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Вградени: {1} съпоставяния, общностно копие от {2}. Изтеглени на {3} от {4}: {0} нов ред.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Общностната база данни не се е променила от последната актуализация.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>Файлът на {0} не се е променил от последната актуализация.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub не можа да бъде достигнат: {0}</value></data>
   <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} не можа да бъде достигнат: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge отказа изтеглянето, защото то не е базата данни на контролерите, която очаква. Нищо не се промени.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge отхвърли отговора на GitHub. Нищо не се промени.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge отхвърли отговора от {0}. Нищо не се промени.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Стартиране в минимизиран вид</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Стартиране при влизане</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1171,6 +1208,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Папка</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Настройка на услуга</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Стъпка на премахване</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Услуга</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Файл</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Горен филтър</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Стойност в регистъра</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Идентификатор на хардуера</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Планирана задача</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Запис в инсталираните приложения</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP устройство</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Позволява на контролерите PlayStation 3, на PlayStation Move и на Navigation контролера да се свързват през Bluetooth. Вграден е в PadForge и се инсталира при първото сдвояване на някой от тях.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Свързва контролери PlayStation 3 през Bluetooth.</value></data>
@@ -1239,6 +1284,8 @@
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Записан {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Записът не започна. Проверка откри лична стойност на този PC, която нямаше да остане извън файла.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Записът не започна. {0}</value></data>
+  <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge не намери временна папка на влезлия потребител в потребителския му профил, достигната без връзка, в която да запише записа.</value></data>
+  <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>Папката със записи е връзка към друго място, което PadForge не следва.</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Предишният запис още се завършва.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>„Пази последните 60 секунди“ е изключено, затова няма какво да се запише.</value></data>
   <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Запис, който PadForge не беше спрял, чака да го прочетете в Начало: {0}</value></data>
@@ -1252,7 +1299,7 @@
   <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, вашите устройства и настройки такива, каквито са сега, през същия преглед.</value></data>
   <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log до PadForge.exe, където можете да го прочетете.</value></data>
   <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Какво да се записва</value></data>
-  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Всичко е включено. Изключена част се пропуска в следващия запис, а файлът казва кои части съдържа.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Всяка част е включена по подразбиране. Изключена част се пропуска в следващия запис, а файлът казва кои части съдържа.</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>За проблем, който се появява веднъж вечер.</value></data>
   <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Записът чака да го прочетете в Начало.</value></data>
   <data name="Recording_Part_Summary" xml:space="preserve"><value>Обобщение</value></data>
@@ -1291,8 +1338,8 @@
   <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 стойност</value></data>
   <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} частни вида</value></data>
   <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 частен вид</value></data>
-  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Проверка за почистване: {0} от собствените стойности на този компютър още са в частите, които запазвате. Изключете тези части или изтрийте записа. Бутонът „Запази…“ остава изключен дотогава.</value></data>
-  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Проверка за почистване: една от собствените стойности на този компютър още е в частите, които запазвате. Изключете тези части или изтрийте записа. Бутонът „Запази…“ остава изключен дотогава.</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Проверка за почистване: {0} от собствените стойности на този компютър още са в частите, които запазвате. Изключете тези части или изтрийте записа. Бутонът „Запази“ остава изключен дотогава.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Проверка за почистване: една от собствените стойности на този компютър още е в частите, които запазвате. Изключете тези части или изтрийте записа. Бутонът „Запази“ остава изключен дотогава.</value></data>
   <data name="Review_Empty" xml:space="preserve"><value>Нищо от тази част не се случи по време на записа.</value></data>
   <data name="Review_Delete" xml:space="preserve"><value>Изтрий</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Копирай обобщението</value></data>
@@ -1303,6 +1350,17 @@
   <data name="Review_SaveTitle" xml:space="preserve"><value>Запазване на записа</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip файлове</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Не е запазено. {0}</value></data>
+  <data name="Review_SizeKB_Format" xml:space="preserve"><value>{0} KB</value></data>
+  <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
+  <data name="Review_Scrub_Checking" xml:space="preserve"><value>Проверка за почистване: проверяват се частите, които запазвате…</value></data>
+  <data name="Review_Scrub_Unread" xml:space="preserve"><value>Проверка за почистване: PadForge не можа да прочете частите, които запазвате, затова бутонът „Запази“ остава изключен.</value></data>
+  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Запазването с вашите права не започна.</value></data>
+  <data name="Review_SaveNoShell" xml:space="preserve"><value>Запазването с вашите права не започна: не работи обвивка на работния плот, под която да се стартира.</value></data>
+  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Запазването с вашите права не започна: Windows отказа с грешка {0}.</value></data>
+  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Запазването не приключи за {0}.</value></data>
+  <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows не позволи файлът да бъде записан там.</value></data>
+  <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge не прие този файл като свой запис.</value></data>
+  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Запазването завърши с код {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Запазва се от ваше име, първия път в папката „Изтегляния“, после където сте запазвали последно, и се показва във „Файлов мениджър“. Запис, който спира, докато никой не е на страницата (по лимит, от макрос, от програма, от инструмента на асистента или от --record stop), чака този преглед в Начало и се изтрива след 7 дни, ако не бъде запазен. На програмата се казва, че чака, но никога къде.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Запис на проблем от {0} чака да го прочетете.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Преглед</value></data>
@@ -1653,6 +1711,7 @@
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Нов контролер</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Настройки</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Всяка ос, бутон и сензор</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Контролите му по имената, които използват скриптовете</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Натиснати: {0}</value></data>
   <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Идентификатори, път, възможности, принудителен суров режим на джойстик</value></data>
   <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Идентификатори, път, възможности</value></data>
@@ -2154,9 +2213,18 @@
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Неуспешно четене: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro отхвърли тази предварителна настройка при {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Тази предварителна настройка няма HID дескриптор, затова от нея не може да се създаде контролер.</value></data>
+  <data name="ManageProfiles_ProblemNotChecked_Format" xml:space="preserve"><value>PadForge не можа да провери тази предварителна настройка: {0}</value></data>
+  <data name="ManageProfiles_StatusChecking" xml:space="preserve"><value>Проверява се предварителната настройка…</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Нищо не беше импортирано. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Импортирай</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID устройство без име)</value></data>
+  <data name="ImportFromDevice_DeviceDetail_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="ImportFromDevice_DeviceDetailMaker_Format" xml:space="preserve"><value>{0}, {1}, {2}</value></data>
+  <data name="ImportFromDevice_UsageMouse" xml:space="preserve"><value>Мишка</value></data>
+  <data name="ImportFromDevice_UsageJoystick" xml:space="preserve"><value>Джойстик</value></data>
+  <data name="ImportFromDevice_UsageGamepad" xml:space="preserve"><value>Геймпад</value></data>
+  <data name="ImportFromDevice_UsageKeyboard" xml:space="preserve"><value>Клавиатура</value></data>
+  <data name="ImportFromDevice_UsageMultiAxis" xml:space="preserve"><value>Многоосен контролер</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Намерени HID интерфейси: {0}.</value></data>
   <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Намерени HID интерфейси: 1.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Неуспешно изброяване: {0}</value></data>
@@ -3288,7 +3356,7 @@
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Докато е задържан и център</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Превключване</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Вход за управление</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Бутонът, който позволява на мишката да управлява, на същото устройство като източника. Ако не е избран нито един, мишката управлява винаги.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Бутонът, който позволява на мишката да управлява, на което и да е устройство от този слот. Ако не е избран нито един, мишката управлява винаги.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Изглаждане</value></data>
   <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Изравнява мишка, която отчита неравномерно. Стикът изостава от ръката с около толкова време. 0 е изключено.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Ъгъл при скорост</value></data>
@@ -3309,7 +3377,7 @@
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Начало от мястото, където е започнало управлението</value></data>
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>При зададен Вход за управление стикът се измерва от мястото, където е бил показалецът, когато е започнало управлението, както стик на екрана на телефон започва там, където се приземи пръстът. Изключено, измерва се от центъра на монитора на показалеца.</value></data>
   <data name="Mapping_AxisRelative" xml:space="preserve"><value>Тази ос се движи относително</value></data>
-  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>За тракбол или въртящ се регулатор, който отчита колко е завъртян. Включено, оста държи положение като „Ход на мишката“ и приема настройките за хода. Windows не казва кои оси се движат така.</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>За тракбол или въртящ се регулатор, който отчита колко е завъртян. Включено, оста държи положение като „Ход на мишката“ и приема настройките за хода. SDL чете общ контролер през DirectInput, който чете всяка ос като положение, затова този превключвател казва кои оси се движат така.</value></data>
   <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} см</value></data>
   <data name="Mapping_Preview" xml:space="preserve"><value>Преглед</value></data>
   <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Показва как това семейство следва вашата мишка. Нищо не е съпоставено, докато не го изберете.</value></data>
@@ -3502,6 +3570,13 @@
 {0}
 
 PadForge записа подробностите в crash.log до PadForge.exe. За да подадете доклад, започнете дискусия на {2} и пуснете crash.log върху нея.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Възникна неочаквана грешка:
+
+{0}
+
+PadForge не можа да запише подробностите в crash.log до PadForge.exe. За да подадете доклад, започнете дискусия на {2}, натиснете Ctrl+C тук, за да копирате това съобщение, и го поставете там.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(потиснати допълнителни грешки: {0})</value></data>
@@ -4430,7 +4505,7 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Декомпресия на Zstandard, която SteamKit2 използва за частите от хранилищата на Steam, C# версия на библиотеката zstd от Oleg Stepanischev.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Сървърът и клиентът на Model Context Protocol зад връзката с асистенти и PadForge.exe --mcp, от Model Context Protocol a Series of LF Projects.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Сървърът и клиентът на Model Context Protocol зад връзката с асистенти и PadForge.exe --mcp, от Model Context Protocol a Series of LF Projects, LLC.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions и DependencyInjection.Abstractions, върху които е изграден MCP C# SDK, от Microsoft.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -5835,7 +5910,18 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="KeyboardScreens_Status_G19Preparing" xml:space="preserve"><value>свързване на WinUSB към екрана на G19</value></data>
   <data name="KeyboardScreens_Status_G19OtherDriver_Format" xml:space="preserve"><value>екранът на G19 е на друг драйвер ({0}), затова стартирайте Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>екранът на G19 е на драйвер на друга програма ({0}), който PadForge не пипа</value></data>
+  <data name="Ds3Pair_Step_Drivers" xml:space="preserve"><value>Проверяват се драйверите на PadForge за Bluetooth на PlayStation…</value></data>
+  <data name="Ds3Pair_Step_Radio" xml:space="preserve"><value>Чете се Bluetooth радиото на този компютър…</value></data>
+  <data name="Ds3Pair_Step_Usb" xml:space="preserve"><value>Контролерът се отваря през USB кабела му…</value></data>
+  <data name="Ds3Pair_Step_Write" xml:space="preserve"><value>Bluetooth адресът на този компютър се записва в контролера…</value></data>
+  <data name="Ds3Pair_Step_Register" xml:space="preserve"><value>Контролерът се регистрира в Bluetooth на Windows…</value></data>
+  <data name="Ds3Pair_Step_Restart" xml:space="preserve"><value>Bluetooth се рестартира…</value></data>
+  <data name="Ds3Pair_FaultAccess" xml:space="preserve"><value>Сдвояването спря: Windows отказа на PadForge достъп до контролера или до настройките на Bluetooth. Журналът за диагностика съдържа подробностите.</value></data>
+  <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Сдвояването спря: четенето или записът на контролера или на Bluetooth радиото не успя. Журналът за диагностика съдържа подробностите.</value></data>
+  <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Сдвояването спря заради грешка, която PadForge не очакваше. Журналът за диагностика съдържа подробностите.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>изисква Logitech Gaming Software 8.52 или по-нова версия</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>библиотеката му е намерена, но не е заредена, тъй като PadForge не можа да потвърди, че само администратори могат да я променят и че е подписана от Logitech</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>библиотеката му е намерена, но не може да се използва, а журналът за диагностика казва защо</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>стартирайте Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>изчакване на телефон с Arx Control</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>на телефон</value></data>
@@ -5938,6 +6024,8 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>Избор на dhd64.dll…</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Зарежда това копие на библиотеката на Force Dimension вместо всяко друго. Falcon, отворен с друго копие, се затваря и се отваря отново с това. Копията, които SDK инсталира, се намират и без него.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Библиотеки (*.dll)|*.dll</value></data>
+  <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Страницата за изтегляне на Falcon SDK не се отвори: {0}.</value></data>
+  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Страницата за изтегляне на Falcon SDK още не се е отворила: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Инсталиране на драйвер за Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Инсталира драйвера на Force Dimension от папката на SDK за Falcon, който няма драйвер. Windows може първо да попита дали да се довери на Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Вземи SDK на Force Dimension</value></data>
@@ -6604,12 +6692,17 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Премахване…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Актуализиране…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Не завърши: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Записът и умението на PadForge остават, тъй като {0} чете същия файл с настройки и същата папка с умения.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Записът на PadForge остава, тъй като {0} чете същия файл с настройки.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge е премахнат от тази програма. Умението му остава, тъй като {0} чете умения от същата папка.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge не може да прочете настройките в {0}, затова не знае дали PadForge е добавен.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Добавен. PadForge не можа да прочете папката с неговото умение.</value></data>
   <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Други асистенти</value></data>
   <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>За асистент, който не е в списъка по-горе: Копирай настройките дава записа за неговите настройки за MCP, а Копирай съобщение дава кратък текст за всеки чат, който казва как да се свърже и какво да попита първо.</value></data>
   <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Копирай настройките</value></data>
   <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Копирай съобщение</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Копирано.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Не е копирано: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Не е копирано. Windows не позволи на PadForge да използва клипборда.</value></data>
   <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Свържи се с PadForge, програмата за съпоставяне на контролери на моя компютър. Това е локален MCP сървър, който работи през stdio: командата е {0}, с аргумент --mcp. Като настройки в JSON: {1} След като се свържеш, първо извикай неговия инструмент status, после ме попитай какво искам да настроя, например: „Покажи ми къде да съпоставя тригерите на контролера ми.“</value></data>
   <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Автоматизацията на PadForge е изключена сега: първо я включи в PadForge под Допълнения, Автоматизация.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Разрешени програми</value></data>
@@ -6630,6 +6723,8 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Джойстик. PadForge го чете суров, затова съпоставянето на SDL не се използва.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Джойстик, подреден като геймпад от ваш ред.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL чете устройствата, докато двигателят работи.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Устройството не е свързано. SDL го чете, щом се свърже.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL не даде на PadForge отчитане за това устройство.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Вграденото общностно копие, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Изтеглено {0}</value></data>
@@ -6667,6 +6762,11 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>турбо, превключватели и други действия</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} и {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Няма какво да се копира: SDL няма съпоставяне за това устройство и то не е на никой контролер.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Няма какво да се копира: PadForge не може да прочете съпоставянето на SDL за това устройство и нито един ред на контролерите му не дава обвързване, което формата на SDL приема.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Няма какво да се копира: SDL няма съпоставяне за това устройство и нито един ред на {0} не чете негов бутон, ос или хет по начин, който формата на SDL приема.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Няма какво да се копира: SDL няма съпоставяне за това устройство, а редовете на {0} го четат само за {1}, което формата на SDL не може да побере.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Няма какво да се копира: PadForge не може да прочете съпоставянето на SDL за това устройство сега и то не е на никой контролер.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Няма какво да се копира: PadForge не може да прочете съпоставянето на SDL за това устройство сега и нито един ред на {0} не дава обвързване, което формата на SDL приема.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Друга програма използва клипборда. Нищо не е копирано.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Редът ви е премахнат. Устройството се чете както преди него.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Съпоставено отново от подредбата на SDL: {0}.</value></data>
@@ -6687,6 +6787,8 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Редове, които носи PadForge</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Няма съвпадащ ред.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Избраният ред се прилага към {0} под собствения му ID, през същата проверка и същия избор като при „Постави“.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Двигателят е спрян, затова списъкът пропуска редовете, които SDL държи, неговите собствени и вграденото копие на общността. Те се показват, щом двигателят заработи.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL не отговори навреме, затова списъкът пропуска редовете, които държи, неговите собствени и вграденото копие на общността.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Ред за SDL съпоставяне</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ред за това устройство.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Налучкана подредба.</value></data>
@@ -6699,14 +6801,17 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} поле, от същия производител и продукт на друга шина или версия. Пази се под собствения ID на това устройство.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} поле, ред на друго устройство. Пази се под собствения ID на това устройство.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} поле. SDL не чете това устройство, затова PadForge подрежда входовете му по реда.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge няма обикновен бутон или ос за тези полета и ги пропуска: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} поле, от осите, бутоните и хатовете на устройството. Проверете го в Тест на входовете, после го запазете или го променете тук.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Това променя как се чете {0}. Редовете му в {1} се съпоставят отново от новата подредба.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Това променя как се чете {0}. То не е на никой контролер, затова никой ред не се променя.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Преките пътища на профили, които четат {0}, запазват входовете, на които са били зададени.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Редът се пази като ваш в PadForge.xml и има предимство пред всеки друг източник за това устройство. „Премахни моя“ връща стария ред и старите редове.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Редовете се пазят като ваши в PadForge.xml и имат предимство за своите устройства пред всеки друг източник. „Изчисти“, под „Още“ на реда „База данни на контролерите“, ги премахва.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} реда за Windows. {1} за други системи се пропускат.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ред за Windows. {1} за други системи се пропускат.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Редове за Windows: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_One_Format" xml:space="preserve"><value>{0:N0} ред за Windows.</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Редове за други системи, които се пропускат: {0:N0}.</value></data>
+  <data name="SdlMappingDialog_AddOther_One_Format" xml:space="preserve"><value>{0:N0} ред за друга система се пропуска.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Всичките {0:N0} ще бъдат добавени. PadForge пази до {1:N0} ваши реда.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ще бъде добавен. PadForge пази до {1:N0} ваши реда.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} от вашите се пазят сега, затова {1:N0} от тези ще бъдат добавени, а {2:N0} няма.</value></data>
@@ -6716,7 +6821,7 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Текстът не е ред от базата данни на контролерите на SDL: ID от 32 шестнадесетични цифри, име, после полета като a:b0.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Редовете са за други системи. PadForge чете редове за Windows или за никоя система в частност.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID на реда не е на устройство. Трябват 32 шестнадесетични цифри.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Името на реда е празно, над 128 знака или съдържа знак, който SDL чете като поле.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Името на реда е празно, надхвърля 128 знака, съдържа маркер на поле, който SDL чете, като „type:“, или съдържа знак, различен от букви, цифри, препинателни знаци, символи и обикновения интервал.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Редът носи подсказка или поле за Android, които PadForge не приема.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Редът има поле, което SDL не познава.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Обвързване не е във формата на SDL, като b3, a2, +a2, a2~ или h0.4.</value></data>
@@ -6727,8 +6832,8 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Вашите редове</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Редове, които добавяте тук или поставяте в картата SDL съпоставяне на устройство, имат предимство за своите устройства пред всеки друг източник и остават след нулирането.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Добави редове от файл или клипборда…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} реда за толкова устройства, ваши, с предимство пред всеки друг източник.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ред за едно устройство, ваш, с предимство пред всеки друг източник.</value></data>
+  <data name="ControllerDatabase_Rows_Format" xml:space="preserve"><value>Редове: {0:N0}, вашите са над всеки друг източник.</value></data>
+  <data name="ControllerDatabase_Rows_One_Format" xml:space="preserve"><value>{0:N0} ред, вашият е над всеки друг източник.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Още няма.</value></data>
   <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Вашата променлива SDL_GAMECONTROLLERCONFIG съдържа {0} реда, които PadForge не пази. „Добави редове от файл или клипборда“ се отваря с тях.</value></data>
   <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Вашата променлива SDL_GAMECONTROLLERCONFIG съдържа {0} ред, който PadForge не пази. „Добави редове от файл или клипборда“ се отваря с него.</value></data>
@@ -6738,7 +6843,7 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Промени…</value></data>
   <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Използвай файла на общността</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Адрес</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge приема адрес, който започва с https:// и назовава хост, на стандартния порт, без потребителско име или парола.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge приема адрес до 2 048 знака, който започва с https:// и назовава хост, на стандартния порт, без потребителско име, парола или част след #.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Достъп до PadForge от уеб</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Асистент, който работи на уебсайт, стига до PadForge чрез програма за тунел на този компютър. Включването първо ви пита.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Достъп до PadForge от уеб?</value></data>
@@ -6755,7 +6860,7 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Спрян. Последните му думи: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Не можа да се стартира.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Вече го няма на този компютър.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>На този компютър не е намерена програма за тунел. PadForge работи с cloudflared, devtunnel, ngrok и Tailscale Funnel или с адреса на ваш собствен тунел.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge не намери нито cloudflared, нито devtunnel, нито ngrok, нито Tailscale Funnel на този компютър. Изберете ChatGPT Secure MCP Tunnel, който PadForge изтегля, или въведете адреса на собствения си тунел.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Изберете тунел, за да даде на PadForge публичен адрес.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Още на този компютър: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, чийто адрес остава същият</value></data>
@@ -6763,7 +6868,7 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Пуснете свой тунел към http://127.0.0.1:{0} и поставете неговия https адрес. Именуван тунел на Cloudflare, постоянен dev тунел, Tailscale Funnel и собственият домейн на ngrok запазват адреса си.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Поставете https адрес без път освен /mcp, както го дава тунелът ви.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>Стартира се уеб помощникът на PadForge.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Уеб помощникът на PadForge спря ({0}). Изключете и включете отново „Достъп до PadForge от уеб“, за да го стартирате пак.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>Уеб помощникът на PadForge спря ({0}). PadForge продължава да се опитва да го стартира.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Адрес</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Още няма публичен адрес.</value></data>
   <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Добави към Claude</value></data>
@@ -6802,11 +6907,6 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>завърши с код {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Автоматизация е изключена, затова никой уеб асистент не стига до PadForge. Уеб помощникът стартира, щом Автоматизация се включи.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Проверява се…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Не е инсталирана.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Инсталирана и актуална. Скриптът започва с {0}.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Инсталирана за {0} и актуална. Скриптът започва с {1}.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Инсталирана. Този PadForge има по-ново копие.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Инсталирана за {0}. Този PadForge има по-ново копие.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Инсталиране…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge не можа да я провери: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>„Инсталирай“ слага библиотеката на PadForge там, където този език я намира. Скрипт, който я зарежда, чете устройства и управлява съпоставянията на нивото по-горе.</value></data>
@@ -6814,8 +6914,27 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Инсталирани копия</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Премахни всички</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Премахнати.</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>Библиотеката на PadForge е инсталирана за {0} и е актуална. Скриптът започва с {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>Библиотеката на PadForge за {0} се различава от копието на този PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>Библиотеката на PadForge не е инсталирана за {0}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlder_Format" xml:space="preserve"><value>Библиотеката на PadForge е актуална за {0}. Копието за {1} се различава от това на този PadForge.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentMissing_Format" xml:space="preserve"><value>Библиотеката на PadForge е актуална за {0} и не е инсталирана за {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_OlderMissing_Format" xml:space="preserve"><value>Библиотеката на PadForge за {0} се различава от копието на този PadForge и не е инсталирана за {1}.</value></data>
+  <data name="Extras_Automation_Scripts_State_CurrentOlderMissing_Format" xml:space="preserve"><value>Библиотеката на PadForge е актуална за {0}. Копието за {1} се различава от това на този PadForge и не е инсталирана за {2}.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows не я стартира с вашите права.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Не приключи за {0} секунди.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>Завърши с код {0} и не даде причина.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge не може да прочете настройките в {0}, затова остави файла както е.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge не е записал {0}, затова го остави както е.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows не посочва папка „Документи“ за вас.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge не намира ваша папка за {0}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>Собствената команда на {0} завърши с код {1}.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>Командата на {0} не е на този компютър.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows не позволи на PadForge да прочете или запише файл, от който се нуждае.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge не намира Python: нито един не е регистриран, инсталиран от Microsoft Store, изброен от стартера py или в PATH.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>Никой Python, който PadForge намери, не отговори в рамките на {0} секунди.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Изпълнението не даде причина, която PadForge познава.</value></data>
   <data name="Devices_ScriptId" xml:space="preserve"><value>ID на скрипта</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Неговият ID за скриптове</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скриптовете наричат контролите му {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скриптовете наричат клавишите му KeyA, KeySpace, KeyLeftShift и подобни, а всеки клавиш по неговия код, от Vk0 до Vk255.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} в тази мрежа от {1}</value></data>
@@ -6827,11 +6946,11 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Помощникът на PadForge, който работи без администраторски права, слуша на мрежовите адреси на този компютър, а PadForge пуска порта му само в частни мрежи. Асистент на друг компютър влиза само с ключ, който правите тук. Заявките и ключът им преминават през мрежата некриптирани.</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Порт</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>Промени…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Заявките и ключът им преминават през тази мрежа некриптирани. Windows ги пуска само в частни мрежи.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Повикванията и ключът им преминават през тази мрежа некриптирани. Правилото на защитната стена на Windows, което PadForge създава за този порт, важи само за частни мрежи.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Портът {0} се използва от друга програма. Сменете го, за да достигате PadForge от тази мрежа.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows не позволи на помощника на PadForge да слуша на порт {0}. PadForge го разрешава с администраторски права, затова стартирайте PadForge с тях и изключете и включете това.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows не пази резервация за помощника на PadForge на порт {0}. Изключете и включете това и PadForge ще я създаде отново.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Помощникът на PadForge не можа да слуша на порт {0}. Сменете порта или изключете и включете това.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Помощникът на PadForge спря ({0}). Изключете и включете отново „Достъп до PadForge от тази мрежа“, за да го стартирате пак.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>Помощникът на PadForge спря ({0}). PadForge продължава да се опитва да го стартира.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Автоматизация е изключена, затова никой асистент в тази мрежа не стига до PadForge. Помощникът стартира, щом Автоматизация се включи.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Този компютър сега няма адрес в частна мрежа.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Асистенти в тази мрежа</value></data>
@@ -6865,7 +6984,7 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Net_Port_Wrong" xml:space="preserve"><value>Въведете порт от 1024 до 49151.</value></data>
   <data name="Reach_Label" xml:space="preserve"><value>Обхват</value></data>
   <data name="Reach_All" xml:space="preserve"><value>Целият PadForge</value></data>
-  <data name="Reach_Own" xml:space="preserve"><value>Само собствените му устройства и тези от „Избери устройства…“</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Само собствените му устройства и тези от „Избери устройства“</value></data>
   <data name="Reach_Pick" xml:space="preserve"><value>Избери устройства…</value></data>
   <data name="Reach_Line_Format" xml:space="preserve"><value>Управлява собствените си устройства и {0}. Все още чете всяко устройство.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Управлява само собствените си устройства. Все още чете всяко устройство.</value></data>
@@ -6875,11 +6994,12 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Reach_Pick_Title" xml:space="preserve"><value>Избор на устройства</value></data>
   <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} може да управлява собствените си устройства и тези, които отметнете. Все още чете всяко устройство.</value></data>
   <data name="Reach_Pick_None" xml:space="preserve"><value>На страницата Устройства няма устройства.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Работи, с вашите права, и е готов. ChatGPT стига до PadForge през този тунел без собствено влизане и само от вашата организация в OpenAI. Стартира отново заедно с PadForge.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Работи, с вашите права. Чака OpenAI да каже, че тунелът е готов.</value></data>
+  <data name="Web_ChatGpt_ReadyReported" xml:space="preserve"><value>Работи с вашите права, а tunnel-client съобщава, че е готов. Стартира отново заедно с PadForge.</value></data>
+  <data name="Web_ChatGpt_NotReadyYet" xml:space="preserve"><value>Работи с вашите права. tunnel-client сега не съобщава, че е готов.</value></data>
   <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Изтегля се tunnel-client на OpenAI и се проверява спрямо сумите SHA-256 на неговото издание.</value></data>
   <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client не можа да бъде изтеглен: {0}. Изберете тунела отново, за да опитате пак.</value></data>
   <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Поставете по-долу ключ за изпълнение и идентификатор на тунел и тунелът стартира.</value></data>
+  <data name="Web_ChatGpt_Missing" xml:space="preserve"><value>tunnel-client на OpenAI още не е на този компютър. Изберете тунела отново, за да го изтеглите.</value></data>
   <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Ключ за изпълнение</value></data>
   <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Ограничен, с Tunnels Read and Use.</value></data>
   <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Направи един</value></data>
@@ -6888,6 +7008,8 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Отвори ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge пази ключа криптиран само за вас. Празно поле го забравя. ChatGPT работи на нивото по-горе.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Ключът не е запазен: уеб помощникът на PadForge не работи, а само той може да криптира ключа за вас.</value></data>
+  <data name="Web_ChatGpt_KeyHelperEnded" xml:space="preserve"><value>Ключът не е запазен: уеб помощникът на PadForge приключи, преди да криптира ключа. Поставете го отново.</value></data>
+  <data name="Web_ChatGpt_KeyNotEncrypted" xml:space="preserve"><value>Ключът не е запазен: Windows не можа да го криптира за вас. Поставете го отново.</value></data>
   <data name="Answer_Label" xml:space="preserve"><value>Отговор от друго устройство</value></data>
   <data name="Answer_Hint" xml:space="preserve"><value>Отговаряйте на въпросите на PadForge от телефон или друг компютър, докато сте далеч от този.</value></data>
   <data name="Answer_Where" xml:space="preserve"><value>Работи само в тази мрежа, през адреса на уеб контролера.</value></data>
@@ -6905,9 +7027,10 @@ PadForge записа подробностите в crash.log до PadForge.exe.
   <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Кодът работи веднъж, до {0}. Пет грешни опита го затварят, а QR кодът все още работи.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Адресът на уеб контролера се стартира…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Страницата не може да се отвори: {0}.</value></data>
+  <data name="Answer_NoPrivateAddress" xml:space="preserve"><value>Този компютър няма адрес в частна мрежа.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows не скри този прозорец от заснемане на екрана, затова той не показва код.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Въведеният код е затворен след пет грешни опита. QR кодът все още работи до {0}.</value></data>
-  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Кодът изтече. „Сдвои устройство…“ прави нов.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Кодът изтече. „Сдвои устройство“ прави нов.</value></data>
   <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge пази най-много {0} мрежови ключ. Първо го отнемете.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Цветовете се изпращат директно към {0}. Променящите се цветове, като цикъл на цветовете или цветове, които следват звука, не стигат до него. Цвят, който не се променя, стига.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Всички файлове (*.*)|*.*</value></data>

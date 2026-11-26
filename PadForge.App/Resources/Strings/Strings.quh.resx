@@ -201,6 +201,14 @@
   <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Carpeta</value></data>
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Serviciopa configuracionnin</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Urqhuypa patan</value></data>
+  <data name="HIDMaestroUninstall_KindService" xml:space="preserve"><value>Servicio</value></data>
+  <data name="HIDMaestroUninstall_KindFile" xml:space="preserve"><value>Archivo</value></data>
+  <data name="HIDMaestroUninstall_KindUpperFilter" xml:space="preserve"><value>Filtro superior</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryValue" xml:space="preserve"><value>Registropa valornin</value></data>
+  <data name="HIDMaestroUninstall_KindHardwareId" xml:space="preserve"><value>Hardwarepa ID-n</value></data>
+  <data name="HIDMaestroUninstall_KindScheduledTask" xml:space="preserve"><value>Programasqa tarea</value></data>
+  <data name="HIDMaestroUninstall_KindAppsEntry" xml:space="preserve"><value>Instalasqa aplicacionkunapi entrada</value></data>
+  <data name="HIDMaestroUninstall_KindUsbipImport" xml:space="preserve"><value>USB/IP dispositivo</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 controlkuna, PlayStation Move, Navigation controlpas Bluetooth-wan tinkikunankupaq. PadForge ukhupi kachkan, ñawpaq kutipi hukninta emparejaqtiyki instalakun.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 controlkunata Bluetooth-wan tinkichin.</value></data>
@@ -714,6 +722,13 @@
 {0}
 
 PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman qillqarqan. Kayta willanaykipaq, {2} nisqapi huk rimanakuyta qallariy, crash.log nisqatataq chayman chuqay.
+
+{1}</value></data>
+  <data name="App_UnexpectedErrorNotWritten_Format" xml:space="preserve"><value>Mana suyasqa pantay rikhurirqa:
+
+{0}
+
+PadForge nisqaqa mana detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman qillqayta atirqanchu. Kayta willanaykipaq, {2} nisqapi huk rimanakuyta qallariy, kaypi Ctrl+C ñit'iy kay willayta copianaykipaq, chaypitaq pegay.
 
 {1}</value></data>
 
@@ -1569,6 +1584,7 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>batería {0}, cargakuchkan</value></data>
   <data name="Devices_UsedBy" xml:space="preserve"><value>Llamk'achiqkuna</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Sapa eje, botón, sensorpas</value></data>
+  <data name="Devices_More_ScriptNames" xml:space="preserve"><value>Controlninkuna, scriptkuna sutichisqankuman hina</value></data>
   <data name="Devices_Pressed_Format" xml:space="preserve"><value>Ñit'isqa: {0}</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Producto</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Rikch'ay</value></data>
@@ -1762,8 +1778,9 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Automation_Result_UnsupportedProtocol" xml:space="preserve"><value>Programaqa PadForge mana riqsisqan versiónta rimachkan</value></data>
   <data name="Automation_Result_Denied" xml:space="preserve"><value>PadForge mana chay plugin llavita qurqanchu</value></data>
   <data name="Automation_Result_Refused" xml:space="preserve"><value>PadForge mana kay programap tinkiyninta chaskirqanchu</value></data>
+  <data name="Automation_Result_UnnamedProgram" xml:space="preserve"><value>PadForge mana ima dispositivotapas ruwarqanchu, Windows mana programap archivonpa sutinta qurqanchu chayrayku</value></data>
   <data name="Automation_Result_TooSoon" xml:space="preserve"><value>Ancha utqayta wakmanta mañakurqan</value></data>
-  <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Manaña kaykunaqa kanqachu PadForge wakmanta qallarinankama</value></data>
+  <data name="Automation_Result_TooManyWaiting" xml:space="preserve"><value>Programakunaqa ancha achka kay hinakunata Home nisqapi qhawanaykipaq suyachirqanku</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge mana chay herramientayuqchu</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programaqa ñawpaq estadota ñawincharqan</value></data>
   <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Mana imapas chay ID-yuqchu</value></data>
@@ -1771,6 +1788,7 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Qanqa mana saqirqankichu</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Mana pipas tiempopi kutichirqanchu</value></data>
   <data name="Automation_Result_Waiting" xml:space="preserve"><value>Kutichiyniykita suyachkan</value></data>
+  <data name="Automation_Result_NotAnswered" xml:space="preserve"><value>Manaraq kutichirqankichu</value></data>
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Chay mañakuy mana kanchu</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Mana imapas kutichinapaq kanchu</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Qanllam kayta t'ikrayta atinki</value></data>
@@ -1891,7 +1909,6 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Automation_Prompt_Import_Title" xml:space="preserve"><value>Huk perfilta apamuy</value></data>
   <data name="Automation_Prompt_Import_Description" xml:space="preserve"><value>Huk programamanta perfil archivota importay, chaymanta ima chayamusqanta qhaway.</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, kutikuna: {1}</value></data>
-  <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, kaykunamanta qhipa kaq: {1}</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} nisqamanta</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} nisqamanta, “{0}” sutichakuq</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>“{0}” sutichakuq programamanta</value></data>
@@ -1899,21 +1916,24 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>astawan: {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge administradorpa derechonkunawan {0} carpetamanta llamk'achkan, huk programakuna t'ikrayta atinku chay carpetata. Chaypi PadForge nisqap configuraciónninta t'ikrayta atinku, PadForgetaq derechonkunawan chaykunata ruwan.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now nisqa comunidadpa control base de datosninta (SDL_GameControllerDB) GitHub nisqamanta, utaq More ukhupi churasqa direcciónmanta uraykachin, configuración archivopitaq kay PadForge versiónpa mana kapuqnin asignaciónkunata waqaychan. Chaylla llamk'achikunku. Huk direcciónmantaqa musuq asignaciónkunallata waqaychan. Musuq asignaciónqa mana imapas gamepad hina ñawinchasqan, mana asignasqa, mana Force Raw Joystick Mode nisqapi kaq controlpaqlla llamk'achikun. Ñawpaqman kutichiyqa tukuy uraykachisqa asignaciónkunata qichun, GitHub nisqamantataq hukmanta uraykachin. More ukhupi kaq kikiyki filakunaqa qhipakunku.</value></data>
+  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge administradorpa derechonkunawan {0} carpetamanta llamk'achkan, huk archivokunayuq carpetamanta. PadForge nisqaqa mana atinchu huk programakunata chaypi configuraciónninta t'ikrayta harkayta, derechonkunawantaq chaykunata ruwan.</value></data>
+  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge administradorpa derechonkunawan {0} carpetamanta llamk'achkan, mana ñawinchayta atisqan carpetamanta. PadForge nisqaqa mana atinchu huk programakunata chaypi configuraciónninta t'ikrayta harkayta, derechonkunawantaq chaykunata ruwan.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now nisqa comunidadpa control base de datosninta (SDL_GameControllerDB) GitHub nisqamanta, utaq More ukhupi churasqa direcciónmanta uraykachin, configuración archivopitaq kay PadForge versiónpa mana kapuqnin asignaciónkunata waqaychan. Chaylla llamk'achikunku. Huk direcciónmantaqa musuq asignaciónkunallata waqaychan. Musuq asignaciónqa ñawpaqtaqa SDL nisqa gamepad hina utaq mana ima tipoyuq hina willasqan, mana imapas gamepad hina ñawinchasqan, mana asignasqa, mana Force Raw Joystick Mode nisqapi kaq controlpaqlla llamk'achikun. Llamk'achisqaña kaqtinqa, control asignasqa kaqtinpas llamk'achikullanpuni. Ñawpaqman kutichiyqa uraykachisqa asignaciónkunata qichun, Maymanta uraykachina nisqatataq comunidadpa archivonman kutichin, hamuq Update Now nisqataq chayta uraykachinqa. More ukhupi kaq kikiyki filakunaqa qhipakunku.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian. {2} uraykachisqa: musuq filakuna {3}, t'ikrasqa {4}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Ukhupi: {1} asignaciónkuna, comunidadpa {2} copian. {3} {4} nisqamanta uraykachisqa: musuq filakuna {0}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Ukhupi: {1} asignaciónkuna, comunidadpa {2} copian. {3} {4} nisqamanta uraykachisqa: {0} musuq fila.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Comunidadpa base de datosninqa qhipa musuqyachiymanta mana t'ikrakunchu.</value></data>
+  <data name="ControllerDatabase_NothingChangedAt_Format" xml:space="preserve"><value>{0} nisqapi kaq archivoqa qhipa musuqyachiymanta mana t'ikrakunchu.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetríamanta</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sapa kuti</value></data>
   <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Hap'ishaqtin, chawpiman kutin</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Mouseta volante hina kamachichiq botón, fuentep kikin dispositivonpi. Mana akllasqa kaqtinqa, mouseqa sapa kuti kamachin.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Mouseta volante hina kamachichiq botón, kay slotpa mayqin dispositivonpipas. Mana akllasqa kaqtinqa, mouseqa sapa kuti kamachin.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Pukllay telemetría hap'isqa kaqtin, 200 km/h nisqapi lockmanta hayk'a puchun. 100% nisqapi tukuy lock tukuy velocidadpi kan.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
-  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol servidor cliente ima, asistente tinkiypa PadForge.exe --mcp nisqapa qhipanpi, Model Context Protocol a Series of LF Projects ruwasqan.</value></data>
+  <data name="About_McpSdkDesc" xml:space="preserve"><value>Model Context Protocol servidor cliente ima, asistente tinkiypa PadForge.exe --mcp nisqapa qhipanpi, Model Context Protocol a Series of LF Projects, LLC ruwasqan.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions, DependencyInjection.Abstractions ima, MCP C# SDK nisqap tiyanan, Microsoft ruwasqan.</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Dispositivo t'aqakusqa willakuy</value></data>
@@ -1965,8 +1985,13 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Urquchkan…</value></data>
   <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Musuqyachichkan…</value></data>
   <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Mana tukurqanchu: {0}</value></data>
+  <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge nisqap entradan skillninpas qhipakunku, {0} nisqa kikin configuración archivota kikin skill carpetatapas ñawinchasqanrayku.</value></data>
+  <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge nisqap entradan qhipakun, {0} nisqa kikin configuración archivota ñawinchasqanrayku.</value></data>
+  <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge nisqaqa kay programamanta qichusqa. Skillninqa qhipakun, {0} nisqa kikin carpetamanta skillkunata ñawinchasqanrayku.</value></data>
+  <data name="Extras_Automation_State_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nisqaqa mana {0} nisqapi kaq configuraciónta ñawinchayta atinchu, chayrayku mana yachanchu PadForge yapasqa kasqanta utaq mana.</value></data>
+  <data name="Extras_Automation_State_SkillUnreadable" xml:space="preserve"><value>Yapasqa. PadForge nisqaqa mana skill carpetanta ñawinchayta atirqanchu.</value></data>
   <data name="Extras_Automation_Copied" xml:space="preserve"><value>Copiasqa.</value></data>
-  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Mana copiasqachu: {0}</value></data>
+  <data name="Extras_Automation_NotCopied" xml:space="preserve"><value>Mana copiasqachu. Windows mana PadForge nisqata portapapelesta llamk'achiyta saqirqanchu.</value></data>
   <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Saqisqa programakuna</value></data>
   <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Read utaq aswan munaq programaqa huk kutillata tapun, ñawpaq kuti tinkikuspa, mañakusqan nivelta chaskintaq, hanaq nivelkama. Hanaqpi yapasqayki asistenteqa chaywan saqisqaña.</value></data>
   <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
@@ -1978,6 +2003,8 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Huk joystick. PadForge nisqaqa raw ñawinchan, chayrayku SDL nisqap asignacionninqa mana llamk'achikunchu.</value></data>
   <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Huk joystick, filaykiwan gamepad hina churasqa.</value></data>
   <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL nisqaqa motor llamk'achkaqtinlla dispositivokunata ñawinchan.</value></data>
+  <data name="SdlMapping_Away" xml:space="preserve"><value>Dispositivoqa mana tinkisqachu. SDL nisqaqa tinkisqa kaqtin ñawinchanqa.</value></data>
+  <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nisqaqa mana PadForge nisqaman kay dispositivomanta ima ñawinchaytapas qurqanchu.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ukhupi kaq comunidadpa copian, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Uraykachisqa {0}</value></data>
@@ -2015,6 +2042,11 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle, huk ruwaykunapas</value></data>
   <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} hinallataq {1}</value></data>
   <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Copiana mana kanchu: SDL nisqaqa mana kay dispositivopaq asignacionniyuqchu, mana ima controlpipas kantaqchu.</value></data>
+  <data name="SdlMapping_CopyUnreadable" xml:space="preserve"><value>Copiana mana kanchu: PadForge nisqaqa mana SDL nisqap kay dispositivopaq asignacionninta ñawinchayta atinchu, controlninkunap mana ni mayqin filanpas SDL nisqap forman chaskisqan vinculaciónta qunchu.</value></data>
+  <data name="SdlMapping_CopyNothingInRows_Format" xml:space="preserve"><value>Copiana mana kanchu: SDL nisqaqa mana kay dispositivopaq asignacionniyuqchu, {0} nisqap mana ni mayqin filanpas botónninkunamanta, ejenkunamanta utaq hatninkunamanta hukta SDL nisqap forman chaskisqanman hina ñawinchanchu.</value></data>
+  <data name="SdlMapping_CopyOnlyLeftOut_Format" xml:space="preserve"><value>Copiana mana kanchu: SDL nisqaqa mana kay dispositivopaq asignacionniyuqchu, {0} nisqap filankunataq {1} nisqallapaq ñawinchanku, chaytaq SDL nisqap formanpi mana yaykunchu.</value></data>
+  <data name="SdlMapping_CopyNotRead" xml:space="preserve"><value>Copiana mana kanchu: PadForge nisqaqa mana SDL nisqap kay dispositivopaq asignacionninta kunan ñawinchayta atinchu, mana ima controlpipas kantaqchu.</value></data>
+  <data name="SdlMapping_CopyNotReadInRows_Format" xml:space="preserve"><value>Copiana mana kanchu: PadForge nisqaqa mana SDL nisqap kay dispositivopaq asignacionninta kunan ñawinchayta atinchu, {0} nisqap mana ni mayqin filanpas SDL nisqap forman chaskisqan vinculaciónta qunchu.</value></data>
   <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Huk programa portapapelesta llamk'achichkan. Mana imapas copiakurqanchu.</value></data>
   <data name="SdlMapping_Removed" xml:space="preserve"><value>Filayki urqusqa. Dispositivoqa ñawpaq hina ñawinchakun.</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL nisqap diseñonmanta hukmanta asignasqa: {0}.</value></data>
@@ -2034,6 +2066,8 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge nisqap apasqan filakuna</value></data>
   <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Mana ni mayqin fila tupanchu.</value></data>
   <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Akllasqa filaqa {0} nisqaman kikin ID-nwan churakun, Paste hina kikin qhawaywan kikin akllaywan.</value></data>
+  <data name="SdlMappingDialog_FindStopped" xml:space="preserve"><value>Motorqa sayachisqa, chayrayku listaqa SDL nisqap hap'isqan filakunata mana churanchu, kikinpa filankunata, ukhunpi kaq comunidadpa copiantapas. Motor llamk'aqtin listakunqa.</value></data>
+  <data name="SdlMappingDialog_FindNoAnswer" xml:space="preserve"><value>SDL nisqaqa mana tiempollanpi kutichirqanchu, chayrayku listaqa hap'isqan filakunata mana churanchu, kikinpa filankunata, ukhunpi kaq comunidadpa copiantapas.</value></data>
   <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL asignación fila</value></data>
   <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Kay dispositivopaq huk fila.</value></data>
   <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Yuyaykusqa diseño.</value></data>
@@ -2046,14 +2080,14 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} campo, kikin vendedormanta productomanta huk bus utaq versiónpi. Kay dispositivop kikin ID-nwan waqaychakun.</value></data>
   <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} campo, huk dispositivop filan. Kay dispositivop kikin ID-nwan waqaychakun.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} campo. SDL nisqaqa mana kay dispositivota ñawinchanchu, chayrayku PadForge nisqa entradankunata filaman hina churan.</value></data>
+  <data name="SdlMappingDialog_Detail_LeftOut_Format" xml:space="preserve"><value>PadForge nisqaqa mana kay campokunapaq sapalla botónniyuqchu utaq ejeyuqchu, chayrayku saqin: {0}.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} campo, dispositivop ejekunamanta, botónkunamanta, hatkunamantapas. Test Inputs nisqapi qhaway, chaymanta kaypi waqaychay utaq t'ikray.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Kayqa {0} imayna ñawinchakusqanta t'ikran. {1} nisqapi filankunaqa musuq diseñomanta hukmanta asignakun.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Kayqa {0} imayna ñawinchakusqanta t'ikran. Mana ima controlpipas kanchu, chayrayku mana ima filapas t'ikrakunchu.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} nisqata ñawinchaq perfil atajokunaqa churasqa entradankunata waqaychanku.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Filaqa PadForge.xml nisqapi qampa hina waqaychakun, kay dispositivopaqtaq tukuy huk fuentekunamanta atipan. Ñuqaqta urquy mawk'a filata mawk'a filakunatapas kutichin.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Filakunaqa PadForge.xml nisqapi qampa hina waqaychakun, dispositivonkupaqtaq tukuy huk fuentekunamanta atipanku. Controller Database filap More ukhunpi Pichay chaykunata urqun.</value></data>
-  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows nisqapaq filakuna: {0}. Huk sistemakunapaq filakuna saqisqa: {1}.</value></data>
-  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows nisqapaq {0} fila. Huk sistemakunapaq filakuna saqisqa: {1}.</value></data>
+  <data name="SdlMappingDialog_AddWindows_Format" xml:space="preserve"><value>Windows nisqapaq {0:N0} fila.</value></data>
   <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Tukuy {0:N0} yapakunqa. PadForge nisqaqa {1:N0} filaykikama waqaychan.</value></data>
   <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Yapakunqa. PadForge nisqaqa {1:N0} filaykikama waqaychan.</value></data>
   <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Kunan {0:N0} filayki waqaychasqa, chayrayku kaykunamanta {1:N0} yapakunqa, {2:N0} mana yapakunqachu.</value></data>
@@ -2063,7 +2097,7 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Textoqa mana SDL nisqap control base de datosninpa filanchu: 32 hex digitoyuq ID, huk suti, chaymanta a:b0 hina campokuna.</value></data>
   <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Filakunaqa huk sistemakunapaq. PadForge nisqaqa Windows nisqapaq filakunata ñawinchan, utaq mana mayqin sistemapaq kaqkunata.</value></data>
   <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Filap ID-nqa mana dispositivopaqchu. 32 hex digitota munan.</value></data>
-  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Filap sutinqa ch'usaq, 128 caractermanta aswan, utaq SDL nisqap campo hina ñawinchasqan caracterta hap'in.</value></data>
+  <data name="SdlMappingDialog_Refused_Name" xml:space="preserve"><value>Filap sutinqa ch'usaq, 128 caractermanta aswan, SDL ñawinchasqan campo marcata hap'in, “type:” hina, utaq letrakuna, digitokuna, puntuación, símbolokuna, ch'usaq espaciollamanta hukniray caracterta hap'in.</value></data>
   <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Filaqa huk hint utaq Android campota apan, chaytaqa PadForge nisqa mana chaskinchu.</value></data>
   <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Filaqa SDL nisqap mana riqsisqan campoyuq.</value></data>
   <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Huk binding mana SDL nisqap formanpichu, b3, a2, +a2, a2~ utaq h0.4 hina.</value></data>
@@ -2088,7 +2122,7 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Sayachisqa. Qhipa siminkuna: {0}</value></data>
   <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Mana qallarichiyta atikurqanchu.</value></data>
   <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Manaña kay PC-pichu kachkan.</value></data>
-  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Kay PC-pi mana ni mayqin túnel programa tarikurqanchu. PadForge nisqaqa cloudflared, devtunnel, ngrok, Tailscale Funnel nisqakunawan llamk'an, utaq kikiyki túnelpa direcciónninwan.</value></data>
+  <data name="Web_Tunnel_NoProgramFound" xml:space="preserve"><value>PadForge nisqaqa kay PCpi mana cloudflared, devtunnel, ngrok, Tailscale Funnel nisqakunamanta ni mayqintapas tarirqanchu. ChatGPT Secure MCP Tunnel nisqata akllay, PadForge uraykachisqanta, utaq kikiyki túnelniykip direcciónninta quy.</value></data>
   <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge nisqaman público direcciónta qunapaq huk túnelta akllay.</value></data>
   <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Kay PC-pi kallantaq: {0}.</value></data>
   <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, direcciónnin kikillan qhipakuq</value></data>
@@ -2096,7 +2130,7 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Kikiyki túnelta http://127.0.0.1:{0} nisqaman llamk'achiy, https direcciónnintataq ch'aqtay. Sutiyuq Cloudflare túnel, persistente dev túnel, Tailscale Funnel, ngrok nisqap kikin domínionpas direcciónninkuta waqaychanku.</value></data>
   <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Huk https direcciónta ch'aqtay, /mcp ñanllayuqta, túnelniyki qusqanta hina.</value></data>
   <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge nisqap web yanapaqninta qallarichichkan.</value></data>
-  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge nisqap web yanapaqnin sayarirqan ({0}). Hukmanta qallarichinapaq Reach PadForge From the Web nisqata wañuchiy, hap'ichiytaq.</value></data>
+  <data name="Web_Helper_Retrying_Format" xml:space="preserve"><value>PadForge nisqap web yanapaqninqa sayarqan ({0}). PadForge nisqaqa qallarichiyta kallpachakuchkallanpuni.</value></data>
   <data name="Web_Address_Label" xml:space="preserve"><value>Dirección</value></data>
   <data name="Web_Address_None" xml:space="preserve"><value>Manaraq público direcciónchu kan.</value></data>
   <data name="Web_Accept_Label" xml:space="preserve"><value>Musuq web asistenteta chaskiy</value></data>
@@ -2132,30 +2166,27 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>{0} códigowan tukukurqan</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation wañusqa, chayrayku mana ni mayqin web asistente PadForge nisqaman chayanchu. Web yanapaqqa Automation hap'ichisqa kaqtin qallarin.</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Qhawachkan…</value></data>
-  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Mana instalasqachu.</value></data>
-  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Instalasqa, kunanpaq. Scriptqa {0} nisqawan qallarin.</value></data>
-  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} nisqapaq instalasqa, kunanpaq. Scriptqa {1} nisqawan qallarin.</value></data>
-  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Instalasqa. Kay PadForge nisqaqa aswan musuq copiayuq.</value></data>
-  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} nisqapaq instalasqa. Kay PadForge nisqaqa aswan musuq copiayuq.</value></data>
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Instalachkan…</value></data>
   <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge nisqaqa mana qhawayta atirqanchu: {0}</value></data>
   <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instalay PadForge nisqap bibliotecanta chay simi tarinan chiqaman churan. Chayta cargaq scriptqa dispositivokunata ñawinchan, asignaciónkunatataq hanaq nivelpi kamachin.</value></data>
   <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Instalasqa copiakuna</value></data>
   <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Tukuyta urquy</value></data>
   <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Urqusqa.</value></data>
-  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Script ID-n</value></data>
+  <data name="Extras_Automation_Scripts_State_Current_Format" xml:space="preserve"><value>PadForge nisqap bibliotecanqa {0} nisqapaq instalasqa, musuqtaq. Scriptqa {1} nisqawan qallarin.</value></data>
+  <data name="Extras_Automation_Scripts_State_Older_Format" xml:space="preserve"><value>{0} nisqapaq PadForge nisqap bibliotecanqa kay PadForge nisqap copianmanta hukniray.</value></data>
+  <data name="Extras_Automation_Scripts_State_Missing_Format" xml:space="preserve"><value>PadForge nisqap bibliotecanqa {0} nisqapaq mana instalasqachu.</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Carpetapi rikuchiy</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} qallarirqan, ichaqa manapuni PadForge nisqawan tinkikurqanchu.</value></data>
   <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Dirección</value></data>
-  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge nisqaqa https:// nisqawan qallariq, huk host sutichaq, default puertopi, mana usuario sutiyuq nitaq contraseñayuq direcciónta hap'in.</value></data>
+  <data name="ControllerDatabase_DownloadFromRule" xml:space="preserve"><value>PadForge nisqaqa 2,048 caracterkama direcciónta chaskin, https:// nisqawan qallariqta, huk hostta sutichiqta, default puertopi, mana usuariop sutinniyuq, contraseñayuq, # qhipan partiyuqpas.</value></data>
   <data name="Net_Caller_Format" xml:space="preserve"><value>{0} kay redpi, {1} nisqamanta</value></data>
   <data name="Net_Port_Label" xml:space="preserve"><value>Puerto</value></data>
   <data name="Net_Port_Change" xml:space="preserve"><value>T'ikray…</value></data>
-  <data name="Net_Note" xml:space="preserve"><value>Waqyakuykuna llavinkunawan kay redta mana cifrasqa chimpanku. Windows nisqaqa privado redkunallapi yaykuchin.</value></data>
+  <data name="Net_Note_Rule" xml:space="preserve"><value>Waqyakuna llavenkunapas kay redta mana cifrasqa chimpanku. Kay puertopaq PadForge ruwasqan Firewall de Windows reglaqa privado redkunallata sutichin.</value></data>
   <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Puerto {0} huk programawan llamk'achisqa. Kay redmanta PadForge nisqaman chayanapaq t'ikray.</value></data>
-  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows nisqaqa mana saqirqanchu PadForge nisqap yanapaqninta puerto {0} nisqapi uyarinanta. PadForge nisqaqa administrador derechokunawan saqin, chayrayku PadForge nisqata chaykunawan qallarichiy, kaytataq wañuchiy, hap'ichiytaq.</value></data>
+  <data name="Net_Port_NoReservation_Format" xml:space="preserve"><value>Windows mana PadForge nisqap yanapaqninpaq puerto {0} nisqapi reservata hap'inchu. Kayta wañuchiy, hap'ichiytaq, PadForge nisqataq hukmanta ruwanqa.</value></data>
   <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge nisqap yanapaqninqa mana puerto {0} nisqapi uyariyta atirqanchu. Puertota t'ikray, utaq kayta wañuchiy, hap'ichiytaq.</value></data>
-  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge nisqap yanapaqnin sayarirqan ({0}). Hukmanta qallarichinapaq Reach PadForge From This Network nisqata wañuchiy, hap'ichiytaq.</value></data>
+  <data name="Net_Helper_Retrying_Format" xml:space="preserve"><value>PadForge nisqap yanapaqninqa sayarqan ({0}). PadForge nisqaqa qallarichiyta kallpachakuchkallanpuni.</value></data>
   <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation wañusqa, chayrayku mana ni mayqin kay redpi kaq asistente PadForge nisqaman chayanchu. Yanapaqqa Automation hap'ichisqa kaqtin qallarin.</value></data>
   <data name="Net_NoAddress" xml:space="preserve"><value>Kay PC nisqaqa kunan mana privado redpi direcciónniyuqchu.</value></data>
   <data name="Net_Keys_Label" xml:space="preserve"><value>Kay redpi asistentekuna</value></data>
@@ -2168,7 +2199,27 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Reach_Line_Format" xml:space="preserve"><value>Kikin dispositivonkunata, {0} nisqatawan kamachin. Tukuy dispositivokunata ñawinchallantaq.</value></data>
   <data name="Reach_Line_Own" xml:space="preserve"><value>Kikin dispositivonkunallata kamachin. Tukuy dispositivokunata ñawinchallantaq.</value></data>
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Línea de comandosmanta kamachiykunaqa PadForge nisqaman chayallantaq, tukuy programakunapaq hina.</value></data>
-  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Llamk'achkan, derechoykikunawan, listotaq. ChatGPT nisqaqa kay túnelta pasaspa PadForge nisqaman chayan, mana kikin yaykuyninwan, OpenAI organizaciónniykimantalla. PadForge nisqawan hukmanta qallarin.</value></data>
-  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Llamk'achkan, derechoykikunawan. OpenAI nisqa túnel listo kasqanta niananta suyan.</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge nisqaqa llavita qampaqlla cifrasqata waqaychan. Ch'usaq caja qunqachin. ChatGPT nisqaqa hanaq nivelpi llamk'an.</value></data>
+  <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge nisqaqa mana plugin kitta waqaychayta atirqanchu.</value></data>
+  <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Ruwasqakuna {0}.txt</value></data>
+  <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
+  <data name="Start_NoLock" xml:space="preserve"><value>PadForge nisqaqa mana ruwayta atirqanchu huk copialla llamk'ananpaq llaveta, chayrayku mana qallarirqanchu.</value></data>
+  <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge nisqaqa GitHub nisqap kutichiyninta mana chaskirqanchu. Mana imapas t'ikrakurqanchu.</value></data>
+  <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge nisqaqa {0} nisqamanta kutichiyta mana chaskirqanchu. Mana imapas t'ikrakurqanchu.</value></data>
+  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>bibliotecanta tarirqan, mana cargarqanchu, PadForge nisqa mana sut'inchayta atisqanrayku administradorkunalla t'ikrayta atisqankuta, Logitech nisqa firmasqantapas</value></data>
+  <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>bibliotecanta tarirqan, mana llamk'achiyta atirqanchu, diagnóstico logtaq imarayku kasqanta nin</value></data>
+  <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Huk sistemakunapaq {0:N0} filaqa saqisqa.</value></data>
+  <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows mana kikiyki derechoykikunawan qallarichirqanchu.</value></data>
+  <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>{0} segundopi mana tukukurqanchu.</value></data>
+  <data name="Extras_Automation_Reason_ExitCode_Format" xml:space="preserve"><value>{0} códigowan tukukurqan, mana ima razóntapas qurqanchu.</value></data>
+  <data name="Extras_Automation_Reason_SettingsUnreadable_Format" xml:space="preserve"><value>PadForge nisqaqa mana {0} nisqapi kaq configuraciónta ñawinchayta atinchu, chayrayku archivota imayna kasqanta saqirqan.</value></data>
+  <data name="Extras_Automation_Reason_NotOurs_Format" xml:space="preserve"><value>PadForge nisqaqa mana {0} nisqata qillqarqanchu, chayrayku imayna kasqanta saqirqan.</value></data>
+  <data name="Extras_Automation_Reason_NoDocuments" xml:space="preserve"><value>Windows mana qanpaq Documentos carpetata sutichinchu.</value></data>
+  <data name="Extras_Automation_Reason_NoUserFolder_Format" xml:space="preserve"><value>PadForge nisqaqa mana {0} nisqapaq qanpa carpetaykita tarinchu.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandFailed_Format" xml:space="preserve"><value>{0} nisqap kikin comandonqa {1} códigowan tukukurqan.</value></data>
+  <data name="Extras_Automation_Reason_HostCommandMissing_Format" xml:space="preserve"><value>{0} nisqap comandonqa mana kay PCpi kanchu.</value></data>
+  <data name="Extras_Automation_Reason_FileRefused" xml:space="preserve"><value>Windows mana PadForge nisqata munasqan archivota ñawinchayta utaq qillqayta saqirqanchu.</value></data>
+  <data name="Extras_Automation_Reason_NoPython" xml:space="preserve"><value>PadForge nisqaqa mana Python tarinchu: mana ni mayqinpas registrasqachu, Microsoft Store nisqamanta instalasqachu, py launcher nisqawan listasqachu, PATH nisqaykipipas kanchu.</value></data>
+  <data name="Extras_Automation_Reason_NoPythonAnswered_Format" xml:space="preserve"><value>PadForge tarisqan mana ni mayqin Python {0} segundopi kutichirqanchu.</value></data>
+  <data name="Extras_Automation_Reason_Other" xml:space="preserve"><value>Llamk'ayqa mana PadForge yachasqan razónta qurqanchu.</value></data>
 </root>

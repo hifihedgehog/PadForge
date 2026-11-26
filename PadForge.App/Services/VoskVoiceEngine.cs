@@ -27,20 +27,18 @@ namespace PadForge.Services
         internal const string ModelName = "vosk-model-small-en-us-0.15";
         private const string ModelResource = "PadForge.VoiceModels.vosk-model-small-en-us-0.15.zipbr";
 
-        /// <summary>Where the embedded model is unpacked.
+        /// <summary>Where the embedded model is unpacked: VoiceModels in the
+        /// protected folder's Work folder (#600).
         ///
-        /// <para>Vosk loads a model from a DIRECTORY, so the bytes have to
-        /// reach the disk somewhere. Not beside the exe, where only
-        /// PadForge.xml, crash.log and the opt-in diagnostics log belong, and
-        /// 68 MB of model is emphatically not one of those. A cache under
-        /// TEMP is the same place the driver installers stage their payloads,
-        /// and it is re-creatable: delete it and the next launch unpacks it
-        /// again from the copy inside the exe.</para></summary>
-        /// <para>It lives in the protected folder's Work folder (#597): the
-        /// model is parsed by native code in the process with rights, and in
-        /// the temp folder any program of the user could replace it with one
-        /// built to break that parser. The test host keeps the temp
-        /// folder.</para></summary>
+        /// <para>Vosk loads a model from a directory, so the bytes have to
+        /// reach the disk somewhere, and not beside the exe, where only
+        /// PadForge.xml and crash.log belong. The model is parsed by native
+        /// code in the process with rights. In the user's temp folder any
+        /// program of the user could replace it with one built to break that
+        /// parser, so it is unpacked where only Administrators and SYSTEM can
+        /// write. The folder can be deleted: the next use unpacks the model
+        /// again from the copy inside the exe. Only the test host, which has
+        /// no protected folder, unpacks it in the temp folder.</para></summary>
         private static string DefaultRoot => PadForge.Services.ProtectedWork.Folder("VoiceModels")
             ?? (PadForge.Common.ProtectedFolder.OffLimitsForTest ? Path.Combine(Path.GetTempPath(), "PadForge", "voice-models") : null);
         private static string _root;
@@ -244,7 +242,7 @@ namespace PadForge.Services
             {
                 if (_state != 0) return;
                 // No protected folder to unpack into: voice macros stay on
-                // SAPI, as when the model cannot be used (#597).
+                // SAPI, as when the model cannot be used (#600).
                 if (Root == null)
                 {
                     LatchUnusable("the protected folder for the voice model could not be made");

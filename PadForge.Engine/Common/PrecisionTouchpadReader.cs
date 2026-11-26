@@ -299,6 +299,45 @@ namespace PadForge.Engine
         /// <summary>Per-device touchpad state keyed by RAWINPUT hDevice handle.</summary>
         private readonly Dictionary<IntPtr, PtpDeviceState> _deviceStates = new();
 
+        /// <summary>Whether a device path is one of HIDMaestro's own
+        /// devices, the test the Raw Input listener asks
+        /// (<see cref="RawInputListener.IsOwnVirtualDevicePath"/>). Null
+        /// leaves nothing out.</summary>
+        private readonly Func<string, bool> _isOwnVirtualDevicePath;
+
+        /// <summary>The Raw Input handles of HIDMaestro's own touchpads, whose
+        /// reports are passed over. Read and written on the message loop's
+        /// thread, and a handle goes at its removal, since Windows reuses
+        /// handles.</summary>
+        private readonly HashSet<IntPtr> _ownHandles = new();
+
+        /// <param name="isOwnVirtualDevicePath">The test for HIDMaestro's own
+        /// devices. A virtual controller on a profile with a Digitizer Touch
+        /// Pad collection, such as one captured from a laptop's touchpad in
+        /// Manage Profiles, sends reports of that collection, and without the
+        /// test PadForge listed its own virtual touchpad as an input device,
+        /// assignable back to a slot.</param>
+        public PrecisionTouchpadReader(Func<string, bool> isOwnVirtualDevicePath = null)
+        {
+            _isOwnVirtualDevicePath = isOwnVirtualDevicePath;
+        }
+
+        /// <summary>Takes a touchpad Windows reported into the list, or
+        /// marks its handle passed over when it is HIDMaestro's own. False
+        /// for HIDMaestro's own.</summary>
+        internal bool AdmitDevice(IntPtr hDevice, PtpDeviceState ds)
+        {
+            if (_isOwnVirtualDevicePath != null && !string.IsNullOrEmpty(ds.DevicePath)
+                && _isOwnVirtualDevicePath(ds.DevicePath))
+            {
+                _ownHandles.Add(hDevice);
+                return false;
+            }
+            lock (_stateLock)
+                _deviceStates[hDevice] = ds;
+            return true;
+        }
+
         /// <summary>Whether any precision touchpad device was detected.</summary>
         public bool IsAvailable { get; private set; }
 
@@ -918,6 +957,7 @@ namespace PadForge.Engine
                     }
                     _valueCapsCache.Remove(removed);
                     _rangeCache.Remove(removed);
+                    _ownHandles.Remove(removed);
                     // And the device state itself. Dropping only the three
                     // caches left the _deviceStates entry behind, and that
                     // dictionary is what GetDevices enumerates, so an
@@ -956,6 +996,8 @@ namespace PadForge.Engine
 
                 var header = Marshal.PtrToStructure<RAWINPUTHEADER>(buffer);
                 if (header.dwType != RIM_TYPEHID)
+                    return;
+                if (_ownHandles.Contains(header.hDevice))
                     return;
 
                 // Read RAWHID header (after RAWINPUTHEADER)
@@ -1224,7 +1266,7 @@ namespace PadForge.Engine
                     if (hDevice.ToInt64() <= CaptureKeyBase) return true;
                     ds = new PtpDeviceState();
                     PopulateDeviceInfo(hDevice, ds);
-                    _deviceStates[hDevice] = ds;
+                    if (!AdmitDevice(hDevice, ds)) return true;
                 }
 
                 ds.LastReportTicks = DateTime.UtcNow.Ticks;

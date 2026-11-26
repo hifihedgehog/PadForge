@@ -77,15 +77,44 @@ namespace PadForge.Engine.Common
         }
 
         /// <summary>A sender is about to release the key. The key stays
-        /// PadForge's until Windows delivers the release.</summary>
-        public static void NoteKeyUp(int index, int scanKey)
+        /// PadForge's until Windows delivers the release. False when no
+        /// press of the key is waiting for a release, and nothing is
+        /// recorded.</summary>
+        public static bool NoteKeyUp(int index, int scanKey)
+        {
+            lock (s_lock)
+            {
+                var k = Find(index, scanKey);
+                if (k == null || k.Held <= k.PendingUps) return false;
+                k.PendingUps++;
+                k.PendingUntil = Clock() + PendingWindowMs;
+                return true;
+            }
+        }
+
+        /// <summary>A press <see cref="NoteKeyDown"/> recorded went out in
+        /// no report: the device refused it. It is taken back, so the
+        /// key's next press and release are counted alone.</summary>
+        public static void ForgetKeyDown(int index, int scanKey)
         {
             lock (s_lock)
             {
                 var k = Find(index, scanKey);
                 if (k == null || k.Held <= k.PendingUps) return;
-                k.PendingUps++;
-                k.PendingUntil = Clock() + PendingWindowMs;
+                k.Held--;
+                if (k.Held == 0) s_keys.Remove(k);
+            }
+        }
+
+        /// <summary>A release <see cref="NoteKeyUp"/> recorded went out in
+        /// no report, and the key stays down. It is taken back.</summary>
+        public static void ForgetKeyUp(int index, int scanKey)
+        {
+            lock (s_lock)
+            {
+                var k = Find(index, scanKey);
+                if (k == null || k.PendingUps == 0) return;
+                k.PendingUps--;
             }
         }
 
@@ -122,21 +151,41 @@ namespace PadForge.Engine.Common
         /// <summary>A sender is about to press or release mouse button
         /// <paramref name="hookId"/>, in the hooks' numbering: 0 left, 1
         /// middle, 2 right, 3 back, 4 forward. A released button stays
-        /// PadForge's until Windows delivers the release.</summary>
-        public static void NoteButton(int hookId, bool down)
+        /// PadForge's until Windows delivers the release. False when nothing
+        /// is recorded: an id past the five, or a release with no press
+        /// waiting for one.</summary>
+        public static bool NoteButton(int hookId, bool down)
         {
-            if (hookId < 0 || hookId >= s_buttonHeld.Length) return;
+            if (hookId < 0 || hookId >= s_buttonHeld.Length) return false;
             lock (s_lock)
             {
                 if (down)
                 {
                     s_buttonHeld[hookId]++;
                     Volatile.Write(ref s_any, 1);
-                    return;
+                    return true;
                 }
-                if (s_buttonHeld[hookId] <= s_buttonPendingUps[hookId]) return;
+                if (s_buttonHeld[hookId] <= s_buttonPendingUps[hookId]) return false;
                 s_buttonPendingUps[hookId]++;
                 s_buttonPendingUntil[hookId] = Clock() + PendingWindowMs;
+                return true;
+            }
+        }
+
+        /// <summary>A press or release <see cref="NoteButton"/> recorded
+        /// went out in no report: the device refused it. It is taken
+        /// back.</summary>
+        public static void ForgetButton(int hookId, bool down)
+        {
+            if (hookId < 0 || hookId >= s_buttonHeld.Length) return;
+            lock (s_lock)
+            {
+                if (down)
+                {
+                    if (s_buttonHeld[hookId] > s_buttonPendingUps[hookId]) s_buttonHeld[hookId]--;
+                    return;
+                }
+                if (s_buttonPendingUps[hookId] > 0) s_buttonPendingUps[hookId]--;
             }
         }
 

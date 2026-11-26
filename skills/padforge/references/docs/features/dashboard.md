@@ -16,10 +16,12 @@ Home is the top entry of the sidebar. Top to bottom it shows:
 |---------|---------------|
 | **Engine card** | The engine's switch and state, and three numbers: the polling rate, the controllers live and the devices connected. |
 | **Offer** | A band for a controller PadForge has just met that no virtual controller uses. Shown only while there is one. |
+| **Waiting recording** | A band for a [problem recording](problem-recorder.md) that stopped while nobody was at its review: **A problem recording from 21:14 is waiting for you to read it.**, with **Review** and **Delete**. Shown only while one waits. |
+| **Shared folder** | A band shown while PadForge runs with administrator rights from a folder other programs can change, a folder that holds other files, or one PadForge could not read, with **Move PadForge to Its Own Folder**. |
 | **Controllers** | One card per [virtual controller](controller-slots.md), then the **Add Controller** tile. |
 | **Extras in Use** | A tile for each [extra](#extras) that is on, or a line that introduces the Extras page while none is. |
 
-While no virtual controller exists, Home shows its [first page](#before-the-first-controller) in place of all four.
+While no virtual controller exists, Home shows its [first page](#before-the-first-controller) in place of all of them.
 
 The on/off switches of the extras ride the active [profile](../guides/profiles.md), in two shapes. The Motion Server, Game Mods, Game Telemetry, Web Controller, Touchpad Overlay, Screen Overlay, Crosshair and Magnifier settings, the DSX.exe stand-in switch, the three Overlays switches, the Motion Server, Game Mods, Game Telemetry and Web Controller ports, the touchpad overlay's opacity and place, and Game Telemetry's game, forward port and Full Speed are stored in every profile and follow it on each switch. The custom telemetry formats are one list for every profile. The head-tracking UDP and FreeTrack switches are stored as opinions: a profile records one only when you change the switch while that profile is active, a profile with no opinion leaves the switch alone on a profile switch, and the global setting stands until some profile has one. Remote Link and Auto-Reconnect stay global, since a link between two PCs is not a per-game setting. Enable OpenXR Headset Input stays global too, and so do the Web Controller's plain HTTP settings and access code. The Twitch Chat switch, channel and **Who Approves !claim** are global as well, so a profile switch never opens or closes the chat connection. The plain address runs only while the Web Controller runs, so a profile that turns the Web Controller off closes both of its ports.
 
@@ -140,9 +142,9 @@ While no extra is on, the heading reads **Extras** and the section holds one lin
 
 ## Extras
 
-![The Extras catalog: twelve tiles in three groups, each with its switch and its status line](https://padforge.org/docs/images/extras-catalog.png)
+![The Extras catalog: fourteen tiles in four groups, each with its switch and its status line](https://padforge.org/docs/images/extras-catalog.png)
 
-**Extras** is its own sidebar entry, after Profiles. Its catalog holds twelve tiles in three groups, with a count such as "3 of 12 on" in its head. Each tile has a switch at its corner that turns the extra on or off without leaving the catalog. A click anywhere else on the tile opens the extra's page.
+**Extras** is its own sidebar entry, after Profiles. Its catalog holds fourteen tiles in four groups, with a count such as "3 of 14 on" in its head. Each tile has a switch at its corner that turns the extra on or off without leaving the catalog. A click anywhere else on the tile opens the extra's page.
 
 | Group | Extra | Tile line | Full page |
 |-------|-------|-----------|-----------|
@@ -158,6 +160,8 @@ While no extra is on, the heading reads **Extras** and the section holds one lin
 | On Screen | Screen Overlay | A picture, timer or clock above other windows. | [Screen Overlay](screen-overlay.md) |
 | On Screen | Crosshair | Your own crosshair over a game. | [Crosshair](crosshair.md) |
 | On Screen | Magnifier | A zoom lens, a full-screen zoom or a spotlight. | [Magnifier](magnifier.md) |
+| With Other Programs | Automation | Let launchers, scripts and assistants work with PadForge. | [Automation](automation.md) |
+| With Other Programs | Plugins | Add devices that programs provide. | [Plugins](plugins.md) |
 
 Every extra's page has the same frame: **Extras / *name*** to go back (Alt+Left, the keyboard's Back key and the mouse's Back button do the same), a head with the extra's name, one line, its switch and its reset, a status card, cards of settings with a **Reset All** each, a **More** card that opens the rest in place, and a note whose bracketed words link to the Devices page or to a controller's Macros & Menus section.
 

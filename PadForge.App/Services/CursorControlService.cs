@@ -117,22 +117,29 @@ namespace PadForge.Services
         /// the documented torn-pair tolerance.</summary>
         private const long ProviderIdleMs = 2000;
 
+        /// <summary>The two providers this instance installed, so its dispose
+        /// takes only its own.</summary>
+        private readonly Func<(float normX, float normY)> _cursorProvider;
+        private readonly Func<(double x, double y, double centerX, double centerY, double unit)?> _pointProvider;
+
         public CursorControlService()
         {
             Active = this;
-            SourceCoercion.MouseCursorProvider = () =>
+            _cursorProvider = () =>
             {
                 System.Threading.Volatile.Write(ref _lastProviderReadMs, Environment.TickCount64);
                 WakeSampler();
                 return (_normX, _normY);
             };
-            SourceCoercion.MouseCursorPointProvider = () =>
+            _pointProvider = () =>
             {
                 System.Threading.Volatile.Write(ref _lastProviderReadMs, Environment.TickCount64);
                 WakeSampler();
                 float unit = _monitorUnit;
                 return unit > 0 ? (_pointX, _pointY, _monitorCenterX, _monitorCenterY, unit) : null;
             };
+            SourceCoercion.MouseCursorProvider = _cursorProvider;
+            SourceCoercion.MouseCursorPointProvider = _pointProvider;
             _timer = new Timer(_ => Tick(), null, 0, SampleIntervalMs);
         }
 
@@ -380,9 +387,9 @@ namespace PadForge.Services
         {
             _disposed = true;
             if (Active == this) Active = null;
-            // Only unhook our own provider so a re-create can rewire cleanly.
-            SourceCoercion.MouseCursorProvider = null;
-            SourceCoercion.MouseCursorPointProvider = null;
+            // Only our own providers: a newer instance's stay, as Active does.
+            if (ReferenceEquals(SourceCoercion.MouseCursorProvider, _cursorProvider)) SourceCoercion.MouseCursorProvider = null;
+            if (ReferenceEquals(SourceCoercion.MouseCursorPointProvider, _pointProvider)) SourceCoercion.MouseCursorPointProvider = null;
             _timer?.Dispose();
             _timer = null;
         }

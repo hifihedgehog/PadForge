@@ -10,7 +10,7 @@ using PadForge.Common.Input;
 namespace PadForge.Services.Automation
 {
     /// <summary>
-    /// One program's connection on the Automation pipe (#597), from its
+    /// One program's connection on the Automation pipe (#600), from its
     /// <c>hello</c> to its end. It reads one line at a time, answers it
     /// through its outbox, and keeps what the program owns: its devices,
     /// its holds, its values and what it follows, which the sessions hold
@@ -19,8 +19,8 @@ namespace PadForge.Services.Automation
     /// <para>Every connection opens with <c>hello name="..." kind=script</c>
     /// and is answered <c>ok padforge=&lt;version&gt; protocol=1
     /// level=&lt;level&gt; session=&lt;n&gt;</c>. Nothing is guessed from
-    /// the first byte. A line runs to 8,192 bytes, a <c>declare</c> line to
-    /// 65,536. A program sends at most <see cref="LinesPerSecond"/> lines a
+    /// the first byte. A line runs to 8,192 bytes, a <c>declare</c>,
+    /// <c>call</c> or <c>setting</c> line to 65,536. A program sends at most <see cref="LinesPerSecond"/> lines a
     /// second, well above what a script that drives a device at 1,000 Hz
     /// sends.</para>
     /// </summary>
@@ -68,6 +68,12 @@ namespace PadForge.Services.Automation
             Outbox = new AutomationOutbox(stream, () => Close("cut-off"));
         }
 
+        /// <summary>A session of a kind, on a stream of its own, as if its
+        /// hello had been taken, for tests of the sessions' limits.</summary>
+        internal static AutomationSession ForTest(AutomationSessions hub, AutomationClientKind kind, int number)
+            => new AutomationSession(hub, new MemoryStream(), AutomationClientProcess.ForTest(number, null), number, CancellationToken.None,
+                () => Environment.TickCount64) { Kind = kind };
+
         /// <summary>PadForge's number for the session, given in hello's
         /// answer.</summary>
         public int Number { get; }
@@ -84,9 +90,11 @@ namespace PadForge.Services.Automation
         /// Null when it gave none.</summary>
         public string GivenName { get; private set; }
 
-        /// <summary>The name a device's identity is made from: the claimed
-        /// name for a script, the approved plugin's name for a
-        /// plugin.</summary>
+        /// <summary>The program's name for its devices: the claimed name for
+        /// a script and an assistant, the approved plugin's name for a
+        /// plugin. A plugin's, a web assistant's and a network caller's
+        /// devices are made from it, a script's and an assistant's from its
+        /// consent key (ProgramDevices.IdentityOf).</summary>
         public string IdentityName { get; private set; } = string.Empty;
 
         public AutomationClientKind Kind { get; private set; } = AutomationClientKind.Script;
@@ -125,9 +133,9 @@ namespace PadForge.Services.Automation
         /// and devices rest until the program speaks again.</summary>
         public bool Lapsed { get; set; }
 
-        /// <summary>Whether the script was silent long enough for its
-        /// devices to go offline, until it speaks again (#600 item
-        /// 24).</summary>
+        /// <summary>Whether the script or the plugin was silent long enough
+        /// for its devices to go offline, until it speaks again (#600 items
+        /// 18 and 24).</summary>
         public bool Asleep { get; set; }
 
         /// <summary>Taken while the session's devices go offline for its
@@ -182,7 +190,34 @@ namespace PadForge.Services.Automation
         /// (#600 item 53): its key's name, the address it called from and
         /// when the key was made. Null for every other caller, whom the card
         /// names by its program.</summary>
-        internal string AskerLine { get; private set; }
+        internal string AskerLine
+        {
+            get
+            {
+                if (_askerKey == null) return null;
+                // Worded when a card reads it, so a session that runs past
+                // midnight says "today" only on the day the key was made.
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                var culture = CultureInfo.CurrentCulture;
+                var made = _askerMade.ToLocalTime();
+                return string.Format(culture,
+                    made.Date == _hub.Host.Now().ToLocalTime().Date ? s.Net_Asks_Today_Format : s.Net_Asks_Format,
+                    _askerKey, _askerFrom, made.ToString("d", culture));
+            }
+        }
+
+        private string _askerKey, _askerFrom;
+        private DateTimeOffset _askerMade;
+
+        /// <summary>The session is a network caller's: its key's name, the
+        /// address it called from and when the key was made, which
+        /// <see cref="AskerLine"/> words.</summary>
+        internal void AsksFromNetwork(string keyName, string from, DateTimeOffset made)
+        {
+            _askerFrom = from;
+            _askerMade = made;
+            _askerKey = keyName;
+        }
 
         /// <summary>The resume secret an assistant's helper holds across a
         /// pipe drop (#600), or null.</summary>
@@ -203,7 +238,7 @@ namespace PadForge.Services.Automation
         /// <summary>Canceled when the connection ends, however it ends. An
         /// assistant's session hands its stream over and its reader's token
         /// ends then, so what lasts as long as the connection waits on this
-        /// one (#597).</summary>
+        /// one (#600).</summary>
         internal CancellationToken Lifetime => _outer.Token;
 
         /// <summary>A feedback event for a device this session owns. Queued
@@ -212,7 +247,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>The program is still there. An assistant's session calls
         /// it while its protocol runs, since its lines no longer pass the
-        /// reader that keeps the lease (#597).</summary>
+        /// reader that keeps the lease (#600).</summary>
         internal void Heard()
         {
             LastHeardMs = _nowMs();
@@ -231,10 +266,6 @@ namespace PadForge.Services.Automation
             if (Lapsed || Asleep || wasOut) _hub.Woke(this);
         }
 
-        /// <summary>Runs <paramref name="work"/> with the rights of the
-        /// program at the other end of the pipe, so a file a tool opens for
-        /// it is one the program could open itself. False when the
-        /// connection is no pipe of Windows' and has no rights to borrow.</summary>
         /// <summary>While a tool runs a line of the session's on its behalf
         /// (AutomationSessions.RunCapturedAsync), the answers it gets, and
         /// one run at a time. Null otherwise.</summary>
@@ -246,15 +277,17 @@ namespace PadForge.Services.Automation
         internal const string CaptureTag = "@pf";
 
         /// <summary>A line written to an assistant's session once its
-        /// stream is the protocol's: an answer to a line a tool runs is
-        /// kept, anything else is dropped.</summary>
+        /// stream is the protocol's, which is dropped. The answer to a line
+        /// a tool runs never comes here: <see cref="Answer"/> keeps it for
+        /// the tool.</summary>
         internal void Sink(string text)
         {
-            var list = Captured;
-            if (list == null || text == null || !text.StartsWith(CaptureTag + " ", StringComparison.Ordinal)) return;
-            lock (list) list.Add(text.Substring(CaptureTag.Length + 1));
         }
 
+        /// <summary>Runs <paramref name="work"/> with the rights of the
+        /// program at the other end of the pipe, so a file a tool opens for
+        /// it is one the program could open itself. False when the
+        /// connection is no pipe of Windows' and has no rights to borrow.</summary>
         internal bool RunAsClient(Action work)
         {
             if (_stream is not System.IO.Pipes.NamedPipeServerStream pipe) return false;
@@ -277,6 +310,13 @@ namespace PadForge.Services.Automation
             catch (OperationCanceledException) { }
             catch (IOException) { }
             catch (ObjectDisposedException) { }
+            catch (Exception)
+            {
+                // A fault in a line ends the session: it lets go of what it
+                // holds and leaves the list, and is handed over to nothing.
+                _handOver = null;
+                Close("fault");
+            }
             if (_handOver == null)
             {
                 // A session that closes after its last line waits for the
@@ -355,10 +395,12 @@ namespace PadForge.Services.Automation
                     {
                         if (kept == line.Length) Array.Resize(ref line, Math.Min(limit, line.Length * 2));
                         line[kept++] = c;
-                        // A declare line may run longer, since its JSON names
-                        // every control of a device.
-                        if (kept == AutomationLine.LongestLine && limit == AutomationLine.LongestLine && IsDeclare(line, kept))
-                            limit = AutomationLine.LongestDeclare;
+                        // A line whose JSON may run long gets the longer
+                        // bound: a declare names every control of a device,
+                        // a call carries a tool's arguments, and a plugin's
+                        // setting its choices.
+                        if (kept == AutomationLine.LongestLine && limit == AutomationLine.LongestLine && CarriesLongJson(line, kept))
+                            limit = AutomationLine.LongestJsonLine;
                     }
                     else
                     {
@@ -374,7 +416,11 @@ namespace PadForge.Services.Automation
             return null;
         }
 
-        private static bool IsDeclare(byte[] line, int length)
+        /// <summary>The verbs whose line may run to
+        /// <see cref="AutomationLine.LongestJsonLine"/>.</summary>
+        private static readonly string[] LongJsonVerbs = { "declare ", "call ", "setting " };
+
+        private static bool CarriesLongJson(byte[] line, int length)
         {
             int i = 0;
             while (i < length && line[i] == ' ') i++;
@@ -383,11 +429,15 @@ namespace PadForge.Services.Automation
                 while (i < length && line[i] != ' ') i++;
                 while (i < length && line[i] == ' ') i++;
             }
-            const string verb = "declare ";
-            if (length - i < verb.Length) return false;
-            for (int k = 0; k < verb.Length; k++)
-                if (char.ToLowerInvariant((char)line[i + k]) != verb[k]) return false;
-            return true;
+            foreach (string verb in LongJsonVerbs)
+            {
+                if (length - i < verb.Length) continue;
+                bool same = true;
+                for (int k = 0; k < verb.Length && same; k++)
+                    same = char.ToLowerInvariant((char)line[i + k]) == verb[k];
+                if (same) return true;
+            }
+            return false;
         }
 
         private bool _judged;
@@ -486,7 +536,7 @@ namespace PadForge.Services.Automation
             string name = ProgramDeviceDeclaration.Clean(request.Get("name"), ProgramDeviceDeclaration.LongestName);
             string given = name;
             // The copy of PadForge.exe an assistant starts names the program
-            // that started it, its host (#597). Both names are claims and
+            // that started it, its host (#600). Both names are claims and
             // are shown as such. Clean takes the format characters out, so
             // neither name can read backward or hide part of itself on the
             // request card and in Activity.
@@ -495,37 +545,33 @@ namespace PadForge.Services.Automation
             if (name.Length == 0 && Process.ImageName != null)
                 name = ProgramDeviceDeclaration.Clean(PadForge.Common.Input.RunningProcessList.ShortName(Process.ImageName),
                     ProgramDeviceDeclaration.LongestName);
-            ClaimedName = name;
-            IdentityName = name;
-            GivenName = given.Length > 0 ? given : null;
-
+            // Every field is read and checked before any of it is kept: a
+            // hello refused with the pipe left open leaves nothing behind
+            // for the next one, which names its own.
             string lease = request.Get("lease");
+            int leaseMs = kind == "script" ? ScriptLeaseMs : DefaultLeaseMs;
             if (lease != null)
             {
-                if (!AutomationLine.TryInt(lease, out int ms) || ms < ShortestLeaseMs || ms > LongestLeaseMs)
+                if (!AutomationLine.TryInt(lease, out leaseMs) || leaseMs < ShortestLeaseMs || leaseMs > LongestLeaseMs)
                 {
                     Answer(request.Tag, AutomationLine.Error("bad-argument", "lease is 250 to 10000 ms"));
                     return;
                 }
-                LeaseMs = ms;
             }
 
             // Plain units (#600): what the session reads comes as the
             // libraries and the assistant tools speak it.
             string units = request.Get("units");
-            if (units != null)
+            if (units != null && units is not ("plain" or "raw"))
             {
-                if (units is not ("plain" or "raw"))
-                {
-                    Answer(request.Tag, AutomationLine.Error("bad-argument", "units is plain or raw"));
-                    return;
-                }
-                Outbox.Plain = units == "plain";
+                Answer(request.Tag, AutomationLine.Error("bad-argument", "units is plain or raw"));
+                return;
             }
 
             // The level the program asks for (#600), which the question
             // card names.
             string level = request.Get("level");
+            AutomationLevel? wantedLevel = null;
             if (level != null)
             {
                 if (!AutomationConsent.TryLevel(level, out var wanted))
@@ -533,47 +579,54 @@ namespace PadForge.Services.Automation
                     Answer(request.Tag, AutomationLine.Error("bad-argument", "level is commands, read, send-inputs or change-settings"));
                     return;
                 }
-                Wanted = wanted;
+                wantedLevel = wanted;
             }
 
             // The reach the program asks for (#600 DESIGN-2 N3): own holds
             // it to its own devices, which the card names. A hello narrows,
             // never widens, what the user kept.
             string reach = request.Get("reach");
-            if (reach != null)
+            if (reach != null && reach is not ("own" or "all"))
             {
-                if (reach is not ("own" or "all"))
-                {
-                    Answer(request.Tag, AutomationLine.Error("bad-argument", "reach is own or all"));
-                    return;
-                }
-                WantedReach = reach == "own" ? ProgramReach.OwnDevices : null;
+                Answer(request.Tag, AutomationLine.Error("bad-argument", "reach is own or all"));
+                return;
             }
 
             // An assistant's helper keeps one secret for its whole run, so
             // its undo, rate and waiting requests outlive a pipe drop.
             string resume = request.Get("resume");
-            if (resume != null)
+            if (resume != null && (resume.Length < 16 || resume.Length > 64 || !IsSecret(resume)))
             {
-                if (resume.Length < 16 || resume.Length > 64 || !IsSecret(resume))
-                {
-                    Answer(request.Tag, AutomationLine.Error("bad-argument", "resume is 16 to 64 letters and digits"));
-                    return;
-                }
-                Resume = resume;
+                Answer(request.Tag, AutomationLine.Error("bad-argument", "resume is 16 to 64 letters, digits, - or _"));
+                return;
             }
 
             string hwnd = request.Get("hwnd");
-            if (hwnd != null)
+            IntPtr window = IntPtr.Zero;
+            if (hwnd != null && (!TryWindow(hwnd, out window) || !Process.OwnsWindow(window)))
             {
-                if (!TryWindow(hwnd, out IntPtr window) || !Process.OwnsWindow(window))
-                {
-                    Answer(request.Tag, AutomationLine.Error("bad-argument", "hwnd is a window of the connecting program"));
-                    return;
-                }
-                Outbox.Process = Process;
-                Outbox.WakeWindow = window;
+                Answer(request.Tag, AutomationLine.Error("bad-argument", "hwnd is a window of the connecting program"));
+                return;
             }
+
+            if (kind is not ("script" or "mcp" or "web-helper" or "web" or "plugin"))
+            {
+                Answer(request.Tag, AutomationLine.Error("bad-argument", UnknownKindWords));
+                return;
+            }
+
+            // Past the last refusal that leaves the pipe open: the hello's
+            // fields are the session's now.
+            ClaimedName = name;
+            IdentityName = name;
+            GivenName = given.Length > 0 ? given : null;
+            LeaseMs = leaseMs;
+            Outbox.Plain = units == "plain";
+            Wanted = wantedLevel;
+            WantedReach = reach == "own" ? ProgramReach.OwnDevices : null;
+            Resume = resume;
+            Outbox.Process = hwnd != null ? Process : null;
+            Outbox.WakeWindow = window;
 
             // A script and an assistant speak while Automation is on. With
             // Plugins on alone, the pipe serves plugins and nothing else, so
@@ -591,7 +644,6 @@ namespace PadForge.Services.Automation
             {
                 case "script":
                     Kind = AutomationClientKind.Script;
-                    if (lease == null) LeaseMs = ScriptLeaseMs;
                     break;
                 case "mcp":
                 {
@@ -605,7 +657,7 @@ namespace PadForge.Services.Automation
                     Kind = AutomationClientKind.Assistant;
                     if (!_hub.Open(this, out string full))
                     {
-                        Answer(request.Tag, AutomationLine.Error(full));
+                        Answer(request.Tag, full);
                         CloseAfterWritten();
                         return;
                     }
@@ -659,13 +711,11 @@ namespace PadForge.Services.Automation
                     // Its devices are the key's wherever it calls from.
                     IdentityName = ProgramDeviceDeclaration.Clean(key.Name, ProgramDeviceDeclaration.LongestName);
                     GivenName = null;
-                    AskerLine = string.Format(culture,
-                        key.Made.ToLocalTime().Date == DateTimeOffset.Now.Date ? s.Net_Asks_Today_Format : s.Net_Asks_Format,
-                        key.Name, from, key.Made.ToLocalTime().ToString("d", culture));
+                    AsksFromNetwork(key.Name, from, key.Made);
                     Who = new AllowedProgram(PadForge.Services.Automation.Web.WebDoor.NetKey(key.Id), key.Name, "network", null, null, null, key.Level);
                     if (!_hub.Open(this, out string full))
                     {
-                        Answer(request.Tag, AutomationLine.Error(full));
+                        Answer(request.Tag, full);
                         CloseAfterWritten();
                         return;
                     }
@@ -698,7 +748,7 @@ namespace PadForge.Services.Automation
                         AutomationLevel.ChangeSettings) { Reach = grant.Reach };
                     if (!_hub.Open(this, out string full))
                     {
-                        Answer(request.Tag, AutomationLine.Error(full));
+                        Answer(request.Tag, full);
                         CloseAfterWritten();
                         return;
                     }
@@ -736,14 +786,11 @@ namespace PadForge.Services.Automation
                     }
                     break;
                 }
-                default:
-                    Answer(request.Tag, AutomationLine.Error("bad-argument", "kind is script, mcp or plugin"));
-                    return;
             }
 
             if (!_hub.Open(this, out string reason))
             {
-                Answer(request.Tag, AutomationLine.Error(reason));
+                Answer(request.Tag, reason);
                 CloseAfterWritten();
                 return;
             }
@@ -751,6 +798,10 @@ namespace PadForge.Services.Automation
             Opened = true;
             Answer(request.Tag, HelloAnswer());
         }
+
+        /// <summary>The words a hello of a kind PadForge does not take is
+        /// refused with: the five it takes.</summary>
+        internal const string UnknownKindWords = "kind is script, mcp or plugin, or web-helper or web, which take the key PadForge gives its own web helper";
 
         private static bool IsSecret(string text)
         {
@@ -790,7 +841,19 @@ namespace PadForge.Services.Automation
 
         /// <summary>One line of an answer, with the request's tag.</summary>
         public void Answer(string tag, string line, Action after = null)
-            => Outbox.Line(AutomationLine.Tagged(tag, line), after);
+        {
+            // The answer to a line a tool runs is the tool's, whatever
+            // kind of program asked for the tool, and never goes to the
+            // program's pipe.
+            var captured = Captured;
+            if (captured != null && tag == CaptureTag)
+            {
+                lock (captured) captured.Add(line);
+                if (after != null) ThreadPool.UnsafeQueueUserWorkItem(_ => after(), null);
+                return;
+            }
+            Outbox.Line(AutomationLine.Tagged(tag, line), after);
+        }
 
         // ── Closing ──
 

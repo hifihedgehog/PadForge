@@ -16,9 +16,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
     /// (:783-788, BTN_MOUSE + n - 1). Generic Desktop X and Y are motion
     /// when the field is relative (:908-914), and Wheel is the vertical
     /// wheel (:932). A boot mouse's report is that layout, described
-    /// (drivers/hid/usbhid/usbmouse.c:69-77). The horizontal wheel, AC Pan
-    /// on the Consumer page (:1282), has no axis on a mouse row and is not
-    /// read.</para>
+    /// (drivers/hid/usbhid/usbmouse.c:69-77). The horizontal wheel is AC
+    /// Pan on the Consumer page, read as REL_HWHEEL (:1282-1284), for Wheel
+    /// Travel Sideways (#600).</para>
     ///
     /// <para>Motion and the wheel are changes since the last report, so
     /// they add up. A button field carries the state of its buttons, so it
@@ -37,6 +37,8 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         internal const uint X = ((uint)GenericDesktopPage << 16) | 0x30;
         internal const uint Y = ((uint)GenericDesktopPage << 16) | 0x31;
         internal const uint Wheel = ((uint)GenericDesktopPage << 16) | 0x38;
+        internal const ushort ConsumerPage = 0x0C;
+        internal const uint Pan = ((uint)ConsumerPage << 16) | 0x238;
 
         /// <summary>The buttons a mouse row reads, Button page usages 1 to 5
         /// (bit n - 1 of the button state for button n).</summary>
@@ -49,7 +51,8 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             _fields = fields;
             UsesReportIds = usesReportIds;
             LongestInputReport = shape.LongestInputReport;
-            WheelMultiplierFeature = MultiplierOfTheWheel(shape);
+            WheelMultiplierFeature = MultiplierOf(shape, shape.WheelCollections);
+            PanMultiplierFeature = MultiplierOf(shape, shape.PanCollections);
         }
 
         /// <summary>True when the descriptor declares report IDs, so every
@@ -63,6 +66,10 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// <summary>The Resolution Multiplier that applies to the wheel, or
         /// null when none does.</summary>
         internal HidKeyboardReports.Multiplier WheelMultiplierFeature { get; }
+
+        /// <summary>The Resolution Multiplier that applies to the horizontal
+        /// wheel, AC Pan, by the same rule, or null.</summary>
+        internal HidKeyboardReports.Multiplier PanMultiplierFeature { get; }
 
         /// <summary>The fields that carry buttons, motion or the wheel, in
         /// descriptor order.</summary>
@@ -87,14 +94,15 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// the wheel sits in, or one in no logical collection, the last such
         /// in the descriptor, as Linux leaves it (hid-core.c:1177-1198). A
         /// mouse that gives its wheel and its horizontal wheel a multiplier
-        /// each keeps them in separate logical collections.</summary>
-        private static HidKeyboardReports.Multiplier MultiplierOfTheWheel(HidKeyboardReports.Shape shape)
+        /// each keeps them in separate logical collections, so each wheel's
+        /// <paramref name="collections"/> find its own.</summary>
+        private static HidKeyboardReports.Multiplier MultiplierOf(HidKeyboardReports.Shape shape, List<int[]> collections)
         {
             HidKeyboardReports.Multiplier found = null;
             foreach (var multiplier in shape.Multipliers)
             {
                 if (multiplier.LogicalCollection < 0) { found = multiplier; continue; }
-                foreach (int[] chain in shape.WheelCollections)
+                foreach (int[] chain in collections)
                     if (Array.IndexOf(chain, multiplier.LogicalCollection) >= 0) found = multiplier;
             }
             return found;
@@ -106,8 +114,12 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// 255 reads as 1, as Linux takes it (hid_calculate_multiplier,
         /// hid-core.c:1083-1120).</summary>
         internal int EffectiveMultiplier(ReadOnlySpan<byte> featureReport)
+            => EffectiveMultiplier(WheelMultiplierFeature, featureReport);
+
+        /// <summary>The same for <paramref name="feature"/>, the horizontal
+        /// wheel's included.</summary>
+        internal int EffectiveMultiplier(HidKeyboardReports.Multiplier feature, ReadOnlySpan<byte> featureReport)
         {
-            var feature = WheelMultiplierFeature;
             if (feature == null) return 1;
             int span = feature.LogicalMaximum - feature.LogicalMinimum;
             if (span == 0 || featureReport.Length < feature.ReportLength) return 1;
@@ -124,6 +136,14 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         /// whose ID no field uses.</summary>
         internal bool Decode(ReadOnlySpan<byte> report, ref int dx, ref int dy, ref int wheel, ref int buttons)
         {
+            int pan = 0;
+            return Decode(report, ref dx, ref dy, ref wheel, ref pan, ref buttons);
+        }
+
+        /// <summary>The same, with the horizontal wheel's counts added to
+        /// <paramref name="pan"/>.</summary>
+        internal bool Decode(ReadOnlySpan<byte> report, ref int dx, ref int dy, ref int wheel, ref int pan, ref int buttons)
+        {
             if (report.Length == 0) return false;
             byte id = 0;
             ReadOnlySpan<byte> data = report;
@@ -138,14 +158,14 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             {
                 if (field.ReportId != id) continue;
                 any = true;
-                if (field.IsVariable) ReadVariable(field, data, ref dx, ref dy, ref wheel, ref buttons);
+                if (field.IsVariable) ReadVariable(field, data, ref dx, ref dy, ref wheel, ref pan, ref buttons);
                 else ReadArray(field, data, ref buttons);
             }
             return any;
         }
 
         private static void ReadVariable(HidKeyboardReports.Field field, ReadOnlySpan<byte> data,
-            ref int dx, ref int dy, ref int wheel, ref int buttons)
+            ref int dx, ref int dy, ref int wheel, ref int pan, ref int buttons)
         {
             bool signed = field.LogicalMinimum < 0;
             for (int n = 0; n < field.Count; n++)
@@ -163,6 +183,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                     if (usage == X) dx += value;
                     else if (usage == Y) dy += value;
                     else if (usage == Wheel) wheel += value;
+                    else if (usage == Pan) pan += value;
                 }
             }
         }
@@ -206,7 +227,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         private static bool CarriesPointer(uint[] usages)
         {
             foreach (uint usage in usages)
-                if (usage >> 16 == ButtonPage || usage == X || usage == Y || usage == Wheel) return true;
+                if (usage >> 16 == ButtonPage || usage == X || usage == Y || usage == Wheel || usage == Pan) return true;
             return false;
         }
     }

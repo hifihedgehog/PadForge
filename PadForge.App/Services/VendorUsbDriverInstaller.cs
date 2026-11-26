@@ -440,9 +440,6 @@ namespace PadForge.Services
         {
             // The test host changes no driver (NoDriverChangesForTest).
             if (NoDriverChangesForTest) return false;
-            // The device leaves and comes back on Windows' driver: the
-            // connection notes wait for it to settle (#600 item 42).
-            PadForge.Engine.OwnDrops.Settle();
             try
             {
                 bool present = ServiceOf(instanceId) != null;
@@ -455,6 +452,10 @@ namespace PadForge.Services
                     return false;
                 }
                 string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "INF", inf);
+                // From here the device leaves and comes back on Windows'
+                // driver: the connection notes wait for it to settle (#600
+                // item 42). A take-back refused above changed nothing.
+                PadForge.Engine.OwnDrops.Settle();
                 // Removing the package has Windows restart the node on its
                 // own driver, so PadForge lets go of the node first, and
                 // opens nothing on it until the wait below is over.
@@ -644,7 +645,7 @@ namespace PadForge.Services
         }
 
         /// <summary>Where a package is staged: its own folder under the
-        /// protected folder's Work folder, named for the ID (#597). The package
+        /// protected folder's Work folder, named for the ID (#600). The package
         /// is signed and stocked with PadForge's rights, and in the temp folder,
         /// where it was, any program of the user could change the INF between
         /// its write and its signing. The test host keeps the temp
@@ -668,9 +669,6 @@ namespace PadForge.Services
         {
             // The test host changes no driver (NoDriverChangesForTest).
             if (NoDriverChangesForTest) return false;
-            // The device leaves and comes back on another driver: the
-            // connection notes wait for it to settle (#600 item 42).
-            PadForge.Engine.OwnDrops.Settle();
             bool xusb = plan.Driver == BindDriver.Xusb22;
             string service = xusb ? "xusb22" : "WINUSB";
             string driverName = xusb ? "xusb22" : "WinUSB";
@@ -683,6 +681,11 @@ namespace PadForge.Services
                     log(why);
                     return false;
                 }
+
+                // From here the device leaves and comes back on another
+                // driver: the connection notes wait for it to settle (#600
+                // item 42). A bind refused above changed nothing.
+                PadForge.Engine.OwnDrops.Settle();
 
                 // Each driver's package in its own folder, since the catalog
                 // step catalogs every INF it finds in one.

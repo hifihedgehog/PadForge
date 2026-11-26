@@ -14,7 +14,7 @@ namespace PadForge
     public partial class MainWindow
     {
         // ─────────────────────────────────────────────
-        //  Record a Problem (#597, #600): the window's share
+        //  Record a Problem (#600): the window's share
         //
         //  The recorder runs on its own thread and knows no window. This
         //  keeps the Settings row in step with it, opens Read Your
@@ -27,6 +27,26 @@ namespace PadForge
         private bool _problemRecorderRefreshQueued;
         private bool _reviewFinishedRecording;
         private RecordingReviewModel _review;
+        private readonly LatestOpen _reviewOpens = new();
+
+        /// <summary>Reads a review off the window's thread, one open at a
+        /// time: a review read while a later one was asked for (a second
+        /// click on Review before the first unpacking ended) is disposed
+        /// unseen and comes back null, so its unpacked copy goes at once and
+        /// only the later one shows.</summary>
+        internal sealed class LatestOpen
+        {
+            private int _asked;
+
+            internal async Task<T> Open<T>(Func<T> read) where T : class, IDisposable
+            {
+                int ticket = System.Threading.Interlocked.Increment(ref _asked);
+                T made = await Task.Run(read);
+                if (System.Threading.Volatile.Read(ref _asked) == ticket) return made;
+                made?.Dispose();
+                return null;
+            }
+        }
 
         /// <summary>What the Settings row asks of the recorder.</summary>
         internal enum RecorderAsk
@@ -76,7 +96,7 @@ namespace PadForge
             recorder.Finished += path => Dispatcher.BeginInvoke(new Action(() => OnProblemRecordingFinished(path)));
             _inputService.ProblemRecordingAsked += result =>
             {
-                if (!result.Ok) _viewModel.SetStatus(ProblemRecordingRefusal(result), persist: true);
+                if (!result.Ok && ProblemRecordingRefusal(result) is { } refusal) _viewModel.SetStatus(refusal, persist: true);
             };
             Views.SettingsPage.ProblemRecordingAsked = OnProblemRecordingButton;
             RecordingReviewView.CloseRequested += (s, e) => CloseRecordingReview();
@@ -96,8 +116,7 @@ namespace PadForge
                 // A crash in native code at the last run leaves Windows' own
                 // record, which crash.log takes now (#600).
                 NativeCrashRecord.CopyNew(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"));
-                List<string> finished = recorder.FinishLeftOver();
-                RecordingStore.Sweep(recorder.Host.Folder, DateTime.UtcNow, ProblemRecorder.KeptUnsaved);
+                List<string> finished = recorder.TidyAtStart(DateTime.UtcNow);
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     RefreshWaitingRecording();
@@ -133,7 +152,7 @@ namespace PadForge
             };
             if (!result.Ok)
             {
-                _viewModel.Settings.ProblemRecordingStatus = ProblemRecordingRefusal(result);
+                if (ProblemRecordingRefusal(result) != null) _viewModel.Settings.ShowProblemRecordingStatus(() => ProblemRecordingRefusal(result));
                 return;
             }
             // Starting a recording makes no file yet. The rest do.
@@ -167,7 +186,7 @@ namespace PadForge
                 var result = recorder.Start();
                 if (!result.Ok && result.Refusal is RecorderRefusal.Privacy or RecorderRefusal.File)
                     startRefused?.Invoke(result);
-                return result.Ok ? AutomationRecordAnswer.Done(RecordingWord) : RecordRefusal(result.Refusal);
+                return result.Ok ? AutomationRecordAnswer.Done(RecordingWord, result.Path) : RecordRefusal(result.Refusal);
             };
             host.RecordStop = () =>
             {
@@ -193,11 +212,17 @@ namespace PadForge
             _ => AutomationRecordAnswer.NotAvailable,
         };
 
-        private static string ProblemRecordingRefusal(RecorderResult result) => result.Refusal switch
+        /// <summary>What the row and the message line say of a refusal, or
+        /// null for none. A stop that finds no recording running is no
+        /// refusal: a write that failed ended the recording on the
+        /// recorder's thread between the toggle's look and the stop, and
+        /// that end's Changed already shows the row stopped.</summary>
+        internal static string ProblemRecordingRefusal(RecorderResult result) => result.Refusal switch
         {
             RecorderRefusal.Privacy => Strings.Instance.Settings_RecordProblem_Refused,
-            RecorderRefusal.File => string.Format(Strings.Instance.Settings_RecordProblem_FileError_Format, result.Detail),
+            RecorderRefusal.File => string.Format(Strings.Instance.Settings_RecordProblem_FileError_Format, result.UserDetail ?? result.Detail),
             RecorderRefusal.NothingKept => Strings.Instance.Settings_RecordProblem_NothingKept,
+            RecorderRefusal.NotRecording => null,
             _ => Strings.Instance.Settings_RecordProblem_Busy,
         };
 
@@ -230,7 +255,7 @@ namespace PadForge
             }
             else if (state.Finishing)
             {
-                settings.ProblemRecordingStatus = Strings.Instance.Settings_RecordProblem_Finishing;
+                settings.ShowProblemRecordingStatus(static () => Strings.Instance.Settings_RecordProblem_Finishing);
             }
         }
 
@@ -249,9 +274,8 @@ namespace PadForge
                 OpenRecordingReview(path);
                 return;
             }
-            string waits = Strings.Instance.Settings_RecordProblem_Waiting;
-            _viewModel.Settings.ProblemRecordingStatus = waits;
-            _viewModel.SetStatus(waits, persist: true);
+            _viewModel.Settings.ShowProblemRecordingStatus(static () => Strings.Instance.Settings_RecordProblem_Waiting);
+            _viewModel.SetStatus(Strings.Instance.Settings_RecordProblem_Waiting, persist: true);
         }
 
         /// <summary>Home's card follows the newest recording that waits.</summary>
@@ -280,7 +304,8 @@ namespace PadForge
             RecordingReview review;
             try
             {
-                review = await Task.Run(() => RecordingReview.Open(path));
+                review = await _reviewOpens.Open(() => RecordingReview.Open(path));
+                if (review == null) return;
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException)
             {
@@ -293,15 +318,9 @@ namespace PadForge
             {
                 SaveFolder = _viewModel.Settings.ProblemRecordingSaveFolder ?? RecordingFolder.Downloads(),
                 PickTarget = PickRecordingTarget,
-                ShowInExplorer = target =>
-                {
-                    try { PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{target}\""); }
-                    catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException or IOException)
-                    {
-                        // A broken shell association must not take the window
-                        // down. The message line names the file.
-                    }
-                },
+                // Through the desktop shell, which throws nothing. The message
+                // line names the file.
+                ShowInExplorer = target => PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{target}\""),
                 CopyText = text =>
                 {
                     try { PadForge.Common.ShellLaunch.SetClipboardText(text); }
@@ -309,11 +328,7 @@ namespace PadForge
                 },
                 // Save and Post's page, in the browser, as About's GitHub
                 // button opens the repository.
-                OpenPage = url =>
-                {
-                    try { PadForge.Common.ShellLaunch.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }); }
-                    catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException) { }
-                },
+                OpenPage = url => PadForge.Common.ShellLaunch.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }),
             };
             model.Saved = target =>
             {

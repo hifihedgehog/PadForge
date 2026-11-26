@@ -139,7 +139,7 @@ namespace PadForge.Services
 
             // Loaded into PadForge only when only administrators could have
             // put it in place and Logitech signed it, held open from the
-            // check through the load (#597, TrustedLibrary).
+            // check through the load (#600, TrustedLibrary).
             int error = 0;
             IntPtr module = PadForge.Engine.Common.TrustedLibrary.Load(path, PadForge.Engine.Common.TrustedLibrary.Logitech, p =>
             {

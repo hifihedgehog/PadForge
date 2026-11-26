@@ -9,7 +9,7 @@ using static SDL3.SDL;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// How the stored controller database rows reach SDL (#597), as plain
+    /// How the stored controller database rows reach SDL (#600), as plain
     /// logic over SDL's answers, so each rule is tested without SDL.
     ///
     /// <para>SDL holds one mapping per controller ID and three priorities
@@ -109,6 +109,26 @@ namespace PadForge.Common.Input
             return rows;
         }
 
+        /// <summary>The changed rows the row's reset notes as SDL starts
+        /// (ControllerDatabaseEngine.NoteDownloaded): each but one whose ID
+        /// PadForge's own rows map (<paramref name="ownIds"/>, <see cref="OwnIds"/>).
+        /// PadForge's own row goes to SDL after it and stands there
+        /// (<see cref="StartupRows"/>), so the downloaded row never reads a
+        /// device, and what SDL holds before it is not what the reset is to
+        /// give back.</summary>
+        internal static List<string> StartupNoted(IReadOnlyList<string> changed, ISet<string> ownIds)
+        {
+            var noted = new List<string>(changed?.Count ?? 0);
+            foreach (string row in changed ?? Array.Empty<string>())
+            {
+                int comma = row?.IndexOf(',') ?? -1;
+                string id = comma < 0 ? null : ControllerDatabaseRow.LookupId(row.Substring(0, comma));
+                if (id != null && ownIds != null && ownIds.Contains(id)) continue;
+                noted.Add(row);
+            }
+            return noted;
+        }
+
         /// <summary>
         /// The row of the user's that SDL is to be given under a device's own
         /// ID (#600 items 47 and 49), or null. SDL tries a device's exact
@@ -126,8 +146,7 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(deviceGuid) || mine == null) return null;
             var row = mine.ForSdlDevice(deviceGuid);
             if (row == null || row.ForPadForgeDevice || string.Equals(row.Id, deviceGuid, StringComparison.OrdinalIgnoreCase)) return null;
-            if (string.Equals(ControllerDatabaseSource.LayoutOf(sdlMapping), ControllerDatabaseSource.StoredLayout(row), StringComparison.Ordinal))
-                return null;
+            if (ControllerDatabaseSource.ReadsThrough(sdlMapping, row)) return null;
             return row.Row.TextUnder(deviceGuid.ToLowerInvariant());
         }
 
@@ -150,9 +169,7 @@ namespace PadForge.Common.Input
         internal static string ReadBefore(string sdlMapping, ControllerDatabaseMineRow model, bool copied, string beforeCopy, bool hadNone)
         {
             if (copied) return beforeCopy ?? string.Empty;
-            if (model != null && !string.IsNullOrEmpty(sdlMapping)
-                && string.Equals(ControllerDatabaseSource.LayoutOf(sdlMapping), ControllerDatabaseSource.StoredLayout(model), StringComparison.Ordinal))
-                return model.OldRow;
+            if (model != null && ControllerDatabaseSource.ReadsThrough(sdlMapping, model)) return model.OldRow;
             if (hadNone) return string.Empty;
             return sdlMapping ?? string.Empty;
         }

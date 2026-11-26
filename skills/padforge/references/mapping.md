@@ -11,7 +11,7 @@ A mapping row reads one input of one device. `get_device` and `wait_for_input` g
 | `Slider 0` | Slider 0 |
 | `POV 0 Up` | Hat 0 pushed up. `Down`, `Left` and `Right` work the same way |
 
-Pass the device's short ID as `device`. Without it the row reads the controller's first device. `get_mappings` writes an input read the other way round with an `I` in front (`IAxis 1`), one half of an axis with an `H` (`HAxis 1`) and both with `IH`. `set_mappings` takes the plain input with `inverted` and `half_axis` instead.
+Pass the device's short ID as `device`. Without it the row reads that input on any device on the controller. `get_mappings` writes an input read the other way round with an `I` in front (`IAxis 1`), one half of an axis with an `H` (`HAxis 1`) and both with `IH`. `set_mappings` takes the plain input with `inverted` and `half_axis` instead.
 
 ## Targets
 

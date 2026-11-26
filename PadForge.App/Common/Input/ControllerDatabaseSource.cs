@@ -84,7 +84,7 @@ namespace PadForge.Common.Input
             string id = ControllerDatabaseRow.LookupId(deviceGuid);
 
             var yours = mine?.ForSdlDevice(deviceGuid);
-            if (yours != null && Same(StoredLayout(yours), layout)) return SdlMappingSource.Yours;
+            if (yours != null && ReadsThrough(mapping, yours)) return SdlMappingSource.Yours;
 
             if (section != null)
                 foreach (var stored in section.Rows)
@@ -105,6 +105,56 @@ namespace PadForge.Common.Input
         }
 
         private static bool Same(string a, string b) => a != null && string.Equals(a, b, StringComparison.Ordinal);
+
+        /// <summary>
+        /// Whether SDL's text for the mapping it reads a device through
+        /// (<paramref name="sdlMapping"/>) is a row of the user's: the same
+        /// layout, once the paddle fields the fork appends for an XInput
+        /// controller are set aside. For an XInput controller with paddles,
+        /// SDL_GetGamepadMappingForID's text ends with "paddleN:bR," for each
+        /// paddle the mapping neither names nor covers by binding its raw
+        /// button: paddle1 on 12, paddle2 on 14, paddle3 on 13, paddle4 on 15
+        /// (SDL_XInputPaddleMappingMask, SDL_AppendXInputPaddleBindings and
+        /// CreateMappingStringForJoystick in SDL_gamepad.c).
+        /// </summary>
+        internal static bool ReadsThrough(string sdlMapping, ControllerDatabaseMineRow row)
+        {
+            string stored = StoredLayout(row);
+            if (stored == null || string.IsNullOrEmpty(sdlMapping)) return false;
+            if (Same(stored, LayoutOf(sdlMapping))) return true;
+            string bare = WithoutAppendedPaddles(sdlMapping, row.Row);
+            return !ReferenceEquals(bare, sdlMapping) && Same(stored, LayoutOf(bare));
+        }
+
+        /// <summary>The fork's XInput paddles (xinput_paddles in
+        /// SDL_gamepad.c): each field and the raw button it is appended on.</summary>
+        private static readonly (string Field, string Raw)[] XInputPaddles =
+            { ("paddle1", "b12"), ("paddle2", "b14"), ("paddle3", "b13"), ("paddle4", "b15") };
+
+        /// <summary>SDL's text without the paddle fields the fork appends for
+        /// <paramref name="row"/>, or the text itself when it holds none.</summary>
+        private static string WithoutAppendedPaddles(string mapping, SdlMappingRow row)
+        {
+            string[] parts = mapping.Split(',');
+            var kept = new List<string>(parts.Length);
+            for (int i = 0; i < parts.Length; i++)
+                if (i < 2 || !IsAppendedPaddle(parts[i], row)) kept.Add(parts[i]);
+            return kept.Count == parts.Length ? mapping : string.Join(",", kept);
+        }
+
+        private static bool IsAppendedPaddle(string part, SdlMappingRow row)
+        {
+            foreach (var (field, raw) in XInputPaddles)
+            {
+                if (!string.Equals(part, field + ":" + raw, StringComparison.Ordinal)) continue;
+                // A field the row names, or a raw button it binds, gets none.
+                if (row.InputOf(field) != null) return false;
+                foreach (var b in row.Bindings)
+                    if (string.Equals(b.Input.TrimStart('+', '-'), raw, StringComparison.Ordinal)) return false;
+                return true;
+            }
+            return false;
+        }
 
         /// <summary>The layout of a row of the user's as SDL stores it,
         /// to hold against SDL's own text for the mapping it reads a device

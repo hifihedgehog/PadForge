@@ -125,8 +125,12 @@ namespace PadForge.Tests
             // The sink-owned loop notes the bit without touching a feed.
             int at = src.IndexOf("private static void JackWatchLoop", StringComparison.Ordinal);
             Assert.True(at > 0, "the sink-owned jack loop moved");
-            // 4000: the loop gained the Bluetooth DualShock 4 shape (#528).
-            string body = src.Substring(at, Math.Min(4000, src.Length - at));
+            // The whole loop, to the next member's summary: it gained the
+            // Bluetooth DualShock 4 shape (#528) and the skip of Bluetooth
+            // microphone reports, so no fixed length holds it.
+            int end = src.IndexOf("/// <summary>", at, StringComparison.Ordinal);
+            Assert.True(end > at, "the member after the sink-owned jack loop moved");
+            string body = src.Substring(at, end - at);
             Assert.Contains("NoteHeadphoneJack(pad", body);
             Assert.DoesNotContain("feed.", body);
         }

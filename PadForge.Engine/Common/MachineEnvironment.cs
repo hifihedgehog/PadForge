@@ -6,7 +6,7 @@ namespace PadForge.Engine.Common
 {
     /// <summary>
     /// The machine's own environment variables, as Windows keeps them under
-    /// HKEY_LOCAL_MACHINE, for a path PadForge loads a library from (#597).
+    /// HKEY_LOCAL_MACHINE, for a path PadForge loads a library from (#600).
     /// The process's variables come from the user's part of the registry too,
     /// and a user variable of the same name wins, so any program of the user
     /// could point a library path PadForge loads with its rights at a folder
@@ -20,8 +20,10 @@ namespace PadForge.Engine.Common
         public static Func<string, string> GetSeam;
 
         /// <summary>The machine's value of a variable as written, or null.
-        /// SystemRoot, SystemDrive and the like that Windows sets for every
-        /// process are read from Windows' folder.</summary>
+        /// SystemRoot, SystemDrive, the Program Files and Common Files
+        /// folders and ProgramData, which Windows sets for every process and
+        /// keeps in no machine variable, are read from Windows' own folder
+        /// paths.</summary>
         public static string Get(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;
@@ -31,10 +33,16 @@ namespace PadForge.Engine.Common
                 return windows;
             if (name.Equals("SystemDrive", StringComparison.OrdinalIgnoreCase))
                 return windows.Length >= 2 ? windows.Substring(0, 2) : null;
-            if (name.Equals("ProgramFiles", StringComparison.OrdinalIgnoreCase))
+            if (name.Equals("ProgramFiles", StringComparison.OrdinalIgnoreCase) || name.Equals("ProgramW6432", StringComparison.OrdinalIgnoreCase))
                 return Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             if (name.Equals("ProgramFiles(x86)", StringComparison.OrdinalIgnoreCase))
                 return Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            if (name.Equals("CommonProgramFiles", StringComparison.OrdinalIgnoreCase) || name.Equals("CommonProgramW6432", StringComparison.OrdinalIgnoreCase))
+                return Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles);
+            if (name.Equals("CommonProgramFiles(x86)", StringComparison.OrdinalIgnoreCase))
+                return Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86);
+            if (name.Equals("ProgramData", StringComparison.OrdinalIgnoreCase) || name.Equals("ALLUSERSPROFILE", StringComparison.OrdinalIgnoreCase))
+                return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             try
             {
                 using var key = Registry.LocalMachine.OpenSubKey(Key);

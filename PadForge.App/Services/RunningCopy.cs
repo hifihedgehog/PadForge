@@ -11,8 +11,8 @@ namespace PadForge.Services
     /// <para>PadForge runs as one copy. A second start hands its switches to
     /// that copy and leaves. The running copy has administrator rights and the
     /// second one has none, so the two meet only through what Windows lets
-    /// cross that line: a window looked up by its name, one posted message the
-    /// running copy lets through, and the pipe of
+    /// cross that line: a window looked up by its name, the two posted
+    /// messages the running copy lets through, show and exit, and the pipe of
     /// <see cref="ExternalControlService"/>.</para>
     ///
     /// <para>This class is the second copy's side and uses no window toolkit:
@@ -22,8 +22,8 @@ namespace PadForge.Services
     /// <para>Any program of the user's can make a message-only window of the
     /// same name, so a window counts as the running copy's only when its
     /// process runs at high integrity or above, which no program without
-    /// administrator rights can. Show is posted, and the right to the
-    /// foreground lent, to that window alone. The single-instance lock
+    /// administrator rights can. Show and exit are posted, and the right to
+    /// the foreground lent, to that window alone. The single-instance lock
     /// stands in a namespace only a copy with rights can open
     /// (<see cref="InstanceLock"/>), so a copy without them finds the running
     /// copy by that checked window, and its pipes by their owner
@@ -45,6 +45,10 @@ namespace PadForge.Services
         /// <summary>The registered message that asks the running copy to show
         /// its window, as a click on its tray icon does.</summary>
         internal const string ShowMessageName = "PadForge.Show";
+
+        /// <summary>The registered message that asks the running copy to
+        /// close, as its tray icon's Exit does (#600 item 44).</summary>
+        internal const string ExitMessageName = "PadForge.Exit";
 
         /// <summary>The single-instance lock's name in the session's plain
         /// namespace, which a copy without rights takes in a developer's
@@ -74,10 +78,25 @@ namespace PadForge.Services
             Starting,
         }
 
+        /// <summary>How an ask to close ended.</summary>
+        internal enum Closing
+        {
+            /// <summary>The copy's process ended.</summary>
+            Closed,
+
+            /// <summary>The copy took the ask, or Windows said it did, and
+            /// still runs at the end of the wait.</summary>
+            StillRunning,
+
+            /// <summary>No copy runs.</summary>
+            NotRunning,
+        }
+
         private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
         private const uint PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
         private const uint SYNCHRONIZE = 0x00100000;
         private const uint INFINITE = 0xFFFFFFFF;
+        private const uint WAIT_OBJECT_0 = 0;
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern IntPtr FindWindowExW(IntPtr parent, IntPtr after, string className, string windowName);
@@ -215,11 +234,11 @@ namespace PadForge.Services
         /// <summary>The running copy's signal window. A copy that is still
         /// starting is waited for, up to <paramref name="waitMs"/>. Zero when
         /// none came.</summary>
-        private static IntPtr WaitForSignalWindow(int waitMs)
+        private static IntPtr WaitForSignalWindow(int waitMs, string signalName = SignalWindowName)
         {
             var clock = Stopwatch.StartNew();
             IntPtr hwnd;
-            while ((hwnd = Find(SignalWindowName)) == IntPtr.Zero)
+            while ((hwnd = FindChecked(signalName)) == IntPtr.Zero)
             {
                 if (clock.ElapsedMilliseconds >= waitMs || !LockIsHeld()) return IntPtr.Zero;
                 Thread.Sleep(100);
@@ -240,6 +259,58 @@ namespace PadForge.Services
             if (pid != 0) AllowSetForegroundWindow(pid);
             uint msg = RegisterWindowMessageW(ShowMessageName);
             return msg != 0 && PostMessageW(hwnd, msg, IntPtr.Zero, IntPtr.Zero);
+        }
+
+        /// <summary>How long <see cref="Exit()"/> waits for the copy to end.
+        /// Closing stops the engine and takes the virtual controllers down,
+        /// and is given the time a line on the control pipe is given
+        /// (<see cref="ControlPipeClient.AnswerMs"/>).</summary>
+        internal const int CloseWaitMs = ControlPipeClient.AnswerMs;
+
+        /// <summary>
+        /// Asks the running copy to close, as its tray icon's Exit does, and
+        /// waits up to <see cref="CloseWaitMs"/> for its process to end
+        /// (#600 item 44). The message crosses from a copy without rights
+        /// as the show message does, so it needs no Automation. A copy that
+        /// is still starting is waited for, up to <paramref name="waitMs"/>,
+        /// and closes once its window is up.
+        /// </summary>
+        internal static Closing Exit(int waitMs = 10000)
+            => OffLimitsForTest ? Closing.NotRunning : Exit(SignalWindowName, ExitMessageName, waitMs, CloseWaitMs);
+
+        /// <summary>The same ask, to the signal window and message of the
+        /// names given. A test gives names of its own, and the fence in
+        /// <see cref="FindChecked"/> keeps the app's from the test
+        /// host.</summary>
+        internal static Closing Exit(string signalName, string exitMessageName, int waitMs, int closeMs)
+        {
+            IntPtr hwnd = WaitForSignalWindow(waitMs, signalName);
+            if (hwnd == IntPtr.Zero) return Closing.NotRunning;
+            GetWindowThreadProcessId(hwnd, out uint pid);
+            if (pid == 0) return Closing.NotRunning;
+            // The hold is taken before the message goes, so the process
+            // waited for is the one asked, whatever starts after it.
+            IntPtr process = OpenProcess(SYNCHRONIZE | PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+            try
+            {
+                uint msg = RegisterWindowMessageW(exitMessageName);
+                if (msg == 0 || !PostMessageW(hwnd, msg, IntPtr.Zero, IntPtr.Zero)) return Closing.StillRunning;
+                if (process != IntPtr.Zero)
+                    return WaitForSingleObject(process, (uint)Math.Max(0, closeMs)) == WAIT_OBJECT_0 ? Closing.Closed : Closing.StillRunning;
+                // Without a hold the end is the signal window's, which stands
+                // until the process ends (InstanceSignal.MarkClosing).
+                var clock = Stopwatch.StartNew();
+                while (FindChecked(signalName) == hwnd)
+                {
+                    if (clock.ElapsedMilliseconds >= closeMs) return Closing.StillRunning;
+                    Thread.Sleep(100);
+                }
+                return Closing.Closed;
+            }
+            finally
+            {
+                if (process != IntPtr.Zero) CloseHandle(process);
+            }
         }
 
         /// <summary>

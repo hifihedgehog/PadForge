@@ -529,6 +529,24 @@ namespace PadForge.Tests
             Assert.Same(AutomationProgram.Unknown, entry.Program);
         }
 
+        /// <summary>A close over the signal window (#600 item 44) is on the
+        /// record with Automation off, as the pipe's exit is, and its
+        /// program is unknown: a posted message names no sender.</summary>
+        [Fact]
+        public void ACloseOverTheSignalWindow_IsOnTheRecord_WithItsProgramUnknown()
+        {
+            var at = new DateTimeOffset(2026, 11, 25, 9, 0, 0, TimeSpan.Zero);
+            using var host = NewHost(out _, now: () => at);
+            Assert.False(host.IsServing);
+            host.NoteExitBySignal();
+            var entry = Assert.Single(host.Activity.Snapshot());
+            Assert.Same(AutomationProgram.Unknown, entry.Program);
+            Assert.Equal(AutomationAskKind.Exit, entry.Asked.Kind);
+            Assert.Equal(AutomationCommands.Ok, entry.Result);
+            Assert.True(entry.Succeeded);
+            Assert.Equal(at, entry.Time);
+        }
+
         /// <summary>The record keeps every call as it came, oldest first, up to
         /// its capacity (#600). Past that the oldest go, whoever made them,
         /// and the record counts them. A snapshot is the caller's own, and

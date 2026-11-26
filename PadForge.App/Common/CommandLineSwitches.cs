@@ -659,7 +659,8 @@ namespace PadForge.Common
             "Switches run in order. /name and -name work as --name does, and\r\n" +
             "--name=value as --name value. A switch that writes, prints or serves\r\n" +
             "for the user runs alone, with --json or --wait at most.\r\n" +
-            "Switches that reach a running copy need Automation on in PadForge, under Extras.\r\n" +
+            "Switches that reach a running copy need Automation on in PadForge, under Extras,\r\n" +
+            "except --show and --exit. --exit waits for PadForge to close.\r\n" +
             "\r\n" +
             "Exit codes: 0 done, 1 PadForge answered an error, 2 the command line is wrong,\r\n" +
             "4 PadForge is not running, 5 Automation is off or its level is too low.";

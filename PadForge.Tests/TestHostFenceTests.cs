@@ -584,6 +584,7 @@ namespace PadForge.Tests
             new object[] { RunningCopyFile, "internal static Settled WaitUntilSettled(int startingMs = 15000, int lockOnlyMs = 2000)", "if (OffLimitsForTest) return Settled.Gone;" },
             new object[] { RunningCopyFile, "internal static bool Show(int waitMs = 10000)", "if (OffLimitsForTest) return false;" },
             new object[] { RunningCopyFile, "internal static Func<int?> Watch(int waitMs = 10000)", "if (OffLimitsForTest) return null;" },
+            new object[] { RunningCopyFile, "internal static Closing Exit(int waitMs = 10000)", "OffLimitsForTest ? Closing.NotRunning : Exit(SignalWindowName, ExitMessageName, waitMs, CloseWaitMs);" },
             new object[] { InstanceSignalFile, "public bool Open()", "if (RunningCopy.OffLimitsForTest && UsesTheAppsOwnNames) return false;" },
 
             // The caller's console, and the box that stands in for it.

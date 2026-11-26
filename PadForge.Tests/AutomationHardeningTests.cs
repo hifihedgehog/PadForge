@@ -440,7 +440,7 @@ namespace PadForge.Tests
         public void RunningCopy_PassesOverAWindowOfItsNameWithoutRights_Live() => OnSta(() =>
         {
             string tag = "PadForge.Tests.Squat." + Guid.NewGuid().ToString("N");
-            using var squatter = new InstanceSignal(tag + ".Instance", tag + ".Ready", tag + ".Show");
+            using var squatter = new InstanceSignal(tag + ".Instance", tag + ".Ready", tag + ".Show", tag + ".Exit");
             Assert.True(squatter.Open());
             // This process runs without rights: its window is not the
             // running copy's.

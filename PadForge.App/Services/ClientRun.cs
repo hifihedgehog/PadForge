@@ -38,6 +38,7 @@ namespace PadForge.Services
         internal const string AutomationOffText =
             "Automation is off in PadForge. Turn it on under Extras, Automation.";
         internal const string NoAnswerText = "PadForge did not answer.";
+        internal const string DidNotCloseText = "PadForge did not close.";
         internal const string NotPadForgeText =
             "Another program holds the pipe PadForge.Control. It is not PadForge, so nothing was sent to it.";
 
@@ -72,6 +73,11 @@ namespace PadForge.Services
             /// <summary>Takes hold of the running copy and answers with the
             /// wait for its exit, or null when it cannot be watched.</summary>
             public Func<Func<int?>> Watch = () => RunningCopy.Watch();
+
+            /// <summary>Asks the running copy to close over its signal
+            /// window and waits for its end (#600 item 44). Needs no
+            /// pipe.</summary>
+            public Func<RunningCopy.Closing> ExitCopy = () => RunningCopy.Exit();
 
             /// <summary>An answer. It goes to standard output or the caller's
             /// console, and nowhere when the caller gave neither: a launcher
@@ -153,6 +159,7 @@ namespace PadForge.Services
                 seams.ShowWindow = () => false;
                 seams.LendForeground = () => { };
                 seams.Watch = () => null;
+                seams.ExitCopy = () => RunningCopy.Closing.NotRunning;
                 seams.Tell = seams.Say;
                 seams.TellError = seams.SayError;
                 seams.ServeAssistant = () => AssistantMirror.Run(pipe);
@@ -368,6 +375,7 @@ namespace PadForge.Services
                 NotRunningText => "not-running",
                 AutomationOffText => "not-allowed",
                 NotPadForgeText => "not-padforge",
+                DidNotCloseText => "not-closed",
                 _ => "no-answer",
             };
         }
@@ -415,6 +423,9 @@ namespace PadForge.Services
                     seams.Say("ok");
                     return Done;
                 }
+                // So is closing, which the tray icon's Exit does (#600 item
+                // 44).
+                if (line == "exit") return ExitOverTheWindow(seams);
                 if (!seams.PipeStands())
                 {
                     seams.SayError(AutomationOffText);
@@ -442,6 +453,7 @@ namespace PadForge.Services
                 seams.Say("ok");
                 return Done;
             }
+            if (line == "exit" && reply.StartsWith(NotAllowedReply, StringComparison.Ordinal)) return ExitOverTheWindow(seams);
 
             seams.SayError(reply);
             return reply.StartsWith(NotAllowedReply, StringComparison.Ordinal) ? NotAllowed : AnsweredAnError;
@@ -449,8 +461,8 @@ namespace PadForge.Services
 
         /// <summary>The pipe's server is not PadForge: it is treated as no
         /// PadForge, and the caller hears that another program holds the
-        /// name. Showing the window needs no pipe and still goes to the
-        /// running copy, which is found by its own checked window.</summary>
+        /// name. Showing the window and closing need no pipe and still go to
+        /// the running copy, which is found by its own checked window.</summary>
         private static int NotPadForge(string line, Seams seams)
         {
             if (line == "show" && seams.ShowWindow())
@@ -458,8 +470,28 @@ namespace PadForge.Services
                 seams.Say("ok");
                 return Done;
             }
+            if (line == "exit") return ExitOverTheWindow(seams);
             seams.SayError(NotPadForgeText);
             return NotRunning;
+        }
+
+        /// <summary><c>exit</c> over the signal window (#600 item 44): ok
+        /// once the copy's process ended, 1 when it still runs at the end of
+        /// the wait, 4 when no copy runs.</summary>
+        private static int ExitOverTheWindow(Seams seams)
+        {
+            switch (seams.ExitCopy())
+            {
+                case RunningCopy.Closing.Closed:
+                    seams.Say("ok");
+                    return Done;
+                case RunningCopy.Closing.NotRunning:
+                    seams.SayError(NotRunningText);
+                    return NotRunning;
+                default:
+                    seams.SayError(DidNotCloseText);
+                    return AnsweredAnError;
+            }
         }
     }
 

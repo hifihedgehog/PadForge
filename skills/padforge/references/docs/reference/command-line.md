@@ -5,7 +5,7 @@
 
 PadForge runs as one copy. Starting PadForge.exe again with switches hands them to the running copy through the `PadForge.Control` pipe, prints the answer and exits, with no window. That hand-over runs with your ordinary rights, so a launcher gets no UAC prompt while PadForge runs. With no copy running, a switch that can start PadForge starts it, and Windows asks for its rights. Started again with no switch, PadForge shows its window.
 
-A switch that reaches the running copy goes through [Automation](../features/automation.md): it needs **Allow Outside Programs** on, at **Commands** or higher. The switches PadForge is started with apply to the copy they start, with no Automation needed.
+A switch that reaches the running copy goes through [Automation](../features/automation.md): it needs **Allow Outside Programs** on, at **Commands** or higher. `--show` and `--exit` work with Automation off: they reach the running copy through the window message a second start uses to show it. The switches PadForge is started with apply to the copy they start, with no Automation needed.
 
 ---
 
@@ -28,7 +28,7 @@ A switch that reaches the running copy goes through [Automation](../features/aut
 | `--minimized`, `--maximized`, `--tray` | Minimizes, maximizes or hides the window to the tray. | Starts PadForge that way |
 | `--show` | Shows the window. Works with Automation off. | Starts PadForge |
 | `--hide` | Hides the window to the tray. | Exit code 4 |
-| `--exit` | Closes PadForge. | Exit code 4 |
+| `--exit` | Closes PadForge, as Exit on its tray icon does, and waits for it to end. Works with Automation off. | Exit code 4 |
 | `--state` | Prints one line of JSON: version, engine, profile, window, Automation, recording and each virtual controller. | Exit code 4 |
 | `--snapshot` | Takes a diagnostics snapshot, which waits on Home for your review. | Exit code 4 |
 | `--record start`, `--record stop`, `--record mark [words]` | Starts, stops or marks a [problem recording](../features/problem-recorder.md). A recording a program stops waits on Home for your review. | `--record start` starts PadForge recording. The others give 4 |
@@ -67,7 +67,7 @@ Add `--remove` to take it out, or `--check` to ask: exit code 0 and **current**,
 | Code | Meaning |
 |---|---|
 | 0 | Done. |
-| 1 | PadForge answered with an error, gave no answer, or the step failed. |
+| 1 | PadForge answered with an error, gave no answer, or the step failed. `--exit` gives 1 when PadForge still runs a minute later. |
 | 2 | A switch or value PadForge does not know, an unknown tool, or arguments it cannot read. |
 | 4 | PadForge is not running, or another program holds its pipe. |
 | 5 | Automation is off, or its level is too low for this. |

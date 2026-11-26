@@ -592,11 +592,11 @@ namespace PadForge
 
             _startupUiReady = true;
 
-            // There is a window now. A second copy that asked for it while
-            // this one was starting gets it, and from here a copy that finds
-            // no control pipe knows that is Automation's doing and not a
-            // start still under way (#597).
-            InstanceSignal.Attach(window.ShowForACaller);
+            // There is a window now. A second copy that asked for it, or for
+            // a close, while this one was starting gets it, and from here a
+            // copy that finds no control pipe knows that is Automation's
+            // doing and not a start still under way (#597).
+            InstanceSignal.Attach(window.ShowForACaller, window.ExitForACaller);
             InstanceSignal.MarkReady();
         }
 

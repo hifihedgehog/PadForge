@@ -304,8 +304,20 @@ namespace PadForge
             Hide();
         }
 
+        /// <summary>The signal window's exit (#600 item 44): a copy of the
+        /// exe started with <c>--exit</c> asks for the tray icon's Exit with
+        /// no Automation. Activity keeps it with its program unknown, since
+        /// a posted message names no sender. The close runs after the
+        /// message's own handling has returned.</summary>
+        internal void ExitForACaller()
+        {
+            _automation?.NoteExitBySignal();
+            Dispatcher.BeginInvoke(new Action(ExitFromTray));
+        }
+
         /// <summary>Closes PadForge past Close to System Tray: the tray
-        /// icon's Exit, and the exit command.</summary>
+        /// icon's Exit, the exit command and the signal window's
+        /// exit.</summary>
         private void ExitFromTray()
         {
             PrepareForExit();

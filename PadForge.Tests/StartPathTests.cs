@@ -202,10 +202,10 @@ namespace PadForge.Tests
 
         /// <summary>Names of a test's own: a window name and a registered
         /// message are one for the whole session.</summary>
-        private static (string Signal, string Ready, string Show) TestNames()
+        private static (string Signal, string Ready, string Show, string Exit) TestNames()
         {
             string tag = "PadForge.Tests.StartPath." + Guid.NewGuid().ToString("N");
-            return (tag + ".Instance", tag + ".Ready", tag + ".Show");
+            return (tag + ".Instance", tag + ".Ready", tag + ".Show", tag + ".Exit");
         }
 
         /// <summary>Runs <paramref name="body"/> on an STA thread with a
@@ -242,7 +242,7 @@ namespace PadForge.Tests
         public void AShowThatCameBeforeTheWindow_IsHonoredWhenItExists() => OnSta(() =>
         {
             var names = TestNames();
-            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show);
+            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
             Assert.True(signal.Open());
             Assert.Equal(signal.SignalWindow, FindMessageWindow(names.Signal));
             Assert.Equal(RegisterWindowMessageW(names.Show), signal.ShowMessage);
@@ -250,10 +250,10 @@ namespace PadForge.Tests
             Assert.True(PostMessageW(signal.SignalWindow, signal.ShowMessage, IntPtr.Zero, IntPtr.Zero));
             Pump();
             int shown = 0;
-            signal.Attach(() => shown++);
+            signal.Attach(() => shown++, null);
             Assert.Equal(1, shown);
             // Honored once, not again at a later attach.
-            signal.Attach(() => shown++);
+            signal.Attach(() => shown++, null);
             Assert.Equal(1, shown);
 
             Assert.True(PostMessageW(signal.SignalWindow, signal.ShowMessage, IntPtr.Zero, IntPtr.Zero));
@@ -267,14 +267,14 @@ namespace PadForge.Tests
         public void NoOtherMessage_ShowsTheWindow() => OnSta(() =>
         {
             var names = TestNames();
-            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show);
+            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
             Assert.True(signal.Open());
             uint other = RegisterWindowMessageW(names.Show + ".Other");
             Assert.True(PostMessageW(signal.SignalWindow, other, IntPtr.Zero, IntPtr.Zero));
             Assert.True(PostMessageW(signal.SignalWindow, 0x0400 /* WM_USER */, IntPtr.Zero, IntPtr.Zero));
             Pump();
             int shown = 0;
-            signal.Attach(() => shown++);
+            signal.Attach(() => shown++, null);
             Assert.Equal(0, shown);
         });
 
@@ -285,7 +285,7 @@ namespace PadForge.Tests
         public void TheReadyWindow_StandsFromTheStartsEndUntilTheClose() => OnSta(() =>
         {
             var names = TestNames();
-            var signal = new InstanceSignal(names.Signal, names.Ready, names.Show);
+            var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
             // Nothing is made before the signal window.
             signal.MarkReady();
             Assert.False(signal.IsReady);
@@ -316,9 +316,10 @@ namespace PadForge.Tests
             foreach (var signal in new[]
             {
                 new InstanceSignal(),
-                new InstanceSignal(RunningCopy.SignalWindowName.ToUpperInvariant(), names.Ready, names.Show),
-                new InstanceSignal(names.Signal, RunningCopy.ReadyWindowName, names.Show),
-                new InstanceSignal(names.Signal, names.Ready, RunningCopy.ShowMessageName),
+                new InstanceSignal(RunningCopy.SignalWindowName.ToUpperInvariant(), names.Ready, names.Show, names.Exit),
+                new InstanceSignal(names.Signal, RunningCopy.ReadyWindowName, names.Show, names.Exit),
+                new InstanceSignal(names.Signal, names.Ready, RunningCopy.ShowMessageName, names.Exit),
+                new InstanceSignal(names.Signal, names.Ready, names.Show, RunningCopy.ExitMessageName.ToLowerInvariant()),
             })
             {
                 using (signal)
@@ -330,25 +331,95 @@ namespace PadForge.Tests
             Assert.Equal(IntPtr.Zero, FindMessageWindow(names.Signal));
         });
 
-        /// <summary>The running copy lets the show message through from a
-        /// process without rights, and nothing else. The app makes its signal
-        /// window as soon as it holds the single-instance lock, and a copy
-        /// that lost the race for the lock asks the winner for its window.</summary>
+        /// <summary>The running copy lets the show and exit messages through
+        /// from a process without rights, and nothing else (#600 item 44).
+        /// The app makes its signal window as soon as it holds the
+        /// single-instance lock, and a copy that lost the race for the lock
+        /// asks the winner for its window.</summary>
         [Fact]
-        public void TheSignalWindow_LetsTheShowMessageThroughAlone()
+        public void TheSignalWindow_LetsTheShowAndExitMessagesThroughAlone()
         {
-            string open = FenceSource.Body(RepoText("PadForge.App", "Services", "InstanceSignal.cs"), "public bool Open()");
-            Assert.Single(System.Text.RegularExpressions.Regex.Matches(
-                RepoText("PadForge.App", "Services", "InstanceSignal.cs"), @"ChangeWindowMessageFilterEx\(_"));
+            string source = RepoText("PadForge.App", "Services", "InstanceSignal.cs");
+            string open = FenceSource.Body(source, "public bool Open()");
+            Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(source, @"ChangeWindowMessageFilterEx\(_").Count);
             Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, _showMessage, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
+            Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, _exitMessage, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
+            Assert.Equal("PadForge.Exit", RunningCopy.ExitMessageName);
 
             string app = RepoText("PadForge.App", "App.xaml.cs");
             int mutex = app.IndexOf("out bool isNewInstance", StringComparison.Ordinal);
             int signal = app.IndexOf("InstanceSignal.Open();", StringComparison.Ordinal);
             int args = app.IndexOf("StartupRequest = PadForge.Common.CommandLineSwitches.Parse(StartupArgs);", StringComparison.Ordinal);
-            int attach = app.IndexOf("InstanceSignal.Attach(window.ShowForACaller);", StringComparison.Ordinal);
+            int attach = app.IndexOf("InstanceSignal.Attach(window.ShowForACaller, window.ExitForACaller);", StringComparison.Ordinal);
             int ready = app.IndexOf("InstanceSignal.MarkReady();", StringComparison.Ordinal);
             Assert.True(mutex > 0 && signal > mutex && args > signal && attach > args && ready > attach);
+
+            // The window's exit is the tray icon's, run once the message's
+            // own handling has returned, and Activity keeps it.
+            string exit = FenceSource.Body(RepoText("PadForge.App", "MainWindow.Automation.cs"), "internal void ExitForACaller()");
+            Assert.Contains("_automation?.NoteExitBySignal();", exit, StringComparison.Ordinal);
+            Assert.Contains("Dispatcher.BeginInvoke(new Action(ExitFromTray));", exit, StringComparison.Ordinal);
         }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessageW(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        /// <summary>The exit message closes PadForge, and one that comes
+        /// while the copy is still starting is honored once the window
+        /// exists, after a show that came with it (#600 item 44).</summary>
+        [Fact]
+        public void TheExitMessage_ClosesOnce_AndOneThatCameBeforeTheWindow_IsHonoredWhenItExists() => OnSta(() =>
+        {
+            var names = TestNames();
+            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
+            Assert.True(signal.Open());
+            Assert.Equal(RegisterWindowMessageW(names.Exit), signal.ExitMessage);
+            Assert.NotEqual(signal.ShowMessage, signal.ExitMessage);
+
+            var order = new System.Collections.Generic.List<string>();
+            SendMessageW(signal.SignalWindow, signal.ExitMessage, IntPtr.Zero, IntPtr.Zero);
+            SendMessageW(signal.SignalWindow, signal.ShowMessage, IntPtr.Zero, IntPtr.Zero);
+            Assert.Empty(order);
+            signal.Attach(() => order.Add("show"), () => order.Add("exit"));
+            Assert.Equal(new[] { "show", "exit" }, order);
+            // Honored once, not again at a later attach.
+            signal.Attach(() => order.Add("show"), () => order.Add("exit"));
+            Assert.Equal(2, order.Count);
+
+            SendMessageW(signal.SignalWindow, signal.ExitMessage, IntPtr.Zero, IntPtr.Zero);
+            Assert.Equal(new[] { "show", "exit", "exit" }, order);
+        });
+
+        /// <summary>A copy without rights asks the checked signal window to
+        /// close and waits for its process to end. The test host is the
+        /// running copy here and does not end, so the wait runs out, and the
+        /// message has arrived. With no window there is no copy.</summary>
+        [Fact]
+        public void TheExitAsk_ReachesTheCheckedWindow_AndWaitsForTheEnd() => OnSta(() =>
+        {
+            var names = TestNames();
+            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
+            Assert.True(signal.Open());
+            int exits = 0;
+            signal.Attach(null, () => exits++);
+
+            // The window of a process without rights is passed over.
+            Assert.Equal(RunningCopy.Closing.NotRunning, RunningCopy.Exit(names.Signal, names.Exit, 0, 0));
+            RunningCopy.IntegritySeam = pid => pid == (uint)Environment.ProcessId ? 0x3000 : null;
+            try
+            {
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                Assert.Equal(RunningCopy.Closing.StillRunning, RunningCopy.Exit(names.Signal, names.Exit, 0, 300));
+                Assert.True(clock.ElapsedMilliseconds >= 250);
+                Pump();
+                Assert.Equal(1, exits);
+            }
+            finally
+            {
+                RunningCopy.IntegritySeam = null;
+            }
+            // The app's own names reach nothing from the test host.
+            Assert.Equal(RunningCopy.Closing.NotRunning, RunningCopy.Exit());
+        });
     }
 }

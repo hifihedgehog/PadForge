@@ -417,6 +417,22 @@ namespace PadForge.Services.Automation
             Changed?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>A close asked over the signal window (#600 item 44),
+        /// written into Activity as the pipe's exit is. A posted message
+        /// names no sender, so its program is unknown.</summary>
+        internal void NoteExitBySignal()
+        {
+            try
+            {
+                Activity.Add(new AutomationActivityEntry(_now(), AutomationProgram.Unknown,
+                    new AutomationAsk(AutomationAskKind.Exit), AutomationCommands.Ok, true));
+            }
+            catch
+            {
+                // A listener's failure does not hold up the close.
+            }
+        }
+
         /// <summary>One line from the control pipe: answered by the command
         /// set and written into Activity.</summary>
         private ExternalControlService.Answer AnswerControlLine(ExternalControlService.Request request)

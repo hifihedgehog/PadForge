@@ -34,6 +34,8 @@ namespace PadForge.Tests
             public int Lent;
             public int Served;
             public int Settles;
+            public int Exits;
+            public RunningCopy.Closing Closing = RunningCopy.Closing.Closed;
             public RunningCopy.Settled Settled = RunningCopy.Settled.Ready;
             public Func<string, string> Answer = line => "ok";
             public Func<int?> Wait;
@@ -56,6 +58,7 @@ namespace PadForge.Tests
                     ShowWindow = () => { Shown++; Order.Add("show"); return WindowShows; },
                     LendForeground = () => { Lent++; Order.Add("lend"); },
                     Watch = () => { Order.Add("watch"); return Wait; },
+                    ExitCopy = () => { Exits++; Order.Add("exit"); return Closing; },
                     Say = Said.Add,
                     SayError = Errors.Add,
                     Tell = Told.Add,
@@ -205,6 +208,64 @@ namespace PadForge.Tests
             Assert.Empty(run.Sent);
             // The copy was asked whether it had finished starting, and had.
             Assert.Equal(1, run.Settles);
+        }
+
+        /// <summary><c>--exit</c> needs no Automation (#600 item 44). With
+        /// the pipe gone, refusing the line, or held by another program, it
+        /// goes over the signal window and waits for the copy to end. With
+        /// Automation on the pipe takes it, so Activity names the
+        /// program.</summary>
+        [Fact]
+        public void WithAutomationOff_ExitGoesOverTheSignalWindow()
+        {
+            var off = new Run { Pipe = false };
+            Assert.Equal((true, 0), off.Go("--exit"));
+            Assert.Equal(1, off.Exits);
+            Assert.Equal(new[] { "ok" }, off.Said);
+            Assert.Empty(off.Errors);
+
+            var refused = new Run { Answer = _ => ClientRun.NotAllowedReply };
+            Assert.Equal((true, 0), refused.Go("/exit"));
+            Assert.Equal(1, refused.Exits);
+            Assert.Equal(new[] { "ok" }, refused.Said);
+
+            var held = new Run { Answer = _ => ControlPipeClient.NotPadForge };
+            Assert.Equal((true, 0), held.Go("--exit"));
+            Assert.Equal(1, held.Exits);
+
+            var on = new Run();
+            Assert.Equal((true, 0), on.Go("--exit"));
+            Assert.Equal(0, on.Exits);
+            Assert.Equal(new[] { "exit" }, on.Sent);
+
+            // Every other switch keeps the gate.
+            var hide = new Run { Pipe = false };
+            Assert.Equal((true, 5), hide.Go("--hide"));
+            Assert.Equal(0, hide.Exits);
+        }
+
+        /// <summary>A copy that is still there at the end of the wait gives
+        /// 1, and one that is gone before the ask gives 4. With
+        /// <c>--wait</c> the code is the copy's own.</summary>
+        [Fact]
+        public void AnExitOverTheSignalWindow_SaysHowItEnded()
+        {
+            var stays = new Run { Pipe = false, Closing = RunningCopy.Closing.StillRunning };
+            Assert.Equal((true, 1), stays.Go("--exit"));
+            Assert.Equal(new[] { ClientRun.DidNotCloseText }, stays.Errors);
+
+            var gone = new Run { Pipe = false, Closing = RunningCopy.Closing.NotRunning };
+            Assert.Equal((true, 4), gone.Go("--exit"));
+            Assert.Equal(new[] { ClientRun.NotRunningText }, gone.Errors);
+
+            var json = new Run { Pipe = false, Closing = RunningCopy.Closing.StillRunning };
+            Assert.Equal((true, 1), json.Go("--exit", "--json"));
+            Assert.Equal(new[] { ClientRun.JsonRefusal("not-closed", ClientRun.DidNotCloseText) }, json.Errors);
+
+            var waits = new Run { Pipe = false, Wait = () => 42 };
+            Assert.Equal((true, 42), waits.Go("--exit", "--wait"));
+            Assert.Equal("watch", waits.Order[0]);
+            Assert.Equal("exit", waits.Order[^1]);
         }
 
         [Fact]
@@ -410,6 +471,7 @@ namespace PadForge.Tests
             Assert.Equal(RunningCopy.Settled.Gone, seams.Settle());
             Assert.False(seams.ShowWindow());
             Assert.Null(seams.Watch());
+            Assert.Equal(RunningCopy.Closing.NotRunning, seams.ExitCopy());
             var errors = new List<string>();
             Assert.Equal(PadForge.Services.Install.UserInstall.Failed,
                 seams.Install(new PadForge.Services.Install.InstallRequest(PadForge.Services.Install.InstallWhat.Skill, @"C:\Skills"), _ => { }, errors.Add));

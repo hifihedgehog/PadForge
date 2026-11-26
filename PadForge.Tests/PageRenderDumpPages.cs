@@ -514,6 +514,7 @@ namespace PadForge.Tests
                 dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.ChangeSettings;
                 var claudeCode = host.Clients.Add("claude-code (claude.exe)", PadForge.Services.Automation.AutomationClientKind.Assistant, 5100, "PadForge.exe");
                 var steer = host.Clients.Add("Steer Assist", PadForge.Services.Automation.AutomationClientKind.Script, 5200, "AutoHotkey64.exe");
+                var laps = host.Clients.Add("Lap Timer", PadForge.Services.Automation.AutomationClientKind.Script, 5300, "python.exe");
                 dash.AutomationStatus = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, ExternalControlService.PipeState.Serving,
                     host.Clients.Snapshot());
                 dash.RefreshAssistantRowsAsync().Wait();
@@ -523,6 +524,10 @@ namespace PadForge.Tests
                     new PadForge.Services.Automation.ProgramReach { Devices = new[] { new PadForge.Services.Automation.ReachDevice(Guid.NewGuid(), "Xbox Wireless Controller") } }));
                 consent.List.Add(new AllowedProgramView("pedals", "Pedal Curve", @"python.exe running C:\Scripts\pedals.py",
                     PadForge.Services.Automation.AutomationLevel.SendInputs, now.AddDays(-1), false));
+                // A script its own ask holds to its own devices while its row
+                // keeps all of PadForge (#600 DESIGN-2 N3).
+                consent.List.Add(new AllowedProgramView("laps", "Lap Timer", @"python.exe running C:\Scripts\laps.py",
+                    PadForge.Services.Automation.AutomationLevel.SendInputs, null, true, null, AsksOwnNow: true));
                 dash.AttachConsent(consent);
                 PadForge.Services.Automation.AutomationActivityEntry Call(int minute, string program, PadForge.Services.Automation.AutomationAskKind kind,
                     bool ok, string argument = null, int second = 0)
@@ -560,6 +565,7 @@ namespace PadForge.Tests
                 string[] runs = { @"C:\Tools\SimHub\SimHubWPF.exe", "Arguments: --minimized" };
                 host.Clients.Remove(claudeCode.Id);
                 host.Clients.Remove(steer.Id);
+                host.Clients.Remove(laps.Id);
 
                 // The title bar's connected mark, drawn from the window's own
                 // markup: programs on this PC, then one from the web.

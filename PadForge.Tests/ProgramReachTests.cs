@@ -344,6 +344,30 @@ namespace PadForge.Tests
             Assert.NotEqual(true, (await client.CallToolAsync("set", AssistantRig.Args(("id", "pad/Pad_Deadzone@c1"), ("value", 6)))).IsError);
         }
 
+        /// <summary>A script that asked for its own devices, with all of
+        /// PadForge kept for it, calls the assistant tools held by its own
+        /// ask: a Commands tool and a set of another device's entry are
+        /// refused in words that name the ask, and a read still
+        /// answers.</summary>
+        [Fact]
+        public void AScriptThatAskedForItsOwnDevices_IsRefusedACommandToolAndAnotherDevicesEntry_InTheWordsOfItsAsk()
+        {
+            using var rig = new AssistantRig(AutomationLevel.ChangeSettings);
+            using var script = new AutomationTestClient(rig.PipeName);
+            Assert.StartsWith("ok", script.Final("hello name=\"Steer Assist\" kind=script level=change-settings reach=own"));
+            Assert.StartsWith("ok", script.Final("call status {}"));
+
+            string profile = script.Final("call switch_profile {\"profile\":\"x\"}");
+            Assert.StartsWith("err outside-ask ", profile);
+            Assert.Contains("asked to drive and change only its own devices, so switch_profile", profile);
+
+            rig.Settings.Holders["pad/Pad_Deadzone@c1"] = Guid.NewGuid();
+            string other = script.Final("call set {\"id\":\"pad/Pad_Deadzone@c1\",\"value\":5}");
+            Assert.StartsWith("err outside-ask ", other);
+            Assert.Contains("pad/Pad_Deadzone@c1 belongs to none of them", other);
+            Assert.Contains("Without that ask it works within the reach the user set", other);
+        }
+
         [Fact]
         public void TheAllowedRow_SaysTheReach_AndItsChoiceSetsIt()
         {

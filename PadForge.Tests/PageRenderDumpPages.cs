@@ -536,6 +536,11 @@ namespace PadForge.Tests
                 host.Activity.Add(Call(3, "Claude Code", PadForge.Services.Automation.AutomationAskKind.Read, true, "D1", 20));
                 host.Activity.Add(Call(3, "Claude Code", PadForge.Services.Automation.AutomationAskKind.Read, true, "D1", 41));
                 host.Activity.Add(Call(4, "powershell", PadForge.Services.Automation.AutomationAskKind.EngineOff, false));
+                // Output a program fed, held from a window with rights (#600).
+                host.Activity.Add(new PadForge.Services.Automation.AutomationActivityEntry(now.AddMinutes(1),
+                    new PadForge.Services.Automation.AutomationProgram("Steer Assist", 5200, "AutoHotkey64.exe"),
+                    new PadForge.Services.Automation.AutomationAsk(PadForge.Services.Automation.AutomationAskKind.Held, "Registry Editor"),
+                    "err output-held", false));
                 host.CanUndo = e => e.Spell == 3;
                 host.Undo = _ => { };
                 var telemetry = new PadForge.Services.Automation.AutomationProgram("Telemetry Bridge", 4300, "python.exe", @"C:\Tools\python.exe");

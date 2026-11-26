@@ -382,6 +382,7 @@ namespace PadForge.Tests
                 ProfileId = "0123456789abcdef0123456789abcdef",
                 ProfilePinned = true,
                 Window = AutomationWindowState.Tray,
+                StopsBehind = true,
                 Controllers = new[]
                 {
                     new AutomationControllerState(1, "Xbox 360 Controller", VirtualControllerType.Xbox, true, 2, 1),
@@ -398,7 +399,7 @@ namespace PadForge.Tests
 
             using var json = JsonDocument.Parse(line.Substring(3));
             var root = json.RootElement;
-            Assert.Equal(new[] { "version", "build", "commit", "engine", "profile", "window", "automation", "recording", "controllers" },
+            Assert.Equal(new[] { "version", "build", "commit", "engine", "profile", "window", "automation", "recording", "stops_behind", "controllers" },
                 root.EnumerateObject().Select(p => p.Name));
             Assert.Equal(BuildIdentity.VersionText(BuildIdentity.Version), root.GetProperty("version").GetString());
             Assert.Equal(BuildIdentity.BuildNumber, root.GetProperty("build").GetInt32());
@@ -411,6 +412,7 @@ namespace PadForge.Tests
             Assert.True(root.GetProperty("automation").GetProperty("on").GetBoolean());
             Assert.Equal("send-inputs", root.GetProperty("automation").GetProperty("level").GetString());
             Assert.True(root.GetProperty("recording").GetBoolean());
+            Assert.True(root.GetProperty("stops_behind").GetBoolean());
 
             var controllers = root.GetProperty("controllers").EnumerateArray().ToList();
             Assert.Equal(2, controllers.Count);

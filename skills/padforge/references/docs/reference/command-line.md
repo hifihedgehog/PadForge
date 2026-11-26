@@ -29,7 +29,7 @@ A switch that reaches the running copy goes through [Automation](../features/aut
 | `--show` | Shows the window. Works with Automation off. | Starts PadForge |
 | `--hide` | Hides the window to the tray. | Exit code 4 |
 | `--exit` | Closes PadForge, as Exit on its tray icon does, and waits for it to end. Works with Automation off. | Exit code 4 |
-| `--state` | Prints one line of JSON: version, engine, profile, window, Automation, recording and each virtual controller. | Exit code 4 |
+| `--state` | Prints one line of JSON: version, engine, profile, window, Automation, recording, whether the engine stops while PadForge is behind, and each virtual controller. | Exit code 4 |
 | `--snapshot` | Takes a diagnostics snapshot, which waits on Home for your review. | Exit code 4 |
 | `--record start`, `--record stop`, `--record mark [words]` | Starts, stops or marks a [problem recording](../features/problem-recorder.md). A recording a program stops waits on Home for your review. | `--record start` starts PadForge recording. The others give 4 |
 | `--tools [--json]` | Lists the assistant tools with their levels. | Exit code 4 |

@@ -356,8 +356,9 @@ namespace PadForge.Common.Input
             || k.MouseStickCoastX != 0f || k.MouseStickCoastY != 0f || k.MouseAbsValid;
 
         /// <summary>Whether a slot's combined output, which its macros read,
-        /// is at rest: no button down and every axis at its rest. A raw slot
-        /// counts its buttons and hats.</summary>
+        /// is at rest: no button down, every hat centered and every axis at
+        /// its rest. Step 3 has already put an axis inside its dead zone at
+        /// its rest, so an axis off rest is one past its dead zone.</summary>
         private bool SlotStateAtRest(int slot)
         {
             if (SlotRawHidSurface[slot])
@@ -365,6 +366,12 @@ namespace PadForge.Common.Input
                 var raw = CombinedRawHidStates[slot];
                 if (raw.Buttons != null) foreach (uint w in raw.Buttons) if (w != 0) return false;
                 if (raw.Povs != null) foreach (int p in raw.Povs) if (p >= 0) return false;
+                if (raw.Axes != null)
+                {
+                    var layout = SlotCustomLayouts[slot];
+                    for (int i = 0; i < raw.Axes.Length; i++)
+                        if (raw.Axes[i] != (layout.IsTriggerSlot(i) ? short.MinValue : (short)0)) return false;
+                }
                 return true;
             }
             var gp = CombinedOutputStates[slot];

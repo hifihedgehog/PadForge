@@ -188,7 +188,7 @@ namespace PadForge.Tests
 
         // ── Macros ──
 
-        private static MacroItem Macro(MacroTriggerMode mode, params MacroAction[] actions)
+        internal static MacroItem Macro(MacroTriggerMode mode, params MacroAction[] actions)
         {
             var m = new MacroItem
             {
@@ -204,7 +204,7 @@ namespace PadForge.Tests
             return m;
         }
 
-        private static void Pass(InputManager im, MacroItem[] macros, bool pressed, OutputCause slot)
+        internal static void Pass(InputManager im, MacroItem[] macros, bool pressed, OutputCause slot)
         {
             im.SlotMacroCauses[0] = slot;
             im.BeginLatchWants();
@@ -267,22 +267,6 @@ namespace PadForge.Tests
             Pass(im, macros, pressed: false, OutputCause.Own);
             Pass(im, macros, pressed: true, OutputCause.Own);
             Pass(im, macros, pressed: false, OutputCause.Own);
-        }
-
-        [Fact]
-        public void ACustomExpression_FedByAScriptValue_IsHeld()
-        {
-            var im = new InputManager();
-            var macro = Macro(MacroTriggerMode.CustomExpression,
-                new MacroAction { Type = MacroActionType.KeyPress, KeyCode = F17, DurationMs = 0 });
-            macro.TriggerExpression = "a > 0.5";
-            macro.TriggerExpressionVariables.Add(new MacroExpressionVariable { Source = MacroTriggerSource.ScriptValue, ScriptValue = "boost" });
-            var macros = new[] { macro };
-            Assert.True(ScriptValues.Set("boost", 1, 6));
-            Pass(im, macros, pressed: false, OutputCause.Own);
-            Pass(im, macros, pressed: false, OutputCause.Own);
-            Assert.DoesNotContain("80 down", Sent(F17));
-            Assert.Equal(6, macro.RunCause.Session);
         }
 
         // ── Shift layers ──
@@ -396,7 +380,59 @@ namespace PadForge.Tests
             Assert.Equal("SDL.joystick.xinput.paddle.data_available", SdlDeviceWrapper.PaddleDataAvailableProperty);
             Assert.Equal("SDL.joystick.xinput.paddle.error", SdlDeviceWrapper.PaddleErrorProperty);
         }
-            // ── The wiring ──
+            [Fact]
+        public void ARunAProgramFedPartway_KeepsTheMarkThroughItsLaterSteps()
+        {
+            var im = new InputManager();
+            var macros = new[]
+            {
+                Macro(MacroTriggerMode.OnPress,
+                    new MacroAction { Type = MacroActionType.Delay, DurationMs = 30 },
+                    new MacroAction { Type = MacroActionType.KeyPress, KeyCode = F18, DurationMs = 0 }),
+            };
+            Pass(im, macros, pressed: true, OutputCause.Own);              // the person starts it
+            Pass(im, macros, pressed: false, OutputCause.Program(5));      // a program feeds the slot partway
+            Thread.Sleep(60);
+            Pass(im, macros, pressed: false, OutputCause.Own);
+            Pass(im, macros, pressed: false, OutputCause.Own);
+            Assert.Equal(new[] { "81 up" }, Sent(F18));
+        }
+
+        [Fact]
+        public void ARawSlotsMark_StaysWhileAProgramStillHoldsOneOfItsAxes()
+        {
+            var im = new InputManager();
+            im.SlotRawHidSurface[0] = true;
+            im.SlotCustomLayouts[0] = new CustomControllerLayout { Sticks = 1, Triggers = 1 };
+            var raw = RawHidState.Create(3, 8, 1);
+            raw.ClearToRest(im.SlotCustomLayouts[0]);
+            raw.Axes[0] = 20000;                                           // a stick a program pushed
+            im.CombinedRawHidStates[0] = raw;
+            var set = new MappingSet();
+            im.NoteProgramMarks(ProgramPad(4), State());
+            im.WorkOutSlotCauses(0, set, new[] { Script });
+            Assert.Equal(4, im.SlotMacroCauses[0].Session);
+
+            // The program's device is gone from this pass, its axis is not at rest.
+            BeginMarks.Invoke(im, null);
+            im.WorkOutSlotCauses(0, set, new[] { Script });
+            Assert.Equal(4, im.SlotMacroCauses[0].Session);
+
+            // At rest, the stick centered and the trigger let go, the mark comes off.
+            im.CombinedRawHidStates[0].Axes[0] = 0;
+            im.WorkOutSlotCauses(0, set, new[] { Script });
+            Assert.True(im.SlotMacroCauses[0].IsOwn);
+
+            // A trigger still pulled keeps it as well.
+            im.NoteProgramMarks(ProgramPad(4), State());
+            im.CombinedRawHidStates[0].Axes[2] = 0;                        // half pulled
+            im.WorkOutSlotCauses(0, set, new[] { Script });
+            BeginMarks.Invoke(im, null);
+            im.WorkOutSlotCauses(0, set, new[] { Script });
+            Assert.Equal(4, im.SlotMacroCauses[0].Session);
+        }
+
+        // ── The wiring ──
 
         /// <summary>The pass marks each device as Step 2 reads it, works out
         /// the causes after Step 4 and in the idle pass before the
@@ -474,6 +510,36 @@ namespace PadForge.Tests
                 ProgramInputGate.MarksKept = false;
             }
             Assert.Null(PadForge.Services.Automation.AssistantTools.HeldBackWords());
+        }
+    }
+
+    /// <summary>The program-set script values are one table for the whole
+    /// process, and a host whose level drops below Send Inputs lets go of
+    /// every value (AutomationSessions, the level's change). A test class
+    /// that makes such a host runs beside the SettingsManagerStatics
+    /// collection, so a test that sets a value and reads it on a later pass
+    /// runs alone.</summary>
+    [CollectionDefinition("ScriptValueCauses", DisableParallelization = true)]
+    public sealed class ScriptValueCausesCollection { }
+
+    [Collection("ScriptValueCauses")]
+    public sealed class OutputCauseScriptValueTests : IDisposable
+    {
+        public void Dispose() => ScriptValues.ResetForTest();
+
+        [Fact]
+        public void ACustomExpression_FedByAScriptValue_RunsWithItsSettersCause()
+        {
+            var im = new InputManager();
+            var macro = OutputCauseTests.Macro(MacroTriggerMode.CustomExpression,
+                new MacroAction { Type = MacroActionType.KeyPress, KeyCode = 0x80, DurationMs = 0 });
+            macro.TriggerExpression = "a > 0.5";
+            macro.TriggerExpressionVariables.Add(new MacroExpressionVariable { Source = MacroTriggerSource.ScriptValue, ScriptValue = "boost" });
+            var macros = new[] { macro };
+            Assert.True(ScriptValues.Set("boost", 1, 6));
+            OutputCauseTests.Pass(im, macros, pressed: false, OutputCause.Own);
+            OutputCauseTests.Pass(im, macros, pressed: false, OutputCause.Own);
+            Assert.Equal(6, macro.RunCause.Session);
         }
     }
 }

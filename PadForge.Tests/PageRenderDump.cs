@@ -1350,6 +1350,11 @@ namespace PadForge.Tests
             var elite = Add("Xbox Elite Wireless Controller Series 2", "Gamepad", PadForge.Engine.InputDeviceType.Gamepad,
                 @"\\?\HID#VID_045E&PID_0B00&IG_00#8&2&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}", true, 0x045E, 0x0B00, 64);
             elite.BatteryCharging = true;
+            // The counts the Device-Panel board shows for an Elite.
+            elite.AxisCount = 6;
+            elite.ButtonCount = 19;
+            elite.PovCount = 1;
+            elite.HasRumble = true;
             var g502 = Add("Logitech G502 HERO Gaming Mouse", "Mouse", PadForge.Engine.InputDeviceType.Mouse,
                 @"\\?\HID#VID_046D&PID_C08B&MI_00#8&4&0&0000#{378de44c-56ef-11d1-bc8c-00a0c91405dd}", true, 0x046D, 0xC08B);
             var keyboard = Add("Standard PS/2 Keyboard", "Keyboard", PadForge.Engine.InputDeviceType.Keyboard,
@@ -1482,6 +1487,12 @@ namespace PadForge.Tests
                 vm.RebuildRawStateCollections(new[] { 0, 1, 2, 3, 4, 5 }, Enumerable.Range(0, 13).ToArray(), 1, gamepadLayout: true);
                 vm.HasRawData = true;
             });
+            // The same Elite with its paddle route declined by the USB
+            // runtime gate, in the fork's own words (#600).
+            elite.PaddleNote = DeviceRowViewModel.PaddleNoteOf(
+                @"The installed USB runtime is outside the qualified family: drivers\xboxgip.sys 10.0.26100.8246.", bluetooth: false);
+            ShotOpen("devices-1280-elite-paddles.png", 1500, "DetailsFold");
+            elite.PaddleNote = null;
             // A device that is not connected: its picture in gray.
             Shot("devices-1280-away.png", PageWidth, 1088, () =>
             {

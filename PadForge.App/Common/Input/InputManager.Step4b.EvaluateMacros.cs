@@ -982,7 +982,10 @@ namespace PadForge.Common.Input
                 if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro);
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                 {
-                    macro.RunCause = macro.RunCause.And(triggerCause);
+                    // What fed it on this pass joins the run's cause. The
+                    // trigger's cause already holds the run's own mark
+                    // (MacroChainCause), so the mark never comes off mid-run.
+                    macro.RunCause = triggerCause;
                     _currentMacroCause = macro.RunCause;
                     ExecuteMacroActions(ref gp, macro);
                 }
@@ -5820,7 +5823,7 @@ namespace PadForge.Common.Input
                 if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro); // X14 twin
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                 {
-                    macro.RunCause = macro.RunCause.And(triggerCause);
+                    macro.RunCause = triggerCause;
                     _currentMacroCause = macro.RunCause;
                     ExecuteMacroActionsExtended(ref raw, macro);
                 }

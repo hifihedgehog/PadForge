@@ -166,6 +166,22 @@ public class WindowSettingsTests
         Assert.DoesNotContain("e.Cancel =", session);
     }
 
+    /// <summary>A window in its shutdown is never brought back, and bringing
+    /// one back reads a tray icon only while there is one. On 2026-11-26 a
+    /// second start's show reached a copy in its shutdown and threw on the
+    /// tray icon the shutdown had let go of.</summary>
+    [Fact]
+    public void AWindowInItsShutdown_IsNeverBroughtBack_AndItsRestoreNeedsNoTrayIcon()
+    {
+        string window = Read("PadForge.App/MainWindow.xaml.cs");
+        string restore = Between(window, "private void RestoreFromTray(", "private void OnCopySettings(");
+        int guard = restore.IndexOf("if (_shutdownStarted) return;", StringComparison.Ordinal);
+        int restoring = restore.IndexOf("_isRestoring = true;", StringComparison.Ordinal);
+        Assert.True(guard >= 0 && restoring > guard, "RestoreFromTray brings back a window in its shutdown");
+        Assert.Contains("if (_notifyIcon != null) _notifyIcon.Visible = _viewModel.Settings.AlwaysShowTrayIcon;", restore);
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(restore, @"_notifyIcon\.Visible\b"));
+    }
+
     private static string Root()
     {
         var root = new DirectoryInfo(AppContext.BaseDirectory);

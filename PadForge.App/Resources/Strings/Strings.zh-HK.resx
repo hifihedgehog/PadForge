@@ -6742,9 +6742,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} 允許，上次使用：{1}。</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} 允許，尚未使用。</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>撤銷</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>它自己的 Secure MCP Tunnel 會直接執行 PadForge，不需要在這裡設定位址或登入。請把指令複製到該通道的設定中。</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>複製指令</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge 不會下載任何通道程式，也不會保存其他公司的金鑰。網絡助理以上方的等級運作。</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>允許 {0} 從網絡與 PadForge 配合使用？</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>其登入返回到 {0}。</value></data>

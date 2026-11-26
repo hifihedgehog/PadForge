@@ -6742,9 +6742,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Được cho phép {0}, dùng lần cuối {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Được cho phép {0}, chưa dùng.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Thu hồi</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel của chính nó chạy PadForge trực tiếp, không cần địa chỉ hay đăng nhập ở đây. Hãy sao chép lệnh vào phần thiết lập của đường hầm đó.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Sao chép lệnh</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge không tải chương trình đường hầm nào và không giữ khóa của công ty nào khác. Một trợ lý web làm việc ở mức nêu trên.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Cho phép {0} làm việc với PadForge từ web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Đăng nhập của nó quay về {0}.</value></data>

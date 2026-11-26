@@ -6064,9 +6064,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permès {0}, últim ús {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permès {0}, encara no usat.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoca</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>El seu propi Secure MCP Tunnel executa PadForge directament, sense adreça ni inici de sessió aquí. Copia l'ordre a la configuració d'aquest túnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copia l'ordre</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge no baixa cap programa de túnel i no guarda la clau de cap altra empresa. Un assistent web treballa al nivell d'aquí a dalt.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Vols permetre que {0} treballi amb PadForge des del web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>El seu inici de sessió torna a {0}.</value></data>

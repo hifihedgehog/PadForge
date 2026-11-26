@@ -75,7 +75,9 @@ namespace PadForge.Tests
             Assert.Equal(1, (int)AutomationClientKind.Assistant);
             Assert.Equal(2, (int)AutomationClientKind.Plugin);
             Assert.Equal(3, (int)AutomationClientKind.Web);
-            Assert.Equal(4, Enum.GetValues<AutomationClientKind>().Length);
+            // An assistant on this network (#600 item 53), after it.
+            Assert.Equal(4, (int)AutomationClientKind.Network);
+            Assert.Equal(5, Enum.GetValues<AutomationClientKind>().Length);
             Assert.Equal(3, (int)ApprovalKind.WebSignIn);
             Assert.Equal(4, Enum.GetValues<ApprovalKind>().Length);
         }

@@ -780,6 +780,24 @@ namespace PadForge.Services.Automation
     //  The tools
     // ─────────────────────────────────────────────
 
+    /// <summary>What a tool does for a program held to its own devices and
+    /// the ones picked (#600 DESIGN-2 N3).</summary>
+    internal enum ReachVerdict
+    {
+        /// <summary>It reads, and works whole.</summary>
+        Whole,
+
+        /// <summary>It drives a device, one the reach takes.</summary>
+        ItsDevices,
+
+        /// <summary>It sets or presses an entry of a device the reach
+        /// takes.</summary>
+        EntriesOfItsDevices,
+
+        /// <summary>It acts on the rest of PadForge, and is refused.</summary>
+        Refused,
+    }
+
     /// <summary>
     /// PadForge's tools for assistants (#597), in the order every list keeps,
     /// by level: Commands, Read, Send Inputs, Change Settings. Each one sets
@@ -811,6 +829,35 @@ namespace PadForge.Services.Automation
                 Changes = changes,
                 Run = async (inv, args, ct) => await run(inv, (TArgs)args, ct).ConfigureAwait(false),
             };
+
+        /// <summary>
+        /// What a tool does for a program held to its own devices and the
+        /// ones the user picked (#600 DESIGN-2 N3). A tool that only reads
+        /// works whole: the reach never limits what a program reads. The
+        /// tools that drive a device work on the devices the reach takes,
+        /// which the pipe checks for each line. set and press work on an
+        /// entry of such a device alone. Every other tool is refused, the
+        /// Commands tools among them. A tool added later is refused until it
+        /// is named here.
+        /// </summary>
+        internal static ReachVerdict UnderReach(AssistantToolDefinition tool) => tool.Name switch
+        {
+            "add_device" or "set_device_inputs" or "remove_device" or "hold_control" => ReachVerdict.ItsDevices,
+            "set" or "press" => ReachVerdict.EntriesOfItsDevices,
+            _ => tool.ReadOnly ? ReachVerdict.Whole : ReachVerdict.Refused,
+        };
+
+        /// <summary>Refuses a set or a press of an entry whose device the
+        /// caller's reach does not take.</summary>
+        private static void CheckReach(AssistantInvocation inv, string id)
+        {
+            var session = inv.Caller.Session;
+            if (session?.Reach == null) return;
+            Guid? device = inv.OnUi(() => inv.Catalog.DeviceHolding(id));
+            if (device is not Guid held || !inv.Host.Sessions.ReachTakes(session, held))
+                throw new AssistantRefusal("outside-reach", "This program's reach is its own devices and the ones the user picked, and "
+                    + id + " belongs to none of them. It still reads every device. Only the user can widen its reach, on PadForge's Automation page.");
+        }
 
         private static IReadOnlyList<AssistantToolDefinition> Build() => new[]
         {
@@ -1615,7 +1662,7 @@ namespace PadForge.Services.Automation
             // the question card asks, at its own place.
             var last = inv.OnUi(() => inv.Catalog.CheckShow(request));
             var question = new ApprovalRequest(inv.Caller.Program, AssistantToolWords.AskShow(program, last.Name),
-                new[] { AssistantToolWords.ShowWhere(last.Where) }) { Kind = ApprovalKind.Show };
+                new[] { AssistantToolWords.ShowWhere(last.Where) }) { Kind = ApprovalKind.Show, From = inv.Caller.Session?.AskerLine };
             var answer = inv.Host.Approvals.AskAsync(question, inv.Caller.Session?.Lifetime ?? inv.Stopping);
             if (answer.IsCompletedSuccessfully && answer.Result == ApprovalAnswer.TooMany)
                 throw new AssistantRefusal("too-many-questions", "Too many questions already wait for the user. Wait, then show again.");
@@ -1841,6 +1888,7 @@ namespace PadForge.Services.Automation
             }
             if (values.Count > 50) throw new AssistantRefusal("bad-argument", "set takes at most 50 values in one call.");
             inv.Detail = values[0].Id;
+            foreach (var (id, _) in values) CheckReach(inv, id);
             var asks = new List<AssistantAsk>();
             inv.OnUi(() =>
             {
@@ -1881,6 +1929,7 @@ namespace PadForge.Services.Automation
         private static async Task<PressResult> Press(AssistantInvocation inv, IdArgs a, CancellationToken ct)
         {
             inv.Detail = a.Id;
+            CheckReach(inv, a.Id);
             var plan = inv.OnUi(() => inv.Catalog.PlanPress(a.Id));
             inv.Detail = plan.Place.Name;
             var before = inv.OnUi(() => inv.Catalog.Dialogs());

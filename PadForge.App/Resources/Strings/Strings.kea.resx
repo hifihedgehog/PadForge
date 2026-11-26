@@ -3754,9 +3754,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permitidu {0}, uzadu pa última bês {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permitidu {0}, inda ka uzadu.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ruvoga</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Se propi Secure MCP Tunnel ta roda PadForge diretamenti, sen enderesu o login li. Kopia instruson pa konfigurason di kel túnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopia instruson</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ka ta baxa nenhun programa di túnel i ka ta guarda xavi di nenhun otu empreza. Un asistenti web ta trabadja na nível di riba.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Se login ta volta pa {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>E ta txoma si mésmu {0}.</value></data>

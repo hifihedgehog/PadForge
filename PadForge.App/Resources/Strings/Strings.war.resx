@@ -2016,9 +2016,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Gintugotan han {0}, kataposan nga gamit han {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Gintugotan han {0}, waray pa nagamit.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawia</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>An kalugaringon nga Secure MCP Tunnel niya direkta nga nagpapadalagan han PadForge, waray adres o sign-in dinhi. Kopyaha an command ngadto ha setup hito nga tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopyaha an Command</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Diri nagdadownload an PadForge hin programa han tunnel ngan diri nagtitipig hin key han iba nga kompanya. Nagtatrabaho an web assistant ha lebel nga aada ha igbaw.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Nabalik ha {0} an sign-in niya.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>{0} an tawag niya ha iya kalugaringon.</value></data>

@@ -44,6 +44,12 @@ namespace PadForge.Services.Automation
         /// opens never holds the call.</summary>
         AssistantPressPlan PlanPress(string id);
 
+        /// <summary>The device an entry belongs to (#600 DESIGN-2 N3): the
+        /// one its ID names, or the device a plugin declaration sits under,
+        /// else null. A program held to its own devices and the ones picked
+        /// sets and presses only entries of those.</summary>
+        Guid? DeviceHolding(string id);
+
         /// <summary>What the user sees now.</summary>
         AssistantWhere Where();
 

@@ -2517,9 +2517,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Endimami {0}, esalelami mbala ya suka {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Endimami {0}, esalelami naino te.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Kolongola ndingisa</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel na yango moko etambwisaka PadForge mbala moko, kozanga adresse to kokota awa. Kopia commande na kati ya paramètre ya tunnel wana.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kokopia commande</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ekitisaka programme ya tunnel moko te mpe ebombaka clé ya kompanyi mosusu te. Assistant ya web esalaka na niveau oyo ezali likolo.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Kokota na yango ezongaka na {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Emibengaka {0}.</value></data>

@@ -126,12 +126,12 @@ namespace PadForge.Tests
             using var door = new WebDoor(rig.Host, store, new WebTestLauncher(), () => @"C:\PadForge\PadForge.exe", rig.PipeName);
             int asked = 0;
             var view = new WebAccessViewModel(door, store) { AskToTurnOn = () => { asked++; return true; } };
-            Assert.Equal(new[] { "web/reach" }, view.CatalogItems().Select(i => i.Id));
+            Assert.Equal(new[] { "web/reach", "net/reach" }, view.CatalogItems().Select(i => i.Id));
             view.IsOn = true;
             store.Add(new WebGrant { Id = "g1", Origin = "claude.ai", Allowed = DateTimeOffset.UtcNow });
             view.Refresh();
             var items = view.CatalogItems();
-            Assert.Equal(new[] { "web/reach", "web/tunnel", "web/address", "web/accept", "web/copy-command", "web/allowed/g1" }, items.Select(i => i.Id));
+            Assert.Equal(new[] { "web/reach", "net/reach", "web/tunnel", "web/address", "web/accept", "web/allowed/g1" }, items.Select(i => i.Id));
             Assert.All(items, i => Assert.Equal(PadForge.Common.ReachClass.UsersOwn, i.Reach));
             Assert.All(items, i => Assert.Null(i.Write));
             Assert.All(items, i => Assert.Null(i.Press));

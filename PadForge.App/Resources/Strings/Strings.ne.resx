@@ -6742,9 +6742,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>अनुमति दिइएको {0}, पछिल्लो प्रयोग {1}।</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>अनुमति दिइएको {0}, अहिलेसम्म प्रयोग भएको छैन।</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>रद्द गर्नुहोस्</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>यसको आफ्नै Secure MCP Tunnel ले PadForge सिधै चलाउँछ, यहाँ कुनै ठेगाना वा साइन इन बिना। कमान्डलाई त्यो टनेलको सेटअपमा प्रतिलिपि गर्नुहोस्।</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>कमान्ड प्रतिलिपि गर्नुहोस्</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ले कुनै टनेल प्रोग्राम डाउनलोड गर्दैन र अरू कुनै कम्पनीको कुञ्जी राख्दैन। वेब सहायकले माथिको स्तरमा काम गर्छ।</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} लाई वेबबाट PadForge सँग काम गर्न अनुमति दिने हो?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>यसको साइन इन {0} मा फर्कन्छ।</value></data>

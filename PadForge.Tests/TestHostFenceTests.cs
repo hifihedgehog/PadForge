@@ -530,7 +530,7 @@ namespace PadForge.Tests
             // The web controller's certificate, binding and firewall rules.
             new object[] { WebTls, "private static string FindOrCreateCertThumbprint()", "if (OffLimitsForTest) return null;" },
             new object[] { WebTls, "private static string RunNetsh(string arguments)", "if (OffLimitsForTest)" },
-            new object[] { Services + "WebControllerServer.cs", "private static string RunNetsh(string arguments)", "if (WebControllerTls.OffLimitsForTest)" },
+            new object[] { Services + "WebControllerServer.cs", "internal static string RunNetsh(string arguments)", "if (WebControllerTls.OffLimitsForTest)" },
 
             // Names and collections other programs share.
             new object[] { Mutex, "private static AnalogKeyboardNamedMutex Create(string name)", "if (OffLimitsForTest && IsShared(name)) return null;" },
@@ -750,7 +750,8 @@ namespace PadForge.Tests
             // the user's own variables (#600).
             // And the web door's tunnel program (#600 item 11), started by the
             // helper without rights, in the member that asks its fence first.
-            Assert.Equal(Map((RightsVariablesStartFile, 1), (StartWithRightsFile, 1), (UserInstallFile, 1), (WebTunnelsFile, 1)), FenceSource.Census(@"\bProcess\.Start\("));
+            // tunnel-client (#600 DESIGN-2 N4) the same way, in StartVendor.
+            Assert.Equal(Map((RightsVariablesStartFile, 1), (StartWithRightsFile, 1), (UserInstallFile, 1), (WebTunnelsFile, 2)), FenceSource.Census(@"\bProcess\.Start\("));
             Assert.Contains("Process.Start(info)",
                 FenceSource.Body(OffLimitsSource.Read(WebTunnelsFile), "internal static Process Start(WebTunnelKind kind, string exe, int port, Action<string> address, Action<string> line, Action<int> exited)"), StringComparison.Ordinal);
             Assert.Contains("using var process = Process.Start(psi);",
@@ -779,7 +780,7 @@ namespace PadForge.Tests
             Assert.StartsWith("if (OutputSeam != null) return OutputSeam(arguments);", FenceSource.FirstStatement(OffLimitsSource.Read(GiveBack), "private static string Output(string arguments)"), StringComparison.Ordinal);
             Assert.Contains("RightsVariables.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Ds3Driver), "private static (int Code, string Output) RunTool(string exe, string args, string workingDir, int timeoutMs = 120000)"), StringComparison.Ordinal);
             Assert.Contains("RightsVariables.Start(psi)", FenceSource.Body(OffLimitsSource.Read(WebTls), "private static string RunNetsh(string arguments)"), StringComparison.Ordinal);
-            Assert.Contains("RightsVariables.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Services + "WebControllerServer.cs"), "private static string RunNetsh(string arguments)"), StringComparison.Ordinal);
+            Assert.Contains("RightsVariables.Start(psi)", FenceSource.Body(OffLimitsSource.Read(Services + "WebControllerServer.cs"), "internal static string RunNetsh(string arguments)"), StringComparison.Ordinal);
             // And the restart with rights (#597).
             Assert.Contains("Process.Start(start)", FenceSource.Body(OffLimitsSource.Read(StartWithRightsFile), "internal static int Run(IReadOnlyList<string> args)"), StringComparison.Ordinal);
 
@@ -1070,7 +1071,11 @@ namespace PadForge.Tests
                 (SteamHttpFile, 2),
                 // A web assistant's client document (#600 item 11), sent
                 // only after the outbound gate (AskedBeforeTheCall).
-                (WebDocuments, 1)), FenceSource.Census(Creates("HttpClient")));
+                (WebDocuments, 1),
+                // tunnel-client's /readyz (#600 DESIGN-2 N4), on loopback
+                // alone, read only while a tunnel-client the fenced
+                // StartVendor started runs.
+                (WebTunnelsFile, 1)), FenceSource.Census(Creates("HttpClient")));
             Assert.DoesNotContain("NewHttpClient(", OffLimitsSource.Read(WorkshopPanel), StringComparison.Ordinal);
             Assert.DoesNotContain("new HttpClient(", OffLimitsSource.Read(WorkshopPanel), StringComparison.Ordinal);
 

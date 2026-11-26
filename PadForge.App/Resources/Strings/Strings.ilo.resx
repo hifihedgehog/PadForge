@@ -1830,9 +1830,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Naipalubos {0}, maudi a nausar {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Naipalubos {0}, saan pay a nausar.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawien</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Patarayen a direkta ti bukodna a Secure MCP Tunnel ti PadForge, nga awan ti address wenno sign-in ditoy. Kopiaen ti command iti setup dayta a tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiaen ti command</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Awan ti tunnel a programa nga i-download ti PadForge ken awan ti idulinna a key ti sabali a kompania. Agtrabaho ti web assistant iti level iti ngato.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Agsubli ti sign-in-na iti {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Awaganna ti bagina a {0}.</value></data>

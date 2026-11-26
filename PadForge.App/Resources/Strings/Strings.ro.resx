@@ -6742,9 +6742,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permis {0}, folosit ultima dată {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permis {0}, nefolosit încă.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revocare</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Propriul său Secure MCP Tunnel rulează PadForge direct, fără adresă sau autentificare aici. Copiați comanda în configurarea acelui tunel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copiere comandă</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge nu descarcă niciun program de tunel și nu păstrează cheia altei companii. Un asistent web lucrează la nivelul de mai sus.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Permiteți ca {0} să lucreze cu PadForge de pe web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Autentificarea sa se întoarce la {0}.</value></data>

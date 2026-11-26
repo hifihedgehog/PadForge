@@ -6038,9 +6038,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>დაშვებულია {0}, ბოლოს გამოიყენა {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>დაშვებულია {0}, ჯერ არ გამოუყენებია.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>გაუქმება</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>მისი საკუთარი Secure MCP Tunnel PadForge-ს პირდაპირ უშვებს, აქ მისამართისა და შესვლის გარეშე. დააკოპირეთ ბრძანება ამ გვირაბის მოწყობაში.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ბრძანების კოპირება</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge არ ჩამოტვირთავს გვირაბის პროგრამას და არ ინახავს სხვა კომპანიის გასაღებს. ვებ ასისტენტი ზემოთ მითითებული დონით მუშაობს.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>მივცეთ {0}-ს უფლება, იმუშაოს PadForge-თან ვებიდან?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>მისი შესვლა დაბრუნდა მისამართზე {0}.</value></data>

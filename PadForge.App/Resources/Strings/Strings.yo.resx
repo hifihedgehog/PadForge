@@ -2596,9 +2596,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>A gbà á láàyè ní {0}, ìlò tó kẹ́yìn ní {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>A gbà á láàyè ní {0}, a kò tíì lò ó.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Gba àyè padà</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel tirẹ̀ ń ṣiṣẹ́ PadForge tààrà, láìsí àdírẹ́sì tàbí ìwọlé níbí. Ṣàdàkọ àṣẹ náà sínú ìṣètò tọ́nẹ́ẹ̀lì yẹn.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Ṣàdàkọ àṣẹ</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge kò gba ìṣàfilọ́lẹ̀ tọ́nẹ́ẹ̀lì kankan wálẹ̀, kò sì pa kọ́kọ́rọ́ ilé iṣẹ́ míràn kankan mọ́. Olùrànlọ́wọ́ wẹ́ẹ̀bù ń ṣiṣẹ́ ní ìpele tí ó wà lókè.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ìwọlé rẹ̀ ń padà sí {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ó pe ara rẹ̀ ní {0}.</value></data>

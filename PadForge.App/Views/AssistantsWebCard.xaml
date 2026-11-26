@@ -9,10 +9,12 @@
         Reach PadForge From the Web is on, in the Extras cards' own look:
         Tunnel (the tunnel programs found on this PC, or an address the user
         pastes, with what each does with its address), Address with Copy and
-        Add to Claude, Accept a New Web Assistant, Allowed on the Web with
-        Revoke, and the row of the assistant whose own tunnel runs PadForge's
-        stdio command. Every control is the user's alone. The data context
-        is a WebAccessViewModel.
+        Add to Claude, Accept a New Web Assistant, and Allowed on the Web with
+        Revoke. With the ChatGPT Secure MCP Tunnel picked (#600 DESIGN-2 N4),
+        Runtime Key and Tunnel ID take the Address row's place, each with Make
+        One, and Open ChatGPT under them. Every control is the user's alone,
+        and a program reads no runtime key. The data context is a
+        WebAccessViewModel.
     -->
     <Border Style="{DynamicResource ExtraCard}" AutomationProperties.AutomationId="Web_Card">
         <StackPanel>
@@ -35,8 +37,70 @@
             <TextBlock Text="{Binding TunnelLine}" Style="{DynamicResource ExtraRowNote}" common:LiveText.Polite="True"
                        AutomationProperties.AutomationId="Web_TunnelLine"/>
 
+            <!-- The ChatGPT Secure MCP Tunnel's key and ID. -->
+            <StackPanel Visibility="{Binding IsChatGpt, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0">
+                    <StackPanel Margin="0,10,0,6">
+                        <Grid MinHeight="44">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="272"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Web_ChatGpt_KeyLabel, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+                            <PasswordBox x:Name="RuntimeKeyBox" Grid.Column="1" Width="240" PasswordChar="•" VerticalAlignment="Center" MaxLength="400"
+                                         AutomationProperties.AutomationId="Web_RuntimeKey"
+                                         AutomationProperties.Name="{Binding Web_ChatGpt_KeyLabel, Source={x:Static strings:Strings.Instance}}"
+                                         AutomationProperties.HelpText="{Binding Web_ChatGpt_KeyHint, Source={x:Static strings:Strings.Instance}}"/>
+                            <Button Grid.Column="3" Style="{DynamicResource ExtraButton}" Command="{Binding MakeKeyCommand}" Margin="14,0,0,0"
+                                    AutomationProperties.AutomationId="Web_MakeRuntimeKey"
+                                    AutomationProperties.HelpText="{Binding Web_ChatGpt_KeyLabel, Source={x:Static strings:Strings.Instance}}"
+                                    Content="{Binding Web_ChatGpt_MakeOne, Source={x:Static strings:Strings.Instance}}"/>
+                        </Grid>
+                        <TextBlock Text="{Binding RuntimeKeyLine}" FontSize="13" TextWrapping="Wrap" Margin="272,2,12,0" common:LiveText.Polite="True"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+                <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                    <StackPanel Margin="0,10,0,10">
+                        <Grid MinHeight="44">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="272"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Web_ChatGpt_IdLabel, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+                            <TextBox Grid.Column="1" Width="240" VerticalAlignment="Center" MaxLength="100"
+                                     Text="{Binding TunnelIdText, UpdateSourceTrigger=LostFocus}"
+                                     AutomationProperties.AutomationId="Web_TunnelId"
+                                     AutomationProperties.Name="{Binding Web_ChatGpt_IdLabel, Source={x:Static strings:Strings.Instance}}"/>
+                            <Button Grid.Column="3" Style="{DynamicResource ExtraButton}" Command="{Binding MakeTunnelCommand}" Margin="14,0,0,0"
+                                    AutomationProperties.AutomationId="Web_MakeTunnel"
+                                    AutomationProperties.HelpText="{Binding Web_ChatGpt_IdLabel, Source={x:Static strings:Strings.Instance}}"
+                                    Content="{Binding Web_ChatGpt_MakeOne, Source={x:Static strings:Strings.Instance}}"/>
+                        </Grid>
+                        <Grid MinHeight="44" Margin="0,6,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="272"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Text="{Binding Web_ChatGpt_Then, Source={x:Static strings:Strings.Instance}}" FontSize="14" TextWrapping="Wrap"
+                                       VerticalAlignment="Center" Margin="0,0,14,0" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding OpenChatGptCommand}"
+                                    AutomationProperties.AutomationId="Web_OpenChatGpt"
+                                    AutomationProperties.HelpText="{Binding Web_ChatGpt_Then, Source={x:Static strings:Strings.Instance}}"
+                                    Content="{Binding Web_ChatGpt_Open, Source={x:Static strings:Strings.Instance}}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
             <!-- Address -->
-            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0">
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0"
+                    Visibility="{Binding ShowsAddress, Converter={StaticResource BoolToVisibilityConverter}}">
                 <StackPanel>
                     <!-- The address fills the row up to its buttons, as the
                          board draws it. -->
@@ -68,7 +132,8 @@
             </Border>
 
             <!-- Accept a New Web Assistant -->
-            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0">
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0"
+                    Visibility="{Binding ShowsAddress, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid Margin="0,10,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -91,7 +156,8 @@
             </Border>
 
             <!-- Allowed on the Web -->
-            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0"
+                    Visibility="{Binding ShowsAddress, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid Margin="0,10,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -128,25 +194,8 @@
                 </Grid>
             </Border>
 
-            <!-- The assistant whose own tunnel runs PadForge's stdio command. -->
-            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
-                <Grid Margin="0,10,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="{Binding Web_ChatGpt_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Web_ChatGpt_Hint, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
-                               VerticalAlignment="Center" Margin="0,0,14,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding CopyCommandCommand}" VerticalAlignment="Center"
-                            AutomationProperties.AutomationId="Web_CopyCommand"
-                            AutomationProperties.HelpText="{Binding Web_ChatGpt_Hint, Source={x:Static strings:Strings.Instance}}"
-                            Content="{Binding Web_ChatGpt_Copy, Source={x:Static strings:Strings.Instance}}"/>
-                </Grid>
-            </Border>
-
-            <TextBlock Text="{Binding Web_Footnote, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource ExtraSmall}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+            <TextBlock Text="{Binding Footnote}" Style="{DynamicResource ExtraSmall}" TextWrapping="Wrap" Margin="0,8,0,0"
+                       AutomationProperties.AutomationId="Web_Footnote"/>
         </StackPanel>
     </Border>
 </UserControl>

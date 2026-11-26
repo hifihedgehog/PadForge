@@ -6049,9 +6049,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>ڕێگەپێدراو {0}، دوایین بەکارهێنان {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>ڕێگەپێدراو {0}، هێشتا بەکارنەهاتووە.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>هەڵوەشاندنەوەی ڕێگەپێدان</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel ی خۆی ڕاستەوخۆ PadForge کار پێدەکات، بەبێ ناونیشان یان چوونەژوورەوە لێرە. فەرمانەکە لەبەربگرەوە بۆ ناو ڕێکخستنی ئەو تونێلە.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>لەبەرگرتنەوەی فەرمان</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge هیچ بەرنامەیەکی تونێل دانابەزێنێت و کلیلی هیچ کۆمپانیایەکی تر هەڵناگرێت. یاریدەدەرێکی وێب لە ئاستی سەرەوەدا کار دەکات.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>ڕێگە بە {0} دەدەیت لە وێبەوە لەگەڵ PadForge کار بکات؟</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>چوونەژوورەوەکەی دەگەڕێتەوە بۆ {0}.</value></data>

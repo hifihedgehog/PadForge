@@ -2641,9 +2641,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Hayyamame {0}, yeroo dhumaaf itti fayyadame {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Hayyamame {0}, ammaaf itti hin fayyadamne.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Hayyama kaasi</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel mataa isaa PadForge kallattiin hojjechiisa, asitti teessoo ykn seensa malee. Ajaja sana qindaa'ina tunelii sanaa keessa garagalchi.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Ajaja garagalchi</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge sagantaa tunelii tokkollee hin buufatu, furtuu dhaabbata biraa kamiyyuu hin kuusu. Gargaaraan weebii sadarkaa olii irratti hojjeta.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Seensi isaa gara {0} deebi'a.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Of {0} jedhee waama.</value></data>

@@ -6742,9 +6742,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Atļauts {0}, pēdējo reizi izmantots {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Atļauts {0}, vēl nav izmantots.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Atsaukt</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Tā paša Secure MCP Tunnel palaiž PadForge tieši, bez adreses vai pierakstīšanās šeit. Nokopējiet komandu šā tuneļa iestatīšanā.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopēt komandu</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge nelejupielādē nevienu tuneļa programmu un neglabā nevienas citas kompānijas atslēgu. Tīmekļa asistents strādā augstāk norādītajā līmenī.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Vai atļaut {0} strādāt ar PadForge no tīmekļa?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Tā pierakstīšanās atgriežas uz {0}.</value></data>

@@ -1726,9 +1726,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Oñemoneĩ {0}, ipaha jeporu {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Oñemoneĩ {0}, ndojeporúi gueteri.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Eipe'a</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel imba'éva omboguata PadForge directamente, ndorekóiva dirección térã jeike ápe. Emonguatia comando upe túnel ñemboheko ryepýpe.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Emonguatia comando</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge noboguejýi ni peteĩ túnel programa ha nongatúi ambue empresa llave. Peteĩ Web pytyvõhára omba'apo yvategua nivel-pe.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ijeike ojevy {0} peve.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ohenói ijupe {0}.</value></data>

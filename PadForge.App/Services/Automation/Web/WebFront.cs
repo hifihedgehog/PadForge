@@ -25,6 +25,16 @@ namespace PadForge.Services.Automation.Web
     /// <c>http://127.0.0.1:port</c>, one that came by the tunnel as the
     /// public address. The issuer, the resource, the metadata's address and
     /// a token's audience all come from that one string.</para>
+    ///
+    /// <para>A request to the network door (#600 item 53), the listener on
+    /// this PC's network addresses, takes its own way in
+    /// (<see cref="HandleNetworkAsync"/>): the MCP endpoint alone, with a key
+    /// the user made at this PC, a Host that names this PC and its port,
+    /// and an Origin, when it carries one, of that same address. It has no
+    /// sign-in, metadata or token endpoint, since Claude Code refuses an
+    /// OAuth sign-in over plain HTTP outside localhost, and a web
+    /// assistant's token is not taken there, nor a key on the web
+    /// door.</para>
     /// </summary>
     internal sealed class WebFront
     {
@@ -37,10 +47,18 @@ namespace PadForge.Services.Automation.Web
         private readonly Func<string> _publicBase;
         private readonly Func<DateTimeOffset> _now;
         private readonly Dictionary<string, DateTimeOffset> _usedSaid = new(StringComparer.Ordinal);
+        private readonly WebNetworkSide _network;
+        private readonly Func<bool> _webOn;
 
         /// <param name="port">The loopback port the helper listens on.</param>
         /// <param name="publicBase">The public address now, or null.</param>
-        public WebFront(int port, WebAuth auth, WebMcp mcp, IWebAppSide app, Func<string> publicBase, Func<DateTimeOffset> now = null)
+        /// <param name="network">The network door's keys, port and names,
+        /// or null with no network door.</param>
+        /// <param name="webOn">Whether Reach PadForge From the Web is on.
+        /// While it is off the loopback door answers nothing. On when
+        /// null.</param>
+        public WebFront(int port, WebAuth auth, WebMcp mcp, IWebAppSide app, Func<string> publicBase, Func<DateTimeOffset> now = null,
+            WebNetworkSide network = null, Func<bool> webOn = null)
         {
             Port = port;
             _auth = auth;
@@ -48,6 +66,8 @@ namespace PadForge.Services.Automation.Web
             _app = app;
             _publicBase = publicBase ?? (() => null);
             _now = now ?? (() => DateTimeOffset.UtcNow);
+            _network = network;
+            _webOn = webOn ?? (() => true);
         }
 
         public int Port { get; }
@@ -82,6 +102,8 @@ namespace PadForge.Services.Automation.Web
 
         internal async Task<WebReply> HandleAsync(WebRequest request, CancellationToken cancel)
         {
+            if (request.Network) return await HandleNetworkAsync(request, cancel).ConfigureAwait(false);
+            if (!_webOn()) return WebReply.RpcError(404, -32000, "Reach PadForge From the Web is off.");
             string baseUrl = BaseOf(request);
             if (baseUrl == null) return WebReply.RpcError(403, -32000, "Forbidden: this Host is not PadForge's web address.");
             string origin = request.Header("Origin");
@@ -121,6 +143,45 @@ namespace PadForge.Services.Automation.Web
             }
         }
 
+        /// <summary>
+        /// One request to the network door (#600 item 53). Host must name
+        /// this PC (one of its private addresses, its computer name or its
+        /// .local name) with the door's port, and Origin, when a browser
+        /// sends one, must be that same address, as the web door checks it:
+        /// a page on another site is refused. Every request needs a key the
+        /// user made, sent as a Bearer header. A key the user revoked is
+        /// refused at its next call, since the keys come from PadForge's
+        /// state alone.
+        /// </summary>
+        internal async Task<WebReply> HandleNetworkAsync(WebRequest request, CancellationToken cancel)
+        {
+            var net = _network;
+            if (net == null || !net.On) return WebReply.RpcError(404, -32000, "Reach PadForge From This Network is off.");
+            string host = request.Header("Host");
+            if (!net.NamesThisPc(host)) return WebReply.RpcError(403, -32000, "Forbidden: this Host is not this PC's address on the network.");
+            string origin = request.Header("Origin");
+            if (origin != null && !string.Equals(origin.TrimEnd('/'), "http://" + host, StringComparison.OrdinalIgnoreCase))
+                return WebReply.RpcError(403, -32000, "Forbidden: this Origin is not PadForge's network address.");
+            if ((request.Path ?? "/") != WebAddress.McpPath) return WebReply.RpcError(404, -32000, "Not found.");
+            if (request.Method != "POST") return NotAllowed("POST");
+            string presented = Bearer(request.Header("Authorization"));
+            string id = presented == null ? null : net.Find(presented);
+            if (id == null)
+                return WebReply.RpcError(401, -32001, "A key made in PadForge is needed: Authorization: Bearer <key>.")
+                    .With("WWW-Authenticate", presented == null ? "Bearer realm=\"PadForge\"" : "Bearer realm=\"PadForge\", error=\"invalid_token\"");
+            SayUsed(WebNetworkSide.UsedId(id));
+            string from = System.Net.IPAddress.TryParse(request.Remote ?? string.Empty, out var remote) ? remote.ToString() : "?";
+            return await _mcp.PostAsync(request, new WebGrant { Id = id, Origin = from, Network = true, From = from }, cancel).ConfigureAwait(false);
+        }
+
+        /// <summary>The token of a Bearer header, or null.</summary>
+        private static string Bearer(string header)
+        {
+            if (string.IsNullOrEmpty(header) || !header.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)) return null;
+            string token = header.Substring(7).Trim();
+            return token.Length == 0 ? null : token;
+        }
+
         private static WebReply NotAllowed(string allow) => WebReply.RpcError(405, -32000, "Method Not Allowed.").With("Allow", allow);
 
         /// <summary>Tells the app a grant was used, at most once a minute.</summary>
@@ -134,5 +195,53 @@ namespace PadForge.Services.Automation.Web
             }
             try { _app.Used(id); } catch { /* the request goes on */ }
         }
+    }
+
+    /// <summary>
+    /// The network door as the web helper holds it (#600 item 53): whether
+    /// it is on, its port, and the hashes of the keys the user made, as
+    /// PadForge's last state said them. A key PadForge no longer lists is
+    /// refused at its next call.
+    /// </summary>
+    internal sealed class WebNetworkSide
+    {
+        private volatile IReadOnlyList<(string Id, string Hash)> _keys = Array.Empty<(string, string)>();
+
+        public volatile bool On;
+        public volatile int Port;
+
+        /// <summary>This PC's names, as a request's Host may give them.</summary>
+        internal Func<IReadOnlyCollection<string>> Names { get; init; } = NetworkDoor.ThisPcNames;
+
+        internal IReadOnlyList<(string Id, string Hash)> Keys
+        {
+            get => _keys;
+            set => _keys = value ?? Array.Empty<(string, string)>();
+        }
+
+        /// <summary>The ID of the key a presented text is, or null. Every
+        /// key is compared, each in fixed time.</summary>
+        internal string Find(string presented)
+        {
+            string found = null;
+            foreach (var (id, hash) in _keys)
+                if (WebSecrets.Matches(presented, hash) && found == null) found = id;
+            return found;
+        }
+
+        /// <summary>Whether a Host names this PC with the door's port.</summary>
+        internal bool NamesThisPc(string host)
+        {
+            if (string.IsNullOrEmpty(host)) return false;
+            int colon = host.LastIndexOf(':');
+            if (colon <= 0 || host.IndexOf(']') > colon) return false;
+            if (!int.TryParse(host.AsSpan(colon + 1), NumberStyles.None, CultureInfo.InvariantCulture, out int port) || port != Port) return false;
+            string name = host.Substring(0, colon);
+            return Names().Contains(name, StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>How the app hears a key was used: its ID with a word of
+        /// its own, so no web grant's ID is taken for it.</summary>
+        internal static string UsedId(string keyId) => "net:" + keyId;
     }
 }

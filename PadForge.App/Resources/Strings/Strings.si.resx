@@ -6013,9 +6013,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>ඉඩ දුන්නේ {0}, අවසන් වරට භාවිත කළේ {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>ඉඩ දුන්නේ {0}, තවම භාවිත කර නැත.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>අහෝසි කරන්න</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>එහිම Secure MCP Tunnel මෙහි ලිපිනයක් හෝ පුරනය වීමක් නොමැතිව PadForge සෘජුවම ධාවනය කරයි. විධානය එම උමගේ සැකසුමට පිටපත් කරන්න.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>විධානය පිටපත් කරන්න</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge කිසිදු උමං වැඩසටහනක් බාගත නොකරන අතර වෙනත් කිසිදු සමාගමක යතුරක් තබා නොගනී. වෙබ් සහායකයෙකු ඉහත මට්ටමින් වැඩ කරයි.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} හට වෙබයෙන් PadForge සමඟ වැඩ කිරීමට ඉඩ දෙන්නද?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>එහි පුරනය වීම {0} වෙත ආපසු යයි.</value></data>

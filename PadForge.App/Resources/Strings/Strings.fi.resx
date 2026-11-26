@@ -6742,9 +6742,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Sallittu {0}, viimeksi käytetty {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Sallittu {0}, ei vielä käytetty.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Peruuta lupa</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Sen oma Secure MCP Tunnel ajaa PadForge-sovellusta suoraan, ilman osoitetta tai kirjautumista täällä. Kopioi komento sen tunnelin asetuksiin.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopioi komento</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ei lataa tunneliohjelmaa eikä säilytä toisen yrityksen avainta. Verkkoavustaja toimii yllä olevalla tasolla.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Sallitaanko, että {0} toimii PadForge-sovelluksen kanssa verkosta?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sen kirjautuminen palaa osoitteeseen {0}.</value></data>

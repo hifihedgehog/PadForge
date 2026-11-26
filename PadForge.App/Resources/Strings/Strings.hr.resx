@@ -6056,9 +6056,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Dopušteno {0}, zadnji put korišteno {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Dopušteno {0}, još nije korišteno.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Opozovi</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Njegov vlastiti Secure MCP Tunnel pokreće PadForge izravno, bez adrese i prijave ovdje. Kopirajte naredbu u postavljanje tog tunela.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiraj naredbu</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ne preuzima nijedan program za tunel i ne čuva ključ nijedne druge tvrtke. Web asistent radi na gornjoj razini.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Želite li dopustiti da {0} radi s programom PadForge s weba?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Njegova se prijava vraća na {0}.</value></data>

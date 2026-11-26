@@ -1126,9 +1126,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>A mwúttir {0}, a aea le sópwólóón {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>A mwúttir {0}, ese mwo aea.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Atoui</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Pwisin an Secure MCP Tunnel a angangééni PadForge, esor address are sign in ikei. Kapiini ewe command non ewe setup an ena tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kapiini Command</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ese download eu program ren tunnel me ese isóni an pwal eu company key. Eu web chón álillis a angang won ewe level asan.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>An sign in a liwiniti {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>A apasa pwe itan {0}.</value></data>

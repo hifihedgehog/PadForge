@@ -2376,9 +2376,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Ivunyelwe {0}, igqibele ukusetyenziswa {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Ivunyelwe {0}, ayikasetyenziswa.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Rhoxisa imvume</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>I-Secure MCP Tunnel yayo iqhuba i-PadForge ngqo, ngaphandle kwedilesi okanye ukungena apha. Kopa umyalelo kuseto lwaloo tonela.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopa umyalelo</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>I-PadForge ayikhupheli nayiphi na inkqubo yetonela kwaye ayigcini sitshixo senye inkampani. Umncedisi wewebhu usebenza kwinqanaba elingentla.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ukungena kwayo kubuyela ku-{0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Izibiza ngokuba ngu-{0}.</value></data>

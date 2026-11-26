@@ -452,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-Reconnect, port, pairing identity, connect by address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Full Speed, Custom Formats</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Other assistants, assistants on the web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Other assistants, assistants on the web and on this network</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Look around with a head tracker or VR headset while both thumbs stay on the buttons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Map the speed, pedals and gears a driving game sends, like any input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Send controller motion to emulators that read a DSU motion source.</value></data>
@@ -6834,10 +6834,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Allowed {0}, last used {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Allowed {0}, not used yet.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoke</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Its own Secure MCP Tunnel runs PadForge directly, with no address or sign-in here. Copy the command into that tunnel’s setup.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copy Command</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge downloads no tunnel program and keeps no other company’s key. A web assistant works at the level above.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge downloads a tunnel program only for ChatGPT Secure MCP Tunnel. A web assistant works at the level above.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Allow {0} to work with PadForge from the web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Its sign-in returns to {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>It calls itself {0}.</value></data>
@@ -6874,4 +6871,74 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Its script ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scripts name its controls {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scripts name its keys KeyA, KeySpace, KeyLeftShift and the like, and every key by its code, Vk0 to Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} on this network from {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} asks, on this network from {1}, with the key you made today.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} asks, on this network from {1}, with the key you made on {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Reach PadForge From This Network</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>An assistant on another PC on this network reaches PadForge with a key you make here, with no tunnel program or outside account. Turning this on asks you first.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Reach PadForge from this network?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>PadForge’s helper, which runs without administrator rights, listens on this PC’s network addresses, and PadForge lets its port in on private networks only. An assistant on another PC gets in only with a key you make here. Calls and their key cross the network unencrypted.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Change…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Calls and their key cross this network unencrypted. Windows lets them in on private networks only.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} is in use by another program. Change it to reach PadForge from this network.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows did not let PadForge’s helper listen on port {0}. PadForge allows it with administrator rights, so start PadForge with them and turn this off and on.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge’s helper could not listen on port {0}. Change the port, or turn this off and on.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge’s helper stopped ({0}). Turn Reach PadForge From This Network off and on to start it again.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation is off, so no assistant on this network reaches PadForge. The helper starts once Automation is on.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>This PC has no address on a private network now.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Assistants on This Network</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Its key was made {1}, last used {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Its key was made {1}, not used yet.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>today at {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>on {0} at {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>at {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Each assistant gets its own key, with a name and a level up to the one above. The key shows once. Making it here is your consent, so its first call asks you nothing.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Add a Network Assistant…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Add a Network Assistant</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Name the other PC or its assistant, and pick what it may do. PadForge makes its key next.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Level</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Make Key</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Give it a name.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge keeps {0} network keys at most. Revoke one first.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>The Key for {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>It shows this once. PadForge keeps only its hash, so copy it now. Revoke under Assistants on This Network ends it.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Key</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>For</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Any Other Host</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Or Any Other Host, for the address and the header to paste in its settings.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>What to Paste</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Run it in a terminal on the other PC.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Add an MCP server over HTTP in the host’s settings with this address and this header.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Change the Port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Pick a port from 1024 to 49151. Each assistant’s saved address names the port, so add each one again after the change.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Type a port from 1024 to 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Reach</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>All of PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Only Its Own Devices and These</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Pick Devices…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Drives its own devices and {0}. It still reads every device.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Drives its own devices alone. It still reads every device.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Commands from the command line still reach PadForge, as they do for every program.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>It asks to drive only its own devices.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>It asks once. You can remove it or change its reach on the Automation page.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Pick Devices</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} may drive its own devices and the ones you tick. It still reads every device.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>No devices are on the Devices page.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Running, with your rights, and ready. ChatGPT reaches PadForge through this tunnel with no sign-in of its own, and only from your OpenAI organization. It starts again with PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Running, with your rights. It waits for OpenAI to say the tunnel is ready.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Downloading OpenAI’s tunnel-client and checking it against its release’s SHA-256 sums.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client could not be downloaded: {0}. Pick the tunnel again to try again.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Paste a runtime key and a tunnel ID below, and the tunnel starts.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Runtime Key</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Restricted, with Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Make One</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>Tunnel ID</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Then add this tunnel in ChatGPT.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Open ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge keeps the key encrypted for you alone. An empty box forgets it. ChatGPT works at the level above.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>The key was not kept: PadForge’s web helper is not running, and only it can encrypt the key for you.</value></data>
 </root>

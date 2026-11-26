@@ -6742,9 +6742,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>அனுமதித்தது {0}, கடைசியாகப் பயன்படுத்தியது {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>அனுமதித்தது {0}, இன்னும் பயன்படுத்தவில்லை.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>திரும்பப்பெறு</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>அதன் சொந்த Secure MCP Tunnel PadForge-ஐ நேரடியாக இயக்கும், இங்கே முகவரி அல்லது உள்நுழைவு தேவையில்லை. கட்டளையை அந்தச் சுரங்கத்தின் அமைப்பில் நகலெடுக்கவும்.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>கட்டளையை நகலெடு</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge எந்தச் சுரங்க நிரலையும் பதிவிறக்குவதில்லை, வேறு எந்த நிறுவனத்தின் விசையையும் வைத்திருப்பதில்லை. இணைய உதவியாளர் மேலே உள்ள நிலையில் செயல்படும்.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} PadForge உடன் இணையத்திலிருந்து செயல்பட அனுமதிக்கவா?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>அதன் உள்நுழைவு {0} க்குத் திரும்புகிறது.</value></data>

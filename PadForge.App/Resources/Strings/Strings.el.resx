@@ -6742,9 +6742,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Επιτράπηκε {0}, τελευταία χρήση {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Επιτράπηκε {0}, δεν έχει χρησιμοποιηθεί ακόμη.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ανάκληση</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Η δική του Secure MCP Tunnel εκτελεί το PadForge απευθείας, χωρίς διεύθυνση ή σύνδεση εδώ. Αντιγράψτε την εντολή στη ρύθμιση αυτής της σήραγγας.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Αντιγραφή εντολής</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Το PadForge δεν κατεβάζει κανένα πρόγραμμα σήραγγας και δεν κρατά κλειδί άλλης εταιρείας. Ένας βοηθός του ιστού λειτουργεί στο παραπάνω επίπεδο.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Να επιτραπεί στο {0} να συνεργάζεται με το PadForge από τον ιστό?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Η σύνδεσή του επιστρέφει στο {0}.</value></data>

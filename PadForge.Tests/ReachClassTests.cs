@@ -171,6 +171,9 @@ namespace PadForge.Tests
                 "Views/ExtrasPage.xaml <Button NewWebAccessCodeButton>",  // an access code
                 "Views/ExtrasPage.xaml <TextBox WebControllerAccessCodeBox>",
                 "Views/RecordingReviewView.xaml <UserControl>",           // the review of a recording
+                "Views/NetworkAssistantDialog.xaml <DialogWindow>",        // a network key, made and shown once (#600 item 53)
+                "Views/NetworkPortDialog.xaml <DialogWindow>",             // the network door's port
+                "Views/PickDevicesDialog.xaml <DialogWindow>",             // the devices a program's reach takes (#600 DESIGN-2 N3)
                 "Views/RecordingWaitingCard.xaml <UserControl>",          // a waiting recording, what was typed among it
                 "Views/RemoteLinkPairDialog.xaml <DialogWindow>",         // a pairing code
                 "Views/RemoteLinkPasswordDialog.xaml <DialogWindow>",     // an access code

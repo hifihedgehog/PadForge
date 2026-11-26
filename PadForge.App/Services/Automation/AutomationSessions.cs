@@ -196,12 +196,12 @@ namespace PadForge.Services.Automation
                     // Each web assistant comes through the one web helper,
                     // which PadForge started: its sessions are bounded by the
                     // web assistants allowed, not by the cap of one process.
-                    if (open.Process.Id == session.Process.Id && open.Kind != AutomationClientKind.Web) ofProcess++;
+                    if (open.Process.Id == session.Process.Id && !IsThroughHelper(open.Kind)) ofProcess++;
                     if (!open.IsPlugin) notPlugins++;
                 }
                 if (_sessions.Count >= MostSessions
                     || (!session.IsPlugin && notPlugins >= MostSessions - KeptForPlugins)
-                    || (ofProcess >= MostPerProcess && session.Kind != AutomationClientKind.Web))
+                    || (ofProcess >= MostPerProcess && !IsThroughHelper(session.Kind)))
                 {
                     error = "too-many";
                     return false;
@@ -589,9 +589,12 @@ namespace PadForge.Services.Automation
                     else _resumes[session.Resume] = (who.Key, session.Number);
                 }
             }
-            if (wanted <= AutomationLevel.Commands) { session.Granted = AutomationLevel.Commands; return; }
             var store = Consent ?? AutomationConsent.Shared;
             var allowed = store.Find(who.Key);
+            // The reach the user kept, narrowed by the one the hello asked
+            // (#600 DESIGN-2 N3), before any line past the hello runs.
+            session.Reach = ProgramReach.Narrowest(allowed?.Reach, session.WantedReach);
+            if (wanted <= AutomationLevel.Commands) { session.Granted = AutomationLevel.Commands; return; }
             if (allowed != null && allowed.Level >= wanted) { session.Granted = wanted; return; }
             session.Granted = allowed?.Level ?? AutomationLevel.Commands;
             Task<bool> answer;
@@ -607,11 +610,14 @@ namespace PadForge.Services.Automation
         /// Decides a web assistant's level as it opens (#600 item 11): the
         /// user allowed it at its sign-in, on the question card with its
         /// code, so it works at the user's level at once and asks nothing.
+        /// A network key works at the level the user gave it when making
+        /// it (#600 item 53), which was its consent.
         /// Its helper's resume secret keeps its undo and rate across a pipe
         /// drop, as an assistant's does.
         /// </summary>
-        internal void BeginWeb(AutomationSession session)
+        internal void BeginWeb(AutomationSession session, AutomationLevel level = AutomationLevel.ChangeSettings, ProgramReach reach = null)
         {
+            session.Reach = ProgramReach.Narrowest(reach, session.WantedReach);
             session.CallerKey = session.Number;
             string key = session.Who?.Key;
             if (session.Resume != null && key != null)
@@ -622,8 +628,14 @@ namespace PadForge.Services.Automation
                     else _resumes[session.Resume] = (key, session.Number);
                 }
             }
-            session.Granted = AutomationLevel.ChangeSettings;
+            session.Granted = level;
         }
+
+        /// <summary>Whether a kind comes through the one web helper: a web
+        /// assistant, or an assistant on this network (#600 item 53). Those
+        /// count by the assistants allowed, not by the cap of one
+        /// process.</summary>
+        internal static bool IsThroughHelper(AutomationClientKind kind) => kind is AutomationClientKind.Web or AutomationClientKind.Network;
 
         /// <summary>A connection whose hello was taken but which is no
         /// program of the list, the web helper's own (#600 item 11): it no
@@ -646,7 +658,7 @@ namespace PadForge.Services.Automation
             List<AutomationSession> close = new();
             lock (_sync)
                 foreach (var session in _sessions)
-                    if (session.Kind == AutomationClientKind.Web && session.Who?.Key == key) close.Add(session);
+                    if (IsThroughHelper(session.Kind) && session.Who?.Key == key) close.Add(session);
             foreach (var session in close) session.CloseAfterWritten();
         }
 
@@ -672,8 +684,13 @@ namespace PadForge.Services.Automation
             // program behind it is named with its own signer.
             if (who.Kind is "assistant" or "command-line")
                 detail.Add(string.IsNullOrEmpty(who.Signer) ? s.Automation_Consent_NotSigned : string.Format(culture, s.Automation_Consent_Signed_Format, who.Signer));
+            // A program that asks to drive only its own devices is told so
+            // (#600 DESIGN-2 N3). It still reads every device, so the card's
+            // two answers look alike.
+            bool own = session.WantedReach != null;
+            if (own) detail.Add(s.Automation_Consent_OwnDevices);
             detail.Add(s.Automation_Consent_ReadsKeys);
-            detail.Add(s.Automation_Consent_AsksOnce);
+            detail.Add(own ? s.Automation_Consent_AsksOnceReach : s.Automation_Consent_AsksOnce);
             var request = new ApprovalRequest(session.Program,
                 string.Format(culture, s.Automation_Ask_Consent_Format, who.Name ?? session.ClaimedName, levelName), detail)
             { Kind = ApprovalKind.Consent };
@@ -695,7 +712,7 @@ namespace PadForge.Services.Automation
                 else if (answer != ApprovalAnswer.Allowed) _declined[who.Key] = _host.Now() + UnansweredQuiet;
             }
             if (answer != ApprovalAnswer.Allowed) return false;
-            store.Allow(who with { Level = wanted, Allowed = _host.Now(), LastUsed = _host.Now() });
+            store.Allow(who with { Level = wanted, Allowed = _host.Now(), LastUsed = _host.Now(), Reach = session.WantedReach });
             // Every open session of the program works at its level before
             // the answer is out, so a line that waited for it runs at it.
             Raise(who.Key, wanted);
@@ -734,6 +751,50 @@ namespace PadForge.Services.Automation
                 foreach (var session in _sessions)
                     if (!session.IsPlugin && session.Who?.Key is { } key) keys.Add(key);
             return keys;
+        }
+
+        // ── Reach (#600 DESIGN-2 N3) ──
+
+        /// <summary>Whether a session's reach takes a device: every device
+        /// with all of PadForge, else its own devices and the picked
+        /// ones.</summary>
+        internal bool ReachTakes(AutomationSession session, Guid device)
+        {
+            var reach = session?.Reach;
+            return reach == null || session.IsPlugin || reach.Picked(device) || Devices.IsOwn(device, session);
+        }
+
+        /// <summary>The words a refusal by reach gives a program.</summary>
+        internal const string OutsideReachWords = "this program's reach is its own devices and the ones the user picked, and this is outside it."
+            + " It still reads every device. Only the user can widen its reach, on PadForge's Automation page.";
+
+        /// <summary>The user changed a program's reach on its row: every open
+        /// session of it works within the new one at once, and lets go of
+        /// the holds and values outside it.</summary>
+        internal void SetReach(string key, ProgramReach reach)
+        {
+            lock (_sync)
+            {
+                foreach (var session in _sessions)
+                {
+                    if (session.IsPlugin || session.Who?.Key != key) continue;
+                    session.Reach = ProgramReach.Narrowest(reach, session.WantedReach);
+                    if (session.Reach == null) continue;
+                    ScriptValues.ReleaseOwner(session.Number);
+                    foreach (var device in _held.DevicesOf(session))
+                        if (!ReachTakes(session, device)) _held.Release(session, device, _held.HeldOn(session, device), 0);
+                    // A claim takes a control from games: one outside the
+                    // reach goes too, and its subscription follows without
+                    // it, as below a level (DropBelowLocked).
+                    if (_owned.TryGetValue(session, out var owned))
+                        foreach (var entry in owned.Subscriptions)
+                        {
+                            if (entry.Claims.Count == 0 || ReachTakes(session, entry.Device)) continue;
+                            foreach (var (kind, index, value) in entry.Claims) _held.Unclaim(session, entry.Device, kind, index, value);
+                            entry.Claims.Clear();
+                        }
+                }
+            }
         }
 
         /// <summary>Takes a program's consent away now (#600): the user
@@ -897,6 +958,13 @@ namespace PadForge.Services.Automation
         /// run by the core's executor at the level it asks itself.</summary>
         private void RunCommand(AutomationSession session, AutomationRequest r)
         {
+            // A program held to its own devices runs no command but the ones
+            // that read (#600 DESIGN-2 N3).
+            if (session.Reach != null && !session.IsPlugin && r.Verb is not ("state" or "query" or "version"))
+            {
+                Fail(session, r, AutomationCommands.Describe(r.Verb).Kind, r.Verb, "outside-reach", OutsideReachWords);
+                return;
+            }
             var words = new StringBuilder(r.Verb);
             foreach (var word in r.Words) words.Append(' ').Append(word.IsPair ? word.Raw : word.Value);
             string body = words.ToString();
@@ -1236,6 +1304,7 @@ namespace PadForge.Services.Automation
         {
             made = null;
             if (claim && !Allows(session, AutomationLevel.SendInputs)) return "claim needs Send Inputs";
+            if (claim && !ReachTakes(session, device)) return "a claim is outside this program's reach: its own devices and the ones the user picked";
             int buttons = 0;
             if (ud != null) buttons = Math.Max(ud.CapButtonCount, ud.CapButtonIndices is { Length: > 0 } b ? b[^1] + 1 : 0);
             else if (entry != null) buttons = entry.Device.NumButtons;
@@ -1659,6 +1728,7 @@ namespace PadForge.Services.Automation
             var (ud, entry) = FindDevice(id);
             Guid device = ud?.InstanceGuid ?? entry?.Guid ?? Guid.Empty;
             if (device == Guid.Empty) { Fail(session, r, AutomationAskKind.Own, id, "unknown-device"); return; }
+            if (!ReachTakes(session, device)) { Fail(session, r, AutomationAskKind.Own, id, "outside-reach", OutsideReachWords); return; }
             int after = AfterOf(r, out bool fromNow);
             if (after < 0) { Fail(session, r, AutomationAskKind.Own, id, "bad-argument", "after= or in= is 0 to 60000 ms, and one of them"); return; }
             if ((r.Get("after") != null || r.Get("in") != null) && NotConnected(ud, entry)) { Fail(session, r, AutomationAskKind.Own, id, "offline"); return; }
@@ -1816,6 +1886,9 @@ namespace PadForge.Services.Automation
             }
             string what = pairs.Count > 0 ? pairs[0].Item1 : string.Empty;
             if (!Allows(session, AutomationLevel.SendInputs)) { Refuse(session, r, AutomationAskKind.Value, what); return; }
+            // A value feeds every Custom Expression, so a program held to its
+            // own devices sets none (#600 DESIGN-2 N3).
+            if (session.Reach != null && !session.IsPlugin) { Fail(session, r, AutomationAskKind.Value, what, "outside-reach", OutsideReachWords); return; }
             AfterTheLevelCheck?.Invoke();
             if (pairs.Count == 0) { Fail(session, r, AutomationAskKind.Value, what, "bad-argument", "var takes name=number"); return; }
             string full = null;

@@ -2092,9 +2092,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Saqisqa {0}, qhipa kuti llamk'achisqa {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Saqisqa {0}, manaraq llamk'achisqa.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Anulay</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Kikin Secure MCP Tunnel nisqan PadForge nisqata chiqanta llamk'achin, mana kaypi direcciónniyuq ni yaykuyniyuq. Kamachiyta chay túnelpa configuraciónninman copiay.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kamachiyta copiay</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge nisqaqa mana ni mayqin túnel programata uraykachinchu, mana huk empresap llavintapas waqaychanchu. Web asistenteqa hanaq nivelpi llamk'an.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Yaykuynin {0} nisqaman kutin.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Payqa {0} sutiwan sutichakun.</value></data>

@@ -5952,9 +5952,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Yǔnxǔ yú {0}, shàngcì shǐyòng yú {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Yǔnxǔ yú {0}, shàngwèi shǐyòng.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Chèxiāo</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Qí zìyǒu de Secure MCP Tunnel zhíjiē yùnxíng PadForge, cǐ chù wúxū dìzhǐ huò dēnglù. Qǐng jiāng mìnglìng fùzhì dào gāi suìdào de shèzhì zhōng.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Fùzhì mìnglìng</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge bù xiàzài rènhé suìdào chéngxù, yě bù bǎocún qítā gōngsī de mìyào. Wǎngluò zhùshǒu àn shàngfāng de jíbié gōngzuò.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Yǔnxǔ {0} cóng wǎngluò yǔ PadForge xiézuò ma?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Qí dēnglù fǎnhuí dào {0}.</value></data>

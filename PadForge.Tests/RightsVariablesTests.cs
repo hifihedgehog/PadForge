@@ -147,7 +147,7 @@ namespace PadForge.Tests
             new object[] { "PadForge.App/Services/GiveBackTask.cs", "private static int Run(string arguments)" },
             // The update helper and PadForge's start after the swap.
             new object[] { "PadForge.App/Services/UpdateService.cs", "internal static Process StartProcess(ProcessStartInfo psi)" },
-            new object[] { "PadForge.App/Services/WebControllerServer.cs", "private static string RunNetsh(string arguments)" },
+            new object[] { "PadForge.App/Services/WebControllerServer.cs", "internal static string RunNetsh(string arguments)" },
             new object[] { "PadForge.App/Services/WebControllerTls.cs", "private static string RunNetsh(string arguments)" },
         };
 

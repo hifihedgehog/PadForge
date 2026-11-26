@@ -76,6 +76,7 @@ namespace PadForge.Services.Automation.Web
 
         private sealed class Behind
         {
+            public string GrantId;
             public AssistantMirror Mirror;
             public CancellationTokenSource Stop;
             public Task Upstream;
@@ -88,7 +89,8 @@ namespace PadForge.Services.Automation.Web
             _now = now ?? (() => DateTimeOffset.UtcNow);
         }
 
-        /// <summary>The grants with a connection to PadForge now, for tests.</summary>
+        /// <summary>The grants with a connection to PadForge now, for tests:
+        /// a web assistant's grant, or a network key and its address.</summary>
         internal IReadOnlyList<string> Connected
         {
             get { lock (_sync) return _behind.Keys.ToList(); }
@@ -257,21 +259,43 @@ namespace PadForge.Services.Automation.Web
         //  The copy behind each web assistant
         // ─────────────────────────────────────────────
 
+        /// <summary>The most addresses one network key keeps a connection
+        /// for at once. A new one past it ends the longest unused.</summary>
+        internal const int MostPerKey = 4;
+
+        /// <summary>A copy per web assistant, and per network key and the
+        /// address it calls from (#600 item 53), so PadForge names the PC
+        /// each call came from.</summary>
+        private static string KeyOf(WebGrant grant) => grant.Network ? grant.Id + "|" + grant.From : grant.Id;
+
         private Behind Ensure(WebGrant grant)
         {
+            List<Behind> gone = new();
+            Behind behind;
             lock (_sync)
             {
-                if (!_behind.TryGetValue(grant.Id, out var behind))
+                string key = KeyOf(grant);
+                if (!_behind.TryGetValue(key, out behind))
                 {
-                    behind = new Behind { Mirror = _makeMirror(grant), Stop = new CancellationTokenSource() };
+                    if (grant.Network)
+                    {
+                        var same = _behind.Where(b => b.Value.GrantId == grant.Id).OrderBy(b => b.Value.LastUsed).ToList();
+                        foreach (var old in same.Take(Math.Max(0, same.Count - MostPerKey + 1)))
+                        {
+                            gone.Add(old.Value);
+                            _behind.Remove(old.Key);
+                        }
+                    }
+                    behind = new Behind { GrantId = grant.Id, Mirror = _makeMirror(grant), Stop = new CancellationTokenSource() };
                     var stop = behind.Stop.Token;
                     var mirror = behind.Mirror;
                     behind.Upstream = Task.Run(() => mirror.RunUpstreamAsync(stop));
-                    _behind[grant.Id] = behind;
+                    _behind[key] = behind;
                 }
                 behind.LastUsed = _now();
-                return behind;
             }
+            foreach (var old in gone) _ = EndAsync(old);
+            return behind;
         }
 
         /// <summary>Ends the connection of every grant that is no longer
@@ -284,7 +308,7 @@ namespace PadForge.Services.Automation.Web
             {
                 var now = _now();
                 foreach (var pair in _behind.ToList())
-                    if (!keep.Contains(pair.Key) || now - pair.Value.LastUsed > IdleClose)
+                    if (!keep.Contains(pair.Value.GrantId) || now - pair.Value.LastUsed > IdleClose)
                     {
                         gone.Add(pair.Value);
                         _behind.Remove(pair.Key);
@@ -316,6 +340,14 @@ namespace PadForge.Services.Automation.Web
     /// <summary>One HTTP request as the web helper reads it.</summary>
     internal sealed record WebRequest(string Method, string Path, string Query, IReadOnlyDictionary<string, string> Headers, string Body)
     {
+        /// <summary>Whether it came to the network door (#600 item 53), the
+        /// listener on this PC's network addresses, rather than the loopback
+        /// one a tunnel reaches.</summary>
+        public bool Network { get; init; }
+
+        /// <summary>The address it came from, as the listener saw it.</summary>
+        public string Remote { get; init; }
+
         public string Header(string name) => Headers != null && Headers.TryGetValue(name, out var value) ? value : null;
 
         internal static IReadOnlyDictionary<string, string> HeadersOf(params (string Name, string Value)[] headers)

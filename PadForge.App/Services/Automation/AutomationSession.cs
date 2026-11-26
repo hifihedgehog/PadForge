@@ -97,6 +97,7 @@ namespace PadForge.Services.Automation
             AutomationClientKind.Plugin => "plugin",
             AutomationClientKind.Assistant => "assistant",
             AutomationClientKind.Web => "web",
+            AutomationClientKind.Network => "network",
             _ => "script",
         };
 
@@ -152,6 +153,21 @@ namespace PadForge.Services.Automation
         /// <summary>The user's answer to the program's first connection,
         /// while one is asked for: true when allowed.</summary>
         internal Task<bool> Consent { get; set; }
+
+        /// <summary>What the session may drive and change (#600 DESIGN-2
+        /// N3), null for all of PadForge: the narrower of what the user kept
+        /// for the program and what its hello asked.</summary>
+        internal ProgramReach Reach { get; set; }
+
+        /// <summary>The reach the hello asked for: its own devices, or null
+        /// when it named none or all.</summary>
+        internal ProgramReach WantedReach { get; private set; }
+
+        /// <summary>The line the question card names a network caller by
+        /// (#600 item 53): its key's name, the address it called from and
+        /// when the key was made. Null for every other caller, whom the card
+        /// names by its program.</summary>
+        internal string AskerLine { get; private set; }
 
         /// <summary>The resume secret an assistant's helper holds across a
         /// pipe drop (#600), or null.</summary>
@@ -505,6 +521,20 @@ namespace PadForge.Services.Automation
                 Wanted = wanted;
             }
 
+            // The reach the program asks for (#600 DESIGN-2 N3): own holds
+            // it to its own devices, which the card names. A hello narrows,
+            // never widens, what the user kept.
+            string reach = request.Get("reach");
+            if (reach != null)
+            {
+                if (reach is not ("own" or "all"))
+                {
+                    Answer(request.Tag, AutomationLine.Error("bad-argument", "reach is own or all"));
+                    return;
+                }
+                WantedReach = reach == "own" ? ProgramReach.OwnDevices : null;
+            }
+
             // An assistant's helper keeps one secret for its whole run, so
             // its undo, rate and waiting requests outlive a pipe drop.
             string resume = request.Get("resume");
@@ -591,6 +621,46 @@ namespace PadForge.Services.Automation
                         () => _handOverReady.TrySetResult(true));
                     return;
                 }
+                case "web" when request.Get("net") != null:
+                {
+                    // An assistant on this network through that helper
+                    // (#600 item 53), by the key the user made. Its name and
+                    // level are the key's in PadForge's own list, and it is
+                    // named with the address it called from.
+                    var door = PadForge.Services.Automation.Web.WebDoor.Of(_hub.Host);
+                    var key = door?.AcceptNetwork(request.Get("token"), Process.Id, request.Get("net"));
+                    var bridge = _hub.Host.McpSession;
+                    string from = System.Net.IPAddress.TryParse(request.Get("from") ?? string.Empty, out var address) ? address.ToString() : null;
+                    if (key == null || bridge == null || from == null)
+                    {
+                        Answer(request.Tag, AutomationLine.Error("denied", "no such network key"));
+                        CloseAfterWritten();
+                        return;
+                    }
+                    var s = PadForge.Resources.Strings.Strings.Instance;
+                    var culture = System.Globalization.CultureInfo.CurrentCulture;
+                    Kind = AutomationClientKind.Network;
+                    ClaimedName = ProgramDeviceDeclaration.Clean(string.Format(culture, s.Net_Caller_Format, key.Name, from), ProgramDeviceDeclaration.LongestName);
+                    // Its devices are the key's wherever it calls from.
+                    IdentityName = ProgramDeviceDeclaration.Clean(key.Name, ProgramDeviceDeclaration.LongestName);
+                    GivenName = null;
+                    AskerLine = string.Format(culture,
+                        key.Made.ToLocalTime().Date == DateTimeOffset.Now.Date ? s.Net_Asks_Today_Format : s.Net_Asks_Format,
+                        key.Name, from, key.Made.ToLocalTime().ToString("d", culture));
+                    Who = new AllowedProgram(PadForge.Services.Automation.Web.WebDoor.NetKey(key.Id), key.Name, "network", null, null, null, key.Level);
+                    if (!_hub.Open(this, out string full))
+                    {
+                        Answer(request.Tag, AutomationLine.Error(full));
+                        CloseAfterWritten();
+                        return;
+                    }
+                    _hub.BeginWeb(this, key.Level, key.Reach);
+                    var netPeer = Peer();
+                    _handOver = (stream, stopping) => bridge(netPeer, stream, stopping);
+                    Opened = true;
+                    Answer(request.Tag, HelloAnswer(), () => _handOverReady.TrySetResult(true));
+                    return;
+                }
                 case "web":
                 {
                     // One web assistant through that helper, by the grant
@@ -610,14 +680,14 @@ namespace PadForge.Services.Automation
                     IdentityName = ClaimedName;
                     GivenName = string.IsNullOrEmpty(grant.Name) ? null : grant.Name;
                     Who = new AllowedProgram(PadForge.Services.Automation.Web.WebDoor.WebKey(grant.Id), ClaimedName, "web", null, null, null,
-                        AutomationLevel.ChangeSettings);
+                        AutomationLevel.ChangeSettings) { Reach = grant.Reach };
                     if (!_hub.Open(this, out string full))
                     {
                         Answer(request.Tag, AutomationLine.Error(full));
                         CloseAfterWritten();
                         return;
                     }
-                    _hub.BeginWeb(this);
+                    _hub.BeginWeb(this, AutomationLevel.ChangeSettings, grant.Reach);
                     var webPeer = Peer();
                     _handOver = (stream, stopping) => bridge(webPeer, stream, stopping);
                     Opened = true;

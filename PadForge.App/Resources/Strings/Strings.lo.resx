@@ -6037,9 +6037,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>ອະນຸຍາດເມື່ອ {0}, ໃຊ້ຄັ້ງຫຼ້າສຸດ {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>ອະນຸຍາດເມື່ອ {0}, ຍັງບໍ່ໄດ້ໃຊ້.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ຖອນສິດ</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel ຂອງມັນເອງເປີດໃຊ້ PadForge ໂດຍກົງ, ບໍ່ຕ້ອງມີທີ່ຢູ່ ຫຼື ການເຂົ້າສູ່ລະບົບຢູ່ນີ້. ສຳເນົາຄຳສັ່ງໃສ່ການຕັ້ງຄ່າຂອງອຸໂມງນັ້ນ.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ສຳເນົາຄຳສັ່ງ</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ບໍ່ດາວໂຫຼດໂປຣແກຣມອຸໂມງໃດ ແລະ ບໍ່ເກັບກະແຈຂອງບໍລິສັດອື່ນ. ຜູ້ຊ່ວຍເວັບເຮັດວຽກໃນລະດັບຂ້າງເທິງ.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>ອະນຸຍາດໃຫ້ {0} ເຮັດວຽກກັບ PadForge ຈາກເວັບບໍ?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>ການເຂົ້າສູ່ລະບົບຂອງມັນກັບໄປຫາ {0}.</value></data>

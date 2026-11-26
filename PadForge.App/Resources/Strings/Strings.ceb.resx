@@ -4856,9 +4856,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Gitugotan {0}, katapusang gigamit {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Gitugotan {0}, wala pa magamit.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawia</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Ang kaugalingon niini nga Secure MCP Tunnel mopadagan direkta sa PadForge, nga walay address o sign-in dinhi. Kopyaha ang command ngadto sa setup sa maong tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopyaha ang command</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Walay tunnel nga programa nga i-download sa PadForge ug walay key sa laing kompanya nga tipigan niini. Mogana ang web assistant sa lebel sa ibabaw.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Tugotan ba ang {0} nga mogamit sa PadForge gikan sa web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Mobalik ang sign-in niini sa {0}.</value></data>

@@ -6742,9 +6742,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Leyft {0}, síðast notað {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Leyft {0}, ekki notað enn.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Afturkalla</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Eigin Secure MCP Tunnel þess keyrir PadForge beint, án vistfangs eða innskráningar hér. Afritaðu skipunina í uppsetningu þeirra ganga.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Afrita skipun</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge sækir ekkert göngaforrit og geymir ekki lykil neins annars fyrirtækis. Vefaðstoðarforrit vinnur á stiginu hér að ofan.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Leyfa {0} að vinna með PadForge af vefnum?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Innskráning þess skilar sér til {0}.</value></data>

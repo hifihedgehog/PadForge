@@ -6742,9 +6742,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} న అనుమతించారు, చివరిగా వాడింది {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} న అనుమతించారు, ఇంకా వాడలేదు.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ఉపసంహరించు</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>దాని సొంత Secure MCP Tunnel PadForge ను నేరుగా నడుపుతుంది, ఇక్కడ చిరునామా, సైన్ ఇన్ అవసరం లేదు. ఆ కమాండ్‌ను ఆ టన్నెల్ సెటప్‌లో కాపీ చేయండి.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>కమాండ్ కాపీ చేయి</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ఏ టన్నెల్ ప్రోగ్రామ్‌నూ డౌన్లోడ్ చేయదు, ఇతర కంపెనీ కీని ఉంచుకోదు. వెబ్ అసిస్టెంట్ పై స్థాయిలో పని చేస్తుంది.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ను వెబ్ నుండి PadForge తో పని చేయడానికి అనుమతించాలా?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>దాని సైన్ ఇన్ {0} కు తిరిగి వస్తుంది.</value></data>

@@ -6009,9 +6009,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Թոյլատրուած՝ {0}, վերջին գործածութիւն՝ {1}։</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Թոյլատրուած՝ {0}, տակաւին գործածուած չէ։</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ետ առնել</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Անոր սեփական Secure MCP Tunnel-ը ուղղակի կը գործարկէ PadForge-ը՝ առանց հոս հասցէի կամ մուտքի։ Պատճէնեցէք հրամանը այդ թունելին կարգաւորման մէջ։</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Պատճէնել հրամանը</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge-ը թունելի ծրագիր չի ներբեռներ եւ ուրիշ ընկերութեան բանալի չի պահեր։ Վեբ օգնականը կ՚աշխատի վերի մակարդակով։</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Թոյլատրե՞լ, որ {0} վեբէն աշխատի PadForge-ի հետ</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Անոր մուտքը կը վերադառնայ {0}։</value></data>

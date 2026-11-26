@@ -6742,9 +6742,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Дазволена {0}, апошні раз выкарыстана {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Дазволена {0}, яшчэ не выкарыстоўвалася.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Адклікаць</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Яго ўласны Secure MCP Tunnel запускае PadForge наўпрост, без адраса і ўваходу тут. Скапіруйце каманду ў налады гэтага тунэля.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Скапіраваць каманду</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge не спампоўвае праграм тунэля і не захоўвае ключа іншай кампаніі. Вэб-памочнік працуе на ўзроўні вышэй.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Дазволіць {0} працаваць з PadForge праз вэб?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Яго ўваход вяртаецца на {0}.</value></data>

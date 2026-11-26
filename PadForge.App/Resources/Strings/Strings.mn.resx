@@ -6038,9 +6038,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Зөвшөөрсөн: {0}, сүүлд ашигласан: {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Зөвшөөрсөн: {0}, одоогоор ашиглаагүй.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Цуцлах</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Түүний өөрийн Secure MCP Tunnel нь PadForge-ийг энд хаяг эсвэл нэвтрэлтгүйгээр шууд ажиллуулдаг. Командыг тэр туннелийн тохиргоонд хуулна уу.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Командыг хуулах</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ямар ч туннелийн програм татдаггүй бөгөөд өөр компанийн түлхүүр хадгалдаггүй. Вэб туслах дээрх түвшинд ажиллана.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} нь вэбээс PadForge-тай ажиллахыг зөвшөөрөх үү?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Нэвтрэлт нь {0} руу буцна.</value></data>

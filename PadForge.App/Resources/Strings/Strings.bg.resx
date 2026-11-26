@@ -6742,9 +6742,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Разрешен {0}, последно използван {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Разрешен {0}, още не е използван.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Отнеми</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Собственият му Secure MCP Tunnel стартира PadForge директно, без адрес или вход тук. Копирайте командата в настройката на този тунел.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Копирай командата</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge не изтегля програма за тунел и не пази ключ на друга компания. Уеб асистент работи на нивото по-горе.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Да разрешите ли на {0} да работи с PadForge от уеб?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Влизането му се връща към {0}.</value></data>

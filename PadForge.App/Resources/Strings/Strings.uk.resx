@@ -6053,9 +6053,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Дозволено {0}, востаннє використано {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Дозволено {0}, ще не використовувався.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Відкликати</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Його власний Secure MCP Tunnel запускає PadForge напряму, без адреси чи входу тут. Скопіюйте команду в налаштування цього тунелю.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Копіювати команду</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge не завантажує жодної програми тунелю й не зберігає ключа іншої компанії. Вебасистент працює на рівні, вказаному вище.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Дозволити {0} працювати з PadForge з вебу?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Його вхід повертається на {0}.</value></data>

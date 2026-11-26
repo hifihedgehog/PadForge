@@ -5986,9 +5986,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permess {0}, użat l-aħħar {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permess {0}, għadu ma ntużax.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Irrevoka</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Is-Secure MCP Tunnel tiegħu stess iħaddem PadForge direttament, mingħajr indirizz jew dħul hawn. Ikkopja l-kmand fis-setup ta' dak it-tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Ikkopja l-kmand</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ma jniżżel l-ebda programm tat-tunnel u ma jżomm l-ebda ċavetta ta' kumpanija oħra. Assistent tal-web jaħdem fil-livell t'hawn fuq.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Tippermetti lil {0} jaħdem ma' PadForge mill-web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Id-dħul tiegħu jirritorna lejn {0}.</value></data>

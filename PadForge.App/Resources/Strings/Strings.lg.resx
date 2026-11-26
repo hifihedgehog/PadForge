@@ -1228,9 +1228,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Kyakkirizibwa {0}, kyasembayo okukozesebwa {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Kyakkirizibwa {0}, tekinnakozesebwa.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ggyawo Olukusa</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel yaakyo yennyini eddukanya PadForge butereevu, awatali ndagiriro wadde okuyingira wano. Koppa ekiragiro mu nteekateeka ya tunnel eyo.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Koppa Ekiragiro</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge tewanula pulogulaamu ya tunnel yonna era tekuuma kisumuluzo kya kampuni ndala yonna. Omuyambi ow'oku mutimbagano akola ku ddaala eriri waggulu.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Okuyingira kwakyo kuddayo ku {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Kyeyita {0}.</value></data>

@@ -1,4 +1,4 @@
-<UserControl common:Reach.Class="Free" x:Class="PadForge.Views.ExtrasPage"
+﻿<UserControl common:Reach.Class="Free" x:Class="PadForge.Views.ExtrasPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -2982,10 +2982,24 @@
                                                 <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap"
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             </StackPanel>
-                                            <Button Grid.Column="1" Style="{StaticResource ExtraButton}" Command="{Binding RemoveCommand}"
-                                                    AutomationProperties.AutomationId="{Binding RemoveId}"
-                                                    AutomationProperties.HelpText="{Binding Name}"
-                                                    Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
+                                            <!-- Its reach (#600 DESIGN-2 N3): All of PadForge, or
+                                                 its own devices and the ones Pick Devices… names.
+                                                 The user's alone, as the page is. -->
+                                            <controls:SettingRow Grid.Column="1" VerticalAlignment="Center">
+                                                <ComboBox Width="280" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
+                                                          AutomationProperties.AutomationId="{Binding ReachId}"
+                                                          AutomationProperties.Name="{Binding Reach_Label, Source={x:Static strings:Strings.Instance}}"
+                                                          AutomationProperties.HelpText="{Binding Name}"/>
+                                                <Button Style="{StaticResource ExtraButton}" Command="{Binding PickCommand}" Margin="14,0,0,0"
+                                                        Visibility="{Binding IsLimited, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                        AutomationProperties.AutomationId="{Binding PickId}"
+                                                        AutomationProperties.HelpText="{Binding Name}"
+                                                        Content="{Binding Reach_Pick, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Button Style="{StaticResource ExtraButton}" Command="{Binding RemoveCommand}" Margin="14,0,0,0"
+                                                        AutomationProperties.AutomationId="{Binding RemoveId}"
+                                                        AutomationProperties.HelpText="{Binding Name}"
+                                                        Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
+                                            </controls:SettingRow>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

@@ -5,15 +5,30 @@
              xmlns:controls="clr-namespace:PadForge.Controls"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings">
     <!--
-        Reach PadForge From the Web (#600 item 11), the last row under the
-        Assistants card's More, in the More's own row look. Off until the user
-        turns it on, and turning it on asks first (the window's
-        confirmation). The user's alone, as everything on the Automation page
-        is. The data context is a WebAccessViewModel.
+        Reach PadForge From the Web (#600 item 11) and Reach PadForge From
+        This Network (#600 item 53), the last rows under the Assistants card's
+        More, in the More's own row look: a label, the line that says what it
+        does, the switch and its reset, as the Assistants-Web board draws
+        them. Each is off until the user turns it on, and turning it on asks
+        first (the window's confirmation). While the network switch is on, the
+        rows under it give this PC's addresses with Copy, the port with
+        Change…, the line on what crosses the network or why the port is not
+        open, the keys made with Revoke, and Add a Network Assistant…. The
+        user's alone, as everything on the Automation page is, so no program
+        turns either on or makes itself a key. The data context is a
+        WebAccessViewModel.
     -->
+    <UserControl.Resources>
+        <!-- The label column of the More's rows, where ExtraRowNote indents. The
+             two switch rows run the card's width, their line between, as the
+             board draws them. -->
+        <GridLength x:Key="NetLabelColumn">272</GridLength>
+    </UserControl.Resources>
     <StackPanel>
-        <controls:SettingRow MinHeight="44">
+        <controls:SettingRow MinHeight="44" Margin="0,6,0,6" controls:SettingRow.Reach="Infinity">
             <TextBlock Text="{Binding Web_Reach_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+            <TextBlock controls:SettingRow.Fills="True" Text="{Binding Web_Reach_Hint, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                       VerticalAlignment="Center" Margin="0,0,14,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             <CheckBox Style="{DynamicResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
                       AutomationProperties.AutomationId="Web_Reach"
                       AutomationProperties.Name="{Binding Web_Reach_Label, Source={x:Static strings:Strings.Instance}}"
@@ -23,6 +38,151 @@
                                          SettingLabel="{Binding Web_Reach_Label, Source={x:Static strings:Strings.Instance}}"
                                          AutomationProperties.AutomationId="Reset_WebAccessViewModel_IsOn_60011" Margin="14,0,0,0"/>
         </controls:SettingRow>
-        <TextBlock Text="{Binding Web_Reach_Hint, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource ExtraRowNote}"/>
+
+        <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+            <controls:SettingRow MinHeight="44" Margin="0,6,0,6" controls:SettingRow.Reach="Infinity">
+                <TextBlock Text="{Binding Net_Reach_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+                <TextBlock controls:SettingRow.Fills="True" Text="{Binding Net_Reach_Hint, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                           VerticalAlignment="Center" Margin="0,0,14,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <CheckBox Style="{DynamicResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                          AutomationProperties.AutomationId="Net_Reach"
+                          AutomationProperties.Name="{Binding Net_Reach_Label, Source={x:Static strings:Strings.Instance}}"
+                          AutomationProperties.HelpText="{Binding Net_Reach_Hint, Source={x:Static strings:Strings.Instance}}"
+                          IsChecked="{Binding IsNetworkOn}"/>
+                <controls:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="IsNetworkOn"
+                                             SettingLabel="{Binding Net_Reach_Label, Source={x:Static strings:Strings.Instance}}"
+                                             AutomationProperties.AutomationId="Reset_WebAccessViewModel_IsNetworkOn_60053" Margin="14,0,0,0"/>
+            </controls:SettingRow>
+        </Border>
+
+        <StackPanel Visibility="{Binding IsNetworkOn, Converter={StaticResource BoolToVisibilityConverter}}">
+            <!-- Address: one line per private address of this PC, each with
+                 its own Copy. -->
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Margin="0,10,0,4">
+                    <Grid MinHeight="44" Visibility="{Binding HasNetworkAddress, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{StaticResource NetLabelColumn}"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Web_Address_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Net_NoAddress, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                                   VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding NetworkAddresses}" IsTabStop="False" AutomationProperties.AutomationId="Net_Addresses">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid MinHeight="44" Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{StaticResource NetLabelColumn}"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Web_Address_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"
+                                               Visibility="{Binding IsFirst, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <TextBox Grid.Column="1" Width="240" IsReadOnly="True" Text="{Binding Address, Mode=OneWay}" VerticalAlignment="Center"
+                                             AutomationProperties.Name="{Binding Web_Address_Label, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Grid.Column="3" Style="{DynamicResource ExtraButton}" Command="{Binding CopyCommand}" Margin="14,0,0,0"
+                                            AutomationProperties.AutomationId="{Binding CopyId}"
+                                            AutomationProperties.HelpText="{Binding Address}"
+                                            Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Port, with Change…, and the line under it: what crosses the
+                 network, or why the port is not open. A taken port is said
+                 and never moved. -->
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Margin="0,10,0,10">
+                    <Grid MinHeight="44">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{StaticResource NetLabelColumn}"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Net_Port_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+                        <TextBox Grid.Column="1" Width="86" IsReadOnly="True" TextAlignment="Right" Text="{Binding NetworkPortText, Mode=OneWay}" VerticalAlignment="Center"
+                                 Typography.NumeralAlignment="Tabular"
+                                 AutomationProperties.AutomationId="Net_Port"
+                                 AutomationProperties.Name="{Binding Net_Port_Label, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Grid.Column="3" Style="{DynamicResource ExtraButton}" Command="{Binding ChangePortCommand}" Margin="14,0,0,0"
+                                AutomationProperties.AutomationId="Net_ChangePort"
+                                AutomationProperties.HelpText="{Binding Net_Port_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                Content="{Binding Net_Port_Change, Source={x:Static strings:Strings.Instance}}"/>
+                    </Grid>
+                    <TextBlock Text="{Binding NetworkLine}" FontSize="13" TextWrapping="Wrap" Margin="272,6,12,0" common:LiveText.Polite="True"
+                               AutomationProperties.AutomationId="Net_Line"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="{Binding NetworkNote}" FontSize="13" TextWrapping="Wrap" Margin="272,6,12,0" common:LiveText.Polite="True"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Visibility="{Binding HasNetworkNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Assistants on This Network: each key with Revoke, then
+                 Add a Network Assistant…. -->
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Margin="0,10,0,4">
+                    <ItemsControl ItemsSource="{Binding NetworkKeys}" IsTabStop="False" AutomationProperties.AutomationId="Net_Keys">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid MinHeight="44" Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{StaticResource NetLabelColumn}"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Net_Keys_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"
+                                               Visibility="{Binding IsFirst, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,14,0">
+                                        <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <!-- Its reach (#600 DESIGN-2 N3), the user's alone. -->
+                                        <ComboBox Width="170" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
+                                                  AutomationProperties.AutomationId="{Binding ReachId}"
+                                                  AutomationProperties.Name="{Binding Reach_Label, Source={x:Static strings:Strings.Instance}}"
+                                                  AutomationProperties.HelpText="{Binding Name}"/>
+                                        <Button Style="{DynamicResource ExtraButton}" Command="{Binding PickCommand}" Margin="14,0,0,0"
+                                                Visibility="{Binding IsLimited, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                AutomationProperties.AutomationId="{Binding PickId}"
+                                                AutomationProperties.HelpText="{Binding Name}"
+                                                Content="{Binding Reach_Pick, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Button Style="{DynamicResource ExtraButton}" Command="{Binding RevokeCommand}" Margin="14,0,0,0"
+                                                AutomationProperties.AutomationId="{Binding RevokeId}"
+                                                AutomationProperties.HelpText="{Binding Name}"
+                                                Content="{Binding Web_Allowed_Revoke, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Grid MinHeight="44" Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{StaticResource NetLabelColumn}"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Net_Keys_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"
+                                   Visibility="{Binding HasNetworkKeys, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Net_Keys_Hint, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                                   VerticalAlignment="Center" Margin="0,0,14,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding AddKeyCommand}"
+                                AutomationProperties.AutomationId="Net_AddKey"
+                                AutomationProperties.HelpText="{Binding Net_Keys_Hint, Source={x:Static strings:Strings.Instance}}"
+                                Content="{Binding Net_Add, Source={x:Static strings:Strings.Instance}}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
     </StackPanel>
 </UserControl>

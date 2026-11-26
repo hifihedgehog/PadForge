@@ -187,6 +187,12 @@ namespace PadForge.Tests
             return Make(id);
         }
 
+        /// <summary>The device each entry belongs to, as a test sets it
+        /// (#600 DESIGN-2 N3).</summary>
+        public readonly Dictionary<string, Guid> Holders = new();
+
+        public Guid? DeviceHolding(string id) => Holders.TryGetValue(id, out var device) ? device : null;
+
         public AssistantPressPlan PlanPress(string id)
         {
             var place = Make(id);

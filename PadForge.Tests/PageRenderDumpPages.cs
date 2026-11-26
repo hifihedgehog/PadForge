@@ -502,7 +502,8 @@ namespace PadForge.Tests
                 dash.RefreshAssistantRowsAsync().Wait();
                 var consent = new DrawnConsent();
                 consent.List.Add(new AllowedProgramView("steer", "Steer Assist", @"AutoHotkey64.exe running C:\Scripts\steer.ahk",
-                    PadForge.Services.Automation.AutomationLevel.SendInputs, null, true));
+                    PadForge.Services.Automation.AutomationLevel.SendInputs, null, true,
+                    new PadForge.Services.Automation.ProgramReach { Devices = new[] { new PadForge.Services.Automation.ReachDevice(Guid.NewGuid(), "Xbox Wireless Controller") } }));
                 consent.List.Add(new AllowedProgramView("pedals", "Pedal Curve", @"python.exe running C:\Scripts\pedals.py",
                     PadForge.Services.Automation.AutomationLevel.SendInputs, now.AddDays(-1), false));
                 dash.AttachConsent(consent);
@@ -2012,6 +2013,50 @@ namespace PadForge.Tests
                 view.Refresh();
                 drawing.Picture(ground, "web-on.png", Board, 2100, () => { page.Show("Automation"); more.IsExpanded = true; });
 
+                // Reach PadForge From This Network (#600 item 53): two
+                // addresses, the port, one key with its reach, then the port
+                // another program holds.
+                PadForge.Services.Automation.Web.NetworkDoor.AddressesSeam = () => new[] { "192.168.1.24", "10.0.0.7" };
+                try
+                {
+                    view.AskToTurnNetworkOn = () => true;
+                    store.SetNetworkPort(47321);
+                    view.IsNetworkOn = true;
+                    store.AddKey(new PadForge.Services.Automation.Web.NetworkKey
+                    {
+                        Id = "k1", Name = "Office PC", Level = PadForge.Services.Automation.AutomationLevel.SendInputs,
+                        Hash = PadForge.Services.Automation.Web.WebSecrets.Hash("pfn_x"), Made = now.AddMinutes(8), LastUsed = now.AddMinutes(11),
+                    });
+                    // The helper runs, as the page sees it once it connected.
+                    door.HelperState = PadForge.Services.Automation.Web.WebHelperState.Running;
+                    door.Take(new System.Text.Json.Nodes.JsonObject { ["t"] = "net", ["state"] = "listening", ["port"] = 47321 });
+                    view.Refresh();
+                    drawing.Picture(ground, "web-network.png", Board, 2600, () => { page.Show("Automation"); more.IsExpanded = true; });
+                    door.Take(new System.Text.Json.Nodes.JsonObject { ["t"] = "net", ["state"] = "taken", ["port"] = 47321 });
+                    view.Refresh();
+                    drawing.Picture(ground, "web-network-taken.png", Board, 2600, () => { page.Show("Automation"); more.IsExpanded = true; });
+                    drawing.PictureWindow(Views.NetworkAssistantDialog.ForKey("Office PC", "pfn_Q7m2vX9tR4wKc8Lz1HbE6yNaJ3sD", "http://192.168.1.24:47321/mcp"),
+                        "web-network-key.png");
+                    view.IsNetworkOn = false;
+                }
+                finally
+                {
+                    PadForge.Services.Automation.Web.NetworkDoor.AddressesSeam = null;
+                }
+
+                // The ChatGPT Secure MCP Tunnel (#600 DESIGN-2 N4), ready.
+                door.KeptSeam = () => @"C:\PadForge\Work\TunnelClient\v0.0.21\tunnel-client.exe";
+                door.PickTunnel(PadForge.Services.Automation.Web.TunnelClient.Key);
+                store.SetRuntimeKey("QkxPQg==");
+                store.SetTunnelId("tunnel_7f3c2a91e4b05d68");
+                door.HelperState = PadForge.Services.Automation.Web.WebHelperState.Running;
+                door.Take(new System.Text.Json.Nodes.JsonObject { ["t"] = "tunnel", ["key"] = PadForge.Services.Automation.Web.TunnelClient.Key, ["state"] = "ready" });
+                view.Refresh();
+                drawing.Picture(ground, "web-chatgpt.png", Board, 2100, () => { page.Show("Automation"); more.IsExpanded = true; });
+                door.PickTunnel("ngrok");
+                door.Take(new System.Text.Json.Nodes.JsonObject { ["t"] = "tunnel", ["key"] = "ngrok", ["state"] = "running", ["address"] = "https://quiet-lake-4b2c.ngrok-free.app" });
+                view.Refresh();
+
                 // The question card of a web sign-in.
                 AutomationRequestCard.KindOf = id => host.Approvals.KindOf(id);
                 try
@@ -2067,6 +2112,23 @@ namespace PadForge.Tests
                     host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(claude,
                         s.Automation_Ask_UseOnly, new[] { s.Automation_Ask_Always }));
                     drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(2)), "assistant-card-change.png");
+                    foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+
+                    // A program that asks to drive only its own devices
+                    // (#600 DESIGN-2 N3), and a change asked from a network
+                    // key (#600 item 53).
+                    var steer = new PadForge.Services.Automation.AutomationProgram("Steer Assist", 4500, "AutoHotkey64.exe", @"C:\AutoHotkey\AutoHotkey64.exe");
+                    host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(steer,
+                        string.Format(s.Automation_Ask_Consent_Format, "Steer Assist", s.Extras_Automation_Level_SendInputs),
+                        new[] { s.Automation_Consent_OwnDevices, s.Automation_Consent_ReadsKeys, s.Automation_Consent_AsksOnceReach })
+                    { Kind = PadForge.Services.Automation.ApprovalKind.Consent,
+                      From = string.Format(s.Automation_Request_From_Format, @"AutoHotkey64.exe running C:\Scripts\steer.ahk, not signed") });
+                    drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(5)), "assistant-card-reach.png");
+                    foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+
+                    host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(claude, s.Automation_Ask_UseOnly, new[] { s.Automation_Ask_Always })
+                    { From = string.Format(s.Net_Asks_Today_Format, "Office PC", "192.168.1.30") });
+                    drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(2)), "assistant-card-network.png");
                     foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
                 }
                 finally

@@ -6742,9 +6742,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Engedélyezve: {0}, legutóbb használva: {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Engedélyezve: {0}, még nem használták.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Visszavonás</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>A saját Secure MCP Tunnel közvetlenül futtatja a PadForge-ot, itt nincs cím vagy bejelentkezés. Másolja a parancsot az alagút beállításába.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Parancs másolása</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>A PadForge nem tölt le alagútprogramot, és nem tart meg más cég kulcsát. A webes asszisztens a fenti szinten dolgozik.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Engedélyezi, hogy a(z) {0} a webről dolgozzon a PadForge-dzsal?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>A bejelentkezése ide tér vissza: {0}.</value></data>

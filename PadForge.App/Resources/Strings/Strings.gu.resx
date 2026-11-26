@@ -6047,9 +6047,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>માન્ય {0}, છેલ્લે વપરાયું {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>માન્ય {0}, હજી વપરાયું નથી.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>પાછું ખેંચો</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>તેનું પોતાનું Secure MCP Tunnel PadForge ને સીધું ચલાવે છે, અહીં સરનામા કે સાઇન ઇન વિના. આદેશ તે ટનલના સેટઅપમાં કૉપિ કરો.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>આદેશ કૉપિ કરો</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge કોઈ ટનલ પ્રોગ્રામ ડાઉનલોડ કરતું નથી અને બીજી કંપનીની કોઈ કી રાખતું નથી. વેબ સહાયક ઉપરના સ્તરે કામ કરે છે.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ને વેબ પરથી PadForge સાથે કામ કરવાની મંજૂરી આપવી છે?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>તેનું સાઇન ઇન {0} પર પાછું ફરે છે.</value></data>

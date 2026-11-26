@@ -1743,9 +1743,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Tinugotan {0}, huring ginamit {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Tinugotan {0}, dai pa nagagamit.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawion</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>An sadiri kaining Secure MCP Tunnel direktang nagpapadalagan kan PadForge, mayong address o sign-in digdi. Kopyahon an command sa setup kan tunnel na iyan.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopyahon an command</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Mayong programang tunnel na dina-download an PadForge asin mayong itinatagong key kan ibang kompanya. An web assistant nagtatrabaho sa level sa itaas.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Nagbabalik an sign-in kaini sa {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Inaapod kaini an sadiri na {0}.</value></data>

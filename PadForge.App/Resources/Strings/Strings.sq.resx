@@ -6001,9 +6001,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Lejuar {0}, përdorur së fundmi {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Lejuar {0}, ende i papërdorur.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revokoje</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel i tij e nis PadForge drejtpërdrejt, pa adresë ose hyrje këtu. Kopjo komandën te konfigurimi i atij tuneli.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopjo komandën</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge nuk shkarkon asnjë program tuneli dhe nuk mban çelësin e asnjë kompanie tjetër. Një asistent në ueb punon në nivelin e mësipërm.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>T'i lejosh {0} të punojë me PadForge nga uebi?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Hyrja e tij kthehet te {0}.</value></data>

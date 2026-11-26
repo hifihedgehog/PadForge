@@ -6717,9 +6717,6 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Toegestaan {0}, laatst gebruikt {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Toegestaan {0}, nog niet gebruikt.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Intrekken</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>De eigen Secure MCP Tunnel draait PadForge rechtstreeks, zonder adres of aanmelding hier. Kopieer de opdracht naar de instellingen van die tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Opdracht kopiëren</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge downloadt geen tunnelprogramma en bewaart geen sleutel van een ander bedrijf. Een webassistent werkt op het niveau hierboven.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Toestaan dat {0} via het web met PadForge werkt?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Zijn aanmelding keert terug naar {0}.</value></data>

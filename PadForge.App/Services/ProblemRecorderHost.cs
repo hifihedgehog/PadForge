@@ -87,6 +87,10 @@ namespace PadForge.Services
                 into.Add((PrivateKind.PairingCode, dashboard.RemoteLinkMyCode));
                 into.Add((PrivateKind.HostName, dashboard.RemoteLinkConnectHost));
             }
+            // A network key while its window shows it once (#600 item 53).
+            into.Add((PrivateKind.Key, PadForge.ViewModels.WebAccessViewModel.ShownKey));
+            // The ChatGPT tunnel's runtime key as its blob (#600 DESIGN-2 N4).
+            into.Add((PrivateKind.Key, PadForge.Services.Automation.Web.WebAccessStore.Shared.RuntimeKeyBlob));
             Input?.CollectPrivateValues(into);
             // Every microphone and speaker Windows lists. A Bluetooth
             // headset carries the name its owner gave it. Kept until Windows

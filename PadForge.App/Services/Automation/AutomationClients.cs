@@ -20,6 +20,11 @@ namespace PadForge.Services.Automation
         /// started (#600 item 11), named by the address its sign-in
         /// returned to.</summary>
         Web,
+
+        /// <summary>An assistant on another PC of this network, through the
+        /// web helper's network door (#600 item 53), named by its key's name
+        /// and the address it called from.</summary>
+        Network,
     }
 
     /// <summary>A program connected over the long-lived pipe.</summary>

@@ -41,6 +41,10 @@ namespace PadForge.Services.Automation
 
         /// <summary>When it last connected, in UTC, or the minimum.</summary>
         [XmlAttribute] public DateTime LastUsed { get; set; }
+
+        /// <summary>Its reach (#600 DESIGN-2 N3) while it is held to its own
+        /// devices and the ones picked. Absent for all of PadForge.</summary>
+        [XmlElement("Reach")] public ReachData Reach { get; set; }
     }
 
     /// <summary>A program, as consent knows it (#600).</summary>
@@ -55,6 +59,10 @@ namespace PadForge.Services.Automation
     {
         public DateTimeOffset Allowed { get; init; } = DateTimeOffset.UtcNow;
         public DateTimeOffset? LastUsed { get; init; }
+
+        /// <summary>What it may drive and change (#600 DESIGN-2 N3), null
+        /// for all of PadForge.</summary>
+        public ProgramReach Reach { get; init; }
     }
 
     /// <summary>
@@ -119,8 +127,14 @@ namespace PadForge.Services.Automation
                 int at = _programs.FindIndex(p => p.Key == program.Key);
                 if (at >= 0)
                 {
+                    // The reach the user set on its row stays (#600
+                    // DESIGN-2 N3), unless the program asks for a narrower one.
                     var old = _programs[at];
-                    _programs[at] = program with { Level = (AutomationLevel)Math.Max((int)old.Level, (int)program.Level), Allowed = old.Allowed };
+                    _programs[at] = program with
+                    {
+                        Level = (AutomationLevel)Math.Max((int)old.Level, (int)program.Level), Allowed = old.Allowed,
+                        Reach = ProgramReach.Narrowest(old.Reach, program.Reach),
+                    };
                 }
                 else
                 {
@@ -174,6 +188,22 @@ namespace PadForge.Services.Automation
             return who;
         }
 
+        /// <summary>Sets a program's reach (#600 DESIGN-2 N3): null for all
+        /// of PadForge, else its own devices and the ones picked. False for
+        /// a program not on the list.</summary>
+        public bool SetReach(string key, ProgramReach reach)
+        {
+            bool changed;
+            lock (_sync)
+            {
+                int at = _programs.FindIndex(p => p.Key == key);
+                changed = at >= 0 && !Equals(_programs[at].Reach, reach);
+                if (changed) _programs[at] = _programs[at] with { Reach = reach };
+            }
+            if (changed) Changed?.Invoke(this, EventArgs.Empty);
+            return changed;
+        }
+
         /// <summary>Takes a program off the list. It asks again the next time
         /// it connects.</summary>
         public bool Remove(string key)
@@ -212,6 +242,7 @@ namespace PadForge.Services.Automation
                     {
                         Allowed = new DateTimeOffset(DateTime.SpecifyKind(d.Allowed, DateTimeKind.Utc)),
                         LastUsed = d.LastUsed > DateTime.MinValue ? new DateTimeOffset(DateTime.SpecifyKind(d.LastUsed, DateTimeKind.Utc)) : null,
+                        Reach = ProgramReach.FromData(d.Reach),
                     });
                     if (_programs.Count >= MostPrograms) break;
                 }
@@ -230,6 +261,7 @@ namespace PadForge.Services.Automation
                 {
                     Key = p.Key, Name = p.Name, Kind = p.Kind, Path = p.Path, Script = p.Script ?? string.Empty, Signer = p.Signer,
                     Level = (int)p.Level, Allowed = p.Allowed.UtcDateTime, LastUsed = p.LastUsed?.UtcDateTime ?? DateTime.MinValue,
+                    Reach = p.Reach?.ToData(),
                 }).ToArray();
             }
         }

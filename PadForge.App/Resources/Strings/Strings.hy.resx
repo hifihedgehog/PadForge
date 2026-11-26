@@ -6017,9 +6017,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Թույլատրվել է {0}, վերջին օգտագործումը՝ {1}։</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Թույլատրվել է {0}, դեռ չի օգտագործվել։</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Հետ կանչել</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Նրա սեփական Secure MCP Tunnel-ը գործարկում է PadForge-ը ուղղակիորեն՝ առանց այստեղ հասցեի կամ մուտքի։ Պատճենեք հրամանը այդ թունելի կարգավորման մեջ։</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Պատճենել հրամանը</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge-ը ոչ մի թունելի ծրագիր չի ներբեռնում և այլ ընկերության բանալի չի պահում։ Վեբ օգնականը աշխատում է վերևի մակարդակով։</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Թույլատրե՞լ «{0}» հասցեին աշխատել PadForge-ի հետ վեբից։</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Նրա մուտքը վերադառնում է {0}-ին։</value></data>

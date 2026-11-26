@@ -6027,9 +6027,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>የተፈቀደው {0}፣ መጨረሻ ጥቅም ላይ የዋለው {1}።</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>የተፈቀደው {0}፣ እስካሁን ጥቅም ላይ አልዋለም።</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ሻር</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>የራሱ Secure MCP Tunnel PadForgeን በቀጥታ ያሄዳል፣ እዚህ ያለ አድራሻ ወይም መግቢያ። ትእዛዙን ወደዚያ ዋሻ ማዋቀሪያ ይቅዱ።</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ትእዛዝ ቅዳ</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ምንም የዋሻ ፕሮግራም አያወርድም፣ የሌላ ኩባንያ ቁልፍም አያስቀምጥም። የድር ረዳት ከላይ ባለው ደረጃ ይሠራል።</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ከድር ከPadForge ጋር እንዲሠራ ይፈቀድ?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>መግቢያው ወደ {0} ይመለሳል።</value></data>

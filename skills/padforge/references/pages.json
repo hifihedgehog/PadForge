@@ -9119,6 +9119,105 @@
     "under_more": false
   },
   {
+    "id": "dialog.dialog/NetworkAssistantDialog/==NetworkAssistantDialog",
+    "page": "Dialogs",
+    "place": "NetworkAssistantDialog",
+    "card": null,
+    "words": "NetworkAssistantDialog",
+    "kind": "dialog",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/NetworkAssistantDialog/CancelButton/Common_Cancel",
+    "page": "Dialogs",
+    "place": "NetworkAssistantDialog",
+    "card": null,
+    "words": "Cancel",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/NetworkAssistantDialog/MakeButton/Net_Add_Make",
+    "page": "Dialogs",
+    "place": "NetworkAssistantDialog",
+    "card": null,
+    "words": "Make Key",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/NetworkAssistantDialog/DoneButton/Net_Key_Done",
+    "page": "Dialogs",
+    "place": "NetworkAssistantDialog",
+    "card": null,
+    "words": "Done",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/NetworkAssistantDialog/KeyPanel/Common_Copy",
+    "page": "Dialogs",
+    "place": "NetworkAssistantDialog",
+    "card": null,
+    "words": "Copy",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/NetworkAssistantDialog/KeyPanel/Common_Copy~2",
+    "page": "Dialogs",
+    "place": "NetworkAssistantDialog",
+    "card": null,
+    "words": "Copy",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.dialog/NetworkPortDialog/Net_Port_Title",
+    "page": "Dialogs",
+    "place": "NetworkPortDialog",
+    "card": null,
+    "words": "Change the Port",
+    "kind": "dialog",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/NetworkPortDialog/Common_Cancel",
+    "page": "Dialogs",
+    "place": "NetworkPortDialog",
+    "card": null,
+    "words": "Cancel",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/NetworkPortDialog/Common_OK",
+    "page": "Dialogs",
+    "place": "NetworkPortDialog",
+    "card": null,
+    "words": "OK",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
     "id": "dialog.dialog/PairDeviceDialog/WiiPair_Title",
     "page": "Dialogs",
     "place": "PairDeviceDialog",
@@ -9203,6 +9302,39 @@
     "words": "Address",
     "kind": "setting",
     "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.dialog/PickDevicesDialog/Reach_Pick_Title",
+    "page": "Dialogs",
+    "place": "PickDevicesDialog",
+    "card": null,
+    "words": "Pick Devices",
+    "kind": "dialog",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/PickDevicesDialog/Common_Cancel",
+    "page": "Dialogs",
+    "place": "PickDevicesDialog",
+    "card": null,
+    "words": "Cancel",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/PickDevicesDialog/Common_OK",
+    "page": "Dialogs",
+    "place": "PickDevicesDialog",
+    "card": null,
+    "words": "OK",
+    "kind": "action",
+    "reach": "yours-alone",
     "why": null,
     "under_more": false
   },

@@ -3431,9 +3431,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permití {0}, último uso {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permití {0}, no usá ainda.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoká</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Su mes Secure MCP Tunnel ta kore PadForge direktamente, sin adrès ni drentamentu aki. Kopia e komando den e instalashon di e tùnel ei.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopia komando</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge no ta deskargá ningun programa di tùnel i no ta warda ningun yabi di otro kompania. Un asistente di web ta traha na e nivel ariba.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Su drentamentu ta bolbe na {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>E ta yama su mes {0}.</value></data>

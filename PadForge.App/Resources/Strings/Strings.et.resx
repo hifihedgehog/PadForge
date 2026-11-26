@@ -6055,9 +6055,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Lubatud {0}, viimati kasutatud {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Lubatud {0}, pole veel kasutatud.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Tühista</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Selle oma Secure MCP Tunnel käitab programmi PadForge otse, siin pole aadressi ega sisselogimist. Kopeerige käsk selle tunneli seadistusse.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopeeri käsk</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ei laadi alla ühtegi tunneliprogrammi ega hoia ühegi teise ettevõtte võtit. Veebiassistent töötab ülaltoodud tasemel.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Kas lubada programmil {0} töötada programmiga PadForge veebist?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Selle sisselogimine naaseb aadressile {0}.</value></data>

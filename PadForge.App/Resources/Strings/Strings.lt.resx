@@ -6052,9 +6052,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Leista {0}, paskutinį kartą naudota {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Leista {0}, dar nenaudota.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Atšaukti leidimą</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Jo paties Secure MCP Tunnel paleidžia „PadForge“ tiesiogiai, be čia nurodomo adreso ar prisijungimo. Nukopijuokite komandą į to tunelio sąranką.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopijuoti komandą</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>„PadForge“ neatsisiunčia jokios tunelio programos ir nesaugo kitos įmonės rakto. Interneto asistentas dirba pirmiau nurodytu lygiu.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Leisti {0} dirbti su „PadForge“ iš interneto?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Jo prisijungimas grįžta į {0}.</value></data>

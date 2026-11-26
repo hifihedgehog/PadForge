@@ -6697,9 +6697,6 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permitido {0}, último uso {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permitido {0}, sin usar todavía.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revocar</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Su propio Secure MCP Tunnel ejecuta PadForge directamente, sin dirección ni inicio de sesión aquí. Copia el comando en la configuración de ese túnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copiar comando</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge no descarga ningún programa de túnel y no guarda la clave de ninguna otra empresa. Un asistente web trabaja en el nivel de arriba.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>¿Permitir que {0} trabaje con PadForge desde la web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Su inicio de sesión vuelve a {0}.</value></data>

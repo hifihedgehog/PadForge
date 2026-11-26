@@ -6742,9 +6742,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Povoleno {0}, naposledy použito {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Povoleno {0}, zatím nepoužito.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Odvolat</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Jeho vlastní Secure MCP Tunnel spouští PadForge přímo, bez adresy a přihlášení tady. Zkopírujte příkaz do nastavení toho tunelu.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopírovat příkaz</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge nestahuje žádný tunelovací program a neuchovává klíč žádné jiné firmy. Webový asistent pracuje na úrovni uvedené výše.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Povolit {0} pracovat s programem PadForge z webu?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Jeho přihlášení se vrací na {0}.</value></data>

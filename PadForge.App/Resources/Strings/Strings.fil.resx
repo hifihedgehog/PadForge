@@ -5863,9 +5863,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Pinayagan {0}, huling ginamit {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Pinayagan {0}, hindi pa nagagamit.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawiin</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Direktang pinapatakbo ng sarili nitong Secure MCP Tunnel ang PadForge, nang walang address o sign-in dito. Kopyahin ang command sa setup ng tunnel na iyon.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopyahin ang Command</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Walang dina-download na tunnel program ang PadForge at walang itinatagong key ng ibang kumpanya. Gumagana ang web assistant sa antas sa itaas.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Payagan ang {0} na makipagtulungan sa PadForge mula sa web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Bumabalik ang sign-in nito sa {0}.</value></data>

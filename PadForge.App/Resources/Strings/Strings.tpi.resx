@@ -2635,9 +2635,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Orait long {0}, las yusim {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Orait long {0}, i no yusim yet.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Rausim orait</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel bilong en yet i ranim PadForge stret, i no gat adres o sain in long hia. Kopim komand i go long setap bilong dispela tanel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopim komand</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge i no daunlodim tanel program na i no holim ki bilong narapela kampani. Asistan long web i wok long lewel antap.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sain in bilong en i go bek long {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Em i kolim em yet {0}.</value></data>

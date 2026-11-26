@@ -6065,9 +6065,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>سُمح به {0}، وآخر استخدام {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>سُمح به {0}، ولم يُستخدم بعد.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>إلغاء السماح</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>يشغّل Secure MCP Tunnel الخاص به PadForge مباشرة، بلا عنوان ولا تسجيل دخول هنا. انسخ الأمر إلى إعداد ذلك النفق.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>نسخ الأمر</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>لا ينزّل PadForge أي برنامج نفق ولا يحتفظ بمفتاح أي شركة أخرى. يعمل مساعد الويب بالمستوى المذكور أعلاه.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>السماح لـ {0} بالعمل مع PadForge من الويب؟</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>يعود تسجيل دخوله إلى {0}.</value></data>

@@ -6818,9 +6818,6 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>chaw'lu'pu': {0}, Qav lo'lu': {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>chaw'lu'pu': {0}, wej lo'lu'.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>chaw' yIteq</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>PadForge QapmoH Secure MCP Tunnel, naDev Daq 'elmeH mIw je poQbe'. ra'meH mu' velqa' yIchenmoH, 'ochvetlh jommeH mIwDaq yIlan.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ra'meH mu' velqa' yIchenmoH</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>'och nIqHom Suqbe' PadForge, 'ej latlh ghom pegh ngoq polbe'. Dung patlhDaq Qap SIr'o' QaHwI'.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>SIr'o'vo' PadForge lo' {0} 'e' Dachaw''a'?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>'elmeH mIwDaj chegh: {0}.</value></data>

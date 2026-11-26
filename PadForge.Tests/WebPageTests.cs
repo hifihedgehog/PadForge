@@ -81,13 +81,14 @@ namespace PadForge.Tests
             page.View.IsOn = true;
             // Before the helper answers: it is starting.
             Assert.Equal(s.Web_Helper_Starting, page.View.TunnelLine);
-            Assert.Equal(new[] { s.Web_Tunnel_None, s.Web_Tunnel_Paste }, page.View.Tunnels.Select(t => t.Name));
+            // The ChatGPT Secure MCP Tunnel is always listed: PadForge fetches it.
+            Assert.Equal(new[] { s.Web_Tunnel_None, "ChatGPT Secure MCP Tunnel", s.Web_Tunnel_Paste }, page.View.Tunnels.Select(t => t.Name));
 
             // The helper runs and reports two tunnel programs.
             SetRunning(page);
             Found(page, ("ngrok", @"C:\Tools\ngrok.exe"), ("cloudflared", @"C:\Program Files (x86)\cloudflared\cloudflared.exe"));
             page.View.Refresh();
-            Assert.Equal(new[] { s.Web_Tunnel_None, "ngrok", "cloudflared", s.Web_Tunnel_Paste }, page.View.Tunnels.Select(t => t.Name));
+            Assert.Equal(new[] { s.Web_Tunnel_None, "ngrok", "cloudflared", "ChatGPT Secure MCP Tunnel", s.Web_Tunnel_Paste }, page.View.Tunnels.Select(t => t.Name));
             Assert.StartsWith(s.Web_Tunnel_Choose, page.View.TunnelLine);
 
             page.View.SelectedTunnel = page.View.Tunnels.Single(t => t.Key == "ngrok");
@@ -153,14 +154,6 @@ namespace PadForge.Tests
             page.View.Refresh();
             Assert.Empty(page.Store.Grants);
             Assert.False(page.View.HasAllowed);
-        }
-
-        [Fact]
-        public void CopyCommand_GivesPadForgesStdioCommand_ForAnAssistantsOwnTunnel()
-        {
-            using var page = new Page();
-            page.View.CopyCommandCommand.Execute(null);
-            Assert.Equal("\"" + Environment.ProcessPath + "\" --mcp", page.Copied.Single());
         }
 
         // ── The helper's reports, as its pipe carries them ──

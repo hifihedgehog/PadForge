@@ -6697,9 +6697,6 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Autorisé {0}, dernière utilisation {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Autorisé {0}, pas encore utilisé.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Révoquer</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Son propre Secure MCP Tunnel exécute PadForge directement, sans adresse ni connexion ici. Copiez la commande dans la configuration de ce tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copier la commande</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ne télécharge aucun programme de tunnel et ne garde la clé d'aucune autre société. Un assistant web travaille au niveau ci-dessus.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Autoriser {0} à travailler avec PadForge depuis le web ?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sa connexion revient vers {0}.</value></data>

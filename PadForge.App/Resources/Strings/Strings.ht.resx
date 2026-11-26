@@ -5370,9 +5370,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Pèmèt {0}, dènye itilizasyon {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Pèmèt {0}, poko itilize.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoke</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Pwòp Secure MCP Tunnel li lanse PadForge dirèkteman, san adrès ni koneksyon isit la. Kopye kòmand lan nan konfigirasyon tinèl sa a.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopye kòmand lan</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge pa telechaje okenn pwogram tinèl epi li pa kenbe kle okenn lòt konpayi. Yon asistan wèb travay nan nivo ki anwo a.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Koneksyon li retounen sou {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Li rele tèt li {0}.</value></data>

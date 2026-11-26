@@ -2305,9 +2305,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>I letem {0}, laswan taem we i yusum {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>I letem {0}, i no yusum yet.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Tekemaot raet</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel blong hem nomo i ronem PadForge stret, i no nidim adres o saen in long ples ia. Kopiem koman i go long setap blong tanel ia.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiem Koman</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge i no daonlodem wan program blong tanel mo i no kipim ki blong wan narafala kampani. Wan asistan long web i wok long level we i stap antap.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Saen in blong hem i go bak long {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Hem i singaot hem wan se {0}.</value></data>

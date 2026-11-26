@@ -2570,9 +2570,15 @@ namespace PadForge.Services
         /// <summary>Adds an inbound allow rule for one port unless a rule of
         /// that name already names the port. Best effort, blocking (netsh
         /// spawns): callers hop to the thread pool. Shared with the head
-        /// tracker's UDP listener (#355).</summary>
-        internal static void EnsureInboundFirewallRule(string ruleName, string protocol, int port)
+        /// tracker's UDP listener (#355) and the network door of the
+        /// assistants (#600 item 53), which names the Private profile alone.
+        /// With no profile the rule holds for every profile, as netsh adds
+        /// it. <paramref name="netsh"/> runs each command, netsh itself when
+        /// null.</summary>
+        internal static void EnsureInboundFirewallRule(string ruleName, string protocol, int port, string profile = null,
+            Func<string, string> netsh = null)
         {
+            netsh ??= RunNetsh;
             try
             {
                 // Delete by name, then add. Reading netsh's own output to
@@ -2590,13 +2596,14 @@ namespace PadForge.Services
                 // away from, so the rules accumulated one per port under the
                 // same name. A delete with no matching rule is an error netsh
                 // reports and this swallows.
-                RunNetsh($"advfirewall firewall delete rule name=\"{ruleName}\"");
-                RunNetsh($"advfirewall firewall add rule name=\"{ruleName}\" dir=in action=allow protocol={protocol} localport={port}");
+                netsh($"advfirewall firewall delete rule name=\"{ruleName}\"");
+                netsh($"advfirewall firewall add rule name=\"{ruleName}\" dir=in action=allow protocol={protocol} localport={port}"
+                    + (profile == null ? string.Empty : " profile=" + profile));
             }
             catch { /* best effort, the app may not be elevated */ }
         }
 
-        private static string RunNetsh(string arguments)
+        internal static string RunNetsh(string arguments)
         {
             // The test host writes no firewall rule (WebControllerTls.OffLimitsForTest).
             if (WebControllerTls.OffLimitsForTest)

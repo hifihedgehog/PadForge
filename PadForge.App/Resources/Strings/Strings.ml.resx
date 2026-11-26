@@ -6022,9 +6022,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} അനുവദിച്ചു, അവസാനം ഉപയോഗിച്ചത് {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} അനുവദിച്ചു, ഇതുവരെ ഉപയോഗിച്ചിട്ടില്ല.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>റദ്ദാക്കുക</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>അതിന്റെ സ്വന്തം Secure MCP Tunnel PadForge-നെ നേരിട്ട് പ്രവർത്തിപ്പിക്കുന്നു, ഇവിടെ വിലാസമോ സൈൻ ഇന്നോ വേണ്ട. കമാൻഡ് ആ ടണലിന്റെ സെറ്റപ്പിലേക്ക് പകർത്തുക.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>കമാൻഡ് പകർത്തുക</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ഒരു ടണൽ പ്രോഗ്രാമും ഡൗൺലോഡ് ചെയ്യുന്നില്ല, മറ്റൊരു കമ്പനിയുടെയും കീ സൂക്ഷിക്കുന്നില്ല. ഒരു വെബ് അസിസ്റ്റന്റ് മുകളിലെ ലെവലിൽ പ്രവർത്തിക്കുന്നു.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0}-നെ വെബിൽ നിന്ന് PadForge-നൊപ്പം പ്രവർത്തിക്കാൻ അനുവദിക്കണോ?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>ഇതിന്റെ സൈൻ ഇൻ {0}-ലേക്ക് മടങ്ങുന്നു.</value></data>

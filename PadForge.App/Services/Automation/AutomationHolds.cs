@@ -101,6 +101,15 @@ namespace PadForge.Services.Automation
             }
         }
 
+        /// <summary>The devices the session holds a control of.</summary>
+        internal List<Guid> DevicesOf(AutomationSession session)
+        {
+            var list = new List<Guid>();
+            foreach (var pair in _holds)
+                if (pair.Value.Owner == session && !list.Contains(pair.Key.Device)) list.Add(pair.Key.Device);
+            return list;
+        }
+
         /// <summary>The controls of a device the session holds.</summary>
         internal List<(char Kind, int Index)> HeldOn(AutomationSession session, Guid device)
         {

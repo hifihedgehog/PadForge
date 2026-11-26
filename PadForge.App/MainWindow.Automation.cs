@@ -206,8 +206,8 @@ namespace PadForge
 
         /// <summary>What the title bar's mark shows: whether it shows, the
         /// count, whether the globe shows, and its words for hover and a
-        /// screen reader.</summary>
-        internal readonly record struct MarkState(bool Shows, int Count, bool Web, string Words);
+        /// screen reader, and whether the network mark shows.</summary>
+        internal readonly record struct MarkState(bool Shows, int Count, bool Web, string Words, bool Network = false);
 
         /// <summary>The mark shows while a program other than a plugin is
         /// connected, on every page but Home and Automation's, which name the
@@ -226,7 +226,11 @@ namespace PadForge
             string words = web.Count == 0 ? string.Format(s.Main_ConnectedMark_Format, JoinNames(local))
                 : local.Count == 0 ? string.Format(s.Main_ConnectedMark_WebOnly_Format, JoinNames(web))
                 : string.Format(s.Main_ConnectedMark_Web_Format, JoinNames(local), JoinNames(web));
-            return new MarkState(!named, count, web.Count > 0, words);
+            // An assistant on this network (#600 item 53) is named with its
+            // address among the others, and the mark carries the network
+            // glyph while one is connected, as the globe marks the web.
+            bool network = (clients ?? Array.Empty<AutomationClient>()).Any(c => c.Kind == AutomationClientKind.Network);
+            return new MarkState(!named, count, web.Count > 0, words, network);
         }
 
         /// <summary>Puts the mark in step with the programs connected and the
@@ -239,8 +243,8 @@ namespace PadForge
             ConnectedMark.Visibility = state.Shows ? Visibility.Visible : Visibility.Collapsed;
             if (state.Count == 0) return;
             // E839 is the board's mark for programs on this PC, E774 the
-            // globe.
-            ConnectedMarkGlyph.Text = state.Web ? "" : "";
+            // globe, EC27 the network's PCs.
+            ConnectedMarkGlyph.Text = state.Web ? "" : state.Network ? "" : "";
             ConnectedMarkCount.Text = state.Count.ToString(System.Globalization.CultureInfo.CurrentCulture);
             ConnectedMark.ToolTip = state.Words;
             System.Windows.Automation.AutomationProperties.SetName(ConnectedMark, state.Words);

@@ -41,7 +41,7 @@ namespace PadForge.Services.Automation
                 // path, and each is its own program.
                 var connected = _sessions?.ConnectedKeys() ?? new HashSet<string>();
                 return _store.Programs.Select(p => new AllowedProgramView(p.Key, p.Name ?? ShortName(p.Path), WhoOf(p), p.Level,
-                    p.LastUsed, connected.Contains(p.Key))).ToList();
+                    p.LastUsed, connected.Contains(p.Key), p.Reach)).ToList();
             }
         }
 
@@ -50,6 +50,13 @@ namespace PadForge.Services.Automation
             if (string.IsNullOrEmpty(key)) return;
             _store.Remove(key);
             _sessions?.Revoke(key);
+        }
+
+        public void SetReach(string key, ProgramReach reach)
+        {
+            if (string.IsNullOrEmpty(key)) return;
+            _store.SetReach(key, reach);
+            _sessions?.SetReach(key, reach);
         }
 
         public void AllowAssistant(string hostKey, string hostName, string program)

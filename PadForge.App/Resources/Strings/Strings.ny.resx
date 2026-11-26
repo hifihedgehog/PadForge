@@ -1985,9 +1985,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Yaloledwa {0}, yagwiritsidwa ntchito komaliza {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Yaloledwa {0}, sinagwiritsidwe ntchito pano.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Chotsani chilolezo</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel yake imayendetsa PadForge mwachindunji, popanda adilesi kapena kulowa pano. Koperani lamulo mu kakhazikitsidwe ka ngalande imeneyo.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Koperani lamulo</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge sitsitsa pulogalamu ya ngalande ndipo sisunga kiyi ya kampani ina. Wothandizira wa pa intaneti amagwira ntchito pa mlingo womwe uli pamwambapa.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Kulowa kwake kumabwerera ku {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Imadzitcha {0}.</value></data>

@@ -6742,9 +6742,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>İzin verildi: {0}, son kullanım: {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>İzin verildi: {0}, henüz kullanılmadı.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Geri al</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Kendi Secure MCP Tunnel aracı PadForge'u doğrudan çalıştırır, burada adres veya oturum açma gerekmez. Komutu o tünelin kurulumuna kopyalayın.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Komutu kopyala</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge hiçbir tünel programı indirmez ve başka hiçbir şirketin anahtarını tutmaz. Bir web asistanı yukarıdaki düzeyde çalışır.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>PadForge ile web'den çalışması için {0} adresine izin verilsin mi?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Oturum açması şuraya döner: {0}.</value></data>

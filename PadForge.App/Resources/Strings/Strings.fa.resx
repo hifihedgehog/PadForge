@@ -6742,9 +6742,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>مجاز شده {0}، آخرین استفاده {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>مجاز شده {0}، هنوز استفاده نشده.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>لغو مجوز</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel خودش PadForge را مستقیم اجرا می‌کند، بدون نشانی یا ورود در اینجا. فرمان را در راه‌اندازی آن تونل کپی کنید.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>کپی فرمان</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge هیچ برنامه تونلی دانلود نمی‌کند و کلید شرکت دیگری را نگه نمی‌دارد. یک دستیار وب در سطح بالا کار می‌کند.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>به {0} اجازه می‌دهید از وب با PadForge کار کند؟</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>ورود آن به {0} برمی‌گردد.</value></data>

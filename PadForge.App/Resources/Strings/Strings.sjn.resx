@@ -6818,9 +6818,6 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Davannen {0}, maethannen medui {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Davannen {0}, ú-maethannen sí.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Haedo davad</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel în iesta PadForge, pen sad egor fennas sí. Lammo i beth na pannad i fela hen.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Lammo peth</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ú-ged curu fela a ú-heb ledil gwaith egel. Sadron lhing maetha vi i pâd or.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Davo {0} maetha PadForge o lhing?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>I fennas dîn dammen na {0}.</value></data>

@@ -6049,9 +6049,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Baimenduta: {0}. Azken erabilera: {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Baimenduta: {0}. Oraindik erabili gabe.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ezeztatu</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Bere Secure MCP Tunnel-ak PadForge zuzenean exekutatzen du, helbiderik edo saio-hasierarik gabe hemen. Kopiatu komandoa tunel horren konfigurazioan.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiatu komandoa</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge-k ez du tunel-programarik deskargatzen eta ez du beste enpresa baten gakorik gordetzen. Web-laguntzaile batek goiko mailan lan egiten du.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} programak PadForge-rekin webetik lan egitea baimendu nahi duzu?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Bere saio-hasiera hona itzultzen da: {0}.</value></data>

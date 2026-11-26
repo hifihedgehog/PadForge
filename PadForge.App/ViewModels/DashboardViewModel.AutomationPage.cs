@@ -712,9 +712,16 @@ namespace PadForge.ViewModels
         {
             AllowedPrograms.Clear();
             foreach (var program in _automationConsent?.Allowed ?? Array.Empty<AllowedProgramView>())
-                AllowedPrograms.Add(new AllowedProgramItem(program, key => _automationConsent?.Remove(key)));
+                AllowedPrograms.Add(new AllowedProgramItem(program, key => _automationConsent?.Remove(key),
+                    (key, reach) => _automationConsent?.SetReach(key, reach), PickReachDevices));
             OnPropertyChanged(nameof(HasAllowedPrograms));
         }
+
+        /// <summary>Pick Devices… on an Allowed row or a network key's row
+        /// (#600 DESIGN-2 N3): the program's name and its reach now in, the
+        /// reach picked out, or null when the user canceled. The window shows
+        /// its dialog.</summary>
+        internal Func<string, ProgramReach, ProgramReach> PickReachDevices { get; set; }
 
         // ─────────────────────────────────────────────
         //  Activity

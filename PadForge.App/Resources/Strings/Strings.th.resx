@@ -6742,9 +6742,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>อนุญาตเมื่อ {0} ใช้ล่าสุด {1}</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>อนุญาตเมื่อ {0} ยังไม่เคยใช้</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>เพิกถอน</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel ของมันรัน PadForge โดยตรง ไม่ต้องมีที่อยู่หรือการลงชื่อเข้าใช้ที่นี่ คัดลอกคำสั่งไปยังการตั้งค่าทันเนลนั้น</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>คัดลอกคำสั่ง</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ไม่ดาวน์โหลดโปรแกรมทันเนลและไม่เก็บคีย์ของบริษัทอื่น ผู้ช่วยบนเว็บทำงานที่ระดับข้างต้น</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>อนุญาตให้ {0} ทำงานร่วมกับ PadForge จากเว็บหรือไม่</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>การลงชื่อเข้าใช้ของมันกลับไปที่ {0}</value></data>

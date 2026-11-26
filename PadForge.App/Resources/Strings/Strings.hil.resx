@@ -2260,9 +2260,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Gintugutan {0}, katapusan nga gingamit {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Gintugutan {0}, wala pa magamit.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawion</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Ang kaugalingon sini nga Secure MCP Tunnel nagapadalagan sang PadForge sing direkta, wala sing address ukon sign-in diri. Kopyaha ang command sa setup sang sina nga tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopyaha ang command</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Wala sing gina-download nga tunnel nga programa ang PadForge kag wala ini nagatipig sang key sang iban nga kompanya. Ang web assistant nagatrabaho sa lebel sa ibabaw.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ang sign-in sini nagabalik sa {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ginatawag sini ang iya kaugalingon nga {0}.</value></data>

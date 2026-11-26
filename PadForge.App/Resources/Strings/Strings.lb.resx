@@ -6013,9 +6013,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Erlaabt den {0}, fir d'lescht benotzt den {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Erlaabt den {0}, nach net benotzt.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Zréckzéien</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Säin eegene Secure MCP Tunnel féiert PadForge direkt aus, ouni Adress oder Umeldung hei. Kopéiert de Befeel an d'Ariichtung vun dësem Tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Befeel kopéieren</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge lued keen Tunnelprogramm erof an hält kee Schlëssel vun enger anerer Firma. E Web-Assistent schafft um Niveau uewendriwwer.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} erlaben, vum Web aus mat PadForge ze schaffen?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Seng Umeldung geet zréck op {0}.</value></data>

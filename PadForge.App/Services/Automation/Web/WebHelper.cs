@@ -30,12 +30,19 @@ namespace PadForge.Services.Automation.Web
     /// and the tunnel the user picked come down, and sign-ins, new token
     /// hashes, the port and the tunnel's address go up.</para>
     ///
-    /// <para>It listens on <c>http://127.0.0.1:port/</c> only. A loopback
+    /// <para>It listens on <c>http://127.0.0.1:port/</c>. A loopback
     /// listener needs no URL reservation from a process without rights, and
     /// its prefix takes a request whatever Host it names (both probed on this
     /// PC on 2026-11-24), so a tunnel's Host reaches it and the front door
     /// checks it. It ends when PadForge closes its pipe, and when PadForge's
     /// process ends however it ends (<see cref="ServerWatch"/>).</para>
+    ///
+    /// <para>While Reach PadForge From This Network is on (#600 item 53) it
+    /// also listens on <c>http://+:port/</c> at the network door's own port,
+    /// a second listener, so a port another program holds never takes the
+    /// loopback door down. PadForge makes the URL reservation for this
+    /// helper's user, whose SID the helper tells it, and says when it is
+    /// made. A port that is taken is reported and never moved.</para>
     /// </summary>
     internal static class WebHelper
     {
@@ -69,7 +76,8 @@ namespace PadForge.Services.Automation.Web
         /// <summary>Runs the helper against a pipe until PadForge closes it or
         /// <paramref name="stopping"/>. A test runs it with its own pipe.</summary>
         internal static async Task<int> RunAsync(string key, string pipeName, CancellationToken stopping,
-            Func<string, CancellationToken, Task<string>> fetchDocument = null, Action<int> listening = null, Action<WebRequest, WebReply> answered = null)
+            Func<string, CancellationToken, Task<string>> fetchDocument = null, Action<int> listening = null, Action<WebRequest, WebReply> answered = null,
+            Func<int, string> networkPrefix = null, WebNetworkSide network = null)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -96,7 +104,7 @@ namespace PadForge.Services.Automation.Web
             // PadForge's own process: when it ends, the run ends, should
             // anything hold PadForge's end of the pipe open after it.
             using var server = ServerWatch.Start(pipe.SafePipeHandle, stop);
-            await using var link = new WebLink(pipe);
+            await using var link = new WebLink(pipe, network);
             var reading = link.RunAsync(stop.Token);
             // The first state says which port PadForge kept and the language.
             await Task.WhenAny(link.FirstState, reading).ConfigureAwait(false);
@@ -105,6 +113,9 @@ namespace PadForge.Services.Automation.Web
             using var listener = Listen(link.WantedPort, out int port);
             if (listener == null) return Refused;
             link.Say(new JsonObject { ["t"] = "port", ["port"] = port });
+            // The user the network door's reservation is made for: this
+            // helper's own.
+            link.Say(new JsonObject { ["t"] = "who", ["sid"] = System.Security.Principal.WindowsIdentity.GetCurrent().User?.Value });
             listening?.Invoke(port);
             link.Say(new JsonObject
             {
@@ -116,17 +127,29 @@ namespace PadForge.Services.Automation.Web
             await using var mcp = new WebMcp(grant => new AssistantMirror(pipeName, padForgeRuns: () => true, host: "web",
                 fileSettings: () => AutomationFileSettings.None)
             {
-                HelloLine = () => "hello kind=web token=" + key + " grant=" + grant.Id,
+                // A network key's copy names the key and the address it
+                // calls from. PadForge takes its name and level from its own
+                // list by that key.
+                HelloLine = () => grant.Network
+                    ? "hello kind=web token=" + key + " net=" + grant.Id + " from=" + grant.From
+                    : "hello kind=web token=" + key + " grant=" + grant.Id,
                 LocalFiles = false,
                 ListChanges = false,
                 StartPadForge = () => false,
             });
-            var front = new WebFront(port, auth, mcp, link, () => link.PublicBase);
-            link.Changed += () => mcp.Sweep(link.Grants.Select(g => g.Id));
+            var front = new WebFront(port, auth, mcp, link, () => link.PublicBase, network: link.Network, webOn: () => link.WebOn);
+            IEnumerable<string> Allowed() => link.Grants.Select(g => g.Id).Concat(link.Network.Keys.Select(k => k.Id));
+            using var door = new NetworkListening(link, front, networkPrefix ?? NetworkDoor.Prefix, answered, stop.Token);
+            link.Changed += () =>
+            {
+                mcp.Sweep(Allowed());
+                door.Apply();
+            };
             link.Port = port;
+            door.Apply();
 
             var serving = ServeAsync(listener, front, stop.Token, answered);
-            using var sweep = new Timer(_ => mcp.Sweep(link.Grants.Select(g => g.Id)), null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+            using var sweep = new Timer(_ => mcp.Sweep(Allowed()), null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
             try
             {
                 await reading.ConfigureAwait(false);
@@ -136,9 +159,99 @@ namespace PadForge.Services.Automation.Web
                 stop.Cancel();
                 link.StopTunnel();
                 try { listener.Stop(); } catch { }
+                door.Dispose();
                 try { await serving.ConfigureAwait(false); } catch { }
             }
             return Done;
+        }
+
+        /// <summary>
+        /// The network door's listener (#600 item 53): open on the port
+        /// PadForge kept while the row is on and PadForge made the
+        /// reservation, closed otherwise. Its state goes up the pipe: open,
+        /// taken by another program, refused by Windows (no reservation), or
+        /// failed. It never moves to another port.
+        /// </summary>
+        private sealed class NetworkListening : IDisposable
+        {
+            private readonly WebLink _link;
+            private readonly WebFront _front;
+            private readonly Func<int, string> _prefix;
+            private readonly Action<WebRequest, WebReply> _answered;
+            private readonly CancellationToken _stopping;
+            private readonly object _sync = new object();
+            private HttpListener _listener;
+            private CancellationTokenSource _serving;
+            private int _port;
+            private string _said;
+
+            public NetworkListening(WebLink link, WebFront front, Func<int, string> prefix, Action<WebRequest, WebReply> answered, CancellationToken stopping)
+            {
+                _link = link;
+                _front = front;
+                _prefix = prefix;
+                _answered = answered;
+                _stopping = stopping;
+            }
+
+            public void Apply()
+            {
+                var net = _link.Network;
+                int want = net.On && _link.NetworkReady && NetworkDoor.IsPort(net.Port) ? net.Port : 0;
+                lock (_sync)
+                {
+                    if (want == _port && (want == 0 || _listener != null)) return;
+                    CloseLocked();
+                    _port = want;
+                    if (want == 0)
+                    {
+                        Say(net.On ? "waiting" : "off", net.Port);
+                        return;
+                    }
+                    string prefix = _prefix(want);
+                    var listener = new HttpListener();
+                    try
+                    {
+                        PadForge.Engine.Common.NetworkListenerGate.EnterPrefix(prefix);
+                        listener.Prefixes.Add(prefix);
+                        listener.Start();
+                    }
+                    catch (HttpListenerException error)
+                    {
+                        listener.Close();
+                        // 5: Windows holds no reservation for this user. 32
+                        // and 183: another program holds the port.
+                        Say(error.ErrorCode switch { 5 => "denied", 32 or 183 => "taken", _ => "failed" }, want);
+                        return;
+                    }
+                    _listener = listener;
+                    _serving = CancellationTokenSource.CreateLinkedTokenSource(_stopping);
+                    _ = ServeAsync(listener, _front, _serving.Token, _answered, network: true);
+                    Say("listening", want);
+                }
+            }
+
+            private void Say(string state, int port)
+            {
+                if (_said == state + port) return;
+                _said = state + port;
+                _link.Say(new JsonObject { ["t"] = "net", ["state"] = state, ["port"] = port });
+            }
+
+            private void CloseLocked()
+            {
+                try { _serving?.Cancel(); } catch (ObjectDisposedException) { }
+                _serving?.Dispose();
+                _serving = null;
+                try { _listener?.Stop(); } catch { }
+                try { _listener?.Close(); } catch { }
+                _listener = null;
+            }
+
+            public void Dispose()
+            {
+                lock (_sync) CloseLocked();
+            }
         }
 
         /// <summary>A listener on 127.0.0.1 at the port PadForge kept, else
@@ -168,7 +281,7 @@ namespace PadForge.Services.Automation.Web
             return null;
         }
 
-        private static int FreePort()
+        internal static int FreePort()
         {
             var probe = new TcpListener(IPAddress.Loopback, 0);
             try
@@ -188,7 +301,8 @@ namespace PadForge.Services.Automation.Web
 
         /// <summary>Takes requests until <paramref name="stopping"/>, each on
         /// its own task.</summary>
-        internal static async Task ServeAsync(HttpListener listener, WebFront front, CancellationToken stopping, Action<WebRequest, WebReply> answered = null)
+        internal static async Task ServeAsync(HttpListener listener, WebFront front, CancellationToken stopping, Action<WebRequest, WebReply> answered = null,
+            bool network = false)
         {
             using var stopsListening = stopping.Register(() => { try { listener.Stop(); } catch { } });
             while (!stopping.IsCancellationRequested)
@@ -196,11 +310,12 @@ namespace PadForge.Services.Automation.Web
                 HttpListenerContext context;
                 try { context = await listener.GetContextAsync().ConfigureAwait(false); }
                 catch (Exception error) when (error is HttpListenerException or ObjectDisposedException or InvalidOperationException) { return; }
-                _ = Task.Run(() => AnswerAsync(context, front, stopping, answered));
+                _ = Task.Run(() => AnswerAsync(context, front, stopping, answered, network));
             }
         }
 
-        private static async Task AnswerAsync(HttpListenerContext context, WebFront front, CancellationToken stopping, Action<WebRequest, WebReply> answered)
+        private static async Task AnswerAsync(HttpListenerContext context, WebFront front, CancellationToken stopping, Action<WebRequest, WebReply> answered,
+            bool network)
         {
             var response = context.Response;
             try
@@ -223,7 +338,11 @@ namespace PadForge.Services.Automation.Web
                         return;
                     }
                 }
-                var asked = new WebRequest(request.HttpMethod, path, request.Url?.Query, headers, body);
+                var asked = new WebRequest(request.HttpMethod, path, request.Url?.Query, headers, body)
+                {
+                    Network = network,
+                    Remote = request.RemoteEndPoint?.Address?.ToString(),
+                };
                 var reply = await front.HandleAsync(asked, stopping).ConfigureAwait(false);
                 // A test's own record of what was asked and answered.
                 try { answered?.Invoke(asked, reply); } catch { }
@@ -286,9 +405,25 @@ namespace PadForge.Services.Automation.Web
         private volatile string _pasted;
         private long _armedUntil;
 
-        public WebLink(Stream stream) => _stream = stream;
+        public WebLink(Stream stream, WebNetworkSide network = null)
+        {
+            _stream = stream;
+            Network = network ?? new WebNetworkSide();
+        }
 
         public event Action Changed;
+
+        /// <summary>The network door as PadForge's last state said it (#600
+        /// item 53).</summary>
+        internal WebNetworkSide Network { get; }
+
+        /// <summary>Whether PadForge made the reservation for the network
+        /// door's port, so the helper may listen on it.</summary>
+        internal bool NetworkReady { get; private set; }
+
+        /// <summary>Whether Reach PadForge From the Web is on. While it is
+        /// off the loopback door answers nothing and no tunnel runs.</summary>
+        internal bool WebOn { get; private set; } = true;
 
         internal Task FirstState => _first.Task;
         internal int WantedPort { get; private set; }
@@ -306,6 +441,7 @@ namespace PadForge.Services.Automation.Web
 
         private int _port;
         private string _wantKey, _wantPath;
+        private string _wantBlob, _wantTunnelId;
         private int _wantRun;
         private string _startedFor;
 
@@ -427,14 +563,46 @@ namespace PadForge.Services.Automation.Web
                     _first.TrySetResult(true);
                     // PadForge hears which armed window the helper now holds.
                     Say(new JsonObject { ["t"] = "seen", ["armedUntil"] = Interlocked.Read(ref _armedUntil) });
+                    WebOn = message["web"] is not JsonValue webOn || !webOn.TryGetValue(out bool on) || on;
+                    if (message["network"] is JsonObject network)
+                    {
+                        Network.Port = network["port"] is JsonValue np && np.TryGetValue(out int netPort) ? netPort : 0;
+                        NetworkReady = network["ready"] is JsonValue nr && nr.TryGetValue(out bool ready) && ready;
+                        Network.Keys = (network["keys"] as JsonArray ?? new JsonArray()).OfType<JsonObject>()
+                            .Select(k => (Id: k["id"]?.GetValue<string>(), Hash: k["hash"]?.GetValue<string>()))
+                            .Where(k => !string.IsNullOrEmpty(k.Id) && !string.IsNullOrEmpty(k.Hash)).ToList();
+                        Network.On = network["on"] is JsonValue no && no.TryGetValue(out bool netOn) && netOn;
+                    }
+                    else
+                    {
+                        Network.On = false;
+                        Network.Keys = null;
+                    }
                     lock (_tunnelSync)
                     {
-                        _wantKey = message["tunnel"]?.GetValue<string>();
+                        _wantKey = WebOn ? message["tunnel"]?.GetValue<string>() : null;
                         _wantPath = message["tunnelPath"]?.GetValue<string>();
                         _wantRun = message["tunnelRun"]?.GetValue<int>() ?? 0;
+                        // tunnel-client's runtime key, as its blob, and its
+                        // tunnel ID (#600 DESIGN-2 N4).
+                        _wantBlob = message["tunnelKeyBlob"]?.GetValue<string>();
+                        _wantTunnelId = message["tunnelId"]?.GetValue<string>();
                     }
                     ApplyTunnel();
                     try { Changed?.Invoke(); } catch { }
+                    break;
+                case "protect":
+                    // The runtime key the user pasted, encrypted here for the
+                    // signed-in user alone (#600 DESIGN-2 N4): PadForge, which
+                    // may run as another account, keeps only the blob.
+                    string plain = message["key"]?.GetValue<string>();
+                    if (!string.IsNullOrEmpty(plain))
+                    {
+                        string blob = null;
+                        try { blob = TunnelClient.Protect(plain); }
+                        catch (System.Security.Cryptography.CryptographicException) { }
+                        Say(new JsonObject { ["t"] = "protected", ["blob"] = blob });
+                    }
                     break;
                 case "answer":
                     string sid = message["sid"]?.GetValue<string>();
@@ -452,7 +620,8 @@ namespace PadForge.Services.Automation.Web
             lock (_tunnelSync)
             {
                 if (_port == 0) return;
-                string want = _wantKey == null ? null : _wantKey + "|" + _wantPath + "|" + _wantRun.ToString(CultureInfo.InvariantCulture);
+                string want = _wantKey == null ? null : _wantKey + "|" + _wantPath + "|" + _wantRun.ToString(CultureInfo.InvariantCulture)
+                    + "|" + _wantTunnelId + "|" + WebSecrets.Hash(_wantBlob);
                 if (want == _startedFor) return;
                 StopTunnelLocked();
                 _startedFor = want;
@@ -465,9 +634,37 @@ namespace PadForge.Services.Automation.Web
                     Report(key, "missing", null, null);
                     return;
                 }
-                Report(key, "starting", null, null);
                 string last = null;
                 System.Diagnostics.Process started = null;
+                if (kind.Vendor)
+                {
+                    // tunnel-client (#600 DESIGN-2 N4): it runs PadForge's
+                    // stdio copy itself, on the key and the tunnel ID.
+                    string runtimeKey = TunnelClient.Unprotect(_wantBlob);
+                    string tunnelId = _wantTunnelId;
+                    if (runtimeKey == null || !TunnelClient.IsTunnelId(tunnelId))
+                    {
+                        Report(key, "needs", null, null);
+                        return;
+                    }
+                    Report(key, "starting", null, null);
+                    started = WebTunnels.StartVendor(path, Environment.ProcessPath, runtimeKey, tunnelId, WebHelper.FreePort(),
+                        ready => Report(key, ready ? "ready" : "running", null, null),
+                        line => last = line,
+                        code =>
+                        {
+                            lock (_tunnelSync)
+                            {
+                                if (_tunnelKey != key || !ReferenceEquals(_tunnel, started)) return;
+                                _tunnel = null;
+                            }
+                            Report(key, "stopped", null, Last(last));
+                        });
+                    _tunnel = started;
+                    if (_tunnel == null) Report(key, "failed", null, null);
+                    return;
+                }
+                Report(key, "starting", null, null);
                 started = WebTunnels.Start(kind, path, _port,
                     address =>
                     {

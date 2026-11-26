@@ -100,6 +100,14 @@ namespace PadForge.Services.Automation
                       + ". Only the user can raise it, on PadForge's Automation page."
                     : "Automation is off in PadForge. Only the user can turn it on, on the Automation page under Extras.");
             }
+            else if (caller.Session?.Reach != null && AssistantTools.UnderReach(tool) == ReachVerdict.Refused)
+            {
+                // A program held to its own devices and the ones picked
+                // (#600 DESIGN-2 N3) reads all of PadForge and changes none
+                // of the rest of it.
+                outcome = AssistantOutcome.Failure("outside-reach", "This program's reach is its own devices and the ones the user picked, so "
+                    + name + ", which acts on the rest of PadForge, is refused. It still reads every device. Only the user can widen its reach, on PadForge's Automation page.");
+            }
             else if (!TakeRate(caller.Key))
             {
                 outcome = AssistantOutcome.Failure("rate-limited", "Too many calls a second. Wait a moment, then call again.");
@@ -284,7 +292,9 @@ namespace PadForge.Services.Automation
             // (AutomationApprovals.MostPerProgram and MostInAll). A question
             // past either is never put: the approvals answer it TooMany at
             // once, and the call is refused in plain words.
-            var request = new ApprovalRequest(who, ask.Title, ask.Detail);
+            // A caller on this network is named by its key, where it called
+            // from and when the key was made (#600 item 53).
+            var request = new ApprovalRequest(who, ask.Title, ask.Detail) { From = invocation.Caller.Session?.AskerLine };
             // A helper with a resume secret keeps its question across a
             // pipe drop. The card's own two minutes end it.
             var session = invocation.Caller.Session;

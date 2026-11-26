@@ -5860,9 +5860,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Toegelaat {0}, laas gebruik {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Toegelaat {0}, nog nie gebruik nie.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Trek terug</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Sy eie Secure MCP Tunnel laat PadForge direk loop, sonder adres of aanmelding hier. Kopieer die opdrag na daardie tonnel se opstelling.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopieer opdrag</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge laai geen tonnelprogram af nie en hou nie 'n ander maatskappy se sleutel nie. 'n Webassistent werk op die vlak hierbo.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Laat {0} toe om vanaf die web met PadForge te werk?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sy aanmelding keer terug na {0}.</value></data>

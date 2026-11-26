@@ -6020,9 +6020,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} ರಂದು ಅನುಮತಿಸಲಾಗಿದೆ, ಕೊನೆಯ ಬಳಕೆ {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} ರಂದು ಅನುಮತಿಸಲಾಗಿದೆ, ಇನ್ನೂ ಬಳಸಿಲ್ಲ.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ಹಿಂಪಡೆಯಿರಿ</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>ಅದರ ಸ್ವಂತ Secure MCP Tunnel PadForge ಅನ್ನು ನೇರವಾಗಿ ಚಲಾಯಿಸುತ್ತದೆ, ಇಲ್ಲಿ ವಿಳಾಸ ಅಥವಾ ಸೈನ್ ಇನ್ ಇಲ್ಲದೆ. ಆ ಟನೆಲ್‌ನ ಸೆಟಪ್‌ಗೆ ಕಮಾಂಡ್ ಅನ್ನು ನಕಲಿಸಿ.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ಕಮಾಂಡ್ ನಕಲಿಸಿ</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ಯಾವುದೇ ಟನೆಲ್ ಪ್ರೋಗ್ರಾಂ ಡೌನ್‌ಲೋಡ್ ಮಾಡುವುದಿಲ್ಲ ಮತ್ತು ಬೇರೆ ಯಾವ ಕಂಪನಿಯ ಕೀಯನ್ನೂ ಇರಿಸಿಕೊಳ್ಳುವುದಿಲ್ಲ. ವೆಬ್ ಸಹಾಯಕ ಮೇಲಿನ ಹಂತದಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ಗೆ ವೆಬ್‌ನಿಂದ PadForge ನೊಂದಿಗೆ ಕೆಲಸ ಮಾಡಲು ಅನುಮತಿಸುವಿರಾ?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>ಅದರ ಸೈನ್ ಇನ್ {0} ಗೆ ಹಿಂದಿರುಗುತ್ತದೆ.</value></data>

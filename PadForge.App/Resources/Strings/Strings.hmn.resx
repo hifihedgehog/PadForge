@@ -2092,9 +2092,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Tso cai {0}, siv zaum kawg {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Tso cai {0}, tseem tsis tau siv.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Rho tawm</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Nws tus kheej Secure MCP Tunnel khiav PadForge ncaj qha, tsis muaj chaw nyob los yog sign in ntawm no. Theej cov lus txib rau hauv lub tunnel ntawd qhov kev teeb.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Theej cov lus txib</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge tsis rub tawm ib lub tunnel program twg thiab tsis khaws lwm lub tuam txhab tus key. Ib lub web assistant ua hauj lwm raws li theem saum toj no.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Nws kev sign in rov qab mus rau {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Nws hu nws tus kheej ua {0}.</value></data>

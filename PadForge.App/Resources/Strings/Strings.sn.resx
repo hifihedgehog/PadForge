@@ -1967,9 +1967,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Yakabvumirwa {0}, yakashandiswa pekupedzisira {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Yakabvumirwa {0}, haisati yashandiswa.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bvisa mvumo</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel yayo pachayo inomhanyisa PadForge zvakananga, pasina kero kana kupinda pano. Kopa murayiro uise mumagadzirirwo e-tunnel iyoyo.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopa murayiro</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge haidhawunirodhi chirongwa che-tunnel uye haichengeti kiyi yeimwe kambani. Mubatsiri wewebhu anoshanda padanho riri pamusoro.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Kupinda kwayo kunodzokera ku-{0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Inozviti {0}.</value></data>

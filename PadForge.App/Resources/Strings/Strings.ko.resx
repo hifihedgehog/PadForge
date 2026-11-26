@@ -6697,9 +6697,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0}에 허용됨, 마지막 사용 {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0}에 허용됨, 아직 사용하지 않음.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>취소</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>자체 Secure MCP Tunnel이 PadForge를 직접 실행하므로 여기서 주소나 로그인이 필요 없습니다. 명령을 복사해 그 터널의 설정에 넣으세요.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>명령 복사</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge는 터널 프로그램을 다운로드하지 않고 다른 회사의 키도 보관하지 않습니다. 웹 어시스턴트는 위의 수준으로 작동합니다.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0}이(가) 웹에서 PadForge와 함께 작동하도록 허용하시겠습니까?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>로그인이 {0}(으)로 돌아갑니다.</value></data>

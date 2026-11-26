@@ -6053,9 +6053,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Dibenarkan {0}, terakhir digunakan {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Dibenarkan {0}, belum digunakan.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Tarik Balik</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel miliknya menjalankan PadForge terus, tanpa alamat atau log masuk di sini. Salin arahan ke dalam persediaan terowong itu.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Salin Arahan</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge tidak memuat turun sebarang program terowong dan tidak menyimpan kunci syarikat lain. Pembantu web berfungsi pada tahap di atas.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Benarkan {0} berfungsi dengan PadForge dari web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Log masuknya kembali ke {0}.</value></data>

@@ -1653,9 +1653,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Faʻatagaina {0}, faʻaaogā mulimuli {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Faʻatagaina {0}, e leʻi faʻaaogāina.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Soloia</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>O lona lava Secure MCP Tunnel e faʻagaoioi saʻo PadForge, e aunoa ma se tuatusi poʻo se ulufale iinei. Kopi le poloaiga i le faʻatulagaga o lena tunnel.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopi le Poloaiga</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>E le sii mai e PadForge se polokalame tunnel ma e le teu se ki a se isi kamupani. E galue se fesoasoani upega i le tulaga o loʻo i luga.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>E toe foʻi lona ulufale i {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>E taʻua e ia o ia lava o {0}.</value></data>

@@ -1788,9 +1788,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>E dumeletšwe {0}, e šomišitšwe la mafelelo {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>E dumeletšwe {0}, ga se ya šomišwa ga bjale.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Tšea morago</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel ya yona ka boyona e šomiša PadForge thwii, ntle le aterese goba go tsena mo. Kopiša taelo ka go peakanyo ya thanele yeo.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiša taelo</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ga e laolle lenaneo la thanele gomme ga e boloke khii ya khamphani ye nngwe. Mothuši wa wepe o šoma ka legato le le lego ka godimo.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Go tsena ga yona go boela go {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>E ipitša {0}.</value></data>

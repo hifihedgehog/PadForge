@@ -18,8 +18,10 @@ namespace PadForge.ViewModels
     /// <param name="Level">The level it asked for and was allowed.</param>
     /// <param name="LastUsed">When it last connected, or null for never.</param>
     /// <param name="ConnectedNow">Whether it is connected now.</param>
+    /// <param name="Reach">What it may drive and change (#600 DESIGN-2 N3),
+    /// null for all of PadForge.</param>
     internal sealed record AllowedProgramView(string Key, string Name, string Who, AutomationLevel Level,
-        DateTimeOffset? LastUsed, bool ConnectedNow);
+        DateTimeOffset? LastUsed, bool ConnectedNow, ProgramReach Reach = null);
 
     /// <summary>
     /// The consent store the Automation page shows and changes (#600 items 5
@@ -55,5 +57,10 @@ namespace PadForge.ViewModels
         /// <param name="hostKey">The program's key in AssistantHosts.</param>
         /// <param name="program">The program's own file, as Add gave it.</param>
         void ForgetAssistant(string hostKey, string program);
+
+        /// <summary>The user set a program's reach on its row (#600 DESIGN-2
+        /// N3): null for all of PadForge, else its own devices and the ones
+        /// picked. Its open sessions work within it at once.</summary>
+        void SetReach(string key, ProgramReach reach) { }
     }
 }

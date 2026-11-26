@@ -1641,9 +1641,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>E dumelletswe {0}, e sebedisitswe la ho qetela {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>E dumelletswe {0}, ha e eso sebediswe.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Hlakola tumello</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel ya yona e sebedisa PadForge ka kotloloho, ntle le aterese kapa ho kena mona. Kopitsa taelo ho ditlhophiso tsa thanele eo.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopitsa taelo</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ha e jarolle lenaneo la thanele mme ha e boloke senotlolo sa khampani e nngwe. Mothusi wa websaete o sebetsa boemong bo ka hodimo.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ho kena ha yona ho kgutlela ho {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>E ipitsa {0}.</value></data>

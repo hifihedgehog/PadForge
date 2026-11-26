@@ -6052,9 +6052,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>បានអនុញ្ញាត {0} បានប្រើចុងក្រោយ {1}។</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>បានអនុញ្ញាត {0} មិនទាន់បានប្រើនៅឡើយ។</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ដកសិទ្ធិ</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel ផ្ទាល់របស់វាដំណើរការ PadForge ដោយផ្ទាល់ ដោយគ្មានអាសយដ្ឋាន ឬការចូលនៅទីនេះ។ ចម្លងពាក្យបញ្ជាទៅក្នុងការរៀបចំរបស់ទុនណែលនោះ។</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ចម្លងពាក្យបញ្ជា</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge មិនទាញយកកម្មវិធីទុនណែលណាមួយ ហើយមិនរក្សាសោរបស់ក្រុមហ៊ុនផ្សេងទេ។ ជំនួយការវេបធ្វើការនៅកម្រិតខាងលើ។</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>អនុញ្ញាតឱ្យ {0} ធ្វើការជាមួយ PadForge ពីវេប?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>ការចូលរបស់វាត្រឡប់ទៅ {0}។</value></data>

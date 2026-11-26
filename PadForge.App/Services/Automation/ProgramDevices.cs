@@ -317,6 +317,25 @@ namespace PadForge.Services.Automation
             public bool Asleep;
         }
 
+        /// <summary>Whether a device is one the session's program added (#600
+        /// DESIGN-2 N3): one the session owns, or one another open session of
+        /// the same program owns, by the program's consent key, never by the
+        /// name it claims. A device no session owns now is no one's own until
+        /// the program declares it again.</summary>
+        internal bool IsOwn(Guid device, AutomationSession session)
+        {
+            if (session == null) return false;
+            lock (_sync)
+            {
+                if (!_entries.TryGetValue(device, out var e) || e.BuiltIn) return false;
+                var owner = e.Owner;
+                if (owner == null) return false;
+                if (owner == session) return true;
+                string key = session.Who?.Key;
+                return key != null && string.Equals(owner.Who?.Key, key, StringComparison.Ordinal);
+            }
+        }
+
         private readonly object _sync = new object();
         private readonly Dictionary<Guid, Entry> _entries = new();
         private readonly Func<long> _nowMs;

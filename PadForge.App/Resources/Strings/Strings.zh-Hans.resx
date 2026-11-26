@@ -6697,9 +6697,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>于 {0} 允许，上次使用 {1}。</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>于 {0} 允许，尚未使用。</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>撤销</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>它自己的 Secure MCP Tunnel 直接运行 PadForge，不需要这里的地址或登录。请把该命令复制到那个隧道的设置中。</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>复制命令</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge 不下载任何隧道程序，也不保存其他公司的密钥。网络助手以上方的级别工作。</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>允许 {0} 从网络与 PadForge 配合工作吗？</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>它的登录返回到 {0}。</value></data>

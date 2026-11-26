@@ -6742,9 +6742,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Dovoljeno {0}, nazadnje uporabljeno {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Dovoljeno {0}, še ni bil uporabljen.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Prekliči</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Njegov lasten Secure MCP Tunnel zažene PadForge neposredno, brez naslova ali prijave tukaj. Kopirajte ukaz v nastavitev tega tunela.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiraj ukaz</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ne prenese nobenega programa za tunel in ne hrani ključa nobenega drugega podjetja. Spletni pomočnik deluje na zgornji ravni.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Ali programu {0} dovolite sodelovanje s programom PadForge iz spleta?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Njegova prijava se vrne na {0}.</value></data>

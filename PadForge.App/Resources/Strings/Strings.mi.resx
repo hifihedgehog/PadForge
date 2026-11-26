@@ -2625,9 +2625,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>I whakaaetia {0}, i whakamahia whakamutunga {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>I whakaaetia {0}, kāore anō kia whakamahia.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Unuhia</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Ka whakahaere tōna ake Secure MCP Tunnel i a PadForge tonu, kāore he wāhitau, he takiuru rānei i konei. Tāruatia te tono ki te whakaritenga o taua kauhanga.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Tāruatia te tono</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Kāore a PadForge e tikiake i tētahi hōtaka kauhanga, kāore hoki e pupuri i te kī o tētahi atu kamupene. Ka mahi tētahi kaiāwhina tukutuku i te taumata i runga ake.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ka hoki tōna takiuru ki {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ka karanga ia i a ia anō ko {0}.</value></data>

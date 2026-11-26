@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -522,12 +523,40 @@ namespace PadForge.ViewModels
         public override string ToString() => Name + ". " + Line;
     }
 
+    /// <summary>
+    /// A program's reach as a row offers and says it (#600 DESIGN-2 N3): the
+    /// two choices, All of PadForge and Only Its Own Devices and These, and
+    /// the line that names the devices picked and says reads stay whole.
+    /// </summary>
+    public static class ReachWords
+    {
+        /// <summary>The choices, in the order the list shows them.</summary>
+        public static IReadOnlyList<string> Choices => new[] { Strings.Instance.Reach_All, Strings.Instance.Reach_Own };
+
+        /// <summary>What a limited reach drives, in a sentence, or null for
+        /// all of PadForge.</summary>
+        internal static string Line(ProgramReach reach)
+        {
+            if (reach == null) return null;
+            var s = Strings.Instance;
+            var names = reach.Devices.Select(d => ShownText.Clean(d.Name ?? string.Empty)).Where(n => n.Length > 0).Distinct().ToList();
+            return names.Count == 0 ? s.Reach_Line_Own : string.Format(CultureInfo.CurrentCulture, s.Reach_Line_Format, MainWindow.JoinNames(names));
+        }
+    }
+
     /// <summary>One program the user allowed, as the Allowed Programs card
-    /// lists it (#600 items 5 and 16), with Remove.</summary>
+    /// lists it (#600 items 5 and 16), with its reach (#600 DESIGN-2 N3),
+    /// Pick Devices… while it is held to its own devices, and Remove.</summary>
     public sealed class AllowedProgramItem
     {
-        internal AllowedProgramItem(AllowedProgramView program, Action<string> remove)
+        private readonly Action<string, ProgramReach> _setReach;
+        private readonly ProgramReach _reach;
+
+        internal AllowedProgramItem(AllowedProgramView program, Action<string> remove,
+            Action<string, ProgramReach> setReach = null, Func<string, ProgramReach, ProgramReach> pick = null)
         {
+            _setReach = setReach;
+            _reach = program.Reach;
             Key = program.Key;
             Name = ShownText.Clean(program.Name ?? string.Empty);
             var s = Strings.Instance;
@@ -544,8 +573,40 @@ namespace PadForge.ViewModels
                 : s.Automation_Allowed_NeverUsed;
             string who = ShownText.Clean(program.Who ?? string.Empty);
             Line = string.Format(CultureInfo.CurrentCulture, s.Automation_Allowed_Line_Format, who, level, when).Trim();
+            // A local program can still send commands through the control
+            // pipe, which asks no consent, so its row says so.
+            if (_reach != null) Line += " " + ReachWords.Line(_reach) + " " + s.Reach_LocalCommands;
             RemoveCommand = new RelayCommand(() => remove?.Invoke(Key));
+            PickCommand = new RelayCommand(() =>
+            {
+                var picked = pick?.Invoke(Name, _reach ?? ProgramReach.OwnDevices);
+                if (picked != null) _setReach?.Invoke(Key, picked);
+            });
         }
+
+        /// <summary>The reach list's choices.</summary>
+        public IReadOnlyList<string> ReachChoices => ReachWords.Choices;
+
+        /// <summary>0 for All of PadForge, 1 for Only Its Own Devices and
+        /// These. Picking the second keeps the devices picked before.</summary>
+        public int SelectedReach
+        {
+            get => _reach == null ? 0 : 1;
+            set
+            {
+                if (value == SelectedReach) return;
+                _setReach?.Invoke(Key, value == 0 ? null : _reach ?? ProgramReach.OwnDevices);
+            }
+        }
+
+        /// <summary>Whether Pick Devices… shows.</summary>
+        public bool IsLimited => _reach != null;
+
+        public RelayCommand PickCommand { get; }
+
+        public string ReachId => "Automation_AllowedReach_" + LiveIdOf(Key);
+
+        public string PickId => "Automation_AllowedPick_" + LiveIdOf(Key);
 
         internal string Key { get; }
 

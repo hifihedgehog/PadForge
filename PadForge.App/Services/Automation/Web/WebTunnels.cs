@@ -26,6 +26,12 @@ namespace PadForge.Services.Automation.Web
 
         /// <summary>The folders it installs to beside the PATH.</summary>
         internal Func<IEnumerable<string>> Folders { get; init; }
+
+        /// <summary>OpenAI's tunnel-client (#600 DESIGN-2 N4): it serves no
+        /// address, starts PadForge's stdio copy itself, takes a runtime key
+        /// and a tunnel ID, and PadForge fetches it when it is not on the
+        /// PATH.</summary>
+        internal bool Vendor { get; init; }
     }
 
     /// <summary>A tunnel program found on this PC.</summary>
@@ -33,9 +39,11 @@ namespace PadForge.Services.Automation.Web
 
     /// <summary>
     /// The tunnel programs the web helper can start (#600 item 11), the ones
-    /// a user already has: cloudflared, devtunnel, ngrok and tailscale.
-    /// PadForge downloads none and keeps no key of theirs: each one runs on
-    /// its own sign-in. The helper starts the one the user picked, with the
+    /// a user already has: cloudflared, devtunnel, ngrok and tailscale, each
+    /// on its own sign-in, and OpenAI's tunnel-client (#600 DESIGN-2 N4),
+    /// which PadForge fetches and checks when the user picks it and which
+    /// runs on the runtime key the user pastes (<see cref="TunnelClient"/>).
+    /// The helper starts the one the user picked, with the
     /// user's rights (it runs without PadForge's), as its own child in the job
     /// the plugin launcher gave it, so the tunnel ends with the helper and
     /// with PadForge, and reads the public address from what the program
@@ -107,6 +115,13 @@ namespace PadForge.Services.Automation.Web
                 Arguments = port => "funnel " + port,
                 AddressIn = line => Https.Matches(line).Select(m => m.Value).FirstOrDefault(u => u.EndsWith(".ts.net", StringComparison.OrdinalIgnoreCase) || u.Contains(".ts.net:", StringComparison.OrdinalIgnoreCase)),
                 Folders = () => new[] { ProgramFiles(false, "Tailscale") },
+            },
+            new WebTunnelKind(TunnelClient.Key, "ChatGPT Secure MCP Tunnel", TunnelClient.ExeName, KeepsAddress: true)
+            {
+                Arguments = _ => null,
+                AddressIn = _ => null,
+                Folders = () => Array.Empty<string>(),
+                Vendor = true,
             },
         };
 
@@ -201,6 +216,78 @@ namespace PadForge.Services.Automation.Web
             }
             catch (InvalidOperationException) { }
             return process;
+        }
+
+        /// <summary>
+        /// Starts tunnel-client (#600 DESIGN-2 N4) for PadForge's stdio copy,
+        /// with the runtime key and the tunnel ID in its environment alone,
+        /// and its health server on a loopback port of its own. Reports each
+        /// line it writes, and whether its /readyz says ready, read every
+        /// two seconds while it runs. Null when it could not start.
+        /// </summary>
+        internal static Process StartVendor(string exe, string padForge, string runtimeKey, string tunnelId, int healthPort,
+            Action<bool> ready, Action<string> line, Action<int> exited)
+        {
+            if (OffLimitsForTest && StartSeam == null) return null;
+            var info = new ProcessStartInfo(exe, TunnelClient.CommandLine(TunnelClient.Arguments(padForge, healthPort)))
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                WorkingDirectory = Path.GetDirectoryName(exe) ?? Environment.CurrentDirectory,
+            };
+            info.Environment.Remove(WebHelper.KeyVariable);
+            info.Environment[TunnelClient.KeyVariable] = runtimeKey;
+            info.Environment[TunnelClient.TunnelVariable] = tunnelId;
+            Process process;
+            try
+            {
+                process = StartSeam != null ? StartSeam(info) : Process.Start(info);
+            }
+            catch (Exception error) when (error is System.ComponentModel.Win32Exception or InvalidOperationException or IOException)
+            {
+                return null;
+            }
+            if (process == null) return null;
+            process.EnableRaisingEvents = true;
+            process.OutputDataReceived += (_, e) => { if (e.Data != null) line?.Invoke(e.Data); };
+            process.ErrorDataReceived += (_, e) => { if (e.Data != null) line?.Invoke(e.Data); };
+            var watch = new CancellationTokenSource();
+            process.Exited += (_, _) =>
+            {
+                try { watch.Cancel(); } catch (ObjectDisposedException) { }
+                int code = -1;
+                try { code = process.ExitCode; } catch (InvalidOperationException) { }
+                exited?.Invoke(code);
+            };
+            try
+            {
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+            }
+            catch (InvalidOperationException) { }
+            _ = WatchReadyAsync(healthPort, ready, watch.Token);
+            return process;
+        }
+
+        /// <summary>Reads tunnel-client's /readyz on its loopback health port
+        /// every two seconds and says when the answer changes.</summary>
+        private static async Task WatchReadyAsync(int port, Action<bool> ready, CancellationToken stop)
+        {
+            using var http = new System.Net.Http.HttpClient { Timeout = TimeSpan.FromSeconds(2) };
+            bool? said = null;
+            while (!stop.IsCancellationRequested)
+            {
+                bool now;
+                try { now = (await http.GetAsync("http://127.0.0.1:" + port + "/readyz", stop).ConfigureAwait(false)).IsSuccessStatusCode; }
+                catch (Exception error) when (error is System.Net.Http.HttpRequestException or TaskCanceledException) { now = false; }
+                if (stop.IsCancellationRequested) return;
+                if (said != now) { said = now; ready?.Invoke(now); }
+                try { await Task.Delay(2000, stop).ConfigureAwait(false); }
+                catch (TaskCanceledException) { return; }
+            }
         }
 
         /// <summary>Ends a tunnel program and what it started.</summary>

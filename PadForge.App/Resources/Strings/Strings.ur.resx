@@ -6742,9 +6742,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>اجازت {0} کو دی گئی، آخری استعمال {1}۔</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>اجازت {0} کو دی گئی، ابھی استعمال نہیں ہوا۔</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>منسوخ کریں</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>اس کی اپنی Secure MCP Tunnel PadForge کو براہ راست چلاتی ہے، یہاں کسی پتے یا سائن اِن کے بغیر۔ کمانڈ اس ٹنل کی سیٹ اپ میں کاپی کریں۔</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>کمانڈ کاپی کریں</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge کوئی ٹنل پروگرام ڈاؤن لوڈ نہیں کرتا اور کسی دوسری کمپنی کی کلید نہیں رکھتا۔ ویب اسسٹنٹ اوپر والی سطح پر کام کرتا ہے۔</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>کیا {0} کو ویب سے PadForge کے ساتھ کام کرنے کی اجازت دیں؟</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>اس کا سائن اِن {0} پر لوٹتا ہے۔</value></data>

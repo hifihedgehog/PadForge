@@ -1610,9 +1610,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} allow bhais, aakhri use {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} allow bhais, abhi tak use nai bhais.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Waapas lo</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Iske apan Secure MCP Tunnel PadForge ke sidha chalaawe hai, hian koi address ya sign in ke bina. Command ke uu tunnel ke setup me copy karo.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Command copy karo</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge koi tunnel program download nai kare hai aur koi dusra company ke key nai rakhe hai. Web assistant upar wala level pe kaam kare hai.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Iske sign in {0} pe lautaawe hai.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ii apan ke {0} bole hai.</value></data>

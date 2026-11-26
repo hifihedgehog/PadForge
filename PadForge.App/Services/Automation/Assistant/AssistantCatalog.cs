@@ -1120,6 +1120,14 @@ namespace PadForge.Services.Automation
                 throw new AssistantRefusal("users-own", "Only the user can change this, in PadForge. show takes the user to it.");
         }
 
+        public Guid? DeviceHolding(string id)
+        {
+            SearchIds.TryRead(id?.Trim(), out _, out _, out _, out string device);
+            if (device != null)
+                return _vm.Devices?.Devices?.FirstOrDefault(r => AutomationDevices.IdOf(r.InstanceGuid) == device)?.InstanceGuid;
+            return HolderOf(Resolve(id))?.Live?.Payload is DeviceRowViewModel row ? row.InstanceGuid : null;
+        }
+
         public AssistantAsk AskFor(string id, JsonElement value) => WithDevice(id, () =>
         {
             var p = Resolve(id);

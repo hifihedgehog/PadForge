@@ -2780,9 +2780,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Navela tamin'ny {0}, nampiasaina farany tamin'ny {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Navela tamin'ny {0}, tsy mbola nampiasaina.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Esory ny alalana</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Ny Secure MCP Tunnel azy no mampandeha mivantana ny PadForge, tsy mila adiresy na fidirana eto. Adikao ao amin'ny fametrahana io tunnel io ny baiko.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Adikao ny baiko</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Tsy maka programa tunnel ny PadForge ary tsy mitahiry lakile an'ny orinasa hafa. Miasa amin'ny ambaratonga etsy ambony ny mpanampy web.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Miverina any amin'ny {0} ny fidirany.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Miantso ny tenany hoe {0} izy.</value></data>

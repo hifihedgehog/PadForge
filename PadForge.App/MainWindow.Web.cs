@@ -27,12 +27,23 @@ namespace PadForge
                 // Turning it on asks first: an extra that listens on the network.
                 AskToTurnOn = () => Views.ConfirmDialog.Show(this, Strings.Instance.Web_Reach_Ask_Title, Strings.Instance.Web_Reach_Ask_Body,
                     Strings.Instance.Web_Reach_Ask_Confirm, kind: Views.ConfirmKind.Primary),
+                // Reach PadForge From This Network (#600 item 53): it asks
+                // first too, and its key and port windows are the user's.
+                AskToTurnNetworkOn = () => Views.ConfirmDialog.Show(this, Strings.Instance.Net_Reach_Ask_Title, Strings.Instance.Net_Reach_Ask_Body,
+                    Strings.Instance.Web_Reach_Ask_Confirm, kind: Views.ConfirmKind.Primary),
+                AskNewKey = cap => Views.NetworkAssistantDialog.Ask(this, cap, WebAccessStore.Shared.Keys.Count >= NetworkDoor.MostKeys),
+                ShowKey = (name, key, address) => Views.NetworkAssistantDialog.ShowKey(this, name, key, address),
+                AskPort = port => Views.NetworkPortDialog.Ask(this, port),
+                UserLevel = () => _automation?.Level ?? PadForge.Services.Automation.AutomationLevel.Commands,
+                // A key's reach (#600 DESIGN-2 N3), as an Allowed row's.
+                PickReachDevices = (name, reach) => Views.PickDevicesDialog.Pick(this, name, reach),
             };
+            _viewModel.Dashboard.PickReachDevices = (name, reach) => Views.PickDevicesDialog.Pick(this, name, reach);
             _viewModel.Dashboard.WebAccess = view;
             // The switch, the card's controls and each allowed web assistant
             // join the catalog, each the user's alone (#600 items 1 and 2).
             PadForge.Services.Catalog.LiveCatalog.AddProvider(view.CatalogItems);
-            if (WebAccessStore.Shared.On) _webDoor.Start();
+            if (WebAccessStore.Shared.On || WebAccessStore.Shared.NetworkOn) _webDoor.Start();
         }
 
         private void StopWebDoor()

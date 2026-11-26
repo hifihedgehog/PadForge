@@ -5987,9 +5987,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Iliruhusiwa {0}, ilitumika mwisho {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Iliruhusiwa {0}, haijatumika bado.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Batilisha</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel yake yenyewe huendesha PadForge moja kwa moja, bila anwani wala kuingia hapa. Nakili amri kwenye usanidi wa handaki hilo.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Nakili Amri</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge haipakui programu ya handaki na haihifadhi ufunguo wa kampuni nyingine. Msaidizi wa wavuti hufanya kazi kwa kiwango kilicho juu.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Ruhusu {0} ifanye kazi na PadForge kutoka wavuti?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Kuingia kwake kunarudi kwa {0}.</value></data>

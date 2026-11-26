@@ -6046,9 +6046,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} တွင် ခွင့်ပြုခဲ့သည်၊ နောက်ဆုံး အသုံးပြုချိန် {1}။</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} တွင် ခွင့်ပြုခဲ့သည်၊ မသုံးရသေးပါ။</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ရုပ်သိမ်းရန်</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>၎င်း၏ ကိုယ်ပိုင် Secure MCP Tunnel သည် PadForge ကို တိုက်ရိုက် လည်ပတ်စေပြီး ဤနေရာတွင် လိပ်စာ သို့မဟုတ် ဝင်ရောက်မှု မလိုပါ။ command ကို ထို tunnel ၏ setup ထဲ ကူးထည့်ပါ။</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Command ကူးယူရန်</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge သည် tunnel ပရိုဂရမ် မဒေါင်းလုဒ်လုပ်ပါ၊ အခြားကုမ္ပဏီ၏ key ကိုလည်း မသိမ်းထားပါ။ ဝဘ် အကူအညီပေး ပရိုဂရမ်သည် အထက်ပါ အဆင့်ဖြင့် အလုပ်လုပ်သည်။</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ကို ဝဘ်မှ PadForge နှင့် တွဲလုပ်ခွင့် ပြုမလား?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>၎င်း၏ ဝင်ရောက်မှုသည် {0} သို့ ပြန်သွားသည်။</value></data>

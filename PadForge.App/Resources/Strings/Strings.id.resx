@@ -6742,9 +6742,6 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Diizinkan {0}, terakhir dipakai {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Diizinkan {0}, belum dipakai.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Cabut</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel miliknya menjalankan PadForge secara langsung, tanpa alamat atau proses masuk di sini. Salin perintahnya ke pengaturan terowongan itu.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Salin perintah</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge tidak mengunduh program terowongan apa pun dan tidak menyimpan kunci perusahaan lain. Asisten web bekerja pada tingkat di atas.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Izinkan {0} bekerja dengan PadForge dari web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Proses masuknya kembali ke {0}.</value></data>

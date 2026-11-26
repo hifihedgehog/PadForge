@@ -6697,9 +6697,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} に許可、最終使用は {1}。</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} に許可、未使用。</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>取り消す</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>独自の Secure MCP Tunnel が PadForge を直接実行するため、ここでのアドレスやサインインは不要です。コマンドをそのトンネルの設定にコピーしてください。</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>コマンドをコピー</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge はトンネルプログラムをダウンロードせず、他社のキーも保持しません。Web アシスタントは上のレベルで動作します。</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} が Web から PadForge を操作することを許可しますか？</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>サインインの戻り先は {0} です。</value></data>

@@ -959,6 +959,21 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Forget: action, free. `dialog.action/MapKeyLightsDialog/StepButtons/MapKeyLights_Forget`
 - Stop: action, free. `dialog.action/MapKeyLightsDialog/StepButtons/MapKeyLights_Stop`
 
+### NetworkAssistantDialog
+
+- NetworkAssistantDialog: dialog, yours-alone. `dialog.dialog/NetworkAssistantDialog/==NetworkAssistantDialog`
+- Cancel: action, yours-alone. `dialog.action/NetworkAssistantDialog/CancelButton/Common_Cancel`
+- Make Key: action, yours-alone. `dialog.action/NetworkAssistantDialog/MakeButton/Net_Add_Make`
+- Done: action, yours-alone. `dialog.action/NetworkAssistantDialog/DoneButton/Net_Key_Done`
+- Copy: action, yours-alone. `dialog.action/NetworkAssistantDialog/KeyPanel/Common_Copy`
+- Copy: action, yours-alone. `dialog.action/NetworkAssistantDialog/KeyPanel/Common_Copy~2`
+
+### NetworkPortDialog
+
+- Change the Port: dialog, yours-alone. `dialog.dialog/NetworkPortDialog/Net_Port_Title`
+- Cancel: action, yours-alone. `dialog.action/NetworkPortDialog/Common_Cancel`
+- OK: action, yours-alone. `dialog.action/NetworkPortDialog/Common_OK`
+
 ### PairDeviceDialog
 
 - Pair a Wii Remote: dialog, free. `dialog.dialog/PairDeviceDialog/WiiPair_Title`
@@ -969,6 +984,12 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Port: choice, free. `dialog/PairDeviceDialog/SerialPickers/SerialPair_Port`
 - Controller: choice, free. `dialog/PairDeviceDialog/SerialPickers/SerialPair_Controller`
 - Address: setting, free. `dialog/PairDeviceDialog/DjiPickers/DjiPair_Address`
+
+### PickDevicesDialog
+
+- Pick Devices: dialog, yours-alone. `dialog.dialog/PickDevicesDialog/Reach_Pick_Title`
+- Cancel: action, yours-alone. `dialog.action/PickDevicesDialog/Common_Cancel`
+- OK: action, yours-alone. `dialog.action/PickDevicesDialog/Common_OK`
 
 ### PickSoundDialog
 

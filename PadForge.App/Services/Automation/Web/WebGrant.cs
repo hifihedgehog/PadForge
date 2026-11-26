@@ -46,6 +46,18 @@ namespace PadForge.Services.Automation.Web
 
         public DateTimeOffset Allowed { get; init; }
         public DateTimeOffset? LastUsed { get; init; }
+
+        /// <summary>Whether this stands for a key of an assistant on this
+        /// network (#600 item 53) on one call, with <see cref="Id"/> the
+        /// key's and <see cref="From"/> the address the call came from.</summary>
+        public bool Network { get; init; }
+
+        /// <summary>The address a network call came from.</summary>
+        public string From { get; init; }
+
+        /// <summary>What it may drive and change (#600 DESIGN-2 N3), null
+        /// for all of PadForge. The app's own record decides it.</summary>
+        public ProgramReach Reach { get; init; }
     }
 
     /// <summary>The secrets of the web door and their hashes.</summary>

@@ -1948,9 +1948,6 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Ekwere {0}, ejiri ya mee ihe ikpeazụ {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Ekwere {0}, ejibeghị ya mee ihe.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Wepụ ikike</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel nke ya na-agba PadForge ozugbo, na-enweghị adreesị ma ọ bụ mbanye ebe a. Detuo iwu ahụ n'ime nhazi tunnel ahụ.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Detuo iwu</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge anaghị ebudata mmemme tunnel ọ bụla, anaghịkwa edebe igodo ụlọ ọrụ ọzọ. Assistant weebụ na-arụ ọrụ n'ọkwa dị n'elu.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Mbanye ya na-alaghachi na {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ọ na-akpọ onwe ya {0}.</value></data>

@@ -6742,9 +6742,6 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Tillåten {0}, senast använd {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Tillåten {0}, inte använd än.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Återkalla</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Dess egen Secure MCP Tunnel kör PadForge direkt, utan adress eller inloggning här. Kopiera kommandot till den tunnelns inställning.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiera kommando</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge laddar inte ned något tunnelprogram och behåller ingen annan firmas nyckel. En webbassistent arbetar på nivån ovan.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Tillåt {0} att arbeta med PadForge från webben?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Dess inloggning återvänder till {0}.</value></data>

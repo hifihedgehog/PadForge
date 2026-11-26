@@ -6020,9 +6020,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Caniatawyd {0}, defnyddiwyd ddiwethaf {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Caniatawyd {0}, heb ei ddefnyddio eto.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Dirymu</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Mae ei Secure MCP Tunnel ei hun yn rhedeg PadForge yn uniongyrchol, heb gyfeiriad na mewngofnodiad yma. Copïwch y gorchymyn i osodiad y twnnel hwnnw.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copïo'r Gorchymyn</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>Nid yw PadForge yn lawrlwytho unrhyw raglen twnnel ac nid yw'n cadw allwedd unrhyw gwmni arall. Mae cynorthwyydd gwe yn gweithio ar y lefel uchod.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Caniatáu i {0} weithio gyda PadForge o'r we?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Mae ei fewngofnodiad yn dychwelyd i {0}.</value></data>

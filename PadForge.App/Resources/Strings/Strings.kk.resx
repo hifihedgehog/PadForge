@@ -6052,9 +6052,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Рұқсат етілген: {0}, соңғы қолданылуы: {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Рұқсат етілген: {0}, әлі қолданылмаған.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Қайтарып алу</value></data>
-  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
-  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Оның өз Secure MCP Tunnel құралы PadForge бағдарламасымен тікелей жұмыс істейді, мұнда мекенжай мен кіру қажет емес. Пәрменді сол туннельдің баптауына көшіріңіз.</value></data>
-  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Пәрменді көшіру</value></data>
   <data name="Web_Footnote" xml:space="preserve"><value>PadForge ешбір туннель бағдарламасын жүктемейді және басқа компанияның кілтін сақтамайды. Веб көмекші жоғарыдағы деңгейде жұмыс істейді.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} вебтен PadForge бағдарламасымен жұмыс істеуіне рұқсат бересіз бе?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Оның кіруі {0} мекенжайына қайтады.</value></data>

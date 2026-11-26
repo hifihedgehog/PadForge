@@ -55,7 +55,9 @@
             </controls:SettingRow>
         </Border>
 
-        <StackPanel Visibility="{Binding IsNetworkOn, Converter={StaticResource BoolToVisibilityConverter}}">
+        <!-- Hidden with no view behind it too: a binding that finds no
+             IsNetworkOn leaves Visible, the rows of a door that is off. -->
+        <StackPanel Visibility="{Binding IsNetworkOn, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
             <!-- Address: one line per private address of this PC, each with
                  its own Copy. -->
             <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">

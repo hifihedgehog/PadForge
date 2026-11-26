@@ -266,20 +266,25 @@ namespace PadForge.Tests
                         System.IO.File.WriteAllText(path, name);
                         return path;
                     }
-                    // The board's plugins: Pedal Box runs and declared its
-                    // settings, Wheel Bridge failed five times, leds.ps1
-                    // changed since it was approved (#600 items 17 and 18).
-                    foreach (var name in new[] { "pedals.exe", "WheelBridge.exe", "leds.ps1" })
+                    // The board's plugins: Pedal Box runs, declared its
+                    // settings and is signed, Wheel Bridge failed five times,
+                    // Lap Timer started and never connected, leds.ps1
+                    // changed since it was approved (#600 items 17 and 18,
+                    // N9).
+                    foreach (var name in new[] { "pedals.exe", "WheelBridge.exe", "LapTimer.exe", "leds.ps1" })
                         dash.PluginActions.Add(dash.PluginActions.Describe(File(name)));
                     var runs = manager.Snapshot();
                     runs[0].Signer = "Example Studio";
+                    runs[0].SignerKey = "ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB";
+                    runs[2].Name = "Lap Timer";
                     manager.SetEngine(true);
                     var pedals = manager.AcceptToken(launcher.Starts[0].Variables[PadForge.Services.Plugins.PluginManager.TokenVariable], launcher.Starts[0].Process.Id);
                     pedals.Named("Pedal Box");
                     pedals.Log("Found the board on COM4.");
                     var set = runs[0].Settings;
                     string Declare(string line) => PadForge.Services.Plugins.PluginLines.Answer(set, PadForge.Services.Automation.AutomationLine.Parse(line));
-                    Declare("setting key=curve kind=choice name=\"Brake Curve\" {\"choices\":[\"Linear\",\"Progressive\"],\"default\":\"Progressive\"}");
+                    Declare("setting key=curve kind=choice name=\"Brake Curve\" {\"choices\":[\"Linear\",\"Progressive\"],\"default\":\"Linear\"}");
+                    set.Set(null, "curve", "Progressive");
                     Declare("setting key=dead kind=number name=\"Dead Zone\" min=0 max=20 unit=% default=3");
                     Declare("setting key=port kind=status name=Port");
                     Declare("setting key=port value=COM4");
@@ -288,6 +293,7 @@ namespace PadForge.Tests
                     set.Set(null, "steer", "24,40");
                     Declare("setting key=about kind=help device=pedals help=\"Three pedals on one USB serial board. Calibrate from Pedal Box’s settings after a firmware update.\"");
                     Declare("setting key=clutch kind=switch name=\"Clutch Inverted\" device=pedals");
+                    set.Set("pedals", "clutch", "true");
                     // Wheel Bridge exits again and again until it stops.
                     for (int i = 0; i < 5; i++)
                     {
@@ -295,10 +301,22 @@ namespace PadForge.Tests
                         now += runs[1].PauseMs;
                         manager.Tick();
                     }
+                    // Lap Timer never says hello: ended at each deadline and
+                    // started again after a growing pause.
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (i > 0)
+                        {
+                            now += runs[2].PauseMs;
+                            manager.Tick();
+                        }
+                        now += PadForge.Services.Plugins.PluginManager.HelloDeadlineMs;
+                        manager.CheckHello();
+                    }
                     // leds.ps1 changed since it was approved.
-                    manager.SetEnabled(runs[2], false);
-                    System.IO.File.WriteAllText(runs[2].Path, "edited");
-                    manager.SetEnabled(runs[2], true);
+                    manager.SetEnabled(runs[3], false);
+                    System.IO.File.WriteAllText(runs[3].Path, "edited");
+                    manager.SetEnabled(runs[3], true);
 
                     dash.TestControllerOn = true;
                     plugins.BuiltIns.TestSettings.Set(null, PadForge.Services.Plugins.TestControllerPattern.KeyHand, "true");

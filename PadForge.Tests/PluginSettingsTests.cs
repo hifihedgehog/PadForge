@@ -438,6 +438,51 @@ namespace PadForge.Tests
             Assert.Equal(PluginFile.Sha256(path), run.Sha256);
         }
 
+        /// <summary>A plugin that runs and has not said hello says its
+        /// settings show once it connects. Past its deadline the page's
+        /// once-a-second look ends it, and its card and the status line,
+        /// which Home's Plugins tile shows, say it started but never
+        /// connected, from the first miss on and while its next run waits
+        /// for its hello. The hello clears both.</summary>
+        [Fact]
+        public void APluginThatNeverConnects_IsNamedOnItsCardAndOnHomesTile_FromTheFirstMiss()
+        {
+            using var rig = new ControllerRig();
+            var s = Strings.Instance;
+            var run = rig.AddRunning("lap.exe");
+            Assert.Equal(s.Plugins_Missing_NotConnected, PluginsController.MissingLine(run));
+            rig.Controller.Refresh();
+            Assert.DoesNotContain("lap.exe", rig.Vm.PluginsStatus);
+
+            rig.Now += PluginManager.HelloDeadlineMs;
+            rig.Controller.Second();
+            var row = rig.Vm.PluginRows.Single();
+            Assert.Equal(string.Format(s.Plugins_State_NeverConnected_One_Format, 1) + " " + s.Plugins_Row_NotSigned, row.State);
+            Assert.EndsWith(string.Format(s.Plugins_Problem_NeverConnected_Format, "lap.exe"), rig.Vm.PluginsStatus);
+            Assert.Equal(s.Plugins_Missing_NotRunning, PluginsController.MissingLine(run));
+
+            // Its next run waits for its hello: still named.
+            rig.Now += run.PauseMs;
+            rig.Controller.Manager.Tick();
+            rig.Controller.Refresh();
+            Assert.Equal(PluginStatus.Running, run.Status);
+            Assert.EndsWith(string.Format(s.Plugins_Problem_NeverConnected_Format, "lap.exe"), rig.Vm.PluginsStatus);
+
+            // A second miss: the pause in seconds.
+            rig.Now += PluginManager.HelloDeadlineMs;
+            rig.Controller.Second();
+            Assert.StartsWith(string.Format(s.Plugins_State_NeverConnected_Format, 2), row.State);
+
+            // The run that says hello is connected.
+            rig.Now += run.PauseMs;
+            rig.Controller.Manager.Tick();
+            Assert.NotNull(rig.Controller.Manager.AcceptToken(rig.Launcher.Starts[^1].Variables[PluginManager.TokenVariable], rig.Launcher.Last.Id));
+            rig.Controller.Refresh();
+            Assert.DoesNotContain("lap.exe", rig.Vm.PluginsStatus);
+            Assert.StartsWith(s.Common_Running, row.State);
+            Assert.Equal(s.Plugins_Missing_None, PluginsController.MissingLine(run));
+        }
+
         [Fact]
         public void ASilentPlugin_IsEnded_UnlessADebuggerIsAttached()
         {

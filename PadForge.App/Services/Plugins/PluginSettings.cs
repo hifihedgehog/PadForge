@@ -162,6 +162,13 @@ namespace PadForge.Services.Plugins
             if (had) Changed?.Invoke();
         }
 
+        /// <summary>Whether a value is kept for the setting, which is so
+        /// exactly while its value differs from its default.</summary>
+        public bool Keeps(string device, string key)
+        {
+            lock (_sync) return _values.ContainsKey((device, key));
+        }
+
         /// <summary>The value in force: the kept one, the status line, or
         /// the default.</summary>
         public string ValueOf(string device, string key)

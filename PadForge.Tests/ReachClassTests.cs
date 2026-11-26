@@ -162,6 +162,10 @@ namespace PadForge.Tests
                 "Views/ExtrasPage.xaml <FoldList PluginsReplay>",
                 "Views/ExtrasPage.xaml <StackPanel PluginRowActions>",
                 "Views/ExtrasPage.xaml <Button {Binding RemoveId}>",
+                // Show in Folder, and Trust New Versions From This Signer,
+                // which lets a new file start without the question (#600 N9).
+                "Views/ExtrasPage.xaml <Button {Binding ShowInFolderId}>",
+                "Views/ExtrasPage.xaml <SettingRow PluginTrustRow>",
                 "Views/ExtrasPage.xaml <Border PluginsAddCard>",
                 "Views/ExtrasPage.xaml <FoldList PluginsMoreList>",
                 "Views/ExtrasPage.xaml <Button NewWebAccessCodeButton>",  // an access code

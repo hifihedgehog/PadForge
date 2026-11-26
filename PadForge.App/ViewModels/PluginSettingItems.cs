@@ -73,6 +73,7 @@ namespace PadForge.ViewModels
         private bool _isShown = true;
         private IReadOnlyList<PluginChoiceItem> _choices;
         private bool _picking;
+        private bool _isChanged;
 
         internal PluginSettingItem(PluginSettingsHost host, PluginDeclaration declaration)
         {
@@ -116,6 +117,23 @@ namespace PadForge.ViewModels
         /// value the user sets, at their default too, as every setting's
         /// reset in PadForge shows on its row.</summary>
         public bool CanReset => Declaration.HoldsValue;
+
+        /// <summary>The setting's value differs from its default, which is
+        /// when the plugin's settings keep a value for it: its name shows in
+        /// ember and a screen reader hears <see cref="ChangedStatus"/>. Its
+        /// reset shows either way (<see cref="CanReset"/>).</summary>
+        public bool IsChanged
+        {
+            get => _isChanged;
+            private set
+            {
+                if (SetProperty(ref _isChanged, value)) OnPropertyChanged(nameof(ChangedStatus));
+            }
+        }
+
+        /// <summary>"Changed" while <see cref="IsChanged"/>, as the row's UI
+        /// Automation item status, else empty.</summary>
+        public string ChangedStatus => _isChanged ? Strings.Instance.Plugins_Setting_Changed : string.Empty;
 
         public IReadOnlyList<PluginChoiceItem> Choices
         {
@@ -239,6 +257,7 @@ namespace PadForge.ViewModels
             }
             else if (!SameChoices(_choices, declaration.Choices)) Choices = Convert(declaration.Choices);
             Value = _host.Set.ValueOf(_host.Device, Key);
+            IsChanged = Declaration.HoldsValue && _host.Set.Keeps(_host.Device, Key);
         }
 
         /// <summary>A choice's list opens: the plugin is asked for the list

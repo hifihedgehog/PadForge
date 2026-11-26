@@ -14,7 +14,10 @@
          page's plugin cards and the device panel's plugin card, where a
          plugin's settings are free to a program at Change Settings as they
          are to the user. The words are the plugin's, cleaned and capped when
-         PadForge read them. -->
+         PadForge read them. A setting whose value differs from its default
+         shows its name in ember, as the SDL Mapping card colors the
+         user's own row, and its control's UI Automation item status says
+         Changed. Its reset shows either way. -->
     <UserControl.Resources>
         <Style x:Key="PluginLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="{Binding LabelWidth, ElementName=Root}"/>
@@ -23,6 +26,22 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChanged}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <!-- A compact declaration's name, under its pad or beside its
+             slider. -->
+        <Style x:Key="PluginCompactName" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChanged}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="PluginNote" TargetType="TextBlock">
             <Setter Property="FontSize" Value="13"/>
@@ -36,12 +55,23 @@
             <Setter Property="Padding" Value="14,0"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        <!-- A compact switch: a toggle with its name, lit while on. -->
+        <!-- A compact switch: a toggle with its name, lit while on. Off its
+             default and off, its name is ember. On, it is lit in ember
+             already. -->
         <Style x:Key="PluginToggle" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
             <Setter Property="MinWidth" Value="56"/>
             <Setter Property="MinHeight" Value="30"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="8,0"/>
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsChanged}" Value="True"/>
+                        <Condition Binding="{Binding IsOn}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Each kind's control, between the label and the reset. -->
@@ -50,6 +80,7 @@
                       AutomationProperties.AutomationId="{Binding AutomationId}"
                       AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
                       AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                      AutomationProperties.ItemStatus="{Binding ChangedStatus}"
                       IsChecked="{Binding IsOn, Mode=TwoWay}"/>
         </DataTemplate>
         <DataTemplate x:Key="KindNumber" DataType="{x:Type vm:PluginSettingItem}">
@@ -60,6 +91,7 @@
                         AutomationProperties.AutomationId="{Binding AutomationId}"
                         AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
                         AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                        AutomationProperties.ItemStatus="{Binding ChangedStatus}"
                         Value="{Binding Number, Mode=TwoWay}"/>
                 <TextBlock Text="{Binding NumberText}" Margin="10,0,0,0" FontSize="13" VerticalAlignment="Center"
                            MinWidth="56" Typography.NumeralAlignment="Tabular"
@@ -73,7 +105,8 @@
                       DropDownOpened="Choice_DropDownOpened"
                       AutomationProperties.AutomationId="{Binding AutomationId}"
                       AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
-                      AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
+                      AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                      AutomationProperties.ItemStatus="{Binding ChangedStatus}"/>
         </DataTemplate>
         <DataTemplate x:Key="KindText" DataType="{x:Type vm:PluginSettingItem}">
             <ui:TextBox MinWidth="254" MinHeight="34" VerticalAlignment="Center" VerticalContentAlignment="Center"
@@ -81,6 +114,7 @@
                         AutomationProperties.AutomationId="{Binding AutomationId}"
                         AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
                         AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                        AutomationProperties.ItemStatus="{Binding ChangedStatus}"
                         Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
         </DataTemplate>
         <DataTemplate x:Key="KindStatus" DataType="{x:Type vm:PluginSettingItem}">
@@ -99,7 +133,8 @@
             <controls:PluginPad Position="{Binding Pad, Mode=TwoWay}" Stay="{Binding Stay}" Margin="0,4,0,4"
                                 AutomationProperties.AutomationId="{Binding AutomationId}"
                                 AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
-                                AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
+                                AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                                AutomationProperties.ItemStatus="{Binding ChangedStatus}"/>
         </DataTemplate>
         <DataTemplate x:Key="KindInput" DataType="{x:Type vm:PluginSettingItem}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -107,7 +142,8 @@
                         Content="{Binding Plugins_Input_Pick, Source={x:Static strings:Strings.Instance}}"
                         AutomationProperties.AutomationId="{Binding AutomationId}"
                         AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
-                        AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
+                        AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                        AutomationProperties.ItemStatus="{Binding ChangedStatus}"/>
                 <TextBlock Text="{Binding InputText}" Margin="12,0,0,0" FontSize="13" VerticalAlignment="Center"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             </StackPanel>
@@ -206,9 +242,9 @@
                             <StackPanel Margin="0,8,26,8">
                                 <controls:PluginPad Position="{Binding Pad, Mode=TwoWay}" Stay="{Binding Stay}"
                                                     AutomationProperties.AutomationId="{Binding AutomationId}"
-                                                    AutomationProperties.Name="{Binding Name, TargetNullValue=''}"/>
-                                <TextBlock Text="{Binding Name}" FontSize="13" HorizontalAlignment="Center" Margin="0,8,0,0"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                    AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                                                    AutomationProperties.ItemStatus="{Binding ChangedStatus}"/>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource PluginCompactName}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -218,13 +254,13 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Text="{Binding Name}" Width="96" FontSize="13" VerticalAlignment="Center"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource PluginCompactName}" Width="96" VerticalAlignment="Center"/>
                                     <Slider Width="140" VerticalAlignment="Center" IsSnapToTickEnabled="True"
                                             Minimum="{Binding Min}" Maximum="{Binding Max}" TickFrequency="{Binding Step}"
                                             SmallChange="{Binding Step}" LargeChange="{Binding Step}"
                                             AutomationProperties.AutomationId="{Binding AutomationId}"
                                             AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                                            AutomationProperties.ItemStatus="{Binding ChangedStatus}"
                                             Value="{Binding Number, Mode=TwoWay}"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -240,6 +276,7 @@
                             <DataTemplate>
                                 <ToggleButton Style="{StaticResource PluginToggle}" Content="{Binding Name}" Margin="0,0,6,6"
                                               AutomationProperties.AutomationId="{Binding AutomationId}"
+                                              AutomationProperties.ItemStatus="{Binding ChangedStatus}"
                                               IsChecked="{Binding IsOn, Mode=TwoWay}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

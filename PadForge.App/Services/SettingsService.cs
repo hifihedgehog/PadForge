@@ -6924,6 +6924,20 @@ namespace PadForge.Services
         [XmlAttribute]
         public string Signer { get; set; }
 
+        /// <summary>The key that signed the approved bytes, the SHA-256 of
+        /// its certificate's SubjectPublicKeyInfo as hex, when their signature
+        /// verified with revocation checked, or null. Trust New Versions From
+        /// This Signer is offered only while it is kept.</summary>
+        [XmlAttribute]
+        public string SignerKey { get; set; }
+
+        /// <summary>Trust New Versions From This Signer: a changed file signed
+        /// with <see cref="SignerKey"/> starts without Approve and
+        /// Restart.</summary>
+        [XmlAttribute]
+        public bool TrustSigner { get; set; }
+        public bool ShouldSerializeTrustSigner() => TrustSigner;
+
         /// <summary>The values of the settings it declared that differ from
         /// their default, its own and each device's (#600 item 17).</summary>
         [XmlArray("Values")]

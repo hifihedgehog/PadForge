@@ -17,6 +17,8 @@ namespace PadForge.ViewModels
         private readonly IPluginsPageActions _actions;
         private string _name, _state, _path;
         private bool _isOn, _showStart, _showApprove, _updating;
+        private bool _canTrust, _trustSigner;
+        private string _trustNote;
 
         internal PluginRowItem(object run, int number, IPluginsPageActions actions, PluginSettingsHost settings = null)
         {
@@ -26,6 +28,8 @@ namespace PadForge.ViewModels
             Settings = settings;
             RemoveCommand = new RelayCommand(() => _actions?.Remove(this));
             StartCommand = new RelayCommand(() => _actions?.StartAgain(this));
+            ShowInFolderCommand = new RelayCommand(() => PadForge.Services.Plugins.PluginFile.ShowInFolder(Path));
+            ResetTrustCommand = new RelayCommand(() => TrustSigner = false);
         }
 
         /// <summary>The plugin this row shows, the plugins' part's own
@@ -91,13 +95,50 @@ namespace PadForge.ViewModels
             private set => SetProperty(ref _showApprove, value);
         }
 
+        /// <summary>Trust New Versions From This Signer is offered: the
+        /// approved bytes carry a signature that verified, and its key is
+        /// kept.</summary>
+        public bool CanTrust
+        {
+            get => _canTrust;
+            private set => SetProperty(ref _canTrust, value);
+        }
+
+        /// <summary>Trust New Versions From This Signer. The user's change
+        /// goes to the plugins' part.</summary>
+        public bool TrustSigner
+        {
+            get => _trustSigner;
+            set
+            {
+                if (!SetProperty(ref _trustSigner, value) || _updating) return;
+                _actions?.SetTrust(this, value);
+            }
+        }
+
+        /// <summary>The trust row's line, naming the signer.</summary>
+        public string TrustNote
+        {
+            get => _trustNote;
+            private set => SetProperty(ref _trustNote, value);
+        }
+
+        /// <summary>The trust row's reset: off, its default.</summary>
+        public RelayCommand ResetTrustCommand { get; }
+
         public RelayCommand RemoveCommand { get; }
         public RelayCommand StartCommand { get; }
+
+        /// <summary>Show in Folder: Explorer opens the plugin's folder with
+        /// its file selected.</summary>
+        public RelayCommand ShowInFolderCommand { get; }
 
         public string SwitchId => "Plugins_Switch_" + Number.ToString(CultureInfo.InvariantCulture);
         public string RemoveId => "Plugins_Remove_" + Number.ToString(CultureInfo.InvariantCulture);
         public string StartId => "Plugins_Start_" + Number.ToString(CultureInfo.InvariantCulture);
         public string ApproveId => "Plugins_Approve_" + Number.ToString(CultureInfo.InvariantCulture);
+        public string TrustId => "Plugins_Trust_" + Number.ToString(CultureInfo.InvariantCulture);
+        public string ShowInFolderId => "Plugins_ShowInFolder_" + Number.ToString(CultureInfo.InvariantCulture);
         public string ResetAllId => "Plugins_ResetAll_" + Number.ToString(CultureInfo.InvariantCulture);
         public string FoldId => "Plugins_Card_" + Number.ToString(CultureInfo.InvariantCulture);
 
@@ -114,6 +155,20 @@ namespace PadForge.ViewModels
                 IsOn = on;
                 ShowStart = showStart;
                 ShowApprove = showApprove;
+            }
+            finally { _updating = false; }
+        }
+
+        /// <summary>The plugins' part sets the trust row. A switch set here is
+        /// not sent back as the user's change.</summary>
+        internal void ShowTrust(bool offered, bool on, string note)
+        {
+            _updating = true;
+            try
+            {
+                CanTrust = offered;
+                TrustSigner = on;
+                TrustNote = note;
             }
             finally { _updating = false; }
         }

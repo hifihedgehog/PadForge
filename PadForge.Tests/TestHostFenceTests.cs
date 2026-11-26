@@ -403,6 +403,9 @@ namespace PadForge.Tests
 
         public static IEnumerable<object[]> AskedFirst() => new[]
         {
+            // A plugin file's signature checked with revocation (#600 N9),
+            // which asks the certificate authorities' servers.
+            new object[] { "PadForge.Engine/Common/AuthenticodeSigner.cs", "public static AuthenticodeSignature VerifiedHeld(string path, Microsoft.Win32.SafeHandles.SafeFileHandle held)", "if (OutboundNetworkGate.OffLimitsForTest) return null;" },
             // An install for the user (#600): its folders, the programs it
             // runs, the Pythons it finds and the commands it looks for.
             new object[] { UserFoldersFile, "internal static string Of(UserFolder folder)", "if (OffLimitsForTest && Seam == null) return null;" },

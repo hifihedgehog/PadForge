@@ -783,6 +783,10 @@ public class Strings : INotifyPropertyChanged
     public string Plugins_Add => Get("Plugins_Add");
     public string Plugins_Add_Filter => Get("Plugins_Add_Filter");
     public string Plugins_Approve => Get("Plugins_Approve");
+    public string Plugins_ShowInFolder => Get("Plugins_ShowInFolder");
+    public string Plugins_Trust => Get("Plugins_Trust");
+    public string Plugins_Trust_Note_Format => Get("Plugins_Trust_Note_Format");
+    public string Plugins_Log_TrustedVersion => Get("Plugins_Log_TrustedVersion");
     public string Plugins_State_Waiting => Get("Plugins_State_Waiting");
     public string Plugins_State_Checking => Get("Plugins_State_Checking");
     public string Plugins_State_Exited_Format => Get("Plugins_State_Exited_Format");
@@ -822,6 +826,12 @@ public class Strings : INotifyPropertyChanged
     public string Plugins_Row_NotSigned => Get("Plugins_Row_NotSigned");
     public string Plugins_Missing_NotRunning => Get("Plugins_Missing_NotRunning");
     public string Plugins_Missing_None => Get("Plugins_Missing_None");
+    public string Plugins_Missing_NotConnected => Get("Plugins_Missing_NotConnected");
+    public string Plugins_State_NeverConnected_Format => Get("Plugins_State_NeverConnected_Format");
+    public string Plugins_State_NeverConnected_One_Format => Get("Plugins_State_NeverConnected_One_Format");
+    public string Plugins_Problem_NeverConnected_Format => Get("Plugins_Problem_NeverConnected_Format");
+    public string Plugins_Log_NeverConnected => Get("Plugins_Log_NeverConnected");
+    public string Plugins_Setting_Changed => Get("Plugins_Setting_Changed");
     public string Plugins_Missing_Refused_Format => Get("Plugins_Missing_Refused_Format");
     public string Plugins_Log_Silent => Get("Plugins_Log_Silent");
     public string Plugins_Log_ChangedWhileRunning => Get("Plugins_Log_ChangedWhileRunning");

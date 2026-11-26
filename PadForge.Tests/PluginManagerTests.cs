@@ -78,12 +78,18 @@ namespace PadForge.Tests
         private long _now = 1_000_000;
         private readonly PluginManager _manager;
 
+        /// <summary>The signature check's answer for a held file: a fake,
+        /// since the real one asks the certificate authorities' servers
+        /// (#600 N9). Null answers that the file is not validly
+        /// signed.</summary>
+        private Func<string, FileStream, AuthenticodeSignature> _signature;
+
         public PluginManagerTests()
         {
             Directory.CreateDirectory(_dir);
             _manager = new PluginManager(_launcher, "PadForge.Tests.Pipe", () => _now,
                 commandFor: path => new PluginCommand(path, "\"" + path + "\"", Path.GetDirectoryName(path)), timer: false,
-                runCheck: work => work());
+                runCheck: work => work(), signatureOf: (path, held) => _signature?.Invoke(path, held));
         }
 
         public void Dispose()
@@ -240,6 +246,9 @@ namespace PadForge.Tests
             }
             Assert.Equal(3, run.Failures);
 
+            // A run that said hello and lasted a minute.
+            void Hello() => Assert.NotNull(_manager.AcceptToken(_launcher.Starts[^1].Variables[PluginManager.TokenVariable], _launcher.Last.Id));
+            Hello();
             _now += PluginManager.SteadyRunMs;
             _launcher.Last.Exit(1);
             Assert.Equal(1, run.Failures);
@@ -248,9 +257,69 @@ namespace PadForge.Tests
             // A minute less a millisecond does not.
             _now += run.PauseMs;
             _manager.Tick();
+            Hello();
             _now += PluginManager.SteadyRunMs - 1;
             _launcher.Last.Exit(1);
             Assert.Equal(2, run.Failures);
+
+            // Nor does a minute with no hello.
+            _now += run.PauseMs;
+            _manager.Tick();
+            _now += PluginManager.SteadyRunMs;
+            _launcher.Last.Exit(1);
+            Assert.Equal(3, run.Failures);
+        }
+
+        /// <summary>A plugin that has not said hello a minute after its start
+        /// is ended, unless a debugger is attached to it, and started again
+        /// with the back-off. Its key is taken from it, so a late hello is
+        /// refused. A run with no hello is never a steady one, so the pause
+        /// grows and five misses stop it. The run that says hello is
+        /// connected and never ended for its hello.</summary>
+        [Fact]
+        public void APluginThatNeverSaysHello_IsEndedAtItsDeadline_AndStartsAgainWithAGrowingPause()
+        {
+            Assert.Equal(PluginsController.EndAfterSilenceMs, PluginManager.HelloDeadlineMs);
+            var run = AddRunning();
+            string token = _launcher.Starts[0].Variables[PluginManager.TokenVariable];
+            var first = _launcher.Last;
+            _now += PluginManager.HelloDeadlineMs - 1;
+            _manager.CheckHello();
+            Assert.False(first.Stopped);
+            _now += 1;
+            first.Debugged = true;
+            _manager.CheckHello();
+            Assert.False(first.Stopped);
+            Assert.False(run.NeverConnected);
+            first.Debugged = false;
+            _manager.CheckHello();
+            Assert.True(first.Stopped);
+            Assert.True(run.NeverConnected);
+            Assert.Equal(PluginStatus.Restarting, run.Status);
+            Assert.Equal(1, run.Failures);
+            Assert.Contains(_manager.LogOf(run), l => l.Kind == PluginLogKind.NeverConnected);
+            Assert.Null(_manager.AcceptToken(token, first.Id));
+
+            // Its next run lasts past a minute and never says hello either:
+            // no steady run, so the failures count on and the pause grows.
+            _now += run.PauseMs;
+            _manager.Tick();
+            Assert.Equal(2, _launcher.Starts.Count);
+            _now += PluginManager.HelloDeadlineMs;
+            _manager.CheckHello();
+            Assert.True(_launcher.Last.Stopped);
+            Assert.Equal(2, run.Failures);
+            Assert.Equal(PluginManager.PauseAfter(2), run.PauseMs);
+
+            // The run that says hello is connected and is not ended for it.
+            _now += run.PauseMs;
+            _manager.Tick();
+            Assert.NotNull(_manager.AcceptToken(_launcher.Starts[2].Variables[PluginManager.TokenVariable], _launcher.Last.Id));
+            Assert.False(run.NeverConnected);
+            _now += PluginManager.HelloDeadlineMs * 2;
+            _manager.CheckHello();
+            Assert.False(_launcher.Last.Stopped);
+            Assert.Equal(PluginStatus.Running, run.Status);
         }
 
         [Fact]
@@ -268,6 +337,151 @@ namespace PadForge.Tests
         }
 
         // ── Approval ──
+
+        // ── Trust New Versions From This Signer (#600 N9) ──
+
+        private const string KeyOne = "ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB";
+        private const string KeyTwo = "CDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCD";
+
+        /// <summary>The check answers for the handle that was hashed: a
+        /// signature whose key is <paramref name="key"/> while the file held
+        /// is <paramref name="bytes"/>, else none.</summary>
+        private Func<string, FileStream, AuthenticodeSignature> SignedFor(string bytes, string key, string signer = "Example Studio")
+            => (path, held) =>
+            {
+                Assert.NotNull(held);
+                held.Position = 0;
+                string text = new StreamReader(held, leaveOpen: true).ReadToEnd();
+                held.Position = 0;
+                return text == bytes ? new AuthenticodeSignature(signer, key) : null;
+            };
+
+        /// <summary>With the switch on, a changed file restarts without
+        /// Approve only when its signature verifies and its key is the one
+        /// trusted. Another key, no valid signature, the same name on another
+        /// key, or the switch off: Changed, as before. The new bytes become
+        /// the approved ones and are saved.</summary>
+        [Fact]
+        public void ATrustedSignersNewVersion_StartsWithoutApprove_OnlyForTheSameKey()
+        {
+            string path = NewFile(text: "version 1");
+            var run = _manager.Add(path, PluginFile.Sha256(path), "Example Studio", KeyOne);
+            Assert.Equal(KeyOne, run.SignerKey);
+            Assert.False(run.TrustSigner);
+            File.WriteAllText(path, "version 2");
+            _manager.SetPluginsOn(true);
+
+            // Off: the same key still asks.
+            _signature = SignedFor("version 2", KeyOne);
+            _manager.SetEngine(true);
+            Assert.Equal(PluginStatus.Changed, run.Status);
+            Assert.Empty(_launcher.Starts);
+
+            _manager.SetTrust(run, true);
+            Assert.True(run.TrustSigner);
+            Assert.True(_manager.Save().Single().TrustSigner);
+
+            // Another key under the same name, and no valid signature, ask.
+            _signature = SignedFor("version 2", KeyTwo);
+            _manager.StartAgain(run);
+            Assert.Equal(PluginStatus.Changed, run.Status);
+            _signature = (_, _) => null;
+            _manager.StartAgain(run);
+            Assert.Equal(PluginStatus.Changed, run.Status);
+            Assert.Empty(_launcher.Starts);
+
+            // The same key: it starts on the new bytes, which are approved
+            // and saved.
+            _signature = SignedFor("version 2", KeyOne, "Example Studio Ltd");
+            _manager.StartAgain(run);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            Assert.Single(_launcher.Starts);
+            Assert.Equal(PluginFile.Sha256(path), run.Sha256);
+            Assert.Equal("Example Studio Ltd", run.Signer);
+            Assert.Equal(KeyOne, run.SignerKey);
+            Assert.True(run.TrustSigner);
+            Assert.Equal(PluginFile.Sha256(path), _manager.Save().Single().Sha256);
+            Assert.Contains(_manager.LogOf(run), l => l.Kind == PluginLogKind.TrustedVersion);
+        }
+
+        /// <summary>A running plugin's file that changes to a version signed
+        /// with the trusted key restarts on it, as Approve and Restart does.
+        /// One signed with another key shows Approve and Restart and keeps
+        /// running.</summary>
+        [Fact]
+        public void ARunningPlugin_RestartsOnATrustedVersion_AndKeepsRunningOnAnyOther()
+        {
+            string path = NewFile(text: "version 1");
+            var run = _manager.Add(path, PluginFile.Sha256(path), "Example Studio", KeyOne);
+            _manager.SetTrust(run, true);
+            _manager.SetPluginsOn(true);
+            _manager.SetEngine(true);
+            Assert.NotNull(_manager.AcceptToken(_launcher.Starts[0].Variables[PluginManager.TokenVariable], _launcher.Last.Id));
+            var first = _launcher.Last;
+
+            File.WriteAllText(path, "version 2");
+            File.SetLastWriteTimeUtc(path, DateTime.UtcNow.AddMinutes(1));
+            _signature = SignedFor("version 2", KeyTwo);
+            _manager.CheckFiles();
+            Assert.True(run.FileChanged);
+            Assert.False(first.Stopped);
+
+            // Moved again, still not the trusted key: looked at again, and
+            // the log says it changed once.
+            File.WriteAllText(path, "version 2b");
+            File.SetLastWriteTimeUtc(path, DateTime.UtcNow.AddMinutes(1.5));
+            _manager.CheckFiles();
+            Assert.True(run.FileChanged);
+            Assert.False(first.Stopped);
+            Assert.Single(_manager.LogOf(run), l => l.Kind == PluginLogKind.ChangedWhileRunning);
+
+            // Rebuilt again, now with the trusted key: the marked file is
+            // looked at again, since the user trusts its signer.
+            File.WriteAllText(path, "version 3");
+            File.SetLastWriteTimeUtc(path, DateTime.UtcNow.AddMinutes(2));
+            _signature = SignedFor("version 3", KeyOne);
+            _manager.CheckFiles();
+            Assert.True(first.Stopped);
+            Assert.NotSame(first, _launcher.Last);
+            Assert.False(run.FileChanged);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            Assert.Equal(PluginFile.Sha256(path), run.Sha256);
+        }
+
+        /// <summary>The switch turns on only while a key is kept. Approving
+        /// bytes with another key, or with none, turns it off. The key and
+        /// the switch are kept in PadForge.xml.</summary>
+        [Fact]
+        public void TheTrustSwitch_NeedsAKey_AndApprovingAnotherKeyTurnsItOff()
+        {
+            string unsigned = NewFile("plain.exe");
+            var plain = _manager.Add(unsigned, PluginFile.Sha256(unsigned), null, null);
+            _manager.SetTrust(plain, true);
+            Assert.False(plain.TrustSigner);
+
+            string path = NewFile();
+            var run = _manager.Add(path, PluginFile.Sha256(path), "Example Studio", KeyOne.ToLowerInvariant());
+            _manager.SetTrust(run, true);
+            var saved = _manager.Save().Single(d => d.Path == run.Path);
+            Assert.Equal(KeyOne, saved.SignerKey);
+            Assert.True(saved.TrustSigner);
+            var copy = new PluginRun(saved);
+            Assert.True(copy.TrustSigner);
+            Assert.Equal(KeyOne, copy.SignerKey);
+            // A record whose key is gone trusts nothing.
+            Assert.False(new PluginRun(new PluginData { Path = path, Sha256 = "AA", TrustSigner = true }).TrustSigner);
+
+            // The same key approved again keeps it on. Another turns it off.
+            _manager.Approve(run, run.Sha256, "Example Studio", KeyOne);
+            Assert.True(run.TrustSigner);
+            _manager.Approve(run, run.Sha256, "Someone Else", KeyTwo);
+            Assert.False(run.TrustSigner);
+            Assert.Equal(KeyTwo, run.SignerKey);
+            _manager.SetTrust(run, true);
+            _manager.Approve(run, run.Sha256, null, null);
+            Assert.False(run.TrustSigner);
+            Assert.Null(run.SignerKey);
+        }
 
         [Fact]
         public void AChangedFile_IsNotStarted_AndApprovingItsNewBytesStartsIt()

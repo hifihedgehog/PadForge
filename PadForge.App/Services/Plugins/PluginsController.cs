@@ -28,7 +28,10 @@ namespace PadForge.Services.Plugins
     /// plugin silent for <see cref="OfflineAfterSilenceMs"/> has its devices
     /// taken offline at rest, and one silent for
     /// <see cref="EndAfterSilenceMs"/> is ended and started again with the
-    /// back-off unless a debugger is attached to it.</para>
+    /// back-off unless a debugger is attached to it. A plugin that has not
+    /// said hello by <see cref="PluginManager.HelloDeadlineMs"/> is ended
+    /// the same way, and its card and Home's Plugins tile say it started but
+    /// never connected.</para>
     /// </summary>
     internal sealed class PluginsController : IPluginsPageActions, IDisposable
     {
@@ -181,6 +184,7 @@ namespace PadForge.Services.Plugins
         {
             if (_disposed) return;
             Manager.CheckFiles();
+            Manager.CheckHello();
             CheckSilence();
             BuiltIns.CountReads();
             Refresh();
@@ -288,6 +292,10 @@ namespace PadForge.Services.Plugins
                 row.Show(run.ShownName, run.Path, StateLine(run), run.Enabled,
                     showStart: run.Status is PluginStatus.Failed or PluginStatus.Refused,
                     showApprove: run.Status == PluginStatus.Changed || run.FileChanged);
+                // Trust New Versions From This Signer, offered while the
+                // approved bytes' signing key is kept.
+                row.ShowTrust(run.SignerKey != null && run.Signer != null, run.TrustSigner,
+                    run.Signer == null ? null : string.Format(CultureInfo.CurrentCulture, s.Plugins_Trust_Note_Format, run.Signer));
                 row.Devices = DeviceGuids(run);
                 row.Settings.MissingLine = MissingLine(run);
             }
@@ -344,6 +352,10 @@ namespace PadForge.Services.Plugins
                 PluginStatus.Failed => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Failed_Format, run.ShownName),
                 PluginStatus.Changed => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Changed_Format, run.ShownName),
                 PluginStatus.Refused => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Refused_Format, run.ShownName),
+                // Its last run never said hello: named from the first miss,
+                // and while its next run waits for its hello.
+                PluginStatus.Restarting or PluginStatus.Checking or PluginStatus.Running when run.NeverConnected && run.Refusal == PluginRefusal.None
+                    => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_NeverConnected_Format, run.ShownName),
                 // It exited, or could not be started, while it should run,
                 // and waits out its pause before the next start. A single
                 // failure after a steady run is a one-second pause that its
@@ -402,7 +414,8 @@ namespace PadForge.Services.Plugins
                 return string.Format(CultureInfo.CurrentCulture, s.Plugins_Missing_Refused_Format, why);
             var mine = run.Settings.Declarations().FindAll(d => d.Device == null);
             if (mine.Count > 0) return null;
-            return run.Status == PluginStatus.Running && run.Grant != null ? s.Plugins_Missing_None : s.Plugins_Missing_NotRunning;
+            if (run.Status != PluginStatus.Running) return s.Plugins_Missing_NotRunning;
+            return run.Grant != null ? s.Plugins_Missing_None : s.Plugins_Missing_NotConnected;
         }
 
         /// <summary>The devices plugins' sessions own now.</summary>
@@ -449,6 +462,8 @@ namespace PadForge.Services.Plugins
                 PluginStatus.Checking => s.Plugins_State_Checking,
                 PluginStatus.Restarting => run.Refusal != PluginRefusal.None
                     ? string.Format(CultureInfo.CurrentCulture, s.Plugins_State_Retry_Format, Seconds(run.PauseMs))
+                    : run.NeverConnected
+                    ? string.Format(CultureInfo.CurrentCulture, Seconds(run.PauseMs) == 1 ? s.Plugins_State_NeverConnected_One_Format : s.Plugins_State_NeverConnected_Format, Seconds(run.PauseMs))
                     : string.Format(CultureInfo.CurrentCulture, s.Plugins_State_Exited_Format, run.ExitCode ?? 0, Seconds(run.PauseMs)),
                 PluginStatus.Changed => s.Plugins_State_Changed,
                 PluginStatus.Failed => s.Plugins_State_Failed,
@@ -490,6 +505,8 @@ namespace PadForge.Services.Plugins
                 PluginLogKind.ForeignKey => string.Format(CultureInfo.CurrentCulture, s.Plugins_Log_ForeignKey_Format, line.Code),
                 PluginLogKind.Silent => s.Plugins_Log_Silent,
                 PluginLogKind.ChangedWhileRunning => s.Plugins_Log_ChangedWhileRunning,
+                PluginLogKind.NeverConnected => s.Plugins_Log_NeverConnected,
+                PluginLogKind.TrustedVersion => s.Plugins_Log_TrustedVersion,
                 _ => line.Text ?? string.Empty,
             };
             return line.Time.ToLocalTime().ToString("T", CultureInfo.CurrentCulture) + "  " + text;
@@ -647,13 +664,18 @@ namespace PadForge.Services.Plugins
             string full;
             try { full = System.IO.Path.GetFullPath(path); }
             catch { return null; }
-            string sha = PluginFile.Sha256(full);
-            return sha == null ? null : new PluginApproval(full, AuthenticodeSigner.Of(full), sha);
+            // The key is read on the handle that was hashed, so it is the key
+            // of the bytes the user approves, as the confirmation reads the
+            // signer: with no revocation check and nothing fetched.
+            string sha, key;
+            using (var held = PluginFile.OpenHeld(full, out sha))
+                key = held == null ? null : AuthenticodeSigner.SignedHeld(full, held.SafeFileHandle)?.Key;
+            return sha == null ? null : new PluginApproval(full, AuthenticodeSigner.Of(full), sha, key);
         }
 
         public bool Has(string path) => Manager.Has(path);
 
-        public bool Add(PluginApproval approved) => approved != null && Manager.Add(approved.Path, approved.Sha256, approved.Signer) != null;
+        public bool Add(PluginApproval approved) => approved != null && Manager.Add(approved.Path, approved.Sha256, approved.Signer, approved.Key) != null;
 
         public void Remove(PluginRowItem row)
         {
@@ -671,7 +693,12 @@ namespace PadForge.Services.Plugins
 
         public void Approve(PluginRowItem row, PluginApproval approved)
         {
-            if (row?.Run is PluginRun run && approved != null) Manager.Approve(run, approved.Sha256, approved.Signer);
+            if (row?.Run is PluginRun run && approved != null) Manager.Approve(run, approved.Sha256, approved.Signer, approved.Key);
+        }
+
+        public void SetTrust(PluginRowItem row, bool on)
+        {
+            if (row?.Run is PluginRun run) Manager.SetTrust(run, on);
         }
 
         public void StartAgain(PluginRowItem row)

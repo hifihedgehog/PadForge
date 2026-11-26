@@ -3375,7 +3375,26 @@
                                             <TextBlock Text="{Binding Settings.MissingLine}" Style="{StaticResource ExtraSmall}" TextWrapping="Wrap" Margin="0,12,0,4"
                                                        Visibility="{Binding Settings.HasMissingLine, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <views:PluginSettingsView DataContext="{Binding Settings}"/>
+                                            <!-- Trust New Versions From This Signer, while the
+                                                 approved bytes carry a signature that verified:
+                                                 the user's own, since it lets a new file start
+                                                 without the question. -->
+                                            <controls:SettingRow MinHeight="50" common:Reach.Class="UsersOwn" x:Name="PluginTrustRow"
+                                                                 Visibility="{Binding CanTrust, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Plugins_Trust, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding TrustNote}" controls:SettingRow.Fills="True" FontSize="13" TextWrapping="Wrap"
+                                                           VerticalAlignment="Center" Margin="0,0,14,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                                                          AutomationProperties.AutomationId="{Binding TrustId}"
+                                                          AutomationProperties.HelpText="{Binding TrustNote, TargetNullValue=''}"
+                                                          Content="{Binding Plugins_Trust, Source={x:Static strings:Strings.Instance}}"
+                                                          IsChecked="{Binding TrustSigner, Mode=TwoWay}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetTrustCommand}" SettingLabel="{Binding Plugins_Trust, Source={x:Static strings:Strings.Instance}}"/>
+                                            </controls:SettingRow>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                                                <Button Style="{StaticResource ExtraButton}" Command="{Binding ShowInFolderCommand}" common:Reach.Class="UsersOwn" Margin="0,0,10,0"
+                                                        AutomationProperties.AutomationId="{Binding ShowInFolderId}"
+                                                        Content="{Binding Plugins_ShowInFolder, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Button Style="{StaticResource ExtraButton}" Command="{Binding RemoveCommand}" common:Reach.Class="UsersOwn"
                                                         AutomationProperties.AutomationId="{Binding RemoveId}"
                                                         Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>

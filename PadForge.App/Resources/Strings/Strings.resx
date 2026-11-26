@@ -614,6 +614,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Add a Plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programs and scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|All files|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Approve and Restart…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Show in Folder</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Trust New Versions From This Signer</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>A new version signed with {0}’s same certificate key restarts without Approve and Restart. Any other change asks you first.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Took a new version signed with the same certificate key</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Starts with the engine</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Checking the file before it starts</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Exited with code {0}. Starts again in {1} s.</value></data>
@@ -653,6 +657,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Not signed.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Its settings show here while it runs.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>It declares no settings.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Its settings show here once it connects to PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Started but never connected to PadForge. It starts again in {0} seconds.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Started but never connected to PadForge. It starts again in {0} second.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} started but never connected to PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Ended a minute after its start, never connected to PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Changed</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge could not read its settings: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Ended after a minute without a word</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Its file changed while it ran</value></data>

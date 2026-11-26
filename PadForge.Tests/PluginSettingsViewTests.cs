@@ -115,6 +115,83 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>A setting whose value differs from its default shows its
+        /// name in ember and says Changed to UI Automation, on a plugin's
+        /// card and on a device's, in the full row and in a compact one. It
+        /// turns back on its reset and on a value typed back to its default,
+        /// since the set keeps only a value that differs from its default.
+        /// Its reset stays on its row either way.</summary>
+        [Fact]
+        public void AChangedValue_ShowsItsNameInEmber_AndSaysChanged_UntilItIsAtItsDefaultAgain()
+        {
+            WithAppResources(dispatcher =>
+            {
+                var set = new PluginSettingSet();
+                Declare(set, "setting key=dead kind=number name=\"Dead Zone\" min=0 max=20 default=3");
+                Declare(set, "setting key=curve kind=choice name=\"Brake Curve\" {\"choices\":[\"Linear\",\"Progressive\"],\"default\":\"Linear\"}");
+                Declare(set, "setting key=port kind=status name=Port");
+                Declare(set, "setting key=trigger kind=number name=Trigger min=0 max=100 default=0 look=compact");
+                Declare(set, "setting key=stick kind=pad name=Stick look=compact");
+                Declare(set, "setting key=hand kind=switch name=A look=compact default=true");
+                Declare(set, "setting key=clutch kind=switch name=\"Clutch Inverted\" device=pedals");
+                var card = new PluginSettingsHost(set, null, "Test", dispatcher);
+                var device = new PluginSettingsHost(set, "pedals", "Device_Plugin_pedals", dispatcher);
+                var cardView = new PluginSettingsView { DataContext = card };
+                var deviceView = new PluginSettingsView { DataContext = device, LabelWidth = 170, CompactMargin = new Thickness(0) };
+                var ember = ((SolidColorBrush)Application.Current.FindResource("EmberTextBrush")).Color;
+
+                // The text that names the row, and the control a screen
+                // reader is on.
+                System.Windows.Controls.TextBlock Name(FrameworkElement view, PluginSettingItem item)
+                    => Under(view).OfType<System.Windows.Controls.TextBlock>().First(t => ReferenceEquals(t.DataContext, item) && t.Text == item.Name);
+                FrameworkElement Control(FrameworkElement view, PluginSettingItem item)
+                    => Under(view).OfType<FrameworkElement>().First(e => System.Windows.Automation.AutomationProperties.GetAutomationId(e) == item.AutomationId);
+                bool Ember(Brush brush) => brush is SolidColorBrush b && b.Color == ember;
+                void Marked(FrameworkElement view, PluginSettingItem item, bool changed)
+                {
+                    Assert.Equal(changed, Ember(Name(view, item).Foreground));
+                    Assert.Equal(changed ? "Changed" : string.Empty, System.Windows.Automation.AutomationProperties.GetItemStatus(Control(view, item)));
+                }
+
+                Lay(cardView);
+                Lay(deviceView);
+                foreach (string key in new[] { "dead", "curve", "trigger", "stick" }) Marked(cardView, card.Item(key), false);
+                Marked(deviceView, device.Item("clutch"), false);
+                // A status holds no value and is never marked.
+                Assert.False(Ember(Name(cardView, card.Item("port")).Foreground));
+
+                card.Item("dead").Number = 5;
+                card.Item("curve").Choice = "Progressive";
+                card.Item("trigger").Number = 70;
+                card.Item("stick").Pad = new Point(20, 30);
+                device.Item("clutch").IsOn = true;
+                Lay(cardView);
+                Lay(deviceView);
+                foreach (string key in new[] { "dead", "curve", "trigger", "stick" }) Marked(cardView, card.Item(key), true);
+                Marked(deviceView, device.Item("clutch"), true);
+
+                // A compact toggle off its default says so, and in ember while
+                // it is off, since a lit toggle is ember already.
+                card.Item("hand").IsOn = false;
+                Lay(cardView);
+                Assert.Equal("Changed", System.Windows.Automation.AutomationProperties.GetItemStatus(Control(cardView, card.Item("hand"))));
+                Assert.True(Ember(((System.Windows.Controls.Primitives.ToggleButton)Control(cardView, card.Item("hand"))).Foreground));
+
+                // Back by its reset, and by a value typed back to its default.
+                card.Item("dead").ResetCommand.Execute(null);
+                card.Item("curve").Choice = "Linear";
+                device.Item("clutch").IsOn = false;
+                Lay(cardView);
+                Lay(deviceView);
+                Marked(cardView, card.Item("dead"), false);
+                Marked(cardView, card.Item("curve"), false);
+                Marked(deviceView, device.Item("clutch"), false);
+                Marked(cardView, card.Item("trigger"), true);
+                Assert.True(card.Item("dead").CanReset);
+                Assert.True(card.Item("curve").CanReset);
+            });
+        }
+
         [Fact]
         public void TheTestControllersStickPads_StayWhereTheyAreLetGo_AndShowWhereTheyWereLeftAfterARestart()
         {

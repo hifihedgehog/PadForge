@@ -6,6 +6,11 @@ using System.Text;
 
 namespace PadForge.Engine.Common
 {
+    /// <summary>A file's signer as its certificate names it, and the key it
+    /// was signed with: the SHA-256 of the leaf certificate's
+    /// SubjectPublicKeyInfo, as hex.</summary>
+    public sealed record AuthenticodeSignature(string Signer, string Key);
+
     /// <summary>
     /// Who signed a program's file, as the request card and Activity name it
     /// (#597): the signer of an Authenticode signature Windows trusts, the
@@ -120,6 +125,62 @@ namespace PadForge.Engine.Common
             }
         }
 
+        /// <summary>
+        /// The signer and the signing key of the file the caller holds open at
+        /// <paramref name="path"/> through <paramref name="held"/>, read on
+        /// that handle, when the signature the file carries verifies with
+        /// revocation checked along the whole chain. The certificate
+        /// authorities' revocation servers are asked, as System Informer's
+        /// PhpVerifyFile asks them when network access is not prevented
+        /// (WTD_REVOKE_WHOLECHAIN, without WTD_CACHE_ONLY_URL_RETRIEVAL).
+        /// Only WinVerifyTrust's success counts, as verify.c's
+        /// PhpStatusToVerifyResult trusts status 0 alone, so a revoked
+        /// certificate gives null. Whether a revocation server that cannot be
+        /// reached fails the check is Windows' Software Publishing policy's
+        /// to say, not this code's. The test host asks no server
+        /// (OutboundNetworkGate) and gets null.
+        /// </summary>
+        public static AuthenticodeSignature VerifiedHeld(string path, Microsoft.Win32.SafeHandles.SafeFileHandle held)
+        {
+            if (OutboundNetworkGate.OffLimitsForTest) return null;
+            return SignatureOfHeld(path, held, revocation: true);
+        }
+
+        /// <summary>
+        /// The signer and the signing key of the file the caller holds open,
+        /// read on that handle, when the signature the file carries holds,
+        /// read as <see cref="Of"/> reads it: no revocation check and nothing
+        /// fetched. A catalog that lists the file does not count, since the
+        /// file must carry the signature itself. The key is the SHA-256 of
+        /// the leaf certificate's SubjectPublicKeyInfo, which names the key
+        /// the file was signed with where a display name does not: two
+        /// certificates can carry one name. Null unless both the name and the
+        /// key are read. Nothing is kept.
+        /// </summary>
+        public static AuthenticodeSignature SignedHeld(string path, Microsoft.Win32.SafeHandles.SafeFileHandle held)
+            => SignatureOfHeld(path, held, revocation: false);
+
+        private static AuthenticodeSignature SignatureOfHeld(string path, Microsoft.Win32.SafeHandles.SafeFileHandle held, bool revocation)
+        {
+            if (string.IsNullOrEmpty(path) || held == null || held.IsInvalid || held.IsClosed) return null;
+            bool added = false;
+            try
+            {
+                held.DangerousAddRef(ref added);
+                int result = VerifyFile(path, held.DangerousGetHandle(), revocation, readKey: true, out string signer, out string key);
+                return result == 0 && signer != null && key != null ? new AuthenticodeSignature(signer, key) : null;
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or ExternalException
+                                           or ObjectDisposedException or System.Security.Cryptography.CryptographicException)
+            {
+                return null;
+            }
+            finally
+            {
+                if (added) held.DangerousRelease();
+            }
+        }
+
         private static string Read(string path, IntPtr handle)
         {
             string embedded = VerifyFile(path, handle, out bool noSignature);
@@ -131,7 +192,21 @@ namespace PadForge.Engine.Common
 
         private static string VerifyFile(string path, IntPtr handle, out bool noSignature)
         {
-            noSignature = false;
+            int result = VerifyFile(path, handle, revocation: false, readKey: false, out string signer, out _);
+            // A file of a kind no signature format covers (a script
+            // without a SIP) may still be listed in a catalog, which
+            // PowerShell's reading takes for any file
+            // (GetSignatureFromMSSecurityExtensions), so it goes to the
+            // catalogs as an unsigned file does.
+            noSignature = result is TRUST_E_NOSIGNATURE or TRUST_E_SUBJECT_FORM_UNKNOWN or TRUST_E_PROVIDER_UNKNOWN;
+            return result == 0 ? signer : null;
+        }
+
+        /// <summary>WinVerifyTrust's result for the signature the file
+        /// carries, with its signer and, with <paramref name="readKey"/>, its
+        /// signing key.</summary>
+        private static int VerifyFile(string path, IntPtr handle, bool revocation, bool readKey, out string signer, out string key)
+        {
             IntPtr file = Marshal.StringToCoTaskMemUni(path);
             IntPtr fileInfo = IntPtr.Zero;
             try
@@ -144,15 +219,8 @@ namespace PadForge.Engine.Common
                 };
                 fileInfo = Marshal.AllocHGlobal(Marshal.SizeOf<WINTRUST_FILE_INFO>());
                 Marshal.StructureToPtr(fi, fileInfo, false);
-                var data = NewData(WTD_CHOICE_FILE, fileInfo);
-                int result = Verify(ref data, out string signer);
-                // A file of a kind no signature format covers (a script
-                // without a SIP) may still be listed in a catalog, which
-                // PowerShell's reading takes for any file
-                // (GetSignatureFromMSSecurityExtensions), so it goes to the
-                // catalogs as an unsigned file does.
-                noSignature = result is TRUST_E_NOSIGNATURE or TRUST_E_SUBJECT_FORM_UNKNOWN or TRUST_E_PROVIDER_UNKNOWN;
-                return result == 0 ? signer : null;
+                var data = NewData(WTD_CHOICE_FILE, fileInfo, revocation);
+                return Verify(ref data, out signer, out key, readKey);
             }
             finally
             {
@@ -240,29 +308,41 @@ namespace PadForge.Engine.Common
 
         // ── WinVerifyTrust and its state ──
 
-        private static WINTRUST_DATA NewData(uint choice, IntPtr info) => new WINTRUST_DATA
+        private static WINTRUST_DATA NewData(uint choice, IntPtr info, bool revocation = false) => new WINTRUST_DATA
         {
             cbStruct = (uint)Marshal.SizeOf<WINTRUST_DATA>(),
             dwUIChoice = WTD_UI_NONE,
-            fdwRevocationChecks = WTD_REVOKE_NONE,
+            fdwRevocationChecks = revocation ? WTD_REVOKE_WHOLECHAIN : WTD_REVOKE_NONE,
             dwUnionChoice = choice,
             pInfo = info,
             dwStateAction = WTD_STATEACTION_VERIFY,
-            // verify.c's PhpVerifyFile with network access prevented. MD2
-            // and MD4 hashes are refused.
-            dwProvFlags = WTD_SAFER_FLAG | WTD_DISABLE_MD2_MD4 | WTD_CACHE_ONLY_URL_RETRIEVAL,
+            // verify.c's PhpVerifyFile: with network access prevented unless
+            // revocation is checked. MD2 and MD4 hashes are refused.
+            dwProvFlags = WTD_SAFER_FLAG | WTD_DISABLE_MD2_MD4 | (revocation ? 0 : WTD_CACHE_ONLY_URL_RETRIEVAL),
         };
 
-        /// <summary>Verifies, reads the signer when the signature holds, and
-        /// closes the state WinVerifyTrust kept whatever came of it.</summary>
-        private static int Verify(ref WINTRUST_DATA data, out string signer)
+        private static int Verify(ref WINTRUST_DATA data, out string signer) => Verify(ref data, out signer, out _, readKey: false);
+
+        /// <summary>Verifies, reads the signer, and the signing key when asked,
+        /// when the signature holds, and closes the state WinVerifyTrust kept
+        /// whatever came of it.</summary>
+        private static int Verify(ref WINTRUST_DATA data, out string signer, out string key, bool readKey)
         {
             signer = null;
+            key = null;
             var action = WINTRUST_ACTION_GENERIC_VERIFY_V2;
             int result = WinVerifyTrust(INVALID_HANDLE_VALUE, ref action, ref data);
             try
             {
-                if (result == 0 && data.hWVTStateData != IntPtr.Zero) signer = SignerOf(data.hWVTStateData);
+                if (result == 0 && data.hWVTStateData != IntPtr.Zero)
+                {
+                    IntPtr leaf = LeafOf(data.hWVTStateData);
+                    if (leaf != IntPtr.Zero)
+                    {
+                        signer = NameOf(leaf);
+                        if (readKey) key = KeyOf(leaf);
+                    }
+                }
             }
             finally
             {
@@ -272,22 +352,37 @@ namespace PadForge.Engine.Common
             return result;
         }
 
-        private static string SignerOf(IntPtr state)
+        /// <summary>The signer's certificate: the first signer's chain, its
+        /// first certificate, as verify.c's PhpGetSignaturesFromStateData
+        /// reads it. Valid until the state is closed.</summary>
+        private static IntPtr LeafOf(IntPtr state)
         {
             IntPtr provider = WTHelperProvDataFromStateData(state);
-            if (provider == IntPtr.Zero) return null;
+            if (provider == IntPtr.Zero) return IntPtr.Zero;
             IntPtr provSigner = WTHelperGetProvSignerFromChain(provider, 0, false, 0);
-            if (provSigner == IntPtr.Zero) return null;
+            if (provSigner == IntPtr.Zero) return IntPtr.Zero;
             var ps = Marshal.PtrToStructure<CRYPT_PROVIDER_SGNR>(provSigner);
-            if (ps.csCertChain == 0 || ps.pasCertChain == IntPtr.Zero) return null;
-            var leaf = Marshal.PtrToStructure<CRYPT_PROVIDER_CERT>(ps.pasCertChain);
-            if (leaf.pCert == IntPtr.Zero) return null;
-            uint length = CertGetNameStringW(leaf.pCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, 0, IntPtr.Zero, null, 0);
+            if (ps.csCertChain == 0 || ps.pasCertChain == IntPtr.Zero) return IntPtr.Zero;
+            return Marshal.PtrToStructure<CRYPT_PROVIDER_CERT>(ps.pasCertChain).pCert;
+        }
+
+        private static string NameOf(IntPtr certificate)
+        {
+            uint length = CertGetNameStringW(certificate, CERT_NAME_SIMPLE_DISPLAY_TYPE, 0, IntPtr.Zero, null, 0);
             if (length <= 1) return null;
             var name = new StringBuilder((int)length);
-            CertGetNameStringW(leaf.pCert, CERT_NAME_SIMPLE_DISPLAY_TYPE, 0, IntPtr.Zero, name, length);
+            CertGetNameStringW(certificate, CERT_NAME_SIMPLE_DISPLAY_TYPE, 0, IntPtr.Zero, name, length);
             string text = name.ToString().Trim();
             return text.Length == 0 ? null : text;
+        }
+
+        /// <summary>The SHA-256 of the certificate's SubjectPublicKeyInfo, as
+        /// hex. The certificate is copied from its context, so the copy
+        /// outlives the state.</summary>
+        private static string KeyOf(IntPtr certificate)
+        {
+            using var copy = new System.Security.Cryptography.X509Certificates.X509Certificate2(certificate);
+            return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(copy.PublicKey.ExportSubjectPublicKeyInfo()));
         }
 
         private static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
@@ -295,6 +390,7 @@ namespace PadForge.Engine.Common
 
         private const uint WTD_UI_NONE = 2;
         private const uint WTD_REVOKE_NONE = 0;
+        private const uint WTD_REVOKE_WHOLECHAIN = 1;
         private const uint WTD_CHOICE_FILE = 1;
         private const uint WTD_CHOICE_CATALOG = 2;
         private const uint WTD_STATEACTION_VERIFY = 1;

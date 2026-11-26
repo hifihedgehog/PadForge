@@ -27,6 +27,9 @@ namespace PadForge.ViewModels
         void Approve(PluginRowItem row, PluginApproval approved);
         void StartAgain(PluginRowItem row);
 
+        /// <summary>Trust New Versions From This Signer.</summary>
+        void SetTrust(PluginRowItem row, bool on);
+
         /// <summary>Opens a recording for Replay. Null when it opened, or the
         /// reason in a word.</summary>
         string OpenRecording(string path);
@@ -42,7 +45,7 @@ namespace PadForge.ViewModels
 
     /// <summary>A file as PadForge's confirmation shows it before the user
     /// approves it.</summary>
-    internal sealed record PluginApproval(string Path, string Signer, string Sha256);
+    internal sealed record PluginApproval(string Path, string Signer, string Sha256, string Key = null);
 
     /// <summary>
     /// The Plugins extra (#597, #600): its switch and state, the two built-in

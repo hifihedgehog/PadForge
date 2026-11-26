@@ -46,6 +46,28 @@ namespace PadForge.Services.Plugins
             }
         }
 
+        /// <summary>
+        /// Show in Folder: Explorer opens the file's folder with the file
+        /// selected, or the folder alone when the file is gone. It starts as
+        /// the user, through the desktop shell, as --settings-folder and the
+        /// recording review's Show in Explorer do. The test host starts
+        /// nothing (ShellLaunch.OffLimitsForTest).
+        /// </summary>
+        internal static void ShowInFolder(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return;
+            PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer,
+                PadForge.Services.SettingsFolderRun.ExplorerArguments(path, File.Exists));
+        }
+
+        /// <summary>The signer and signing key of the held file, read on the
+        /// handle that was hashed, when the signature it carries verifies
+        /// with revocation checked
+        /// (<see cref="PadForge.Engine.Common.AuthenticodeSigner.VerifiedHeld"/>).
+        /// Null otherwise.</summary>
+        internal static PadForge.Engine.Common.AuthenticodeSignature SignatureOf(string path, FileStream held)
+            => held == null ? null : PadForge.Engine.Common.AuthenticodeSigner.VerifiedHeld(path, held.SafeFileHandle);
+
         /// <summary>The file's SHA-256 as hex, or null when it cannot be
         /// read.</summary>
         internal static string Sha256(string path)

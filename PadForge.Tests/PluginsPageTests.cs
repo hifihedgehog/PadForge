@@ -234,6 +234,90 @@ namespace PadForge.Tests
             Assert.Empty(rig.Vm.PluginRecords);
         }
 
+        /// <summary>Show in Folder starts Explorer through the desktop
+        /// shell, as the user, with the plugin's file selected, as
+        /// --settings-folder and the recording review's Show in Explorer do.
+        /// It stands in the open card's bottom row before Remove and Reset
+        /// All, the user's own.</summary>
+        [Fact]
+        public void ShowInFolder_StartsExplorerAsTheUser_WithThePluginsFileSelected()
+        {
+            var starts = new List<PadForge.Common.ShellLaunch.UserStart>();
+            PadForge.Common.ShellLaunch.UserShellSeam = start => { starts.Add(start); return null; };
+            try
+            {
+                using var rig = new Rig();
+                string path = rig.File("bridge.exe");
+                Assert.True(rig.Vm.PluginActions.Add(rig.Vm.PluginActions.Describe(path)));
+                Pump();
+                var row = rig.Vm.PluginRows.Single();
+                row.ShowInFolderCommand.Execute(null);
+                var started = Assert.Single(starts);
+                Assert.Equal(PadForge.Common.ShellLaunch.Explorer, started.File);
+                Assert.Equal("/select,\"" + path + "\"", started.Arguments);
+            }
+            finally
+            {
+                PadForge.Common.ShellLaunch.UserShellSeam = null;
+            }
+
+            string body = Body();
+            int show = body.IndexOf("AutomationProperties.AutomationId=\"{Binding ShowInFolderId}\"", StringComparison.Ordinal);
+            int remove = body.IndexOf("AutomationProperties.AutomationId=\"{Binding RemoveId}\"", show, StringComparison.Ordinal);
+            int resetAll = body.IndexOf("AutomationProperties.AutomationId=\"{Binding ResetAllId}\"", StringComparison.Ordinal);
+            Assert.True(show > 0 && show < remove && remove < resetAll, "Show in Folder is not before Remove and Reset All");
+            string button = body.Substring(body.LastIndexOf("<Button", show, StringComparison.Ordinal), show - body.LastIndexOf("<Button", show, StringComparison.Ordinal));
+            Assert.Contains("Command=\"{Binding ShowInFolderCommand}\"", button);
+            Assert.Contains("common:Reach.Class=\"UsersOwn\"", button);
+        }
+
+        /// <summary>Trust New Versions From This Signer shows on a card only
+        /// while the approved bytes' signing key is kept, names the signer,
+        /// and reaches the plugin's switch both ways. Its reset turns it off.
+        /// The row is the user's own.</summary>
+        [Fact]
+        public void TheTrustRow_ShowsForASignedPlugin_AndReachesItsSwitch()
+        {
+            using var rig = new Rig();
+            var s = Strings.Instance;
+            var actions = rig.Vm.PluginActions;
+            // A file with no signature that verified: no key, no row.
+            var approval = actions.Describe(rig.File("bridge.exe"));
+            Assert.Null(approval.Key);
+            Assert.True(actions.Add(approval));
+            Pump();
+            var row = rig.Vm.PluginRows.Single();
+            Assert.False(row.CanTrust);
+
+            // Approved for bytes whose signature verified.
+            var run = rig.Controller.Manager.Snapshot().Single();
+            rig.Controller.Manager.Approve(run, run.Sha256, "Example Studio", "ABCD");
+            Pump();
+            Assert.True(row.CanTrust);
+            Assert.False(row.TrustSigner);
+            Assert.Equal(string.Format(s.Plugins_Trust_Note_Format, "Example Studio"), row.TrustNote);
+            Assert.EndsWith("Any other change asks you first.", s.Plugins_Trust_Note_Format);
+            row.TrustSigner = true;
+            Assert.True(run.TrustSigner);
+            Assert.True(rig.Vm.PluginRecords.Single().TrustSigner);
+            row.ResetTrustCommand.Execute(null);
+            Assert.False(run.TrustSigner);
+            Assert.False(row.TrustSigner);
+
+            string body = Body();
+            int at = body.IndexOf("x:Name=\"PluginTrustRow\"", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string trustRow = body.Substring(body.LastIndexOf("<controls:SettingRow", at, StringComparison.Ordinal),
+                body.IndexOf("</controls:SettingRow>", at, StringComparison.Ordinal) - body.LastIndexOf("<controls:SettingRow", at, StringComparison.Ordinal));
+            Assert.Contains("common:Reach.Class=\"UsersOwn\"", trustRow);
+            Assert.Contains("Visibility=\"{Binding CanTrust, Converter={StaticResource BoolToVisibilityConverter}}\"", trustRow);
+            Assert.Contains("IsChecked=\"{Binding TrustSigner, Mode=TwoWay}\"", trustRow);
+            Assert.Contains("Command=\"{Binding ResetTrustCommand}\"", trustRow);
+            // It stands between the plugin's settings and Show in Folder.
+            Assert.True(body.IndexOf("<views:PluginSettingsView DataContext=\"{Binding Settings}\"/>", StringComparison.Ordinal) < at
+                && at < body.IndexOf("{Binding ShowInFolderId}", StringComparison.Ordinal));
+        }
+
         [Fact]
         public void AFloodOfLogLines_IsDrawnAFewTimes_AndTheLogKeepsItsLast200()
         {
@@ -371,7 +455,39 @@ namespace PadForge.Tests
             string notepad = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "notepad.exe");
             Assert.Equal("Microsoft Windows", AuthenticodeSigner.Of(notepad));
             string controller = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginsController.cs");
-            Assert.Contains("new PluginApproval(full, AuthenticodeSigner.Of(full), sha)", controller);
+            Assert.Contains("new PluginApproval(full, AuthenticodeSigner.Of(full), sha, key)", controller);
+            // The key is read on the handle that was hashed, with revocation
+            // checked, and the test host asks no server: even a file that
+            // carries a valid signature gives none here.
+            Assert.Contains("using (var held = PluginFile.OpenHeld(full, out sha))", controller);
+            Assert.Contains("key = held == null ? null : AuthenticodeSigner.SignedHeld(full, held.SafeFileHandle)?.Key;", controller);
+            // The key is the SHA-256 of the signing certificate's
+            // SubjectPublicKeyInfo, read here from a file that carries a
+            // signature and checked against .NET's own reading of it.
+            string core = typeof(object).Assembly.Location;
+            using (var signed = new FileStream(core, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var signature = AuthenticodeSigner.SignedHeld(core, signed.SafeFileHandle);
+                Assert.NotNull(signature);
+#pragma warning disable SYSLIB0057
+                using var certificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(
+                    System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(core));
+#pragma warning restore SYSLIB0057
+                Assert.Equal(Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(certificate.PublicKey.ExportSubjectPublicKeyInfo())), signature.Key);
+                Assert.Equal(certificate.GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType.SimpleName, false), signature.Signer);
+                // The check with revocation asks a server, which the test
+                // host never does: null here even for this file.
+                Assert.Null(AuthenticodeSigner.VerifiedHeld(core, signed.SafeFileHandle));
+            }
+            // A file with no signature has none.
+            string plain = Path.Combine(Path.GetTempPath(), "PadForge.Tests.Unsigned." + Guid.NewGuid().ToString("N") + ".exe");
+            File.WriteAllText(plain, "not signed");
+            try
+            {
+                using var unsigned = new FileStream(plain, FileMode.Open, FileAccess.Read, FileShare.Read);
+                Assert.Null(AuthenticodeSigner.SignedHeld(plain, unsigned.SafeFileHandle));
+            }
+            finally { File.Delete(plain); }
             // The add's confirmation is PadForge's own, with Cancel first.
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
             Assert.Contains("ConfirmDialog.Show(owner, s.Plugins_Confirm_Title, s.Plugins_Confirm_Message, s.Plugins_Confirm_Add,", code);
@@ -410,6 +526,7 @@ namespace PadForge.Tests
             public void SetEnabled(PluginRowItem row, bool on) { }
             public void Approve(PluginRowItem row, PluginApproval approved) { }
             public void StartAgain(PluginRowItem row) { }
+            public void SetTrust(PluginRowItem row, bool on) { }
             public string OpenRecording(string path) => null;
             public void Play() { }
             public void Stop() { }

@@ -27,6 +27,7 @@ namespace PadForge.Tests
     public class ControllerDatabaseSettingsTests : IDisposable
     {
         private readonly ControllerDatabaseSection _section = SettingsManager.ControllerDatabase;
+        private readonly string _from = SettingsManager.ControllerDatabaseFrom;
         private readonly SettingsCollection _settings = SettingsManager.UserSettings;
         private readonly DeviceCollection _devices = SettingsManager.UserDevices;
         private readonly List<ProfileData> _profiles = SettingsManager.Profiles;
@@ -40,6 +41,7 @@ namespace PadForge.Tests
         public void Dispose()
         {
             SettingsManager.ControllerDatabase = _section;
+            SettingsManager.ControllerDatabaseFrom = _from;
             SettingsManager.UserSettings = _settings;
             SettingsManager.UserDevices = _devices;
             SettingsManager.Profiles = _profiles;
@@ -90,7 +92,7 @@ namespace PadForge.Tests
             string added = Row(0xFFF1, 0xFFF2, "A New Pad");
             var data = new ControllerDatabaseData
             {
-                Source = ControllerDatabaseSection.SourceUrl,
+                Source = ControllerDatabaseAddress.Community,
                 FetchedUtc = "2030-01-02T03:04:05Z",
                 ETag = "W/\"real\"",
                 Sha256 = new string('b', 64),
@@ -155,6 +157,46 @@ namespace PadForge.Tests
             var (_, settings2) = Arrange();
             settings2.LoadFromFile(path);
             Assert.Null(SettingsManager.ControllerDatabase);
+        }
+
+        /// <summary>Download From (#600): the address the user set goes into
+        /// the file with no download and no row of theirs, comes back on
+        /// load, and a file that holds one PadForge does not take loads with
+        /// the community's and is saved again. Reset to Defaults puts the
+        /// community's back.</summary>
+        [Fact]
+        public void TheDownloadAddress_IsSavedAndLoaded_AndAnAddressPadForgeDoesNotTakeIsDropped()
+        {
+            const string mirror = "https://mirror.example.net/sdl/gamecontrollerdb.txt";
+            var (_, settings) = Arrange();
+            SettingsManager.ControllerDatabase = null;
+            SettingsManager.ControllerDatabaseFrom = mirror;
+            string path = TempFile();
+            Assert.True(settings.SaveToFile(path));
+            Assert.Contains("DownloadFrom=\"" + mirror + "\"", File.ReadAllText(path), StringComparison.Ordinal);
+
+            SettingsManager.ControllerDatabaseFrom = null;
+            var (vm, settings2) = Arrange();
+            settings2.LoadFromFile(path);
+            Assert.Equal(mirror, SettingsManager.ControllerDatabaseFrom);
+            Assert.Equal(mirror, vm.Settings.ControllerDatabaseAddress);
+            Assert.Null(SettingsManager.ControllerDatabase);
+
+            settings2.ResetToDefaults();
+            Assert.Equal(ControllerDatabaseAddress.Community, SettingsManager.ControllerDatabaseFrom);
+
+            foreach (string odd in new[] { "http://mirror.example.net/plain.txt", "https://MIRROR.example.net/sdl/gamecontrollerdb.txt" })
+            {
+                string other = TempFile();
+                WriteFile(other, new ControllerDatabaseData { DownloadFrom = odd });
+                SettingsManager.ControllerDatabaseFrom = mirror;
+                var (_, settings3) = Arrange();
+                PathField.SetValue(settings3, other);
+                settings3.LoadFromFile(other);
+                Assert.Equal(ControllerDatabaseAddress.Community, SettingsManager.ControllerDatabaseFrom);
+                Assert.True((bool)typeof(SettingsService).GetField("_controllerDatabaseChangedOnLoad", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(settings3));
+            }
+            GC.KeepAlive(vm);
         }
 
         /// <summary>A file from before the feature, as an older PadForge
@@ -296,8 +338,11 @@ namespace PadForge.Tests
             const string rearm = "if (_controllerDatabaseChangedOnLoad) { _controllerDatabaseChangedOnLoad = false; MarkDirty(); }";
             Assert.Contains(rearm, FenceSource.Body(service, "public void Initialize()"), StringComparison.Ordinal);
             Assert.Contains(rearm, FenceSource.Body(service, "public void Reload()"), StringComparison.Ordinal);
-            Assert.Contains("data.ControllerDatabase = ControllerDatabaseSection.Compose(SettingsManager.ControllerDatabase, ControllerDatabaseMine.Current);",
-                FenceSource.Body(service, "public bool SaveToFile(string filePath)"), StringComparison.Ordinal);
+            string save = FenceSource.Body(service, "public bool SaveToFile(string filePath)");
+            Assert.Contains("data.ControllerDatabase = ControllerDatabaseSection.Compose(SettingsManager.ControllerDatabase, ControllerDatabaseMine.Current,",
+                save, StringComparison.Ordinal);
+            // With the address the user set under Download From (#600).
+            Assert.Contains("SettingsManager.ControllerDatabaseFrom);", save, StringComparison.Ordinal);
         }
 
         /// <summary>Reset to Defaults is a fresh install's state, and a

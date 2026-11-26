@@ -33,10 +33,6 @@ namespace PadForge.Common.Input
     /// </summary>
     internal sealed class ControllerDatabaseSection
     {
-        /// <summary>The one address the database is fetched from.</summary>
-        internal const string SourceUrl =
-            "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt";
-
         private const string TimeFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         private const int MaxETagLength = 256;
         /// <summary>What the file writes on a row in use.</summary>
@@ -45,6 +41,11 @@ namespace PadForge.Common.Input
         private readonly Dictionary<string, ControllerDatabaseStoredRow> _newById = new(StringComparer.Ordinal);
 
         public DateTime FetchedUtc { get; }
+
+        /// <summary>The address the rows were fetched from, in the form
+        /// <see cref="ControllerDatabaseAddress.TryRead"/> gives, or null when
+        /// the file named none it could read.</summary>
+        public string Source { get; }
 
         /// <summary>The tag GitHub gave the download, or null.</summary>
         public string ETag { get; }
@@ -69,10 +70,11 @@ namespace PadForge.Common.Input
 
         public int ChangedRows { get; }
 
-        private ControllerDatabaseSection(DateTime fetchedUtc, string etag, string sha256, int windowsRows,
+        private ControllerDatabaseSection(DateTime fetchedUtc, string source, string etag, string sha256, int windowsRows,
             string baselinePin, string appVersion, List<ControllerDatabaseStoredRow> rows)
         {
             FetchedUtc = fetchedUtc;
+            Source = source;
             ETag = etag;
             Sha256 = sha256;
             WindowsRows = windowsRows;
@@ -131,14 +133,20 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>The section a checked download gives. A new row in use
-        /// keeps its mark, and stays when the community's copy no longer
+        /// <summary>The section a checked download from
+        /// <paramref name="source"/> gives. From an address that is not the
+        /// community's, only new rows are kept: no date in a file from
+        /// another host tells a newer row from an older one, so a changed row
+        /// could roll back one this release carries (#600). A new row in use
+        /// keeps its mark, and stays when the downloaded copy no longer
         /// carries it: it is how a controller the user set up is read.</summary>
         internal static ControllerDatabaseSection FromDownload(ControllerDatabaseDownload download, string etag, DateTime fetchedUtc,
-            ControllerDatabaseBaseline baseline, string appVersion, ControllerDatabaseSection previous)
+            ControllerDatabaseBaseline baseline, string appVersion, ControllerDatabaseSection previous,
+            string source = ControllerDatabaseAddress.Community)
         {
             if (download == null) throw new ArgumentNullException(nameof(download));
             if (baseline == null) throw new ArgumentNullException(nameof(baseline));
+            bool community = ControllerDatabaseAddress.IsCommunity(source);
             var rows = new List<ControllerDatabaseStoredRow>();
             var seen = new HashSet<string>(StringComparer.Ordinal);
             foreach (var row in download.Rows)
@@ -146,7 +154,7 @@ namespace PadForge.Common.Input
                 seen.Add(row.Guid);
                 bool used = previous != null && previous.TryFindNew(row.Guid, out var before) && before.InUse;
                 var kind = Classify(baseline, row);
-                if (kind == null) continue;
+                if (kind == null || (kind == ControllerDatabaseRowKind.Changed && !community)) continue;
                 rows.Add(new ControllerDatabaseStoredRow(row, kind.Value, used && kind == ControllerDatabaseRowKind.New));
             }
             if (previous != null)
@@ -157,7 +165,7 @@ namespace PadForge.Common.Input
                     if (Classify(baseline, before.Row) == ControllerDatabaseRowKind.New) rows.Add(before);
                 }
             }
-            return new ControllerDatabaseSection(TrimToSeconds(fetchedUtc), CleanETag(etag), download.Sha256, download.WindowsRows,
+            return new ControllerDatabaseSection(TrimToSeconds(fetchedUtc), source, CleanETag(etag), download.Sha256, download.WindowsRows,
                 baseline.PinCommit, appVersion, rows);
         }
 
@@ -173,6 +181,10 @@ namespace PadForge.Common.Input
         /// leaves out. A row whose text no longer passes the grammar is
         /// dropped too, whoever wrote it.</para>
         ///
+        /// <para>Rows from an address that is not the community's are new
+        /// rows only, as <see cref="FromDownload"/> keeps them, so a changed
+        /// row a file holds from there goes.</para>
+        ///
         /// <para>A release with another pin leaves the stored tag unused, so
         /// the next Update Now fetches the whole file and judges it against
         /// the new pin. A changed row fetched before that pin's commit is
@@ -184,8 +196,8 @@ namespace PadForge.Common.Input
             changed = false;
             if (data == null) return null;
             if (baseline == null) throw new ArgumentNullException(nameof(baseline));
-            // An element that holds only the user's own rows (#600) holds
-            // no download.
+            // An element that holds only the user's own rows or the address
+            // of Download From (#600) holds no download.
             if (data.FetchedUtc == null && data.Source == null && (data.Rows == null || data.Rows.Length == 0)) return null;
             if (!DateTime.TryParseExact(data.FetchedUtc, TimeFormat, CultureInfo.InvariantCulture,
                     DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTime fetched))
@@ -195,8 +207,13 @@ namespace PadForge.Common.Input
             }
 
             bool otherPin = !string.Equals(data.BaselinePin, baseline.PinCommit, StringComparison.Ordinal);
-            bool otherSource = !string.Equals(data.Source, SourceUrl, StringComparison.Ordinal);
-            string etag = otherPin || otherSource ? null : CleanETag(data.ETag);
+            // The address the rows came from. One the file does not hold in
+            // the form PadForge writes is no address, and its tag is sent to
+            // none.
+            bool sourceRead = ControllerDatabaseAddress.TryRead(data.Source, out string source)
+                && string.Equals(source, data.Source, StringComparison.Ordinal);
+            if (!sourceRead) source = null;
+            string etag = otherPin || !sourceRead ? null : CleanETag(data.ETag);
             string sha256 = IsSha256(data.Sha256) ? data.Sha256 : null;
             if (!int.TryParse(data.WindowsRows, NumberStyles.None, CultureInfo.InvariantCulture, out int windowsRows))
                 windowsRows = 0;
@@ -214,6 +231,9 @@ namespace PadForge.Common.Input
                 bool marked = string.Equals(stored.InUse, InUseMark, StringComparison.Ordinal);
                 var kind = Classify(baseline, row);
                 if (kind == ControllerDatabaseRowKind.Changed && otherPin && fetched < baseline.PinTimeUtc) kind = null;
+                // Rows from an address that is not the community's are new
+                // rows only (#600), whoever wrote the file.
+                if (kind == ControllerDatabaseRowKind.Changed && !ControllerDatabaseAddress.IsCommunity(source)) kind = null;
                 if (kind == null)
                 {
                     changed = true;
@@ -228,27 +248,31 @@ namespace PadForge.Common.Input
                 rows.Add(new ControllerDatabaseStoredRow(row, kind.Value, used));
             }
 
-            if (otherPin || otherSource
+            if (otherPin || !sourceRead
                 || !string.Equals(windowsRows.ToString(CultureInfo.InvariantCulture), data.WindowsRows, StringComparison.Ordinal)
                 || !string.Equals(etag ?? string.Empty, data.ETag ?? string.Empty, StringComparison.Ordinal)
                 || !string.Equals(sha256 ?? string.Empty, data.Sha256 ?? string.Empty, StringComparison.Ordinal)
                 || !string.Equals(appVersion ?? string.Empty, data.AppVersion ?? string.Empty, StringComparison.Ordinal))
                 changed = true;
-            return new ControllerDatabaseSection(fetched, etag, sha256, windowsRows, baseline.PinCommit, appVersion, rows);
+            return new ControllerDatabaseSection(fetched, source, etag, sha256, windowsRows, baseline.PinCommit, appVersion, rows);
         }
 
         /// <summary>The element the settings file holds for the downloaded
-        /// rows and the user's own (#600), or null, which leaves it out,
-        /// when there are neither.</summary>
-        internal static ControllerDatabaseData Compose(ControllerDatabaseSection section, ControllerDatabaseMine mine)
+        /// rows, the user's own (#600) and the address the user set under
+        /// Download From, or null, which leaves it out, when there are none
+        /// of them.</summary>
+        internal static ControllerDatabaseData Compose(ControllerDatabaseSection section, ControllerDatabaseMine mine,
+            string downloadFrom = ControllerDatabaseAddress.Community)
         {
             var data = section?.ToData();
             var rows = mine?.ToData();
             var owed = mine?.PutBacksData();
-            if (rows == null && owed == null) return data;
+            string from = downloadFrom == null || ControllerDatabaseAddress.IsCommunity(downloadFrom) ? null : downloadFrom;
+            if (rows == null && owed == null && from == null) return data;
             data ??= new ControllerDatabaseData();
             data.Mine = rows;
             data.PutBack = owed;
+            data.DownloadFrom = from;
             return data;
         }
 
@@ -265,7 +289,7 @@ namespace PadForge.Common.Input
                 };
             return new ControllerDatabaseData
             {
-                Source = SourceUrl,
+                Source = Source,
                 FetchedUtc = FetchedUtc.ToString(TimeFormat, CultureInfo.InvariantCulture),
                 ETag = ETag,
                 Sha256 = Sha256,
@@ -285,7 +309,7 @@ namespace PadForge.Common.Input
             var rows = new List<ControllerDatabaseStoredRow>(Rows.Count);
             foreach (var row in Rows)
                 rows.Add(ReferenceEquals(row, found) ? row with { InUse = true } : row);
-            return new ControllerDatabaseSection(FetchedUtc, ETag, Sha256, WindowsRows, BaselinePin, AppVersion, rows);
+            return new ControllerDatabaseSection(FetchedUtc, Source, ETag, Sha256, WindowsRows, BaselinePin, AppVersion, rows);
         }
 
         /// <summary>A tag as it goes back to GitHub in If-None-Match:

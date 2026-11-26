@@ -143,6 +143,19 @@ namespace PadForge.Common.Input
             }
         }
 
+        private static string _controllerDatabaseFrom = ControllerDatabaseAddress.Community;
+
+        /// <summary>Where Update Now downloads the controller database from
+        /// (#600 item 49): the community's file unless the user set another
+        /// address under Download From. Always in the form
+        /// <see cref="ControllerDatabaseAddress.TryRead"/> gives. Null puts
+        /// the community's back.</summary>
+        internal static string ControllerDatabaseFrom
+        {
+            get => System.Threading.Volatile.Read(ref _controllerDatabaseFrom);
+            set => System.Threading.Volatile.Write(ref _controllerDatabaseFrom, value ?? ControllerDatabaseAddress.Community);
+        }
+
         // ─────────────────────────────────────────────
         //  Virtual Controller Slots
         // ─────────────────────────────────────────────

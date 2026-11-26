@@ -319,6 +319,15 @@ namespace PadForge.Views
             await vm.AddControllerDatabaseRows(dialog.PickedRows);
         }
 
+        /// <summary>Download From's Change… (#600 item 49): the address the
+        /// dialog takes becomes where Update Now downloads from.</summary>
+        private void ChangeDatabaseAddress_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.SettingsViewModel vm) return;
+            var dialog = new DownloadFromDialog(vm.ControllerDatabaseAddress) { Owner = Window.GetWindow(this) };
+            if (dialog.ShowDialog() == true) vm.ChooseControllerDatabaseAddress(dialog.Address);
+        }
+
         private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
             => PadForge.Services.ExeFolderState.Instance.RequestMove();
 

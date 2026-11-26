@@ -510,6 +510,8 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Include Pre-Releases (Updates): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_IncludePreReleases`
 - Update Now Controller Database (Updates): action, asks. `settings.action/GeneralGroup/Settings_ControllerDatabaseUpdateNow#Settings_ControllerDatabase`
 - Controller Database (Updates): setting, free. `settings/GeneralGroup/Settings_ControllerDatabase`
+- Change… Download From (Updates): action, yours-alone, under More. `settings.action/ControllerDatabaseFrom/ControllerDatabase_DownloadFromChange#ControllerDatabase_DownloadFrom`
+- Use the Community’s File Download From (Updates): action, yours-alone, under More. `settings.action/ControllerDatabaseFrom/ControllerDatabase_UseCommunityFile#ControllerDatabase_DownloadFrom`
 - Add Rows From a File or the Clipboard… Your Rows (Updates): action, free, under More. `settings.action/ControllerDatabaseMore/ControllerDatabase_AddRows#ControllerDatabase_YourRows`
 - Input Engine: card, free. `settings.card/InputGroup/Settings_InputEngine`
 - Auto-Start Engine on Launch (Input Engine): switch, free. `settings/InputGroup/Settings_AutoStart`
@@ -880,6 +882,12 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Duplicate: action, free. `dialog.action/CustomTelemetryFormatsDialog/DuplicateFormatButton/Common_Duplicate`
 - Delete: action, free. `dialog.action/CustomTelemetryFormatsDialog/DeleteFormatButton/Common_Delete`
 - Add Field: action, free. `dialog.action/CustomTelemetryFormatsDialog/AddFieldButton/Telemetry_Formats_AddField`
+
+### DownloadFromDialog
+
+- Download From: dialog, yours-alone. `dialog.dialog/DownloadFromDialog/ControllerDatabase_DownloadFrom`
+- Cancel: action, yours-alone. `dialog.action/DownloadFromDialog/Common_Cancel`
+- OK: action, yours-alone. `dialog.action/DownloadFromDialog/OkButton/Common_OK`
 
 ### DreamcastScreenDialog
 

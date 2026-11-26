@@ -174,6 +174,7 @@ public class Strings : INotifyPropertyChanged
         [nameof(SdlMappingDialog_Detail_Guess_Format)] = nameof(SdlMappingDialog_Detail_Guess_One_Format),
         [nameof(SdlMappingDialog_AddFound_Format)] = nameof(SdlMappingDialog_AddFound_One_Format),
         [nameof(ControllerDatabase_Mine_Format)] = nameof(ControllerDatabase_Mine_One_Format),
+        [nameof(ControllerDatabase_BuiltInUpdatedFrom_Format)] = nameof(ControllerDatabase_BuiltInUpdatedFrom_One_Format),
     };
 
     /// <summary>The words a count is written in: the string for a count of
@@ -1393,8 +1394,11 @@ public class Strings : INotifyPropertyChanged
     public string Update_Updated_Format => Get("Update_Updated_Format");
     public string ControllerDatabase_BuiltIn_Format => Get("ControllerDatabase_BuiltIn_Format");
     public string ControllerDatabase_BuiltInUpdated_Format => Get("ControllerDatabase_BuiltInUpdated_Format");
+    public string ControllerDatabase_BuiltInUpdatedFrom_Format => Get("ControllerDatabase_BuiltInUpdatedFrom_Format");
+    public string ControllerDatabase_BuiltInUpdatedFrom_One_Format => Get("ControllerDatabase_BuiltInUpdatedFrom_One_Format");
     public string ControllerDatabase_NothingChanged => Get("ControllerDatabase_NothingChanged");
     public string ControllerDatabase_NoNetwork_Format => Get("ControllerDatabase_NoNetwork_Format");
+    public string ControllerDatabase_NoNetworkAt_Format => Get("ControllerDatabase_NoNetworkAt_Format");
     public string ControllerDatabase_Refused => Get("ControllerDatabase_Refused");
     public string Settings_StartMinimized => Get("Settings_StartMinimized");
     public string Settings_StartAtLogin => Get("Settings_StartAtLogin");
@@ -6546,6 +6550,12 @@ public class Strings : INotifyPropertyChanged
     public string ControllerDatabase_Mine_One_Format => Get("ControllerDatabase_Mine_One_Format");
     public string ControllerDatabase_MineNone => Get("ControllerDatabase_MineNone");
     public string ControllerDatabase_InUseAtOnce => Get("ControllerDatabase_InUseAtOnce");
+    public string ControllerDatabase_DownloadFrom => Get("ControllerDatabase_DownloadFrom");
+    public string ControllerDatabase_DownloadFromNote => Get("ControllerDatabase_DownloadFromNote");
+    public string ControllerDatabase_DownloadFromChange => Get("ControllerDatabase_DownloadFromChange");
+    public string ControllerDatabase_UseCommunityFile => Get("ControllerDatabase_UseCommunityFile");
+    public string ControllerDatabase_DownloadFromBox => Get("ControllerDatabase_DownloadFromBox");
+    public string ControllerDatabase_DownloadFromRefused => Get("ControllerDatabase_DownloadFromRefused");
     public string Web_Reach_Label => Get("Web_Reach_Label");
     public string Web_Reach_Hint => Get("Web_Reach_Hint");
     public string Web_Reach_Ask_Title => Get("Web_Reach_Ask_Title");

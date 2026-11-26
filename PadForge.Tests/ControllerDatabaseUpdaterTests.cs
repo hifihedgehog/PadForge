@@ -74,8 +74,11 @@ namespace PadForge.Tests
             return response;
         }
 
-        private static Task<ControllerDatabaseFetch> Fetch(Transport transport, string etag = null, CancellationToken ct = default) =>
-            ControllerDatabaseUpdater.FetchAsync(etag, transport.Send, Stall, Deadline, ct);
+        private static Task<ControllerDatabaseFetch> Fetch(Transport transport, string etag = null, CancellationToken ct = default,
+            string address = ControllerDatabaseAddress.Community) =>
+            ControllerDatabaseUpdater.FetchAsync(address, etag, transport.Send, Stall, Deadline, ct);
+
+        private static readonly Uri Community = new(ControllerDatabaseAddress.Community);
 
         private static readonly byte[] Body = Encoding.UTF8.GetBytes("# Game Controller DB\n030000004c050000b20b000000000000,Pad,a:b0,platform:Windows,\n");
 
@@ -304,7 +307,7 @@ namespace PadForge.Tests
             var fetch = await Fetch(transport);
             Assert.Equal(ControllerDatabaseFetchOutcome.Refused, fetch.Outcome);
             Assert.Single(transport.Asked);
-            Assert.False(ControllerDatabaseUpdater.IsTrusted(new Uri(new Uri(ControllerDatabaseSection.SourceUrl), location)));
+            Assert.False(ControllerDatabaseUpdater.IsTrusted(new Uri(Community, location), Community));
         }
 
         [Fact]
@@ -331,9 +334,70 @@ namespace PadForge.Tests
         [InlineData("https://raw.githubusercontent.com@example.com/a", false)]
         public void OnlyTheDatabasesHostOverHttps_IsTrusted(string address, bool trusted)
         {
-            Assert.Equal(trusted, ControllerDatabaseUpdater.IsTrusted(new Uri(address)));
-            Assert.False(ControllerDatabaseUpdater.IsTrusted(null));
-            Assert.False(ControllerDatabaseUpdater.IsTrusted(new Uri("/a", UriKind.Relative)));
+            Assert.Equal(trusted, ControllerDatabaseUpdater.IsTrusted(new Uri(address), Community));
+            Assert.False(ControllerDatabaseUpdater.IsTrusted(null, Community));
+            Assert.False(ControllerDatabaseUpdater.IsTrusted(new Uri("/a", UriKind.Relative), Community));
+        }
+
+        // ── Download From (#600 item 49) ──
+
+        private const string Mirror = "https://mirror.example.net/sdl/gamecontrollerdb.txt";
+
+        /// <summary>The address the user set is the one asked, and a
+        /// redirect on its own host is followed with the same question.</summary>
+        [Fact]
+        public async Task TheChosenAddress_IsAsked_AndARedirectOnItsHostIsFollowed()
+        {
+            var transport = new Transport().Then(() => Redirect(HttpStatusCode.Found, "/sdl/v2/gamecontrollerdb.txt")).Then(() => Ok(Body, "\"m\""));
+            var fetch = await Fetch(transport, "\"old\"", address: Mirror);
+            Assert.Equal(ControllerDatabaseFetchOutcome.Fetched, fetch.Outcome);
+            Assert.Equal(new[] { Mirror, "https://mirror.example.net/sdl/v2/gamecontrollerdb.txt" },
+                transport.Asked.Select(a => a.Address.AbsoluteUri));
+            Assert.Equal("\"old\"", transport.Asked[1].IfNoneMatch);
+        }
+
+        /// <summary>Every redirect stays on the chosen address's host, over
+        /// HTTPS, on the default port: the community's own host is another
+        /// host from a mirror, and is refused as any other is.</summary>
+        [Theory]
+        [InlineData("https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt")]
+        [InlineData("https://cdn.mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("http://mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("https://mirror.example.net:8443/sdl/gamecontrollerdb.txt")]
+        [InlineData("//example.com/gamecontrollerdb.txt")]
+        public async Task ARedirectOffTheChosenHost_IsRefused_AndNotFollowed(string location)
+        {
+            var transport = new Transport().Then(() => Redirect(HttpStatusCode.Found, location));
+            var fetch = await Fetch(transport, address: Mirror);
+            Assert.Equal(ControllerDatabaseFetchOutcome.Refused, fetch.Outcome);
+            Assert.Single(transport.Asked);
+            Assert.False(ControllerDatabaseUpdater.IsTrusted(new Uri(new Uri(Mirror), location), new Uri(Mirror)));
+        }
+
+        [Fact]
+        public async Task AFourthRedirectOnTheChosenHost_IsRefused()
+        {
+            var loop = new Transport();
+            for (int i = 0; i <= ControllerDatabaseUpdater.MaxRedirects; i++) loop.Then(() => Redirect(HttpStatusCode.Found, "/sdl/again.txt"));
+            Assert.Equal(ControllerDatabaseFetchOutcome.Refused, (await Fetch(loop, address: Mirror)).Outcome);
+            Assert.Equal(ControllerDatabaseUpdater.MaxRedirects + 1, loop.Asked.Count);
+        }
+
+        /// <summary>An address PadForge does not take is never asked.</summary>
+        [Theory]
+        [InlineData("http://mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("https://mirror.example.net:8443/sdl/gamecontrollerdb.txt")]
+        [InlineData("https://someone:secret@mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("ftp://mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task AnAddressPadForgeDoesNotTake_IsNeverAsked(string address)
+        {
+            var transport = new Transport();
+            var fetch = await Fetch(transport, address: address);
+            Assert.Equal(ControllerDatabaseFetchOutcome.Refused, fetch.Outcome);
+            Assert.Empty(transport.Asked);
         }
 
         // ── No answer ──
@@ -359,7 +423,7 @@ namespace PadForge.Tests
         {
             Task<HttpResponseMessage> Fails(HttpRequestMessage r, CancellationToken c) =>
                 Task.FromException<HttpResponseMessage>(new HttpRequestException("No such host is known."));
-            var fetch = await ControllerDatabaseUpdater.FetchAsync(null, Fails, Stall, Deadline, CancellationToken.None);
+            var fetch = await ControllerDatabaseUpdater.FetchAsync(ControllerDatabaseAddress.Community, null, Fails, Stall, Deadline, CancellationToken.None);
             Assert.Equal(ControllerDatabaseFetchOutcome.Unreachable, fetch.Outcome);
             Assert.Equal("No such host is known.", fetch.Reason);
             Assert.False(fetch.Stalled);
@@ -371,7 +435,7 @@ namespace PadForge.Tests
         public async Task ABodyThatStopsArriving_IsAStall()
         {
             var transport = new Transport().Then(() => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new NeverArrives()) });
-            var fetch = await ControllerDatabaseUpdater.FetchAsync(null, transport.Send, TimeSpan.FromMilliseconds(100), Deadline, CancellationToken.None);
+            var fetch = await ControllerDatabaseUpdater.FetchAsync(ControllerDatabaseAddress.Community, null, transport.Send, TimeSpan.FromMilliseconds(100), Deadline, CancellationToken.None);
             Assert.Equal(ControllerDatabaseFetchOutcome.Unreachable, fetch.Outcome);
             Assert.True(fetch.Stalled);
         }
@@ -383,7 +447,7 @@ namespace PadForge.Tests
         public async Task ABodyThatDrips_EndsAtTheFetchsOwnDeadline()
         {
             var transport = new Transport().Then(() => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new Drips()) });
-            var fetch = await ControllerDatabaseUpdater.FetchAsync(null, transport.Send, Stall, TimeSpan.FromMilliseconds(300), CancellationToken.None);
+            var fetch = await ControllerDatabaseUpdater.FetchAsync(ControllerDatabaseAddress.Community, null, transport.Send, Stall, TimeSpan.FromMilliseconds(300), CancellationToken.None);
             Assert.Equal(ControllerDatabaseFetchOutcome.Unreachable, fetch.Outcome);
             Assert.True(fetch.Stalled);
             Assert.Null(fetch.Content);
@@ -419,7 +483,7 @@ namespace PadForge.Tests
         {
             Task<HttpResponseMessage> TimesOut(HttpRequestMessage r, CancellationToken c) =>
                 Task.FromException<HttpResponseMessage>(new TaskCanceledException("The request was canceled due to the configured HttpClient.Timeout."));
-            var fetch = await ControllerDatabaseUpdater.FetchAsync(null, TimesOut, Stall, Deadline, CancellationToken.None);
+            var fetch = await ControllerDatabaseUpdater.FetchAsync(ControllerDatabaseAddress.Community, null, TimesOut, Stall, Deadline, CancellationToken.None);
             Assert.Equal(ControllerDatabaseFetchOutcome.Unreachable, fetch.Outcome);
             Assert.True(fetch.Stalled);
         }
@@ -431,7 +495,7 @@ namespace PadForge.Tests
         {
             using var cts = new CancellationTokenSource();
             var transport = new Transport().Then(() => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new NeverArrives()) });
-            var running = ControllerDatabaseUpdater.FetchAsync(null, transport.Send, Stall, Deadline, cts.Token);
+            var running = ControllerDatabaseUpdater.FetchAsync(ControllerDatabaseAddress.Community, null, transport.Send, Stall, Deadline, cts.Token);
             cts.Cancel();
             await Assert.ThrowsAnyAsync<OperationCanceledException>(() => running);
 
@@ -483,12 +547,17 @@ namespace PadForge.Tests
             // The updater's client conventions: its User-Agent and its wait.
             Assert.Contains("new ProductInfoHeaderValue(\"PadForge\", BuildIdentity.VersionText(BuildIdentity.Version))", source, StringComparison.Ordinal);
             Assert.Contains("Timeout = TimeSpan.FromSeconds(30)", source, StringComparison.Ordinal);
-            Assert.Contains("FetchAsync(etag, SendAsync, UpdateService.DownloadStallTimeout, FetchDeadline, ct)", source, StringComparison.Ordinal);
+            Assert.Contains("FetchAsync(address, etag, SendAsync, UpdateService.DownloadStallTimeout, FetchDeadline, ct)", source, StringComparison.Ordinal);
 
             Assert.True(PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(ControllerDatabaseUpdater.Host));
-            var fetch = await ControllerDatabaseUpdater.FetchAsync(null, CancellationToken.None);
+            var fetch = await ControllerDatabaseUpdater.FetchAsync(ControllerDatabaseAddress.Community, null, CancellationToken.None);
             Assert.Equal(ControllerDatabaseFetchOutcome.Unreachable, fetch.Outcome);
             Assert.StartsWith("The test host sends no request beyond this PC", fetch.Reason, StringComparison.Ordinal);
+            // An address the user sets under Download From meets the same
+            // fence: the gate refuses every host that is not this PC.
+            var mirror = await ControllerDatabaseUpdater.FetchAsync("https://mirror.example.net/sdl/gamecontrollerdb.txt", null, CancellationToken.None);
+            Assert.Equal(ControllerDatabaseFetchOutcome.Unreachable, mirror.Outcome);
+            Assert.StartsWith("The test host sends no request beyond this PC: mirror.example.net", mirror.Reason, StringComparison.Ordinal);
         }
 
         /// <summary>The updater writes nothing: no file, no folder, no temp

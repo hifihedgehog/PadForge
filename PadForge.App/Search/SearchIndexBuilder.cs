@@ -747,6 +747,11 @@ namespace PadForge.Search
                 if (ctx.ItemQualifier != null) return ctx.ItemQualifier;
                 var row = RowOf(button);
                 if (row != null && MainRowLabel(row) is { } rowLabel) return rowLabel;
+                // A line that stands its words over its buttons, its label in
+                // the grid's first column (the Controller Database row's More,
+                // #600): the label of the grid the buttons sit in.
+                for (var up = row?.Parent; up != null && Local(up) != "SettingItem"; up = up.Parent)
+                    if (Local(up) == "Grid" && MainRowLabel(up) is { } gridLabel) return gridLabel;
                 if (row != null && Kids(row).FirstOrDefault(k => Local(k) == "TextBlock" && StyleOf(k) == "DzSubLabel") is { } subLabel
                     && TextLabel(subLabel, false) is { } sub)
                     return sub;

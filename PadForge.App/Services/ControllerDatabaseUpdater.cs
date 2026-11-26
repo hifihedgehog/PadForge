@@ -13,46 +13,51 @@ namespace PadForge.Services
 {
     internal enum ControllerDatabaseFetchOutcome
     {
-        /// <summary>GitHub sent the file.</summary>
+        /// <summary>The server sent the file.</summary>
         Fetched,
-        /// <summary>GitHub answered 304: the file is the one the stored tag
-        /// names.</summary>
+        /// <summary>The server answered 304: the file is the one the stored
+        /// tag names.</summary>
         NotModified,
         /// <summary>No answer, a failed connection, a stalled download or an
         /// HTTP error.</summary>
         Unreachable,
-        /// <summary>An answer PadForge does not take: a redirect off the
-        /// host, a body over the cap, or an encoding it did not ask for.</summary>
+        /// <summary>An address PadForge does not take, or an answer it does
+        /// not take: a redirect off the address's host, a body over the cap,
+        /// or an encoding it did not ask for.</summary>
         Refused,
     }
 
-    /// <summary>What one request for the community database came to.
+    /// <summary>What one request for the controller database came to.
     /// <see cref="Reason"/> is the network's own word for a failure, null
     /// for a stall, and for a refusal what was refused, for the log.</summary>
     internal sealed record ControllerDatabaseFetch(ControllerDatabaseFetchOutcome Outcome, byte[] Content = null,
         string ETag = null, DateTime? ServerTimeUtc = null, string Reason = null, bool Stalled = false);
 
     /// <summary>
-    /// Fetches the community controller database for Settings, Updates,
-    /// Controller Database (#597). One fixed HTTPS address on
-    /// raw.githubusercontent.com, asked only when the user presses Update
-    /// Now. Nothing is written to disk here: the bytes go to
+    /// Fetches the controller database for Settings, Updates, Controller
+    /// Database (#597): the community's own file on
+    /// raw.githubusercontent.com, or the HTTPS address the user set under
+    /// Download From (#600), asked only when the user presses Update Now.
+    /// Nothing is written to disk here: the bytes go to
     /// <see cref="ControllerDatabaseDownload"/>, and what is kept goes into
     /// PadForge.xml at the next settings save.
     ///
     /// <para>The client follows <see cref="UpdateService"/>'s: the same
-    /// User-Agent, 30 seconds for GitHub's answer, and a deadline on every
-    /// read of the body. Three things differ. No redirect is followed by
-    /// the handler, so each is read here and taken only to the same host
-    /// over HTTPS. The body is decoded here, so the 4 MB cap counts the
-    /// bytes that come out of gzip and not the ones on the wire. And the
-    /// whole fetch has a deadline of its own.</para>
+    /// User-Agent, 30 seconds for the server's answer, and a deadline on
+    /// every read of the body. Three things differ. No redirect is followed
+    /// by the handler, so each is read here and taken only to the address's
+    /// own host over HTTPS on the default port, at most three times. The
+    /// body is decoded here, so the 4 MB cap counts the bytes that come out
+    /// of gzip and not the ones on the wire. And the whole fetch has a
+    /// deadline of its own.</para>
     /// </summary>
     internal static class ControllerDatabaseUpdater
     {
+        /// <summary>The community file's host.</summary>
         internal const string Host = "raw.githubusercontent.com";
 
-        /// <summary>How many redirects on the host are followed.</summary>
+        /// <summary>How many redirects on the address's host are
+        /// followed.</summary>
         internal const int MaxRedirects = 3;
 
         /// <summary>How long one fetch may take in all. The deadline on each
@@ -75,7 +80,7 @@ namespace PadForge.Services
                 UseCookies = false,
             };
             // HttpClient's timeout ends once the headers arrive when the body
-            // is streamed, so it bounds the wait for GitHub's answer alone.
+            // is streamed, so it bounds the wait for the server's answer alone.
             var http = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) };
             http.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue("PadForge", BuildIdentity.VersionText(BuildIdentity.Version)));
@@ -92,22 +97,25 @@ namespace PadForge.Services
             return LazyClient.Value.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
         }
 
-        /// <summary>Asks GitHub for the file. <paramref name="etag"/> is the
-        /// tag of the copy the settings hold, or null.</summary>
-        internal static Task<ControllerDatabaseFetch> FetchAsync(string etag, CancellationToken ct) =>
-            FetchAsync(etag, SendAsync, UpdateService.DownloadStallTimeout, FetchDeadline, ct);
+        /// <summary>Asks <paramref name="address"/> for the file.
+        /// <paramref name="etag"/> is the tag of the copy the settings hold
+        /// from that address, or null.</summary>
+        internal static Task<ControllerDatabaseFetch> FetchAsync(string address, string etag, CancellationToken ct) =>
+            FetchAsync(address, etag, SendAsync, UpdateService.DownloadStallTimeout, FetchDeadline, ct);
 
-        /// <summary>Only the database's host, over HTTPS, on the default
-        /// port.</summary>
-        internal static bool IsTrusted(Uri address) =>
-            address != null && address.IsAbsoluteUri && address.Scheme == Uri.UriSchemeHttps
-            && address.IsDefaultPort && string.Equals(address.IdnHost, Host, StringComparison.OrdinalIgnoreCase);
+        /// <summary>Only the chosen address's host, over HTTPS, on the
+        /// default port.</summary>
+        internal static bool IsTrusted(Uri hop, Uri chosen) =>
+            hop != null && chosen != null && hop.IsAbsoluteUri && chosen.IsAbsoluteUri && hop.Scheme == Uri.UriSchemeHttps
+            && hop.IsDefaultPort && string.Equals(hop.IdnHost, chosen.IdnHost, StringComparison.OrdinalIgnoreCase);
 
-        internal static async Task<ControllerDatabaseFetch> FetchAsync(string etag,
+        internal static async Task<ControllerDatabaseFetch> FetchAsync(string chosen, string etag,
             Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> send, TimeSpan stallTimeout, TimeSpan deadline,
             CancellationToken caller)
         {
-            var address = new Uri(ControllerDatabaseSection.SourceUrl);
+            if (!ControllerDatabaseAddress.TryRead(chosen, out string read)) return Refused("an address PadForge does not take");
+            var start = new Uri(read);
+            var address = start;
             // Ends with the caller's token or at the deadline, whichever
             // comes first. Only the caller's own cancel leaves as a cancel.
             using var whole = CancellationTokenSource.CreateLinkedTokenSource(caller);
@@ -117,8 +125,8 @@ namespace PadForge.Services
             {
                 for (int hop = 0; ; hop++)
                 {
-                    if (!IsTrusted(address))
-                        return Refused("an address off " + Host + ": " + address.GetLeftPart(UriPartial.Authority));
+                    if (!IsTrusted(address, start))
+                        return Refused("an address off " + start.IdnHost + ": " + address.GetLeftPart(UriPartial.Authority));
                     using var request = new HttpRequestMessage(HttpMethod.Get, address);
                     request.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                     if (etag != null && EntityTagHeaderValue.TryParse(etag, out var tag))
@@ -162,7 +170,7 @@ namespace PadForge.Services
             }
             catch (Exception ex) when (ex is OperationCanceledException or UpdateDownloadStalledException)
             {
-                // HttpClient's own timeout while it waited for GitHub's
+                // HttpClient's own timeout while it waited for the server's
                 // answer, a read of the body past its deadline, or the
                 // whole fetch past its own.
                 return new ControllerDatabaseFetch(ControllerDatabaseFetchOutcome.Unreachable, Stalled: true);

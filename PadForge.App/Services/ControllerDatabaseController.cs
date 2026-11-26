@@ -10,7 +10,8 @@ namespace PadForge.Services
 {
     /// <summary>
     /// Runs the Controller Database row of the Updates card (#597): Update
-    /// Now, the row's reset, the status line and the line under it. UI
+    /// Now, the row's reset, the status line and the line under it, and
+    /// Download From under its More (#600). UI
     /// thread only, as <see cref="UpdateController"/> is. The request lives
     /// in <see cref="ControllerDatabaseUpdater"/>, the checks in
     /// <see cref="ControllerDatabaseDownload"/>, and what is kept in
@@ -35,10 +36,11 @@ namespace PadForge.Services
         /// <summary>The download running now.</summary>
         private CancellationTokenSource _op;
         private EventHandler _onUpdate, _onReset;
+        private Action<string> _onAddress;
 
         // The network, the baseline, the clock and the build's name,
         // replaceable in tests.
-        internal Func<string, CancellationToken, Task<ControllerDatabaseFetch>> Fetch = ControllerDatabaseUpdater.FetchAsync;
+        internal Func<string, string, CancellationToken, Task<ControllerDatabaseFetch>> Fetch = ControllerDatabaseUpdater.FetchAsync;
         internal Func<ControllerDatabaseBaseline> Baseline = () => ControllerDatabaseBaseline.Embedded;
         internal Func<DateTime> UtcNow = () => DateTime.UtcNow;
         internal string AppVersion = BuildIdentity.Display;
@@ -62,8 +64,10 @@ namespace PadForge.Services
             if (_onUpdate != null || _disposed) return;
             _onUpdate = (s, e) => _ = UpdateAsync();
             _onReset = (s, e) => Reset();
+            _onAddress = ChooseAddress;
             Settings.UpdateControllerDatabaseRequested += _onUpdate;
             Settings.ControllerDatabaseResetRequested += _onReset;
+            Settings.ControllerDatabaseAddressChosen += _onAddress;
             Settings.SetControllerDatabaseStatus(StatusText);
             StartDevices();
         }
@@ -85,18 +89,23 @@ namespace PadForge.Services
         private bool IsCurrent(CancellationTokenSource op) =>
             !_disposed && ReferenceEquals(_op, op) && !op.IsCancellationRequested;
 
-        /// <summary>Update Now: fetches the community's current copy, checks
-        /// it, and stores what is new or changed against this release.</summary>
+        /// <summary>Update Now: fetches the current copy from the address
+        /// Download From names, checks it, and stores what is new or changed
+        /// against this release. The stored tag goes only to the address it
+        /// came from.</summary>
         public async Task UpdateAsync()
         {
             if (_disposed || _op != null) return;
             var op = _op = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token);
             Settings.IsControllerDatabaseUpdating = true;
             Settings.SetControllerDatabaseResult(null);
+            string address = SettingsManager.ControllerDatabaseFrom;
             try
             {
                 var baseline = Baseline();
-                var fetch = await Fetch(SettingsManager.ControllerDatabase?.ETag, op.Token);
+                var held = SettingsManager.ControllerDatabase;
+                string etag = held != null && string.Equals(held.Source, address, StringComparison.Ordinal) ? held.ETag : null;
+                var fetch = await Fetch(address, etag, op.Token);
                 if (!IsCurrent(op)) return;
                 switch (fetch.Outcome)
                 {
@@ -107,8 +116,8 @@ namespace PadForge.Services
                         Log("MAPPINGS database update: no answer (" + (fetch.Stalled ? "stalled" : fetch.Reason) + ")");
                         string reason = fetch.Reason;
                         bool stalled = fetch.Stalled;
-                        Settings.SetControllerDatabaseResult(() => string.Format(Strings.Instance.ControllerDatabase_NoNetwork_Format,
-                            stalled ? Strings.Instance.Update_DownloadStalled : reason), warning: true);
+                        Settings.SetControllerDatabaseResult(() => NoAnswer(address, stalled ? Strings.Instance.Update_DownloadStalled : reason),
+                            warning: true);
                         break;
                     case ControllerDatabaseFetchOutcome.Refused:
                         Refuse(fetch.Reason);
@@ -125,7 +134,7 @@ namespace PadForge.Services
                                    + baseline.PinnedIds.Count + " known rows, SHA-256 " + download.Sha256);
                             break;
                         }
-                        Store(download, fetch.ETag, fetch.ServerTimeUtc ?? UtcNow(), baseline);
+                        Store(download, fetch.ETag, fetch.ServerTimeUtc ?? UtcNow(), baseline, address);
                         break;
                 }
             }
@@ -138,8 +147,7 @@ namespace PadForge.Services
                 {
                     Log("MAPPINGS database update failed: " + ex.Message);
                     string reason = ex.Message;
-                    Settings.SetControllerDatabaseResult(() => string.Format(Strings.Instance.ControllerDatabase_NoNetwork_Format, reason),
-                        warning: true);
+                    Settings.SetControllerDatabaseResult(() => NoAnswer(address, reason), warning: true);
                 }
             }
             finally
@@ -150,17 +158,25 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>The line for a download that got no answer: GitHub by
+        /// name for the community's file, the host for an address the user
+        /// set.</summary>
+        private static string NoAnswer(string address, string reason) => ControllerDatabaseAddress.IsCommunity(address)
+            ? string.Format(Strings.Instance.ControllerDatabase_NoNetwork_Format, reason)
+            : string.Format(Strings.Instance.ControllerDatabase_NoNetworkAt_Format, ControllerDatabaseAddress.HostOf(address), reason);
+
         private void Refuse(string what)
         {
             Log("MAPPINGS database update refused: " + what);
             Settings.SetControllerDatabaseResult(() => Strings.Instance.ControllerDatabase_Refused, warning: true);
         }
 
-        private void Store(ControllerDatabaseDownload download, string etag, DateTime fetchedUtc, ControllerDatabaseBaseline baseline)
+        private void Store(ControllerDatabaseDownload download, string etag, DateTime fetchedUtc, ControllerDatabaseBaseline baseline,
+            string address)
         {
             ControllerDatabaseSection stored = null;
             SettingsManager.ChangeControllerDatabase(current =>
-                stored = ControllerDatabaseSection.FromDownload(download, etag, fetchedUtc, baseline, AppVersion, current));
+                stored = ControllerDatabaseSection.FromDownload(download, etag, fetchedUtc, baseline, AppVersion, current, address));
             _markDirty();
             Log("MAPPINGS database update stored: " + stored.NewRows + " new, " + stored.ChangedRows + " changed, of "
                 + download.Rows.Count + " accepted rows, SHA-256 " + download.Sha256);
@@ -175,15 +191,42 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>The row's reset: empties the section, and ends a
-        /// download that would fill it again.</summary>
+        /// <summary>The row's reset: empties the section, puts the
+        /// community's address back under Download From, and ends a download
+        /// that would fill it again.</summary>
         public void Reset()
         {
             if (_disposed) return;
             _op?.Cancel();
-            if (SettingsManager.ChangeControllerDatabase(_ => null)) _markDirty();
+            bool emptied = SettingsManager.ChangeControllerDatabase(_ => null);
+            bool moved = !ControllerDatabaseAddress.IsCommunity(SettingsManager.ControllerDatabaseFrom);
+            SettingsManager.ControllerDatabaseFrom = null;
+            if (emptied || moved) _markDirty();
             Settings.SetControllerDatabaseResult(null);
             Settings.RaiseControllerDatabaseStatus();
+            Settings.RaiseControllerDatabaseAddress();
+        }
+
+        /// <summary>
+        /// Download From (#600): the address the next Update Now asks, set by
+        /// Change… or put back by Use the Community's File (null). Only
+        /// the user reaches either, since the line is theirs alone. An
+        /// address PadForge does not take changes nothing. A download running
+        /// for the old address ends, since what it brought would be stored as
+        /// the new address's. The rows already stored stay until the next
+        /// download, and their tag goes only to the address they came from.
+        /// </summary>
+        public void ChooseAddress(string address)
+        {
+            if (_disposed) return;
+            string chosen = ControllerDatabaseAddress.Community;
+            if (address != null && !ControllerDatabaseAddress.TryRead(address, out chosen)) return;
+            if (string.Equals(chosen, SettingsManager.ControllerDatabaseFrom, StringComparison.Ordinal)) return;
+            _op?.Cancel();
+            SettingsManager.ControllerDatabaseFrom = chosen;
+            _markDirty();
+            Settings.SetControllerDatabaseResult(null);
+            Settings.RaiseControllerDatabaseAddress();
         }
 
         public void Dispose()
@@ -192,6 +235,7 @@ namespace PadForge.Services
             _disposed = true;
             if (_onUpdate != null) Settings.UpdateControllerDatabaseRequested -= _onUpdate;
             if (_onReset != null) Settings.ControllerDatabaseResetRequested -= _onReset;
+            if (_onAddress != null) Settings.ControllerDatabaseAddressChosen -= _onAddress;
             StopDevices();
             // A running download disposes its own linked source when it ends.
             _cts.Cancel();

@@ -50,6 +50,11 @@ namespace PadForge.Common.Input
                 return string.Format(culture, Strings.Instance.ControllerDatabase_BuiltIn_Format, builtIn, pinned);
             string fetched = TimeZoneInfo.ConvertTimeFromUtc(section.FetchedUtc, zone ?? TimeZoneInfo.Local)
                 .ToString(DateFormat, CultureInfo.InvariantCulture);
+            // Rows from an address the user set (#600) are new rows only,
+            // and the line names where they came from.
+            if (section.Source != null && !ControllerDatabaseAddress.IsCommunity(section.Source))
+                return string.Format(culture, Strings.CountFormat(nameof(Strings.ControllerDatabase_BuiltInUpdatedFrom_Format), section.NewRows),
+                    section.NewRows, builtIn, pinned, fetched, ControllerDatabaseAddress.HostOf(section.Source));
             return string.Format(culture, Strings.Instance.ControllerDatabase_BuiltInUpdated_Format,
                 builtIn, pinned, fetched, section.NewRows, section.ChangedRows);
         }

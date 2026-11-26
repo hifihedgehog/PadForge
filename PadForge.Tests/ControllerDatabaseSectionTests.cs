@@ -282,7 +282,8 @@ namespace PadForge.Tests
             string xml = Xml(new SettingsFileData { ControllerDatabase = section.ToData() });
 
             var element = Assert.Single(XDocument.Parse(xml).Root.Elements(), e => e.Name.LocalName == "ControllerDatabase");
-            Assert.Equal(ControllerDatabaseSection.SourceUrl, (string)element.Attribute("Source"));
+            Assert.Equal(ControllerDatabaseAddress.Community, (string)element.Attribute("Source"));
+            Assert.Null(element.Attribute("DownloadFrom"));
             Assert.Equal("2026-11-23T14:17:35Z", (string)element.Attribute("FetchedUtc"));
             Assert.Equal("W/\"tag-1\"", (string)element.Attribute("ETag"));
             Assert.Equal(section.Sha256, (string)element.Attribute("Sha256"));
@@ -533,12 +534,26 @@ namespace PadForge.Tests
                 Assert.Single(loaded.Rows);
             }
 
+            // A section from another address keeps its tag, for that
+            // address alone (ControllerDatabaseController sends it nowhere
+            // else). A source the file does not hold in PadForge's own form
+            // is no address, and its tag goes.
             var elsewhere = Data(stored);
             elsewhere.Source = "https://example.com/gamecontrollerdb.txt";
             var read = ControllerDatabaseSection.FromData(elsewhere, Pinned(), Version, out bool moved);
-            Assert.Null(read.ETag);
-            Assert.True(moved);
-            Assert.Equal(ControllerDatabaseSection.SourceUrl, read.ToData().Source);
+            Assert.Equal("W/\"tag-1\"", read.ETag);
+            Assert.False(moved);
+            Assert.Equal("https://example.com/gamecontrollerdb.txt", read.Source);
+            Assert.Equal("https://example.com/gamecontrollerdb.txt", read.ToData().Source);
+            foreach (string unread in new[] { null, "http://example.com/gamecontrollerdb.txt", "https://EXAMPLE.com/gamecontrollerdb.txt" })
+            {
+                var odd = Data(stored);
+                odd.Source = unread;
+                var back = ControllerDatabaseSection.FromData(odd, Pinned(), Version, out bool oddChanged);
+                Assert.Null(back.ETag);
+                Assert.Null(back.Source);
+                Assert.True(oddChanged);
+            }
 
             Assert.Equal("\"abc\"", ControllerDatabaseSection.CleanETag("\"abc\""));
             Assert.Null(ControllerDatabaseSection.CleanETag(""));
@@ -551,8 +566,111 @@ namespace PadForge.Tests
         public void TheSource_IsTheCommunitysFileOnGitHubsRawHost()
         {
             Assert.Equal("https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt",
-                ControllerDatabaseSection.SourceUrl);
-            Assert.True(ControllerDatabaseUpdater.IsTrusted(new Uri(ControllerDatabaseSection.SourceUrl)));
+                ControllerDatabaseAddress.Community);
+            var community = new Uri(ControllerDatabaseAddress.Community);
+            Assert.True(ControllerDatabaseUpdater.IsTrusted(community, community));
+            Assert.Equal(ControllerDatabaseUpdater.Host, community.Host);
+            Assert.True(ControllerDatabaseAddress.TryRead(ControllerDatabaseAddress.Community, out string read));
+            Assert.Equal(ControllerDatabaseAddress.Community, read);
+        }
+
+        // ── Download From (#600 item 49) ──
+
+        private const string Mirror = "https://mirror.example.net/sdl/gamecontrollerdb.txt";
+
+        /// <summary>An address is taken over HTTPS on the default port, with
+        /// a host and no user name, password or fragment, and kept in one
+        /// form, so the community's is known by its text.</summary>
+        [Theory]
+        [InlineData(" https://Mirror.Example.NET/sdl/gamecontrollerdb.txt ", "https://mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("https://mirror.example.net:443/sdl/gamecontrollerdb.txt", "https://mirror.example.net/sdl/gamecontrollerdb.txt")]
+        [InlineData("https://mirror.example.net", "https://mirror.example.net/")]
+        [InlineData("https://RAW.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt", ControllerDatabaseAddress.Community)]
+        [InlineData("http://mirror.example.net/sdl/gamecontrollerdb.txt", null)]
+        [InlineData("https://mirror.example.net:8443/sdl/gamecontrollerdb.txt", null)]
+        [InlineData("https://someone:secret@mirror.example.net/sdl/gamecontrollerdb.txt", null)]
+        [InlineData("https://mirror.example.net/sdl/gamecontrollerdb.txt#rows", null)]
+        [InlineData("ftp://mirror.example.net/sdl/gamecontrollerdb.txt", null)]
+        [InlineData("file:///C:/rows.txt", null)]
+        [InlineData("mirror.example.net/sdl/gamecontrollerdb.txt", null)]
+        [InlineData("/sdl/gamecontrollerdb.txt", null)]
+        [InlineData("", null)]
+        [InlineData(null, null)]
+        public void AnAddress_IsTakenOnlyOverHttpsOnTheDefaultPort(string typed, string taken)
+        {
+            Assert.Equal(taken != null, ControllerDatabaseAddress.TryRead(typed, out string read));
+            Assert.Equal(taken, read);
+            Assert.Equal(taken == ControllerDatabaseAddress.Community, ControllerDatabaseAddress.IsCommunity(read));
+        }
+
+        [Fact]
+        public void AnAddressPastTheLongestTaken_IsRefused()
+        {
+            string longest = "https://mirror.example.net/" + new string('a', ControllerDatabaseAddress.MaxLength - 27);
+            Assert.Equal(ControllerDatabaseAddress.MaxLength, longest.Length);
+            Assert.True(ControllerDatabaseAddress.TryRead(longest, out _));
+            Assert.False(ControllerDatabaseAddress.TryRead(longest + "a", out _));
+        }
+
+        /// <summary>From an address that is not the community's, a download
+        /// keeps new rows only: a changed row could be older than the row
+        /// this release carries. The section says where its rows came from.</summary>
+        [Fact]
+        public void ADownloadFromAnotherAddress_KeepsNewRowsOnly()
+        {
+            var baseline = Pinned();
+            var section = ControllerDatabaseSection.FromDownload(Download(baseline, Changed(KeptRow), Row(0x2000, 0x0001)), "\"m\"", Fetched,
+                baseline, Version, null, Mirror);
+            var row = Assert.Single(section.Rows);
+            Assert.Equal(Id(0x2000, 0x0001), row.Row.Guid);
+            Assert.Equal(ControllerDatabaseRowKind.New, row.Kind);
+            Assert.Equal(0, section.ChangedRows);
+            Assert.Equal(Mirror, section.Source);
+            Assert.Equal(Mirror, section.ToData().Source);
+
+            // The community's own file keeps both, as before.
+            var community = Stored(baseline, null, Changed(KeptRow), Row(0x2000, 0x0001));
+            Assert.Equal(1, community.ChangedRows);
+            Assert.Equal(1, community.NewRows);
+            Assert.Equal(ControllerDatabaseAddress.Community, community.Source);
+        }
+
+        /// <summary>A file whose rows came from another address and holds a
+        /// changed row, as a hand edit could make it, loses that row on
+        /// load.</summary>
+        [Fact]
+        public void ALoadOfRowsFromAnotherAddress_DropsAChangedRow()
+        {
+            var baseline = Pinned();
+            var data = Data(Stored(baseline, null, Changed(KeptRow), Row(0x2000, 0x0001)));
+            data.Source = Mirror;
+            var read = ControllerDatabaseSection.FromData(data, baseline, Version, out bool changed);
+            Assert.True(changed);
+            var row = Assert.Single(read.Rows);
+            Assert.Equal(ControllerDatabaseRowKind.New, row.Kind);
+            Assert.Equal(Mirror, read.Source);
+        }
+
+        /// <summary>The address the user set is kept in the element whether
+        /// or not a download or a row of the user's is, and left out while it
+        /// is the community's.</summary>
+        [Fact]
+        public void TheChosenAddress_IsKept_WithNothingElseInTheElement()
+        {
+            var data = ControllerDatabaseSection.Compose(null, ControllerDatabaseMine.Empty, Mirror);
+            string xml = Xml(new SettingsFileData { ControllerDatabase = data });
+            var element = Assert.Single(XDocument.Parse(xml).Root.Elements(), e => e.Name.LocalName == "ControllerDatabase");
+            Assert.Equal(Mirror, (string)element.Attribute("DownloadFrom"));
+            Assert.Empty(element.Elements());
+            var back = FromXml(xml).ControllerDatabase;
+            Assert.Equal(Mirror, back.DownloadFrom);
+            Assert.Null(ControllerDatabaseSection.FromData(back, Pinned(), Version, out bool changed));
+            Assert.False(changed);
+
+            Assert.Null(ControllerDatabaseSection.Compose(null, ControllerDatabaseMine.Empty, ControllerDatabaseAddress.Community));
+            Assert.Null(ControllerDatabaseSection.Compose(null, ControllerDatabaseMine.Empty, null));
+            var withRows = ControllerDatabaseSection.Compose(Stored(Pinned(), null, Row(0x2000, 0x0001)), ControllerDatabaseMine.Empty, ControllerDatabaseAddress.Community);
+            Assert.Null(withRows.DownloadFrom);
         }
     }
 }

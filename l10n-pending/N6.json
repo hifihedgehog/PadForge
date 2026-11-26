@@ -1,0 +1,132 @@
+{
+  "new": [
+    {
+      "key": "ControllerDatabase_BuiltInUpdatedFrom_Format",
+      "english": "Built in: {1} mappings, community copy of {2}. Downloaded {3} from {4}: {0} new rows.",
+      "sibling": [
+        "ControllerDatabase_BuiltInUpdated_Format"
+      ],
+      "where": "Settings, General, Updates card, the Controller Database row's status line after a download from an address the user set under Download From. {0} new rows kept (its one-row form is ControllerDatabase_BuiltInUpdatedFrom_One_Format), {1} mappings built in, {2} and {3} dates, {4} the address's host",
+      "keep": []
+    },
+    {
+      "key": "ControllerDatabase_NoNetworkAt_Format",
+      "english": "Could not reach {0}: {1}",
+      "sibling": [
+        "ControllerDatabase_NoNetwork_Format"
+      ],
+      "where": "Settings, General, Updates card, the line under the Controller Database row when a download from the user's own address got no answer. {0} the address's host, {1} the network's own error text",
+      "keep": []
+    },
+    {
+      "key": "ControllerDatabase_DownloadFrom",
+      "english": "Download From",
+      "sibling": [
+        "ControllerDatabase_YourRows"
+      ],
+      "where": "Settings, General, Updates card, Controller Database row, More: the label of the line that shows where Update Now downloads from, and the title of the dialog its Change button opens",
+      "keep": []
+    },
+    {
+      "key": "ControllerDatabase_DownloadFromNote",
+      "english": "HTTPS only. From an address that is not the community’s, PadForge takes new rows only.",
+      "sibling": [
+        "ControllerDatabase_DownloadFrom"
+      ],
+      "where": "Settings, Controller Database row, More, Download From: the gray line under the address, also in the Download From dialog",
+      "keep": [
+        "HTTPS",
+        "PadForge"
+      ]
+    },
+    {
+      "key": "ControllerDatabase_DownloadFromChange",
+      "english": "Change…",
+      "sibling": [
+        "ControllerDatabase_UseCommunityFile"
+      ],
+      "where": "Settings, Controller Database row, More, Download From: the button that opens a box for another download address",
+      "keep": []
+    },
+    {
+      "key": "ControllerDatabase_UseCommunityFile",
+      "english": "Use the Community’s File",
+      "sibling": [
+        "ControllerDatabase_DownloadFromChange"
+      ],
+      "where": "Settings, Controller Database row, More, Download From: the button that puts the community database's own address back, shown while another address is set",
+      "keep": []
+    },
+    {
+      "key": "ControllerDatabase_DownloadFromBox",
+      "english": "Address",
+      "sibling": [
+        "ControllerDatabase_DownloadFrom"
+      ],
+      "where": "The Download From dialog: the label of the box where the user types the download address",
+      "keep": []
+    },
+    {
+      "key": "ControllerDatabase_DownloadFromRefused",
+      "english": "PadForge takes an address that starts with https:// and names a host, on the default port, with no user name or password.",
+      "sibling": [
+        "ControllerDatabase_DownloadFromNote"
+      ],
+      "where": "The Download From dialog: the line under the box when the typed address is not one PadForge takes",
+      "keep": [
+        "PadForge",
+        "https://"
+      ]
+    },
+    {
+      "key": "ControllerDatabase_BuiltInUpdatedFrom_One_Format",
+      "english": "Built in: {1} mappings, community copy of {2}. Downloaded {3} from {4}: {0} new row.",
+      "sibling": [
+        "ControllerDatabase_BuiltInUpdatedFrom_Format"
+      ],
+      "where": "The same line when the download kept one new row. {0} is 1, {1} mappings built in, {2} and {3} dates, {4} the address's host",
+      "keep": []
+    }
+  ],
+  "changed": [
+    {
+      "key": "Settings_More_ControllerDatabase",
+      "english": "Where it downloads from, your own rows",
+      "sibling": [
+        "ControllerDatabase_DownloadFrom",
+        "ControllerDatabase_YourRows"
+      ],
+      "where": "Settings, Controller Database row: the gray hint beside More, which opens Download From and Your Rows",
+      "keep": []
+    },
+    {
+      "key": "Settings_UpdatesDesc",
+      "english": "Check GitHub for new versions of PadForge and install them from here, and update the controller database. PadForge contacts only GitHub (api.github.com, github.com and its download servers, and raw.githubusercontent.com for the controller database), and the address you set under the Controller Database row’s Download From. The only data it sends is its own version number and, for the controller database, the tag the server gave the last download.",
+      "sibling": [
+        "Settings_ControllerDatabaseDesc"
+      ],
+      "where": "Settings, General, Updates card: the card's description, its tooltip and search words",
+      "keep": [
+        "GitHub",
+        "PadForge",
+        "api.github.com",
+        "github.com",
+        "raw.githubusercontent.com"
+      ]
+    },
+    {
+      "key": "Settings_ControllerDatabaseDesc",
+      "english": "Update Now downloads the community controller database (SDL_GameControllerDB) from GitHub, or from the address set under More, and keeps, in the settings file, the mappings this version of PadForge lacks. They are in use at once. From another address it keeps new mappings only. A new mapping is used only for a controller that nothing else reads as a gamepad, that is not assigned and that is not in Force Raw Joystick Mode. The reset removes every downloaded mapping and downloads from GitHub again. Your own rows, under More, stay.",
+      "sibling": [
+        "Settings_UpdatesDesc"
+      ],
+      "where": "Settings, Updates card, the Controller Database row's tooltip and search words",
+      "keep": [
+        "SDL_GameControllerDB",
+        "GitHub",
+        "PadForge",
+        "Force Raw Joystick Mode"
+      ]
+    }
+  ]
+}

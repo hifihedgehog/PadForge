@@ -23,10 +23,19 @@ namespace PadForge.Tests
     public class ControllerDatabaseControllerTests : IDisposable
     {
         private readonly ControllerDatabaseSection _saved = SettingsManager.ControllerDatabase;
+        private readonly string _savedFrom = SettingsManager.ControllerDatabaseFrom;
 
-        public ControllerDatabaseControllerTests() => SettingsManager.ControllerDatabase = null;
+        public ControllerDatabaseControllerTests()
+        {
+            SettingsManager.ControllerDatabase = null;
+            SettingsManager.ControllerDatabaseFrom = null;
+        }
 
-        public void Dispose() => SettingsManager.ControllerDatabase = _saved;
+        public void Dispose()
+        {
+            SettingsManager.ControllerDatabase = _saved;
+            SettingsManager.ControllerDatabaseFrom = _savedFrom;
+        }
 
         private static readonly string KeptRow = Row(0x1000, 0x0001, "Kept Pad");
         private static readonly string SdlRow = Row(0x1000, 0x0002, "SDL Pad");
@@ -67,6 +76,7 @@ namespace PadForge.Tests
             public readonly MainViewModel Vm = new();
             public readonly ControllerDatabaseController Controller;
             public readonly List<string> AskedTags = new();
+            public readonly List<string> AskedAddresses = new();
             public readonly List<string> Log = new();
             public int Dirty;
             public Func<string, CancellationToken, Task<ControllerDatabaseFetch>> Answer =
@@ -78,8 +88,9 @@ namespace PadForge.Tests
                 var baseline = Pinned().WithOwnRows(Own);
                 Controller = new ControllerDatabaseController(Vm, () => Dirty++)
                 {
-                    Fetch = (etag, ct) =>
+                    Fetch = (address, etag, ct) =>
                     {
+                        AskedAddresses.Add(address);
                         AskedTags.Add(etag);
                         return Answer(etag, ct);
                     },
@@ -482,6 +493,122 @@ namespace PadForge.Tests
             Assert.Contains("OnPropertyChanged(nameof(ControllerDatabaseStatus));", onCulture, StringComparison.Ordinal);
             Assert.Contains("OnPropertyChanged(nameof(ControllerDatabaseResult));", onCulture, StringComparison.Ordinal);
         }
+
+        // ── Download From (#600 item 49) ──
+
+        private const string Mirror = "https://mirror.example.net/sdl/gamecontrollerdb.txt";
+
+        /// <summary>Update Now asks the address the user set, stores where
+        /// the rows came from, keeps new rows only from there, and the row's
+        /// line names the host.</summary>
+        [Fact]
+        public async Task UpdateNow_AsksTheChosenAddress_KeepsNewRowsOnly_AndTheLineNamesItsHost()
+        {
+            using var h = new Harness();
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            Assert.Equal(Mirror, SettingsManager.ControllerDatabaseFrom);
+            Assert.Equal(Mirror, h.Settings.ControllerDatabaseAddress);
+            Assert.True(h.Settings.HasOwnControllerDatabaseAddress);
+            Assert.Equal(1, h.Dirty);
+
+            h.Answers(Fetched(FileWith(ChangedKept, NewOne), serverTime: new DateTime(2026, 11, 22, 12, 0, 0, DateTimeKind.Utc)));
+            await h.Controller.UpdateAsync();
+
+            Assert.Equal(new[] { Mirror }, h.AskedAddresses);
+            var section = SettingsManager.ControllerDatabase;
+            Assert.Equal(Mirror, section.Source);
+            Assert.Equal(1, section.NewRows);
+            Assert.Equal(0, section.ChangedRows);
+            Assert.Equal(string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.ControllerDatabase_BuiltInUpdatedFrom_Format), 1),
+                1, 316, "2026-09-24", "2026-11-22", "mirror.example.net"), h.Settings.ControllerDatabaseStatus);
+            Assert.Contains("mirror.example.net", h.Settings.ControllerDatabaseStatus, StringComparison.Ordinal);
+        }
+
+        /// <summary>The stored tag goes only to the address it came from:
+        /// another address is asked for its whole file.</summary>
+        [Fact]
+        public async Task TheStoredTag_GoesOnlyToTheAddressItCameFrom()
+        {
+            using var h = new Harness();
+            h.Answers(Fetched(FileWith(NewOne)));
+            await h.Controller.UpdateAsync();
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            h.Answers(Fetched(FileWith(NewOne), etag: "\"mirror-tag\""));
+            await h.Controller.UpdateAsync();
+            h.Answers(new ControllerDatabaseFetch(ControllerDatabaseFetchOutcome.NotModified));
+            await h.Controller.UpdateAsync();
+            h.Settings.UseCommunityDatabaseCommand.Execute(null);
+            await h.Controller.UpdateAsync();
+
+            Assert.Equal(new[] { ControllerDatabaseAddress.Community, Mirror, Mirror, ControllerDatabaseAddress.Community }, h.AskedAddresses);
+            Assert.Equal(new[] { null, null, "\"mirror-tag\"", null }, h.AskedTags);
+        }
+
+        /// <summary>Use the Community's File, the row's reset and the card's
+        /// Reset All put the community's address back. An address PadForge
+        /// does not take changes nothing.</summary>
+        [Fact]
+        public void TheCommunitysAddress_ComesBack_ByItsButton_AndByTheResets()
+        {
+            using var h = new Harness();
+            h.Settings.ChooseControllerDatabaseAddress("http://mirror.example.net/plain.txt");
+            Assert.Equal(ControllerDatabaseAddress.Community, SettingsManager.ControllerDatabaseFrom);
+            Assert.False(h.Settings.HasOwnControllerDatabaseAddress);
+            Assert.Equal(0, h.Dirty);
+
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            var raised = new List<string>();
+            h.Settings.PropertyChanged += (s, e) => raised.Add(e.PropertyName);
+            h.Settings.UseCommunityDatabaseCommand.Execute(null);
+            Assert.Equal(ControllerDatabaseAddress.Community, SettingsManager.ControllerDatabaseFrom);
+            Assert.Contains(nameof(SettingsViewModel.ControllerDatabaseAddress), raised);
+            Assert.Contains(nameof(SettingsViewModel.HasOwnControllerDatabaseAddress), raised);
+            Assert.Equal(2, h.Dirty);
+
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            h.Settings.ResetSettingCommand.Execute(nameof(SettingsViewModel.ControllerDatabaseStatus));
+            Assert.Equal(ControllerDatabaseAddress.Community, SettingsManager.ControllerDatabaseFrom);
+            Assert.Equal(4, h.Dirty);
+
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            h.Settings.ResetCardCommand.Execute("Updates");
+            Assert.Equal(ControllerDatabaseAddress.Community, SettingsManager.ControllerDatabaseFrom);
+        }
+
+        /// <summary>A download running for the old address ends when the
+        /// address changes, and nothing it brings is stored.</summary>
+        [Fact]
+        public async Task ChangingTheAddress_EndsARunningDownload()
+        {
+            using var h = new Harness();
+            var gate = new TaskCompletionSource<ControllerDatabaseFetch>(TaskCreationOptions.RunContinuationsAsynchronously);
+            CancellationToken seen = default;
+            h.Answer = (_, ct) =>
+            {
+                seen = ct;
+                return gate.Task;
+            };
+            var running = h.Controller.UpdateAsync();
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            Assert.True(seen.IsCancellationRequested);
+            gate.SetResult(Fetched(FileWith(NewOne)));
+            await running;
+            Assert.Null(SettingsManager.ControllerDatabase);
+            Assert.False(h.Settings.IsControllerDatabaseUpdating);
+        }
+
+        /// <summary>No answer from the user's address names that host, not
+        /// GitHub.</summary>
+        [Fact]
+        public async Task NoAnswerFromTheChosenAddress_NamesItsHost()
+        {
+            using var h = new Harness();
+            h.Settings.ChooseControllerDatabaseAddress(Mirror);
+            h.Answers(new ControllerDatabaseFetch(ControllerDatabaseFetchOutcome.Unreachable, Reason: "No such host is known."));
+            await h.Controller.UpdateAsync();
+            Assert.Equal(string.Format(Strings.Instance.ControllerDatabase_NoNetworkAt_Format, "mirror.example.net", "No such host is known."),
+                h.Settings.ControllerDatabaseResult);
+        }
     }
 
     /// <summary>The status line's numbers and words, in English.</summary>
@@ -562,10 +689,13 @@ namespace PadForge.Tests
             foreach (string host in new[] { "api.github.com", "github.com", ControllerDatabaseUpdater.Host })
                 Assert.Contains(host, card, StringComparison.Ordinal);
             Assert.Equal("raw.githubusercontent.com", ControllerDatabaseUpdater.Host);
-            Assert.Equal(ControllerDatabaseUpdater.Host, new Uri(ControllerDatabaseSection.SourceUrl).Host);
+            Assert.Equal(ControllerDatabaseUpdater.Host, new Uri(ControllerDatabaseAddress.Community).Host);
             // And on what it sends: its version, and the stored tag.
             Assert.Contains("version number", card, StringComparison.Ordinal);
-            Assert.Contains("the tag GitHub gave the last download", card, StringComparison.Ordinal);
+            Assert.Contains("the tag the server gave the last download", card, StringComparison.Ordinal);
+            // An address the user sets is the one other place it contacts,
+            // and the card says so (#600).
+            Assert.Contains("Download From", card, StringComparison.Ordinal);
         }
     }
 }

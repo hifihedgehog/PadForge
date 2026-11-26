@@ -1333,6 +1333,38 @@ namespace PadForge.ViewModels
         /// <summary>The row's reset: the downloaded rows go.</summary>
         public event EventHandler ControllerDatabaseResetRequested;
 
+        // Download From (#600 item 49), under the row's More.
+
+        /// <summary>The address Update Now downloads from.</summary>
+        public string ControllerDatabaseAddress => PadForge.Common.Input.SettingsManager.ControllerDatabaseFrom;
+
+        /// <summary>Whether the user set an address other than the
+        /// community's, so Use the Community's File shows.</summary>
+        public bool HasOwnControllerDatabaseAddress =>
+            !PadForge.Common.Input.ControllerDatabaseAddress.IsCommunity(ControllerDatabaseAddress);
+
+        /// <summary>Change… or Use the Community's File chose an address:
+        /// the text typed, or null for the community's.</summary>
+        public event Action<string> ControllerDatabaseAddressChosen;
+
+        /// <summary>Asks for another address. The controller takes only one
+        /// it can read.</summary>
+        internal void ChooseControllerDatabaseAddress(string address) => ControllerDatabaseAddressChosen?.Invoke(address);
+
+        /// <summary>The address changed: the line is read again.</summary>
+        internal void RaiseControllerDatabaseAddress()
+        {
+            OnPropertyChanged(nameof(ControllerDatabaseAddress));
+            OnPropertyChanged(nameof(HasOwnControllerDatabaseAddress));
+        }
+
+        private RelayCommand _useCommunityDatabaseCommand;
+
+        /// <summary>Use the Community's File: puts the community's address
+        /// back.</summary>
+        public RelayCommand UseCommunityDatabaseCommand =>
+            _useCommunityDatabaseCommand ??= new RelayCommand(() => ChooseControllerDatabaseAddress(null));
+
         // The user's own rows (#600 item 49), under the row's More.
         private Func<string> _controllerDatabaseMine;
         private Func<System.Threading.Tasks.Task> _clearControllerDatabaseMine;

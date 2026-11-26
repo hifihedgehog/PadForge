@@ -182,6 +182,8 @@ namespace PadForge.Tests
                 "Views/SettingsPage.xaml <TextBlock SettingsFilePath>",   // the settings file's path
                 "MainWindow.xaml <Button ConnectedMark>",                 // the title bar's mark names other programs (#600 item 13)
                 "Views/SettingsPage.xaml <SettingItem WhatToRecord>",   // what a recording holds, Activity among it
+                "Views/SettingsPage.xaml <SettingItem ControllerDatabaseFrom>", // Download From, where the controller database comes from (#600 item 49)
+                "Views/DownloadFromDialog.xaml <DialogWindow>",           // its address box
             };
             var found = new List<string>();
             foreach (string file in ReachMarkup.Files())

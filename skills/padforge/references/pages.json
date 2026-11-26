@@ -5291,6 +5291,28 @@
     "under_more": false
   },
   {
+    "id": "settings.action/ControllerDatabaseFrom/ControllerDatabase_DownloadFromChange#ControllerDatabase_DownloadFrom",
+    "page": "Settings",
+    "place": "",
+    "card": "Updates",
+    "words": "Change… Download From",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": true
+  },
+  {
+    "id": "settings.action/ControllerDatabaseFrom/ControllerDatabase_UseCommunityFile#ControllerDatabase_DownloadFrom",
+    "page": "Settings",
+    "place": "",
+    "card": "Updates",
+    "words": "Use the Community’s File Download From",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": true
+  },
+  {
     "id": "settings.action/ControllerDatabaseMore/ControllerDatabase_AddRows#ControllerDatabase_YourRows",
     "page": "Settings",
     "place": "",
@@ -8521,6 +8543,39 @@
     "words": "Add Field",
     "kind": "action",
     "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.dialog/DownloadFromDialog/ControllerDatabase_DownloadFrom",
+    "page": "Dialogs",
+    "place": "DownloadFromDialog",
+    "card": null,
+    "words": "Download From",
+    "kind": "dialog",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/DownloadFromDialog/Common_Cancel",
+    "page": "Dialogs",
+    "place": "DownloadFromDialog",
+    "card": null,
+    "words": "Cancel",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/DownloadFromDialog/OkButton/Common_OK",
+    "page": "Dialogs",
+    "place": "DownloadFromDialog",
+    "card": null,
+    "words": "OK",
+    "kind": "action",
+    "reach": "yours-alone",
     "why": null,
     "under_more": false
   },

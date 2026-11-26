@@ -71,16 +71,20 @@ The device's rows on its controllers are mapped again from the new layout once S
 
 ## The Controller Database row
 
-On **Settings**, the **Updates** card holds the **Controller Database** row. Its line counts what PadForge reads, **Built in: … mappings, community copy of …** with the date of the copy the release carries, and after a download adds **Downloaded …: … new rows, … changed.**
+On **Settings**, the **Updates** card holds the **Controller Database** row. Its line counts what PadForge reads, **Built in: … mappings, community copy of …** with the date of the copy the release carries, and after a download adds **Downloaded …: … new rows, … changed.**, or **Downloaded … from …: … new rows.** for an address you set.
 
-**Update Now** downloads the community database from its own repository on GitHub, over HTTPS, from one fixed address, only when you click it. PadForge keeps, in PadForge.xml, the rows this release lacks, with the time, the source and a SHA-256, and uses them at once (**In use at once.**).
+**Update Now** downloads the community database from its own repository on GitHub, or from the address set under **Download From**, over HTTPS, only when you click it. PadForge keeps, in PadForge.xml, the rows this release lacks, with the time, the source and a SHA-256, and uses them at once (**In use at once.**).
 
 - A changed row replaces the community copy's row for that device, never SDL's own or PadForge's.
 - A new row is used only for a controller that nothing else reads as a gamepad, that is not assigned, and that is not in Force Raw Joystick Mode.
 - A downloaded row maps no device's rows again.
 - A file is refused whole when it is over 4 MB or under 100 KB, not plain UTF-8 text, or missing more than a fifth of the rows PadForge knows: **PadForge refused the download because it is not the controller database it expects. Nothing changed.**
 
-The row's reset removes every downloaded row. A new release of PadForge drops the downloaded rows it now carries itself.
+The row's reset removes every downloaded row and puts the community's address back. A new release of PadForge drops the downloaded rows it now carries itself.
+
+### Download From
+
+Under the row's **More**, **Download From** shows the address **Update Now** downloads from: the community's own file on GitHub unless you set another. **Change…** takes another HTTPS address, such as a mirror of the community's file when GitHub is out of reach. The address must start with `https://`, name a host and use the default port, with no user name or password, and every redirect must stay on that host, three at most. From an address that is not the community's, PadForge keeps new rows only: a file from elsewhere carries no date that tells a newer row from an older one, so a changed row from there could roll back a row this release carries. The row's line then names the host the rows came from. **Use the Community’s File** puts the community's address back, and so do the row's reset and **Reset to Defaults**. Only you can change the address: no assistant, script or plugin can.
 
 ### Your Rows
 

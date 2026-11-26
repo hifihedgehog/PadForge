@@ -2137,18 +2137,35 @@ namespace PadForge.Tests
                     var extrasGround = drawing.Ground(extras);
                     drawing.Picture(extrasGround, "notes-overlays.png", Board, 900, () => extras.Show("Overlays"));
 
-                    // A burst's note, in the flyout's own window, drawn on the
-                    // app's ground.
-                    var flyout = new ProfileSwitchOverlay();
-                    flyout.ShowDeviceNote(string.Format(PadForge.Resources.Strings.Strings.Instance.Main_DevicesDisconnectedNamed_Format, 2, "DualSense, T.16000M"), connected: false);
-                    flyout.Left = -32000;
-                    flyout.Top = -32000;
-                    flyout.StopTimers();
-                    flyout.FlyoutPanel.RenderTransform = null;
-                    var content = (FrameworkElement)flyout.Content;
-                    flyout.Content = null;
-                    flyout.Close();
-                    drawing.PictureControl(content, "notes-flyout-burst.png");
+                    // A note in the flyout's own window, drawn on the app's
+                    // ground: a burst, and one pad's drop, its turn in place
+                    // to the return and its count (#600 item 42).
+                    var words = PadForge.Resources.Strings.Strings.Instance;
+                    void Note(string file, Action<ProfileSwitchOverlay> show)
+                    {
+                        var flyout = new ProfileSwitchOverlay();
+                        show(flyout);
+                        flyout.Left = -32000;
+                        flyout.Top = -32000;
+                        flyout.StopTimers();
+                        flyout.FlyoutPanel.RenderTransform = null;
+                        var content = (FrameworkElement)flyout.Content;
+                        flyout.Content = null;
+                        flyout.Close();
+                        drawing.PictureControl(content, file);
+                    }
+                    Note("notes-flyout-burst.png", f => f.ShowDeviceNote(string.Format(words.Main_DevicesDisconnectedNamed_Format, 2, "DualSense, T.16000M"), connected: false));
+                    Note("notes-flyout-drop.png", f => f.ShowDeviceNote(string.Format(words.Main_DeviceDisconnected_Format, "DualSense"), connected: false));
+                    Note("notes-flyout-back.png", f =>
+                    {
+                        f.ShowDeviceNote(string.Format(words.Main_DeviceDisconnected_Format, "DualSense"), connected: false);
+                        f.UpdateDeviceNote(string.Format(words.Main_DeviceIsBack_Format, "DualSense"), connected: true, restartTime: true);
+                    });
+                    Note("notes-flyout-count.png", f =>
+                    {
+                        f.ShowDeviceNote(string.Format(words.Main_DeviceDisconnected_Format, "DualSense"), connected: false);
+                        f.UpdateDeviceNote(string.Format(words.Main_DeviceKeepsDisconnecting_Format, "DualSense", 3), connected: false, restartTime: true);
+                    });
 
                     // The Custom Expression variable that reads the pad's
                     // connection: !a runs the macro when it disconnects.

@@ -193,7 +193,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} conectado, bateria {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} dispositivos desconectados: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} dispositivos conectados: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} continua desconectando</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} caiu {1} vezes em um minuto</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} voltou</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} dispositivos voltaram: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (máx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máx. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (máx. {0})</value></data>
@@ -390,6 +392,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, assinado por {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, sem assinatura</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Feito</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Retido</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Não feito</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Não permitido neste nível</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Indisponível no momento</value></data>
@@ -462,6 +465,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Definir os controles do dispositivo {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Remover o dispositivo {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Colocar todos os controles do dispositivo {0} em repouso</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>A saída de teclas e mouse que ele envia é retida para {0}, que roda como administrador</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>A saída de teclas e mouse que ele envia é retida para uma janela que roda como administrador</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Faz o PadForge executar um programa.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Abre um arquivo, uma pasta ou uma página da web.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Faz o PadForge enviar teclas ou entrada do mouse ao Windows.</value></data>
@@ -686,7 +691,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>O PadForge continua em execução ao clicar em Fechar ou pressionar Alt+F4. Para encerrar o programa, selecione Sair no menu da bandeja do sistema.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Mantenha o PadForge na área de notificação ao minimizar a janela, em vez de na barra de tarefas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantenha a janela oculta quando o PadForge iniciar. Ele continua em execução e mapeando como sempre.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicie o PadForge automaticamente quando você entrar no Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicie o PadForge automaticamente quando você entrar no Windows. Enquanto isto estiver ativado, o PadForge também inicia sem o aviso do Windows a partir de um atalho, de um script ou de outro programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>O PadForge é executado de {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Isto exige o PadForge em uma pasta só dele. A pasta atual contém outros arquivos, então o PadForge não consegue impedir que outros programas a alterem.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Mover o PadForge para Sua Própria Pasta</value></data>
@@ -700,7 +705,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sempre Mostrar na Bandeja do Sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantém o ícone da bandeja do sistema visível enquanto a janela está aberta, então Sair no menu dele está sempre a um clique.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atualizações</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Procure novas versões do PadForge no GitHub e instale-as por aqui, e atualize o banco de dados de controles. O PadForge se conecta apenas ao GitHub (api.github.com, github.com e seus servidores de download, e raw.githubusercontent.com para o banco de dados de controles). Os únicos dados que envia são o seu próprio número de versão e, para o banco de dados de controles, a etiqueta que o GitHub deu ao último download.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Procure novas versões do PadForge no GitHub e instale-as por aqui, e atualize o banco de dados de controles. O PadForge se conecta apenas ao GitHub (api.github.com, github.com e seus servidores de download, e raw.githubusercontent.com para o banco de dados de controles) e ao endereço que você definir em Baixar De, na linha Banco de Dados de Controles. Os únicos dados que envia são o seu próprio número de versão e, para o banco de dados de controles, a etiqueta que o servidor deu ao último download.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Verificar Atualizações Automaticamente</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Verifica quando o PadForge inicia e depois a cada 12 horas.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Instalar Atualizações Automaticamente</value></data>
@@ -711,7 +716,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalar e Reiniciar</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Notas da Versão</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Banco de Dados de Controles</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualizar Agora baixa o banco de dados de controles da comunidade (SDL_GameControllerDB) do GitHub e guarda, no arquivo de configurações, os mapeamentos que esta versão do PadForge não tem. Eles entram em uso na hora. Um mapeamento novo só é usado para um controle que nada mais lê como gamepad, que não está atribuído e que não está em Forçar Modo Joystick Bruto (Ignorar Remapeamento de Gamepad). A redefinição remove todos os mapeamentos baixados. Suas próprias linhas, em Mais, permanecem.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Atualizar Agora baixa o banco de dados de controles da comunidade (SDL_GameControllerDB) do GitHub, ou do endereço definido em Mais, e guarda, no arquivo de configurações, os mapeamentos que esta versão do PadForge não tem. Eles entram em uso na hora. De outro endereço, ele guarda apenas mapeamentos novos. Um mapeamento novo só é usado para um controle que nada mais lê como gamepad, que não está atribuído e que não está em Forçar Modo Joystick Bruto (Ignorar Remapeamento de Gamepad). A redefinição remove todos os mapeamentos baixados e baixa do GitHub de novo. Suas próprias linhas, em Mais, permanecem.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atualizar Agora</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Atualizando…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Verificando atualizações…</value></data>
@@ -741,8 +746,11 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>O PadForge foi atualizado para {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Incluído: {0} mapeamentos, cópia da comunidade de {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Incluído: {0} mapeamentos, cópia da comunidade de {1}. Baixado em {2}: {3} linhas novas, {4} alteradas.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Incluído: {1} mapeamentos, cópia da comunidade de {2}. Baixado em {3} de {4}: {0} linhas novas.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Incluído: {1} mapeamentos, cópia da comunidade de {2}. Baixado em {3} de {4}: {0} linha nova.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>O banco de dados da comunidade não mudou desde a última atualização.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Não foi possível alcançar o GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Não foi possível alcançar {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>O PadForge recusou o download porque ele não é o banco de dados de controles esperado. Nada mudou.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Iniciar Minimizado</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Iniciar com o Windows</value></data>
@@ -913,6 +921,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Copiar Resumo</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Copiado</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Salvar…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Salvar e Publicar</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Salvar e Publicar salva o zip, copia o resumo, mostra o arquivo no Explorer e abre a página do PadForge onde os relatórios são enviados. Cole o resumo lá e solte o arquivo sobre ela.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Salvar a Gravação</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Arquivos zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Não salvo. {0}</value></data>
@@ -1033,6 +1043,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produto</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Tipo</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Recursos</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Os paddles traseiros estão desativados por USB e pelo Xbox Wireless Adapter. Motivo do SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Os paddles traseiros estão desativados por Bluetooth. Motivo do SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Conexão</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Caminho</value></data>
@@ -1732,6 +1744,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ocorreu um erro inesperado:
 
 {0}
+
+O PadForge gravou os detalhes em crash.log ao lado de PadForge.exe. Para relatar isto, inicie uma discussão em {2} e solte o crash.log nela.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} erro(s) adicional(is) suprimido(s))</value></data>
@@ -4070,7 +4084,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconexão Automática, porta, identidade de pareamento, conexão por endereço</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substituto do DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, Velocidade Total, Formatos Personalizados</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Outros assistentes, assistentes na web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Outros assistentes, assistentes na web e nesta rede</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Olhe ao redor com um rastreador de cabeça ou um headset de RV enquanto os dois polegares ficam nos botões.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapeie a velocidade, os pedais e as marchas que um jogo de corrida envia, como qualquer entrada.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Envie o movimento do controle para emuladores que leem uma fonte de movimento DSU.</value></data>
@@ -4234,6 +4248,10 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Adicionar um Plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programas e Scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Todos os Arquivos|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Aprovar e Reiniciar…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Mostrar na Pasta</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Confiar em Novas Versões Deste Signatário</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Uma nova versão assinada com a mesma chave de certificado de {0} reinicia sem Aprovar e Reiniciar. Qualquer outra mudança pergunta a você primeiro.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Aceitou uma nova versão assinada com a mesma chave de certificado</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Inicia com o motor</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Verificando o arquivo antes de iniciar</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Encerrado com o código {0}. Inicia de novo em {1} s.</value></data>
@@ -4273,6 +4291,12 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Sem assinatura.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>As configurações dele aparecem aqui enquanto ele está em execução.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Ele não declara nenhuma configuração.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>As configurações dele aparecem aqui quando ele se conectar ao PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Iniciado, mas nunca se conectou ao PadForge. Inicia de novo em {0} segundos.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Iniciado, mas nunca se conectou ao PadForge. Inicia de novo em {0} segundo.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} foi iniciado, mas nunca se conectou ao PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Encerrado um minuto após o início, sem nunca se conectar ao PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Alterado</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>O PadForge não conseguiu ler as configurações dele: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Encerrado após um minuto sem uma palavra</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>O arquivo dele mudou enquanto ele rodava</value></data>
@@ -6596,6 +6620,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Em uso agora. A linha é sua e prevalece para este dispositivo.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Guardada como sua. Entra em uso quando o motor roda e o dispositivo está conectado.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>O SDL não aceitou a linha. Nada mudou para este dispositivo.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Não guardada. O PadForge guarda até {0:N0} linhas suas e já tem todas elas.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Colar um Mapeamento SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Colar um Mapeamento SDL para {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Encontrar um Mapeamento para {0}</value></data>
@@ -6629,6 +6654,10 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>As linhas são guardadas como suas em PadForge.xml e prevalecem para os dispositivos delas sobre qualquer outra fonte. Limpar, em Mais na linha Banco de Dados de Controles, remove todas.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} linhas para o Windows. {1} para outros sistemas são ignoradas.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} linha para o Windows. {1} para outros sistemas são ignoradas.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Todas as {0:N0} serão adicionadas. O PadForge guarda até {1:N0} linhas suas.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ela será adicionada. O PadForge guarda até {1:N0} linhas suas.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} linhas suas já estão guardadas, então {1:N0} destas serão adicionadas e {2:N0} não serão.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>{0:N0} linha sua já está guardada, então {1:N0} destas serão adicionadas e {2:N0} não serão.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} recusadas. A primeira: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Cole uma linha ou o texto de um arquivo gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>O texto não é uma linha do banco de dados de controles do SDL: um ID de 32 dígitos hexadecimais, um nome e depois campos como a:b0.</value></data>
@@ -6641,14 +6670,22 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>A linha dá um campo duas vezes.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>A linha tem mais de 1.024 caracteres.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>A linha não associa nenhum controle.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Suas Linhas</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>De onde ele baixa, suas próprias linhas</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Suas Linhas</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>As linhas que você adiciona aqui, ou cola no cartão Mapeamento SDL de um dispositivo, prevalecem para os dispositivos delas sobre qualquer outra fonte e permanecem após a redefinição.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Adicionar Linhas de um Arquivo ou da Área de Transferência…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} linhas, suas sobre qualquer outra fonte para os dispositivos delas.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} linha, sua sobre qualquer outra fonte para o dispositivo dela.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} linhas para {0} dispositivos, suas sobre qualquer outra fonte.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} linha para {0} dispositivo, sua sobre qualquer outra fonte.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Nenhuma ainda.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Sua variável SDL_GAMECONTROLLERCONFIG contém {0} linhas que o PadForge não guarda. Adicionar Linhas de um Arquivo ou da Área de Transferência abre com elas.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Sua variável SDL_GAMECONTROLLERCONFIG contém {0} linha que o PadForge não guarda. Adicionar Linhas de um Arquivo ou da Área de Transferência abre com ela.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Em uso na hora.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Baixar De</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Somente HTTPS. De um endereço que não é o da comunidade, o PadForge aceita apenas linhas novas.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Alterar…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Usar o Arquivo da Comunidade</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Endereço</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>O PadForge aceita um endereço que começa com https:// e indica um host, na porta padrão, sem nome de usuário nem senha.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Alcançar o PadForge pela Web</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Um assistente que roda em um site alcança o PadForge por um programa de túnel neste PC. Ativar isto pergunta a você primeiro.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Alcançar o PadForge pela web?</value></data>
@@ -6691,7 +6728,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permitido {0}, último uso {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permitido {0}, ainda não usado.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revogar</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>O PadForge não baixa nenhum programa de túnel e não guarda a chave de nenhuma outra empresa. Um assistente da web trabalha no nível acima.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>O PadForge baixa um programa de túnel somente para o ChatGPT Secure MCP Tunnel. Um assistente da web trabalha no nível acima.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Permitir que {0} trabalhe com o PadForge pela web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>O login dele retorna para {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ele se chama {0}.</value></data>
@@ -6728,6 +6765,97 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>O ID de script dele</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Os scripts chamam os controles dele de {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Os scripts chamam as teclas dele de KeyA, KeySpace, KeyLeftShift e assim por diante, e toda tecla pelo código, Vk0 a Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} nesta rede, a partir de {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} pergunta, nesta rede, a partir de {1}, com a chave que você criou hoje.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} pergunta, nesta rede, a partir de {1}, com a chave que você criou em {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Alcançar o PadForge por Esta Rede</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>Um assistente em outro PC desta rede alcança o PadForge com uma chave que você cria aqui, sem programa de túnel nem conta externa. Ativar isto pergunta a você primeiro.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Alcançar o PadForge por esta rede?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>O helper do PadForge, que roda sem direitos de administrador, escuta nos endereços de rede deste PC, e o PadForge libera a porta dele somente em redes privadas. Um assistente em outro PC só entra com uma chave que você cria aqui. As chamadas e a chave dele trafegam pela rede sem criptografia.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Porta</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Alterar…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>As chamadas e a chave delas trafegam por esta rede sem criptografia. O Windows as deixa entrar somente em redes privadas.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>A porta {0} está em uso por outro programa. Altere-a para alcançar o PadForge por esta rede.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>O Windows não permitiu que o helper do PadForge escutasse na porta {0}. O PadForge a libera com direitos de administrador, então inicie o PadForge com eles e desative e ative isto.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>O helper do PadForge não conseguiu escutar na porta {0}. Altere a porta ou desative e ative isto.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>O helper do PadForge parou ({0}). Desative e ative Alcançar o PadForge por Esta Rede para iniciá-lo de novo.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>A Automação está desativada, então nenhum assistente desta rede alcança o PadForge. O helper inicia quando a Automação é ativada.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Este PC não tem agora um endereço em uma rede privada.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Assistentes Nesta Rede</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. A chave dele foi criada {1}, último uso {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. A chave dele foi criada {1}, ainda não usada.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>hoje às {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>em {0} às {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>às {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Cada assistente recebe a própria chave, com um nome e um nível até o nível acima. A chave aparece uma vez. Criá-la aqui é o seu consentimento, então a primeira chamada dele não pergunta nada.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Adicionar um Assistente da Rede…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Adicionar um Assistente da Rede</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Dê um nome ao outro PC ou ao assistente dele e escolha o que ele pode fazer. Em seguida o PadForge cria a chave dele.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Nome</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Nível</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Criar Chave</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Dê um nome a ele.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>O PadForge guarda no máximo {0} chaves de rede. Revogue uma primeiro.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>A Chave de {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>Ela aparece só desta vez. O PadForge guarda apenas o hash dela, então copie agora. Revogar em Assistentes Nesta Rede a encerra.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Chave</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>Para</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Qualquer Outro Host</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Ou Qualquer Outro Host, para o endereço e o cabeçalho a colar nas configurações dele.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>O Que Colar</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Execute em um terminal no outro PC.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Adicione um servidor MCP por HTTP nas configurações do host com este endereço e este cabeçalho.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Cabeçalho</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Concluir</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Alterar a Porta</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Escolha uma porta de 1024 a 49151. O endereço salvo de cada assistente indica a porta, então adicione cada um de novo após a mudança.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Digite uma porta de 1024 a 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Alcance</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>Todo o PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Somente Seus Próprios Dispositivos e Estes</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Escolher Dispositivos…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Controla os próprios dispositivos e {0}. Ainda lê todos os dispositivos.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Controla somente os próprios dispositivos. Ainda lê todos os dispositivos.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Os comandos da linha de comando ainda chegam ao PadForge, como para todo programa.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Ele pede para controlar somente os próprios dispositivos.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Ele pergunta uma vez. Você pode removê-lo ou mudar o alcance dele na página Automação.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Escolher Dispositivos</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} pode controlar os próprios dispositivos e os que você marcar. Ele ainda lê todos os dispositivos.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>Não há dispositivos na página Dispositivos.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Em execução, com os seus direitos, e pronto. O ChatGPT alcança o PadForge por este túnel sem login próprio, e somente a partir da sua organização na OpenAI. Ele inicia de novo com o PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Em execução, com os seus direitos. Ele espera a OpenAI dizer que o túnel está pronto.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Baixando o tunnel-client da OpenAI e verificando-o com as somas SHA-256 da versão dele.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>Não foi possível baixar o tunnel-client: {0}. Escolha o túnel de novo para tentar outra vez.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Cole abaixo uma chave de runtime e um ID de túnel, e o túnel inicia.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Chave de Runtime</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Restrita, com Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Criar Uma</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>ID do Túnel</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Depois adicione este túnel no ChatGPT.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Abrir o ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>O PadForge guarda a chave criptografada só para você. Uma caixa vazia a esquece. O ChatGPT trabalha no nível acima.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>A chave não foi guardada: o helper da web do PadForge não está em execução, e só ele pode criptografar a chave para você.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Responder de Outro Dispositivo</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Responda às perguntas do PadForge de um celular ou de outro PC enquanto você estiver longe deste.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Funciona somente nesta rede, pelo endereço do controle web.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Parear um Dispositivo…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Pareado {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Última resposta {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>hoje às {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>às {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} às {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Dispositivo sem nome</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Parear um Dispositivo</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Código para escanear com a câmera do dispositivo</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Oculto da captura de tela, então só você pode escaneá-lo.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Ou abra {0} no dispositivo e digite este código:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>O código funciona uma vez, até {0}. Cinco tentativas erradas o fecham, e o código QR continua funcionando.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Iniciando o endereço do controle web…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>A página não pode abrir: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>O Windows não quis ocultar esta janela da captura de tela, então ela não mostra nenhum código.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>O código digitado foi fechado após cinco tentativas erradas. O código QR continua funcionando até {0}.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>O código expirou. Parear um Dispositivo… cria um novo.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>O PadForge guarda no máximo {0} chave de rede. Revogue-a primeiro.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>As cores vão direto para {0}. Cores que mudam, como um ciclo de cores ou cores que seguem o som, não chegam a ele. Uma cor que fica igual chega.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Todos os Arquivos (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Perfil do PadForge (*{0})|*{0}</value></data>

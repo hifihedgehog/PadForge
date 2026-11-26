@@ -321,6 +321,8 @@
 
 {0}
 
+PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe ripotei, poputá eu discussion won {2} me isetiw crash.log won.
+
 {1}</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
@@ -881,6 +883,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Akkota ekkewe control an device {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Atoui ewe device {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Akkota control meinisin an device {0} pwe repwe asösö</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Output ren key me mouse minne a ngeni a pinei seni {0}, minne a angang usun administrator</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Output ren key me mouse minne a ngeni a pinei seni eu window mi angang usun administrator</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>A ereni PadForge pwe epwe angangééni eu program.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>A suuki eu file, eu folder are eu web page.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>A ereni PadForge pwe epwe tinaló key are mouse input ngeni Windows.</value></data>
@@ -1044,6 +1048,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>A aea iei. Ewe row om, me a akkomw ren ei device.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>A isóni usun om. Epwe aea lupwen ewe engine a angang me ewe device a riri.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ese etiwa ewe row. Esor met a siwil ren ei device.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Ese isóni. PadForge a isóni tori {0:N0} row an om, me iei a fen wor ena chommóng.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pacheei eu SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pacheei eu SDL Mapping ren {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Kútta eu Mapping ren {0}</value></data>
@@ -1076,6 +1081,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ekkewe row ra isóni usun om non PadForge.xml me ra akkomw ren ar kewe device asan source meinisin. Clear, fán More an ewe row Controller Database, a atoui.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} row ren Windows. {1} ren ekkoch system ra likitiló.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} row ren Windows. {1} ren ekkoch system ra likitiló.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Meinisin {0:N0} repwe kapachelong. PadForge a isóni tori {1:N0} row an om.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Epwe kapachelong. PadForge a isóni tori {1:N0} row an om.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} row an om ra isóni iei, ina minne {1:N0} seni ekkei repwe kapachelong nge {2:N0} resap.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>{0:N0} row an om a isóni iei, ina minne {1:N0} seni ekkei repwe kapachelong nge {2:N0} resap.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ese etiwa. Ewe akkomw: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Pacheei eu row, are ewe kapas non eu file gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ewe kapas sap eu row non ewe controller database an SDL: eu ID mi 32 hex digit, eu it, mwirin field usun a:b0.</value></data>
@@ -1088,7 +1097,7 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Ewe row a awora eu field fán ruu.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Ewe row a lap seni 1,024 character.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Ewe row ese bind eu control.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Om kewe Row</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ia a download me ie, om kewe row</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Chón Álillis won ewe Web</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
   <data name="Web_Tunnel_None" xml:space="preserve"><value>Esor</value></data>
@@ -1126,7 +1135,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>A mwúttir {0}, a aea le sópwólóón {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>A mwúttir {0}, ese mwo aea.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Atoui</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ese download eu program ren tunnel me ese isóni an pwal eu company key. Eu web chón álillis a angang won ewe level asan.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge a download eu program ren tunnel ren ChatGPT Secure MCP Tunnel chök. Eu web chón álillis a angang won ewe level asan.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>An sign in a liwiniti {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>A apasa pwe itan {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Tiki Allow chök ika ewe page ren sign in a pwáraatá ei kóót:</value></data>
@@ -1158,4 +1167,26 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>An script ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script ra áeita an kewe control {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script ra áeita an kewe key KeyA, KeySpace, KeyLeftShift me ekkewe ra usun, me iteiten key ren an kóót, Vk0 tori Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} won ei network seni {1}</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} a poputá nge ese fókkun riri ngeni PadForge.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Siwili…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Kewe call me an kewe key ra feila won ei network nge ese encrypt. Windows a mwúttiri ir won private network chök.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} a aea ren pwal eu program. Siwili pwe kopwe tori PadForge seni ei network.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ese mwúttiri ewe helper an PadForge pwe epwe áúselinga won port {0}. PadForge a mwúttiri ika a wor tufichin administrator, ina minne poputá PadForge fiti ena tufich me akkota ei ngeni off me on.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Ewe helper an PadForge ese tongeni áúselinga won port {0}. Siwili ewe port, ika akkota ei ngeni off me on.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ewe helper an PadForge a úkútiw ({0}). Akkota Reach PadForge From This Network ngeni off me on pwe epwe poputá sefál.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation a off, ina minne esor chón álillis won ei network a tori PadForge. Ewe helper epwe poputá lupwen Automation a on.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Ei PC esor an address won eu private network iei.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Chón Álillis won Ei Network</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. An key a fóróló {1}, a aea le sópwólóón {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. An key a fóróló {1}, ese mwo aea.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>A Wes</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Siwili ewe Port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Filata eu port seni 1024 tori 49151. An iteiten chón álillis address mi isóni a affata ewe port, ina minne kapachelong emén me emén sefál mwirin ewe siwil.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Makkei eu port seni 1024 tori 49151.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>A angang, fiti om tufich, me a molleta. ChatGPT a tori PadForge non ei tunnel nge esor an sign in, me seni om OpenAI organization chök. Epwe pwal poputá fiti PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>A angang, fiti om tufich. A witiwiti OpenAI pwe epwe ereni pwe ewe tunnel a molleta.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge a isóni ewe key mi encrypt ren om chök. Ika ewe box esor met lón, PadForge epwe likitiló ewe key. ChatGPT a angang won ewe level asan.</value></data>
 </root>

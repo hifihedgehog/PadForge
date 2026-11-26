@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} منسلک ہو گیا، بیٹری {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} آلات منقطع ہوئے: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} آلات منسلک ہوئے: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} بار بار منقطع ہو رہا ہے</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ایک منٹ میں {1} بار منقطع ہوا</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} واپس آ گیا</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} آلات واپس آ گئے: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (زیادہ سے زیادہ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (زیادہ سے زیادہ {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (زیادہ سے زیادہ {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>خودکار دوبارہ رابطہ، پورٹ، جوڑا بنانے کی شناخت، پتے کے ذریعے منسلک کریں</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>پورٹ، DSX.exe کا متبادل</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پورٹس، مکمل رفتار اور حسب ضرورت فارمیٹس</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>دوسرے اسسٹنٹس، ویب پر اسسٹنٹس</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>دوسرے اسسٹنٹس، ویب پر اور اس نیٹ ورک پر اسسٹنٹس</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ہیڈ ٹریکر یا VR ہیڈسیٹ سے ادھر ادھر دیکھیں، جبکہ دونوں انگوٹھے بٹنوں پر رہیں۔</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ڈرائیونگ گیم کی بھیجی ہوئی رفتار، پیڈلز اور گیئرز کو کسی بھی ان پٹ کی طرح میپ کریں۔</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>کنٹرولر کی حرکت ان ایمولیٹرز کو بھیجیں جو DSU موشن ماخذ پڑھتے ہیں۔</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>پلگ اِن شامل کریں…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>پروگرام اور اسکرپٹس|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|تمام فائلیں|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>منظور کریں اور ری اسٹارٹ کریں…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>فولڈر میں دکھائیں</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>اس دستخط کنندہ کے نئے ورژنز پر بھروسا کریں</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0} کی اسی سرٹیفکیٹ کلید سے دستخط شدہ نیا ورژن منظور کریں اور ری اسٹارٹ کریں کے بغیر دوبارہ شروع ہو جاتا ہے۔ کوئی بھی اور تبدیلی پہلے آپ سے پوچھتی ہے۔</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>اسی سرٹیفکیٹ کلید سے دستخط شدہ نیا ورژن قبول کیا</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>انجن کے ساتھ شروع ہوتا ہے</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>شروع ہونے سے پہلے فائل جانچی جا رہی ہے</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>کوڈ {0} کے ساتھ بند ہوا۔ {1} سیکنڈ میں دوبارہ شروع ہوگا۔</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>دستخط شدہ نہیں۔</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>اس کی ترتیبات اس کے چلنے کے دوران یہاں دکھائی دیتی ہیں۔</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>یہ کوئی ترتیب ظاہر نہیں کرتا۔</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>اس کی ترتیبات یہاں اس وقت دکھائی دیتی ہیں جب یہ PadForge سے جڑ جائے۔</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>شروع ہوا لیکن PadForge سے کبھی نہیں جڑا۔ یہ {0} سیکنڈ میں دوبارہ شروع ہوگا۔</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>شروع ہوا لیکن PadForge سے کبھی نہیں جڑا۔ یہ {0} سیکنڈ میں دوبارہ شروع ہوگا۔</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} شروع ہوا لیکن PadForge سے کبھی نہیں جڑا۔</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>شروع ہونے کے ایک منٹ بعد ختم کر دیا گیا، PadForge سے کبھی نہیں جڑا</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>تبدیل شدہ</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge اس کی ترتیبات نہیں پڑھ سکا: {0}۔</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>ایک منٹ تک کوئی جواب نہ ملنے پر ختم کر دیا گیا</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>چلنے کے دوران اس کی فائل بدل گئی</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}، دستخط کنندہ {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}، دستخط شدہ نہیں</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>ہو گیا</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>روکا گیا</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>نہیں ہوا</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>اس سطح پر اجازت نہیں</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ابھی دستیاب نہیں</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز مقرر کریں</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>آلہ {0} ہٹائیں</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>آلہ {0} کے ہر کنٹرول کو آرام کی حالت میں رکھیں</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>اس کی بھیجی ہوئی کی اور ماؤس آؤٹ پٹ {0} سے روک لی جاتی ہے، جو ایڈمنسٹریٹر کے طور پر چلتا ہے</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>اس کی بھیجی ہوئی کی اور ماؤس آؤٹ پٹ اس ونڈو سے روک لی جاتی ہے جو ایڈمنسٹریٹر کے طور پر چلتی ہے</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge سے کوئی پروگرام چلواتا ہے۔</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>کوئی فائل، فولڈر یا ویب صفحہ کھولتا ہے۔</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge سے Windows کو کیز یا ماؤس ان پٹ بھجواتا ہے۔</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>جب آپ "بند کریں" پر کلک کریں یا Alt+F4 دبائیں تو PadForge کو چلتا رہنے دیں۔ بند کرنے کے لیے سسٹم ٹرے مینو میں "باہر نکلیں" استعمال کریں۔</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ونڈو چھوٹی کرنے پر PadForge کو ٹاسک بار کے بجائے اطلاعاتی علاقے میں رکھیں۔</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge شروع ہونے پر ونڈو چھپی رکھیں۔ یہ معمول کے مطابق چلتا اور میپ کرتا ہے۔</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows میں سائن ان کرنے پر PadForge خودکار طور پر شروع کریں۔</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows میں سائن ان کرنے پر PadForge خودکار طور پر شروع کریں۔ یہ آن ہونے کے دوران PadForge شارٹ کٹ، اسکرپٹ یا کسی دوسرے پروگرام سے Windows کے پرامپٹ کے بغیر بھی شروع ہوتا ہے۔</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} سے چل رہا ہے۔</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>اس کے لیے PadForge کا اپنا الگ فولڈر ضروری ہے۔ اس کے فولڈر میں دوسری فائلیں ہیں، اس لیے PadForge دوسرے پروگراموں کو اسے بدلنے سے روک نہیں سکتا۔</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge کو اس کے اپنے فولڈر میں منتقل کریں</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ہمیشہ سسٹم ٹرے میں دکھائیں</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ونڈو کھلی ہونے پر بھی ٹرے آئیکن نظر آتا رہے، تاکہ اس کے مینو میں "باہر نکلیں" ہمیشہ ایک کلک کی دوری پر ہو۔</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>اپ ڈیٹس</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub پر PadForge کے نئے ورژن چیک کریں اور انہیں یہیں سے انسٹال کریں، اور کنٹرولر ڈیٹا بیس اپ ڈیٹ کریں۔ PadForge صرف GitHub (api.github.com، github.com اور اس کے ڈاؤن لوڈ سرورز، اور کنٹرولر ڈیٹا بیس کے لیے raw.githubusercontent.com) سے رابطہ کرتا ہے۔ جو ڈیٹا یہ بھیجتا ہے وہ اس کا اپنا ورژن نمبر ہے اور، کنٹرولر ڈیٹا بیس کے لیے، وہ ٹیگ جو GitHub نے آخری ڈاؤن لوڈ کو دیا تھا۔</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub پر PadForge کے نئے ورژن چیک کریں اور انہیں یہیں سے انسٹال کریں، اور کنٹرولر ڈیٹا بیس اپ ڈیٹ کریں۔ PadForge صرف GitHub (api.github.com، github.com اور اس کے ڈاؤن لوڈ سرورز، اور کنٹرولر ڈیٹا بیس کے لیے raw.githubusercontent.com) سے رابطہ کرتا ہے، اور اس پتے سے جو آپ کنٹرولر ڈیٹا بیس کی قطار کے یہاں سے ڈاؤن لوڈ کریں کے تحت طے کریں۔ جو ڈیٹا یہ بھیجتا ہے وہ اس کا اپنا ورژن نمبر ہے اور، کنٹرولر ڈیٹا بیس کے لیے، وہ ٹیگ جو سرور نے آخری ڈاؤن لوڈ کو دیا تھا۔</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>اپ ڈیٹس خودکار طور پر چیک کریں</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge شروع ہونے پر اور اس کے بعد ہر 12 گھنٹے بعد چیک کرتا ہے۔</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>اپ ڈیٹس خودکار طور پر انسٹال کریں</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>انسٹال کر کے دوبارہ شروع کریں</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>ریلیز نوٹس</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>کنٹرولر ڈیٹا بیس</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ابھی اپ ڈیٹ کریں GitHub سے کمیونٹی کنٹرولر ڈیٹا بیس (SDL_GameControllerDB) ڈاؤن لوڈ کرتا ہے اور ترتیبات کی فائل میں وہ میپنگز رکھتا ہے جو PadForge کے اس ورژن میں نہیں ہیں۔ وہ فوراً استعمال میں آ جاتی ہیں۔ نئی میپنگ صرف ایسے کنٹرولر کے لیے استعمال ہوتی ہے جسے کوئی اور گیم پیڈ کے طور پر نہیں پڑھتا، جو تفویض نہیں ہے اور جو خام جوائے اسٹک موڈ لازمی کریں (گیم پیڈ ری میپنگ کو بائی پاس کریں) میں نہیں ہے۔ ری سیٹ ڈاؤن لوڈ کی گئی ہر میپنگ ہٹا دیتا ہے۔ مزید کے تحت آپ کی اپنی قطاریں رہتی ہیں۔</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ابھی اپ ڈیٹ کریں GitHub سے، یا مزید کے تحت طے کیے گئے پتے سے، کمیونٹی کنٹرولر ڈیٹا بیس (SDL_GameControllerDB) ڈاؤن لوڈ کرتا ہے اور ترتیبات کی فائل میں وہ میپنگز رکھتا ہے جو PadForge کے اس ورژن میں نہیں ہیں۔ وہ فوراً استعمال میں آ جاتی ہیں۔ کسی اور پتے سے یہ صرف نئی میپنگز رکھتا ہے۔ نئی میپنگ صرف ایسے کنٹرولر کے لیے استعمال ہوتی ہے جسے کوئی اور گیم پیڈ کے طور پر نہیں پڑھتا، جو تفویض نہیں ہے اور جو خام جوائے اسٹک موڈ لازمی کریں (گیم پیڈ ری میپنگ کو بائی پاس کریں) میں نہیں ہے۔ ری سیٹ ڈاؤن لوڈ کی گئی ہر میپنگ ہٹا دیتا ہے اور GitHub سے دوبارہ ڈاؤن لوڈ کرتا ہے۔ مزید کے تحت آپ کی اپنی قطاریں رہتی ہیں۔</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ابھی اپ ڈیٹ کریں</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>اپ ڈیٹ ہو رہا ہے…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>اپ ڈیٹس چیک کی جا رہی ہیں…</value></data>
@@ -1106,8 +1121,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge کو {0} پر اپ ڈیٹ کر دیا گیا۔</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>اندر شامل: {0} میپنگز، {1} کی کمیونٹی کاپی۔</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>اندر شامل: {0} میپنگز، {1} کی کمیونٹی کاپی۔ ڈاؤن لوڈ {2}: نئی قطاریں {3}، تبدیل شدہ {4}۔</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>اندر شامل: {1} میپنگز، {2} کی کمیونٹی کاپی۔ {4} سے {3} کو ڈاؤن لوڈ: نئی قطاریں {0}۔</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>اندر شامل: {1} میپنگز، {2} کی کمیونٹی کاپی۔ {4} سے {3} کو ڈاؤن لوڈ: نئی قطار {0}۔</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>پچھلی اپ ڈیٹ کے بعد کمیونٹی ڈیٹا بیس نہیں بدلا۔</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub تک رسائی نہیں ہو سکی: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} تک رسائی نہیں ہو سکی: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge نے ڈاؤن لوڈ قبول نہیں کیا کیونکہ یہ وہ کنٹرولر ڈیٹا بیس نہیں جس کی اسے توقع ہے۔ کچھ نہیں بدلا۔</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>چھوٹی حالت میں شروع کریں</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>لاگ ان پر شروع کریں</value></data>
@@ -1278,6 +1296,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>خلاصہ کاپی کریں</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>کاپی ہو گیا</value></data>
   <data name="Review_Save" xml:space="preserve"><value>محفوظ کریں…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>محفوظ کریں اور پوسٹ کریں</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>محفوظ کریں اور پوسٹ کریں زپ فائل محفوظ کرتا ہے، خلاصہ کاپی کرتا ہے، فائل کو Explorer میں دکھاتا ہے اور PadForge کا وہ صفحہ کھولتا ہے جہاں رپورٹیں جاتی ہیں۔ خلاصہ وہاں پیسٹ کریں اور فائل اس پر ڈراپ کریں۔</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>ریکارڈنگ محفوظ کریں</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip فائلیں</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>محفوظ نہیں ہوا۔ {0}</value></data>
@@ -1638,6 +1658,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>پروڈکٹ</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>قسم</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>صلاحیتیں</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>USB اور Xbox Wireless Adapter پر پچھلے پیڈلز بند ہیں۔ SDL کی وجہ: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>بلوٹوتھ پر پچھلے پیڈلز بند ہیں۔ SDL کی وجہ: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>رابطہ</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>بیٹری</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>راستہ</value></data>
@@ -3476,6 +3498,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>ایک غیر متوقع خرابی پیش آئی:
 
 {0}
+
+PadForge نے تفصیلات PadForge.exe کے ساتھ crash.log میں لکھ دیں۔ اس کی رپورٹ کے لیے {2} پر ایک مباحثہ شروع کریں اور crash.log اس پر ڈراپ کریں۔
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} مزید خرابیاں نہیں دکھائی گئیں)</value></data>
@@ -6647,6 +6671,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>اب استعمال میں ہے۔ قطار آپ کی ہے اور اس آلے کے لیے غالب رہتی ہے۔</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>آپ کی اپنی کے طور پر رکھ لی گئی۔ انجن چلنے اور آلہ منسلک ہونے پر یہ استعمال میں آئے گی۔</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL نے قطار قبول نہیں کی۔ اس آلے کے لیے کچھ نہیں بدلا۔</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>رکھی نہیں گئی۔ PadForge آپ کی زیادہ سے زیادہ {0:N0} قطاریں رکھتا ہے اور ابھی اتنی ہی موجود ہیں۔</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL میپنگ چسپاں کریں</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} کے لیے SDL میپنگ چسپاں کریں</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} کے لیے میپنگ تلاش کریں</value></data>
@@ -6680,6 +6705,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>قطاریں PadForge.xml میں آپ کی اپنی کے طور پر رکھی جاتی ہیں اور اپنے آلات کے لیے ہر دوسرے ماخذ پر غالب رہتی ہیں۔ کنٹرولر ڈیٹا بیس قطار کے مزید کے تحت صاف کریں انہیں ہٹا دیتا ہے۔</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows کے لیے {0} قطاریں۔ دوسرے سسٹمز کی {1} چھوڑ دی گئیں۔</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows کے لیے {0} قطار۔ دوسرے سسٹمز کی {1} چھوڑ دی گئیں۔</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>سب {0:N0} شامل کی جائیں گی۔ PadForge آپ کی زیادہ سے زیادہ {1:N0} قطاریں رکھتا ہے۔</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>یہ شامل کی جائے گی۔ PadForge آپ کی زیادہ سے زیادہ {1:N0} قطاریں رکھتا ہے۔</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>آپ کی {0:N0} قطاریں ابھی رکھی ہوئی ہیں، اس لیے ان میں سے {1:N0} شامل کی جائیں گی اور {2:N0} نہیں۔</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>آپ کی {0:N0} قطار ابھی رکھی ہوئی ہے، اس لیے ان میں سے {1:N0} شامل کی جائیں گی اور {2:N0} نہیں۔</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} مسترد ہوئیں۔ پہلی: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>کوئی قطار، یا gamecontrollerdb.txt فائل کا متن چسپاں کریں۔</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>یہ متن SDL کے کنٹرولر ڈیٹا بیس کی کوئی قطار نہیں: 32 ہیکس ہندسوں کی ID، ایک نام، پھر فیلڈز جیسے a:b0۔</value></data>
@@ -6692,14 +6721,22 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>قطار ایک فیلڈ دو بار دیتی ہے۔</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>قطار 1,024 حروف سے زیادہ ہے۔</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>قطار کسی کنٹرول کو بائنڈ نہیں کرتی۔</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>آپ کی قطاریں</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>جہاں سے ڈاؤن لوڈ ہوتا ہے، آپ کی اپنی قطاریں</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>آپ کی قطاریں</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>جو قطاریں آپ یہاں شامل کریں، یا کسی آلے کے SDL میپنگ کارڈ پر چسپاں کریں، وہ اپنے آلات کے لیے ہر دوسرے ماخذ پر غالب رہتی ہیں اور ری سیٹ کے بعد بھی رہتی ہیں۔</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>فائل یا کلپ بورڈ سے قطاریں شامل کریں…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} قطاریں، اپنے آلات کے لیے ہر دوسرے ماخذ پر آپ کی۔</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} قطار، اپنے آلے کے لیے ہر دوسرے ماخذ پر آپ کی۔</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} قطاریں {0} آلات کے لیے، ہر دوسرے ماخذ پر آپ کی۔</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} قطار {0} آلے کے لیے، ہر دوسرے ماخذ پر آپ کی۔</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>ابھی کوئی نہیں۔</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>آپ کے SDL_GAMECONTROLLERCONFIG متغیر میں {0} قطاریں ہیں جنہیں PadForge نہیں رکھتا۔ فائل یا کلپ بورڈ سے قطاریں شامل کریں ان کے ساتھ کھلتا ہے۔</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>آپ کے SDL_GAMECONTROLLERCONFIG متغیر میں {0} قطار ہے جسے PadForge نہیں رکھتا۔ فائل یا کلپ بورڈ سے قطاریں شامل کریں اس کے ساتھ کھلتا ہے۔</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>فوراً استعمال میں۔</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>یہاں سے ڈاؤن لوڈ کریں</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>صرف HTTPS۔ کمیونٹی کے علاوہ کسی اور پتے سے PadForge صرف نئی قطاریں لیتا ہے۔</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>تبدیل کریں…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>کمیونٹی کی فائل استعمال کریں</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>پتہ</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge ایسا پتہ لیتا ہے جو https:// سے شروع ہو اور کسی ہوسٹ کا نام دے، ڈیفالٹ پورٹ پر، صارف نام یا پاس ورڈ کے بغیر۔</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>ویب سے PadForge تک رسائی</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>ویب سائٹ پر چلنے والا اسسٹنٹ اس PC پر ایک ٹنل پروگرام کے ذریعے PadForge تک پہنچتا ہے۔ اسے آن کرنے سے پہلے آپ سے پوچھا جاتا ہے۔</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>ویب سے PadForge تک رسائی دیں؟</value></data>
@@ -6742,7 +6779,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>اجازت {0} کو دی گئی، آخری استعمال {1}۔</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>اجازت {0} کو دی گئی، ابھی استعمال نہیں ہوا۔</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>منسوخ کریں</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge کوئی ٹنل پروگرام ڈاؤن لوڈ نہیں کرتا اور کسی دوسری کمپنی کی کلید نہیں رکھتا۔ ویب اسسٹنٹ اوپر والی سطح پر کام کرتا ہے۔</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ٹنل پروگرام صرف ChatGPT Secure MCP Tunnel کے لیے ڈاؤن لوڈ کرتا ہے۔ ویب اسسٹنٹ اوپر والی سطح پر کام کرتا ہے۔</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>کیا {0} کو ویب سے PadForge کے ساتھ کام کرنے کی اجازت دیں؟</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>اس کا سائن اِن {0} پر لوٹتا ہے۔</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>یہ اپنا نام {0} بتاتا ہے۔</value></data>
@@ -6779,6 +6816,97 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>اس کی اسکرپٹ ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>اسکرپٹس اس کے کنٹرولز کے نام {0} رکھتے ہیں۔</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>اسکرپٹس اس کی کیز کے نام KeyA، KeySpace، KeyLeftShift اور ان جیسے رکھتے ہیں، اور ہر کلید اس کے کوڈ سے، Vk0 سے Vk255 تک۔</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>اس نیٹ ورک پر {1} سے {0}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} اس نیٹ ورک پر {1} سے آج بنائی گئی کلید کے ساتھ پوچھتا ہے۔</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} اس نیٹ ورک پر {1} سے {2} کو بنائی گئی کلید کے ساتھ پوچھتا ہے۔</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>اس نیٹ ورک سے PadForge تک رسائی</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>اس نیٹ ورک پر دوسرے PC کا اسسٹنٹ اس کلید سے PadForge تک پہنچتا ہے جو آپ یہاں بناتے ہیں، کسی ٹنل پروگرام یا بیرونی اکاؤنٹ کے بغیر۔ اسے آن کرنے سے پہلے آپ سے پوچھا جاتا ہے۔</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>اس نیٹ ورک سے PadForge تک رسائی دیں؟</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>PadForge کا ہیلپر، جو ایڈمنسٹریٹر حقوق کے بغیر چلتا ہے، اس PC کے نیٹ ورک پتوں پر سنتا ہے، اور PadForge اس کے پورٹ کو صرف نجی نیٹ ورکس پر اندر آنے دیتا ہے۔ دوسرے PC کا اسسٹنٹ صرف اس کلید سے اندر آتا ہے جو آپ یہاں بناتے ہیں۔ کالز اور ان کی کلید نیٹ ورک پر بغیر خفیہ کاری کے جاتی ہیں۔</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>پورٹ</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>تبدیل کریں…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>کالز اور ان کی کلید اس نیٹ ورک پر بغیر خفیہ کاری کے جاتی ہیں۔ Windows انہیں صرف نجی نیٹ ورکس پر اندر آنے دیتا ہے۔</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>پورٹ {0} کسی دوسرے پروگرام کے استعمال میں ہے۔ اس نیٹ ورک سے PadForge تک پہنچنے کے لیے اسے تبدیل کریں۔</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows نے PadForge کے ہیلپر کو پورٹ {0} پر سننے نہیں دیا۔ PadForge اسے ایڈمنسٹریٹر حقوق کے ساتھ اجازت دیتا ہے، اس لیے PadForge کو ان کے ساتھ شروع کریں اور اسے بند کر کے دوبارہ آن کریں۔</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge کا ہیلپر پورٹ {0} پر سن نہیں سکا۔ پورٹ تبدیل کریں، یا اسے بند کر کے دوبارہ آن کریں۔</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge کا ہیلپر رک گیا ({0})۔ اسے دوبارہ شروع کرنے کے لیے اس نیٹ ورک سے PadForge تک رسائی بند کر کے دوبارہ آن کریں۔</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>آٹومیشن آف ہے، اس لیے اس نیٹ ورک پر کوئی اسسٹنٹ PadForge تک نہیں پہنچتا۔ آٹومیشن آن ہونے پر ہیلپر شروع ہو جاتا ہے۔</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>اس PC کا ابھی کسی نجی نیٹ ورک پر کوئی پتہ نہیں۔</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>اس نیٹ ورک پر اسسٹنٹس</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}۔ اس کی کلید {1} بنائی گئی، آخری استعمال {2}۔</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}۔ اس کی کلید {1} بنائی گئی، ابھی استعمال نہیں ہوئی۔</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>آج {0} پر</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>{0} کو {1} پر</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>{0} پر</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>ہر اسسٹنٹ کو اپنی کلید ملتی ہے، ایک نام اور اوپر والی سطح تک کی ایک سطح کے ساتھ۔ کلید ایک ہی بار دکھائی جاتی ہے۔ اسے یہاں بنانا آپ کی رضامندی ہے، اس لیے اس کی پہلی کال آپ سے کچھ نہیں پوچھتی۔</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>نیٹ ورک اسسٹنٹ شامل کریں…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>نیٹ ورک اسسٹنٹ شامل کریں</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>دوسرے PC یا اس کے اسسٹنٹ کا نام لکھیں، اور چنیں کہ وہ کیا کر سکتا ہے۔ اس کے بعد PadForge اس کی کلید بناتا ہے۔</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>سطح</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>کلید بنائیں</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>اسے ایک نام دیں۔</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge زیادہ سے زیادہ {0} نیٹ ورک کلیدیں رکھتا ہے۔ پہلے کسی ایک کو منسوخ کریں۔</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>{0} کی کلید</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>یہ ایک ہی بار دکھائی جاتی ہے۔ PadForge صرف اس کا ہیش رکھتا ہے، اس لیے اسے ابھی کاپی کریں۔ اس نیٹ ورک پر اسسٹنٹس کے تحت منسوخ کریں اسے ختم کر دیتا ہے۔</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>کلید</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>کے لیے</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>کوئی اور ہوسٹ</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>یا کوئی اور ہوسٹ، اس کی ترتیبات میں پیسٹ کرنے کے لیے پتے اور ہیڈر کے واسطے۔</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>کیا پیسٹ کرنا ہے</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>اسے دوسرے PC پر ٹرمینل میں چلائیں۔</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>ہوسٹ کی ترتیبات میں HTTP پر ایک MCP سرور اس پتے اور اس ہیڈر کے ساتھ شامل کریں۔</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>ہیڈر</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>ہو گیا</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>پورٹ تبدیل کریں</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>1024 سے 49151 تک کوئی پورٹ چنیں۔ ہر اسسٹنٹ کے محفوظ کردہ پتے میں پورٹ شامل ہے، اس لیے تبدیلی کے بعد ہر ایک کو دوبارہ شامل کریں۔</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>1024 سے 49151 تک کوئی پورٹ لکھیں۔</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>رسائی</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>پورا PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>صرف اس کے اپنے آلات اور وہ جنہیں آلات منتخب کریں نام دیتا ہے</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>آلات منتخب کریں…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>اپنے آلات اور {0} کو چلاتا ہے۔ یہ پھر بھی ہر آلے کو پڑھتا ہے۔</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>صرف اپنے آلات کو چلاتا ہے۔ یہ پھر بھی ہر آلے کو پڑھتا ہے۔</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>کمانڈ لائن سے کمانڈز پھر بھی PadForge تک پہنچتی ہیں، جیسے ہر پروگرام کے لیے۔</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>یہ صرف اپنے آلات چلانے کی اجازت مانگتا ہے۔</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>یہ ایک بار پوچھتا ہے۔ آپ اسے ہٹا سکتے ہیں یا اس کی رسائی آٹومیشن کے صفحے پر بدل سکتے ہیں۔</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>آلات منتخب کریں</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} اپنے آلات اور ان آلات کو چلا سکتا ہے جن پر آپ نشان لگائیں۔ یہ پھر بھی ہر آلے کو پڑھتا ہے۔</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>آلات کے صفحے پر کوئی آلہ نہیں ہے۔</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>چل رہا ہے، آپ کے حقوق کے ساتھ، اور تیار ہے۔ ChatGPT اس ٹنل کے ذریعے PadForge تک پہنچتا ہے، اپنے کسی سائن اِن کے بغیر، اور صرف آپ کی OpenAI تنظیم سے۔ یہ PadForge کے ساتھ دوبارہ شروع ہوتا ہے۔</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>چل رہا ہے، آپ کے حقوق کے ساتھ۔ یہ OpenAI کے ٹنل کو تیار بتانے کا انتظار کرتا ہے۔</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>OpenAI کا tunnel-client ڈاؤن لوڈ ہو رہا ہے اور اسے اس کی ریلیز کے SHA-256 مجموعوں سے جانچا جا رہا ہے۔</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client ڈاؤن لوڈ نہیں ہو سکا: {0}۔ دوبارہ کوشش کے لیے ٹنل کو دوبارہ منتخب کریں۔</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>نیچے رن ٹائم کلید اور ٹنل ID پیسٹ کریں، تو ٹنل شروع ہو جاتا ہے۔</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>رن ٹائم کلید</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>محدود، Tunnels Read and Use کے ساتھ۔</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>ایک بنائیں</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>ٹنل ID</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>پھر ChatGPT میں یہ ٹنل شامل کریں۔</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>ChatGPT کھولیں</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge کلید کو صرف آپ کے لیے خفیہ کر کے رکھتا ہے۔ خالی باکس اسے بھلا دیتا ہے۔ ChatGPT اوپر والی سطح پر کام کرتا ہے۔</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>کلید رکھی نہیں گئی: PadForge کا ویب ہیلپر نہیں چل رہا، اور صرف وہی آپ کے لیے کلید کو خفیہ کر سکتا ہے۔</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>دوسرے آلے سے جواب دیں</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>جب آپ اس PC سے دور ہوں تو فون یا دوسرے PC سے PadForge کے سوالوں کا جواب دیں۔</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>صرف اس نیٹ ورک پر کام کرتا ہے، ویب کنٹرولر کے پتے کے ذریعے۔</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>آلہ جوڑیں…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>جوڑا گیا {0}۔</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>آخری جواب {0}۔</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>آج {0} پر</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>{0} پر</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} کو {1} پر</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>بے نام آلہ</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>آلہ جوڑیں</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>آلے کے کیمرے سے اسکین کرنے کا کوڈ</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>اسکرین کیپچر سے چھپا ہوا، اس لیے صرف آپ اسے اسکین کر سکتے ہیں۔</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>یا آلے پر {0} کھولیں اور یہ کوڈ لکھیں:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>کوڈ ایک بار کام کرتا ہے، {0} تک۔ پانچ غلط کوششیں اسے بند کر دیتی ہیں، اور QR کوڈ پھر بھی کام کرتا ہے۔</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>ویب کنٹرولر کا پتہ شروع ہو رہا ہے…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>صفحہ نہیں کھل سکتا: {0}۔</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows نے اس ونڈو کو اسکرین کیپچر سے چھپانے نہیں دیا، اس لیے یہ کوئی کوڈ نہیں دکھاتی۔</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>پانچ غلط کوششوں کے بعد لکھا جانے والا کوڈ بند ہو گیا۔ QR کوڈ {0} تک پھر بھی کام کرتا ہے۔</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>کوڈ کی مدت ختم ہو گئی۔ آلہ جوڑیں… نیا کوڈ بناتا ہے۔</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge زیادہ سے زیادہ {0} نیٹ ورک کلید رکھتا ہے۔ پہلے اسے منسوخ کریں۔</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔ بدلتے رنگ، جیسے رنگوں کا چکر یا آواز کے ساتھ چلنے والے رنگ، اس تک نہیں پہنچتے۔ جو رنگ ایک جیسا رہے وہ پہنچتا ہے۔</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>تمام فائلیں (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge پروفائل (*{0})|*{0}</value></data>

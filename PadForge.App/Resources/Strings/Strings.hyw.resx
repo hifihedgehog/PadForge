@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} միացաւ, մարտկոց {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} սարք անջատուեցաւ՝ {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} սարք միացաւ՝ {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} կրկին ու կրկին կ՚անջատուի</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} մէկ վայրկեանի մէջ անջատուեցաւ {1} անգամ</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} վերադարձաւ</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} սարք վերադարձաւ՝ {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (առաւելագոյնը {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (առաւելագոյնը {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (առաւելագոյնը {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ինքնաշխատ վերակապում, փորթ, զուգաւորման ինքնութիւն, միանալ հասցէով</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Փորթ, DSX.exe փոխարինող</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Փորթեր, Լրիւ արագութիւն, Անհատական ձեւաչափեր</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Այլ օգնականներ, վեբի վրայի օգնականներ</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Այլ օգնականներ, վեբի եւ այս ցանցին վրայի օգնականներ</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Շուրջը նայեցէք գլխու հետեւիչով կամ VR սաղաւարտով, մինչ երկու բութերն ալ կոճակներուն վրայ կը մնան։</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Վարորդական խաղի մը ղրկած արագութիւնը, ոտնակներն ու փոխանցումները համապատասխանեցուցէք որեւէ մուտքի պէս։</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Կառավարիչի շարժումը ղրկեցէք այն նմանակիչներուն, որոնք DSU շարժման աղբիւր կը կարդան։</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Աւելցնել փլակին մը…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Ծրագիրներ եւ սքրիփթներ|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Բոլոր ֆայլերը|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Հաստատել եւ վերագործարկել…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Ցուցադրել թղթապանակին մէջ</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Կը սկսի շարժիչին հետ</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Ֆայլը կը ստուգուի սկսելէ առաջ</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Աւարտեցաւ {0} կոդով։ Կրկին կը սկսի {1} երկվայրկեանէն։</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ստորագրուած չէ։</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Անոր կարգաւորումները հոս կ՚երեւին, մինչ ան կ՚աշխատի։</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Ան ոչ մէկ կարգաւորում կը յայտարարէ։</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Անոր կարգաւորումները հոս կ՚երեւին, երբ ան PadForge-ին միանայ։</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Սկսաւ, բայց երբեք PadForge-ին չմիացաւ։ Կրկին կը սկսի {0} երկվայրկեանէն։</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Սկսաւ, բայց երբեք PadForge-ին չմիացաւ։ Կրկին կը սկսի {0} երկվայրկեանէն։</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} սկսաւ, բայց երբեք PadForge-ին չմիացաւ։</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Աւարտեցաւ սկսելէն մէկ վայրկեան ետք, երբեք PadForge-ին չմիացաւ</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge-ը չկրցաւ կարդալ անոր կարգաւորումները՝ {0}։</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Աւարտեցաւ մէկ վայրկեան պատասխան չտալէ ետք</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Անոր ֆայլը փոխուեցաւ աշխատած ատեն</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ստորագրուած՝ {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ստորագրուած չէ</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Կատարուած</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Կասեցուած</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Չկատարուեցաւ</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Այս մակարդակին թոյլատրուած չէ</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Հիմա հասանելի չէ</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Կարգաւորել {0} սարքին կառավարման տարրերը</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Հեռացնել սարքը՝ {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>{0} սարքին բոլոր կառավարման տարրերը դնել հանգիստի վիճակի</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Անոր տուած ստեղնի եւ մկնիկի ելքը չի հասցուիր {0}-ին, որ կ՚աշխատի վարիչի իրաւունքներով</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Անոր տուած ստեղնի եւ մկնիկի ելքը չի հասցուիր վարիչի իրաւունքներով աշխատող պատուհանի մը</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge-ին ծրագիր մը գործարկել կու տայ։</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Կը բանայ ֆայլ մը, թղթապանակ մը կամ վեբ էջ մը։</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge-ին Windows-ին ստեղներ կամ մուկի մուտք ղրկել կու տայ։</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge-ը աշխատող պահել, երբ սեղմէք «Փակել» կամ Alt+F4։ Ելլելու համար գործածեցէք ծանուցումներու գօտիի ցանկին «Ելք»-ը։</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>PadForge-ը ծանուցումներու գօտիին մէջ պահել պատուհանը փոքրացնելու ատեն՝ առաջադրանքներու վահանակին փոխարէն։</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Պատուհանը թաքցուած պահել, երբ PadForge-ը կը գործարկուի։ Ան կ՚աշխատի եւ կը համապատասխանեցնէ սովորականին պէս։</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ը ինքնաբերաբար գործարկել, երբ Windows մուտք գործէք։</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ը ինքնաբերաբար գործարկել, երբ Windows մուտք գործէք։ Մինչ ասիկա միացած է, PadForge-ը կը գործարկուի նաեւ առանց Windows-ի հարցումին՝ դիւրանցումէ մը, սքրիփթէ մը կամ ուրիշ ծրագիրէ մը։</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge-ը կ՚աշխատի հետեւեալ տեղէն՝ {0}։</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ասիկա կը պահանջէ, որ PadForge-ը ըլլայ իր սեփական թղթապանակին մէջ։ Անոր թղթապանակը ուրիշ ֆայլեր ալ կը պարունակէ, ուստի PadForge-ը չի կրնար ուրիշ ծրագիրներուն արգիլել զայն փոխելու։</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Փոխադրել PadForge-ը իր սեփական թղթապանակը</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Միշտ ցուցադրել ծանուցումներու գօտիին մէջ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ծանուցումներու գօտիի պատկերակը տեսանելի պահել, մինչ պատուհանը բաց է, որպէսզի անոր ցանկին «Ելք»-ը միշտ մէկ սեղմում հեռու ըլլայ։</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Թարմացումներ</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Ստուգել GitHub-ը PadForge-ի նոր տարբերակներու համար եւ զանոնք տեղադրել հոսկէ, ինչպէս նաեւ թարմացնել կառավարիչներու տուեալներու շտեմարանը։ PadForge-ը կը կապուի միայն GitHub-ի հետ (api.github.com, github.com եւ անոր ներբեռնման սպասարկիչները, եւ raw.githubusercontent.com՝ կառավարիչներու տուեալներու շտեմարանին համար)։ Միակ տուեալը, որ կը ղրկէ, իր սեփական տարբերակի թիւն է, իսկ կառավարիչներու տուեալներու շտեմարանին համար՝ այն պիտակը, որ GitHub-ը տուաւ վերջին ներբեռնումին։</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Ստուգել GitHub-ը PadForge-ի նոր տարբերակներու համար եւ զանոնք տեղադրել հոսկէ, ինչպէս նաեւ թարմացնել կառավարիչներու տուեալներու շտեմարանը։ PadForge-ը կը կապուի միայն GitHub-ի հետ (api.github.com, github.com եւ անոր ներբեռնման սպասարկիչները, եւ raw.githubusercontent.com՝ կառավարիչներու տուեալներու շտեմարանին համար) եւ այն հասցէին հետ, զոր դրած էք կառավարիչներու տուեալներու շտեմարանի տողին «Ներբեռնման աղբիւր»-ին տակ։ Միակ տուեալը, որ կը ղրկէ, իր սեփական տարբերակի թիւն է, իսկ կառավարիչներու տուեալներու շտեմարանին համար՝ այն պիտակը, որ սպասարկիչը տուաւ վերջին ներբեռնումին։</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Ինքնաբերաբար ստուգել թարմացումները</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Կը ստուգէ, երբ PadForge-ը կը գործարկուի, եւ անկէ ետք ամէն 12 ժամը անգամ մը։</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Ինքնաբերաբար տեղադրել թարմացումները</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Տեղադրել եւ վերագործարկել</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Թողարկման նօթեր</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Կառավարիչներու տուեալներու շտեմարան</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Թարմացնել հիմա» կոճակը GitHub-էն կը ներբեռնէ համայնքի կառավարիչներու տուեալներու շտեմարանը (SDL_GameControllerDB) եւ կարգաւորումներու ֆայլին մէջ կը պահէ այն համապատասխանեցումները, որոնք PadForge-ի այս տարբերակը չունի։ Անոնք անմիջապէս գործածութեան մէջ են։ Նոր համապատասխանեցում մը կը գործածուի միայն այն կառավարիչին համար, զոր ուրիշ ոչինչ կը կարդայ իբրեւ խաղային կառավարիչ, որ նշանակուած չէ եւ որ «Ստիպողաբար հում ճոյսթիքի կերպ»-ի մէջ չէ։ Վերակայումը կը հեռացնէ բոլոր ներբեռնուած համապատասխանեցումները։ Ձեր սեփական տողերը՝ «Աւելին» բաժինին տակ, կը մնան։</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Թարմացնել հիմա» կոճակը GitHub-էն, կամ «Աւելին» բաժինին տակ դրուած հասցէէն, կը ներբեռնէ համայնքի կառավարիչներու տուեալներու շտեմարանը (SDL_GameControllerDB) եւ կարգաւորումներու ֆայլին մէջ կը պահէ այն համապատասխանեցումները, որոնք PadForge-ի այս տարբերակը չունի։ Անոնք անմիջապէս գործածութեան մէջ են։ Ուրիշ հասցէէ մը կը պահէ միայն նոր համապատասխանեցումներ։ Նոր համապատասխանեցում մը կը գործածուի միայն այն կառավարիչին համար, զոր ուրիշ ոչինչ կը կարդայ իբրեւ խաղային կառավարիչ, որ նշանակուած չէ եւ որ «Ստիպողաբար հում ճոյսթիքի կերպ»-ի մէջ չէ։ Վերակայումը կը հեռացնէ բոլոր ներբեռնուած համապատասխանեցումները եւ նորէն կը ներբեռնէ GitHub-էն։ Ձեր սեփական տողերը՝ «Աւելին» բաժինին տակ, կը մնան։</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Թարմացնել հիմա</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Կը թարմացուի…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Թարմացումներու ստուգում…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge-ը թարմացուեցաւ {0}-ի։</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ներկառուցուած՝ {0} համապատասխանեցում, համայնքի պատճէն՝ {1}։</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ներկառուցուած՝ {0} համապատասխանեցում, համայնքի պատճէն՝ {1}։ Ներբեռնուած՝ {2}, նոր տող՝ {3}, փոխուած՝ {4}։</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Ներկառուցուած՝ {1} համապատասխանեցում, համայնքի պատճէն՝ {2}։ Ներբեռնուած՝ {3}, {4}-էն, նոր տող՝ {0}։</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Ներկառուցուած՝ {1} համապատասխանեցում, համայնքի պատճէն՝ {2}։ Ներբեռնուած՝ {3}, {4}-էն, {0} նոր տող։</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Համայնքի շտեմարանը չէ փոխուած վերջին թարմացումէն ի վեր։</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-ին կարելի չեղաւ հասնիլ: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0}-ին կարելի չեղաւ հասնիլ: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge-ը մերժեց ներբեռնուածը, քանի որ ան ակնկալուած կառավարիչներու շտեմարանը չէ։ Ոչինչ փոխուեցաւ։</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Փոքրացած գործարկել</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Գործարկել մուտք գործելու ատեն</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>Պատճէնել ամփոփումը</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Պատճէնուեցաւ</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Պահել…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Պահել եւ հրապարակել</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>«Պահել եւ հրապարակել»-ը կը պահէ zip ֆայլը, կը պատճէնէ ամփոփումը, կը ցուցադրէ ֆայլը Explorer-ի մէջ եւ կը բանայ PadForge-ի այն էջը, ուր զեկոյցները կը ղրկուին։ Հոն փակցուցէք ամփոփումը եւ ֆայլը քաշեցէք անոր վրայ։</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Պահել արձանագրումը</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ֆայլեր</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Չպահուեցաւ։ {0}</value></data>
@@ -3238,6 +3254,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Անսպասելի սխալ մը պատահեցաւ:
 
 {0}
+
+PadForge-ը մանրամասնութիւնները գրեց crash.log-ին մէջ, PadForge.exe-ի քով։ Ասիկա զեկուցելու համար սկսեցէք քննարկում մը {2} հասցէին վրայ եւ crash.log-ը քաշեցէք անոր վրայ։
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} լրացուցիչ սխալ(ներ) չցուցադրուեցան)</value></data>
@@ -5740,6 +5758,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Արտադրանք</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Տեսակ</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Կարողութիւններ</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Ետեւի թիակները անջատուած են USB-ի եւ Xbox Wireless Adapter-ի միջոցով։ SDL-ի պատճառը՝ {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Ետեւի թիակները անջատուած են Bluetooth-ի միջոցով։ SDL-ի պատճառը՝ {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Կապ</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Մարտկոց</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Ուղի</value></data>
@@ -5918,6 +5938,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Հիմա գործածութեան մէջ է։ Տողը ձերն է եւ այս սարքին համար կը գերակայէ։</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Պահուեցաւ իբրեւ ձերը։ Ան գործածութեան մէջ կ՚ըլլայ, երբ շարժիչը աշխատի եւ սարքը միացած ըլլայ։</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-ը չընդունեց տողը։ Այս սարքին համար ոչինչ փոխուեցաւ։</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Չպահուեցաւ։ PadForge-ը ձեր տողերէն մինչեւ {0:N0} կը պահէ եւ հիմա այդքան ունի։</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Փակցնել SDL համապատասխանեցում</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Փակցնել SDL համապատասխանեցում {0}-ի համար</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Գտնել համապատասխանեցում {0}-ի համար</value></data>
@@ -5951,6 +5972,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Տողերը կը պահուին իբրեւ ձերը PadForge.xml-ի մէջ եւ իրենց սարքերուն համար կը գերակայեն միւս բոլոր աղբիւրներուն։ «Կառավարիչներու տուեալներու շտեմարան» տողին «Աւելին» բաժինին տակ գտնուող «Մաքրել» կոճակը զանոնք կը հեռացնէ։</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows-ի համար տող՝ {0}։ Այլ համակարգերու համար շրջանցուած՝ {1}։</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} տող Windows-ի համար։ Այլ համակարգերու համար շրջանցուած՝ {1}։</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Բոլորը ({0:N0}) պիտի աւելցուին։ PadForge-ը ձեր տողերէն մինչեւ {1:N0} կը պահէ։</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ան պիտի աւելցուի։ PadForge-ը ձեր տողերէն մինչեւ {1:N0} կը պահէ։</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Ձեր տողերէն {0:N0} հիմա պահուած են, ուստի ասոնցմէ պիտի աւելցուի՝ {1:N0}, իսկ պիտի չաւելցուի՝ {2:N0}։</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Ձեր տողերէն {0:N0} հիմա պահուած է, ուստի ասոնցմէ պիտի աւելցուի՝ {1:N0}, իսկ պիտի չաւելցուի՝ {2:N0}։</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Մերժուած՝ {0}։ Առաջինը՝ {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Փակցուցէք տող մը կամ gamecontrollerdb.txt ֆայլի մը գրութիւնը։</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Գրութիւնը SDL-ի կառավարիչներու շտեմարանի տող չէ՝ 32 տասնվեցական թուանշանով նոյնացուցիչ, անուն, ապա a:b0-ի պէս դաշտեր։</value></data>
@@ -5963,14 +5988,18 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Տողը նոյն դաշտը երկու անգամ կու տայ։</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Տողը 1 024 նշանէն երկար է։</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Տողը ոչ մէկ կառավարման տարր կը կապէ։</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ձեր տողերը</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ուրկէ կը ներբեռնէ, ձեր սեփական տողերը</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ձեր տողերը</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Հոս աւելցուցած կամ սարքի մը «SDL համապատասխանեցում» քարտին վրայ փակցուցած տողերը իրենց սարքերուն համար կը գերակայեն միւս բոլոր աղբիւրներուն եւ կը մնան վերակայումէն ետք ալ։</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Աւելցնել տողեր ֆայլէ մը կամ սեղմատախտակէն…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Տող՝ {0}, ձերը, որ իրենց սարքերուն համար կը գերակայեն միւս բոլոր աղբիւրներուն։</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} տող, ձերը, որ իր սարքին համար կը գերակայէ միւս բոլոր աղբիւրներուն։</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Տող՝ {0}, նոյնքան սարքի համար, ձերը, որ կը գերակայեն միւս բոլոր աղբիւրներուն։</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} տող մէկ սարքի համար, ձերը, որ կը գերակայէ միւս բոլոր աղբիւրներուն։</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Տակաւին ոչ մէկը։</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Ձեր SDL_GAMECONTROLLERCONFIG փոփոխականը կը պարունակէ PadForge-ի չպահած {0} տող։ «Աւելցնել տողեր ֆայլէ մը կամ սեղմատախտակէն»-ը կը բացուի անոնցմով։</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Ձեր SDL_GAMECONTROLLERCONFIG փոփոխականը կը պարունակէ PadForge-ի չպահած {0} տող։ «Աւելցնել տողեր ֆայլէ մը կամ սեղմատախտակէն»-ը կը բացուի անով։</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Անմիջապէս գործածութեան մէջ է։</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Ներբեռնման աղբիւր</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Միայն HTTPS։ Համայնքինէն տարբեր հասցէէ մը PadForge-ը միայն նոր տողեր կ՚առնէ։</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Միացնել</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Օգնականներ վեբի վրայ</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Թունել</value></data>
@@ -6009,7 +6038,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Թոյլատրուած՝ {0}, վերջին գործածութիւն՝ {1}։</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Թոյլատրուած՝ {0}, տակաւին գործածուած չէ։</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ետ առնել</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge-ը թունելի ծրագիր չի ներբեռներ եւ ուրիշ ընկերութեան բանալի չի պահեր։ Վեբ օգնականը կ՚աշխատի վերի մակարդակով։</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge-ը թունելի ծրագիր կը ներբեռնէ միայն ChatGPT Secure MCP Tunnel-ի համար։ Վեբ օգնականը կ՚աշխատի վերի մակարդակով։</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Թոյլատրե՞լ, որ {0} վեբէն աշխատի PadForge-ի հետ</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Անոր մուտքը կը վերադառնայ {0}։</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ան ինքզինք կը կոչէ {0}։</value></data>
@@ -6046,4 +6075,35 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Անոր սքրիփթի նոյնացուցիչը</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Սքրիփթները անոր կառավարման տարրերը կը կոչեն {0}։</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Սքրիփթները անոր ստեղները կը կոչեն KeyA, KeySpace, KeyLeftShift եւ նման անուններով, իսկ ամէն ստեղն՝ իր կոդով, Vk0-էն մինչեւ Vk255։</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0}՝ այս ցանցին վրայ, {1}-էն</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Նոր տարբերակ մը, որ ստորագրուած է {0}-ի նոյն վկայականի բանալիով, կը վերագործարկուի առանց «Հաստատել եւ վերագործարկել»-ի։ Ուրիշ ամէն փոփոխութեան համար նախ ձեզի կը հարցնէ։</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Ընդունեց նոյն վկայականի բանալիով ստորագրուած նոր տարբերակ մը</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Հասցէ</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge-ը կ՚ընդունի այն հասցէն, որ կը սկսի https://-ով եւ հոսթ մը կը նշէ, լռելեայն պորտով, առանց օգտատիրոջ անունի կամ գաղտնաբառի։</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Պորտ</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Փոխել…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Կանչերը եւ անոնց բանալին այս ցանցով կ՚անցնին առանց գաղտնագրումի։ Windows-ը զանոնք ներս կը թողու միայն մասնաւոր ցանցերու վրայ։</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>{0} պորտը կը գործածուի ուրիշ ծրագիրի մը կողմէ։ Փոխեցէք զայն, որպէսզի այս ցանցէն հասնիք PadForge-ին։</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows-ը թոյլ չտուաւ, որ PadForge-ի օգնիչը լսէ {0} պորտին վրայ։ PadForge-ը զայն թոյլ կու տայ վարիչի իրաւունքներով, ուստի PadForge-ը սկսեցէք անոնցմով եւ ասիկա անջատեցէք ու միացուցէք։</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge-ի օգնիչը չկրցաւ լսել {0} պորտին վրայ։ Փոխեցէք պորտը կամ ասիկա անջատեցէք ու միացուցէք։</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ի օգնիչը կեցաւ ({0})։ Զայն նորէն սկսելու համար անջատեցէք ու միացուցէք «Reach PadForge From This Network»-ը։</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>«Ինքնաշխատացում»-ը անջատուած է, ուստի այս ցանցին վրայ ոչ մէկ օգնական կը հասնի PadForge-ին։ Օգնիչը կը սկսի, երբ «Ինքնաշխատացում»-ը միացած ըլլայ։</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Այս համակարգիչը հիմա մասնաւոր ցանցի վրայ հասցէ չունի։</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Այս ցանցին վրայի օգնականներ</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}։ Անոր բանալին ստեղծուեցաւ {1}, վերջին գործածութիւն՝ {2}։</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}։ Անոր բանալին ստեղծուեցաւ {1}, տակաւին չէ գործածուած։</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Ստեղծել բանալի</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Վերնագիր</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Կատարուած</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Փոխել պորտը</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Ընտրեցէք պորտ մը 1024-էն մինչեւ 49151։ Իւրաքանչիւր օգնականի պահուած հասցէն կը նշէ պորտը, ուստի փոփոխութենէն ետք իւրաքանչիւրը նորէն աւելցուցէք։</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Գրեցէք պորտ մը 1024-էն մինչեւ 49151։</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Կը կառավարէ իր սեփական սարքերը եւ {0}։ Ան տակաւին կը կարդայ բոլոր սարքերը։</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Կը կառավարէ միայն իր սեփական սարքերը։ Ան տակաւին կը կարդայ բոլոր սարքերը։</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Հրամանի տողէն եկած հրամանները դարձեալ կը հասնին PadForge-ին, ինչպէս ամէն ծրագիրի համար։</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Ան կը խնդրէ կառավարել միայն իր սեփական սարքերը։</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Ան մէկ անգամ կը հարցնէ։ Զայն կրնաք հեռացնել կամ անոր հասանելիութիւնը փոխել «Ինքնաշխատացում» էջին վրայ։</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Կ՚աշխատի, ձեր իրաւունքներով, եւ պատրաստ է։ ChatGPT-ը այս թունելով կը հասնի PadForge-ին առանց իր սեփական մուտքին, եւ միայն ձեր OpenAI կազմակերպութենէն։ Ան կրկին կը սկսի PadForge-ին հետ։</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Կ՚աշխատի, ձեր իրաւունքներով։ Կը սպասէ, որ OpenAI-ն ըսէ, թէ թունելը պատրաստ է։</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge-ը բանալին գաղտնագրուած կը պահէ միայն ձեզի համար։ Պարապ տուփը զայն կը մոռնայ։ ChatGPT-ը կ՚աշխատի վերի մակարդակով։</value></data>
 </root>

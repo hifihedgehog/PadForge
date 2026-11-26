@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} u lidh, bateria {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} pajisje u shkëputën: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} pajisje u lidhën: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} vazhdon të shkëputet</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} u shkëput {1} herë brenda një minute</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} u kthye</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} pajisje u kthyen: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rilidhja automatike, porta, identiteti i çiftimit, lidhja me adresë</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, zëvendësuesi DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portat, Shpejtësia e plotë, Formate të personalizuara</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Asistentë të tjerë, asistentë në ueb</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Asistentë të tjerë, asistentë në ueb dhe në këtë rrjet</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Shiko përreth me një gjurmues koke ose kufje VR ndërsa të dy gishtat e mëdhenj qëndrojnë te butonat.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hartëzo shpejtësinë, pedalet dhe marshet që dërgon një lojë me makina, si çdo hyrje tjetër.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Dërgo lëvizjen e kontrolluesit te emulatorët që lexojnë një burim lëvizjeje DSU.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Shto një shtojcë…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programe dhe skripte|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Të gjithë skedarët|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Miratoje dhe rinise…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Shfaq në dosje</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Niset me motorin</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Po kontrollohet skedari para nisjes</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Doli me kodin {0}. Niset sërish pas {1} s.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>I panënshkruar.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Cilësimet e tij shfaqen këtu ndërsa punon.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Nuk deklaron asnjë cilësim.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Cilësimet e tij shfaqen këtu pasi të lidhet me PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>U nis por nuk u lidh kurrë me PadForge. Niset sërish pas {0} sekondash.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>U nis por nuk u lidh kurrë me PadForge. Niset sërish pas {0} sekonde.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} u nis por nuk u lidh kurrë me PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>U ndal një minutë pas nisjes, nuk u lidh kurrë me PadForge</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge nuk mundi t'i lexonte cilësimet e tij: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>U ndal pas një minute pa asnjë fjalë</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Skedari i tij ndryshoi ndërsa punonte</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nënshkruar nga {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, i panënshkruar</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>U krye</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Mbajtur</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nuk u krye</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Nuk lejohet në këtë nivel</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Nuk mund të bëhet tani</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Cakto kontrollet e pajisjes {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Hiq pajisjen {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Vendos çdo kontroll të pajisjes {0} në pushim</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Dalja e tastierës dhe e mausit që ai ushqen mbahet larg nga {0}, që punon si administrator</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Dalja e tastierës dhe e mausit që ai ushqen mbahet larg nga një dritare që punon si administrator</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Bën që PadForge të nisë një program.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Hap një skedar, një dosje ose një faqe uebi.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Bën që PadForge t'i dërgojë Windows tastë ose hyrje mausi.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Mbaje PadForge në punë kur klikon Mbyll ose shtyp Alt+F4. Përdor Dil te menyja e tabakasë së sistemit për të dalë.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Mbaje PadForge në zonën e njoftimeve kur minimizon dritaren, në vend të shiritit të detyrave.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mbaje dritaren të fshehur kur niset PadForge. Ai punon dhe hartëzon si zakonisht.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Nise PadForge automatikisht kur hyn në Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Nise PadForge automatikisht kur hyn në Windows. Sa kohë është aktive, PadForge niset edhe pa pyetjen e Windows nga një shkurtore, një skript ose një program tjetër.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge punon nga {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Kjo kërkon PadForge në një dosje të vetën. Dosja e tij përmban skedarë të tjerë, ndaj PadForge nuk mund t'i ndalojë programet e tjera ta ndryshojnë.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Zhvendose PadForge në dosjen e vet</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shfaq gjithmonë në tabakanë e sistemit</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mbaje ikonën e tabakasë të dukshme sa kohë dritarja është e hapur, që Dil në menynë e saj të jetë gjithmonë një klik larg.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Përditësimet</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kontrollo GitHub për versione të reja të PadForge dhe instalo ato që këtu, dhe përditëso bazën e kontrolluesve. PadForge kontakton vetëm GitHub (api.github.com, github.com dhe serverët e shkarkimit të tij, dhe raw.githubusercontent.com për bazën e kontrolluesve). E vetmja e dhënë që dërgon është numri i versionit të vet dhe, për bazën e kontrolluesve, etiketa që GitHub dha për shkarkimin e fundit.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kontrollo GitHub për versione të reja të PadForge dhe instalo ato që këtu, dhe përditëso bazën e kontrolluesve. PadForge kontakton vetëm GitHub (api.github.com, github.com dhe serverët e shkarkimit të tij, dhe raw.githubusercontent.com për bazën e kontrolluesve), si dhe adresën që cakton te Shkarko nga në rreshtin e bazës së kontrolluesve. E vetmja e dhënë që dërgon është numri i versionit të vet dhe, për bazën e kontrolluesve, etiketa që serveri dha për shkarkimin e fundit.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Kontrollo për përditësime automatikisht</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Kontrollon kur niset PadForge dhe çdo 12 orë pas kësaj.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Instalo përditësimet automatikisht</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalo dhe rinis</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Shënimet e versionit</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Baza e kontrolluesve</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Përditëso tani shkarkon bazën e komunitetit të kontrolluesve (SDL_GameControllerDB) nga GitHub dhe mban, në skedarin e cilësimeve, hartëzimet që i mungojnë këtij versioni të PadForge. Ato përdoren menjëherë. Një hartëzim i ri përdoret vetëm për një kontrollues që asgjë tjetër nuk e lexon si gamepad, që nuk është caktuar dhe që nuk është në Detyro modalitetin e papërpunuar të xhojstikut (anashkalo hartëzimin e gamepad-it). Rivendosja i heq të gjitha hartëzimet e shkarkuara. Rreshtat e tu, nën Më shumë, mbeten.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Përditëso tani shkarkon bazën e komunitetit të kontrolluesve (SDL_GameControllerDB) nga GitHub, ose nga adresa e caktuar nën Më shumë, dhe mban, në skedarin e cilësimeve, hartëzimet që i mungojnë këtij versioni të PadForge. Ato përdoren menjëherë. Nga një adresë tjetër mban vetëm hartëzime të reja. Një hartëzim i ri përdoret vetëm për një kontrollues që asgjë tjetër nuk e lexon si gamepad, që nuk është caktuar dhe që nuk është në Detyro modalitetin e papërpunuar të xhojstikut (anashkalo hartëzimin e gamepad-it). Rivendosja i heq të gjitha hartëzimet e shkarkuara dhe shkarkon sërish nga GitHub. Rreshtat e tu, nën Më shumë, mbeten.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Përditëso tani</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Po përditësohet…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Po kontrollohet për përditësime…</value></data>
@@ -1055,8 +1066,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge u përditësua në {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>E brendshme: {0} hartëzime, kopja e komunitetit e {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>E brendshme: {0} hartëzime, kopja e komunitetit e {1}. Shkarkuar më {2}: {3} rreshta të rinj, {4} të ndryshuar.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>E brendshme: {1} hartëzime, kopja e komunitetit e {2}. Shkarkuar më {3} nga {4}: {0} rreshta të rinj.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>E brendshme: {1} hartëzime, kopja e komunitetit e {2}. Shkarkuar më {3} nga {4}: {0} rresht i ri.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Baza e komunitetit nuk ka ndryshuar që nga përditësimi i fundit.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Nuk u arrit GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Nuk u arrit {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge e refuzoi shkarkimin sepse nuk është baza e kontrolluesve që pret. Asgjë nuk ndryshoi.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Nise i minimizuar</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Nise me hyrjen në Windows</value></data>
@@ -1227,6 +1241,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Review_CopySummary" xml:space="preserve"><value>Kopjo përmbledhjen</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>U kopjua</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Ruaj…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Ruaj dhe posto</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Ruaj dhe posto ruan zip-in, kopjon përmbledhjen, shfaq skedarin në Explorer dhe hap faqen e PadForge ku dërgohen raportet. Ngjite përmbledhjen aty dhe hidh skedarin mbi të.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Ruaj regjistrimin</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Skedarë zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nuk u ruajt. {0}</value></data>
@@ -3235,6 +3251,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Ndodhi një gabim i papritur:
 
 {0}
+
+PadForge i shkroi detajet në crash.log pranë PadForge.exe. Për ta raportuar, nis një diskutim te {2} dhe hidh crash.log mbi të.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} gabime të tjera u fshehën)</value></data>
@@ -5732,6 +5750,8 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produkti</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Lloji</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Aftësitë</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Paletat e pasme janë joaktive përmes USB dhe Xbox Wireless Adapter. Arsyeja e SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Paletat e pasme janë joaktive përmes Bluetooth. Arsyeja e SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Lidhja</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Shtegu</value></data>
@@ -5910,6 +5930,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Në përdorim tani. Rreshti është yti dhe fiton për këtë pajisje.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Mbahet si i yti. Përdoret kur motori punon dhe pajisja është e lidhur.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nuk e pranoi rreshtin. Asgjë nuk ndryshoi për këtë pajisje.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Nuk u mbajt. PadForge mban deri në {0:N0} rreshta të tutë dhe tani i mban aq.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Ngjit një hartëzim SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Ngjit një hartëzim SDL për {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Gjej një hartëzim për {0}</value></data>
@@ -5943,6 +5964,10 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rreshtat mbahen si të tutë në PadForge.xml dhe fitojnë për pajisjet e tyre mbi çdo burim tjetër. Pastro, nën Më shumë të rreshtit Baza e kontrolluesve, i heq.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rreshta për Windows. {1} për sisteme të tjera anashkalohen.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rresht për Windows. {1} për sisteme të tjera anashkalohen.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Të {0:N0} do të shtohen. PadForge mban deri në {1:N0} rreshta të tutë.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Do të shtohet. PadForge mban deri në {1:N0} rreshta të tutë.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Tani mbahen {0:N0} të tutë, ndaj {1:N0} nga këta do të shtohen dhe {2:N0} nuk do të shtohen.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Tani mbahet {0:N0} i yti, ndaj {1:N0} nga këta do të shtohen dhe {2:N0} nuk do të shtohen.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} u refuzuan. I pari: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Ngjit një rresht, ose tekstin e një skedari gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teksti nuk është rresht i bazës së kontrolluesve të SDL: një ID me 32 shifra hex, një emër, pastaj fusha si a:b0.</value></data>
@@ -5955,14 +5980,18 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Rreshti e jep një fushë dy herë.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Rreshti është mbi 1,024 shkronja.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Rreshti nuk lidh asnjë kontroll.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Rreshtat e tu</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Nga ku shkarkohet, rreshtat e tu</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Rreshtat e tu</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rreshtat që shton këtu, ose ngjit te karta Hartëzimi SDL e një pajisjeje, fitojnë për pajisjet e tyre mbi çdo burim tjetër dhe mbeten pas rivendosjes.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Shto rreshta nga një skedar ose clipboard-i…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rreshta, të tutë mbi çdo burim tjetër për pajisjet e tyre.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rresht, i yti mbi çdo burim tjetër për pajisjen e tij.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rreshta për {0} pajisje, të tutë mbi çdo burim tjetër.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rresht për {0} pajisje, i yti mbi çdo burim tjetër.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ende asnjë.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Ndryshorja jote SDL_GAMECONTROLLERCONFIG mban {0} rreshta që PadForge nuk i mban. Shto rreshta nga një skedar ose clipboard-i hapet me ta.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Ndryshorja jote SDL_GAMECONTROLLERCONFIG mban {0} rresht që PadForge nuk e mban. Shto rreshta nga një skedar ose clipboard-i hapet me të.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Në përdorim menjëherë.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Shkarko nga</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Vetëm HTTPS. Nga një adresë që nuk është e komunitetit, PadForge merr vetëm rreshta të rinj.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Ndize</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Asistentët në ueb</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tuneli</value></data>
@@ -6001,7 +6030,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Lejuar {0}, përdorur së fundmi {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Lejuar {0}, ende i papërdorur.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revokoje</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge nuk shkarkon asnjë program tuneli dhe nuk mban çelësin e asnjë kompanie tjetër. Një asistent në ueb punon në nivelin e mësipërm.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge shkarkon një program tuneli vetëm për ChatGPT Secure MCP Tunnel. Një asistent në ueb punon në nivelin e mësipërm.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>T'i lejosh {0} të punojë me PadForge nga uebi?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Hyrja e tij kthehet te {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Quhet {0}.</value></data>
@@ -6038,4 +6067,35 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID-ja e skriptit të tij</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skriptet i emërtojnë kontrollet e tij {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skriptet i emërtojnë tastet e tij KeyA, KeySpace, KeyLeftShift e të ngjashme, dhe çdo tast sipas kodit të tij, Vk0 deri Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} në këtë rrjet nga {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Një version i ri i nënshkruar me të njëjtin çelës certifikate të {0} niset sërish pa Miratoje dhe rinise. Çdo ndryshim tjetër të pyet më parë.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Pranoi një version të ri të nënshkruar me të njëjtin çelës certifikate</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adresa</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge pranon një adresë që fillon me https:// dhe emërton një host, në portën e parazgjedhur, pa emër përdoruesi apo fjalëkalim.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Porta</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Ndrysho…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Thirrjet dhe çelësi i tyre kalojnë në këtë rrjet pa enkriptim. Windows i lë të hyjnë vetëm në rrjete private.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Porta {0} është në përdorim nga një program tjetër. Ndryshoje për të arritur PadForge nga ky rrjet.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows nuk e la ndihmësin e PadForge të dëgjojë në portën {0}. PadForge e lejon me të drejta administratori, ndaj nise PadForge me to dhe fike e ndize këtë.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Ndihmësi i PadForge nuk mundi të dëgjojë në portën {0}. Ndryshoje portën, ose fike e ndize këtë.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ndihmësi i PadForge u ndal ({0}). Fike dhe ndize Reach PadForge From This Network që ta nisësh përsëri.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatizimi është joaktiv, ndaj asnjë asistent në këtë rrjet nuk e arrin PadForge. Ndihmësi niset kur Automatizimi është aktiv.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Ky kompjuter tani nuk ka adresë në një rrjet privat.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Asistentë në këtë rrjet</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Çelësi i tij u bë {1}, përdorur së fundmi {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Çelësi i tij u bë {1}, ende i papërdorur.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Bëj çelësin</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>U krye</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Ndrysho portën</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Zgjidh një port nga 1024 deri në 49151. Adresa e ruajtur e çdo asistenti emërton portën, ndaj shtoji përsëri të gjithë pas ndryshimit.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Shkruaj një port nga 1024 deri në 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Drejton pajisjet e veta dhe {0}. Ende lexon çdo pajisje.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Drejton vetëm pajisjet e veta. Ende lexon çdo pajisje.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Komandat nga rreshti i komandave ende arrijnë PadForge, si për çdo program.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Kërkon të drejtojë vetëm pajisjet e veta.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Pyet vetëm një herë. Mund ta heqësh ose t'i ndryshosh arritjen në faqen Automatizimi.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Në punë, me të drejtat e tua, dhe gati. ChatGPT arrin PadForge përmes këtij tuneli pa hyrje të vetën dhe vetëm nga organizata jote OpenAI. Niset sërish me PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Në punë, me të drejtat e tua. Pret që OpenAI të thotë se tuneli është gati.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge e mban çelësin të enkriptuar vetëm për ty. Një kuti e zbrazët e harron. ChatGPT punon në nivelin e mësipërm.</value></data>
 </root>

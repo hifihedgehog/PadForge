@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} холбогдсон, батерей {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} төхөөрөмж салгагдсан: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} төхөөрөмж холбогдсон: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} дахин дахин салгагдаж байна</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} нэг минутад {1} удаа салгагдсан</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} дахин холбогдсон</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} төхөөрөмж дахин холбогдсон: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (дээд тал нь {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (дээд тал нь {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (дээд тал нь {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автомат дахин холболт, порт, хослуулалтын таних мэдээлэл, хаягаар холбогдох</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe орлуулагч</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портууд, Бүрэн хурд, Өөрийн форматууд</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Бусад туслахууд, вэб дээрх туслахууд</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Бусад туслахууд, вэб болон энэ сүлжээн дэх туслахууд</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Хоёр эрхий хуруу товчлуур дээрээ байх зуур толгой хянагч эсвэл VR дуулгаар эргэн тойрноо харна.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Уралдааны тоглоомын илгээдэг хурд, дөрөө, арааг бусад оролтын адил онооно.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU хөдөлгөөний эх үүсвэр уншдаг эмуляторуудад контроллерын хөдөлгөөнийг илгээнэ.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Залгаас нэмэх…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програм ба скриптүүд|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Бүх файл|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Зөвшөөрөөд дахин эхлүүлэх…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Хавтсанд харуулах</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Хөдөлгүүртэй хамт эхэлнэ</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Эхлэхээс өмнө файлыг шалгаж байна</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} кодоор дууссан. {1} с дараа дахин эхэлнэ.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Гарын үсэггүй.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Ажиллаж байх үед нь тохиргоо нь энд харагдана.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Энэ залгаас тохиргоо зарлаагүй.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>PadForge-д холбогдсоны дараа тохиргоо нь энд харагдана.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Эхэлсэн боловч PadForge-д хэзээ ч холбогдоогүй. {0} секундын дараа дахин эхэлнэ.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Эхэлсэн боловч PadForge-д хэзээ ч холбогдоогүй. {0} секундын дараа дахин эхэлнэ.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} эхэлсэн боловч PadForge-д хэзээ ч холбогдоогүй.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Эхэлснээс хойш нэг минутын дараа зогсоосон, PadForge-д хэзээ ч холбогдоогүй</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge түүний тохиргоог уншиж чадсангүй: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Нэг минут хариу өгөөгүй тул зогсоосон</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Ажиллаж байх үед файл нь өөрчлөгдсөн</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, гарын үсэг зурсан: {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, гарын үсэггүй</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Хийгдсэн</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Саатуулсан</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Хийгдээгүй</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Энэ түвшинд зөвшөөрөгдөөгүй</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Одоогоор боломжгүй</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг тохируулах</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>{0} төхөөрөмжийг хасах</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>{0} төхөөрөмжийн бүх удирдлагыг тайван байрлалд оруулах</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Түүний оруулж буй гар болон хулганын гаралтыг администратороор ажилладаг {0}-д хүргэлгүй саатуулсан</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Түүний оруулж буй гар болон хулганын гаралтыг администратороор ажилладаг цонхонд хүргэлгүй саатуулсан</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge програм ажиллуулна.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Файл, хавтас эсвэл вэб хуудас нээнэ.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge Windows руу товч эсвэл хулганы оролт илгээнэ.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Хаах дээр дарах эсвэл Alt+F4 дарахад PadForge ажилласаар байна. Гарахын тулд мэдэгдлийн хэсгийн цэс дэх “Гарах”-ыг ашиглана уу.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Цонхыг багасгахад PadForge-ийг ажлын мөрөнд биш, мэдэгдлийн хэсэгт байлгана.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge эхлэхэд цонхыг нуусан хэвээр байлгана. Програм ердийнхөөрөө ажиллаж, оноолтоо хийнэ.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows-д нэвтрэхэд PadForge-ийг автоматаар эхлүүлнэ.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows-д нэвтрэхэд PadForge-ийг автоматаар эхлүүлнэ. Энэ асаалттай үед PadForge нь товчлол, скрипт эсвэл өөр програмаас Windows-ийн асуулгагүйгээр эхэлнэ.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge дараах байршлаас ажиллаж байна: {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Үүнд PadForge тусдаа хавтсанд байх шаардлагатай. Түүний хавтсанд өөр файлууд байгаа тул PadForge бусад програмыг түүнийг өөрчлөхөөс сэргийлж чадахгүй.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ийг тусдаа хавтас руу зөөх</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Мэдэгдлийн хэсэгт үргэлж харуулах</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Цонх нээлттэй үед мэдэгдлийн хэсгийн дүрс тэмдгийг харагдуулна. Ингэснээр түүний цэсний “Гарах” үргэлж нэг товшилтын зайд байна.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Шинэчлэлт</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge-ийн шинэ хувилбарыг GitHub-аас шалгаж, эндээс суулгах ба контроллерын мэдээллийн санг шинэчилнэ. PadForge зөвхөн GitHub-тай (api.github.com, github.com болон түүний татах серверүүд, мөн контроллерын мэдээллийн сангийн хувьд raw.githubusercontent.com) холбогддог. Зөвхөн өөрийн хувилбарын дугаарыг, мөн контроллерын мэдээллийн сангийн хувьд сүүлийн татан авалтад GitHub-ын өгсөн шошгыг илгээдэг.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge-ийн шинэ хувилбарыг GitHub-аас шалгаж, эндээс суулгах ба контроллерын мэдээллийн санг шинэчилнэ. PadForge зөвхөн GitHub (api.github.com, github.com болон түүний татах серверүүд, мөн контроллерын мэдээллийн сангийн хувьд raw.githubusercontent.com) болон контроллерын мэдээллийн сангийн мөрийн Татах эх сурвалж хэсэгт таны тохируулсан хаягтай холбогддог. Зөвхөн өөрийн хувилбарын дугаарыг, мөн контроллерын мэдээллийн сангийн хувьд сүүлийн татан авалтад серверийн өгсөн шошгыг илгээдэг.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Шинэчлэлтийг автоматаар шалгах</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge эхлэхэд, дараа нь 12 цаг тутамд шалгана.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Шинэчлэлтийг автоматаар суулгах</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Суулгаад дахин эхлүүлэх</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Хувилбарын тэмдэглэл</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Контроллерын мэдээллийн сан</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Одоо шинэчлэх товч нийгэмлэгийн контроллерын мэдээллийн санг (SDL_GameControllerDB) GitHub-аас татаж, PadForge-ийн энэ хувилбарт байхгүй оноолтуудыг тохиргооны файлд хадгална. Тэдгээр нь тэр дороо ашиглагдана. Шинэ оноолтыг зөвхөн өөр юу ч геймпад гэж уншдаггүй, оноогдоогүй, Түүхий жойстикийн горимыг албадах тохиргоонд ороогүй контроллерт ашиглана. Дахин тохируулах товч татсан бүх оноолтыг устгана. Бусад доторх таны өөрийн мөрүүд үлдэнэ.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Одоо шинэчлэх товч нийгэмлэгийн контроллерын мэдээллийн санг (SDL_GameControllerDB) GitHub-аас, эсвэл Бусад дотор тохируулсан хаягаас татаж, PadForge-ийн энэ хувилбарт байхгүй оноолтуудыг тохиргооны файлд хадгална. Тэдгээр нь тэр дороо ашиглагдана. Өөр хаягаас зөвхөн шинэ оноолтуудыг хадгална. Шинэ оноолтыг зөвхөн өөр юу ч геймпад гэж уншдаггүй, оноогдоогүй, Түүхий жойстикийн горимыг албадах тохиргоонд ороогүй контроллерт ашиглана. Дахин тохируулах товч татсан бүх оноолтыг устгаж, GitHub-аас дахин татна. Бусад доторх таны өөрийн мөрүүд үлдэнэ.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Одоо шинэчлэх</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Шинэчилж байна…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Шинэчлэлт шалгаж байна…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge шинэчлэгдлээ: {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Суулгагдсан: {0} оноолт, нийгэмлэгийн хуулбар {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Суулгагдсан: {0} оноолт, нийгэмлэгийн хуулбар {1}. Татсан {2}: шинэ мөр {3}, өөрчлөгдсөн {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Суулгагдсан: {1} оноолт, нийгэмлэгийн хуулбар {2}. {4} хаягаас татсан {3}: шинэ мөр {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Суулгагдсан: {1} оноолт, нийгэмлэгийн хуулбар {2}. {4} хаягаас татсан {3}: {0} шинэ мөр.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Сүүлийн шинэчлэлтээс хойш нийгэмлэгийн мэдээллийн сан өөрчлөгдөөгүй.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-д хүрч чадсангүй: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0}-д хүрч чадсангүй: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Татсан файл PadForge-ийн хүлээж буй контроллерын мэдээллийн сан биш тул PadForge үүнийг хүлээн авсангүй. Юу ч өөрчлөгдөөгүй.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Багасгасан байдлаар эхлэх</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Нэвтрэхэд эхлэх</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>Хураангуйг хуулах</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Хуулсан</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Хадгалах…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Хадгалаад илгээх</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Хадгалаад илгээх товч zip файлыг хадгалж, хураангуйг хуулж, файлыг Explorer дээр харуулаад PadForge-ийн тайлан илгээх хуудсыг нээнэ. Хураангуйг тэнд буулгаж, файлыг түүн дээр чирж оруулна уу.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Бичлэгийг хадгалах</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip файлууд</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Хадгалсангүй. {0}</value></data>
@@ -3247,6 +3263,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Гэнэтийн алдаа гарлаа:
 
 {0}
+
+PadForge дэлгэрэнгүйг PadForge.exe-ийн хажууд байгаа crash.log-д бичсэн. Үүнийг мэдээлэхийн тулд {2} хаягт хэлэлцүүлэг эхлүүлээд crash.log-ийг түүн дээр чирж оруулна уу.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(нэмэлт {0} алдааг нуусан)</value></data>
@@ -5769,6 +5787,8 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Бүтээгдэхүүн</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Төрөл</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Боломжууд</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>USB болон Xbox Wireless Adapter-аар холбогдсон үед арын сэлүүрүүд унтраалттай. SDL-ийн шалтгаан: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Bluetooth-ээр холбогдсон үед арын сэлүүрүүд унтраалттай. SDL-ийн шалтгаан: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Холболт</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Батерей</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Зам</value></data>
@@ -5947,6 +5967,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Одоо ашиглагдаж байна. Мөр таных бөгөөд энэ төхөөрөмжид давуу эрхтэй.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Таных болгон хадгалсан. Хөдөлгүүр ажиллаж, төхөөрөмж холбогдоход ашиглагдана.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL мөрийг хүлээж авсангүй. Энэ төхөөрөмжид юу ч өөрчлөгдсөнгүй.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Хадгалсангүй. PadForge таны {0:N0} хүртэлх мөрийг хадгалах бөгөөд одоо яг тэр хэмжээгээр хадгалж байна.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL оноолт буулгах</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} төхөөрөмжид SDL оноолт буулгах</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} төхөөрөмжид оноолт хайх</value></data>
@@ -5980,6 +6001,10 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Мөрүүдийг PadForge.xml-д таных болгон хадгалах бөгөөд өөрсдийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй. Контроллерын мэдээллийн сан мөрийн Бусад доторх Цэвэрлэх тэдгээрийг хасна.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows-д зориулсан мөр: {0}. Бусад системийн {1} мөрийг алгассан.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows-д зориулсан {0} мөр. Бусад системийн {1} мөрийг алгассан.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Бүх {0:N0} мөрийг нэмнэ. PadForge таны {1:N0} хүртэлх мөрийг хадгална.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Үүнийг нэмнэ. PadForge таны {1:N0} хүртэлх мөрийг хадгална.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Таны {0:N0} мөр одоо хадгалагдаж байгаа тул эдгээрээс {1:N0} мөрийг нэмж, {2:N0} мөрийг нэмэхгүй.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Таны {0:N0} мөр одоо хадгалагдаж байгаа тул эдгээрээс {1:N0} мөрийг нэмж, {2:N0} мөрийг нэмэхгүй.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Татгалзсан: {0}. Эхнийх нь: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Мөр эсвэл gamecontrollerdb.txt файлын текстийг буулгана уу.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Энэ текст SDL-ийн контроллерын мэдээллийн сангийн мөр биш: 32 оронтой арван зургаатын ID, нэр, дараа нь a:b0 зэрэг талбарууд байх ёстой.</value></data>
@@ -5992,14 +6017,18 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Мөрөнд нэг талбар хоёр удаа байна.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Мөр 1 024 тэмдэгтээс урт байна.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Мөр ямар ч удирдлага холбодоггүй.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Таны мөрүүд</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Хаанаас татах, таны өөрийн мөрүүд</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Таны мөрүүд</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Энд нэмсэн эсвэл төхөөрөмжийн SDL оноолт карт дээр буулгасан мөрүүд өөрсдийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй бөгөөд дахин тохируулсны дараа ч үлдэнэ.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Файл эсвэл санах ойгоос мөр нэмэх…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Мөр: {0}, өөрсдийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} мөр, өөрийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} төхөөрөмжид {0} мөр, таных бусад бүх эх сурвалжаас давуу эрхтэй.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} төхөөрөмжид {0} мөр, таных бусад бүх эх сурвалжаас давуу эрхтэй.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Одоогоор алга.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Таны SDL_GAMECONTROLLERCONFIG хувьсагчид PadForge-ийн хадгалдаггүй {0} мөр байна. Файл эсвэл санах ойгоос мөр нэмэх цонх тэдгээрийг агуулан нээгдэнэ.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Таны SDL_GAMECONTROLLERCONFIG хувьсагчид PadForge-ийн хадгалдаггүй {0} мөр байна. Файл эсвэл санах ойгоос мөр нэмэх цонх түүнийг агуулан нээгдэнэ.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Тэр дороо ашиглагдаж байна.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Татах эх сурвалж</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Зөвхөн HTTPS. Нийгэмлэгийнхээс өөр хаягаас PadForge зөвхөн шинэ мөрүүдийг авна.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Асаах</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Вэб дээрх туслахууд</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Туннель</value></data>
@@ -6038,7 +6067,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Зөвшөөрсөн: {0}, сүүлд ашигласан: {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Зөвшөөрсөн: {0}, одоогоор ашиглаагүй.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Цуцлах</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ямар ч туннелийн програм татдаггүй бөгөөд өөр компанийн түлхүүр хадгалдаггүй. Вэб туслах дээрх түвшинд ажиллана.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge зөвхөн ChatGPT Secure MCP Tunnel-д зориулж туннелийн програм татдаг. Вэб туслах дээрх түвшинд ажиллана.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} нь вэбээс PadForge-тай ажиллахыг зөвшөөрөх үү?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Нэвтрэлт нь {0} руу буцна.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Өөрийгөө {0} гэж нэрлэдэг.</value></data>
@@ -6075,4 +6104,35 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Түүний скриптийн ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скриптүүд түүний удирдлагуудыг {0} гэж нэрлэнэ.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скриптүүд түүний товчнуудыг KeyA, KeySpace, KeyLeftShift гэх мэтээр, мөн товч бүрийг кодоор нь Vk0-оос Vk255 хүртэл нэрлэнэ.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0}, энэ сүлжээний {1} хаягаас</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0}-ийн ижил гэрчилгээний түлхүүрээр гарын үсэг зурсан шинэ хувилбар Зөвшөөрөөд дахин эхлүүлэх товчгүйгээр дахин эхэлнэ. Бусад ямар ч өөрчлөлтийн өмнө танаас асууна.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Ижил гэрчилгээний түлхүүрээр гарын үсэг зурсан шинэ хувилбарыг авсан</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Хаяг</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge нь https:// гэж эхэлсэн, хост заасан, үндсэн портыг ашигласан, хэрэглэгчийн нэр болон нууц үггүй хаягийг хүлээн авна.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Порт</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Өөрчлөх…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Дуудлагууд болон тэдгээрийн түлхүүр энэ сүлжээгээр шифрлэгдээгүй дамжина. Windows тэдгээрийг зөвхөн хувийн сүлжээнд нэвтрүүлнэ.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>{0} портыг өөр програм ашиглаж байна. Энэ сүлжээнээс PadForge-д хандахын тулд портыг өөрчилнө үү.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows нь PadForge-ийн туслагчид {0} портыг сонсохыг зөвшөөрсөнгүй. PadForge администраторын эрхтэй үед үүнийг зөвшөөрдөг тул PadForge-ийг тэр эрхтэйгээр эхлүүлж, үүнийг унтрааж асаана уу.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge-ийн туслагч {0} портыг сонсож чадсангүй. Портыг өөрчлөх, эсвэл үүнийг унтрааж асаана уу.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ийн туслагч зогссон ({0}). Дахин эхлүүлэхийн тулд Reach PadForge From This Network-ийг унтрааж асаана уу.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Автоматжуулалт унтраалттай тул энэ сүлжээн дэх ямар ч туслах PadForge-д хандахгүй. Автоматжуулалт асахад туслагч эхэлнэ.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Энэ компьютер одоогоор хувийн сүлжээнд хаяггүй байна.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Энэ сүлжээн дэх туслахууд</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Түлхүүрийг {1} үүсгэсэн, сүүлд {2} ашигласан.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Түлхүүрийг {1} үүсгэсэн, одоогоор ашиглаагүй.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Түлхүүр үүсгэх</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Толгой</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Болсон</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Портыг өөрчлөх</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>1024-өөс 49151 хүртэлх порт сонгоно уу. Туслах бүрийн хадгалсан хаяг портыг заадаг тул өөрчилсний дараа туслах бүрийг дахин нэмнэ үү.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>1024-өөс 49151 хүртэлх порт оруулна уу.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Өөрийн төхөөрөмжүүд болон {0}-г удирдана. Бүх төхөөрөмжийг уншсаар байна.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Зөвхөн өөрийн төхөөрөмжүүдийг удирдана. Бүх төхөөрөмжийг уншсаар байна.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Бусад бүх програмын адилаар командын мөрийн командууд PadForge-д хүрсээр байна.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Зөвхөн өөрийн төхөөрөмжүүдийг удирдахыг хүсэж байна.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Нэг л удаа асууна. Үүнийг Автоматжуулалт хуудсанд хасах эсвэл хүрээг нь өөрчлөх боломжтой.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Таны эрхээр ажиллаж байгаа бөгөөд бэлэн. ChatGPT өөрийн нэвтрэлтгүйгээр энэ туннелээр, зөвхөн таны OpenAI байгууллагаас PadForge-д хандана. PadForge-тэй хамт дахин эхэлнэ.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Таны эрхээр ажиллаж байна. OpenAI туннелийг бэлэн гэж хэлэхийг хүлээж байна.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge түлхүүрийг зөвхөн танд зориулан шифрлэж хадгална. Хоосон талбар түүнийг мартуулна. ChatGPT дээрх түвшинд ажиллана.</value></data>
 </root>

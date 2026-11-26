@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} yǐ liánjiē, diànliàng {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} gè shèbèi yǐ duànkāi liánjiē: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} gè shèbèi yǐ liánjiē: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} fǎnfù duànkāi liánjiē</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} yì fēnzhōng nèi duànkāi liánjiē {1} cì</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} yǐ huīfù liánjiē</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} gè shèbèi yǐ huīfù liánjiē: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (zuìduō {0} tái)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (zuìduō {0} tái)</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (zuìduō {0} tái)</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Zìdòng chóngliánjiē, duānkǒu, pèiduì shēnfèn, tōngguò dìzhǐ liánjiē</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Duānkǒu, DSX.exe tìshēn chéngxù</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Duānkǒu, Mǎnfú chēsù, Zìdìngyì géshì</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Qítā zhùshǒu, wǎngluò zhùshǒu</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Qítā zhùshǒu, wǎngluò zhùshǒu jí cǐ wǎngluò shàng de zhùshǒu</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Yòng tóubù zhuīzōngqì huò VR tóuxiǎn huánshì sìzhōu, shuāng mǔzhǐ réng kě liú zài ànniǔ shàng.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Xiàng yìngshè rènhé shūrù yíyàng, yìngshè sàichē yóuxì fāchū de chēsù, tàbǎn hé dàngwèi.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Jiāng kòngzhìqì tǐgǎn fāsòng gěi dúqǔ DSU tǐgǎn yuán de mónǐqì.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Tiānjiā chājiàn…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Chéngxù hé jiǎoběn|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Suǒyǒu wénjiàn|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Pīzhǔn bìng chóngqǐ…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Zài wénjiànjiā zhōng xiǎnshì</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Suí yǐnqíng qǐdòng</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Qǐdòng qián zhèngzài jiǎnchá wénjiàn</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Yǐ tuìchū, dàimǎ {0}. {1} miǎo hòu chóngxīn qǐdòng.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Wèi qiānmíng.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Tā yùnxíng shí, qí shèzhì huì xiǎnshì zài cǐ chù.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Tā wèi shēngmíng rènhé shèzhì.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Tā liánjiē dào PadForge hòu, qí shèzhì huì xiǎnshì zài cǐ chù.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Yǐ qǐdòng dàn cóngwèi liánjiē dào PadForge. {0} miǎo hòu chóngxīn qǐdòng.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Yǐ qǐdòng dàn cóngwèi liánjiē dào PadForge. {0} miǎo hòu chóngxīn qǐdòng.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} yǐ qǐdòng dàn cóngwèi liánjiē dào PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Qǐdòng yì fēnzhōng hòu yǐ jiéshù, cóngwèi liánjiē dào PadForge</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge wúfǎ dúqǔ qí shèzhì: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Yì fēnzhōng wú rènhé xiǎngyìng hòu yǐ jiéshù</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Yùnxíng qījiān qí wénjiàn yǐ gēnggǎi</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, qiānmíng zhě: {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, wèi qiānmíng</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Yǐ wánchéng</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Yǐ lánjié</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wèi wánchéng</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Cǐ jíbié bù yǔnxǔ</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Dāngqián bù kěyòng</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Shèzhì shèbèi {0} de kòngjiàn</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Yíchú shèbèi {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Shǐ shèbèi {0} de suǒyǒu kòngjiàn huīfù jìngzhǐ</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Tā shūrù de jiànpán hé shǔbiāo shūchū yǐ bèi lánjié, wèi fāsòng gěi yǐ guǎnlǐyuán shēnfèn yùnxíng de {0}</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Tā shūrù de jiànpán hé shǔbiāo shūchū yǐ bèi lánjié, wèi fāsòng gěi yǐ guǎnlǐyuán shēnfèn yùnxíng de chuāngkǒu</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Ràng PadForge yùnxíng mǒu gè chéngxù.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Dǎkāi wénjiàn, wénjiànjiā huò wǎngyè.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Ràng PadForge xiàng Windows fāsòng ànjiàn huò shǔbiāo shūrù.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Diǎnjī guānbì ànniǔ huò àn Alt+F4 hòu, PadForge jiāng jìxù yùnxíng. Yào tuìchū chéngxù, qǐng zài xìtǒng tuōpán càidān zhōng xuǎnzé “Tuìchū”.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Zuìxiǎohuà chuāngkǒu shí jiāng PadForge liú zài tōngzhī qūyù, ér bú shì rènwùlán.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge qǐdòng shí bǎochí chuāngkǒu yǐncáng. Tā zhàocháng yùnxíng bìng jìnxíng yìngshè.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Dēnglù Windows shí zìdòng qǐdòng PadForge.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Dēnglù Windows shí zìdòng qǐdòng PadForge. Cǐ xiàng kāiqǐ shí, cóng kuàijié fāngshì, jiǎoběn huò qítā chéngxù qǐdòng PadForge yě bú huì xiǎnshì Windows de tíshì.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge cóng {0} yùnxíng.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Cǐ gōngnéng xūyào jiāng PadForge fàng zài dúlì de wénjiànjiā zhōng. Qí wénjiànjiā zhōng hái yǒu qítā wénjiàn, yīncǐ PadForge wúfǎ fángzhǐ qítā chéngxù gēnggǎi tā.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Jiāng PadForge yídòng dào dúlì wénjiànjiā</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shǐzhōng xiǎnshì zài xìtǒng tuōpán</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Chuāngkǒu dǎkāi shí yě bǎochí xiǎnshì xìtǒng tuōpán túbiāo, suíshí kěyǐ zài qí càidān zhōng xuǎnzé “Tuìchū”.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Gēngxīn</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Zài GitHub shàng jiǎnchá PadForge de xīn bǎnběn, bìng cóng zhèlǐ ānzhuāng, yě kě gēngxīn kòngzhìqì shùjùkù. PadForge zhǐ liánjiē GitHub (api.github.com, github.com jí qí xiàzài fúwùqì, yǐjí yòngyú kòngzhìqì shùjùkù de raw.githubusercontent.com). Fāsòng de shùjù jǐn yǒu tā zìjǐ de bǎnběnhào, yǐjí wèi kòngzhìqì shùjùkù fāsòng de GitHub gěi shàngcì xiàzài de biāoqiān.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Zài GitHub shàng jiǎnchá PadForge de xīn bǎnběn, bìng cóng zhèlǐ ānzhuāng, yě kě gēngxīn kòngzhìqì shùjùkù. PadForge zhǐ liánjiē GitHub (api.github.com, github.com jí qí xiàzài fúwùqì, yǐjí yòngyú kòngzhìqì shùjùkù de raw.githubusercontent.com), yǐjí nín zài Kòngzhìqì shùjùkù xíng de Xiàzài láiyuán zhōng shèzhì de dìzhǐ. Fāsòng de shùjù jǐn yǒu tā zìjǐ de bǎnběnhào, yǐjí wèi kòngzhìqì shùjùkù fāsòng de fúwùqì gěi shàngcì xiàzài de biāoqiān.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Zìdòng jiǎnchá gēngxīn</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Zài PadForge qǐdòng shí jiǎnchá, zhīhòu měi 12 xiǎoshí jiǎnchá yí cì.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Zìdòng ānzhuāng gēngxīn</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Ānzhuāng bìng chóngqǐ</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Fāxíng shuōmíng</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kòngzhìqì shùjùkù</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Lìjí gēngxīn huì cóng GitHub xiàzài shèqū kòngzhìqì shùjùkù (SDL_GameControllerDB), bìng jiāng cǐ bǎnběn PadForge suǒ quēshǎo de yìngshè bǎocún zài shèzhì wénjiàn zhōng. Tāmen huì lìjí qǐyòng. Xīn yìngshè jǐn yòngyú méiyǒu qítā fāngshì shíbié wéi shǒubǐng, wèi fēnpèi qiě wèi chǔyú Qiángzhì yuánshǐ yáogǎn móshì de kòngzhìqì. Chóngzhì huì yíchú suǒyǒu yǐ xiàzài de yìngshè. Gèngduō xià nín zìjǐ de tiáomù huì bǎoliú.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Lìjí gēngxīn huì cóng GitHub huò Gèngduō xià shèzhì de dìzhǐ xiàzài shèqū kòngzhìqì shùjùkù (SDL_GameControllerDB), bìng jiāng cǐ bǎnběn PadForge suǒ quēshǎo de yìngshè bǎocún zài shèzhì wénjiàn zhōng. Tāmen huì lìjí qǐyòng. Cóng qítā dìzhǐ xiàzài shí jǐn bǎoliú xīn yìngshè. Xīn yìngshè jǐn yòngyú méiyǒu qítā fāngshì shíbié wéi shǒubǐng, wèi fēnpèi qiě wèi chǔyú Qiángzhì yuánshǐ yáogǎn móshì de kòngzhìqì. Chóngzhì huì yíchú suǒyǒu yǐ xiàzài de yìngshè, bìng chóngxīn cóng GitHub xiàzài. Gèngduō xià nín zìjǐ de tiáomù huì bǎoliú.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Lìjí gēngxīn</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Gēngxīn zhōng…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Zhèngzài jiǎnchá gēngxīn…</value></data>
@@ -1055,8 +1066,11 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge yǐ gēngxīn dào {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Nèizhì: {0} tiáo yìngshè, shèqū fùběn rìqī {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Nèizhì: {0} tiáo yìngshè, shèqū fùběn rìqī {1}. {2} yǐ xiàzài: xīnzēng tiáomù {3}, gēnggǎi {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Nèizhì: {1} tiáo yìngshè, shèqū fùběn rìqī {2}. {3} yǐ cóng {4} xiàzài: xīnzēng tiáomù {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Nèizhì: {1} tiáo yìngshè, shèqū fùběn rìqī {2}. {3} yǐ cóng {4} xiàzài: xīnzēng {0} tiáo tiáomù.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Zì shàngcì gēngxīn yǐlái, shèqū shùjùkù wèi fāshēng biànhuà.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Wúfǎ liánjiē GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Wúfǎ liánjiē {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge jùjué le cǐ xiàzài, yīnwèi tā bú shì yùqī de kòngzhìqì shùjùkù. Wèi zuò rènhé gēnggǎi.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Qǐdòng shí zuìxiǎohuà</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng</value></data>
@@ -1227,6 +1241,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Fùzhì zhāiyào</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Yǐ fùzhì</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Bǎocún…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Bǎocún bìng fābù</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Bǎocún bìng fābù huì bǎocún zip wénjiàn, fùzhì zhāiyào, zài Explorer zhōng xiǎnshì gāi wénjiàn, bìng dǎkāi PadForge de bàogào yèmiàn. Qǐng jiāng zhāiyào zhāntiē dào nàlǐ, bìng jiāng wénjiàn tuōfàng dào gāi yèmiàn shàng.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Bǎocún lùzhì</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip wénjiàn</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Wèi bǎocún. {0}</value></data>
@@ -3244,6 +3260,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Fāshēng yìwài cuòwù:
 
 {0}
+
+PadForge yǐ jiāng xiángxì xìnxī xiěrù PadForge.exe pángbiān de crash.log. Rú xū bàogào cǐ wèntí, qǐng zài {2} fāqǐ tǎolùn, bìng jiāng crash.log tuōfàng dào qízhōng.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(Yǐ yǐncáng {0} gè éwài cuòwù)</value></data>
@@ -5683,6 +5701,8 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Chǎnpǐn</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Lèixíng</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Gōngnéng</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Tōngguò USB hé Xbox Wireless Adapter liánjiē shí, bèihòu bōpiàn yǐ guānbì. SDL de yuányīn: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Tōngguò Lányá liánjiē shí, bèihòu bōpiàn yǐ guānbì. SDL de yuányīn: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Liánjiē</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Diànliàng</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Lùjìng</value></data>
@@ -5861,6 +5881,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Yǐ qǐyòng. Gāi tiáomù shǔyú nín, duì cǐ shèbèi yōuxiān shēngxiào.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Yǐ zuòwéi nín de tiáomù bǎoliú. Yǐnqíng yùnxíng qiě shèbèi liánjiē hòu jí shēngxiào.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL wèi jiēshòu gāi tiáomù. Cǐ shèbèi wèi zuò rènhé gēnggǎi.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Wèi bǎoliú. PadForge zuìduō bǎoliú nín de {0:N0} tiáo tiáomù, xiànzài yǐ dádào gāi shùliàng.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Zhāntiē SDL yìngshè</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Wèi {0} zhāntiē SDL yìngshè</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Wèi {0} cházhǎo yìngshè</value></data>
@@ -5894,6 +5915,10 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Zhèxiē tiáomù zuòwéi nín de tiáomù bǎocún zài PadForge.xml zhōng, duì qí shèbèi yōuxiān yú qítā suǒyǒu láiyuán. Kòngzhìqì shùjùkù yì xíng Gèngduō xià de Qīngchú kě jiāng qí yíchú.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Shìyòng yú Windows de tiáomù: {0}. Shìyòng yú qítā xìtǒng de {1} tiáo yǐ tiàoguò.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} tiáo shìyòng yú Windows de tiáomù. Shìyòng yú qítā xìtǒng de {1} tiáo yǐ tiàoguò.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Jiāng tiānjiā quánbù {0:N0} tiáo. PadForge zuìduō bǎoliú nín de {1:N0} tiáo tiáomù.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Gāi tiáomù jiāng bèi tiānjiā. PadForge zuìduō bǎoliú nín de {1:N0} tiáo tiáomù.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Xiàn yǐ bǎoliú nín de {0:N0} tiáo tiáomù, yīncǐ qízhōng {1:N0} tiáo jiāng bèi tiānjiā, {2:N0} tiáo bú huì tiānjiā.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Xiàn yǐ bǎoliú nín de {0:N0} tiáo tiáomù, yīncǐ qízhōng {1:N0} tiáo jiāng bèi tiānjiā, {2:N0} tiáo bú huì tiānjiā.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Yǐ jùjué: {0}. Dì yī gè yuányīn: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Qǐng zhāntiē yì tiáo tiáomù, huò gamecontrollerdb.txt wénjiàn de wénběn.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Gāi wénběn bú shì SDL kòngzhìqì shùjùkù de tiáomù: yīng wéi 32 wèi shíliù jìnzhì shùzì de ID, míngchēng, ránhòu shì a:b0 zhī lèi de zìduàn.</value></data>
@@ -5906,14 +5931,18 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Gāi tiáomù jiāng tóng yí gè zìduàn gěi le liǎng cì.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Gāi tiáomù chāoguò 1,024 gè zìfú.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Gāi tiáomù wèi bǎngdìng rènhé kòngjiàn.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Nín de tiáomù</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Xiàzài láiyuán, nín zìjǐ de tiáomù</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Nín de tiáomù</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Nín zài cǐ tiānjiā huò zài shèbèi de SDL yìngshè kǎpiàn shàng zhāntiē de tiáomù, duì qí shèbèi yōuxiān yú qítā suǒyǒu láiyuán, bìng zài chóngzhì hòu bǎoliú.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Cóng wénjiàn huò jiǎntiēbǎn tiānjiā tiáomù…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Tiáomù: {0}, duì qí shèbèi yōuxiān yú qítā suǒyǒu láiyuán.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} tiáo tiáomù, duì qí shèbèi yōuxiān yú qítā suǒyǒu láiyuán.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Tiáomù: {0}, duìyìng {0} gè shèbèi, yōuxiān yú qítā suǒyǒu láiyuán.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} tiáo tiáomù, duìyìng {0} gè shèbèi, yōuxiān yú qítā suǒyǒu láiyuán.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Zànwú.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Nín de SDL_GAMECONTROLLERCONFIG biànliàng bāohán {0} tiáo PadForge wèi bǎoliú de tiáomù. Cóng wénjiàn huò jiǎntiēbǎn tiānjiā tiáomù huì dàizhe zhèxiē tiáomù dǎkāi.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Nín de SDL_GAMECONTROLLERCONFIG biànliàng bāohán {0} tiáo PadForge wèi bǎoliú de tiáomù. Cóng wénjiàn huò jiǎntiēbǎn tiānjiā tiáomù huì dàizhe gāi tiáomù dǎkāi.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Yǐ lìjí qǐyòng.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Xiàzài láiyuán</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Jǐn xiàn HTTPS. Cóng fēi shèqū de dìzhǐ xiàzài shí, PadForge jǐn cǎiyòng xīn tiáomù.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Kāiqǐ</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Wǎngluò zhùshǒu</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Suìdào</value></data>
@@ -5952,7 +5981,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Yǔnxǔ yú {0}, shàngcì shǐyòng yú {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Yǔnxǔ yú {0}, shàngwèi shǐyòng.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Chèxiāo</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge bù xiàzài rènhé suìdào chéngxù, yě bù bǎocún qítā gōngsī de mìyào. Wǎngluò zhùshǒu àn shàngfāng de jíbié gōngzuò.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge jǐn wèi ChatGPT Secure MCP Tunnel xiàzài suìdào chéngxù. Wǎngluò zhùshǒu àn shàngfāng de jíbié gōngzuò.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Yǔnxǔ {0} cóng wǎngluò yǔ PadForge xiézuò ma?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Qí dēnglù fǎnhuí dào {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Tā zìchēng {0}.</value></data>
@@ -5989,4 +6018,35 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Qí jiǎoběn ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Jiǎoběn jiāng qí kòngjiàn mìngmíng wéi {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Jiǎoběn jiāng qí jiàn mìngmíng wéi KeyA, KeySpace, KeyLeftShift děng, bìng àn dàimǎ mìngmíng měi gè jiàn, cóng Vk0 dào Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>Cǐ wǎngluò shàng láizì {1} de {0}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Shǐyòng {0} de tóng yī zhèngshū mìyào qiānmíng de xīn bǎnběn huì zhíjiē chóngqǐ, wúxū Pīzhǔn bìng chóngqǐ. Qítā rènhé gēnggǎi dōu huì xiān xúnwèn nín.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Yǐ cǎiyòng tóng yī zhèngshū mìyào qiānmíng de xīn bǎnběn</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Dìzhǐ</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge jǐn jiēshòu yǐ https:// kāitóu, bāohán zhǔjī míng, shǐyòng mòrèn duānkǒu qiě bù hán yònghùmíng huò mìmǎ de dìzhǐ.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Duānkǒu</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Gēnggǎi…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Qǐngqiú jí qí mìyào yǐ wèi jiāmì de xíngshì chuánshū yú cǐ wǎngluò. Windows jǐn zài zhuānyòng wǎngluò shàng yǔnxǔ tāmen jìnrù.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Duānkǒu {0} zhèng bèi qítā chéngxù shǐyòng. Qǐng gēnggǎi duānkǒu, yǐ cóng cǐ wǎngluò fǎngwèn PadForge.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows wèi yǔnxǔ PadForge de zhùshǒu chéngxù zài duānkǒu {0} shàng jiāntīng. PadForge xū guǎnlǐyuán quánxiàn cáinéng yǔnxǔ cǐ cāozuò, yīncǐ qǐng yǐ guǎnlǐyuán quánxiàn qǐdòng PadForge, bìng guānbì zài kāiqǐ cǐ xiàng.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge de zhùshǒu chéngxù wúfǎ zài duānkǒu {0} shàng jiāntīng. Qǐng gēnggǎi duānkǒu, huò guānbì zài kāiqǐ cǐ xiàng.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge de zhùshǒu chéngxù yǐ tíngzhǐ ({0}). Qǐng guānbì zài kāiqǐ Reach PadForge From This Network yǐ chóngxīn qǐdòng.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Zìdònghuà yǐ guānbì, yīncǐ cǐ wǎngluò shàng méiyǒu zhùshǒu néng fǎngwèn PadForge. Zìdònghuà kāiqǐ hòu, zhùshǒu chéngxù jiāng qǐdòng.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Cǐ diànnǎo mùqián zài zhuānyòng wǎngluò shàng méiyǒu dìzhǐ.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Cǐ wǎngluò shàng de zhùshǒu</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Qí mìyào chuàngjiàn yú {1}, shàngcì shǐyòng yú {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Qí mìyào chuàngjiàn yú {1}, shàngwèi shǐyòng.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Shēngchéng mìyào</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Biāotóu</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Wánchéng</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Gēnggǎi duānkǒu</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Qǐng xuǎnzé 1024 dào 49151 zhī jiān de duānkǒu. Měi gè zhùshǒu bǎocún de dìzhǐ dōu bāohán duānkǒu, yīncǐ gēnggǎi hòu qǐng chóngxīn tiānjiā měi gè zhùshǒu.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Qǐng shūrù 1024 dào 49151 zhī jiān de duānkǒu.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Qūdòng qí zìjǐ de shèbèi yǐjí {0}. Tā réng huì dúqǔ suǒyǒu shèbèi.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Jǐn qūdòng qí zìjǐ de shèbèi. Tā réng huì dúqǔ suǒyǒu shèbèi.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Láizì mìnglìngháng de mìnglìng réng néng dàodá PadForge, duì suǒyǒu chéngxù jūn rúcǐ.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Tā qǐngqiú jǐn qūdòng qí zìjǐ de shèbèi.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Zhǐ xúnwèn yí cì. Nín kěyǐ zài Zìdònghuà yèmiàn jiāng qí yíchú huò gēnggǎi qí fànwéi.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Zhèngzài yǐ nín de quánxiàn yùnxíng, qiě yǐ jiùxù. ChatGPT tōngguò cǐ suìdào fǎngwèn PadForge, wúxū zìshēn dēnglù, qiě jǐn xiàn láizì nín de OpenAI zǔzhī. Tā huì suí PadForge chóngxīn qǐdòng.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Zhèngzài yǐ nín de quánxiàn yùnxíng. Zhèngzài děngdài OpenAI quèrèn suìdào yǐ jiùxù.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge huì jiāmì bǎocún gāi mìyào, jǐn gōng nín shǐyòng. Kōng kuàng huì qīngchú gāi mìyào. ChatGPT àn shàngfāng de jíbié gōngzuò.</value></data>
 </root>

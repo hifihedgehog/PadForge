@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Повезано: {0}, батерија {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Прекинута веза за уређаје ({0}): {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Повезани уређаји ({0}): {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Стално се прекида веза: {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0}: број прекида везе у минуту: {1}</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>Поново повезано: {0}</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Поново су повезани уређаји ({0}): {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (макс. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (макс. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Аутоматско поновно повезивање, порт, идентитет упаривања, повезивање преко адресе</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, замена DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портови, Пуна брзина, Прилагођени формати</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Остали асистенти, асистенти на вебу</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Остали асистенти, асистенти на вебу и на овој мрежи</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Осврћите се помоћу трекера главе или VR слушалица док оба палца остају на дугмадима.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Мапирајте брзину, педале и мењаче које игра вожње шаље, као било који улаз.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Шаљите покрете контролера емулаторима који читају DSU извор покрета.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Додај плагин…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програми и скрипте|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Све датотеке|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Одобри и поново покрени…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Прикажи у фасцикли</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Веруј новим верзијама овог потписника</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Нова верзија потписана истим кључем сертификата потписника ({0}) поново се покреће без Одобри и поново покрени. Свака друга промена прво тражи ваше одобрење.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Прихваћена нова верзија потписана истим кључем сертификата</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Покреће се са механизмом</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Провера датотеке пре покретања</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Завршио са кодом {0}. Поново почиње за {1} с.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Није потписан.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Његова подешавања се приказују овде док ради.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Не декларише ниједно подешавање.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Његова подешавања се приказују овде када се повеже са програмом PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Покренут, али се никада није повезао са програмом PadForge. Поново почиње за {0} с.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Покренут, али се никада није повезао са програмом PadForge. Поново почиње за {0} секунду.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Плагин {0} је покренут, али се никада није повезао са програмом PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Завршен минут после покретања, никада се није повезао са програмом PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Промењено</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge није могао да прочита његова подешавања: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Завршен после минут без одговора</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Његова датотека је промењена док је радио</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, потписник {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, није потписан</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Урађено</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Задржано</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Није урађено</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Није дозвољено на овом нивоу</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Тренутно није доступно</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Подеси контроле уређаја {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Уклони уређај {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Врати све контроле уређаја {0} у мировање</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Излаз тастера и миша који он шаље задржава се за {0}, који ради као администратор</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Излаз тастера и миша који он шаље задржава се за прозор који ради као администратор</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Тера PadForge да покрене програм.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Отвара датотеку, фасциклу или веб страницу.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Тера PadForge да шаље тастере или улаз миша у Windows.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge наставља да ради када кликнете на „Затвори“ или притиснете Alt+F4. Да бисте изашли, користите „Изађи“ у менију системске палете.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Када минимизујете прозор, PadForge остаје у области за обавештења уместо на траци задатака.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Прозор остаје сакривен када се PadForge покрене. Програм ради и мапира као и обично.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се аутоматски покреће када се пријавите у Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се аутоматски покреће када се пријавите у Windows. Док је ово укључено, PadForge се покреће и без Windows упита из пречице, скрипте или другог програма.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ради из {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ово захтева да PadForge буде у сопственој фасцикли. Његова фасцикла садржи друге датотеке, па PadForge не може да спречи друге програме да је мењају.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Премести PadForge у сопствену фасциклу</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Увек прикажи у системској палети</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Икона у системској палети остаје видљива док је прозор отворен, па је „Изађи“ у њеном менију увек на један клик.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ажурирања</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Проверите да ли на сајту GitHub постоје нове верзије програма PadForge и инсталирајте их одавде, а ажурирајте и базу контролера. PadForge контактира само GitHub (api.github.com, github.com и његове сервере за преузимање, а raw.githubusercontent.com за базу контролера). Једини податак који шаље је сопствени број верзије и, за базу контролера, ознака коју је GitHub дао последњем преузимању.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Проверите да ли на сајту GitHub постоје нове верзије програма PadForge и инсталирајте их одавде, а ажурирајте и базу контролера. PadForge контактира само GitHub (api.github.com, github.com и његове сервере за преузимање, а raw.githubusercontent.com за базу контролера) и адресу коју поставите под Преузми са у реду База контролера. Једини податак који шаље је сопствени број верзије и, за базу контролера, ознака коју је сервер дао последњем преузимању.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Аутоматски проверавај ажурирања</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Проверава при покретању програма PadForge и затим на сваких 12 сати.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Аутоматски инсталирај ажурирања</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Инсталирај и поново покрени</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Белешке о издању</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>База контролера</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ажурирај одмах преузима базу контролера заједнице (SDL_GameControllerDB) са сајта GitHub и у датотеци подешавања чува мапирања која овој верзији програма PadForge недостају. Одмах су у употреби. Ново мапирање користи се само за контролер који ништа друго не чита као гејмпед, који није додељен и који није у Принудни сирови режим џојстика. Ресетовање уклања свако преузето мапирање. Ваши редови, под Више, остају.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ажурирај одмах преузима базу контролера заједнице (SDL_GameControllerDB) са сајта GitHub, или са адресе постављене под Више, и у датотеци подешавања чува мапирања која овој верзији програма PadForge недостају. Одмах су у употреби. Са друге адресе чува само нова мапирања. Ново мапирање користи се само за контролер који ништа друго не чита као гејмпед, који није додељен и који није у Принудни сирови режим џојстика (заобилази мапирање гејмпеда). Ресетовање уклања свако преузето мапирање и поново преузима са сајта GitHub. Ваши редови, под Више, остају.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Ажурирај одмах</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ажурирање…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Провера ажурирања…</value></data>
@@ -1106,8 +1121,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge је ажуриран на {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Уграђено: мапирања: {0}, копија заједнице од {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Уграђено: мапирања: {0}, копија заједнице од {1}. Преузето {2}: нових редова: {3}, промењених: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Уграђено: мапирања: {1}, копија заједнице од {2}. Преузето {3} са {4}: нових редова: {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Уграђено: мапирања: {1}, копија заједнице од {2}. Преузето {3} са {4}: нови ред: {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>База заједнице се није променила од последњег ажурирања.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub није доступан: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} није доступан: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge је одбио преузимање јер то није база контролера коју очекује. Ништа није промењено.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Покрени минимизовано</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Покрени при пријављивању</value></data>
@@ -1278,6 +1296,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>Копирај сажетак</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Копирано</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Сачувај…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Сачувај и објави</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Сачувај и објави чува zip, копира сажетак, приказује датотеку у програму Explorer и отвара страницу програма PadForge на којој се шаљу пријаве. Налепите сажетак тамо и превуците датотеку на њу.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Сачувај снимак</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Зип датотеке</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Није сачувано. {0}</value></data>
@@ -1638,6 +1658,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Производ</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Врста</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Могућности</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Задње педале су искључене преко USB и Xbox Wireless Adapter. Разлог који даје SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Задње педале су искључене преко Bluetooth. Разлог који даје SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Веза</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Батерија</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Путања</value></data>
@@ -3476,6 +3498,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Дошло је до неочекиване грешке:
 
 {0}
+
+PadForge је записао детаље у crash.log поред PadForge.exe. Да бисте ово пријавили, покрените дискусију на {2} и превуците crash.log на њу.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(потиснуто додатних грешака: {0})</value></data>
@@ -6647,6 +6671,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Сада је у употреби. Ред је ваш и важи за овај уређај пре свих других.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Задржано као ваше. У употреби је када механизам ради и уређај је повезан.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL није прихватио ред. Ништа се није променило за овај уређај.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Није задржано. PadForge чува до {0:N0} ваших редова и сада их има толико.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Налепите SDL мапирање</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Налепите SDL мапирање за {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Нађите мапирање за {0}</value></data>
@@ -6680,6 +6705,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Редови се чувају као ваши у PadForge.xml и важе за своје уређаје пре сваког другог извора. Обриши, под Више у реду База контролера, уклања их.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Редова за Windows: {0}. Редова за друге системе који се прескачу: {1}.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ред за Windows. Редова за друге системе који се прескачу: {1}.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Све ће бити додато (редова: {0:N0}). PadForge чува до {1:N0} ваших редова.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Биће додат један ред. PadForge чува до {1:N0} ваших редова.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Сада је задржано ваших редова: {0:N0}. Биће додато: {1:N0}, а неће бити додато: {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Сада је задржан {0:N0} ваш ред. Биће додато: {1:N0}, а неће бити додато: {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Одбијено: {0}. Први: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Налепите ред или текст датотеке gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Текст није ред SDL базе контролера: ИД од 32 хексадецималне цифре, назив, па поља као што је a:b0.</value></data>
@@ -6692,14 +6721,22 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Ред даје једно поље двапут.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Ред је дужи од 1.024 знака.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Ред не везује ниједну контролу.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ваши редови</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Одакле преузима, ваши редови</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ваши редови</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Редови које овде додате или налепите на картици SDL мапирање уређаја важе за своје уређаје пре сваког другог извора и остају после ресетовања.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Додај редове из датотеке или са клипборда…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Редова: {0}, ваши пре сваког другог извора за њихове уређаје.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ред, ваш пре сваког другог извора за његов уређај.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Редова: {0} за уређаје: {0}, ваши пре сваког другог извора.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ред за {0} уређај, ваш пре сваког другог извора.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Још нема.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Ваша променљива SDL_GAMECONTROLLERCONFIG садржи редова које PadForge не чува: {0}. Додај редове из датотеке или са клипборда се отвара са њима.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Ваша променљива SDL_GAMECONTROLLERCONFIG садржи ред који PadForge не чува: {0}. Додај редове из датотеке или са клипборда се отвара са њим.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Одмах у употреби.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Преузми са</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Само HTTPS. Са адресе која није адреса заједнице, PadForge узима само нове редове.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Промени…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Користи датотеку заједнице</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Адреса</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge прихвата адресу која почиње са https:// и садржи име хоста, на подразумеваном порту, без корисничког имена или лозинке.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Приступ програму PadForge са веба</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Асистент који ради на веб сајту досеже PadForge преко програма за тунел на овом рачунару. Укључивање прво тражи ваше одобрење.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Приступ програму PadForge са веба?</value></data>
@@ -6742,7 +6779,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Дозвољено {0}, последњи пут коришћен {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Дозвољено {0}, још није коришћен.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Опозови</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge не преузима ниједан програм за тунел и не чува туђ кључ. Веб асистент ради на нивоу изнад.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge преузима програм за тунел само за ChatGPT Secure MCP Tunnel. Веб асистент ради на нивоу изнад.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Дозволити програму {0} да ради са програмом PadForge са веба?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Његова пријава се враћа на {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Назива себе {0}.</value></data>
@@ -6779,6 +6816,97 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Његов ИД скрипте</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скрипте називају његове контроле {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скрипте називају његове тастере KeyA, KeySpace, KeyLeftShift и слично, а сваки тастер његовим кодом, од Vk0 до Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} на овој мрежи са адресе {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} тражи, на овој мрежи са адресе {1}, са кључем који сте данас направили.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} тражи, на овој мрежи са адресе {1}, са кључем који сте направили дана {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Приступ програму PadForge са ове мреже</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>Асистент на другом рачунару на овој мрежи досеже PadForge помоћу кључа који направите овде, без програма за тунел и спољашњег налога. Укључивање прво тражи ваше одобрење.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Приступ програму PadForge са ове мреже?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Помоћни програм програма PadForge, који ради без администраторских права, слуша на мрежним адресама овог рачунара, а PadForge пушта његов порт само на приватним мрежама. Асистент на другом рачунару улази само са кључем који направите овде. Позиви и њихов кључ путују мрежом без шифровања.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Порт</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Промени…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Позиви и њихов кључ путују овом мрежом без шифровања. Windows их пушта само на приватним мрежама.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Порт {0} користи други програм. Промените га да бисте приступили програму PadForge са ове мреже.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows није дозволио помоћном програму програма PadForge да слуша на порту {0}. PadForge то дозвољава са администраторским правима, па покрените PadForge са њима и искључите па поново укључите ово.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Помоћни програм програма PadForge није могао да слуша на порту {0}. Промените порт или искључите па поново укључите ово.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Помоћни програм програма PadForge је стао ({0}). Искључите па поново укључите Приступ програму PadForge са ове мреже да га покренете поново.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Аутоматизација је искључена, па ниједан асистент на овој мрежи не досеже PadForge. Помоћни програм се покреће када се Аутоматизација укључи.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Овај рачунар тренутно нема адресу на приватној мрежи.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Асистенти на овој мрежи</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Његов кључ је направљен {1}, последњи пут коришћен {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Његов кључ је направљен {1}, још није коришћен.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>данас у {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>дана {0} у {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>у {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Сваки асистент добија свој кључ, са именом и нивоом до оног изнад. Кључ се приказује једном. Прављење овде је ваша сагласност, па његов први позив вас ништа не пита.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Додај мрежног асистента…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Додавање мрежног асистента</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Именујте други рачунар или његовог асистента и изаберите шта сме да ради. PadForge затим прави његов кључ.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Име</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Ниво</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Направи кључ</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Унесите име.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>Највише мрежних кључева које PadForge чува: {0}. Прво користите Опозови за један од њих.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>Кључ за {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>Приказује се само једном. PadForge чува само његов хеш, зато га копирајте одмах. Опозови под Асистенти на овој мрежи га окончава.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Кључ</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>За</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Било који други хост</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Или Било који други хост, за адресу и заглавље које треба налепити у његова подешавања.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>Шта налепити</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Покрените то у терминалу на другом рачунару.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Додајте MCP сервер преко HTTP у подешавањима хоста са овом адресом и овим заглављем.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Заглавље</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Готово</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Промена порта</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Изаберите порт од 1024 до 49151. Сачувана адреса сваког асистента садржи порт, зато додајте сваког поново након промене.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Унесите порт од 1024 до 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Домет</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>Цео програм PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Само његови уређаји и они из Изабери уређаје</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Изабери уређаје…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Управља својим уређајима и овима: {0}. И даље чита сваки уређај.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Управља само својим уређајима. И даље чита сваки уређај.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Команде из командне линије и даље стижу до програма PadForge, као и од сваког програма.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Тражи да управља само својим уређајима.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Пита само једном. Можете га уклонити или променити његов домет на страници Аутоматизација.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Избор уређаја</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} сме да управља својим уређајима и онима које означите. И даље чита сваки уређај.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>На страници Уређаји нема уређаја.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Ради, са вашим правима, и спреман је. ChatGPT досеже PadForge преко овог тунела без сопствене пријаве, и то само из ваше OpenAI организације. Поново се покреће са програмом PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Ради, са вашим правима. Чека да OpenAI јави да је тунел спреман.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Преузима се OpenAI tunnel-client и проверава према SHA-256 збировима његовог издања.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client није могао да се преузме: {0}. Поново изаберите тунел да покушате опет.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Налепите кључ за извршавање и ID тунела испод и тунел се покреће.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Кључ за извршавање</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Ограничено, са дозволама Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Направи један</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>ID тунела</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Затим додајте овај тунел у програму ChatGPT.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Отвори ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge чува кључ шифрован само за вас. Празно поље га брише. ChatGPT ради на нивоу изнад.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Кључ није сачуван: веб помоћник програма PadForge не ради, а само он може да шифрује кључ за вас.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Одговарање са другог уређаја</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Одговарајте на питања програма PadForge са телефона или другог рачунара док сте далеко од овог.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Ради само на овој мрежи, преко адресе веб контролера.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Упари уређај…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Упарено {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Последњи пут одговорио {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>данас у {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>у {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} у {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Уређај без имена</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Упаривање уређаја</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Код за скенирање камером уређаја</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Сакривено од снимања екрана, па само ви можете да га скенирате.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Или отворите {0} на уређају и унесите овај код:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Код важи једном, до {0}. Пет погрешних покушаја га затварају, а QR код и даље ради.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Покреће се адреса веб контролера…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Страница не може да се отвори: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows није хтео да сакрије овај прозор од снимања екрана, па не приказује код.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Унети код је затворен после пет погрешних покушаја. QR код и даље ради до {0}.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Код је истекао. Упари уређај… прави нови.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge чува највише {0} мрежни кључ. Прво га опозовите помоћу Опозови.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Боје се шаљу директно на {0}. Променљиве боје, као што су циклус боја или боје које прате звук, не стижу до њега. Боја која се не мења стиже.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Све датотеке (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge профил (*{0})|*{0}</value></data>

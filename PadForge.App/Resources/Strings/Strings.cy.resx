@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} wedi cysylltu, batri {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} dyfais wedi datgysylltu: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} dyfais wedi cysylltu: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} yn datgysylltu dro ar ôl tro</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} wedi datgysylltu {1} gwaith mewn munud</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} yn ôl</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} dyfais yn ôl: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (uchafswm {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (uchafswm {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (uchafswm {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ailgysylltu Awtomatig, porth, hunaniaeth paru, cysylltu drwy gyfeiriad</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porth, dirprwy DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porthladdoedd, Cyflymder Llawn, Fformatau Personol</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Cynorthwywyr eraill, cynorthwywyr ar y we</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Cynorthwywyr eraill, cynorthwywyr ar y we ac ar y rhwydwaith hwn</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Edrychwch o'ch cwmpas gyda thraciwr pen neu glustffon VR tra bydd y ddau fawd yn aros ar y botymau.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapiwch y cyflymder, y pedalau a'r gerau y mae gêm yrru yn eu hanfon, fel unrhyw fewnbwn.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Anfonwch symudiad rheolydd i efelychwyr sy'n darllen ffynhonnell symudiad DSU.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Ychwanegu Ategyn…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Rhaglenni a sgriptiau|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Pob ffeil|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Cymeradwyo ac Ailgychwyn…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Dangos yn y Ffolder</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Yn cychwyn gyda'r injan</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Yn gwirio'r ffeil cyn iddo gychwyn</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Wedi gadael gyda chod {0}. Yn cychwyn eto ymhen {1} eiliad.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Heb ei lofnodi.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Mae ei osodiadau'n ymddangos yma tra bydd yn rhedeg.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Nid yw'n datgan unrhyw osodiadau.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Mae ei osodiadau'n ymddangos yma unwaith y bydd yn cysylltu â PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Wedi cychwyn ond heb gysylltu â PadForge erioed. Mae'n cychwyn eto ymhen {0} eiliad.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Wedi cychwyn ond heb gysylltu â PadForge erioed. Mae'n cychwyn eto ymhen {0} eiliad.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Cychwynnodd {0} ond ni chysylltodd â PadForge erioed.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Daeth i ben funud ar ôl ei gychwyn, heb gysylltu â PadForge erioed</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>Nid oedd PadForge yn gallu darllen ei osodiadau: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Daeth i ben ar ôl munud heb air</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Newidiodd ei ffeil tra oedd yn rhedeg</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, wedi'i llofnodi gan {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, heb ei llofnodi</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Wedi'i wneud</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Wedi'i ddal yn ôl</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Heb ei wneud</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ni chaniateir ar y lefel hon</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ddim ar gael nawr</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Gosod rheolyddion dyfais {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tynnu'r ddyfais {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Rhoi pob rheolydd dyfais {0} wrth orffwys</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Mae allbwn bysellau a llygoden y mae'n ei fwydo yn cael ei ddal yn ôl rhag {0}, sy'n rhedeg fel gweinyddwr</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Mae allbwn bysellau a llygoden y mae'n ei fwydo yn cael ei ddal yn ôl rhag ffenestr sy'n rhedeg fel gweinyddwr</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Yn gwneud i PadForge redeg rhaglen.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Yn agor ffeil, ffolder neu dudalen we.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Yn gwneud i PadForge anfon bysellau neu fewnbwn llygoden i Windows.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Cadwch PadForge yn rhedeg pan fyddwch yn clicio Cau neu'n pwyso Alt+F4. Defnyddiwch Gadael yn newislen yr hambwrdd system i adael.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Cadwch PadForge yn yr ardal hysbysu pan fyddwch yn lleihau'r ffenestr, yn hytrach nag ar y bar tasgau.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Cadwch y ffenestr yn guddiedig pan fydd PadForge yn cychwyn. Mae'n rhedeg ac yn mapio fel arfer.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Cychwyn PadForge yn awtomatig pan fyddwch yn mewngofnodi i Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Cychwyn PadForge yn awtomatig pan fyddwch yn mewngofnodi i Windows. Tra bo hwn ymlaen, mae PadForge hefyd yn cychwyn heb anogwr Windows o lwybr byr, sgript neu raglen arall.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Mae PadForge yn rhedeg o {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Mae angen PadForge mewn ffolder ei hun ar gyfer hyn. Mae ei ffolder yn cynnwys ffeiliau eraill, felly ni all PadForge atal rhaglenni eraill rhag ei newid.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Symud PadForge i'w Ffolder ei Hun</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dangos yn yr Hambwrdd System Bob Amser</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Cadwch eicon yr hambwrdd yn weladwy tra bydd y ffenestr ar agor, fel bod Gadael yn ei ddewislen bob amser un clic i ffwrdd.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Diweddariadau</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Gwiriwch GitHub am fersiynau newydd o PadForge a'u gosod o'r fan hon, a diweddarwch gronfa ddata'r rheolyddion. Dim ond GitHub (api.github.com, github.com a'i weinyddion lawrlwytho, a raw.githubusercontent.com ar gyfer cronfa ddata'r rheolyddion) y mae PadForge yn cysylltu â nhw. Y data a anfonir yw ei rif fersiwn ei hun a, ar gyfer cronfa ddata'r rheolyddion, y tag a roddodd GitHub i'r lawrlwythiad diwethaf.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Gwiriwch GitHub am fersiynau newydd o PadForge a'u gosod o'r fan hon, a diweddarwch gronfa ddata'r rheolyddion. Dim ond GitHub (api.github.com, github.com a'i weinyddion lawrlwytho, a raw.githubusercontent.com ar gyfer cronfa ddata'r rheolyddion), a'r cyfeiriad a osodwch dan Lawrlwytho O yn rhes Cronfa Ddata'r Rheolyddion, y mae PadForge yn cysylltu â nhw. Y data a anfonir yw ei rif fersiwn ei hun a, ar gyfer cronfa ddata'r rheolyddion, y tag a roddodd y gweinydd i'r lawrlwythiad diwethaf.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Gwirio am Ddiweddariadau yn Awtomatig</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Yn gwirio pan fydd PadForge yn cychwyn a bob 12 awr wedi hynny.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Gosod Diweddariadau yn Awtomatig</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Gosod ac Ailgychwyn</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Nodiadau Rhyddhau</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Cronfa Ddata Rheolyddion</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Mae Diweddaru Nawr yn lawrlwytho cronfa ddata rheolyddion y gymuned (SDL_GameControllerDB) o GitHub ac yn cadw, yn y ffeil gosodiadau, y mapiadau nad oes gan y fersiwn hon o PadForge. Maent yn cael eu defnyddio ar unwaith. Defnyddir mapiad newydd dim ond ar gyfer rheolydd nad oes dim arall yn ei ddarllen fel gamepad, nad yw wedi'i neilltuo ac nad yw yn Gorfodi Modd Joystick Amrwd (Hepgor Ailfapio Gamepad). Mae'r ailosod yn dileu pob mapiad a lawrlwythwyd. Mae eich rhesi eich hun, o dan Mwy, yn aros.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Mae Diweddaru Nawr yn lawrlwytho cronfa ddata rheolyddion y gymuned (SDL_GameControllerDB) o GitHub, neu o'r cyfeiriad a osodwyd o dan Mwy, ac yn cadw, yn y ffeil gosodiadau, y mapiadau nad oes gan y fersiwn hon o PadForge. Maent yn cael eu defnyddio ar unwaith. O gyfeiriad arall mae'n cadw mapiadau newydd yn unig. Defnyddir mapiad newydd dim ond ar gyfer rheolydd nad oes dim arall yn ei ddarllen fel gamepad, nad yw wedi'i neilltuo ac nad yw yn Gorfodi Modd Joystick Amrwd (Hepgor Ailfapio Gamepad). Mae'r ailosod yn dileu pob mapiad a lawrlwythwyd ac yn lawrlwytho o GitHub eto. Mae eich rhesi eich hun, o dan Mwy, yn aros.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Diweddaru Nawr</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Yn diweddaru…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Yn gwirio am ddiweddariadau…</value></data>
@@ -1055,8 +1066,11 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>Diweddarwyd PadForge i {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Adeiledig: {0} mapiad, copi'r gymuned o {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Adeiledig: {0} mapiad, copi'r gymuned o {1}. Lawrlwythwyd {2}: {3} rhes newydd, {4} wedi newid.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Adeiledig: {1} mapiad, copi'r gymuned o {2}. Lawrlwythwyd {3} o {4}: {0} rhes newydd.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Adeiledig: {1} mapiad, copi'r gymuned o {2}. Lawrlwythwyd {3} o {4}: {0} rhes newydd.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Nid yw cronfa ddata'r gymuned wedi newid ers y diweddariad diwethaf.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Nid oedd modd cyrraedd GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Nid oedd modd cyrraedd {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Gwrthododd PadForge y lawrlwythiad am nad dyma'r gronfa ddata rheolyddion y mae'n ei disgwyl. Ni newidiodd dim.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Cychwyn wedi'i Leihau</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Cychwyn wrth Fewngofnodi</value></data>
@@ -1227,6 +1241,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Copïo'r Crynodeb</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Wedi copïo</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Cadw…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Cadw a Phostio</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Mae Cadw a Phostio yn cadw'r zip, yn copïo'r crynodeb, yn dangos y ffeil yn Explorer ac yn agor tudalen PadForge lle mae adroddiadau'n mynd. Gludwch y crynodeb yno a gollyngwch y ffeil arni.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Cadw'r Recordiad</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Ffeiliau zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Heb ei gadw. {0}</value></data>
@@ -3243,6 +3259,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Digwyddodd gwall annisgwyl:
 
 {0}
+
+Ysgrifennodd PadForge y manylion i crash.log wrth ymyl PadForge.exe. I adrodd am hyn, dechreuwch drafodaeth yn {2} a gollyngwch crash.log arni.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} gwall ychwanegol wedi'u hatal)</value></data>
@@ -5752,6 +5770,8 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Cynnyrch</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Math</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Galluoedd</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Mae'r padlau cefn i ffwrdd dros USB a'r Xbox Wireless Adapter. Rheswm SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Mae'r padlau cefn i ffwrdd dros Bluetooth. Rheswm SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Cyswllt</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batri</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Llwybr</value></data>
@@ -5929,6 +5949,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Yn cael ei defnyddio nawr. Eich rhes chi yw hi ac mae'n drech ar gyfer y ddyfais hon.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wedi'i chadw fel eich un chi. Mae'n cael ei defnyddio unwaith y bydd yr injan yn rhedeg a'r ddyfais wedi cysylltu.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Ni dderbyniodd SDL y rhes. Ni newidiodd dim ar gyfer y ddyfais hon.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Heb ei gadw. Mae PadForge yn cadw hyd at {0:N0} rhes o'ch rhai chi ac yn dal cymaint â hynny nawr.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Gludo Mapiad SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Gludo Mapiad SDL ar gyfer {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Dod o Hyd i Fapiad ar gyfer {0}</value></data>
@@ -5962,6 +5983,10 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Cedwir y rhesi fel eich rhai chi yn PadForge.xml ac maent yn drech na phob ffynhonnell arall ar gyfer eu dyfeisiau. Mae Clirio, o dan Mwy rhes Cronfa Ddata Rheolyddion, yn eu tynnu.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rhes ar gyfer Windows. Mae {1} ar gyfer systemau eraill yn cael eu pasio drosodd.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rhes ar gyfer Windows. Mae {1} ar gyfer systemau eraill yn cael eu pasio drosodd.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Bydd pob un o'r {0:N0} yn cael ei ychwanegu. Mae PadForge yn cadw hyd at {1:N0} rhes o'ch rhai chi.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Bydd yn cael ei ychwanegu. Mae PadForge yn cadw hyd at {1:N0} rhes o'ch rhai chi.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Cedwir {0:N0} o'ch rhai chi nawr, felly bydd {1:N0} o'r rhain yn cael eu hychwanegu ac ni fydd {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Mae {0:N0} o'ch rhai chi wedi'i gadw nawr, felly bydd {1:N0} o'r rhain yn cael eu hychwanegu ac ni fydd {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} wedi'u gwrthod. Y cyntaf: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Gludwch res, neu destun ffeil gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Nid yw'r testun yn rhes o gronfa ddata rheolyddion SDL: ID o 32 digid hecs, enw, yna meysydd fel a:b0.</value></data>
@@ -5974,14 +5999,18 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Mae'r rhes yn rhoi un maes ddwywaith.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Mae'r rhes dros 1,024 nod.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Nid yw'r rhes yn rhwymo unrhyw reolydd.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Eich Rhesi</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ble mae'n lawrlwytho ohono, eich rhesi eich hun</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Eich Rhesi</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Mae rhesi a ychwanegwch yma, neu a gludwch ar gerdyn Mapiad SDL dyfais, yn drech na phob ffynhonnell arall ar gyfer eu dyfeisiau ac yn aros drwy'r ailosod.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ychwanegu Rhesi o Ffeil neu'r Clipfwrdd…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rhes, eich rhai chi dros bob ffynhonnell arall ar gyfer eu dyfeisiau.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rhes, eich un chi dros bob ffynhonnell arall ar gyfer ei ddyfais.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rhes, un i bob dyfais, eich rhai chi dros bob ffynhonnell arall.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rhes, un i bob dyfais, eich un chi dros bob ffynhonnell arall.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Dim eto.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Mae eich newidyn SDL_GAMECONTROLLERCONFIG yn dal {0} rhes nad yw PadForge yn eu cadw. Mae Ychwanegu Rhesi o Ffeil neu'r Clipfwrdd yn agor gyda nhw.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Mae eich newidyn SDL_GAMECONTROLLERCONFIG yn dal {0} rhes nad yw PadForge yn ei chadw. Mae Ychwanegu Rhesi o Ffeil neu'r Clipfwrdd yn agor gyda hi.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Yn cael ei defnyddio ar unwaith.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Lawrlwytho O</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS yn unig. O gyfeiriad nad yw'n un y gymuned, dim ond rhesi newydd y mae PadForge yn eu cymryd.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Troi Ymlaen</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Cynorthwywyr ar y We</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Twnnel</value></data>
@@ -6020,7 +6049,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Caniatawyd {0}, defnyddiwyd ddiwethaf {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Caniatawyd {0}, heb ei ddefnyddio eto.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Dirymu</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>Nid yw PadForge yn lawrlwytho unrhyw raglen twnnel ac nid yw'n cadw allwedd unrhyw gwmni arall. Mae cynorthwyydd gwe yn gweithio ar y lefel uchod.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>Mae PadForge yn lawrlwytho rhaglen twnnel ar gyfer ChatGPT Secure MCP Tunnel yn unig. Mae cynorthwyydd gwe yn gweithio ar y lefel uchod.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Caniatáu i {0} weithio gyda PadForge o'r we?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Mae ei fewngofnodiad yn dychwelyd i {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Mae'n galw ei hun yn {0}.</value></data>
@@ -6057,4 +6086,35 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Ei ID sgript</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Mae sgriptiau'n enwi ei reolaethau {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Mae sgriptiau'n enwi ei fysellau KeyA, KeySpace, KeyLeftShift a'r tebyg, a phob bysell yn ôl ei chod, Vk0 i Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ar y rhwydwaith hwn o {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Mae fersiwn newydd a lofnodwyd ag allwedd tystysgrif {0} ei hun yn ailgychwyn heb Cymeradwyo ac Ailgychwyn. Mae unrhyw newid arall yn gofyn i chi yn gyntaf.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Derbyniodd fersiwn newydd a lofnodwyd gyda'r un allwedd tystysgrif</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Cyfeiriad</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>Mae PadForge yn cymryd cyfeiriad sy'n dechrau gyda https:// ac yn enwi gwesteiwr, ar y porth rhagosodedig, heb enw defnyddiwr na chyfrinair.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Porth</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Newid…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Mae galwadau a'u hallwedd yn croesi'r rhwydwaith hwn heb eu hamgryptio. Dim ond ar rwydweithiau preifat y mae Windows yn eu gadael i mewn.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Mae porth {0} yn cael ei ddefnyddio gan raglen arall. Newidiwch ef i gyrraedd PadForge o'r rhwydwaith hwn.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Ni adawodd Windows i gymhorthydd PadForge wrando ar borth {0}. Mae PadForge yn ei ganiatáu gyda hawliau gweinyddwr, felly cychwynnwch PadForge gyda nhw a throwch hwn i ffwrdd ac ymlaen.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Methodd cymhorthydd PadForge wrando ar borth {0}. Newidiwch y porth, neu trowch hwn i ffwrdd ac ymlaen.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Mae cymhorthydd PadForge wedi stopio ({0}). Trowch Reach PadForge From This Network i ffwrdd ac ymlaen i'w gychwyn eto.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Mae Awtomeiddio i ffwrdd, felly nid oes cynorthwyydd ar y rhwydwaith hwn yn cyrraedd PadForge. Mae'r cymhorthydd yn cychwyn unwaith y bydd Awtomeiddio ymlaen.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Nid oes gan y cyfrifiadur hwn gyfeiriad ar rwydwaith preifat nawr.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Cynorthwywyr ar y Rhwydwaith Hwn</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Gwnaed ei allwedd {1}, defnyddiwyd ddiwethaf {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Gwnaed ei allwedd {1}, heb ei defnyddio eto.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Gwneud Allwedd</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Pennawd</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Wedi'i wneud</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Newid y Porth</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Dewiswch borth o 1024 i 49151. Mae cyfeiriad cadw pob cynorthwyydd yn enwi'r porth, felly ychwanegwch bob un eto ar ôl y newid.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Teipiwch borth o 1024 i 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Yn gyrru ei ddyfeisiau ei hun a {0}. Mae'n dal i ddarllen pob dyfais.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Yn gyrru ei ddyfeisiau ei hun yn unig. Mae'n dal i ddarllen pob dyfais.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Mae gorchmynion o'r llinell orchymyn yn dal i gyrraedd PadForge, fel y maent ar gyfer pob rhaglen.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Mae'n gofyn i yrru ei ddyfeisiau ei hun yn unig.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Mae'n gofyn unwaith. Gallwch ei dynnu neu newid ei gyrhaeddiad ar y dudalen Awtomeiddio.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Yn rhedeg, gyda'ch hawliau chi, ac yn barod. Mae ChatGPT yn cyrraedd PadForge drwy'r twnnel hwn heb fewngofnodi ei hun, a dim ond o'ch sefydliad OpenAI. Mae'n cychwyn eto gyda PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Yn rhedeg, gyda'ch hawliau chi. Mae'n aros i OpenAI ddweud bod y twnnel yn barod.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Mae PadForge yn cadw'r allwedd wedi'i hamgryptio i chi yn unig. Mae blwch gwag yn ei hanghofio. Mae ChatGPT yn gweithio ar y lefel uchod.</value></data>
 </root>

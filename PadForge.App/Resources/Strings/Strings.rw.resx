@@ -203,6 +203,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, yasinywe na {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, idasinywe</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Byakozwe</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Byafatiriwe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ntibyakozwe</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ntibyemewe kuri uru rwego</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ntibiboneka ubu</value></data>
@@ -275,6 +276,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Shyiraho ibigenzura by'igikoresho {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kuraho igikoresho {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Subiza ibigenzura byose by'igikoresho {0} mu kiruhuko</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Ibyo itanga kuri clavier n'imbeba ntibyoherezwa kuri {0}, ikora ifite uburenganzira bw'umuyobozi</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Ibyo itanga kuri clavier n'imbeba ntibyoherezwa ku idirishya rikora rifite uburenganzira bw'umuyobozi</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Ituma PadForge itangiza porogaramu.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Ifungura dosiye, ububiko cyangwa urupapuro rwa interineti.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Ituma PadForge yohereza buto za mwandikisho cyangwa ibyinjizwa by'imbeba muri Windows.</value></data>
@@ -379,7 +382,7 @@
   <data name="Settings_ThemeNotAThemeNote_Format" xml:space="preserve"><value>Dosiye ya “{0}” ntirimo insanganyamatsiko ya PadForge. PadForge irerekana Umwijima kugeza iyibonetsemo.</value></data>
   <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Umwirondoro “{0}” urimo kwerekana isura y'umukino wawo. Insanganyamatsiko yawe igaruka iyo undi mwirondoro ukora.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Idirishya</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tangiza PadForge mu buryo bwikora iyo winjiye muri Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tangiza PadForge mu buryo bwikora iyo winjiye muri Windows. Iyo ibi bifunguye, PadForge inatangira idasabye uruhushya rwa Windows iyo itangijwe n'inzira ngufi, skripiti cyangwa indi porogaramu.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ikora iturutse muri {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ibi bisaba ko PadForge iba mu bubiko bwayo bwonyine. Ububiko bwayo burimo izindi dosiye, bityo PadForge ntishobora kubuza izindi porogaramu kubuhindura.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Imurira PadForge mu bubiko bwayo</value></data>
@@ -401,8 +404,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge yavuguruwe kuri {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Byubatswemo: ihuzwa {0}, kopi y'umuryango yo ku wa {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Byubatswemo: ihuzwa {0}, kopi y'umuryango yo ku wa {1}. Byamanuwe ku wa {2}: imirongo mishya {3}, yahinduwe {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Byubatswemo: ihuzwa {1}, kopi y'umuryango yo ku wa {2}. Byamanuwe ku wa {3} kuri {4}: imirongo mishya {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Byubatswemo: ihuzwa {1}, kopi y'umuryango yo ku wa {2}. Byamanuwe ku wa {3} kuri {4}: umurongo mushya {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ububiko bw'amakuru bw'umuryango ntibwahindutse kuva ivugurura riheruka.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ntibyashobotse kugera kuri GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Ntibyashobotse kugera kuri {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge yanze ibyamanuwe kuko atari ububiko bw'amakuru bwa kontorola itegereje. Nta cyahindutse.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ongeraho…</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Kuramo HIDMaestro</value></data>
@@ -1148,6 +1154,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Habaye ikosa ritunguranye:
 
 {0}
+
+PadForge yanditse ibisobanuro muri crash.log iruhande rwa PadForge.exe. Kugira ngo ubimenyeshe, tangiza ikiganiro kuri {2} maze ushyireho crash.log.
 
 {1}</value></data>
 
@@ -2028,6 +2036,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Igicuruzwa</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Ubwoko</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Ubushobozi</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Paddle z'inyuma zafunzwe kuri USB no kuri Xbox Wireless Adapter. Impamvu ya SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Paddle z'inyuma zafunzwe kuri Bluetooth. Impamvu ya SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Ihuza</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateri</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Inzira</value></data>
@@ -2178,11 +2188,13 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} cyahujwe, bateri {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Ibikoresho {0} byavanyweho: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Ibikoresho {0} byahujwe: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} gikomeza kuvaho</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} cyavuyeho inshuro {1} mu munota umwe</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} cyagarutse</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Ibikoresho {0} byagarutse: {1}</value></data>
   <data name="Extras_Group_Programs" xml:space="preserve"><value>Hamwe n'izindi porogaramu</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Reka porogaramu zitangiza imikino, scripts n'abafasha bakorane na PadForge.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ongeramo ibikoresho porogaramu zitanga.</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Abandi bafasha, abafasha bo kuri interineti</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Abandi bafasha, abafasha bo kuri interineti no kuri uyu muyoboro</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Izina ry'igikoresho gihujwe iyo kivuyeho.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Izina ry'igikoresho gihujwe iyo gihujwe.</value></data>
   <data name="Extras_Automation_Switch" xml:space="preserve"><value>Emerera porogaramu zo hanze</value></data>
@@ -2218,7 +2230,7 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kuri {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Nta gisubizo mu {0} bifatwa nko kwanga.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ububiko bw'amakuru bwa kontorola</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Vugurura nonaha imanura ububiko bw'amakuru bwa kontorola bw'umuryango (SDL_GameControllerDB) kuri GitHub kandi ikabika, muri dosiye y'igenamiterere, ihuzwa iyi verisiyo ya PadForge idafite. Rihita rikoreshwa ako kanya. Ihuzwa rishya rikoreshwa gusa kuri kontorola nta kindi gisoma nka gamepad, idahujwe kandi itari muri Force Raw Joystick Mode. Gusubiza uko byari biri bikuraho ihuzwa ryose ryamanuwe. Imirongo yawe bwite, munsi ya Ibindi, igumaho.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Vugurura nonaha imanura ububiko bw'amakuru bwa kontorola bw'umuryango (SDL_GameControllerDB) kuri GitHub, cyangwa kuri aderesi yashyizwe munsi ya Ibindi, kandi ikabika, muri dosiye y'igenamiterere, ihuzwa iyi verisiyo ya PadForge idafite. Rihita rikoreshwa ako kanya. Kuri indi aderesi ibika ihuzwa rishya gusa. Ihuzwa rishya rikoreshwa gusa kuri kontorola nta kindi gisoma nka gamepad, idahujwe kandi itari muri Force Raw Joystick Mode (Bypass Gamepad Remapping). Gusubiza uko byari biri bikuraho ihuzwa ryose ryamanuwe kandi bikongera kumanura kuri GitHub. Imirongo yawe bwite, munsi ya Ibindi, igumaho.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Vugurura nonaha</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Iravugurura…</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Urugendo rw'imbeba X</value></data>
@@ -2374,6 +2386,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Birakoreshwa ubu. Umurongo ni uwawe kandi ni wo ukurikizwa kuri iki gikoresho.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wabitswe nk'uwawe. Urakoreshwa iyo moteri ikora kandi igikoresho gihujwe.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ntiyakiriye umurongo. Nta cyahindutse kuri iki gikoresho.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Ntiwabitswe. PadForge ibika imirongo yawe igera kuri {0:N0}, kandi ubu ifite ingana ityo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Omeka Ihuzwa rya SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Omeka Ihuzwa rya SDL kuri {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Shakisha ihuzwa kuri {0}</value></data>
@@ -2407,6 +2420,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Imirongo ibikwa nk'iyawe muri PadForge.xml kandi ikurikizwa ku bikoresho byayo kurusha andi masoko yose. Clear, munsi ya Ibindi y'umurongo wa Ububiko bw'amakuru bwa kontorola, irayikuraho.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Imirongo {0} ya Windows. {1} ya sisitemu zindi irirengagijwe.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Umurongo {0} wa Windows. {1} ya sisitemu zindi irirengagijwe.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Yose uko ari {0:N0} izongerwamo. PadForge ibika imirongo yawe igera kuri {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Uzongerwamo. PadForge ibika imirongo yawe igera kuri {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Imirongo yawe {0:N0} irabitswe ubu, bityo muri iyi {1:N0} izongerwamo naho {2:N0} ntizongerwamo.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Umurongo wawe {0:N0} urabitswe ubu, bityo muri iyi {1:N0} izongerwamo naho {2:N0} ntizongerwamo.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} yanzwe. Uwa mbere: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Omeka umurongo, cyangwa inyandiko ya dosiye gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Iyi nyandiko si umurongo w'ububiko bw'amakuru bwa kontorola bwa SDL: ID y'imibare 32 ya hex, izina, hanyuma ibice nka a:b0.</value></data>
@@ -2419,10 +2436,12 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Umurongo utanga igice kimwe kabiri.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Umurongo urengeje inyuguti 1,024.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Umurongo ntuhuza igenzura na rimwe.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Imirongo yawe</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Imirongo {0}, iyawe ikurikizwa kurusha andi masoko yose ku bikoresho byayo.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Umurongo {0}, uwawe ukurikizwa kurusha andi masoko yose ku gikoresho cyawo.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Aho imanura, imirongo yawe bwite</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Imirongo {0} y'ibikoresho {0}, iyawe ikurikizwa kurusha andi masoko yose.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Umurongo {0} w'igikoresho {0}, uwawe ukurikizwa kurusha andi masoko yose.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Nta wurahari.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Impinduka yawe SDL_GAMECONTROLLERCONFIG ifite imirongo {0} PadForge itabika. Add Rows From a File or the Clipboard ifunguka irimo iyo mirongo.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Impinduka yawe SDL_GAMECONTROLLERCONFIG ifite umurongo {0} PadForge itabika. Add Rows From a File or the Clipboard ifunguka irimo uwo murongo.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Birakoreshwa ako kanya.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Fungura</value></data>
   <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Biragenzurwa…</value></data>
@@ -2434,4 +2453,10 @@
   <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Rirashyirwamo…</value></data>
   <data name="Extras_More_Scripts" xml:space="preserve"><value>Bika isomero aho ari ho hose</value></data>
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID ya script yacyo</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Erekana mu bubiko</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} yatangiye ariko ntiyigeze yihuza na PadForge.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Kora urufunguzo</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Igenzura ibikoresho byayo bwite na {0}. Iracyasoma ibikoresho byose.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Igenzura ibikoresho byayo bwite gusa. Iracyasoma ibikoresho byose.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Amabwiriza aturuka ku murongo w'amabwiriza aracyagera kuri PadForge, nk'uko bigenda kuri porogaramu yose.</value></data>
 </root>

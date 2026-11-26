@@ -867,7 +867,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} kiyungiddwa, bbaatule {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Ebyuma {0} bisaliddwako: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Ebyuma {0} biyungiddwa: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kyeyongera okusalibwako</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kisaliddwako emirundi {1} mu ddakiika emu</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} kikomyewo</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Ebyuma {0} bikomyewo: {1}</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Abayambi</value></data>
   <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Gattako eteeka PadForge, wamu ne skill yaayo, mu muyambi oyo. Olwo akola ku ddaala eriri waggulu, era ebigambo bye birabika okumpi n'ekyo ky'alaga, wansi w'erinnya lye.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Sikulipiti</value></data>
@@ -888,6 +890,7 @@
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Londa plugin olabe ebiwandiiko byayo.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Tewali kiri mu biwandiiko bya plugin eno kyali.</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Kikoleddwa</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Kiziyiziddwa</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tekikoleddwa</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Tekikkirizibwa ku ddaala lino</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tekiriiwo kati</value></data>
@@ -960,6 +963,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Teekawo ebifuga by'ekyuma {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Ggyawo ekyuma {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Teeka buli kifuga ky'ekyuma {0} mu kiwummulo</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Ebiva ku keyboard ne mawusi by'eweereza biziyizibwa okutuuka ku {0}, ekikola n'obuyinza bw'omuddukanya</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Ebiva ku keyboard ne mawusi by'eweereza biziyizibwa okutuuka ku ddirisa erikola n'obuyinza bw'omuddukanya</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Ereetera PadForge okuddukanya pulogulaamu.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Eggulawo fayiro, folda oba olupapula lw'oku mutimbagano.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Ereetera PadForge okusindika kiizi oba ebikolwa bya mawusu eri Windows.</value></data>
@@ -1145,6 +1150,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Kikozesebwa kati. Olunyiriri lwo era lwe lukulembera ku kyuma kino.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kikuumiddwa ng'olwo. Kikozesebwa enjini bw'eba ekola n'ekyuma nga kiyungiddwa.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tetwala lunyiriri. Tewali kyakyuse ku kyuma kino.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Tekikuumiddwa. PadForge ekuuma ennyiriri zo okutuuka ku {0:N0} era kati erina ezo zonna.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Teekamu Okugatta kwa SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Teekamu Okugatta kwa SDL ku {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Noonya Okugatta ku {0}</value></data>
@@ -1178,6 +1184,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ennyiriri zikuumibwa ng'ezizo mu PadForge.xml era zikulembera ku byuma byazo okusinga buli nsibuko endala. Clear, wansi wa More ku lunyiriri lwa Controller Database, eziggyawo.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Ennyiriri za Windows: {0}. Ez'enkola endala zibuuseeko: {1}.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Olunyiriri {0} lwa Windows. Ez'enkola endala zibuuseeko: {1}.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Zonna zijja kwongerwako: {0:N0}. PadForge ekuuma ennyiriri zo okutuuka ku {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Lujja kwongerwako. PadForge ekuuma ennyiriri zo okutuuka ku {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Ennyiriri zo ezikuumiddwa kati: {0:N0}. N'olwekyo ezigenda okwongerwako: {1:N0}, ezitagenda: {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Olunyiriri lwo {0:N0} lwe lukuumiddwa kati. N'olwekyo ezigenda okwongerwako: {1:N0}, ezitagenda: {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Ezigaaniddwa: {0}. Esooka: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Teekamu olunyiriri, oba ebiwandiiko bya fayiro ya gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ebiwandiiko si lunyiriri lwa tterekero lya controller erya SDL: ID ya digits 32 eza hex, erinnya, olwo ebitundu nga a:b0.</value></data>
@@ -1228,7 +1238,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Kyakkirizibwa {0}, kyasembayo okukozesebwa {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Kyakkirizibwa {0}, tekinnakozesebwa.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ggyawo Olukusa</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge tewanula pulogulaamu ya tunnel yonna era tekuuma kisumuluzo kya kampuni ndala yonna. Omuyambi ow'oku mutimbagano akola ku ddaala eriri waggulu.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ewanula pulogulaamu ya tunnel ku lwa ChatGPT Secure MCP Tunnel kyokka. Omuyambi ow'oku mutimbagano akola ku ddaala eriri waggulu.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Okuyingira kwakyo kuddayo ku {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Kyeyita {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Kkiriza kyokka nga olupapula lwakyo olw'okuyingira lulaga koodi eno:</value></data>
@@ -1258,4 +1268,30 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID yaakyo eya sikulipiti</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Sikulipiti ziyita ebifuga byakyo {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Sikulipiti ziyita kiizi zaakyo KeyA, KeySpace, KeyLeftShift n'ezirala, era buli kiizi mu koodi yaayo, Vk0 okutuuka ku Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ku mukutu guno okuva ku {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Laga mu Folda</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Omulyango</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Kyusa…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Okuyita n'ekisumuluzo kyakwo biyita ku mukutu guno nga tebikuumiddwa mu nkukutu. Windows ebiyingiza ku mikutu egy'obwannannyini kyokka.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Omulyango {0} gukozesebwa pulogulaamu endala. Gukyuse okusobola okutuuka ku PadForge okuva ku mukutu guno.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows tekkirizza kiyambi kya PadForge kuwuliriza ku mulyango {0}. PadForge ekikkiriza ng'erina obuyinza bw'omuddukanya, kale tandika PadForge nabwo, ggyako kino oddemu okissaako.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Ekiyambi kya PadForge tekisobodde kuwuliriza ku mulyango {0}. Kyusa omulyango, oba ggyako kino oddemu okissaako.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ekiyambi kya PadForge kiyimiridde ({0}). Ggyako Reach PadForge From This Network oddemu okissaako okukitandika nate.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation eggyiddwako, n'olwekyo tewali muyambi ku mukutu guno atuuka ku PadForge. Ekiyambi kitandika nga Automation ekola.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>PC eno kati terina ndagiriro ku mukutu ogw'obwannannyini.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Abayambi ku Mukutu Guno</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Ekisumuluzo kyakyo kyakolebwa {1}, kyasembayo okukozesebwa {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Ekisumuluzo kyakyo kyakolebwa {1}, tekinnakozesebwa.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Kola Ekisumuluzo</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Omutwe</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Kikoleddwa</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Kyusa Omulyango</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Londa omulyango okuva ku 1024 okutuuka ku 49151. Endagiriro ya buli muyambi eterekeddwa erimu omulyango, kale ddamu okwongerako buli omu oluvannyuma lw'enkyukakyuka.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Wandiika omulyango okuva ku 1024 okutuuka ku 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Kifuga ebyuma byakyo ne {0}. Kikyasoma buli kyuma.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Kifuga ebyuma byakyo byokka. Kikyasoma buli kyuma.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Ebiragiro okuva ku command line bikyatuuka ku PadForge, nga bwe kiri ku buli pulogulaamu.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Ekola, n'obuyinza bwo, era yeetegese. ChatGPT etuuka ku PadForge ng'eyita mu tunnel eno awatali kuyingira kwayo, era okuva mu kibiina kyo ekya OpenAI kyokka. Etandika nate ne PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Ekola, n'obuyinza bwo. Erinda OpenAI okugamba nti tunnel yeetegese.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge ekuuma ekisumuluzo nga kikuumiddwa mu nkukutu ku lulwo wekka. Ekisanduuko ekitaliimu kikyerabira. ChatGPT ekola ku ddaala eriri waggulu.</value></data>
 </root>

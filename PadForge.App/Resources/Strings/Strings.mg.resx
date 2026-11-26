@@ -211,6 +211,8 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>Nohavaozina ho {0} ny PadForge.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tafiditra: mapping {0}, dika fiarahamonina tamin'ny {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tafiditra: mapping {0}, dika fiarahamonina tamin'ny {1}. Nalaina tamin'ny {2}: andalana vaovao {3}, {4} niova.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Tafiditra: mapping {1}, dika fiarahamonina tamin'ny {2}. Nalaina tamin'ny {3} avy amin'ny {4}: andalana vaovao {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Tafiditra: mapping {1}, dika fiarahamonina tamin'ny {2}. Nalaina tamin'ny {3} avy amin'ny {4}: andalana vaovao {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Tsy niova ny tahiry fiarahamonina hatramin'ny fanavaozana farany.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Esory ny HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ireto no hesorina amin'ity PC ity. Apetraky ny PadForge indray ny HIDMaestro amin'ny contrôleur virtoaly manaraka.</value></data>
@@ -1077,6 +1079,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Nisy hadisoana tsy nampoizina:
 
 {0}
+
+Nosoratan'ny PadForge tao amin'ny crash.log eo akaikin'ny PadForge.exe ny antsipiriany. Raha hitatitra izany, manomboka resaka ao amin'ny {2} ary apetraho ao ny crash.log.
 
 {1}</value></data>
 
@@ -2321,7 +2325,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} mifandray, bateria {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Fitaovana {0} tsy mifandray intsony: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Fitaovana {0} mifandray: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Tapaka matetika ny fifandraisan'ny {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Tapaka ny fifandraisan'ny {0} tao anatin'ny iray minitra, isa: {1}</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} tafaverina</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Fitaovana {0} tafaverina: {1}</value></data>
   <data name="Extras_Group_Programs" xml:space="preserve"><value>Miaraka amin'ny programa hafa</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Avelao hiasa amin'ny PadForge ny launcher, ny script ary ny mpanampy.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ampio fitaovana omen'ny programa.</value></data>
@@ -2360,6 +2366,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nosoniavin'ny {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, tsy misy sonia</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Vita</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Notazonina</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tsy vita</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Tsy azo atao amin'ity ambaratonga ity</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tsy azo atao amin'izao</value></data>
@@ -2432,6 +2439,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Apetraho ny bokotra sy axe an'ny fitaovana {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Esory ny fitaovana {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Avereno amin'ny toerana tsy mihetsika ny bokotra sy axe rehetra an'ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Tazonina tsy ho tonga any amin'ny {0}, izay mandeha amin'ny zon'ny mpitantana, ny famoahana kitendry sy totozy alefany</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Tazonina tsy ho tonga any amin'ny varavarankely mandeha amin'ny zon'ny mpitantana ny famoahana kitendry sy totozy alefany</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Mandidy ny PadForge hampandeha programa.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Manokatra rakitra, lahatahiry na pejy web.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Mandidy ny PadForge handefa kitendry na fidirana totozy any amin'ny Windows.</value></data>
@@ -2524,7 +2533,7 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} amin'ny {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Raha tsy misy valiny ao anatin'ny {0} dia heverina ho tsia.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Tahiry contrôleur</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ny Havaozy izao dia maka ny tahiry contrôleur an'ny fiarahamonina (SDL_GameControllerDB) avy amin'ny GitHub ary mitahiry ao amin'ny rakitra fikirakirana ireo mapping tsy ananan'ity version PadForge ity. Ampiasaina avy hatrany izy ireo. Ny mapping vaovao dia ampiasaina ho an'ny contrôleur tsy vakian'ny zavatra hafa ho gamepad, tsy voatendry ary tsy ao amin'ny Force Raw Joystick Mode (Bypass Gamepad Remapping) ihany. Mamafa ny mapping rehetra nalaina ny famerenana. Mijanona kosa ny andalanao, ao amin'ny More.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ny Havaozy izao dia maka ny tahiry contrôleur an'ny fiarahamonina (SDL_GameControllerDB) avy amin'ny GitHub, na avy amin'ny adiresy voafaritra ao amin'ny More, ary mitahiry ao amin'ny rakitra fikirakirana ireo mapping tsy ananan'ity version PadForge ity. Ampiasaina avy hatrany izy ireo. Avy amin'ny adiresy hafa dia mapping vaovao ihany no tahiriziny. Ny mapping vaovao dia ampiasaina ho an'ny contrôleur tsy vakian'ny zavatra hafa ho gamepad, tsy voatendry ary tsy ao amin'ny Force Raw Joystick Mode (Bypass Gamepad Remapping) ihany. Mamafa ny mapping rehetra nalaina ny famerenana ary maka indray avy amin'ny GitHub. Mijanona kosa ny andalanao, ao amin'ny More.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Havaozy izao</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Manavao…</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Nolavin'ny PadForge ilay rakitra nalaina satria tsy ilay tahiry contrôleur andrasany izy. Tsy nisy niova.</value></data>
@@ -2689,6 +2698,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ampiasaina izao. Anao ny andalana ary izy no mandresy ho an'ity fitaovana ity.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Voatahiry ho anao. Ampiasaina izy rehefa mandeha ny motera ary mifandray ny fitaovana.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Tsy noraisin'ny SDL ny andalana. Tsy nisy niova ho an'ity fitaovana ity.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Tsy voatahiry. Mitahiry andalanao hatramin'ny {0:N0} ny PadForge ary efa mitazona izany isa izany izao.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Apetaho Mapping SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Apetaho Mapping SDL ho an'ny {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Tadiavo mapping ho an'ny {0}</value></data>
@@ -2722,6 +2732,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Voatahiry ho anao ao amin'ny PadForge.xml ireo andalana ary mandresy noho ny loharano hafa rehetra ho an'ny fitaovany. Ny Fafao, ao amin'ny More an'ny andalana Tahiry contrôleur, no manala azy ireo.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Andalana {0} ho an'ny Windows. Andalana {1} ho an'ny rafitra hafa no tsy raisina.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Andalana {0} ho an'ny Windows. Andalana {1} ho an'ny rafitra hafa no tsy raisina.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Hampidirina daholo ireo {0:N0}. Mitahiry andalanao hatramin'ny {1:N0} ny PadForge.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Hampidirina izy. Mitahiry andalanao hatramin'ny {1:N0} ny PadForge.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Andalanao {0:N0} no voatahiry izao, ka {1:N0} amin'ireto no hampidirina ary {2:N0} tsy hampidirina.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Andalanao {0:N0} no voatahiry izao, ka {1:N0} amin'ireto no hampidirina ary {2:N0} tsy hampidirina.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Nolavina: {0}. Ny voalohany: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Apetaho andalana iray, na ny lahatsoratry ny rakitra gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Tsy andalana amin'ny tahiry contrôleur an'ny SDL ity lahatsoratra ity: ID misy isa hex 32, anarana, ary saha toy ny a:b0.</value></data>
@@ -2734,14 +2748,18 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Manome saha iray indroa ny andalana.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Mihoatra ny litera 1,024 ny andalana.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Tsy mamatotra bokotra na axe na iray aza ny andalana.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ny andalanao</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Loharanon'ny fakana, ny andalanao manokana</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ny andalanao</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ny andalana ampianao eto, na apetakao ao amin'ny karatra Mapping SDL an'ny fitaovana, dia mandresy noho ny loharano hafa rehetra ho an'ny fitaovany ary mijanona na dia averina aza ny fikirakirana.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ampio andalana avy amin'ny rakitra na ny clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Andalana {0}, anao ary ambonin'ny loharano hafa rehetra ho an'ny fitaovany.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Andalana {0}, anao ary ambonin'ny loharano hafa rehetra ho an'ny fitaovany.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Andalana {0}, iray isaky ny fitaovana, anao ary ambonin'ny loharano hafa rehetra.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Andalana {0} ho an'ny fitaovana iray, anao ary ambonin'ny loharano hafa rehetra.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Tsy mbola misy.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Mitazona andalana {0} tsy tahirizin'ny PadForge ny variable SDL_GAMECONTROLLERCONFIG anao. Misokatra miaraka amin'izy ireo ny Ampio andalana avy amin'ny rakitra na ny clipboard.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Mitazona andalana {0} tsy tahirizin'ny PadForge ny variable SDL_GAMECONTROLLERCONFIG anao. Misokatra miaraka aminy ny Ampio andalana avy amin'ny rakitra na ny clipboard.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ampiasaina avy hatrany.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Loharanon'ny fakana</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS ihany. Avy amin'ny adiresy tsy an'ny fiarahamonina, andalana vaovao ihany no raisin'ny PadForge.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Alefaso</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Mpanampy amin'ny web</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
@@ -2780,7 +2798,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Navela tamin'ny {0}, nampiasaina farany tamin'ny {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Navela tamin'ny {0}, tsy mbola nampiasaina.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Esory ny alalana</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>Tsy maka programa tunnel ny PadForge ary tsy mitahiry lakile an'ny orinasa hafa. Miasa amin'ny ambaratonga etsy ambony ny mpanampy web.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>Ho an'ny ChatGPT Secure MCP Tunnel ihany no maka programa tunnel ny PadForge. Miasa amin'ny ambaratonga etsy ambony ny mpanampy web.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Miverina any amin'ny {0} ny fidirany.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Miantso ny tenany hoe {0} izy.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Avelao raha mampiseho ity kaody ity ny pejy fidirany ihany:</value></data>
@@ -2812,4 +2830,33 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Ny ID script azy</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Antsoin'ny script hoe {0} ny bokotra sy axe ananany.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Antsoin'ny script hoe KeyA, KeySpace, KeyLeftShift sy ny toy izany ny kitendriny, ary ny kitendry tsirairay amin'ny kaodiny, Vk0 hatramin'ny Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} amin'ity tambajotra ity avy amin'ny {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Asehoy ao amin'ny lahatahiry</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Nanomboka ny {0} saingy tsy nifandray tamin'ny PadForge mihitsy.</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adiresy</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>Ny adiresy manomboka amin'ny https:// sy manonona host, amin'ny port mahazatra, tsy misy anaran'ny mpampiasa na tenimiafina no raisin'ny PadForge.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Ovay…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Mamakivaky ity tambajotra ity tsy misy fanafenana ny antso sy ny lakileny. Amin'ny tambajotra tsy miankina ihany no avelan'ny Windows hiditra izy ireo.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa ny port {0}. Ovay izy mba hahatratrarana ny PadForge avy amin'ity tambajotra ity.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Tsy navelan'ny Windows hihaino amin'ny port {0} ny programa an'ny PadForge. Avelan'ny PadForge izany raha manana zon'ny mpitantana izy, ka alefaso amin'ireo zo ireo ny PadForge ary vonoy sy alefaso indray ity.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Tsy afaka nihaino tamin'ny port {0} ny programa an'ny PadForge. Ovay ny port, na vonoy ary alefaso indray ity.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Nijanona ny programa an'ny PadForge ({0}). Vonoy ary alefaso indray ny Reach PadForge From This Network mba hanombohana azy indray.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Tsy mandeha ny Automation, ka tsy misy mpanampy amin'ity tambajotra ity mahatratra ny PadForge. Manomboka ny programa rehefa mandeha ny Automation.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Tsy manana adiresy amin'ny tambajotra tsy miankina ity PC ity amin'izao fotoana izao.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Mpanampy amin'ity tambajotra ity</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Natao tamin'ny {1} ny lakileny, nampiasaina farany tamin'ny {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Natao tamin'ny {1} ny lakileny, tsy mbola nampiasaina.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Ataovy ny lakile</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Lohateny</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Vita</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Ovay ny port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Mifidiana port manomboka amin'ny 1024 ka hatramin'ny 49151. Manonona ny port ny adiresy voatahirin'ny mpanampy tsirairay, ka ampidiro indray izy tsirairay aorian'ny fanovana.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Soraty ny port manomboka amin'ny 1024 ka hatramin'ny 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Mifehy ny fitaovany manokana sy {0}. Mbola mamaky ny fitaovana rehetra izy.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Mifehy ny fitaovany manokana ihany. Mbola mamaky ny fitaovana rehetra izy.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Mbola mahatratra ny PadForge ny baiko avy amin'ny tsipika baiko, toy ny ataony amin'ny programa rehetra.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Mandeha, miaraka amin'ny zonao, ary vonona. Mahatratra ny PadForge amin'ity tunnel ity ny ChatGPT tsy mila fidirana manokana, ary avy amin'ny fikambanana OpenAI anao ihany. Manomboka indray miaraka amin'ny PadForge izy.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Mandeha, miaraka amin'ny zonao. Miandry ny OpenAI hilaza fa vonona ny tunnel izy.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Tahirizin'ny PadForge voafenina ho anao irery ny lakile. Manadino azy ny boaty foana. Miasa amin'ny ambaratonga etsy ambony ny ChatGPT.</value></data>
 </root>

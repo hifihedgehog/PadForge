@@ -180,6 +180,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, pirmado sang {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, wala pirmado</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Nahimo</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Ginpugngan</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Wala nahimo</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Indi ginatugot sa sini nga lebel</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Indi mahimo subong</value></data>
@@ -252,6 +253,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ibutang ang mga kontrol sang device {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kuhaon ang device nga {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Ibutang sa pahuway ang tanan nga kontrol sang device {0}</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Ginapugngan ang key kag mouse nga output nga ginapadala sini nga makaabot sa {0}, nga nagadalagan subong administrator</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Ginapugngan ang key kag mouse nga output nga ginapadala sini nga makaabot sa window nga nagadalagan subong administrator</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Ginapadalagan sang PadForge ang isa ka programa.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Ginabuksan ang file, folder ukon web page.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Ginapadala sang PadForge ang mga key ukon input sang mouse sa Windows.</value></data>
@@ -1706,7 +1709,7 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer, pagbaylo sang profile kag pag-connect sang device samtang nagadula ka.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pulili sang DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga Port, Bug-os nga Tulin, Custom nga mga Format</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Iban nga mga assistant, mga assistant sa web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Iban nga mga assistant, mga assistant sa web kag sa sini nga network</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Naka-connect ang {0} kag wala ginagamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita ini</value></data>
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Ano ang dapat makita sang mga game?</value></data>
@@ -1806,6 +1809,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produkto</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Klase</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Mga kapasidad</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Naka-off ang mga back paddle paagi sa USB kag sa Xbox Wireless Adapter. Rason sang SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Naka-off ang mga back paddle paagi sa Bluetooth. Rason sang SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Koneksyon</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baterya</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
@@ -1962,7 +1967,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Nag-connect ang {0}, baterya {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Nag-disconnect ang {0} ka device: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Nag-connect ang {0} ka device: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Pirme lang nagadisconnect ang {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Nadiskonekta ang {0} sing {1} ka beses sa isa ka minuto</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>Nakabalik na ang {0}</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Nakabalik na ang {0} ka device: {1}</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Tuguti ang mga launcher, script kag assistant nga magtrabaho upod sa PadForge.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Magdugang sang mga device nga ginahatag sang mga programa.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ang ngalan sang device nga may mapping kon mag-disconnect ini.</value></data>
@@ -2010,9 +2017,11 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Kon wala sing sabat sa sulod sang {0}, maisip ini nga indi.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Nagadalagan ang PadForge nga may administrator rights halin sa {0}, isa ka folder nga mabaylo sang iban nga programa. Mabaylo nila didto ang mga setting sang PadForge, kag ginasunod ini sang PadForge gamit ang iya rights.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang Update Now nagadownload sang community controller database (SDL_GameControllerDB) halin sa GitHub kag ginatipigan sa settings file ang mga mapping nga wala sa sini nga bersyon sang PadForge. Ginagamit dayon ang mga ini. Ang bag-o nga mapping ginagamit lang para sa controller nga wala ginabasa sang iban subong gamepad, wala naka-assign kag wala sa Force Raw Joystick Mode. Ang reset nagakuha sang tanan nga na-download nga mapping. Nagapabilin ang imo kaugalingon nga mga row, sa idalom sang More.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang Update Now nagadownload sang community controller database (SDL_GameControllerDB) halin sa GitHub, ukon halin sa address nga ginbutang sa idalom sang More, kag ginatipigan sa settings file ang mga mapping nga wala sa sini nga bersyon sang PadForge. Ginagamit dayon ang mga ini. Halin sa iban nga address, bag-o nga mga mapping lang ang ginatipigan sini. Ang bag-o nga mapping ginagamit lang para sa controller nga wala ginabasa sang iban subong gamepad, wala naka-assign kag wala sa Force Raw Joystick Mode. Ang reset nagakuha sang tanan nga na-download nga mapping kag nagadownload liwat halin sa GitHub. Nagapabilin ang imo kaugalingon nga mga row, sa idalom sang More.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}. Na-download {2}: {3} ka bag-o nga row, ginbaylo {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Built in: {1} ka mapping, community copy sang {2}. Na-download {3} halin sa {4}: {0} ka bag-o nga row.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Built in: {1} ka mapping, community copy sang {2}. Na-download {3} halin sa {4}: {0} ka bag-o nga row.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Wala nagbaylo ang community database kutob sang katapusan nga update.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Lakat sang mouse X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Lakat sang mouse Y</value></data>
@@ -2175,6 +2184,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ginagamit na subong. Imo ang row kag ini ang ginasunod para sa sini nga device.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Gintipig subong imo. Gamiton ini kon nagadalagan ang engine kag naka-connect ang device.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Wala ginbaton sang SDL ang row. Wala sing nagbaylo para sa sini nga device.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Wala gintipig. Ang PadForge nagatipig tubtob {0:N0} ka row nga imo kag amo na ina kadamo subong.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>I-paste ang mapping sang SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>I-paste ang mapping sang SDL para sa {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Mangita sang mapping para sa {0}</value></data>
@@ -2208,6 +2218,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ang mga row ginatipig subong imo sa PadForge.xml kag ini ang ginasunod para sa ila mga device sang sa tanan nga iban nga ginhalinan. Ang Clear, sa idalom sang More sang Controller Database nga row, nagakuha sini.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} ka row para sa Windows. Ginlaktawan ang {1} para sa iban nga sistema.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ka row para sa Windows. Ginlaktawan ang {1} para sa iban nga sistema.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Idugang ang tanan nga {0:N0}. Ang PadForge nagatipig tubtob {1:N0} ka row nga imo.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Idugang ini. Ang PadForge nagatipig tubtob {1:N0} ka row nga imo.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} ka imo ang gintipig subong, gani {1:N0} sini ang idugang kag {2:N0} ang indi.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>{0:N0} ka imo ang gintipig subong, gani {1:N0} sini ang idugang kag {2:N0} ang indi.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ang wala ginbaton. Ang una: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>I-paste ang row, ukon ang teksto sang gamecontrollerdb.txt nga file.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ang teksto indi row sang controller database sang SDL: ID nga 32 ka hex digit, ngalan, dayon mga field pareho sang a:b0.</value></data>
@@ -2220,7 +2234,7 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Ginhatag sang row ang isa ka field sing duha ka beses.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Ang row sobra sa 1,024 ka karakter.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Wala sing kontrol nga gin-bind sang row.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Imo mga row</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Diin ini nagadownload, imo kaugalingon nga mga row</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ginagamit dayon.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>I-on</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Mga assistant sa web</value></data>
@@ -2260,7 +2274,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Gintugutan {0}, katapusan nga gingamit {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Gintugutan {0}, wala pa magamit.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawion</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>Wala sing gina-download nga tunnel nga programa ang PadForge kag wala ini nagatipig sang key sang iban nga kompanya. Ang web assistant nagatrabaho sa lebel sa ibabaw.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>Ang PadForge nagadownload sang tunnel nga programa para lang sa ChatGPT Secure MCP Tunnel. Ang web assistant nagatrabaho sa lebel sa ibabaw.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ang sign-in sini nagabalik sa {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ginatawag sini ang iya kaugalingon nga {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Tuguti lang kon ginapakita sang sign-in page sini ini nga code:</value></data>
@@ -2296,4 +2310,31 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Ang ID sang script sini</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Ginangalanan sang mga script ang mga kontrol sini nga {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Ginangalanan sang mga script ang mga key sini nga KeyA, KeySpace, KeyLeftShift kag iban pa, kag ang tagsa ka key paagi sa code sini, Vk0 tubtob Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} sa sini nga network halin sa {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Ipakita sa folder</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Nagsugod ang {0} pero wala gid nag-connect sa PadForge.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Bayluhan…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Ang mga tawag kag ang ila key nagatabok sa sini nga network nga wala na-encrypt. Ginapasulod lang sila sang Windows sa private nga mga network.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Ginagamit sang iban nga programa ang port {0}. Bayluhan ini para maabot ang PadForge halin sa sini nga network.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Wala gintugutan sang Windows ang helper sang PadForge nga magpamati sa port {0}. Ginatugutan ini sang PadForge upod ang administrator nga mga kinamatarong, gani sugdan ang PadForge upod sini kag i-off kag i-on ini.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Indi makapamati ang helper sang PadForge sa port {0}. Bayluhan ang port, ukon i-off kag i-on ini.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Nag-untat ang helper sang PadForge ({0}). I-off kag i-on ang Reach PadForge From This Network para sugdan ini liwat.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Naka-off ang Automation, gani wala sing assistant sa sini nga network nga makaabot sa PadForge. Magasugod ang helper kon naka-on na ang Automation.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Wala subong sing address ini nga PC sa private nga network.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Mga assistant sa sini nga network</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Ginhimo ang key sini {1}, katapusan nga gingamit {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Ginhimo ang key sini {1}, wala pa nagamit.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Himuon ang key</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Nahimo</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Bayluhan ang port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Magpili sang port halin 1024 tubtob 49151. Ang gintipig nga address sang kada assistant nagasambit sang port, gani idugang liwat ang kada isa pagkatapos sang pagbaylo.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Magsulat sang port halin 1024 tubtob 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Ginadumalahan sini ang iya kaugalingon nga mga device kag ang {0}. Ginabasa gihapon sini ang tanan nga device.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Ang iya kaugalingon nga mga device lang ang ginadumalahan sini. Ginabasa gihapon sini ang tanan nga device.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Ang mga command halin sa command line nagaabot gihapon sa PadForge, pareho sang sa tanan nga programa.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Nagadalagan, upod ang imo mga kinamatarong, kag handa na. Ang ChatGPT nagaabot sa PadForge paagi sa sini nga tunnel nga wala sing kaugalingon nga sign-in, kag halin lang sa imo OpenAI nga organisasyon. Magasugod ini liwat upod ang PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Nagadalagan, upod ang imo mga kinamatarong. Ginahulat sini nga silingon sang OpenAI nga handa na ang tunnel.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Ginatipig sang PadForge ang key nga naka-encrypt para sa imo lang. Ang blangko nga kahon nagakalimot sini. Ang ChatGPT nagatrabaho sa lebel sa ibabaw.</value></data>
 </root>

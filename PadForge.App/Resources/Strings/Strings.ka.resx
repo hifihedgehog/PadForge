@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} დაკავშირდა, ბატარეა {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} მოწყობილობა გაითიშა: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} მოწყობილობა დაკავშირდა: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} განმეორებით ითიშება</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} წუთში {1}-ჯერ გაითიშა</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} დაბრუნდა</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} მოწყობილობა დაბრუნდა: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (მაქს. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (მაქს. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (მაქს. {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ავტომატური გადაკავშირება, პორტი, დაწყვილების პირადობა, დაკავშირება მისამართით</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>პორტი, DSX.exe-ის შემცვლელი</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>პორტები, სრული სიჩქარე და საკუთარი ფორმატები</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>სხვა ასისტენტები, ასისტენტები ვებში</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>სხვა ასისტენტები, ასისტენტები ვებში და ამ ქსელში</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ირგვლივ იხედეთ თავის ტრეკერით ან VR ჰედსეტით, ხოლო ორივე ცერა თითი ღილაკებზე რჩება.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>მიაბით სიჩქარე, პედლები და გადაცემები, რომლებსაც მანქანის მართვის თამაში აგზავნის, ნებისმიერი შეყვანის მსგავსად.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>გაუგზავნეთ კონტროლერის მოძრაობა ემულატორებს, რომლებიც DSU მოძრაობის წყაროს კითხულობენ.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>პლაგინის დამატება…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>პროგრამები და სკრიპტები|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ყველა ფაილი|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>დამტკიცება და გადატვირთვა…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>საქაღალდეში ჩვენება</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>ძრავასთან ერთად ირთვება</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>ფაილის შემოწმება გაშვებამდე</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>დასრულდა კოდით {0}. ხელახლა დაიწყება {1} წამში.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ხელმოუწერელია.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>მისი პარამეტრები აქ გამოჩნდება, სანამ ის მუშაობს.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>ის პარამეტრებს არ აცხადებს.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>მისი პარამეტრები აქ გამოჩნდება, როცა ის PadForge-თან დაკავშირდება.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>დაიწყო, მაგრამ PadForge-თან არასოდეს დაკავშირებულა. ხელახლა დაიწყება {0} წამში.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>დაიწყო, მაგრამ PadForge-თან არასოდეს დაკავშირებულა. ხელახლა დაიწყება {0} წამში.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} დაიწყო, მაგრამ PadForge-თან არასოდეს დაკავშირებულა.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>დასრულდა დაწყებიდან ერთი წუთის შემდეგ, PadForge-თან არასოდეს დაკავშირებულა</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge-მა ვერ წაიკითხა მისი პარამეტრები: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>დასრულდა ერთი წუთის უპასუხობის შემდეგ</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>მისი ფაილი შეიცვალა მუშაობისას</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ხელმოწერილია: {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ხელმოუწერელი</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>შესრულდა</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>შეკავდა</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>არ შესრულდა</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ამ დონეზე დაუშვებელია</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ახლა მიუწვდომელია</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების დაყენება</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>მოწყობილობის წაშლა: {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>მოწყობილობის {0} ყველა კონტროლის უმოქმედოდ დაყენება</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>მის მიერ მიწოდებული კლავიშებისა და მაუსის გამოტანა შეკავებულია პროგრამისთვის {0}, რომელიც ადმინისტრატორის სახით მუშაობს</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>მის მიერ მიწოდებული კლავიშებისა და მაუსის გამოტანა შეკავებულია ფანჯრისთვის, რომელიც ადმინისტრატორის სახით მუშაობს</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>აიძულებს PadForge-ს, გაუშვას პროგრამა.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>ხსნის ფაილს, საქაღალდეს ან ვებგვერდს.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>აიძულებს PadForge-ს, გაუგზავნოს Windows-ს კლავიშები ან მაუსის შეყვანა.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge-ის გაშვებული დატოვება, როცა დააწკაპუნებთ „დახურვაზე“ ან დააჭერთ Alt+F4-ს. გასასვლელად გამოიყენეთ „გასვლა“ სისტემური უჯრის მენიუში.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>PadForge-ის შეტყობინებების არეში დატოვება ფანჯრის ჩაკეცვისას, ამოცანათა ზოლის ნაცვლად.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>ფანჯრის დამალვა PadForge-ის გაშვებისას. ის ჩვეულებრივ მუშაობს და მიბმებს ამუშავებს.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ის ავტომატური გაშვება Windows-ში შესვლისას.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ის ავტომატური გაშვება Windows-ში შესვლისას. სანამ ეს ჩართულია, PadForge ჩაირთვება Windows-ის მოთხოვნის გარეშეც ბმულიდან, სკრიპტიდან ან სხვა პროგრამიდან.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge გაშვებულია აქედან: {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ამას PadForge-ის საკუთარი საქაღალდე სჭირდება. მისი საქაღალდე სხვა ფაილებსაც შეიცავს, ამიტომ PadForge ვერ დაიცავს მას სხვა პროგრამების მიერ ცვლილებისგან.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ის საკუთარ საქაღალდეში გადატანა</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ყოველთვის ჩვენება სისტემურ უჯრაში</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ხატულის სისტემურ უჯრაში ხილულად დატოვება ფანჯრის გახსნილობისას, რომ „გასვლა“ მის მენიუში ყოველთვის ერთი დაწკაპუნებით იყოს.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>განახლებები</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>შეამოწმეთ GitHub PadForge-ის ახალი ვერსიებისთვის და დააყენეთ აქედან, ასევე განაახლეთ კონტროლერების მონაცემთა ბაზა. PadForge მხოლოდ GitHub-ს უკავშირდება (api.github.com, github.com და მისი ჩამოტვირთვის სერვერები, ხოლო კონტროლერების მონაცემთა ბაზისთვის raw.githubusercontent.com). ის მხოლოდ საკუთარ ვერსიის ნომერს აგზავნის და კონტროლერების მონაცემთა ბაზისთვის იმ ტეგს, რომელიც GitHub-მა ბოლო ჩამოტვირთვას მისცა.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>შეამოწმეთ GitHub PadForge-ის ახალი ვერსიებისთვის და დააყენეთ აქედან, ასევე განაახლეთ კონტროლერების მონაცემთა ბაზა. PadForge მხოლოდ GitHub-ს უკავშირდება (api.github.com, github.com და მისი ჩამოტვირთვის სერვერები, ხოლო კონტროლერების მონაცემთა ბაზისთვის raw.githubusercontent.com) და მისამართს, რომელიც მონაცემთა ბაზის რიგში „ჩამოტვირთვის წყარო“ დააყენეთ. ის მხოლოდ საკუთარ ვერსიის ნომერს აგზავნის და კონტროლერების მონაცემთა ბაზისთვის იმ ტეგს, რომელიც სერვერმა ბოლო ჩამოტვირთვას მისცა.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>განახლებების ავტომატური შემოწმება</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>მოწმდება PadForge-ის გაშვებისას და ამის შემდეგ ყოველ 12 საათში.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>განახლებების ავტომატური დაყენება</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>დაყენება და გადატვირთვა</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>გამოშვების შენიშვნები</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>კონტროლერების მონაცემთა ბაზა</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ღილაკი „ახლა განახლება“ GitHub-იდან ჩამოტვირთავს საზოგადოების კონტროლერების მონაცემთა ბაზას (SDL_GameControllerDB) და პარამეტრების ფაილში ინახავს რუკებს, რომლებიც PadForge-ის ამ ვერსიას არ აქვს. ისინი მაშინვე გამოიყენება. ახალი რუკა გამოიყენება მხოლოდ იმ კონტროლერისთვის, რომელსაც სხვა არაფერი კითხულობს გეიმპადად, რომელიც მინიჭებული არ არის და რომელიც არ არის რეჟიმში „ნედლი ჯოისტიკის რეჟიმის იძულება (გეიმპადის გადანაწილების გვერდის ავლით)“. საწყისზე დაბრუნება შლის ყველა ჩამოტვირთულ რუკას. თქვენი რიგები, „მეტი“-ში, რჩება.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ღილაკი „ახლა განახლება“ ჩამოტვირთავს საზოგადოების კონტროლერების მონაცემთა ბაზას (SDL_GameControllerDB) GitHub-იდან ან „მეტი“-ში მითითებული მისამართიდან და პარამეტრების ფაილში ინახავს რუკებს, რომლებიც PadForge-ის ამ ვერსიას არ აქვს. ისინი მაშინვე გამოიყენება. სხვა მისამართიდან ის მხოლოდ ახალ რუკებს იღებს. ახალი რუკა გამოიყენება მხოლოდ იმ კონტროლერისთვის, რომელსაც სხვა არაფერი კითხულობს გეიმპადად, რომელიც მინიჭებული არ არის და რომელიც არ არის რეჟიმში „ნედლი ჯოისტიკის რეჟიმის იძულება (გეიმპადის გადანაწილების გვერდის ავლით)“. საწყისზე დაბრუნება შლის ყველა ჩამოტვირთულ რუკას და ისევ GitHub-იდან ჩამოტვირთავს. თქვენი რიგები, „მეტი“-ში, რჩება.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ახლა განახლება</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>განახლება…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>განახლებების შემოწმება…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge განახლდა {0}-მდე.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ჩაშენებულია {0} რუკა, საზოგადოების ასლი თარიღით {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ჩაშენებულია {0} რუკა, საზოგადოების ასლი თარიღით {1}. ჩამოიტვირთა {2}: ახალი რიგი {3}, შეცვლილი {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>ჩაშენებულია {1} რუკა, საზოგადოების ასლი თარიღით {2}. ჩამოიტვირთა {3} წყაროდან {4}: ახალი რიგი {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>ჩაშენებულია {1} რუკა, საზოგადოების ასლი თარიღით {2}. ჩამოიტვირთა {3} წყაროდან {4}: ახალი რიგი {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>საზოგადოების მონაცემთა ბაზა ბოლო განახლების შემდეგ არ შეცვლილა.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-თან დაკავშირება ვერ მოხერხდა: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0}-თან დაკავშირება ვერ მოხერხდა: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge-მა ჩამოტვირთვა უარყო, რადგან ის არ არის კონტროლერების მონაცემთა ბაზა, რომელსაც ელოდა. არაფერი შეცვლილა.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ჩაკეცილად გაშვება</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>გაშვება სისტემაში შესვლისას</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>შეჯამების კოპირება</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>დაკოპირდა</value></data>
   <data name="Review_Save" xml:space="preserve"><value>შენახვა…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>შენახვა და გამოქვეყნება</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>ღილაკი „შენახვა და გამოქვეყნება“ ინახავს zip-ს, აკოპირებს შეჯამებას, აჩვენებს ფაილს Explorer-ში და ხსნის PadForge-ის გვერდს, სადაც ანგარიშები იგზავნება. ჩასვით იქ შეჯამება და ფაილი გადაათრიეთ მასზე.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>ჩანაწერის შენახვა</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ფაილები</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>არ შეინახა. {0}</value></data>
@@ -3247,6 +3263,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>მოხდა მოულოდნელი შეცდომა:
 
 {0}
+
+PadForge-მა დეტალები ჩაწერა crash.log-ში PadForge.exe-ს გვერდით. ამის შესატყობინებლად დაიწყეთ განხილვა მისამართზე {2} და crash.log გადაათრიეთ მასზე.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(კიდევ {0} შეცდომა დაფარულია)</value></data>
@@ -5767,6 +5785,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>პროდუქტი</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>ტიპი</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>შესაძლებლობები</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>უკანა ბერკეტები გამორთულია USB-ით და Xbox Wireless Adapter-ით. SDL-ის მიზეზი: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>უკანა ბერკეტები გამორთულია Bluetooth-ით. SDL-ის მიზეზი: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>კავშირი</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>ბატარეა</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>გზა</value></data>
@@ -5947,6 +5967,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ახლა გამოიყენება. რიგი თქვენია და ამ მოწყობილობისთვის უპირატესია.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>შენახულია როგორც თქვენი. გამოიყენება, როცა ძრავა იმუშავებს და მოწყობილობა დაკავშირდება.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-მა რიგი არ მიიღო. ამ მოწყობილობისთვის არაფერი შეცვლილა.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>არ შენახულა. PadForge ინახავს თქვენს მაქსიმუმ {0:N0} რიგს და ახლა იმდენივე უკვე აქვს.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL რუკის ჩასმა</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>SDL რუკის ჩასმა: {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>რუკის პოვნა: {0}</value></data>
@@ -5980,6 +6001,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>რიგები ინახება როგორც თქვენი PadForge.xml-ში და თავიანთი მოწყობილობებისთვის ყველა სხვა წყაროზე უპირატესია. „მეტი“ განყოფილებაში, კონტროლერების მონაცემთა ბაზის რიგში, „გასუფთავება“ მათ შლის.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} რიგი Windows-ისთვის. {1} სხვა სისტემებისთვის გამოტოვებულია.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} რიგი Windows-ისთვის. {1} სხვა სისტემებისთვის გამოტოვებულია.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>დაემატება ყველა {0:N0}. PadForge ინახავს თქვენს მაქსიმუმ {1:N0} რიგს.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>ის დაემატება. PadForge ინახავს თქვენს მაქსიმუმ {1:N0} რიგს.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>თქვენგან ახლა შენახულია {0:N0}, ამიტომ ამათგან დაემატება {1:N0}, ხოლო {2:N0} არ დაემატება.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>თქვენგან ახლა შენახულია {0:N0}, ამიტომ ამათგან დაემატება {1:N0}, ხოლო {2:N0} არ დაემატება.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} უარყოფილია. პირველი: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>ჩასვით რიგი ან gamecontrollerdb.txt ფაილის ტექსტი.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ტექსტი SDL-ის კონტროლერების ბაზის რიგი არ არის: ID 32 თექვსმეტობითი ციფრით, სახელი, შემდეგ ველები, მაგალითად a:b0.</value></data>
@@ -5992,14 +6017,18 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>რიგი ერთ ველს ორჯერ იძლევა.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>რიგი 1,024 სიმბოლოზე გრძელია.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>რიგი არც ერთ კონტროლს არ აბამს.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>თქვენი რიგები</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>საიდან ჩამოიტვირთება, თქვენი საკუთარი რიგები</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>თქვენი რიგები</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>რიგები, რომლებსაც აქ დაამატებთ ან მოწყობილობის SDL რუკა ბარათზე ჩასვამთ, თავიანთი მოწყობილობებისთვის ყველა სხვა წყაროზე უპირატესია და საწყისზე დაბრუნებას გადაურჩება.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>რიგების დამატება ფაილიდან ან გაცვლის ბუფერიდან…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} რიგი, თქვენი, თავიანთი მოწყობილობებისთვის ყველა სხვა წყაროზე უპირატესი.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} რიგი, თქვენი, თავისი მოწყობილობისთვის ყველა სხვა წყაროზე უპირატესი.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} რიგი და მოწყობილობა, თქვენი, ყველა სხვა წყაროზე უპირატესი.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} რიგი და მოწყობილობა, თქვენი, ყველა სხვა წყაროზე უპირატესი.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>ჯერ არცერთი.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>თქვენი SDL_GAMECONTROLLERCONFIG ცვლადი შეიცავს {0} რიგს, რომელსაც PadForge არ ინახავს. „რიგების დამატება ფაილიდან ან გაცვლის ბუფერიდან“ მათთან ერთად იხსნება.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>თქვენი SDL_GAMECONTROLLERCONFIG ცვლადი შეიცავს {0} რიგს, რომელსაც PadForge არ ინახავს. „რიგების დამატება ფაილიდან ან გაცვლის ბუფერიდან“ მასთან ერთად იხსნება.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>მაშინვე გამოიყენება.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>ჩამოტვირთვის წყარო</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>მხოლოდ HTTPS. საზოგადოების მისამართისგან განსხვავებული მისამართიდან PadForge მხოლოდ ახალ რიგებს იღებს.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>ჩართვა</value></data>
   <data name="Web_Header" xml:space="preserve"><value>ასისტენტები ვებში</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>გვირაბი</value></data>
@@ -6038,7 +6067,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>დაშვებულია {0}, ბოლოს გამოიყენა {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>დაშვებულია {0}, ჯერ არ გამოუყენებია.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>გაუქმება</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge არ ჩამოტვირთავს გვირაბის პროგრამას და არ ინახავს სხვა კომპანიის გასაღებს. ვებ ასისტენტი ზემოთ მითითებული დონით მუშაობს.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge გვირაბის პროგრამას ჩამოტვირთავს მხოლოდ ChatGPT Secure MCP Tunnel-ისთვის. ვებ ასისტენტი ზემოთ მითითებული დონით მუშაობს.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>მივცეთ {0}-ს უფლება, იმუშაოს PadForge-თან ვებიდან?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>მისი შესვლა დაბრუნდა მისამართზე {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>თავს ეძახის {0}.</value></data>
@@ -6075,4 +6104,35 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>მისი სკრიპტის ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>სკრიპტები მის კონტროლებს ასე ეძახიან: {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>სკრიპტები მის კლავიშებს ასე ეძახიან: KeyA, KeySpace, KeyLeftShift და მისთანანი, ხოლო ყველა კლავიშს მისი კოდით, Vk0-დან Vk255-მდე.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ამ ქსელში მისამართიდან {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>იმავე სერტიფიკატის გასაღებით ხელმოწერილი {0}-ის ახალი ვერსია ჩაირთვება ხელახლა ღილაკის „დამტკიცება და გადატვირთვა“ გარეშე. ნებისმიერი სხვა ცვლილების წინ ის თქვენ გკითხავთ.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>მიიღო ახალი ვერსია, ხელმოწერილი იმავე სერტიფიკატის გასაღებით</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>მისამართი</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge იღებს მისამართს, რომელიც იწყება https://-ით და მიუთითებს ჰოსტს, ნაგულისხმევ პორტზე, მომხმარებლის სახელისა და პაროლის გარეშე.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>პორტი</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>შეცვლა…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>ზარები და მათი გასაღები ამ ქსელში დაუშიფრავად გადის. Windows მათ მხოლოდ კერძო ქსელებში უშვებს.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>პორტს {0} სხვა პროგრამა იყენებს. შეცვალეთ ის, რომ PadForge-ს ამ ქსელიდან მიწვდეთ.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows-მა PadForge-ის დამხმარეს პორტზე {0} მოსმენის უფლება არ მისცა. PadForge ამას ადმინისტრატორის უფლებებით ანიჭებს, ამიტომ გაუშვით PadForge მათთან ერთად და გამორთეთ და ჩართეთ ეს.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge-ის დამხმარეს პორტზე {0} მოსმენა ვერ მოუხერხდა. შეცვალეთ პორტი ან გამორთეთ და ჩართეთ ეს.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ის დამხმარე გაჩერდა ({0}). მის ხელახლა დასაწყებად გამორთეთ და ჩართეთ Reach PadForge From This Network.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>ავტომატიზაცია გამორთულია, ამიტომ ამ ქსელის არცერთი ასისტენტი PadForge-ს ვერ აღწევს. დამხმარე იწყება, როცა ავტომატიზაცია ჩაირთვება.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>ამ კომპიუტერს ახლა კერძო ქსელში მისამართი არ აქვს.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>ასისტენტები ამ ქსელში</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. მისი გასაღები შეიქმნა {1}, ბოლოს გამოიყენა {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. მისი გასაღები შეიქმნა {1}, ჯერ არ გამოუყენებია.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>გასაღების შექმნა</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>სათაური</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>მზადაა</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>პორტის შეცვლა</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>აირჩიეთ პორტი 1024-დან 49151-მდე. თითოეული ასისტენტის შენახული მისამართი პორტს შეიცავს, ამიტომ ცვლილების შემდეგ თითოეული ხელახლა დაამატეთ.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>აკრიფეთ პორტი 1024-დან 49151-მდე.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>მართავს საკუთარ მოწყობილობებს და {0}. ის მაინც კითხულობს ყველა მოწყობილობას.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>მართავს მხოლოდ საკუთარ მოწყობილობებს. ის მაინც კითხულობს ყველა მოწყობილობას.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>ბრძანების სტრიქონიდან გაცემული ბრძანებები PadForge-ს მაინც აღწევს, როგორც ყველა პროგრამისთვის.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>ის მხოლოდ საკუთარი მოწყობილობების მართვას ითხოვს.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>ის ერთხელ ეკითხება. მისი ამოშლა ან მისი დაშვების შეცვლა შეგიძლიათ ავტომატიზაცია გვერდზე.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>მუშაობს, თქვენი უფლებებით, და მზადაა. ChatGPT PadForge-ს ამ გვირაბით აღწევს საკუთარი შესვლის გარეშე და მხოლოდ თქვენი OpenAI ორგანიზაციიდან. ის PadForge-თან ერთად კვლავ ჩაირთვება.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>მუშაობს, თქვენი უფლებებით. ელოდება, სანამ OpenAI იტყვის, რომ გვირაბი მზადაა.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge გასაღებს მხოლოდ თქვენთვის დაშიფრულად ინახავს. ცარიელი ველი მას ივიწყებს. ChatGPT ზემოთ მითითებული დონით მუშაობს.</value></data>
 </root>

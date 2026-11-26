@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tqabbad, batterija {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Apparati li ma baqgħux imqabbdin ({0}): {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Apparati mqabbdin ({0}): {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} jibqa' jitlef il-konnessjoni</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} tilef il-konnessjoni f'minuta. Għadd: {1}</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} reġa' tqabbad</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Apparati reġgħu tqabbdu ({0}): {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (massimu {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (massimu {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (massimu {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rikonnessjoni awtomatika, port, identità tal-ippearjar, qabbad bl-indirizz</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sostitut ta' DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Veloċità Sħiħa, Formati Personalizzati</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Assistenti oħra, assistenti fuq il-web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Assistenti oħra, assistenti fuq il-web u fuq dan in-netwerk</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Dawwar madwarek b'head tracker jew headset VR waqt li ż-żewġ swaba' l-kbar jibqgħu fuq il-buttuni.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mappja l-veloċità, il-pedali u l-gears li logħba tas-sewqan tibgħat, bħal kull input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Ibgħat il-moviment tal-kontrollur lil emulaturi li jaqraw sors tal-moviment DSU.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Żid plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmi u skripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Il-fajls kollha|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Approva u erġa' ibda…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Uri fil-folder</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Jibda mal-engine</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Qed jiċċekkja l-fajl qabel ma jibda</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ħareġ bil-kodiċi {0}. Jibda mill-ġdid fi {1} s.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Mhux iffirmat.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Is-settings tiegħu jidhru hawn waqt li jaħdem.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Ma jiddikjara l-ebda setting.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Is-settings tiegħu jidhru hawn malli jitqabbad ma' PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Beda iżda qatt ma tqabbad ma' PadForge. Jerġa' jibda fi {0} s.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Beda iżda qatt ma tqabbad ma' PadForge. Jerġa' jibda fi {0} sekonda.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} beda iżda qatt ma tqabbad ma' PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Intemm minuta wara li beda, qatt ma tqabbad ma' PadForge</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge ma setax jaqra s-settings tiegħu: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Intemm wara minuta mingħajr kelma</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Il-fajl tiegħu inbidel waqt li kien qed jaħdem</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, iffirmat minn {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, mhux iffirmat</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Magħmul</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Miżmum</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ma sarx</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Mhux permess f'dan il-livell</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Mhux disponibbli issa</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Issettja l-kontrolli tal-apparat {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Neħħi l-apparat {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Poġġi kull kontroll tal-apparat {0} fil-mistrieħ</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>L-output tat-tastiera u tal-maws li jagħti huwa miżmum lura minn {0}, li jaħdem bħala amministratur</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>L-output tat-tastiera u tal-maws li jagħti huwa miżmum lura minn tieqa li taħdem bħala amministratur</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Iġiegħel lil PadForge iħaddem programm.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Jiftaħ fajl, folder jew paġna tal-web.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Iġiegħel lil PadForge jibgħat ċwievet jew input tal-maws lill-Windows.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Żomm PadForge għaddej meta tikklikkja Agħlaq jew tagħfas Alt+F4. Uża Oħroġ fil-menu tat-tray tas-sistema biex toħroġ.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Żomm PadForge fiż-żona tan-notifiki meta timinimizza t-tieqa, minflok fuq it-taskbar.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Żomm it-tieqa moħbija meta PadForge jibda. Jaħdem u jagħmel il-mappjar bħas-soltu.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ibda PadForge awtomatikament meta tidħol f'Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ibda PadForge awtomatikament meta tidħol f'Windows. Sakemm din tkun mixgħula, PadForge jibda wkoll mingħajr il-prompt ta' Windows minn shortcut, script jew programm ieħor.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge jaħdem minn {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dan jeħtieġ lil PadForge f'folder tiegħu stess. Il-folder tiegħu fih fajls oħra, għalhekk PadForge ma jistax iżomm programmi oħra milli jbiddluh.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Ċaqlaq PadForge f'folder tiegħu stess</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dejjem uri fis-system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Żomm l-ikona tat-tray viżibbli waqt li t-tieqa tkun miftuħa, biex Oħroġ fil-menu tagħha jkun dejjem klikk wieħed 'il bogħod.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aġġornamenti</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Iċċekkja GitHub għal verżjonijiet ġodda ta' PadForge u installahom minn hawn, u aġġorna d-database tal-kontrolluri. PadForge jikkuntattja biss lil GitHub (api.github.com, github.com u s-servers tad-download tiegħu, u raw.githubusercontent.com għad-database tal-kontrolluri). L-unika data li jibgħat hija n-numru tal-verżjoni tiegħu stess u, għad-database tal-kontrolluri, it-tag li ta GitHub lill-aħħar tniżżil.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Iċċekkja GitHub għal verżjonijiet ġodda ta' PadForge u installahom minn hawn, u aġġorna d-database tal-kontrolluri. PadForge jikkuntattja biss lil GitHub (api.github.com, github.com u s-servers tad-download tiegħu, u raw.githubusercontent.com għad-database tal-kontrolluri), u l-indirizz li tistabbilixxi taħt Niżżel minn fir-row tad-Database tal-kontrolluri. L-unika data li jibgħat hija n-numru tal-verżjoni tiegħu stess u, għad-database tal-kontrolluri, it-tag li ta s-server lill-aħħar tniżżil.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Iċċekkja għall-aġġornamenti awtomatikament</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Jiċċekkja meta jibda PadForge u kull 12-il siegħa minn hemm 'il quddiem.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Installa l-aġġornamenti awtomatikament</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installa u erġa' ibda</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Noti tal-verżjoni</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database tal-kontrolluri</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aġġorna issa jniżżel id-database komunitarja tal-kontrolluri (SDL_GameControllerDB) minn GitHub u jżomm, fil-fajl tas-settings, l-immappjar li din il-verżjoni ta' PadForge m'għandhiex. Jintużaw minnufih. Immappjar ġdid jintuża biss għal kontrollur li xejn ieħor ma jaqrah bħala gamepad, li mhux assenjat u li mhux f'Sfurza l-modalità tal-joystick mhux ipproċessat (aqbeż l-immappjar mill-ġdid tal-gamepad). L-irrisettjar ineħħi kull immappjar imniżżel. Ir-rows tiegħek, taħt Aktar, jibqgħu.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aġġorna issa jniżżel id-database komunitarja tal-kontrolluri (SDL_GameControllerDB) minn GitHub, jew mill-indirizz stabbilit taħt Aktar, u jżomm, fil-fajl tas-settings, l-immappjar li din il-verżjoni ta' PadForge m'għandhiex. Jintużaw minnufih. Minn indirizz ieħor iżomm immappjar ġdid biss. Immappjar ġdid jintuża biss għal kontrollur li xejn ieħor ma jaqrah bħala gamepad, li mhux assenjat u li mhux f'Sfurza l-modalità tal-joystick mhux ipproċessat (aqbeż l-immappjar mill-ġdid tal-gamepad). L-irrisettjar ineħħi kull immappjar imniżżel u jniżżel minn GitHub mill-ġdid. Ir-rows tiegħek, taħt Aktar, jibqgħu.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Aġġorna issa</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Qed jaġġorna…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Qed jiċċekkja għall-aġġornamenti…</value></data>
@@ -1055,8 +1066,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ġie aġġornat għal {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Inkorporat: {0} immappjar, kopja komunitarja ta' {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Inkorporat: {0} immappjar, kopja komunitarja ta' {1}. Imniżżel {2}: rows ġodda {3}, mibdula {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Inkorporat: {1} immappjar, kopja komunitarja ta' {2}. Imniżżel {3} minn {4}: rows ġodda {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Inkorporat: {1} immappjar, kopja komunitarja ta' {2}. Imniżżel {3} minn {4}: row ġdid {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Id-database komunitarja ma nbidlitx mill-aħħar aġġornament.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ma setax jilħaq GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Ma setax jilħaq {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge irrifjuta t-tniżżil għax mhuwiex id-database tal-kontrolluri li jistenna. Xejn ma nbidel.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Ibda minimizzat</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Ibda mal-login</value></data>
@@ -1227,6 +1241,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Ikkopja s-sommarju</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Ikkupjat</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Salva…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Salva u poġġi</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Salva u poġġi jsalva ż-zip, jikkopja s-sommarju, juri l-fajl fl-Explorer u jiftaħ il-paġna ta' PadForge fejn jitpoġġew ir-rapporti. Waħħal is-sommarju hemm u ħalli l-fajl fuqha.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Salva r-reġistrazzjoni</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Fajls zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ma salvax. {0}</value></data>
@@ -3222,6 +3238,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Seħħ żball mhux mistenni:
 
 {0}
+
+PadForge kiteb id-dettalji f'crash.log ħdejn PadForge.exe. Biex tirrapporta dan, ibda diskussjoni fuq {2} u ħalli crash.log fuqha.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} żball(ijiet) oħra ma ntwerewx)</value></data>
@@ -5717,6 +5735,8 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Prodott</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Tip</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Kapaċitajiet</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Il-paddles ta' wara huma mitfija fuq USB u l-Xbox Wireless Adapter. Ir-raġuni ta' SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Il-paddles ta' wara huma mitfija fuq Bluetooth. Ir-raġuni ta' SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Konnessjoni</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batterija</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
@@ -5895,6 +5915,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Qed jintuża issa. Ir-row hija tiegħek u tirbaħ għal dan l-apparat.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Miżmum bħala tiegħek. Jintuża malli jaħdem l-engine u l-apparat ikun imqabbad.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ma ħax ir-row. Xejn ma nbidel għal dan l-apparat.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Ma nżammx. PadForge jżomm sa {0:N0} rows tiegħek u jżomm dan l-ammont issa.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Waħħal immappjar SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Waħħal immappjar SDL għal {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Sib immappjar għal {0}</value></data>
@@ -5928,6 +5949,10 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ir-rows jinżammu bħala tiegħek f'PadForge.xml u jirbħu għall-apparati tagħhom fuq kull sors ieħor. Ikklirja, taħt Aktar tar-row Database tal-kontrolluri, ineħħihom.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rows għall-Windows. {1} għal sistemi oħra jitħallew barra.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Row {0} għall-Windows. {1} għal sistemi oħra jitħallew barra.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Se jiżdiedu kollha: {0:N0}. PadForge jżomm sa {1:N0} rows tiegħek.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Se jiżdied. PadForge jżomm sa {1:N0} rows tiegħek.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Miżmuma issa minn tiegħek: {0:N0}. Se jiżdiedu {1:N0} minn dawn u {2:N0} ma jiżdiedux.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>{0:N0} minn tiegħek hija miżmuma issa, għalhekk {1:N0} minn dawn se jiżdiedu u {2:N0} le.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} miċħuda. L-ewwel: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Waħħal row, jew it-test ta' fajl gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>It-test mhuwiex row tad-database tal-kontrolluri ta' SDL: ID ta' 32 ċifra eżadeċimali, isem, imbagħad fields bħal a:b0.</value></data>
@@ -5940,14 +5965,18 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Ir-row tagħti field darbtejn.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Ir-row hija ogħla minn 1,024 karattru.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Ir-row ma torbot l-ebda kontroll.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ir-rows tiegħek</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Minn fejn jniżżel, ir-rows tiegħek stess</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ir-rows tiegħek</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rows li żżid hawn, jew twaħħal fuq il-card Immappjar SDL ta' apparat, jirbħu għall-apparati tagħhom fuq kull sors ieħor u jibqgħu mar-reset.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Żid rows minn fajl jew mill-clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Rows: {0}, tiegħek fuq kull sors ieħor għall-apparati tagħhom.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Row {0}, tiegħek fuq kull sors ieħor għall-apparat tagħha.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Rows u apparati: {0} kull wieħed, tiegħek fuq kull sors ieħor.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Row u apparat: {0} kull wieħed, tiegħek fuq kull sors ieħor.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Għadha xejn.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Il-varjabbli SDL_GAMECONTROLLERCONFIG tiegħek fiha rows li PadForge ma jżommx: {0}. Żid rows minn fajl jew mill-clipboard jinfetaħ bihom.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Il-varjabbli SDL_GAMECONTROLLERCONFIG tiegħek fiha row {0} li PadForge ma jżommx. Żid rows minn fajl jew mill-clipboard jinfetaħ miegħu.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Qed jintuża minnufih.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Niżżel minn</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS biss. Minn indirizz li mhuwiex tal-komunità, PadForge jieħu rows ġodda biss.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Ixgħel</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Assistenti fuq il-web</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
@@ -5986,7 +6015,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permess {0}, użat l-aħħar {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permess {0}, għadu ma ntużax.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Irrevoka</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ma jniżżel l-ebda programm tat-tunnel u ma jżomm l-ebda ċavetta ta' kumpanija oħra. Assistent tal-web jaħdem fil-livell t'hawn fuq.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge jniżżel programm tat-tunnel biss għal ChatGPT Secure MCP Tunnel. Assistent tal-web jaħdem fil-livell t'hawn fuq.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Tippermetti lil {0} jaħdem ma' PadForge mill-web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Id-dħul tiegħu jirritorna lejn {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Isemmi lilu nnifsu {0}.</value></data>
@@ -6023,4 +6052,35 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>L-ID tal-iskript tiegħu</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>L-iskripts isemmu l-kontrolli tiegħu {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>L-iskripts isemmu ċwievet tiegħu KeyA, KeySpace, KeyLeftShift u bħalhom, u kull ċavetta bil-kodiċi tagħha, Vk0 sa Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} fuq dan in-netwerk minn {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Verżjoni ġdida ffirmata bl-istess ċavetta taċ-ċertifikat ta' {0} terġa' tibda mingħajr Approva u erġa' ibda. Kwalunkwe bidla oħra tistaqsik l-ewwel.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Ħa verżjoni ġdida ffirmata bl-istess ċavetta taċ-ċertifikat</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Indirizz</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge jaċċetta indirizz li jibda b'https:// u jsemmi host, fuq il-port default, mingħajr isem tal-utent jew password.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Biddel…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Is-sejħiet u ċ-ċavetta tagħhom jaqsmu dan in-netwerk mhux ikkriptati. Windows iħallihom jidħlu fuq netwerks privati biss.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} qed jintuża minn programm ieħor. Biddlu biex tilħaq PadForge minn dan in-netwerk.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ma ħalliex l-helper ta' PadForge jisma' fuq port {0}. PadForge jippermettih b'drittijiet ta' amministratur, għalhekk ibda PadForge bihom u itfi u ixgħel dan.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>L-helper ta' PadForge ma setax jisma' fuq port {0}. Biddel il-port, jew itfi u ixgħel dan.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>L-helper ta' PadForge waqaf ({0}). Itfi u ixgħel Reach PadForge From This Network biex jerġa' jibda.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Awtomazzjoni hija mitfija, għalhekk l-ebda assistent fuq dan in-netwerk ma jilħaq PadForge. L-helper jibda malli Awtomazzjoni tinxtegħel.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Dan il-PC m'għandu l-ebda indirizz fuq netwerk privat bħalissa.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Assistenti fuq dan in-netwerk</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Iċ-ċavetta tiegħu saret {1}, użata l-aħħar {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Iċ-ċavetta tiegħu saret {1}, għadha ma ntużatx.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Agħmel ċavetta</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Magħmul</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Biddel il-port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Agħżel port minn 1024 sa 49151. L-indirizz salvat ta' kull assistent isemmi l-port, għalhekk żid kull wieħed mill-ġdid wara l-bidla.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Ittajpja port minn 1024 sa 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Imexxi l-apparati tiegħu stess u {0}. Xorta jaqra kull apparat.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Imexxi l-apparati tiegħu stess biss. Xorta jaqra kull apparat.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Il-kmandi mil-linja tal-kmand xorta jilħqu PadForge, bħalma jilħqu għal kull programm.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Jitlob li jmexxi l-apparati tiegħu stess biss.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Jistaqsi darba biss. Tista' tneħħih jew tbiddel il-firxa tiegħu fuq il-paġna Awtomazzjoni.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Qed jaħdem, bid-drittijiet tiegħek, u lest. ChatGPT jilħaq PadForge permezz ta' dan it-tunnel mingħajr dħul tiegħu stess, u biss mill-organizzazzjoni OpenAI tiegħek. Jerġa' jibda ma' PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Qed jaħdem, bid-drittijiet tiegħek. Jistenna lil OpenAI tgħid li t-tunnel huwa lest.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge iżomm iċ-ċavetta kriptata għalik biss. Kaxxa vojta tinsiha. ChatGPT jaħdem fil-livell t'hawn fuq.</value></data>
 </root>

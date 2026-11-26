@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} gekoppel, battery {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} toestelle ontkoppel: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} toestelle gekoppel: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ontkoppel aanhoudend</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} het {1} keer in 'n minuut ontkoppel</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} is terug</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} toestelle is terug: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Outo-herkoppel, poort, paringsidentiteit, koppel via adres</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Poort, DSX.exe-plaasvervanger</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Poorte, Volspoed, Pasgemaakte formate</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Ander assistente, assistente op die web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Ander assistente, assistente op die web en op hierdie netwerk</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Kyk rond met 'n kopvolger of VR-headset terwyl albei duime op die knoppies bly.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Karteer die spoed, pedale en rataflope wat 'n renspeletjie stuur, soos enige invoer.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Stuur controller-beweging na emulators wat 'n DSU-bewegingsbron lees.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Voeg 'n inpropprogram by…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programme en skrifte|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Alle lêers|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Keur goed en herbegin…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Wys in vouer</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Begin saam met die enjin</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Kyk die lêer na voordat dit begin</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Het met kode {0} gestop. Begin weer oor {1} s.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nie onderteken nie.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Die instellings verskyn hier terwyl dit loop.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Dit verklaar geen instellings nie.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Die instellings verskyn hier sodra dit aan PadForge koppel.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Het begin maar nooit aan PadForge gekoppel nie. Dit begin weer oor {0} sekondes.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Het begin maar nooit aan PadForge gekoppel nie. Dit begin weer oor {0} sekonde.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} het begin maar nooit aan PadForge gekoppel nie.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>'n Minuut na die begin beëindig, nooit aan PadForge gekoppel nie</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge kon nie die instellings lees nie: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Na 'n minuut sonder 'n woord beëindig</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Die lêer het verander terwyl dit geloop het</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, onderteken deur {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, nie onderteken nie</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Gedoen</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Teruggehou</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nie gedoen nie</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Nie op hierdie vlak toegelaat nie</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Nou nie beskikbaar nie</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Stel die kontroles van toestel {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Verwyder die toestel {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Sit elke kontrole van toestel {0} in rus</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Sleutel- en muisuitvoer wat dit voer, word teruggehou van {0}, wat as administrateur loop</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Sleutel- en muisuitvoer wat dit voer, word teruggehou van 'n venster wat as administrateur loop</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Laat PadForge 'n program laat loop.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Maak 'n lêer, 'n vouer of 'n webblad oop.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Laat PadForge sleutels of muisinvoer na Windows stuur.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Hou PadForge aan die gang wanneer jy op Sluit klik of Alt+F4 druk. Gebruik Verlaat in die stelselbalkkieslys om te stop.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Hou PadForge in die kennisgewingarea wanneer jy die venster minimeer, in plaas van op die taakbalk.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Hou die venster versteek wanneer PadForge begin. Dit loop en wys toe soos gewoonlik.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Begin PadForge outomaties wanneer jy by Windows aanmeld.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Begin PadForge outomaties wanneer jy by Windows aanmeld. Solank dit aan is, begin PadForge ook sonder Windows se venster vanaf 'n kortpad, 'n skrip of 'n ander program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge loop vanaf {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dit vereis dat PadForge in 'n eie vouer is. Sy vouer bevat ander lêers, so PadForge kan nie keer dat ander programme dit verander nie.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Skuif PadForge na sy eie vouer</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Wys altyd in stelselbalk</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hou die balkikoon sigbaar terwyl die venster oop is, sodat Verlaat in sy kieslys altyd een klik weg is.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Opdaterings</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kyk op GitHub vir nuwe weergawes van PadForge en installeer hulle van hier af, en opdateer die controller-databasis. PadForge kontak net GitHub (api.github.com, github.com en sy aflaaibedieners, en raw.githubusercontent.com vir die controller-databasis). Die enigste data wat dit stuur, is sy eie weergawenommer en, vir die controller-databasis, die etiket wat GitHub aan die laaste aflaai gegee het.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kyk op GitHub vir nuwe weergawes van PadForge en installeer hulle van hier af, en opdateer die controller-databasis. PadForge kontak net GitHub (api.github.com, github.com en sy aflaaibedieners, en raw.githubusercontent.com vir die controller-databasis), en die adres wat jy onder die Controller-databasis-ry se Laai af van stel. Die enigste data wat dit stuur, is sy eie weergawenommer en, vir die controller-databasis, die etiket wat die bediener aan die laaste aflaai gegee het.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Kyk outomaties vir opdaterings</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Kyk wanneer PadForge begin en daarna elke 12 uur.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Installeer opdaterings outomaties</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installeer en herbegin</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Vrystellingsnotas</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Controller-databasis</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdateer nou laai die gemeenskap se controller-databasis (SDL_GameControllerDB) van GitHub af en hou in die instellingslêer die toewysings wat hierdie weergawe van PadForge kort. Hulle is dadelik in gebruik. 'n Nuwe toewysing word slegs gebruik vir 'n controller wat niks anders as 'n gamepad lees nie, wat nie toegewys is nie en wat nie in Dwing rou joystick-modus (omseil gamepad-hertoewysing) is nie. Die terugstelling verwyder elke afgelaaide toewysing. Jou eie rye, onder Meer, bly.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdateer nou laai die gemeenskap se controller-databasis (SDL_GameControllerDB) van GitHub af, of van die adres wat onder Meer gestel is, en hou in die instellingslêer die toewysings wat hierdie weergawe van PadForge kort. Hulle is dadelik in gebruik. Van 'n ander adres hou dit net nuwe toewysings. 'n Nuwe toewysing word slegs gebruik vir 'n controller wat niks anders as 'n gamepad lees nie, wat nie toegewys is nie en wat nie in Dwing rou joystick-modus (omseil gamepad-hertoewysing) is nie. Die terugstelling verwyder elke afgelaaide toewysing en laai weer van GitHub af. Jou eie rye, onder Meer, bly.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Opdateer nou</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Opdateer tans…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Kyk tans vir opdaterings…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge is opgedateer na {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ingebou: {0} toewysings, gemeenskapskopie van {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ingebou: {0} toewysings, gemeenskapskopie van {1}. Afgelaai {2}: {3} nuwe rye, {4} verander.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Ingebou: {1} toewysings, gemeenskapskopie van {2}. Afgelaai {3} van {4}: {0} nuwe rye.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Ingebou: {1} toewysings, gemeenskapskopie van {2}. Afgelaai {3} van {4}: {0} nuwe ry.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Die gemeenskapsdatabasis het nie verander sedert die laaste opdatering nie.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Kon nie GitHub bereik nie: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Kon nie {0} bereik nie: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge het die aflaai geweier omdat dit nie die controller-databasis is wat dit verwag nie. Niks het verander nie.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Begin geminimeer</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Begin by aanmelding</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>Kopieer opsomming</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Gekopieer</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Stoor…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Stoor en plaas</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Stoor en plaas stoor die zip, kopieer die opsomming, wys die lêer in Explorer en maak PadForge se bladsy oop waar verslae heen gaan. Plak die opsomming daar en sleep die lêer daarop.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Stoor die opname</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-lêers</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nie gestoor nie. {0}</value></data>
@@ -3199,6 +3215,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>'n Onverwagte fout het voorgekom:
 
 {0}
+
+PadForge het die besonderhede na crash.log langs PadForge.exe geskryf. Om dit te rapporteer, begin 'n bespreking by {2} en sleep crash.log daarop.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} bykomende fout(e) onderdruk)</value></data>
@@ -5583,6 +5601,8 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produk</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Tipe</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Vermoëns</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Die agterste peddels is af oor USB en die Xbox Wireless Adapter. SDL se rede: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Die agterste peddels is af oor Bluetooth. SDL se rede: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Skakel</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Battery</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Pad</value></data>
@@ -5769,6 +5789,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Nou in gebruik. Die ry is joune en geld vir hierdie toestel.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>As joune gehou. Dit is in gebruik sodra die enjin loop en die toestel gekoppel is.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL het nie die ry geneem nie. Niks het vir hierdie toestel verander nie.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Nie gehou nie. PadForge hou tot {0:N0} rye van joune en hou nou soveel.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Plak 'n SDL-toewysing</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Plak 'n SDL-toewysing vir {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Vind 'n toewysing vir {0}</value></data>
@@ -5802,6 +5823,10 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Die rye word as joune in PadForge.xml gehou en geld vir hul toestelle bo elke ander bron. Maak skoon, onder Meer van die Controller-databasis-ry, verwyder hulle.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rye vir Windows. {1} vir ander stelsels word oorgeslaan.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ry vir Windows. {1} vir ander stelsels word oorgeslaan.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Al {0:N0} sal bygevoeg word. PadForge hou tot {1:N0} rye van joune.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Dit sal bygevoeg word. PadForge hou tot {1:N0} rye van joune.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} van joune word nou gehou, so {1:N0} hiervan sal bygevoeg word en {2:N0} nie.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>{0:N0} van joune word nou gehou, so {1:N0} hiervan sal bygevoeg word en {2:N0} nie.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} geweier. Die eerste: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Plak 'n ry, of die teks van 'n gamecontrollerdb.txt-lêer.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Die teks is geen ry van SDL se controller-databasis nie: 'n ID van 32 heksadesimale syfers, 'n naam, dan velde soos a:b0.</value></data>
@@ -5814,14 +5839,18 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Die ry gee een veld twee keer.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Die ry is meer as 1 024 karakters.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Die ry bind geen kontrole nie.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Jou rye</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Waarvandaan dit aflaai, jou eie rye</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Jou rye</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rye wat jy hier byvoeg, of plak op 'n toestel se SDL-toewysing-kaart, geld vir hul toestelle bo elke ander bron en bly deur die terugstelling.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Voeg rye by uit 'n lêer of die knipbord…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rye, joune bo elke ander bron vir hul toestelle.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ry, joune bo elke ander bron vir sy toestel.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rye, een per toestel, joune bo elke ander bron.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ry vir een toestel, joune bo elke ander bron.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Nog geen.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Jou SDL_GAMECONTROLLERCONFIG-veranderlike bevat {0} rye wat PadForge nie hou nie. Voeg rye by uit 'n lêer of die knipbord maak daarmee oop.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Jou SDL_GAMECONTROLLERCONFIG-veranderlike bevat {0} ry wat PadForge nie hou nie. Voeg rye by uit 'n lêer of die knipbord maak daarmee oop.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Dadelik in gebruik.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Laai af van</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Slegs HTTPS. Van 'n adres wat nie die gemeenskap s'n is nie, neem PadForge net nuwe rye.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Skakel aan</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Assistente op die web</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tonnel</value></data>
@@ -5860,7 +5889,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Toegelaat {0}, laas gebruik {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Toegelaat {0}, nog nie gebruik nie.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Trek terug</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge laai geen tonnelprogram af nie en hou nie 'n ander maatskappy se sleutel nie. 'n Webassistent werk op die vlak hierbo.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge laai slegs vir ChatGPT Secure MCP Tunnel 'n tonnelprogram af. 'n Webassistent werk op die vlak hierbo.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Laat {0} toe om vanaf die web met PadForge te werk?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sy aanmelding keer terug na {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Dit noem homself {0}.</value></data>
@@ -5897,4 +5926,35 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Sy skrif-ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skrifte noem sy kontroles {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skrifte noem sy sleutels KeyA, KeySpace, KeyLeftShift en dies meer, en elke sleutel by sy kode, Vk0 tot Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} op hierdie netwerk vanaf {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>'n Nuwe weergawe wat met {0} se selfde sertifikaatsleutel onderteken is, begin weer sonder Keur goed en herbegin. Enige ander verandering vra eers jou.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Het 'n nuwe weergawe aanvaar wat met dieselfde sertifikaatsleutel onderteken is</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adres</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge neem 'n adres wat met https:// begin en 'n gasheer noem, op die verstekpoort, sonder gebruikernaam of wagwoord.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Poort</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Verander…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Oproepe en hul sleutel gaan onversleuteld oor hierdie netwerk. Windows laat hulle net op private netwerke toe.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Poort {0} is in gebruik deur 'n ander program. Verander dit om PadForge vanaf hierdie netwerk te bereik.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows het nie PadForge se helper toegelaat om op poort {0} te luister nie. PadForge laat dit toe met administrateurregte, so begin PadForge daarmee en skakel dit af en aan.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge se helper kon nie op poort {0} luister nie. Verander die poort, of skakel dit af en aan.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge se helper het gestop ({0}). Skakel Reach PadForge From This Network af en aan om dit weer te begin.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Outomatisering is af, so geen assistent op hierdie netwerk bereik PadForge nie. Die helper begin sodra Outomatisering aan is.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Hierdie rekenaar het nou geen adres op 'n private netwerk nie.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Assistente op hierdie netwerk</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Sy sleutel is {1} gemaak, laas gebruik {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Sy sleutel is {1} gemaak, nog nie gebruik nie.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Maak sleutel</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Opskrif</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Gedoen</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Verander die poort</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Kies 'n poort van 1024 tot 49151. Elke assistent se gestoorde adres noem die poort, so voeg elkeen weer by ná die verandering.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Tik 'n poort van 1024 tot 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Voer sy eie toestelle en {0} aan. Dit lees steeds elke toestel.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Voer net sy eie toestelle aan. Dit lees steeds elke toestel.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Opdragte vanaf die opdragreël bereik PadForge steeds, soos by elke program.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Dit vra om net sy eie toestelle te voer.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Dit vra een keer. Jy kan dit op die Outomatisering-bladsy verwyder of sy bereik verander.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Loop, met jou regte, en is gereed. ChatGPT bereik PadForge deur hierdie tonnel sonder sy eie aanmelding, en net vanaf jou OpenAI-organisasie. Dit begin weer saam met PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Loop, met jou regte. Dit wag dat OpenAI sê die tonnel is gereed.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge hou die sleutel versleuteld vir jou alleen. 'n Leë boks vergeet dit. ChatGPT werk op die vlak hierbo.</value></data>
 </root>

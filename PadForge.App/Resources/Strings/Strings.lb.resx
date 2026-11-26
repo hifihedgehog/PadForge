@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} verbonnen, Batterie {1} %</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} Apparater getrennt: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} Apparater verbonnen: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} trennt sech ëmmer erëm</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} huet sech an enger Minutt {1} Mol getrennt</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} ass erëm do</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} Apparater sinn erëm do: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max. {0})</value></data>
@@ -431,7 +433,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatescht Neiverbannen, Port, Koppelungsidentitéit, iwwer eng Adress verbannen</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-Ersatz</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Maximal Vitess, Benotzerdefinéiert Formater</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Aner Assistenten, Assistenten um Web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Aner Assistenten, Assistenten um Web an an dësem Netz</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Mat engem Head-Tracker oder VR-Headset ronderëm kucken, wärend béid Daume bei de Knäppercher bleiwen.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>D'Vitess, d'Pedalen an d'Gäng, déi e Rennspill schéckt, wéi all aner Agab zouuerdnen.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Controllerbeweegung un Emulatore schécken, déi eng DSU-Beweegungsquell liesen.</value></data>
@@ -595,6 +597,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>E Plugin derbäisetzen…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmer a Scripten|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|All Dateien|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Bestätegen an nei starten…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Am Dossier weisen</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Start mat der Engine</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>D'Datei gëtt virum Start iwwerpréift</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Mam Code {0} beendegt. Start an {1} s nei.</value></data>
@@ -634,6 +637,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Net signéiert.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Seng Astellunge stinn hei, soulaang en leeft.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>En deklaréiert keng Astellungen.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Seng Astellunge stinn hei, soubal en sech mat PadForge verbënnt.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Gestart, mee ni mat PadForge verbonnen. En start an {0} Sekonnen nei.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Gestart, mee ni mat PadForge verbonnen. En start an {0} Sekonn nei.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} ass gestart, huet sech awer ni mat PadForge verbonnen.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Eng Minutt nom Start beendegt, ni mat PadForge verbonnen</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge konnt seng Astellungen net liesen: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>No enger Minutt ouni Äntwert beendegt</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Seng Datei huet sech geännert, wärend en gelaf ass</value></data>
@@ -704,6 +712,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signéiert vun {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, net signéiert</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Gemaach</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Zréckbehalen</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Net gemaach</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Op dësem Niveau net erlaabt</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Elo net verfügbar</value></data>
@@ -776,6 +785,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>D'Bedienelementer vum Apparat {0} setzen</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Den Apparat {0} ewechhuelen</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>All Bedienelement vum Apparat {0} a Rou setzen</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Ausgab vun Tasten a Maus, déi en aspeist, gëtt vun {0} ferngehalen, dat als Administrator leeft</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Ausgab vun Tasten a Maus, déi en aspeist, gëtt vun enger Fënster ferngehalen, déi als Administrator leeft</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Léisst PadForge e Programm ausféieren.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Mécht eng Datei, en Dossier oder eng Websäit op.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Léisst PadForge Tasten oder Mausagaben u Windows schécken.</value></data>
@@ -994,7 +1005,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge leeft weider, wann Dir op Zoumaachen klickt oder Alt+F4 dréckt. Fir d'Programm zouzemaachen, benotzt de Menü am Infoberäich.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>PadForge bleift beim Minimiséieren am Infoberäich amplaz an der Taskleescht.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>D'Fënster bleift verstoppt, wann PadForge start. Et leeft a schafft wéi gewinnt.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge automatesch starten, wann Dir Iech bei Windows umellt.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge automatesch starten, wann Dir Iech bei Windows umellt. Soulaang dëst un ass, start PadForge och ouni d'Fro vu Windows, wann et vun enger Verknüpfung, engem Skript oder engem anere Programm gestart gëtt.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge leeft vun {0} aus.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dat brauch PadForge an engem eegenen Dossier. Säin Dossier enthält aner Dateien, dofir kann PadForge aner Programmer net dovun ofhalen, en z'änneren.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge an en eegenen Dossier réckelen</value></data>
@@ -1008,7 +1019,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Ëmmer am Infoberäich weisen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>D'Symbol am Infoberäich bleift siichtbar, och wann d'Fënster op ass, sou datt säi Menü ëmmer just ee Klick ewech ass.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualiséierungen</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Sicht op GitHub no neie Versioune vu PadForge an installéiert se vun hei aus, an aktualiséiert d'Controller-Datebank. PadForge kontaktéiert nëmme GitHub (api.github.com, github.com a seng Download-Serveren, a raw.githubusercontent.com fir d'Controller-Datebank). Déi eenzeg Donnéeën, déi et schéckt, sinn seng eege Versiounsnummer an, fir d'Controller-Datebank, d'Kennung, déi GitHub dem leschten Download ginn huet.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Sicht op GitHub no neie Versioune vu PadForge an installéiert se vun hei aus, an aktualiséiert d'Controller-Datebank. PadForge kontaktéiert nëmme GitHub (api.github.com, github.com a seng Download-Serveren, a raw.githubusercontent.com fir d'Controller-Datebank), an d'Adress, déi Dir an der Zeil Controller-Datebank ënner „Eroflueden vun“ setzt. Déi eenzeg Donnéeën, déi et schéckt, sinn seng eege Versiounsnummer an, fir d'Controller-Datebank, d'Kennung, déi de Server dem leschten Download ginn huet.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Automatesch no Aktualiséierunge sichen</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Sicht beim Start vu PadForge an duerno all 12 Stonnen.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Aktualiséierungen automatesch installéieren</value></data>
@@ -1019,7 +1030,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installéieren an nei starten</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Versiounsnotizen</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Controller-Datebank</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>„Elo aktualiséieren“ luet d'Community-Controller-Datebank (SDL_GameControllerDB) vu GitHub erof a späichert an der Astellungsdatei d'Zouuerdnungen, déi dëser Versioun vu PadForge feelen. Si sinn direkt am Gebrauch. Eng nei Zouuerdnung gëtt nëmme fir e Controller benotzt, deen näischt anescht als Gamepad liest, deen net zougewisen ass a fir deen „Raw-Joystick-Modus forcéieren“ net aktiv ass. D'Zrécksetzen läscht all erofgeluede Zouuerdnungen. Är eegen Zeilen ënner „Méi“ bleiwen.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>„Elo aktualiséieren“ luet d'Community-Controller-Datebank (SDL_GameControllerDB) vu GitHub erof, oder vun der Adress, déi ënner „Méi“ gesat ass, a späichert an der Astellungsdatei d'Zouuerdnungen, déi dëser Versioun vu PadForge feelen. Si sinn direkt am Gebrauch. Vun enger anerer Adress späichert et nëmmen nei Zouuerdnungen. Eng nei Zouuerdnung gëtt nëmme fir e Controller benotzt, deen näischt anescht als Gamepad liest, deen net zougewisen ass a fir deen „Raw-Joystick-Modus forcéieren“ net aktiv ass. D'Zrécksetzen läscht all erofgeluede Zouuerdnungen a luet nees vu GitHub erof. Är eegen Zeilen ënner „Méi“ bleiwen.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Elo aktualiséieren</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Gëtt aktualiséiert…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Sicht no Aktualiséierungen…</value></data>
@@ -1049,8 +1060,11 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge gouf op {0} aktualiséiert.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Agebaut: {0} Zouuerdnungen, Community-Kopie vum {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Agebaut: {0} Zouuerdnungen, Community-Kopie vum {1}. Erofgelueden den {2}: {3} nei Zeilen, {4} geännert.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Agebaut: {1} Zouuerdnungen, Community-Kopie vum {2}. Erofgelueden den {3} vun {4}: {0} nei Zeilen.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Agebaut: {1} Zouuerdnungen, Community-Kopie vum {2}. Erofgelueden den {3} vun {4}: {0} nei Zeil.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>D'Community-Datebank huet sech zënter der leschter Aktualiséierung net geännert.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub war net erreechbar: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} war net erreechbar: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge huet den Download refuséiert, well et net déi Controller-Datebank ass, déi et erwaart. Näischt gouf geännert.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Minimiséiert starten</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Beim Umellen starten</value></data>
@@ -1221,6 +1235,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Zesummefaassung kopéieren</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Kopéiert</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Späicheren…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Späicheren a mellen</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>„Späicheren a mellen“ späichert den Zip, kopéiert d'Zesummefaassung, weist d'Datei am Explorer a mécht d'Säit vu PadForge op, wou Berichter higinn. Fügt d'Zesummefaassung do an an zitt d'Datei drop.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>D'Opnam späicheren</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-Dateien</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Net gespäichert. {0}</value></data>
@@ -3223,6 +3239,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>En onerwaarte Feeler ass opgetrueden:
 
 {0}
+
+PadForge huet d'Detailer an crash.log nieft PadForge.exe geschriwwen. Fir dëst ze mellen, start eng Diskussioun op {2} an zitt crash.log drop.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} weider Feeler ënnerdréckt)</value></data>
@@ -5748,6 +5766,8 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produit</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Typ</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Fäegkeeten</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>D'Réckpaddele sinn iwwer USB an den Xbox Wireless Adapter aus. Grond vun SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>D'Réckpaddele sinn iwwer Bluetooth aus. Grond vun SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Verbindung</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batterie</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Pad</value></data>
@@ -5922,6 +5942,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Elo am Gebrauch. D'Zeil ass Är a gëllt fir dësen Apparat virun allem aneren.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Als Är behalen. Se gëtt benotzt, soubal d'Engine leeft an den Apparat verbonnen ass.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL huet d'Zeil net ugeholl. Fir dësen Apparat huet sech näischt geännert.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Net behalen. PadForge hält bis zu {0:N0} vun Ären Zeilen an huet elo esou vill.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Eng SDL-Zouuerdnung asetzen</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Eng SDL-Zouuerdnung fir {0} asetzen</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Eng Zouuerdnung fir {0} sichen</value></data>
@@ -5955,6 +5976,10 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>D'Zeile ginn als Är an PadForge.xml behalen a gëllen fir hir Apparater virun all anerer Quell. „Eidelmaachen“ ënner „Méi“ vun der Zeil Controller-Datebank läscht se.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} Zeile fir Windows. {1} fir aner Systemer ginn iwwersprongen.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} Zeil fir Windows. {1} fir aner Systemer ginn iwwersprongen.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>All {0:N0} ginn derbäigesat. PadForge hält bis zu {1:N0} vun Ären Zeilen.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Se gëtt derbäigesat. PadForge hält bis zu {1:N0} vun Ären Zeilen.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Elo sinn {0:N0} Zeile vun Iech gespäichert, dofir ginn {1:N0} vun dësen derbäigesat an {2:N0} net.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Elo ass {0:N0} Zeil vun Iech gespäichert, dofir ginn {1:N0} vun dësen derbäigesat an {2:N0} net.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} refuséiert. Déi éischt: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Setzt eng Zeil oder den Text vun enger Datei gamecontrollerdb.txt an.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Den Text ass keng Zeil vun der Controller-Datebank vu SDL: eng ID mat 32 Hexziffer, en Numm, an dann Felder wéi a:b0.</value></data>
@@ -5967,14 +5992,18 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>D'Zeil gëtt ee Feld zweemol un.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>D'Zeil ass méi laang wéi 1.024 Zeechen.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>D'Zeil weist kee Bedienelement zou.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Är Zeilen</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Vu wou erofgelueden gëtt, Är eegen Zeilen</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Är Zeilen</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Zeilen, déi Dir hei derbäisetzt oder op der Kaart SDL-Zouuerdnung vun engem Apparat asetzt, gëllen fir hir Apparater virun all anerer Quell a bleiwen och nom Zrécksetzen.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Zeilen aus enger Datei oder der Tëschenoflag derbäisetzen…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} eegen Zeilen, déi fir hir Apparater virun all anerer Quell gëllen.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} eegen Zeil, déi fir hiren Apparat virun all anerer Quell gëllt.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} eegen Zeilen, all fir een Apparat, déi virun all anerer Quell gëllen.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} eegen Zeil fir een Apparat, déi virun all anerer Quell gëllt.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Nach keng.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Är Variabel SDL_GAMECONTROLLERCONFIG enthält {0} Zeilen, déi PadForge net hält. „Zeilen aus enger Datei oder der Tëschenoflag derbäisetzen“ gëtt mat hinnen opgemaach.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Är Variabel SDL_GAMECONTROLLERCONFIG enthält {0} Zeil, déi PadForge net hält. „Zeilen aus enger Datei oder der Tëschenoflag derbäisetzen“ gëtt domat opgemaach.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Direkt am Gebrauch.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Eroflueden vun</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Nëmmen HTTPS. Vun enger Adress, déi net déi vun der Community ass, hëlt PadForge nëmmen nei Zeilen.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Uschalten</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Assistenten um Web</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
@@ -6013,7 +6042,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Erlaabt den {0}, fir d'lescht benotzt den {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Erlaabt den {0}, nach net benotzt.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Zréckzéien</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge lued keen Tunnelprogramm erof an hält kee Schlëssel vun enger anerer Firma. E Web-Assistent schafft um Niveau uewendriwwer.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge lued nëmme fir ChatGPT Secure MCP Tunnel en Tunnelprogramm erof. E Web-Assistent schafft um Niveau uewendriwwer.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} erlaben, vum Web aus mat PadForge ze schaffen?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Seng Umeldung geet zréck op {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>En nennt sech {0}.</value></data>
@@ -6050,4 +6079,35 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Seng Script-ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scripte nennen seng Bedienelementer {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scripte nennen seng Tasten KeyA, KeySpace, KeyLeftShift an ähnlech, an all Tast no hirem Code, Vk0 bis Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} an dësem Netz vun {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Eng nei Versioun, déi mam selwechte Zertifikatsschlëssel vun {0} signéiert ass, start nei ouni „Bestätegen an nei starten“. All aner Ännerung freet Iech virdrun.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Eng nei Versioun ugeholl, déi mam selwechte Zertifikatsschlëssel signéiert ass</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adress</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge hëlt eng Adress, déi mat https:// ufänkt an en Host nennt, um Standardport, ouni Benotzernumm a Passwuert.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Änneren…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Ufroen an hire Schlëssel ginn onverschlësselt duerch dëst Netz. Windows léisst se nëmmen a privaten Netzer eran.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>De Port {0} gëtt vun engem anere Programm benotzt. Ännert en, fir PadForge vun dësem Netz aus z'erreechen.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows huet dem Hëllefsprogramm vu PadForge net erlaabt, um Port {0} ze lauschteren. PadForge erlaabt et mat Administratorrechter, start PadForge dofir domat a schalt dëst aus an nees un.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Den Hëllefsprogramm vu PadForge konnt net um Port {0} lauschteren. Ännert de Port oder schalt dëst aus an nees un.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Den Hëllefsprogramm vu PadForge ass gestoppt ({0}). Schalt „Reach PadForge From This Network“ aus an nees un, fir en nees ze starten.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatiséierung ass aus, dofir erreecht keen Assistent an dësem Netz PadForge. Den Hëllefsprogramm start, soubal Automatiséierung un ass.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Dëse PC huet elo keng Adress an engem privaten Netz.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Assistenten an dësem Netz</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Säi Schlëssel gouf {1} gemaach, fir d'lescht benotzt {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Säi Schlëssel gouf {1} gemaach, nach net benotzt.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Schlëssel maachen</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Gemaach</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>De Port änneren</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Wielt e Port vun 1024 bis 49151. Déi gespäichert Adress vun all Assistent nennt de Port, dofir setzt all Assistent no der Ännerung nees derbäi.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Gitt e Port vun 1024 bis 49151 an.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Steiert seng eegen Apparater an {0}. En liest weiderhin all Apparat.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Steiert nëmme seng eegen Apparater. En liest weiderhin all Apparat.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Befeeler vun der Kommandozeil erreechen PadForge weiderhin, wéi fir all Programm.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>En freet, nëmme seng eegen Apparater ze steieren.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Dës Fro kënnt eemol. Dir kënnt en op der Säit Automatiséierung ewechhuelen oder seng Reechwäit änneren.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Leeft, mat Äre Rechter, a prett. ChatGPT erreecht PadForge duerch dësen Tunnel ouni eegen Umeldung, an nëmmen aus Ärer OpenAI-Organisatioun. En start mat PadForge nees.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Leeft, mat Äre Rechter. En waart drop, datt OpenAI seet, den Tunnel wier prett.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge hält de Schlëssel verschlësselt fir Iech eleng. Eng eidel Këscht vergësst en. ChatGPT schafft um Niveau uewendriwwer.</value></data>
 </root>

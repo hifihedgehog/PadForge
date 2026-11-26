@@ -519,6 +519,8 @@
 
 {0}
 
+PadForge e kwadile dintlha mo crash.log fa thoko ga PadForge.exe. Go bega se, simolola puisano kwa {2} mme o latlhele crash.log mo go yone.
+
 {1}</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
@@ -1244,6 +1246,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, e saenilwe ke {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ga e a saenwa</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Go dirilwe</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>E thibetswe</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ga go a dirwa</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ga go a letlelelwa mo legatong le</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ga go kgonege jaanong</value></data>
@@ -1316,6 +1319,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Baya ditaolo tsa sedirisiwa {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tlosa sedirisiwa {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Busetsa ditaolo tsotlhe tsa sedirisiwa {0} mo boikhutsong</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Tlhagiso ya dikonopo le ya mouse e e e romelang e thibetswe go {0}, e e dirang ka ditshwanelo tsa motsamaisi</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Tlhagiso ya dikonopo le ya mouse e e e romelang e thibetswe go fensetere e e dirang ka ditshwanelo tsa motsamaisi</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>E dira gore PadForge e tsamaise porogeramo.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>E bula faele, foltara kgotsa tsebe ya inthanete.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>E dira gore PadForge e romelele Windows ditobetso tsa keyboard kgotsa ditiro tsa mouse.</value></data>
@@ -1407,11 +1412,13 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>le tse dingwe di le {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ya {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Fa go se na karabo mo go {0}, go balwa jaaka nnyaa.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ntšhafatsa jaanong e tsenya database ya setšhaba ya dicontroller (SDL_GameControllerDB) go tswa kwa GitHub mme e boloka, mo faeleng ya dithulaganyo, dimapo tse phetolelo e ya PadForge e se nang tsone. Di dirisiwa ka bonako. Mapo e ntšha e dirisiwa fela mo controller e go se nang sepe se sengwe se se e balang jaaka gamepad, e e sa abelwang, e e seng mo Force Raw Joystick Mode. Go busetsa go tlosa mapo nngwe le nngwe e e tsentsweng. Mela ya gago, ka fa tlase ga More, e a sala.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ntšhafatsa jaanong e tsenya database ya setšhaba ya dicontroller (SDL_GameControllerDB) go tswa kwa GitHub, kgotsa go tswa kwa atereseng e e beilweng ka fa tlase ga More, mme e boloka, mo faeleng ya dithulaganyo, dimapo tse phetolelo e ya PadForge e se nang tsone. Di dirisiwa ka bonako. Go tswa kwa atereseng e nngwe e boloka dimapo tse dišwa fela. Mapo e ntšha e dirisiwa fela mo controller e go se nang sepe se sengwe se se e balang jaaka gamepad, e e sa abelwang, e e seng mo Force Raw Joystick Mode. Go busetsa go tlosa mapo nngwe le nngwe e e tsentsweng mme go tsenya gape go tswa kwa GitHub. Mela ya gago, ka fa tlase ga More, e a sala.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Ntšhafatsa jaanong</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>E a ntšhafatsa…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>E agetswe mo teng: dimapo di le {0}, khopi ya setšhaba ya {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>E agetswe mo teng: dimapo di le {0}, khopi ya setšhaba ya {1}. E tsentswe {2}: mela e mešwa: {3}, e e fetotsweng: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>E agetswe mo teng: dimapo di le {1}, khopi ya setšhaba ya {2}. E tsentswe {3} go tswa kwa {4}: mela e mešwa: {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>E agetswe mo teng: dimapo di le {1}, khopi ya setšhaba ya {2}. E tsentswe {3} go tswa kwa {4}: mola o mošwa o le {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Database ya setšhaba ga e a fetoga fa e sale e ntšhafatswa la bofelo.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dipalo</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Ka metlha</value></data>
@@ -1525,6 +1532,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>O a dirisiwa jaanong. Mola ke wa gago mme o tsewa pele mo sedirisiweng se.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>O bolokilwe e le wa gago. O a dirisiwa fa enjine e dira mme sedirisiwa se golagane.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ga e a amogela mola. Ga go a fetoga sepe mo sedirisiweng se.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Ga o a bolokwa. PadForge e boloka mela ya gago go fitlha go {0:N0} mme jaanong e tshotse e le kalo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kgomaretsa Mapo ya SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kgomaretsa Mapo ya SDL ya {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Batla mapo ya {0}</value></data>
@@ -1558,6 +1566,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Mela e bolokwa e le ya gago mo PadForge.xml mme e tsewa pele ga metswedi yotlhe e mengwe mo didirisiweng tsa yone. Phepafatsa, ka fa tlase ga More ya mola wa Controller Database, e a e tlosa.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Mela ya Windows: {0}. Ya ditsamaiso tse dingwe e tlolwa: {1}.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Mola o le {0} wa Windows. Ya ditsamaiso tse dingwe e tlolwa: {1}.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Mela yotlhe e le {0:N0} e tla okediwa. PadForge e boloka mela ya gago go fitlha go {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>O tla okediwa. PadForge e boloka mela ya gago go fitlha go {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Mela ya gago e e bolokilweng jaanong: {0:N0}. Ka jalo e e tla okediwang: {1:N0}, e e sa okediweng: {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Mola wa gago o o bolokilweng jaanong: {0:N0}. Ka jalo e e tla okediwang: {1:N0}, e e sa okediweng: {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>E gannwe: {0}. Ya ntlha: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Kgomaretsa mola, kgotsa mokwalo wa faele ya gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Mokwalo ga se mola wa database ya dicontroller ya SDL: ID ya dinomoro tse 32 tsa hex, leina, morago dikarolo jaaka a:b0.</value></data>
@@ -1570,11 +1582,13 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Mola o neela karolo e le nngwe gabedi.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Mola o feta ditlhaka tse 1,024.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Mola ga o golaganye taolo epe.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Mela ya gago</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Kwa e tsenyang teng, mela ya gago</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Mela ya gago</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Mela e o e okelelang fano, kgotsa o e kgomaretsang mo karateng ya Mapo ya SDL ya sedirisiwa, e tsewa pele ga metswedi yotlhe e mengwe mo didirisiweng tsa yone mme e nna morago ga go busetsa.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Oketsa mela go tswa mo faeleng kgotsa clipboard…</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>E a dirisiwa ka bonako.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Tsenya go tswa kwa</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS fela. Go tswa kwa atereseng e e seng ya setšhaba, PadForge e tsaya mela e mešwa fela.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Bulela</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Bathusi mo inthaneteng</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tonele</value></data>
@@ -1613,7 +1627,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>E letleletswe {0}, e dirisitswe la bofelo {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>E letleletswe {0}, ga e ise e dirisiwe.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Tlosa tetla</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ga e tsenye porogeramo epe ya tonele mme ga e boloke senotlolo sa khampani e nngwe. Mothusi wa inthanete o dira ka legato le le kwa godimo.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge e tsenya porogeramo ya tonele fela bakeng sa ChatGPT Secure MCP Tunnel. Mothusi wa inthanete o dira ka legato le le kwa godimo.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Go tsena ga yone go boela kwa {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>E ipitsa {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Tobetsa Letla fela fa tsebe ya yone ya go tsena e bontsha khoutu e:</value></data>
@@ -1646,4 +1660,35 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID ya yone ya skripiti</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Diskripiti di bitsa ditaolo tsa yone {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Diskripiti di bitsa dikonopo tsa yone KeyA, KeySpace, KeyLeftShift le tse di jalo, mme konopo nngwe le nngwe ka khoutu ya yone, Vk0 go ya go Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} mo neteweking e go tswa kwa {1}</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} e boile</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Didirisiwa di le {0} di boile: {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Bontsha mo foldareng</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} e simolotse mme ga e a ka ya golagana le PadForge.</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Aterese</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge e amogela aterese e e simololang ka https:// e bile e bolela leina la seva, mo kgorong ya tlwaelo, e se na leina la modirisi kgotsa lefoko la sephiri.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Kgoro</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Fetola…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Dipitso le senotlolo sa tsone di kgabaganya neteweke e di sa kwalwa ka khoutu ya sephiri. Windows e di letla fela mo dineteweking tsa poraefete.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Kgoro {0} e dirisiwa ke porogeramo e nngwe. E fetole go fitlhelela PadForge go tswa mo neteweking e.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ga e a letla sethusi sa PadForge go reetsa mo kgorong {0}. PadForge e e letla ka ditshwanelo tsa motsamaisi, ka jalo simolola PadForge ka tsone mme o time se o bo o se bulele gape.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Sethusi sa PadForge ga se a kgona go reetsa mo kgorong {0}. Fetola kgoro, kgotsa o time se o bo o se bulele gape.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Sethusi sa PadForge se emile ({0}). Tima Reach PadForge From This Network mme o e bulele gape go se simolola gape.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation e tswetswe, ka jalo ga go na mothusi mo neteweking e yo o fitlhelelang PadForge. Sethusi se simolola fa Automation e butswe.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>PC e ga e na aterese mo neteweking ya poraefete jaanong.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Bathusi mo neteweking e</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Senotlolo sa yone se dirilwe {1}, se dirisitswe la bofelo {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Senotlolo sa yone se dirilwe {1}, ga se ise se dirisiwe.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Dira senotlolo</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Tlhogo</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Go dirilwe</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Fetola kgoro</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Tlhopha kgoro go tloga ka 1024 go ya go 49151. Aterese e e bolokilweng ya mothusi mongwe le mongwe e bolela kgoro, ka jalo oketsa mongwe le mongwe gape morago ga phetogo.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Kwala kgoro go tloga ka 1024 go ya go 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>E laola didirisiwa tsa yone le {0}. E sa ntse e bala sedirisiwa sengwe le sengwe.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>E laola didirisiwa tsa yone fela. E sa ntse e bala sedirisiwa sengwe le sengwe.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Ditaelo tse di tswang mo moleng wa ditaelo di sa ntse di fitlhelela PadForge, jaaka di dira mo porogerameng nngwe le nngwe.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>E a dira, ka ditshwanelo tsa gago, e bile e siametse. ChatGPT e fitlhelela PadForge ka tonele e kwantle ga go tsena ga yone, e bile fela go tswa mo mokgatlhong wa gago wa OpenAI. E simolola gape le PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>E a dira, ka ditshwanelo tsa gago. E emetse OpenAI go bolela gore tonele e siametse.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge e boloka senotlolo se kwadilwe ka khoutu ya sephiri e le sa gago fela. Lebokose le le se nang sepe le a se lebala. ChatGPT e dira ka legato le le kwa godimo.</value></data>
 </root>

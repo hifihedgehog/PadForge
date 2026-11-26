@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} қосылды, батарея {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Ажыратылған құрылғылар ({0}): {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Қосылған құрылғылар ({0}): {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} жиі ажырап тұр</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} бір минутта {1} рет ажырады</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} қайта қосылды</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Құрылғылар қайта қосылды ({0}): {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (ең көбі {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (ең көбі {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ең көбі {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматты қайта қосылу, порт, жұптастыру сәйкестендіруі, мекенжай арқылы қосылу</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe алмастырғышы</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порттар, Толық жылдамдық, Теңшелетін пішімдер</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Басқа көмекшілер, вебтегі көмекшілер</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Басқа көмекшілер, вебтегі және осы желідегі көмекшілер</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Бас трекерімен немесе VR гарнитурасымен айналаға қараңыз, ал екі бас бармағыңыз түймелерде қалады.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Ойын жіберетін жылдамдықты, педальдарды және берілістерді кез келген кіріс сияқты сәйкестендіріңіз.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Контроллер қозғалысын DSU қозғалыс көзін оқитын эмуляторларға жіберіңіз.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Плагин қосу…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Бағдарламалар мен скрипттер|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Барлық файлдар|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Бекіту және қайта іске қосу…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Қалтада көрсету</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Қозғалтқышпен бірге іске қосылады</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Іске қосар алдында файл тексерілуде</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} кодымен аяқталды. {1} с ішінде қайта іске қосылады.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Қол қойылмаған.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Оның параметрлері жұмыс істеп тұрғанда осы жерде көрсетіледі.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Ол ешқандай параметр жарияламайды.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Оның параметрлері PadForge бағдарламасына қосылғаннан кейін осы жерде көрсетіледі.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Іске қосылды, бірақ PadForge бағдарламасына ешқашан қосылмады. {0} секундтан кейін қайта іске қосылады.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Іске қосылды, бірақ PadForge бағдарламасына ешқашан қосылмады. {0} секундтан кейін қайта іске қосылады.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} іске қосылды, бірақ PadForge бағдарламасына ешқашан қосылмады.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Іске қосылғаннан кейін бір минутта аяқталды, PadForge бағдарламасына ешқашан қосылмады</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge оның параметрлерін оқи алмады: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Бір минут үнсіз тұрғаннан кейін аяқталды</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Оның файлы жұмыс кезінде өзгерді</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, қол қойған: {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, қол қойылмаған</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Орындалды</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Ұсталды</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Орындалмады</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Бұл деңгейде рұқсат етілмеген</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Қазір қолжетімсіз</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>{0} құрылғысының басқару элементтерін орнату</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>{0} құрылғысын жою</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>{0} құрылғысының барлық басқару элементтерін тыныштық күйіне қою</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Ол жіберетін перне мен тінтуір шығысы әкімші ретінде жұмыс істейтін {0} бағдарламасынан ұсталады</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Ол жіберетін перне мен тінтуір шығысы әкімші ретінде жұмыс істейтін терезеден ұсталады</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge арқылы бағдарламаны іске қосады.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Файлды, қалтаны немесе веб-бетті ашады.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge арқылы Windows жүйесіне перне немесе тінтуір кірістерін жібереді.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>«Жабу» түймесін немесе Alt+F4 пернелерін басқанда PadForge жұмысын жалғастырады. Шығу үшін хабарландыру аймағындағы мәзірден «Шығу» пунктін таңдаңыз.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Терезені кішірейткенде PadForge тапсырмалар тақтасында емес, хабарландыру аймағында тұрады.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge іске қосылғанда терезе жасырын тұрады. Бағдарлама әдеттегідей жұмыс істеп, тағайындауларды орындайды.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows жүйесіне кіргенде PadForge автоматты түрде іске қосылады.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows жүйесіне кіргенде PadForge автоматты түрде іске қосылады. Бұл қосулы тұрғанда PadForge Windows сұрауынсыз таңбашадан, скриптен немесе басқа бағдарламадан да іске қосылады.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge мына жерден жұмыс істейді: {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Бұл үшін PadForge өз қалтасында тұруы керек. Оның қалтасында басқа файлдар бар, сондықтан PadForge басқа бағдарламалардың оны өзгертуіне жол бермей алмайды.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ты өз қалтасына жылжыту</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Хабарландыру аймағында әрқашан көрсету</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Терезе ашық тұрғанда да хабарландыру аймағындағы белгіше көрінеді, сондықтан оның мәзіріндегі «Шығу» әрқашан бір басу қашықтықта болады.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Жаңартулар</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge жаңа нұсқаларын GitHub сайтынан тексеріп, осы жерден орнатыңыз және контроллер дерекқорын жаңартыңыз. PadForge тек GitHub сайтымен (api.github.com, github.com және оның жүктеу серверлері, ал контроллер дерекқоры үшін raw.githubusercontent.com) байланысады. Ол тек өз нұсқасының нөмірін және контроллер дерекқоры үшін GitHub соңғы жүктеуге берген тегті жібереді.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge жаңа нұсқаларын GitHub сайтынан тексеріп, осы жерден орнатыңыз және контроллер дерекқорын жаңартыңыз. PadForge тек GitHub сайтымен (api.github.com, github.com және оның жүктеу серверлері, ал контроллер дерекқоры үшін raw.githubusercontent.com) және Контроллер дерекқоры жолындағы Жүктеу көзінде көрсеткен мекенжаймен байланысады. Ол тек өз нұсқасының нөмірін және контроллер дерекқоры үшін сервер соңғы жүктеуге берген тегті жібереді.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Жаңартуларды автоматты түрде тексеру</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge іске қосылғанда және содан кейін әр 12 сағат сайын тексереді.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Жаңартуларды автоматты түрде орнату</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Орнату және қайта іске қосу</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Шығарылым жазбалары</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Контроллер дерекқоры</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Қазір жаңарту қауымдастықтың контроллер дерекқорын (SDL_GameControllerDB) GitHub сайтынан жүктеп алады және параметрлер файлында PadForge бағдарламасының осы нұсқасында жоқ тағайындауларды сақтайды. Олар бірден қолданылады. Жаңа тағайындау тек басқа ештеңе геймпад ретінде оқымайтын, тағайындалмаған және Шикі джойстик режимін мәжбүрлеу (геймпадқа қайта тағайындауды айналып өту) режимінде емес контроллер үшін қолданылады. Қалпына келтіру жүктелген барлық тағайындауларды жояды. Қосымша астындағы өз жолдарыңыз қалады.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Қазір жаңарту қауымдастықтың контроллер дерекқорын (SDL_GameControllerDB) GitHub сайтынан немесе Қосымша астында көрсетілген мекенжайдан жүктеп алады және параметрлер файлында PadForge бағдарламасының осы нұсқасында жоқ тағайындауларды сақтайды. Олар бірден қолданылады. Басқа мекенжайдан тек жаңа тағайындаулар сақталады. Жаңа тағайындау тек басқа ештеңе геймпад ретінде оқымайтын, тағайындалмаған және Шикі джойстик режимін мәжбүрлеу (геймпадқа қайта тағайындауды айналып өту) режимінде емес контроллер үшін қолданылады. Қалпына келтіру жүктелген барлық тағайындауларды жояды және GitHub сайтынан қайта жүктейді. Қосымша астындағы өз жолдарыңыз қалады.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Қазір жаңарту</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Жаңартылуда…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Жаңартулар тексерілуде…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} нұсқасына жаңартылды.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Кірістірілген: {0} тағайындау, {1} күніндегі қауымдастық көшірмесі.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Кірістірілген: {0} тағайындау, {1} күніндегі қауымдастық көшірмесі. Жүктелген күні {2}: жаңа жол {3}, өзгергені {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Кірістірілген: {1} тағайындау, {2} күніндегі қауымдастық көшірмесі. Жүктелген күні {3}, көзі {4}: жаңа жол {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Кірістірілген: {1} тағайындау, {2} күніндегі қауымдастық көшірмесі. Жүктелген күні {3}, көзі {4}: жаңа жол {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Қауымдастық дерекқоры соңғы жаңартудан бері өзгерген жоқ.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub сайтына қосылу мүмкін болмады: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} мекенжайына қосылу мүмкін болмады: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge жүктеуді қабылдамады, себебі ол күтілетін контроллер дерекқоры емес. Ештеңе өзгерген жоқ.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Кішірейтілген күйде іске қосу</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Жүйеге кіргенде іске қосу</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>Қорытындыны көшіру</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Көшірілді</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Сақтау…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Сақтау және жариялау</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Сақтау және жариялау zip файлын сақтайды, қорытындыны көшіреді, файлды Explorer ішінде көрсетеді және PadForge есептер жіберілетін бетті ашады. Қорытындыны сонда қойып, файлды соған апарып тастаңыз.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Жазбаны сақтау</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip файлдары</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Сақталмады. {0}</value></data>
@@ -3247,6 +3263,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Күтпеген қате орын алды:
 
 {0}
+
+PadForge мәліметтерді PadForge.exe жанындағы crash.log файлына жазды. Бұл туралы хабарлау үшін {2} мекенжайында талқылау бастаңыз және crash.log файлын соған апарып тастаңыз.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} қосымша қате жасырылды)</value></data>
@@ -5783,6 +5801,8 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Өнім</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Түрі</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Мүмкіндіктер</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Артқы пернелер USB және Xbox Wireless Adapter арқылы өшірулі. SDL көрсеткен себеп: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Артқы пернелер Bluetooth арқылы өшірулі. SDL көрсеткен себеп: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Байланыс</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Батарея</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Жол</value></data>
@@ -5961,6 +5981,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Қазір қолданыста. Жол сіздікі және осы құрылғы үшін басым.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Сіздікі ретінде сақталды. Қозғалтқыш жұмыс істеп, құрылғы қосылғанда қолданылады.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL жолды қабылдамады. Осы құрылғы үшін ештеңе өзгерген жоқ.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Сақталмады. PadForge сіздің {0:N0} жолға дейін сақтайды және қазір сонша жол бар.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL тағайындауын қою</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} үшін SDL тағайындауын қою</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} үшін тағайындауды табу</value></data>
@@ -5994,6 +6015,10 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Жолдар PadForge.xml ішінде сіздікі ретінде сақталады және өз құрылғылары үшін басқа көздерден басым болады. Контроллер дерекқоры жолының Қосымша астындағы Тазалау оларды алып тастайды.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows үшін {0} жол. Басқа жүйелерге арналған {1} жол өткізіліп жіберіледі.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows үшін {0} жол. Басқа жүйелерге арналған {1} жол өткізіліп жіберіледі.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Барлығы, яғни {0:N0} жол қосылады. PadForge сіздің {1:N0} жолға дейін сақтайды.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ол қосылады. PadForge сіздің {1:N0} жолға дейін сақтайды.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Қазір сіздің жолдарыңыздан {0:N0} сақталған, сондықтан осылардың {1:N0} жолы қосылады, {2:N0} жолы қосылмайды.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Қазір сіздің жолдарыңыздан {0:N0} сақталған, сондықтан осылардың {1:N0} жолы қосылады, {2:N0} жолы қосылмайды.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} қабылданбады. Біріншісі: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Жолды немесе gamecontrollerdb.txt файлының мәтінін қойыңыз.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Мәтін SDL контроллер дерекқорының жолы емес: 32 он алтылық таңбадан тұратын ID, ат, содан кейін a:b0 сияқты өрістер.</value></data>
@@ -6006,14 +6031,18 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Жол бір өрісті екі рет береді.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Жол 1 024 таңбадан асады.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Жол ешбір басқару элементін байланыстырмайды.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Сіздің жолдарыңыз</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Қайдан жүктейтіні, өз жолдарыңыз</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Сіздің жолдарыңыз</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Мұнда қосқан немесе құрылғының SDL тағайындауы картасына қойған жолдарыңыз өз құрылғылары үшін басқа көздерден басым болады және қалпына келтіруден кейін де қалады.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Жолдарды файлдан немесе алмасу буферінен қосу…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} жол, өз құрылғылары үшін басқа көздерден басым сіздікі.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} жол, өз құрылғысы үшін басқа көздерден басым сіздікі.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} жол, әрқайсысы бір құрылғы үшін, басқа көздерден басым сіздікі.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} жол, бір құрылғы үшін, басқа көздерден басым сіздікі.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Әзірше жоқ.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG айнымалысында PadForge сақтамайтын жолдар бар, саны {0}. Жолдарды файлдан немесе алмасу буферінен қосу түймесі солармен ашылады.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG айнымалысында PadForge сақтамайтын жол бар, саны {0}. Жолдарды файлдан немесе алмасу буферінен қосу түймесі онымен ашылады.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Бірден қолданылады.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Жүктеу көзі</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Тек HTTPS. Қауымдастықтікі емес мекенжайдан PadForge тек жаңа жолдарды алады.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Қосу</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Вебтегі көмекшілер</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Туннель</value></data>
@@ -6052,7 +6081,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Рұқсат етілген: {0}, соңғы қолданылуы: {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Рұқсат етілген: {0}, әлі қолданылмаған.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Қайтарып алу</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ешбір туннель бағдарламасын жүктемейді және басқа компанияның кілтін сақтамайды. Веб көмекші жоғарыдағы деңгейде жұмыс істейді.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge туннель бағдарламасын тек ChatGPT Secure MCP Tunnel үшін жүктейді. Веб көмекші жоғарыдағы деңгейде жұмыс істейді.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} вебтен PadForge бағдарламасымен жұмыс істеуіне рұқсат бересіз бе?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Оның кіруі {0} мекенжайына қайтады.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ол өзін {0} деп атайды.</value></data>
@@ -6089,4 +6118,35 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Оның скрипт ID мәні</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скрипттер оның басқару элементтерін {0} деп атайды.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скрипттер оның пернелерін KeyA, KeySpace, KeyLeftShift және т.б. деп, ал әр пернені коды бойынша, Vk0 мен Vk255 аралығында атайды.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>Осы желідегі {1} мекенжайынан {0}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0} пайдаланған сертификат кілтімен қол қойылған жаңа нұсқа Бекіту және қайта іске қосусыз қайта іске қосылады. Кез келген басқа өзгеріс алдымен сізден сұрайды.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Дәл сол сертификат кілтімен қол қойылған жаңа нұсқа қабылданды</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Мекенжай</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge https:// деп басталатын, хостты көрсететін, әдепкі портты қолданатын және пайдаланушы атысыз, құпия сөзсіз мекенжайды қабылдайды.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Порт</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Өзгерту…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Шақырулар мен олардың кілті осы желі арқылы шифрсыз өтеді. Windows оларды тек жеке желілерде қосады.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>{0} портын басқа бағдарлама пайдаланып тұр. PadForge бағдарламасына осы желіден жету үшін портты өзгертіңіз.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows PadForge көмекшісіне {0} портын тыңдауға рұқсат бермеді. PadForge оған әкімші құқықтарымен рұқсат береді, сондықтан PadForge бағдарламасын солармен іске қосып, осыны өшіріп, қайта қосыңыз.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge көмекшісі {0} портын тыңдай алмады. Портты өзгертіңіз немесе осыны өшіріп, қайта қосыңыз.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge көмекшісі тоқтады ({0}). Оны қайта іске қосу үшін Reach PadForge From This Network параметрін өшіріп, қайта қосыңыз.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Автоматтандыру өшірулі, сондықтан осы желідегі ешбір көмекші PadForge бағдарламасына жете алмайды. Көмекші Автоматтандыру қосылғаннан кейін іске қосылады.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Бұл компьютердің қазір жеке желіде мекенжайы жоқ.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Осы желідегі көмекшілер</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Оның кілті {1} жасалды, соңғы қолданылуы {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Оның кілті {1} жасалды, әлі қолданылмаған.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Кілт жасау</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Тақырып</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Дайын</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Портты өзгерту</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>1024 мен 49151 аралығынан порт таңдаңыз. Әр көмекшінің сақталған мекенжайында порт көрсетіледі, сондықтан өзгерткеннен кейін әрқайсысын қайта қосыңыз.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>1024 мен 49151 аралығындағы портты теріңіз.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Өз құрылғыларын және {0} басқарады. Ол әлі де барлық құрылғыны оқиды.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Тек өз құрылғыларын басқарады. Ол әлі де барлық құрылғыны оқиды.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Пәрмен жолындағы пәрмендер, барлық бағдарлама сияқты, PadForge бағдарламасына әлі де жетеді.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Ол тек өз құрылғыларын басқаруды сұрайды.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Ол бір рет сұрайды. Оны немесе оның қолжетімділігін Автоматтандыру бетінде өзгертуге болады.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Жұмыс істеп тұр, сіздің құқықтарыңызбен, әрі дайын. ChatGPT PadForge бағдарламасына осы туннель арқылы өз кіруінсіз және тек сіздің OpenAI ұйымыңыздан жетеді. Ол PadForge бағдарламасымен бірге қайта іске қосылады.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Жұмыс істеп тұр, сіздің құқықтарыңызбен. Ол OpenAI туннелдің дайын екенін айтуын күтеді.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge кілтті тек сіз үшін шифрланған күйде сақтайды. Бос өріс оны ұмытады. ChatGPT жоғарыдағы деңгейде жұмыс істейді.</value></data>
 </root>

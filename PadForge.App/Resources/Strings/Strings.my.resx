@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်လာသည်၊ ဘက်ထရီ {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ခု ချိတ်ဆက်မှု ပြတ်သွားသည်: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ခု ချိတ်ဆက်လာသည်: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ချိတ်ဆက်မှု ထပ်ခါထပ်ခါ ပြတ်နေသည်</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} သည် တစ်မိနစ်အတွင်း {1} ကြိမ် ချိတ်ဆက်မှု ပြတ်သွားသည်</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} ပြန်ချိတ်ဆက်လာသည်</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ခု ပြန်ချိတ်ဆက်လာသည်: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (အများဆုံး {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (အများဆုံး {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (အများဆုံး {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>အလိုအလျောက် ပြန်ချိတ်ဆက်၊ ပေါ့တ်၊ တွဲချိတ်မှု အထောက်အထား၊ လိပ်စာဖြင့် ချိတ်ဆက်ရန်</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ပေါ့တ်၊ DSX.exe အစားထိုး ပရိုဂရမ်</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ပေါ့တ်၊ အပြည့် အမြန်နှုန်း၊ စိတ်ကြိုက် ဖော်မတ်များ</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>အခြား အကူအညီပေး ပရိုဂရမ်များ၊ ဝဘ်ပေါ်ရှိ အကူအညီပေး ပရိုဂရမ်များ</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>အခြား အကူအညီပေး ပရိုဂရမ်များ၊ ဝဘ်ပေါ်နှင့် ဤကွန်ရက်ပေါ်ရှိ အကူအညီပေး ပရိုဂရမ်များ</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>လက်မနှစ်ချောင်းလုံး ခလုတ်များပေါ်တွင် ထားလျက် ဦးခေါင်းခြေရာခံကိရိယာ သို့မဟုတ် VR ခေါင်းစွပ်ဖြင့် ပတ်ပတ်လည်ကို ကြည့်ပါ။</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ကားမောင်းဂိမ်းက ပို့သော အမြန်နှုန်း၊ ခြေနင်းများနှင့် ဂီယာများကို အခြားအဝင်များကဲ့သို့ မက်ပ်လုပ်ပါ။</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU လှုပ်ရှားမှုရင်းမြစ်ကို ဖတ်သော အီမြူလေတာများထံ ကွန်ထရိုလာ၏ လှုပ်ရှားမှုကို ပို့ပါ။</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>ပလပ်အင် ထည့်ရန်…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>ပရိုဂရမ်များနှင့် စခရစ်များ|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ဖိုင်အားလုံး|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>အတည်ပြုပြီး ပြန်စတင်ရန်…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>ဖိုင်တွဲတွင် ပြရန်</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>အင်ဂျင်နှင့်အတူ စတင်သည်</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>မစတင်မီ ဖိုင်ကို စစ်ဆေးနေသည်</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>ကုဒ် {0} ဖြင့် ထွက်သွားသည်။ {1} စက္ကန့်အတွင်း ပြန်စတင်မည်။</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>လက်မှတ်မထိုးထားပါ။</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>၎င်း လည်ပတ်နေစဉ် ၎င်း၏ ဆက်တင်များကို ဤနေရာတွင် ပြသည်။</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>၎င်းသည် ဆက်တင် မကြေညာထားပါ။</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>PadForge သို့ ချိတ်ဆက်ပြီးသည်နှင့် ၎င်း၏ ဆက်တင်များကို ဤနေရာတွင် ပြသည်။</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>စတင်ခဲ့သော်လည်း PadForge သို့ တစ်ကြိမ်မျှ မချိတ်ဆက်ခဲ့ပါ။ {0} စက္ကန့်အတွင်း ပြန်စတင်မည်။</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>စတင်ခဲ့သော်လည်း PadForge သို့ တစ်ကြိမ်မျှ မချိတ်ဆက်ခဲ့ပါ။ {0} စက္ကန့်အတွင်း ပြန်စတင်မည်။</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} သည် စတင်ခဲ့သော်လည်း PadForge သို့ တစ်ကြိမ်မျှ မချိတ်ဆက်ခဲ့ပါ။</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>စတင်ပြီး တစ်မိနစ်အကြာတွင် အဆုံးသတ်လိုက်သည်၊ PadForge သို့ တစ်ကြိမ်မျှ မချိတ်ဆက်ခဲ့ပါ</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge က ၎င်း၏ ဆက်တင်များကို ဖတ်၍ မရပါ: {0}။</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>တစ်မိနစ်ကြာ တုံ့ပြန်မှု မရှိသဖြင့် အဆုံးသတ်လိုက်သည်</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>လည်ပတ်နေစဉ် ၎င်း၏ ဖိုင် ပြောင်းလဲသွားသည်</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}၊ {1} က လက်မှတ်ထိုးထားသည်</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}၊ လက်မှတ်မထိုးထားပါ</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>ပြီးပါပြီ</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>ဆိုင်းငံ့ထားသည်</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>မလုပ်ခဲ့ပါ</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ဤအဆင့်တွင် ခွင့်မပြုပါ</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ယခု မရနိုင်ပါ</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ ထိန်းချုပ်ကိရိယာများကို သတ်မှတ်ရန်</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ကို ဖယ်ရှားရန်</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ၏ ထိန်းချုပ်ကိရိယာ အားလုံးကို ငြိမ်အနေအထားသို့ ထားရန်</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>၎င်း ပေးပို့သော ကီးနှင့် မောက်စ် အထွက်ကို စီမံခန့်ခွဲသူအဖြစ် လည်ပတ်နေသော {0} သို့ မရောက်အောင် ဆိုင်းငံ့ထားသည်</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>၎င်း ပေးပို့သော ကီးနှင့် မောက်စ် အထွက်ကို စီမံခန့်ခွဲသူအဖြစ် လည်ပတ်နေသော ဝင်းဒိုးတစ်ခုသို့ မရောက်အောင် ဆိုင်းငံ့ထားသည်</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge ကို ပရိုဂရမ်တစ်ခု လည်ပတ်စေသည်။</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>ဖိုင်၊ ဖိုင်တွဲ သို့မဟုတ် ဝဘ်စာမျက်နှာ တစ်ခုကို ဖွင့်သည်။</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge ကို Windows သို့ ကီး သို့မဟုတ် မောက်စ် အဝင် ပို့စေသည်။</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>ပိတ်ရန် ကို နှိပ်သည့်အခါ သို့မဟုတ် Alt+F4 ကို နှိပ်သည့်အခါ PadForge ကို ဆက်လည်ပတ်စေပါ။ အပြီးထွက်ရန် စနစ်ထရေး မီနူးရှိ ထွက်ရန် ကို အသုံးပြုပါ။</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>ဝင်းဒိုးကို အသေးချုံ့သည့်အခါ PadForge ကို တက်စ်ဘားပေါ်တွင် မဟုတ်ဘဲ အသိပေးချက်နေရာတွင် ထားပါ။</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge စတင်သည့်အခါ ဝင်းဒိုးကို ဝှက်ထားပါ။ ၎င်းသည် ပုံမှန်အတိုင်း လည်ပတ်ပြီး မက်ပ်လုပ်သည်။</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows သို့ ဝင်ရောက်သည့်အခါ PadForge ကို အလိုအလျောက် စတင်ပါ။</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows သို့ ဝင်ရောက်သည့်အခါ PadForge ကို အလိုအလျောက် စတင်ပါ။ ဤအရာ ဖွင့်ထားစဉ် PadForge သည် shortcut၊ script သို့မဟုတ် အခြား ပရိုဂရမ်တစ်ခုမှလည်း Windows ၏ မေးမြန်းချက် မပါဘဲ စတင်သည်။</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge သည် {0} မှ လည်ပတ်သည်။</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ဤအရာအတွက် PadForge ကို ၎င်း၏ ကိုယ်ပိုင် ဖိုင်တွဲတွင် ထားရန် လိုသည်။ ၎င်း၏ ဖိုင်တွဲတွင် အခြားဖိုင်များ ရှိသဖြင့် PadForge သည် အခြားပရိုဂရမ်များက ၎င်းကို ပြောင်းလဲခြင်းမှ မတားနိုင်ပါ။</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ကို ၎င်း၏ ကိုယ်ပိုင် ဖိုင်တွဲသို့ ရွှေ့ရန်</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>စနစ်ထရေးတွင် အမြဲပြရန်</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ဝင်းဒိုး ဖွင့်ထားစဉ် ထရေးအိုင်ကွန်ကို မြင်ရအောင် ထားပါ။ သို့မှသာ ၎င်း၏မီနူးရှိ ထွက်ရန် ကို တစ်ချက်နှိပ်ရုံဖြင့် အမြဲ ရောက်နိုင်မည်။</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>အပ်ဒိတ်များ</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge ဗားရှင်းအသစ်များအတွက် GitHub ကို စစ်ဆေးပြီး ဤနေရာမှ ထည့်သွင်းပါ၊ ကွန်ထရိုလာ ဒေတာဘေ့စ်ကိုလည်း အပ်ဒိတ်လုပ်ပါ။ PadForge သည် GitHub (api.github.com၊ github.com နှင့် ၎င်း၏ ဒေါင်းလုဒ်ဆာဗာများ၊ ကွန်ထရိုလာ ဒေတာဘေ့စ်အတွက် raw.githubusercontent.com) ကိုသာ ဆက်သွယ်သည်။ ပို့သည့် ဒေတာမှာ ၎င်း၏ ကိုယ်ပိုင် ဗားရှင်းနံပါတ်နှင့် ကွန်ထရိုလာ ဒေတာဘေ့စ်အတွက် နောက်ဆုံး ဒေါင်းလုဒ်အား GitHub ပေးခဲ့သော တက်ဂ်သာ ဖြစ်သည်။</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge ဗားရှင်းအသစ်များအတွက် GitHub ကို စစ်ဆေးပြီး ဤနေရာမှ ထည့်သွင်းပါ၊ ကွန်ထရိုလာ ဒေတာဘေ့စ်ကိုလည်း အပ်ဒိတ်လုပ်ပါ။ PadForge သည် GitHub (api.github.com၊ github.com နှင့် ၎င်း၏ ဒေါင်းလုဒ်ဆာဗာများ၊ ကွန်ထရိုလာ ဒေတာဘေ့စ်အတွက် raw.githubusercontent.com) နှင့် ကွန်ထရိုလာ ဒေတာဘေ့စ် အတန်း၏ “ဒေါင်းလုဒ်လုပ်မည့်နေရာ” တွင် သင် သတ်မှတ်ထားသော လိပ်စာကိုသာ ဆက်သွယ်သည်။ ပို့သည့် ဒေတာမှာ ၎င်း၏ ကိုယ်ပိုင် ဗားရှင်းနံပါတ်နှင့် ကွန်ထရိုလာ ဒေတာဘေ့စ်အတွက် နောက်ဆုံး ဒေါင်းလုဒ်အား ဆာဗာ ပေးခဲ့သော တက်ဂ်သာ ဖြစ်သည်။</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>အပ်ဒိတ်များကို အလိုအလျောက် စစ်ဆေးရန်</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge စတင်ချိန်တွင်နှင့် ထို့နောက် 12 နာရီတိုင်း စစ်ဆေးသည်။</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>အပ်ဒိတ်များကို အလိုအလျောက် ထည့်သွင်းရန်</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ထည့်သွင်းပြီး ပြန်စတင်ရန်</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>ထုတ်ဝေမှု မှတ်စုများ</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>ကွန်ထရိုလာ ဒေတာဘေ့စ်</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>“ယခု အပ်ဒိတ်လုပ်ရန်” သည် အသိုင်းအဝိုင်း ကွန်ထရိုလာ ဒေတာဘေ့စ် (SDL_GameControllerDB) ကို GitHub မှ ဒေါင်းလုဒ်လုပ်ပြီး PadForge ၏ ဤဗားရှင်းတွင် မပါသော မက်ပင်းများကို ဆက်တင်ဖိုင်တွင် သိမ်းထားသည်။ ၎င်းတို့ကို ချက်ချင်း အသုံးပြုသည်။ မက်ပင်းအသစ်ကို အခြားမည်သည့်အရာကမျှ ဂိမ်းပက်ဒ်အဖြစ် မဖတ်သော၊ သတ်မှတ်မထားသော၊ “မူရင်း ဂျွိုက်စတစ် မုဒ်ကို အတင်းသုံးရန်” တွင် မရှိသော ကွန်ထရိုလာအတွက်သာ အသုံးပြုသည်။ ပြန်လည်သတ်မှတ်ခြင်းသည် ဒေါင်းလုဒ်လုပ်ထားသော မက်ပင်းအားလုံးကို ဖယ်ရှားသည်။ “နောက်ထပ်” အောက်ရှိ သင့်ကိုယ်ပိုင် အတန်းများ ကျန်ရှိသည်။</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>“ယခု အပ်ဒိတ်လုပ်ရန်” သည် အသိုင်းအဝိုင်း ကွန်ထရိုလာ ဒေတာဘေ့စ် (SDL_GameControllerDB) ကို GitHub မှ သို့မဟုတ် “နောက်ထပ်” အောက်တွင် သတ်မှတ်ထားသော လိပ်စာမှ ဒေါင်းလုဒ်လုပ်ပြီး PadForge ၏ ဤဗားရှင်းတွင် မပါသော မက်ပင်းများကို ဆက်တင်ဖိုင်တွင် သိမ်းထားသည်။ ၎င်းတို့ကို ချက်ချင်း အသုံးပြုသည်။ အခြား လိပ်စာမှဆိုလျှင် မက်ပင်းအသစ်များကိုသာ သိမ်းသည်။ မက်ပင်းအသစ်ကို အခြားမည်သည့်အရာကမျှ ဂိမ်းပက်ဒ်အဖြစ် မဖတ်သော၊ သတ်မှတ်မထားသော၊ “မူရင်း ဂျွိုက်စတစ် မုဒ်ကို အတင်းသုံးရန်” တွင် မရှိသော ကွန်ထရိုလာအတွက်သာ အသုံးပြုသည်။ ပြန်လည်သတ်မှတ်ခြင်းသည် ဒေါင်းလုဒ်လုပ်ထားသော မက်ပင်းအားလုံးကို ဖယ်ရှားပြီး GitHub မှ ပြန်ဒေါင်းလုဒ်လုပ်သည်။ “နောက်ထပ်” အောက်ရှိ သင့်ကိုယ်ပိုင် အတန်းများ ကျန်ရှိသည်။</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ယခု အပ်ဒိတ်လုပ်ရန်</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>အပ်ဒိတ်လုပ်နေသည်…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>အပ်ဒိတ်များကို စစ်ဆေးနေသည်…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ကို {0} သို့ အပ်ဒိတ်လုပ်ပြီးပါပြီ။</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ပါဝင်ပြီးသား: မက်ပင်း {0} ခု၊ {1} ရက်စွဲပါ အသိုင်းအဝိုင်း မိတ္တူ။</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ပါဝင်ပြီးသား: မက်ပင်း {0} ခု၊ {1} ရက်စွဲပါ အသိုင်းအဝိုင်း မိတ္တူ။ {2} တွင် ဒေါင်းလုဒ်လုပ်ခဲ့သည်: အတန်းအသစ် {3}၊ ပြောင်းလဲ {4}။</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>ပါဝင်ပြီးသား: မက်ပင်း {1} ခု၊ {2} ရက်စွဲပါ အသိုင်းအဝိုင်း မိတ္တူ။ {3} တွင် {4} မှ ဒေါင်းလုဒ်လုပ်ခဲ့သည်: အတန်းအသစ် {0} ခု။</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>ပါဝင်ပြီးသား: မက်ပင်း {1} ခု၊ {2} ရက်စွဲပါ အသိုင်းအဝိုင်း မိတ္တူ။ {3} တွင် {4} မှ ဒေါင်းလုဒ်လုပ်ခဲ့သည်: အတန်းအသစ် {0} ခု။</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>နောက်ဆုံး အပ်ဒိတ်ပြီးနောက် အသိုင်းအဝိုင်း ဒေတာဘေ့စ် မပြောင်းလဲပါ။</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub သို့ မရောက်နိုင်ပါ: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} သို့ မရောက်နိုင်ပါ: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>ဒေါင်းလုဒ်သည် PadForge မျှော်လင့်သော ကွန်ထရိုလာ ဒေတာဘေ့စ် မဟုတ်သဖြင့် PadForge က ငြင်းပယ်လိုက်သည်။ မည်သည့်အရာမျှ မပြောင်းလဲပါ။</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>အသေးချုံ့၍ စတင်ရန်</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ဝင်ရောက်ချိန်တွင် စတင်ရန်</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>အကျဉ်းချုပ် ကူးယူရန်</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>ကူးယူပြီး</value></data>
   <data name="Review_Save" xml:space="preserve"><value>သိမ်းရန်…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>သိမ်းပြီး တင်ရန်</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>“သိမ်းပြီး တင်ရန်” သည် zip ကို သိမ်းပြီး အကျဉ်းချုပ်ကို ကူးယူကာ ဖိုင်ကို Explorer တွင် ပြပြီး အစီရင်ခံစာများ တင်ရာ PadForge ၏ စာမျက်နှာကို ဖွင့်သည်။ ထိုနေရာတွင် အကျဉ်းချုပ်ကို ကူးထည့်ပြီး ဖိုင်ကို ၎င်းပေါ်သို့ ဆွဲချပါ။</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>မှတ်တမ်းတင်ချက်ကို သိမ်းရန်</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ဖိုင်များ</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>မသိမ်းရပါ။ {0}</value></data>
@@ -3244,6 +3260,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>မမျှော်လင့်သော အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့သည်:
 
 {0}
+
+PadForge သည် အသေးစိတ်များကို PadForge.exe ဘေးရှိ crash.log တွင် ရေးထားသည်။ ဤအရာကို တိုင်ကြားရန် {2} တွင် ဆွေးနွေးမှုတစ်ခု စတင်ပြီး crash.log ကို ၎င်းပေါ်သို့ ဆွဲချပါ။
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(နောက်ထပ် အမှား {0} ခုကို မပြဘဲ ချန်ထားသည်)</value></data>
@@ -5777,6 +5795,8 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Devices_Detail_Product" xml:space="preserve"><value>ထုတ်ကုန်</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>အမျိုးအစား</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>စွမ်းရည်များ</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>USB နှင့် Xbox Wireless Adapter မှတစ်ဆင့် နောက်ဘက် ပက်ဒယ်များကို ပိတ်ထားသည်။ SDL ၏ အကြောင်းရင်း: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Bluetooth မှတစ်ဆင့် နောက်ဘက် ပက်ဒယ်များကို ပိတ်ထားသည်။ SDL ၏ အကြောင်းရင်း: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>ချိတ်ဆက်မှု</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>ဘက်ထရီ</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>လမ်းကြောင်း</value></data>
@@ -5955,6 +5975,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ယခု အသုံးပြုနေသည်။ အတန်းသည် သင့်ဟာ ဖြစ်ပြီး ဤစက်ပစ္စည်းအတွက် ဦးစားပေးသည်။</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>သင့်ဟာအဖြစ် ထားပြီးပါပြီ။ အင်ဂျင် လည်ပတ်ပြီး စက်ပစ္စည်း ချိတ်ဆက်သည်နှင့် အသုံးပြုသည်။</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL က အတန်းကို လက်မခံပါ။ ဤစက်ပစ္စည်းအတွက် ဘာမျှ မပြောင်းလဲပါ။</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>မထားပါ။ PadForge သည် သင့် အတန်း {0:N0} ခုအထိ ထားပြီး ယခု ထိုမျှ ရှိနေပြီ ဖြစ်သည်။</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL မက်ပင်း ကူးထည့်ရန်</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} အတွက် SDL မက်ပင်း ကူးထည့်ရန်</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} အတွက် မက်ပင်း ရှာရန်</value></data>
@@ -5988,6 +6009,10 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>အတန်းများကို PadForge.xml တွင် သင့်ဟာအဖြစ် ထားပြီး ၎င်းတို့၏ စက်ပစ္စည်းများအတွက် အခြား ရင်းမြစ်တိုင်းထက် ဦးစားပေးသည်။ “ကွန်ထရိုလာ ဒေတာဘေ့စ်” အတန်း၏ “နောက်ထပ်” အောက်ရှိ “ရှင်းလင်း” က ၎င်းတို့ကို ဖယ်ရှားသည်။</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows အတွက် အတန်း {0} ခု။ အခြားစနစ်များအတွက် {1} ခုကို ကျော်သွားသည်။</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows အတွက် အတန်း {0} ခု။ အခြားစနစ်များအတွက် {1} ခုကို ကျော်သွားသည်။</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>{0:N0} ခုလုံးကို ထည့်မည်။ PadForge သည် သင့် အတန်း {1:N0} ခုအထိ ထားသည်။</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>၎င်းကို ထည့်မည်။ PadForge သည် သင့် အတန်း {1:N0} ခုအထိ ထားသည်။</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>သင့်ဟာ {0:N0} ခုကို ယခု ထားပြီးဖြစ်သဖြင့် ဤအတန်းများထဲမှ {1:N0} ခုကို ထည့်မည်ဖြစ်ပြီး {2:N0} ခုကို မထည့်ပါ။</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>သင့်ဟာ {0:N0} ခုကို ယခု ထားပြီးဖြစ်သဖြင့် ဤအတန်းများထဲမှ {1:N0} ခုကို ထည့်မည်ဖြစ်ပြီး {2:N0} ခုကို မထည့်ပါ။</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ခု လက်မခံပါ။ ပထမဆုံး: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>အတန်းတစ်ခု သို့မဟုတ် gamecontrollerdb.txt ဖိုင်၏ စာသားကို ကူးထည့်ပါ။</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>စာသားသည် SDL ၏ ကွန်ထရိုလာ ဒေတာဘေ့စ် အတန်း မဟုတ်ပါ: hex ဂဏန်း 32 လုံးပါ ID၊ အမည်၊ ထို့နောက် a:b0 ကဲ့သို့ field များ။</value></data>
@@ -6000,14 +6025,18 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>အတန်းသည် field တစ်ခုကို နှစ်ကြိမ် ပေးထားသည်။</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>အတန်းသည် စာလုံး 1,024 လုံး ကျော်နေသည်။</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>အတန်းသည် မည်သည့် ထိန်းချုပ်ကိရိယာကိုမျှ bind မလုပ်ပါ။</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>သင့် အတန်းများ</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>ဒေါင်းလုဒ်လုပ်မည့်နေရာ၊ သင့်ကိုယ်ပိုင် အတန်းများ</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>သင့် အတန်းများ</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>ဤနေရာတွင် သင် ထည့်သော သို့မဟုတ် စက်ပစ္စည်း၏ “SDL မက်ပင်း” ကတ်တွင် ကူးထည့်သော အတန်းများသည် ၎င်းတို့၏ စက်ပစ္စည်းများအတွက် အခြား ရင်းမြစ်တိုင်းထက် ဦးစားပေးပြီး ပြန်လည်သတ်မှတ်ပြီးနောက်လည်း ကျန်ရှိသည်။</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ဖိုင် သို့မဟုတ် clipboard မှ အတန်းများ ထည့်ရန်…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>အတန်း {0} ခု၊ ၎င်းတို့၏ စက်ပစ္စည်းများအတွက် အခြား ရင်းမြစ်တိုင်းထက် သင့်ဟာကို ဦးစားပေးသည်။</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>အတန်း {0} ခု၊ ၎င်း၏ စက်ပစ္စည်းအတွက် အခြား ရင်းမြစ်တိုင်းထက် သင့်ဟာကို ဦးစားပေးသည်။</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ခုအတွက် အတန်း {0} ခု၊ အခြား ရင်းမြစ်တိုင်းထက် သင့်ဟာကို ဦးစားပေးသည်။</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>စက်ပစ္စည်း {0} ခုအတွက် အတန်း {0} ခု၊ အခြား ရင်းမြစ်တိုင်းထက် သင့်ဟာကို ဦးစားပေးသည်။</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>မရှိသေးပါ။</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>သင့် SDL_GAMECONTROLLERCONFIG ကိန်းရှင်တွင် PadForge မထားသော အတန်း {0} ခု ရှိသည်။ “ဖိုင် သို့မဟုတ် clipboard မှ အတန်းများ ထည့်ရန်” သည် ၎င်းတို့ဖြင့် ဖွင့်သည်။</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>သင့် SDL_GAMECONTROLLERCONFIG ကိန်းရှင်တွင် PadForge မထားသော အတန်း {0} ခု ရှိသည်။ “ဖိုင် သို့မဟုတ် clipboard မှ အတန်းများ ထည့်ရန်” သည် ၎င်းဖြင့် ဖွင့်သည်။</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>ချက်ချင်း အသုံးပြုနေသည်။</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>ဒေါင်းလုဒ်လုပ်မည့်နေရာ</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS သာ။ အသိုင်းအဝိုင်း၏ လိပ်စာ မဟုတ်သော လိပ်စာမှ PadForge သည် အတန်းအသစ်များကိုသာ ယူသည်။</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>ဖွင့်ရန်</value></data>
   <data name="Web_Header" xml:space="preserve"><value>ဝဘ်ပေါ်ရှိ အကူအညီပေး ပရိုဂရမ်များ</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
@@ -6046,7 +6075,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} တွင် ခွင့်ပြုခဲ့သည်၊ နောက်ဆုံး အသုံးပြုချိန် {1}။</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} တွင် ခွင့်ပြုခဲ့သည်၊ မသုံးရသေးပါ။</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ရုပ်သိမ်းရန်</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge သည် tunnel ပရိုဂရမ် မဒေါင်းလုဒ်လုပ်ပါ၊ အခြားကုမ္ပဏီ၏ key ကိုလည်း မသိမ်းထားပါ။ ဝဘ် အကူအညီပေး ပရိုဂရမ်သည် အထက်ပါ အဆင့်ဖြင့် အလုပ်လုပ်သည်။</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge သည် ChatGPT Secure MCP Tunnel အတွက်သာ tunnel ပရိုဂရမ်ကို ဒေါင်းလုဒ်လုပ်သည်။ ဝဘ် အကူအညီပေး ပရိုဂရမ်သည် အထက်ပါ အဆင့်ဖြင့် အလုပ်လုပ်သည်။</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ကို ဝဘ်မှ PadForge နှင့် တွဲလုပ်ခွင့် ပြုမလား?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>၎င်း၏ ဝင်ရောက်မှုသည် {0} သို့ ပြန်သွားသည်။</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>၎င်းသည် မိမိကိုယ်ကို {0} ဟု ခေါ်သည်။</value></data>
@@ -6083,4 +6112,35 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>၎င်း၏ စခရစ် ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>စခရစ်များသည် ၎င်း၏ ထိန်းချုပ်ကိရိယာများကို {0} ဟု အမည်ပေးသည်။</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>စခရစ်များသည် ၎င်း၏ ကီးများကို KeyA၊ KeySpace၊ KeyLeftShift စသည်ဖြင့် အမည်ပေးပြီး ကီးတိုင်းကို ၎င်း၏ ကုဒ် Vk0 မှ Vk255 အထိဖြင့်လည်း အမည်ပေးသည်။</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{1} မှ ခေါ်ဆိုသော ဤကွန်ရက်ပေါ်ရှိ {0}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0} ၏ အသိအမှတ်ပြုလက်မှတ် key တူတူဖြင့် လက်မှတ်ထိုးထားသော ဗားရှင်းအသစ်သည် “အတည်ပြုပြီး ပြန်စတင်ရန်” မလိုဘဲ ပြန်စတင်သည်။ အခြား ပြောင်းလဲမှုတိုင်းအတွက် သင့်ကို အရင် မေးသည်။</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>အသိအမှတ်ပြုလက်မှတ် key တူတူဖြင့် လက်မှတ်ထိုးထားသော ဗားရှင်းအသစ်ကို လက်ခံခဲ့သည်</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>လိပ်စာ</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge သည် https:// ဖြင့် စပြီး host တစ်ခုကို အမည်ဖော်ပြသော၊ မူလ ပို့တ်ပေါ်ရှိ၊ အသုံးပြုသူအမည် သို့မဟုတ် စကားဝှက် မပါသော လိပ်စာကို လက်ခံသည်။</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>ပို့တ်</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>ပြောင်းရန်…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>ခေါ်ဆိုမှုများနှင့် ၎င်းတို့၏ key သည် ဤကွန်ရက်ကို ကုဒ်ဝှက်မထားဘဲ ဖြတ်သွားသည်။ Windows သည် ၎င်းတို့ကို ပုဂ္ဂလိက ကွန်ရက်များတွင်သာ ဝင်ခွင့်ပြုသည်။</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>ပို့တ် {0} ကို အခြား ပရိုဂရမ်တစ်ခုက အသုံးပြုနေသည်။ ဤကွန်ရက်မှ PadForge သို့ ရောက်ရန် ၎င်းကို ပြောင်းပါ။</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows သည် PadForge ၏ helper ကို ပို့တ် {0} တွင် နားထောင်ခွင့် မပြုခဲ့ပါ။ PadForge သည် စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် ၎င်းကို ခွင့်ပြုသဖြင့် PadForge ကို ထိုအခွင့်အရေးဖြင့် စတင်ပြီး ဤအရာကို ပိတ်ပြီး ပြန်ဖွင့်ပါ။</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge ၏ helper သည် ပို့တ် {0} တွင် နားမထောင်နိုင်ပါ။ ပို့တ်ကို ပြောင်းပါ သို့မဟုတ် ဤအရာကို ပိတ်ပြီး ပြန်ဖွင့်ပါ။</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge ၏ helper ရပ်သွားသည် ({0})။ ၎င်းကို ပြန်စတင်ရန် “Reach PadForge From This Network” ကို ပိတ်ပြီး ပြန်ဖွင့်ပါ။</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>“အလိုအလျောက်လုပ်ဆောင်ခြင်း” ပိတ်ထားသဖြင့် ဤကွန်ရက်ပေါ်ရှိ မည်သည့် အကူအညီပေး ပရိုဂရမ်မျှ PadForge သို့ မရောက်ပါ။ “အလိုအလျောက်လုပ်ဆောင်ခြင်း” ဖွင့်ပြီးသည်နှင့် helper စတင်သည်။</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>ဤ PC တွင် ယခု ပုဂ္ဂလိက ကွန်ရက်ပေါ်ရှိ လိပ်စာ မရှိပါ။</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>ဤကွန်ရက်ပေါ်ရှိ အကူအညီပေး ပရိုဂရမ်များ</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}။ ၎င်း၏ key ကို {1} တွင် ပြုလုပ်ခဲ့သည်၊ နောက်ဆုံး အသုံးပြုချိန် {2}။</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}။ ၎င်း၏ key ကို {1} တွင် ပြုလုပ်ခဲ့သည်၊ မသုံးရသေးပါ။</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Key ပြုလုပ်ရန်</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>ခေါင်းစီး</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>ပြီးပါပြီ</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>ပို့တ်ကို ပြောင်းရန်</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>1024 မှ 49151 အတွင်း ပို့တ်တစ်ခု ရွေးပါ။ အကူအညီပေး ပရိုဂရမ်တိုင်း၏ သိမ်းထားသော လိပ်စာတွင် ပို့တ် ပါသဖြင့် ပြောင်းပြီးနောက် တစ်ခုချင်းစီကို ပြန်ထည့်ပါ။</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>1024 မှ 49151 အတွင်း ပို့တ်တစ်ခု ရိုက်ထည့်ပါ။</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>၎င်း၏ ကိုယ်ပိုင် စက်ပစ္စည်းများနှင့် {0} ကို ထိန်းချုပ်သည်။ စက်ပစ္စည်းတိုင်းကို ဆက်ဖတ်နေဆဲ ဖြစ်သည်။</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>၎င်း၏ ကိုယ်ပိုင် စက်ပစ္စည်းများကိုသာ ထိန်းချုပ်သည်။ စက်ပစ္စည်းတိုင်းကို ဆက်ဖတ်နေဆဲ ဖြစ်သည်။</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>ပရိုဂရမ်တိုင်းအတွက်ကဲ့သို့ command line မှ အမိန့်များသည် PadForge သို့ ဆက်ရောက်နေဆဲ ဖြစ်သည်။</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>၎င်းသည် ၎င်း၏ ကိုယ်ပိုင် စက်ပစ္စည်းများကိုသာ ထိန်းချုပ်ရန် တောင်းဆိုသည်။</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>၎င်းသည် တစ်ကြိမ်သာ မေးသည်။ ၎င်းကို “အလိုအလျောက်လုပ်ဆောင်ခြင်း” စာမျက်နှာတွင် ဖယ်ရှားနိုင်သည် သို့မဟုတ် ၎င်း၏ အကျုံးဝင်မှုကို ပြောင်းနိုင်သည်။</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>သင့် အခွင့်အရေးဖြင့် လည်ပတ်နေပြီး အသင့်ဖြစ်နေသည်။ ChatGPT သည် ကိုယ်ပိုင် ဝင်ရောက်မှု မလိုဘဲ ဤ tunnel မှတစ်ဆင့် PadForge သို့ ရောက်ပြီး သင့် OpenAI အဖွဲ့အစည်းမှသာ ရောက်သည်။ ၎င်းသည် PadForge နှင့်အတူ ပြန်စတင်သည်။</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>သင့် အခွင့်အရေးဖြင့် လည်ပတ်နေသည်။ tunnel အသင့်ဖြစ်ကြောင်း OpenAI ပြောသည်ကို စောင့်နေသည်။</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge သည် key ကို သင်တစ်ဦးတည်းအတွက် ကုဒ်ဝှက်ပြီး သိမ်းထားသည်။ အကွက် ဗလာဖြစ်လျှင် ၎င်းကို မေ့ပစ်သည်။ ChatGPT သည် အထက်ပါ အဆင့်ဖြင့် အလုပ်လုပ်သည်။</value></data>
 </root>

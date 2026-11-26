@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} iannannen, tund {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} cerf dannodannen: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} cerf iannannen: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} dannoda laew</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} dannodant {1} lû vi luig er</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} tôl ad</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} cerf tolar ad: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (taeg {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (taeg {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (taeg {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ianno ad, fen, eneth ialthad, ianno o sad</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Fen, sui DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Fin, lagor pân, cant i cerig</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Sedryn egel, sedryn bo lhing</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Sedryn egel, sedryn bo lhing a vi raew hen</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Tiro os ah tirith dol egor thôl VR ir atheg tad rethar bo i sarn.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Sesto i lagor, tellyn a rind i menna telias noriod, sui minnad pân.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Menno mîn maethas na curu lammad i gethir eithel mîn DSU.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Goianno goiannas…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Curu a teithais|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Parlas pân|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Davo a iesto ad…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Tano vi colch</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Estelio cŷl cîr o ennais hen</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Cŷl cîr nu ledil ennais ain o {0} iesta ad pen Davo a iesto ad. Gwistad egel ceth le minui.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Gedant cŷl cîr nu ledil ennais ain</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Iesta ir i naur iesta</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Cetha i barlas nui iestad</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Telant adh noth {0}. Iesta ad ab {1} s.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Alnad ennais.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>I chilith dîn tanar sí lo cuia.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Ped alnad cilith.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>I chilith dîn tanar sí ir ianna na PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Iestant, a ú-iannant na PadForge. Iesta ad ab {0} s.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Iestant, a ú-iannant na PadForge. Iesta ad ab {0} s.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} iestant, a ú-iannant na PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Telant luig ab iestad, ú-iannant na PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Gwistannen</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge ú-hennant i chilith dîn: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Telant ab luig pen peth</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>I parlas dîn gwistant lo cuia</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ennais o {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, alnad ennais</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Carnen</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Hebannen</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ú-carnen</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ú-davannen vi pâd hen</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ú-ferui sí</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Sesto sarnath carf {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Haedo i garf {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Sesto ilphen sarn o carf {0} na îdh</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Etholad pan ledil a nigol i anna hebannen o {0}, i cuia adh polodh herdir</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Etholad pan ledil a nigol i anna hebannen o henneth i cuia adh polodh herdir</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Cara PadForge iesta curu.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Edra parlas, colch egor palt lhing.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Cara PadForge menna ledil egor minnad nigol na Windows.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Heb PadForge norol ir nistal Holo egor Alt+F4. Maetho Uthwen vi narth i dast na haenad.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Heb PadForge vi tast ir níthal i henneth, ú vi rib carthas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Heb i henneth toblannen ir PadForge iesta. Nor a sesta sui senu.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Iesto PadForge ir minnal Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Iesto PadForge ir minnal Windows. Lo hen cui, PadForge iesta eithro pen ceth Windows o râd thent, teithas egor curu egel.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge cuia o {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Hen baura PadForge vi colch în er. Colch în gar parlas egel, a PadForge ú-pol boda curu egel gwista hon.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Menno PadForge na colch în er</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Tano anuir vi dast</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Heb aerem i dast athgen lo i henneth edrannen, sí Uthwen vi narth în ferui anuir.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cŷl</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cetho GitHub an noth cîr o PadForge a panno hain o sí, a cýro i narth maethas. PadForge ianna na GitHub ero (api.github.com, github.com a pethron ged în, a raw.githubusercontent.com an i narth maethas). I noth ero i menna noth în, a, an i narth maethas, i têw i GitHub annant i ged medui.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cetho GitHub an noth cîr o PadForge a panno hain o sí, a cýro i narth maethas. PadForge ianna na GitHub ero (api.github.com, github.com a pethron ged în, a raw.githubusercontent.com an i narth maethas), a na i sad sestannen nu Gedad o vi lîr i narth maethas. I noth ero i menna noth în, a, an i narth maethas, i têw i bethron annant i ged medui.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Cetho cŷl anuir</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Ceth ir PadForge iesta a pân 12 lû ab hen.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Panno cŷl anuir</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Panno a iesto nui</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Sarth edannad</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Narth maethas</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cýro hí ged i narth maethas govod (SDL_GameControllerDB) o GitHub a heb, vi parlas cilith, i theinas i noth hen o PadForge ú-gar. Maethar sí. Theinas cîr maethannen ero an maethas i alnad egel henna sui maethas telias, i ú-annannen, a i ú-vi Henno sui bang maethas. I redhiad haeda ilphen theinas gedannen. I lîr lín, nu Am, bâr.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cýro hí ged i narth maethas govod (SDL_GameControllerDB) o GitHub, egor o i sad sestannen nu Am, a heb, vi parlas cilith, i theinas i noth hen o PadForge ú-gar. Maethar sí. O sad egel heb theinas cîr ero. Theinas cîr maethannen ero an maethas i alnad egel henna sui maethas telias, i ú-annannen, a i ú-vi Henno sui bang maethas (pen theinas maethas telias). I redhiad haeda ilphen theinas gedannen a ged o GitHub ad. I lîr lín, nu Am, bâr.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Cýro hí</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Cýra…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Cethad cŷl…</value></data>
@@ -1106,8 +1121,11 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge cýrannen na {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Adabannen: {0} theinas, lammad govod o {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Adabannen: {0} theinas, lammad govod o {1}. Gedannen {2}: {3} lîr cîr, {4} gwistannen.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Adabannen: {1} theinas, lammad govod o {2}. Gedannen {3} o {4}: {0} lîr cîr.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Adabannen: {1} theinas, lammad govod o {2}. Gedannen {3} o {4}: {0} lîr cîr.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>I narth govod ú-gwistant ab i cŷl medui.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ú-tolant na GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Ú-tolant na {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge bodant i ged an ú-i narth maethas i aníra. Alnad gwistant.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Iesto níthannen</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Iesto ir minnad</value></data>
@@ -1278,6 +1296,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Lammo narn thent</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Lammannen</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Haudho…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Haudho a menno</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Haudho a menno haudha i zip, lamma i narn thent, tana i parlas mi Explorer a edra i balt PadForge an narn dŷl. Hinio i narn thent ennas a anno i parlas na hon.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Haudho i teithad</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Parlas zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ú-haudhannen. {0}</value></data>
@@ -1638,6 +1658,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Carf</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Cant</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Polodh</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>I plador lorn bo USB a Xbox Wireless Adapter. Peth SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>I plador lorn bo Bluetooth. Peth SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Lîf</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Tund</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Râd</value></data>
@@ -3490,6 +3512,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Dŷl ú-genant:
 
 {0}
+
+PadForge teithant i narn na crash.log ned PadForge.exe. An teithad hen, iesto peth mi {2} a anno crash.log na hon.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} dŷl egel toblant)</value></data>
@@ -6723,6 +6747,7 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Maethannen sí. I lîr lín, a bâr or ilphen eithel egel an carf hen.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Hebannen sui lín. Maethar ir i naur cuia a i garf iannannen.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ú-gedant i lîr. Alnad gwistant an carf hen.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Ú-hebannen. PadForge heb lîr lín naden {0:N0}, a heb hain hí.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Hinio Theinas SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Hinio Theinas SDL an {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Cesto theinas an {0}</value></data>
@@ -6756,6 +6781,10 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>I lîr hebannen sui lín mi PadForge.xml a bâr or ilphen eithel egel an i cerf în. Covro, nu Am o lîr Narth maethas, haeda hain.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Lîr an Windows: {0}. Lîr an ardh egel, {1}, ú-gedannen.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} lîr an Windows. Lîr an ardh egel, {1}, ú-gedannen.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>PadForge goianna pân, {0:N0}. PadForge heb lîr lín naden {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>PadForge goianna hon. PadForge heb lîr lín naden {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Lîr lín hebannen hí: {0:N0}, sui PadForge goianna {1:N0} o hain, a ú-goianna {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Lîr lín hebannen hí: {0:N0}, sui PadForge goianna {1:N0} o hain, a ú-goianna {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Ú-gedannen: {0}. I minui: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Hinio lîr, egor i teith o parlas gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>I teith ú-lîr o narth maethas SDL: ID o 32 têw, eneth, a sant sui a:b0.</value></data>
@@ -6768,14 +6797,22 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>I lîr anna sant er tâd lû.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>I lîr or 1,024 têw.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>I lîr gar alnad gwaef an sarn.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>I lîr lín</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Sad gedad, i lîr lín</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>I lîr lín</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Lîr i le goianna sí, egor hinia bo sam Theinas SDL o carf, bâr or ilphen eithel egel an i cerf în, a bâr ab i redhiad.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Goianno lîr o parlas egor colch lammad…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Lîr: {0}, lín, or ilphen eithel egel an i cerf în.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} lîr, lín, or ilphen eithel egel an i garf dîn.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Lîr a cerf: {0}. Lín, or ilphen eithel egel.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} lîr an {0} carf, lín, or ilphen eithel egel.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Alnad sí.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Lîr i ú-heb PadForge mi SDL_GAMECONTROLLERCONFIG lín: {0}. Goianno lîr o parlas egor colch lammad edra gu hain.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>{0} lîr i ú-heb PadForge mi SDL_GAMECONTROLLERCONFIG lín. Goianno lîr o parlas egor colch lammad edra gu hon.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Maethannen sí.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Gedad o</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS ero. O sad ú-govod, PadForge ged lîr cîr ero.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Gwisto…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Maetho i parlas govod</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Sad</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge ged sad i iesta adh https:// a esta bethron, bo i fen senu, pen eneth maethron egor peth thurin.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Raetho PadForge o lhing</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Sadron i cuia bo palt lhing raetha PadForge adh curu fela mi PC hen. Echuidad hen ceth le minui.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Raetho PadForge o lhing?</value></data>
@@ -6818,7 +6855,7 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Davannen {0}, maethannen medui {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Davannen {0}, ú-maethannen sí.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Haedo davad</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ú-ged curu fela a ú-heb ledil gwaith egel. Sadron lhing maetha vi i pâd or.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ged curu fela an ChatGPT Secure MCP Tunnel ero. Sadron lhing maetha vi i pâd or.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Davo {0} maetha PadForge o lhing?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>I fennas dîn dammen na {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Eneth în: {0}.</value></data>
@@ -6855,4 +6892,95 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID teithas dîn</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Teithais estar i sarnath dîn {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Teithais estar i ledil dîn KeyA, KeySpace, KeyLeftShift a egel sui hain, a ilphen ledil adh i noth dîn, Vk0 na Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} vi raew hen o {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} ceth, vi raew hen o {1}, adh i ledil adabannen sír.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} ceth, vi raew hen o {1}, adh i ledil adabannen bo {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Raetho PadForge o raew hen</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>Sadron vi PC egel vi raew hen raetha PadForge adh ledil adabannen sí, pen curu fela egor fennas egel. Echuidad hen ceth le minui.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Raetho PadForge o raew hen?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Curu grest o PadForge, i cuia pen polodh herdir, lasta bo sad raew i PC hen, a PadForge dava fen dîn vi raew thurin ero. Sadron vi PC egel minna ero adh ledil adabannen sí. Pethath a ledil în athrar i raew ú-thurin.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Fen</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Gwisto…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Pethath a ledil în athrar raew hen ú-thurin. Windows dava hain vi raew thurin ero.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Curu egel maetha fen {0}. Gwisto hon an raethad PadForge o raew hen.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ú-davant curu grest o PadForge lasta bo fen {0}. PadForge dava hon adh polodh herdir, sui iesto PadForge adh hain a lortho a echuido hen.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Curu grest o PadForge ú-pol lasta bo fen {0}. Gwisto i fen, egor lortho a echuido hen.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Curu grest o PadForge postant ({0}). Lortho a echuido Raetho PadForge o raew hen an iesta hon ad.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Maethad Curu lorn, sui alnad sadron vi raew hen raetha PadForge. I curu grest iesta ir Maethad Curu cui.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>PC hen ú-gar sad vi raew thurin hí.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Sedryn vi raew hen</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. I ledil dîn adabannen {1}, maethannen medui {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. I ledil dîn adabannen {1}, ú-maethannen hí.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>sír ben {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>bo {0} ben {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>ben {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Ilphen sadron ged ledil în, adh eneth a pâd naden i pâd or. I ledil tana lû er. Adabad hon sí i davad lín, sui i nallan minui dîn ú-ceth alnad o le.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Goianno sadron raew…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Goianno sadron raew</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Esto i PC egel egor i sadron dîn, a cilo i pol caro. PadForge adab i ledil dîn ab hen.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Eneth</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Pâd</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Caro ledil</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Anno eneth na hon.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge heb ledil raew naden {0}. Haedo davad an min minui.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>I ledil an {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>Tana hen lû er. PadForge heb noth thent o hon ero, sui lammo hon hí. Haedo davad nu Sedryn vi raew hen tel hon.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Ledil</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>An</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Ilphen curu egel</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Egor Ilphen curu egel, an i sad a i dol an hinio mi chilith dîn.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>Teith an hinio</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Iesto hon vi lîr pethath mi PC egel.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Goianno bethron MCP bo HTTP mi chilith i guru, adh sad hen a dol hen.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Dol</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Carnen</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Gwisto i fen</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Cilo fen o 1024 naden 49151. I sad haudhannen o ilphen sadron esta i fen, sui goianno ilphen min ad ab i gwistad.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Teitho fen o 1024 naden 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Raeth</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>PadForge pân</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>I cerf dîn ero a hain</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Cilo cerf…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Maetha i cerf dîn a {0}. Henna ilphen carf eno.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Maetha i cerf dîn ero. Henna ilphen carf eno.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Hestad o i lîr pethath raethar PadForge eno, sui an ilphen curu.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Ceth maethad i cerf dîn ero.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Ceth lû er. Le pol haeda hon egor gwista raeth dîn mi palt Maethad Curu.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Cilo cerf</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} pol maetha i cerf dîn a i cerf i cilig. Henna ilphen carf eno.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>Alnad carf mi palt Cerf.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Cuin, gu tûr lín, a ferui. ChatGPT raetha PadForge adh fela hen pen fennas în, a o gwaith OpenAI lín ero. Iesta ad gu PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Cuin, gu tûr lín. Dartha naden OpenAI ped i fela ferui.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Gedad tunnel-client o OpenAI a tastad hon adh noth SHA-256 o i cŷl dîn.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client ú-gedannen: {0}. Cilo i fela ad an ritha ad.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Hinio ledil cuin a ID fela nu, a i fela iesta.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Ledil cuin</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Gleinannen, adh Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Caro min</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>ID fela</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Ab hen, goianno fela hen mi ChatGPT.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Edro ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge heb i ledil toblannen an le ero. Ir le covra i sam, PadForge lítha hon. ChatGPT maetha vi i pâd or.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>I ledil ú-hebannen: curu grest lhing o PadForge ú-cuia, a hon ero pol tobla i ledil an le.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Dambedo o carf egel</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Dambedo i vabedad PadForge o carf palan egor PC egel lo le hae o hen.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Maetha vi raew hen ero, adh sad i Maethas lhing.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Ialtho carf…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Ialthannen {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Dambedant medui {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>sír ben {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>ben {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} ben {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Carf pen eneth</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Ialtho carf</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Têw an tiriad adh hent i garf</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Toblannen o teithad cenedril, sui le ero pol tiro hon.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Egor edro {0} bo i garf a teitho têw hen:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>I têw maetha lû er, naden {0}. Leben dýgar hol hon, a i têw QR maetha eno.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Iestad sad i Maethas lhing…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>I phalt ú-pol edra: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows ú-doblant henneth hen o teithad cenedril, sui ú-tana têw.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>I têw teithannen hollen ab leben dýgar. I têw QR maetha eno naden {0}.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>I têw telant. Ialtho carf… cara min cîr.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge heb ledil raew {0} ero. Haedo davad an hon minui.</value></data>
 </root>

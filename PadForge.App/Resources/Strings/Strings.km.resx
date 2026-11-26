@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} បានភ្ជាប់ ថ្ម {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>ឧបករណ៍ {0} បានផ្ដាច់៖ {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>ឧបករណ៍ {0} បានភ្ជាប់៖ {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ផ្ដាច់ម្ដងហើយម្ដងទៀត</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} បានផ្ដាច់ {1} ដងក្នុងមួយនាទី</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} បានត្រឡប់មកវិញ</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>ឧបករណ៍ {0} បានត្រឡប់មកវិញ៖ {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (អតិបរមា {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (អតិបរមា {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (អតិបរមា {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ភ្ជាប់ឡើងវិញស្វ័យប្រវត្តិ, ច្រក, អត្តសញ្ញាណផ្គូផ្គង, ភ្ជាប់តាមអាសយដ្ឋាន</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ច្រក កម្មវិធីជំនួស DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ច្រក, ល្បឿនពេញ, ទម្រង់ផ្ទាល់ខ្លួន</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>ជំនួយការផ្សេងទៀត, ជំនួយការនៅលើវេប</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>ជំនួយការផ្សេងទៀត, ជំនួយការនៅលើវេប និងនៅលើបណ្ដាញនេះ</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>មើលជុំវិញដោយប្រើឧបករណ៍តាមដានក្បាល ឬកាសពាក់ក្បាល VR ខណៈមេដៃទាំងពីរនៅលើប៊ូតុង។</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ម៉ាបល្បឿន ឈ្នាន់ និងលេខប្រអប់លេខដែលហ្គេមបើកបរផ្ញើ ដូចការបញ្ចូលផ្សេងទៀត។</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ផ្ញើចលនាឧបករណ៍បញ្ជាទៅកម្មវិធីត្រាប់តាមដែលអានប្រភពចលនា DSU។</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>បន្ថែមកម្មវិធីបន្ថែម…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>កម្មវិធី និងស្គ្រីប|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ឯកសារទាំងអស់|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>យល់ព្រម និងចាប់ផ្ដើមឡើងវិញ…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>បង្ហាញក្នុងថត</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>ចាប់ផ្ដើមជាមួយម៉ាស៊ីន</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>កំពុងពិនិត្យឯកសារមុនពេលវាចាប់ផ្ដើម</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>បានចេញដោយកូដ {0}។ ចាប់ផ្ដើមម្ដងទៀតក្នុងរយៈ {1} វិនាទី។</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>គ្មានហត្ថលេខា។</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>ការកំណត់របស់វាបង្ហាញនៅទីនេះ ខណៈវាកំពុងដំណើរការ។</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>វាមិនប្រកាសការកំណត់ណាមួយទេ។</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>ការកំណត់របស់វាបង្ហាញនៅទីនេះ នៅពេលវាភ្ជាប់ទៅ PadForge។</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>បានចាប់ផ្ដើម ប៉ុន្តែមិនដែលភ្ជាប់ទៅ PadForge ទេ។ វាចាប់ផ្ដើមម្ដងទៀតក្នុងរយៈ {0} វិនាទី។</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>បានចាប់ផ្ដើម ប៉ុន្តែមិនដែលភ្ជាប់ទៅ PadForge ទេ។ វាចាប់ផ្ដើមម្ដងទៀតក្នុងរយៈ {0} វិនាទី។</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} បានចាប់ផ្ដើម ប៉ុន្តែមិនដែលភ្ជាប់ទៅ PadForge ទេ។</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>បានបញ្ចប់មួយនាទីបន្ទាប់ពីចាប់ផ្ដើម ដោយមិនដែលភ្ជាប់ទៅ PadForge</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge មិនអាចអានការកំណត់របស់វាបានទេ៖ {0}។</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>បានបញ្ចប់ បន្ទាប់ពីមួយនាទីដោយគ្មានការឆ្លើយតប</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>ឯកសាររបស់វាបានផ្លាស់ប្ដូរ ខណៈវាកំពុងដំណើរការ</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0} ចុះហត្ថលេខាដោយ {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0} គ្មានហត្ថលេខា</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>រួចរាល់</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>បានទប់ទុក</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>មិនបានធ្វើ</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>មិនអនុញ្ញាតនៅកម្រិតនេះ</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>មិនអាចប្រើបានឥឡូវនេះ</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>កំណត់ការបញ្ជារបស់ឧបករណ៍ {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>ដកឧបករណ៍ {0} ចេញ</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>ដាក់គ្រប់ការបញ្ជារបស់ឧបករណ៍ {0} ឱ្យនៅស្ងៀម</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>លទ្ធផលគ្រាប់ចុច និងកណ្ដុរដែលវាបញ្ជូន ត្រូវបានទប់ទុកពី {0} ដែលដំណើរការជាអ្នកគ្រប់គ្រង</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>លទ្ធផលគ្រាប់ចុច និងកណ្ដុរដែលវាបញ្ជូន ត្រូវបានទប់ទុកពីបង្អួចដែលដំណើរការជាអ្នកគ្រប់គ្រង</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>ធ្វើឱ្យ PadForge ដំណើរការកម្មវិធីមួយ។</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>បើកឯកសារ ថត ឬទំព័រវេប។</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>ធ្វើឱ្យ PadForge ផ្ញើគ្រាប់ចុច ឬការបញ្ចូលកណ្ដុរទៅ Windows។</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>រក្សា PadForge ឲ្យដំណើរការ ពេលអ្នកចុច «បិទ» ឬចុច Alt+F4។ ប្រើ «ចាកចេញ» ក្នុងម៉ឺនុយថាសប្រព័ន្ធ ដើម្បីបិទកម្មវិធី។</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>រក្សា PadForge នៅក្នុងតំបន់ជូនដំណឹង ពេលអ្នកបង្រួមបង្អួច ជំនួសឲ្យនៅលើរបារភារកិច្ច។</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>រក្សាបង្អួចឲ្យលាក់ពេល PadForge ចាប់ផ្ដើម។ វាដំណើរការ និងម៉ាបដូចធម្មតា។</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ចាប់ផ្ដើម PadForge ដោយស្វ័យប្រវត្តិ ពេលអ្នកចូល Windows។</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ចាប់ផ្ដើម PadForge ដោយស្វ័យប្រវត្តិ ពេលអ្នកចូល Windows។ ខណៈនេះបើក PadForge ក៏ចាប់ផ្ដើមដោយគ្មានការសួររបស់ Windows ពីផ្លូវកាត់ ស្គ្រីប ឬកម្មវិធីផ្សេងទៀតដែរ។</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ដំណើរការពី {0}។</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>មុខងារនេះត្រូវការ PadForge នៅក្នុងថតផ្ទាល់ខ្លួនរបស់វា។ ថតរបស់វាមានឯកសារផ្សេងទៀត ដូច្នេះ PadForge មិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរវាបានទេ។</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>ផ្លាស់ PadForge ទៅថតផ្ទាល់ខ្លួនរបស់វា</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>បង្ហាញក្នុងថាសប្រព័ន្ធជានិច្ច</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>រក្សារូបតំណាងថាសឲ្យមើលឃើញ ពេលបង្អួចបើក ដូច្នេះ «ចាកចេញ» ក្នុងម៉ឺនុយរបស់វាតែងតែនៅចម្ងាយមួយចុច។</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>បច្ចុប្បន្នភាព</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>ពិនិត្យ GitHub រកកំណែថ្មីរបស់ PadForge ហើយដំឡើងពួកវាពីទីនេះ និងធ្វើបច្ចុប្បន្នភាពមូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា។ PadForge ទាក់ទងតែ GitHub ប៉ុណ្ណោះ (api.github.com, github.com និងម៉ាស៊ីនមេទាញយករបស់វា និង raw.githubusercontent.com សម្រាប់មូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា)។ ទិន្នន័យតែមួយគត់ដែលវាផ្ញើ គឺលេខកំណែរបស់វាផ្ទាល់ ហើយសម្រាប់មូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា គឺស្លាកដែល GitHub បានផ្ដល់ឱ្យការទាញយកចុងក្រោយ។</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>ពិនិត្យ GitHub រកកំណែថ្មីរបស់ PadForge ហើយដំឡើងពួកវាពីទីនេះ និងធ្វើបច្ចុប្បន្នភាពមូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា។ PadForge ទាក់ទងតែ GitHub (api.github.com, github.com និងម៉ាស៊ីនមេទាញយករបស់វា និង raw.githubusercontent.com សម្រាប់មូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា) និងអាសយដ្ឋានដែលអ្នកកំណត់នៅក្រោម «ទាញយកពី» នៃជួរ «មូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា» ប៉ុណ្ណោះ។ ទិន្នន័យតែមួយគត់ដែលវាផ្ញើ គឺលេខកំណែរបស់វាផ្ទាល់ ហើយសម្រាប់មូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា គឺស្លាកដែលម៉ាស៊ីនមេបានផ្ដល់ឱ្យការទាញយកចុងក្រោយ។</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>ពិនិត្យរកបច្ចុប្បន្នភាពដោយស្វ័យប្រវត្តិ</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>ពិនិត្យពេល PadForge ចាប់ផ្ដើម និងរៀងរាល់ 12 ម៉ោងបន្ទាប់ពីនោះ។</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>ដំឡើងបច្ចុប្បន្នភាពដោយស្វ័យប្រវត្តិ</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ដំឡើង និងចាប់ផ្ដើមឡើងវិញ</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>កំណត់ចំណាំការចេញផ្សាយ</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>មូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«ធ្វើបច្ចុប្បន្នភាពឥឡូវ» ទាញយកមូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជារបស់សហគមន៍ (SDL_GameControllerDB) ពី GitHub ហើយរក្សាទុកការម៉ាបដែលកំណែ PadForge នេះមិនមាន នៅក្នុងឯកសារការកំណត់។ ពួកវាត្រូវបានប្រើភ្លាមៗ។ ការម៉ាបថ្មីត្រូវបានប្រើតែសម្រាប់ឧបករណ៍បញ្ជាដែលគ្មានអ្វីផ្សេងអានវាជាហ្គេមផេត មិនទាន់បានចាត់តាំង និងមិននៅក្នុង «បង្ខំរបៀបយ៉យស្ទីកដើម»។ ការកំណត់ឡើងវិញ លុបការម៉ាបដែលបានទាញយកទាំងអស់។ ជួរផ្ទាល់របស់អ្នក នៅក្រោម «ច្រើនទៀត» នៅដដែល។</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«ធ្វើបច្ចុប្បន្នភាពឥឡូវ» ទាញយកមូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជារបស់សហគមន៍ (SDL_GameControllerDB) ពី GitHub ឬពីអាសយដ្ឋានដែលបានកំណត់នៅក្រោម «ច្រើនទៀត» ហើយរក្សាទុកការម៉ាបដែលកំណែ PadForge នេះមិនមាន នៅក្នុងឯកសារការកំណត់។ ពួកវាត្រូវបានប្រើភ្លាមៗ។ ពីអាសយដ្ឋានផ្សេង វារក្សាទុកតែការម៉ាបថ្មីប៉ុណ្ណោះ។ ការម៉ាបថ្មីត្រូវបានប្រើតែសម្រាប់ឧបករណ៍បញ្ជាដែលគ្មានអ្វីផ្សេងអានវាជាហ្គេមផេត មិនទាន់បានចាត់តាំង និងមិននៅក្នុង «បង្ខំរបៀបយ៉យស្ទីកដើម»។ ការកំណត់ឡើងវិញ លុបការម៉ាបដែលបានទាញយកទាំងអស់ ហើយទាញយកពី GitHub ម្ដងទៀត។ ជួរផ្ទាល់របស់អ្នក នៅក្រោម «ច្រើនទៀត» នៅដដែល។</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ធ្វើបច្ចុប្បន្នភាពឥឡូវ</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>កំពុងធ្វើបច្ចុប្បន្នភាព…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>កំពុងពិនិត្យរកបច្ចុប្បន្នភាព…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ត្រូវបានធ្វើបច្ចុប្បន្នភាពទៅ {0}។</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ភ្ជាប់មកជាមួយ៖ ការម៉ាប {0} ច្បាប់ចម្លងរបស់សហគមន៍ចុះថ្ងៃ {1}។</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ភ្ជាប់មកជាមួយ៖ ការម៉ាប {0} ច្បាប់ចម្លងរបស់សហគមន៍ចុះថ្ងៃ {1}។ បានទាញយក {2}៖ ជួរថ្មី {3} បានប្ដូរ {4}។</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>ភ្ជាប់មកជាមួយ៖ ការម៉ាប {1} ច្បាប់ចម្លងរបស់សហគមន៍ចុះថ្ងៃ {2}។ បានទាញយក {3} ពី {4}៖ ជួរថ្មី {0}។</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>ភ្ជាប់មកជាមួយ៖ ការម៉ាប {1} ច្បាប់ចម្លងរបស់សហគមន៍ចុះថ្ងៃ {2}។ បានទាញយក {3} ពី {4}៖ ជួរថ្មី {0}។</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>មូលដ្ឋានទិន្នន័យរបស់សហគមន៍មិនបានផ្លាស់ប្ដូរទេ តាំងពីការធ្វើបច្ចុប្បន្នភាពចុងក្រោយ។</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>មិនអាចភ្ជាប់ទៅ GitHub បានទេ៖ {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>មិនអាចភ្ជាប់ទៅ {0} បានទេ៖ {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge បានបដិសេធការទាញយក ព្រោះវាមិនមែនជាមូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជាដែលវារំពឹងទុក។ គ្មានអ្វីផ្លាស់ប្ដូរទេ។</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ចាប់ផ្ដើមដោយបង្រួម</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ចាប់ផ្ដើមពេលចូលគណនី</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>ចម្លងសេចក្ដីសង្ខេប</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>បានចម្លង</value></data>
   <data name="Review_Save" xml:space="preserve"><value>រក្សាទុក…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>រក្សាទុក និងបង្ហោះ</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>«រក្សាទុក និងបង្ហោះ» រក្សាទុកឯកសារ zip ចម្លងសេចក្ដីសង្ខេប បង្ហាញឯកសារក្នុង Explorer ហើយបើកទំព័ររបស់ PadForge ដែលរបាយការណ៍ត្រូវផ្ញើទៅ។ បិទភ្ជាប់សេចក្ដីសង្ខេបនៅទីនោះ ហើយទម្លាក់ឯកសារលើវា។</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>រក្សាទុកការថត</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>ឯកសារ Zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>មិនបានរក្សាទុកទេ។ {0}</value></data>
@@ -3244,6 +3260,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>មានកំហុសដែលមិនបានរំពឹងទុកបានកើតឡើង៖
 
 {0}
+
+PadForge បានសរសេរព័ត៌មានលម្អិតទៅ crash.log នៅក្បែរ PadForge.exe។ ដើម្បីរាយការណ៍រឿងនេះ ចាប់ផ្ដើមការពិភាក្សានៅ {2} ហើយទម្លាក់ crash.log លើវា។
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(កំហុសបន្ថែម {0} ត្រូវបានលាក់)</value></data>
@@ -5783,6 +5801,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>ផលិតផល</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>ប្រភេទ</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>សមត្ថភាព</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>ប៉ាដលខាងក្រោយត្រូវបានបិទ តាម USB និង Xbox Wireless Adapter។ មូលហេតុរបស់ SDL៖ {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>ប៉ាដលខាងក្រោយត្រូវបានបិទ តាម Bluetooth។ មូលហេតុរបស់ SDL៖ {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>ការតភ្ជាប់</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>ថ្ម</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>ផ្លូវ</value></data>
@@ -5961,6 +5981,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>កំពុងប្រើឥឡូវ។ ជួរនេះជារបស់អ្នក ហើយមានអាទិភាពសម្រាប់ឧបករណ៍នេះ។</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>បានរក្សាទុកជារបស់អ្នក។ វានឹងត្រូវបានប្រើ នៅពេលម៉ាស៊ីនដំណើរការ ហើយឧបករណ៍បានភ្ជាប់។</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL មិនបានទទួលយកជួរនេះទេ។ គ្មានអ្វីផ្លាស់ប្ដូរសម្រាប់ឧបករណ៍នេះទេ។</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>មិនបានរក្សាទុកទេ។ PadForge រក្សាទុកជួររបស់អ្នករហូតដល់ {0:N0} ហើយឥឡូវមានចំនួននោះហើយ។</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>បិទភ្ជាប់ការម៉ាប SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>បិទភ្ជាប់ការម៉ាប SDL សម្រាប់ {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>ស្វែងរកការម៉ាបសម្រាប់ {0}</value></data>
@@ -5994,6 +6015,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>ជួរទាំងនេះត្រូវបានរក្សាទុកជារបស់អ្នកក្នុង PadForge.xml ហើយមានអាទិភាពសម្រាប់ឧបករណ៍របស់វា លើប្រភពផ្សេងទៀតទាំងអស់។ «សម្អាត» នៅក្រោម «ច្រើនទៀត» នៃជួរ «មូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជា» ដកពួកវាចេញ។</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>ជួរ {0} សម្រាប់ Windows។ {1} សម្រាប់ប្រព័ន្ធផ្សេងទៀត ត្រូវបានរំលង។</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>ជួរ {0} សម្រាប់ Windows។ {1} សម្រាប់ប្រព័ន្ធផ្សេងទៀត ត្រូវបានរំលង។</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>ទាំង {0:N0} នឹងត្រូវបានបន្ថែម។ PadForge រក្សាទុកជួររបស់អ្នករហូតដល់ {1:N0}។</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>វានឹងត្រូវបានបន្ថែម។ PadForge រក្សាទុកជួររបស់អ្នករហូតដល់ {1:N0}។</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>ឥឡូវជួររបស់អ្នក {0:N0} ត្រូវបានរក្សាទុក ដូច្នេះ {1:N0} ក្នុងចំណោមទាំងនេះនឹងត្រូវបានបន្ថែម ហើយ {2:N0} នឹងមិនត្រូវបានបន្ថែមទេ។</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>ឥឡូវជួររបស់អ្នក {0:N0} ត្រូវបានរក្សាទុក ដូច្នេះ {1:N0} ក្នុងចំណោមទាំងនេះនឹងត្រូវបានបន្ថែម ហើយ {2:N0} នឹងមិនត្រូវបានបន្ថែមទេ។</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ត្រូវបានបដិសេធ។ ទីមួយ៖ {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>បិទភ្ជាប់ជួរមួយ ឬអត្ថបទនៃឯកសារ gamecontrollerdb.txt។</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>អត្ថបទនេះមិនមែនជាជួរនៃមូលដ្ឋានទិន្នន័យឧបករណ៍បញ្ជារបស់ SDL ទេ៖ ID មានលេខគោលដប់ប្រាំមួយ 32 ខ្ទង់ ឈ្មោះ បន្ទាប់មកវាលដូចជា a:b0។</value></data>
@@ -6006,14 +6031,18 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>ជួរនេះផ្ដល់វាលមួយពីរដង។</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>ជួរនេះលើសពី 1,024 តួអក្សរ។</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>ជួរនេះមិនភ្ជាប់ការបញ្ជាណាមួយទេ។</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>ជួររបស់អ្នក</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>កន្លែងដែលវាទាញយកពី, ជួរផ្ទាល់របស់អ្នក</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>ជួររបស់អ្នក</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>ជួរដែលអ្នកបន្ថែមនៅទីនេះ ឬបិទភ្ជាប់នៅលើកាត «ការម៉ាប SDL» របស់ឧបករណ៍ មានអាទិភាពសម្រាប់ឧបករណ៍របស់វា លើប្រភពផ្សេងទៀតទាំងអស់ ហើយនៅដដែលក្រោយការកំណត់ឡើងវិញ។</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>បន្ថែមជួរពីឯកសារ ឬក្ដារតម្បៀតខ្ទាស់…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>ជួរ {0} ជារបស់អ្នក មានអាទិភាពលើប្រភពផ្សេងទៀតទាំងអស់សម្រាប់ឧបករណ៍របស់វា។</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>ជួរ {0} ជារបស់អ្នក មានអាទិភាពលើប្រភពផ្សេងទៀតទាំងអស់សម្រាប់ឧបករណ៍របស់វា។</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>ជួរ {0} សម្រាប់ឧបករណ៍ចំនួនដូចគ្នា ជារបស់អ្នក មានអាទិភាពលើប្រភពផ្សេងទៀតទាំងអស់។</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>ជួរ {0} សម្រាប់ឧបករណ៍មួយ ជារបស់អ្នក មានអាទិភាពលើប្រភពផ្សេងទៀតទាំងអស់។</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>មិនទាន់មាននៅឡើយ។</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>អថេរ SDL_GAMECONTROLLERCONFIG របស់អ្នកមានជួរ {0} ដែល PadForge មិនរក្សាទុក។ «បន្ថែមជួរពីឯកសារ ឬក្ដារតម្បៀតខ្ទាស់» បើកជាមួយពួកវា។</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>អថេរ SDL_GAMECONTROLLERCONFIG របស់អ្នកមានជួរ {0} ដែល PadForge មិនរក្សាទុក។ «បន្ថែមជួរពីឯកសារ ឬក្ដារតម្បៀតខ្ទាស់» បើកជាមួយវា។</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>កំពុងប្រើភ្លាមៗ។</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>ទាញយកពី</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>តែ HTTPS ប៉ុណ្ណោះ។ ពីអាសយដ្ឋានដែលមិនមែនជារបស់សហគមន៍ PadForge យកតែជួរថ្មីប៉ុណ្ណោះ។</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>បើក</value></data>
   <data name="Web_Header" xml:space="preserve"><value>ជំនួយការនៅលើវេប</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>ទុនណែល</value></data>
@@ -6052,7 +6081,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>បានអនុញ្ញាត {0} បានប្រើចុងក្រោយ {1}។</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>បានអនុញ្ញាត {0} មិនទាន់បានប្រើនៅឡើយ។</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ដកសិទ្ធិ</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge មិនទាញយកកម្មវិធីទុនណែលណាមួយ ហើយមិនរក្សាសោរបស់ក្រុមហ៊ុនផ្សេងទេ។ ជំនួយការវេបធ្វើការនៅកម្រិតខាងលើ។</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ទាញយកកម្មវិធីទុនណែលតែសម្រាប់ ChatGPT Secure MCP Tunnel ប៉ុណ្ណោះ។ ជំនួយការវេបធ្វើការនៅកម្រិតខាងលើ។</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>អនុញ្ញាតឱ្យ {0} ធ្វើការជាមួយ PadForge ពីវេប?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>ការចូលរបស់វាត្រឡប់ទៅ {0}។</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>វាហៅខ្លួនឯងថា {0}។</value></data>
@@ -6089,4 +6118,35 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID ស្គ្រីបរបស់វា</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>ស្គ្រីបដាក់ឈ្មោះការបញ្ជារបស់វាថា {0}។</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>ស្គ្រីបដាក់ឈ្មោះគ្រាប់ចុចរបស់វាថា KeyA, KeySpace, KeyLeftShift ជាដើម ហើយគ្រប់គ្រាប់ចុចតាមកូដរបស់វា Vk0 ដល់ Vk255។</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} នៅលើបណ្ដាញនេះ ពី {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>កំណែថ្មីដែលបានចុះហត្ថលេខាដោយសោវិញ្ញាបនបត្រដដែលរបស់ {0} ចាប់ផ្ដើមឡើងវិញដោយមិនចាំបាច់ «យល់ព្រម និងចាប់ផ្ដើមឡើងវិញ»។ ការផ្លាស់ប្ដូរផ្សេងទៀតណាមួយ សួរអ្នកជាមុនសិន។</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>បានទទួលយកកំណែថ្មីដែលបានចុះហត្ថលេខាដោយសោវិញ្ញាបនបត្រដដែល</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>អាសយដ្ឋាន</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge ទទួលយកអាសយដ្ឋានដែលចាប់ផ្ដើមដោយ https:// និងដាក់ឈ្មោះម៉ាស៊ីនមេ នៅលើច្រកលំនាំដើម ដោយគ្មានឈ្មោះអ្នកប្រើ ឬពាក្យសម្ងាត់។</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>ច្រក</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>ប្ដូរ…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>ការហៅ និងសោរបស់វា ឆ្លងកាត់បណ្ដាញនេះដោយមិនបានអ៊ិនគ្រីប។ Windows អនុញ្ញាតឱ្យពួកវាចូលតែនៅលើបណ្ដាញឯកជនប៉ុណ្ណោះ។</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>ច្រក {0} កំពុងត្រូវបានប្រើដោយកម្មវិធីផ្សេង។ ប្ដូរវា ដើម្បីភ្ជាប់ទៅ PadForge ពីបណ្ដាញនេះ។</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows មិនបានអនុញ្ញាតឱ្យកម្មវិធីជំនួយរបស់ PadForge ស្ដាប់នៅលើច្រក {0} ទេ។ PadForge អនុញ្ញាតវាដោយសិទ្ធិអ្នកគ្រប់គ្រង ដូច្នេះចាប់ផ្ដើម PadForge ដោយសិទ្ធិទាំងនោះ ហើយបិទ និងបើកវាវិញ។</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>កម្មវិធីជំនួយរបស់ PadForge មិនអាចស្ដាប់នៅលើច្រក {0} បានទេ។ ប្ដូរច្រក ឬបិទ និងបើកវាវិញ។</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>កម្មវិធីជំនួយរបស់ PadForge បានឈប់ ({0})។ បិទ ហើយបើក «Reach PadForge From This Network» វិញ ដើម្បីចាប់ផ្ដើមវាម្ដងទៀត។</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>«ស្វ័យប្រវត្តិកម្ម» បិទ ដូច្នេះគ្មានជំនួយការណានៅលើបណ្ដាញនេះភ្ជាប់មក PadForge បានទេ។ កម្មវិធីជំនួយចាប់ផ្ដើម នៅពេល «ស្វ័យប្រវត្តិកម្ម» បើក។</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>ឥឡូវ PC នេះគ្មានអាសយដ្ឋាននៅលើបណ្ដាញឯកជនទេ។</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>ជំនួយការនៅលើបណ្ដាញនេះ</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}។ សោរបស់វាត្រូវបានបង្កើត {1} បានប្រើចុងក្រោយ {2}។</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}។ សោរបស់វាត្រូវបានបង្កើត {1} មិនទាន់បានប្រើនៅឡើយ។</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>បង្កើតសោ</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>ក្បាល</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>រួចរាល់</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>ប្ដូរច្រក</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>ជ្រើសច្រកពី 1024 ដល់ 49151។ អាសយដ្ឋានដែលបានរក្សាទុករបស់ជំនួយការនីមួយៗមានច្រកនេះ ដូច្នេះបន្ថែមជំនួយការនីមួយៗម្ដងទៀតបន្ទាប់ពីការប្ដូរ។</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>វាយច្រកពី 1024 ដល់ 49151។</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>បញ្ជាឧបករណ៍ផ្ទាល់របស់វា និង {0}។ វានៅតែអានគ្រប់ឧបករណ៍។</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>បញ្ជាតែឧបករណ៍ផ្ទាល់របស់វាប៉ុណ្ណោះ។ វានៅតែអានគ្រប់ឧបករណ៍។</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>ពាក្យបញ្ជាពីបន្ទាត់ពាក្យបញ្ជានៅតែទៅដល់ PadForge ដូចដែលវាធ្វើសម្រាប់គ្រប់កម្មវិធី។</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>វាសុំបញ្ជាតែឧបករណ៍ផ្ទាល់របស់វាប៉ុណ្ណោះ។</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>វាសួរតែម្ដង។ អ្នកអាចដកវាចេញ ឬប្ដូរវិសាលភាពរបស់វានៅលើទំព័រ «ស្វ័យប្រវត្តិកម្ម»។</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>កំពុងដំណើរការ ដោយសិទ្ធិរបស់អ្នក ហើយរួចរាល់។ ChatGPT ភ្ជាប់មក PadForge តាមទុនណែលនេះ ដោយគ្មានការចូលផ្ទាល់ខ្លួន ហើយតែពីអង្គភាព OpenAI របស់អ្នកប៉ុណ្ណោះ។ វាចាប់ផ្ដើមម្ដងទៀតជាមួយ PadForge។</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>កំពុងដំណើរការ ដោយសិទ្ធិរបស់អ្នក។ វារង់ចាំ OpenAI ប្រាប់ថាទុនណែលរួចរាល់។</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge រក្សាសោដោយអ៊ិនគ្រីបសម្រាប់តែអ្នកប៉ុណ្ណោះ។ ប្រអប់ទទេនឹងបំភ្លេចវា។ ChatGPT ធ្វើការនៅកម្រិតខាងលើ។</value></data>
 </root>

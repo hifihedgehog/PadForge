@@ -199,8 +199,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge tau hloov tshiab mus rau {0} lawm.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Muaj nyob hauv: {0} qhov mapping, zej zog daim qauv hnub {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Muaj nyob hauv: {0} qhov mapping, zej zog daim qauv hnub {1}. Rub tawm {2}: {3} kab tshiab, {4} hloov.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Muaj nyob hauv: {1} qhov mapping, zej zog daim qauv hnub {2}. Rub tawm {3} los ntawm {4}: {0} kab tshiab.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Muaj nyob hauv: {1} qhov mapping, zej zog daim qauv hnub {2}. Rub tawm {3} los ntawm {4}: {0} kab tshiab.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Lub database ntawm zej zog tsis tau hloov txij li zaum hloov tshiab kawg.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Mus tsis txog GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Mus tsis txog {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge tsis txais qhov rub tawm vim nws tsis yog lub database controller uas nws xav tau. Tsis muaj dab tsi hloov.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ntxiv…</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Tshem tawm HIDMaestro</value></data>
@@ -695,6 +698,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Muaj ib qho yuam kev uas tsis tau xav txog tshwm sim:
 
 {0}
+
+PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhia txog qhov no, pib ib qho kev sib tham ntawm {2} thiab muab crash.log tso rau hauv.
 
 {1}</value></data>
 
@@ -1474,6 +1479,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Khoom</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Hom</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Peev xwm</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Cov paddle tom qab raug kaw thaum siv USB thiab Xbox Wireless Adapter. SDL qhov laj thawj: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Cov paddle tom qab raug kaw thaum siv Bluetooth. SDL qhov laj thawj: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Kev txuas</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Roj teeb</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
@@ -1635,7 +1642,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} txuas lawm, roj teeb {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} lub khoom siv tsis txuas lawm: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} lub khoom siv txuas lawm: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} pheej tu txuas</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} tu txuas {1} zaug hauv ib feeb</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} rov qab los lawm</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} lub khoom siv rov qab los lawm: {1}</value></data>
   <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Yam uas cov program ua tau</value></data>
   <data name="Extras_Automation_Level" xml:space="preserve"><value>Theem</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Cov assistant</value></data>
@@ -1675,6 +1684,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, kos npe los ntawm {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, tsis tau kos npe</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ua tiav lawm</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Tuav cia</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tsis tau ua</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Theem no tsis pub ua</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tam sim no ua tsis tau</value></data>
@@ -1747,6 +1757,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Teeb cov tswj ntawm khoom siv {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Tshem lub khoom siv {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Tso txhua qho tswj ntawm khoom siv {0} rov qab so</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Cov keyboard thiab nas tso tawm uas nws xa raug tuav cia tsis pub mus txog {0}, uas khiav nrog txoj cai administrator</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Cov keyboard thiab nas tso tawm uas nws xa raug tuav cia tsis pub mus txog ib lub qhov rais uas khiav nrog txoj cai administrator</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Ua rau PadForge khiav ib lub program.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Qhib ib daim ntawv, ib lub folder los yog ib nplooj web.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Ua rau PadForge xa cov key los yog mouse input mus rau Windows.</value></data>
@@ -1839,7 +1851,7 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} ntawm {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Yog tsis teb hauv {0} yuav suav tias tsis kam.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hloov tshiab tam sim no rub tawm lub database controller ntawm zej zog (SDL_GameControllerDB) los ntawm GitHub thiab khaws cov mapping uas PadForge version no tsis muaj cia rau hauv daim ntawv teeb tsa. Lawv siv tau tam sim ntawd. Ib qho mapping tshiab tsuas siv rau ib lub controller uas tsis muaj lwm yam nyeem ua gamepad, tsis tau muab rau ib lub controller virtual thiab tsis nyob hauv Force Raw Joystick Mode xwb. Kev rov teeb tsa dua tshem txhua qho mapping uas rub tawm lawm. Koj tus kheej cov kab, hauv Ntxiv, tseem nyob.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Hloov tshiab tam sim no rub tawm lub database controller ntawm zej zog (SDL_GameControllerDB) los ntawm GitHub, los sis los ntawm qhov chaw nyob uas teeb hauv Ntxiv, thiab khaws cov mapping uas PadForge version no tsis muaj cia rau hauv daim ntawv teeb tsa. Lawv siv tau tam sim ntawd. Los ntawm lwm qhov chaw nyob nws tsuas khaws cov mapping tshiab xwb. Ib qho mapping tshiab tsuas siv rau ib lub controller uas tsis muaj lwm yam nyeem ua gamepad, tsis tau muab rau ib lub controller virtual thiab tsis nyob hauv Force Raw Joystick Mode xwb. Kev rov teeb tsa dua tshem txhua qho mapping uas rub tawm lawm thiab rub tawm los ntawm GitHub dua. Koj tus kheej cov kab, hauv Ntxiv, tseem nyob.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Hloov tshiab tam sim no</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Tab tom hloov tshiab…</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Kev mus ntawm mouse X</value></data>
@@ -2004,6 +2016,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Siv tam sim no. Kab yog koj li thiab siv ua ntej tshaj rau lub khoom siv no.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Khaws ua koj li. Nws yuav siv thaum lub engine khiav thiab lub khoom siv txuas.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tsis txais kab. Tsis muaj dab tsi hloov rau lub khoom siv no.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Tsis khaws. PadForge khaws tau txog {0:N0} kab ntawm koj li thiab tam sim no twb khaws ntau li ntawd lawm.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Muab ib qho Mapping SDL tso</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Muab ib qho Mapping SDL tso rau {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Nrhiav ib qho mapping rau {0}</value></data>
@@ -2037,6 +2050,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Cov kab raug khaws ua koj li hauv PadForge.xml thiab siv ua ntej txhua qhov chaw rau lawv cov khoom siv. Clear, hauv kab Database controller qhov Ntxiv, tshem lawv.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} kab rau Windows. {1} rau lwm lub system raug hla mus.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} kab rau Windows. {1} rau lwm lub system raug hla mus.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Tag nrho {0:N0} yuav raug ntxiv. PadForge khaws tau txog {1:N0} kab ntawm koj li.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Nws yuav raug ntxiv. PadForge khaws tau txog {1:N0} kab ntawm koj li.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Tam sim no khaws {0:N0} kab ntawm koj li lawm, yog li {1:N0} ntawm cov no yuav raug ntxiv thiab {2:N0} yuav tsis raug ntxiv.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Tam sim no khaws {0:N0} kab ntawm koj li lawm, yog li {1:N0} ntawm cov no yuav raug ntxiv thiab {2:N0} yuav tsis raug ntxiv.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} raug tsis txais. Thawj qhov: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Muab ib kab tso, los yog cov ntawv ntawm ib daim gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Cov ntawv no tsis yog ib kab ntawm SDL lub database controller: ib tus ID 32 tus lej hex, ib lub npe, ces cov field xws li a:b0.</value></data>
@@ -2049,10 +2066,12 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Kab muab ib qho field ob zaug.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Kab ntev tshaj 1,024 tus ntawv.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Kab tsis khi ib qho tswj twg.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Koj cov kab</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} kab, koj li siv ua ntej txhua qhov chaw rau lawv cov khoom siv.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} kab, koj li siv ua ntej txhua qhov chaw rau nws lub khoom siv.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Qhov chaw nws rub tawm los, koj tus kheej cov kab</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} kab, ib kab rau ib lub khoom siv, koj li siv ua ntej txhua qhov chaw.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} kab rau ib lub khoom siv, koj li siv ua ntej txhua qhov chaw.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Tseem tsis tau muaj.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Koj tus variable SDL_GAMECONTROLLERCONFIG muaj {0} kab uas PadForge tsis khaws. Add Rows From a File or the Clipboard qhib nrog lawv.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Koj tus variable SDL_GAMECONTROLLERCONFIG muaj {0} kab uas PadForge tsis khaws. Add Rows From a File or the Clipboard qhib nrog nws.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Siv tam sim ntawd.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Qhib</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Cov assistant hauv Web</value></data>
@@ -2092,7 +2111,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Tso cai {0}, siv zaum kawg {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Tso cai {0}, tseem tsis tau siv.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Rho tawm</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge tsis rub tawm ib lub tunnel program twg thiab tsis khaws lwm lub tuam txhab tus key. Ib lub web assistant ua hauj lwm raws li theem saum toj no.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge tsuas rub tawm ib lub tunnel program rau ChatGPT Secure MCP Tunnel xwb. Ib lub web assistant ua hauj lwm raws li theem saum toj no.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Nws kev sign in rov qab mus rau {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Nws hu nws tus kheej ua {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Tso cai tsuas yog thaum nws nplooj sign in qhia tus code no:</value></data>
@@ -2126,4 +2145,31 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Nws ID script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Cov script hu nws cov tswj ua {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Cov script hu nws cov key ua KeyA, KeySpace, KeyLeftShift thiab lwm yam zoo li ntawd, thiab txhua tus key raws nws code, Vk0 txog Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ntawm lub network no los ntawm {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Qhia hauv nplaub tshev</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} pib lawm tab sis yeej tsis txuas rau PadForge.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Hloov…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Cov kev hu thiab lawv tus key hla lub network no yam tsis muaj encrypt. Windows tsuas pub lawv nkag los rau cov network private xwb.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} raug lwm lub program siv lawm. Hloov nws kom mus txog PadForge los ntawm lub network no.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows tsis pub PadForge lub helper mloog ntawm port {0}. PadForge pub nws nrog txoj cai administrator, yog li pib PadForge nrog txoj cai ntawd thiab kaw thiab qhib qhov no dua.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge lub helper mloog tsis tau ntawm port {0}. Hloov lub port, los sis kaw thiab qhib qhov no dua.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge lub helper nres lawm ({0}). Kaw thiab qhib Reach PadForge From This Network dua kom pib nws dua.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation kaw, yog li tsis muaj assistant twg ntawm lub network no mus txog PadForge. Lub helper pib thaum Automation qhib.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Lub PC no tam sim no tsis muaj chaw nyob ntawm ib lub network private.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Cov assistant ntawm lub network no</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Nws tus key tsim {1}, siv zaum kawg {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Nws tus key tsim {1}, tseem tsis tau siv.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Tsim key</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Ua tiav lawm</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Hloov lub port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Xaiv ib lub port txij 1024 txog 49151. Txhua lub assistant qhov chaw nyob uas khaws cia muaj lub port, yog li ntxiv txhua lub dua tom qab hloov.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Ntaus ib lub port txij 1024 txog 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Tswj nws tus kheej cov khoom siv thiab {0}. Nws tseem nyeem txhua lub khoom siv.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Tswj nws tus kheej cov khoom siv xwb. Nws tseem nyeem txhua lub khoom siv.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Cov lus txib los ntawm command line tseem mus txog PadForge, ib yam li lawv ua rau txhua lub program.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Tab tom khiav, nrog koj txoj cai, thiab npaj txhij. ChatGPT mus txog PadForge los ntawm lub tunnel no yam tsis tas sign in ntawm nws tus kheej, thiab tsuas yog los ntawm koj lub koom haum OpenAI xwb. Nws rov pib dua nrog PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Tab tom khiav, nrog koj txoj cai. Nws tos OpenAI hais tias lub tunnel npaj txhij lawm.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge khaws tus key encrypt cia rau koj ib leeg xwb. Ib lub thawv khoob ua rau PadForge hnov qab nws. ChatGPT ua hauj lwm raws li theem saum toj no.</value></data>
 </root>

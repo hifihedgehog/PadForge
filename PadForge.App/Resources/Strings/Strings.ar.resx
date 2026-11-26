@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>اتصل {0}، البطارية {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>انقطع اتصال {0} من الأجهزة: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>اتصل {0} من الأجهزة: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>يتكرر انقطاع اتصال {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>انقطع اتصال {0} في دقيقة واحدة، عدد المرات: {1}</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>عاد {0}</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>عاد {0} من الأجهزة: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (الحد الأقصى {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (الحد الأقصى {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (الحد الأقصى {0})</value></data>
@@ -437,7 +439,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>إعادة اتصال تلقائي، المنفذ، هوية الإقران، الاتصال بالعنوان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>المنفذ، بديل DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>المنافذ، «السرعة الكاملة»، «تنسيقات مخصصة»</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>مساعدون آخرون، مساعدون على الويب</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>مساعدون آخرون، مساعدون على الويب وعلى هذه الشبكة</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>انظر حولك بمتتبع رأس أو نظارة واقع افتراضي بينما يبقى إبهاماك على الأزرار.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>عيّن السرعة والدواسات والتروس التي ترسلها لعبة قيادة، كأي إدخال.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>أرسل حركة وحدة التحكم إلى المحاكيات التي تقرأ مصدر حركة DSU.</value></data>
@@ -601,6 +603,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>إضافة مكون إضافي…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>البرامج والنصوص البرمجية|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|كل الملفات|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>الموافقة وإعادة التشغيل…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>إظهار في المجلد</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>يبدأ مع المحرك</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>جارٍ فحص الملف قبل البدء</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>انتهى برمز {0}. يبدأ من جديد خلال {1} ث.</value></data>
@@ -640,6 +643,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>غير موقّع.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>تظهر إعداداته هنا أثناء تشغيله.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>لا يعلن أي إعدادات.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>تظهر إعداداته هنا متى اتصل بـ PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>بدأ لكنه لم يتصل بـ PadForge أبدا. يبدأ من جديد خلال {0} ث.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>بدأ لكنه لم يتصل بـ PadForge أبدا. يبدأ من جديد خلال {0} ث.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>بدأ {0} لكنه لم يتصل بـ PadForge أبدا.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>أُنهي بعد دقيقة من بدايته ولم يتصل بـ PadForge أبدا</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>تعذر على PadForge قراءة إعداداته: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>أُنهي بعد دقيقة من دون أي رد</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>تغيّر ملفه أثناء تشغيله</value></data>
@@ -710,6 +718,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}، موقّع من {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}، غير موقّع</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>تم</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>محجوب</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>لم يتم</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>غير مسموح في هذا المستوى</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>غير متاح الآن</value></data>
@@ -782,6 +791,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ضبط عناصر التحكم في الجهاز {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>إزالة الجهاز {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>وضع كل عناصر التحكم في الجهاز {0} على وضع الراحة</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>يُحجب عن {0}، الذي يعمل كمسؤول، ما يغذّيه من مخرجات المفاتيح والماوس</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>يُحجب عن نافذة تعمل كمسؤول ما يغذّيه من مخرجات المفاتيح والماوس</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>يجعل PadForge يشغّل برنامجا.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>يفتح ملفا أو مجلدا أو صفحة ويب.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>يجعل PadForge يرسل مفاتيح أو مدخلات ماوس إلى Windows.</value></data>
@@ -1000,7 +1011,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>يبقي PadForge قيد التشغيل عندما تنقر «إغلاق» أو تضغط Alt+F4. استخدم «خروج» في قائمة علبة النظام للإنهاء.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>يبقي PadForge في منطقة الإعلام عند تصغير النافذة، بدلا من شريط المهام.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>يبقي النافذة مخفية عند بدء PadForge. يعمل البرنامج وينفذ التعيينات كالمعتاد.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>تشغيل PadForge تلقائيا عند تسجيل دخولك إلى Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>تشغيل PadForge تلقائيا عند تسجيل دخولك إلى Windows. ما دام هذا الخيار مفعلا، يبدأ PadForge أيضا من دون مطالبة Windows من اختصار أو سكربت أو برنامج آخر.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>يعمل PadForge من {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>هذا يتطلب أن يكون PadForge في مجلد خاص به. مجلده الحالي يحوي ملفات أخرى، لذا لا يستطيع PadForge منع البرامج الأخرى من تغييره.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>نقل PadForge إلى مجلد خاص به</value></data>
@@ -1014,7 +1025,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>الإظهار دائما في علبة النظام</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>يبقي أيقونة علبة النظام ظاهرة والنافذة مفتوحة، فيكون «خروج» في قائمتها على بعد نقرة واحدة دائما.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>التحديثات</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>التحقق من وجود إصدارات جديدة من PadForge على GitHub وتثبيتها من هنا، وتحديث قاعدة بيانات وحدات التحكم. لا يتصل PadForge إلا بموقع GitHub (api.github.com وgithub.com وخوادم التنزيل التابعة له، وraw.githubusercontent.com لقاعدة بيانات وحدات التحكم). البيانات الوحيدة التي يرسلها هي رقم إصداره، ولقاعدة بيانات وحدات التحكم الوسم الذي منحه GitHub لآخر تنزيل.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>التحقق من وجود إصدارات جديدة من PadForge على GitHub وتثبيتها من هنا، وتحديث قاعدة بيانات وحدات التحكم. لا يتصل PadForge إلا بموقع GitHub (api.github.com وgithub.com وخوادم التنزيل التابعة له، وraw.githubusercontent.com لقاعدة بيانات وحدات التحكم)، وبالعنوان الذي تحدده في التنزيل من تحت صف قاعدة بيانات وحدات التحكم. البيانات الوحيدة التي يرسلها هي رقم إصداره، ولقاعدة بيانات وحدات التحكم الوسم الذي منحه الخادم لآخر تنزيل.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>التحقق من التحديثات تلقائيا</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>يتحقق عند بدء PadForge ثم كل 12 ساعة بعد ذلك.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>تثبيت التحديثات تلقائيا</value></data>
@@ -1025,7 +1036,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>تثبيت وإعادة التشغيل</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>ملاحظات الإصدار</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>قاعدة بيانات وحدات التحكم</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>التحديث الآن ينزّل قاعدة بيانات وحدات التحكم التي يصنعها المجتمع (SDL_GameControllerDB) من GitHub، ويحتفظ في ملف الإعدادات بالتعيينات التي تنقص هذا الإصدار من PadForge. تُستخدم فورا. لا يُستخدم التعيين الجديد إلا لوحدة تحكم لا يقرؤها شيء آخر كذراع تحكم، وغير معينة، وليست في فرض وضع عصا التحكم الخام. تحذف إعادة الضبط كل تعيين نُزّل. صفوفك، تحت المزيد، تبقى.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>التحديث الآن ينزّل قاعدة بيانات وحدات التحكم التي يصنعها المجتمع (SDL_GameControllerDB) من GitHub، أو من العنوان المحدد تحت المزيد، ويحتفظ في ملف الإعدادات بالتعيينات التي تنقص هذا الإصدار من PadForge. تُستخدم فورا. من عنوان آخر يحتفظ بالتعيينات الجديدة فقط. لا يُستخدم التعيين الجديد إلا لوحدة تحكم لا يقرؤها شيء آخر كذراع تحكم، وغير معينة، وليست في فرض وضع عصا التحكم الخام. تحذف إعادة الضبط كل تعيين نُزّل وتنزّل من GitHub من جديد. صفوفك، تحت المزيد، تبقى.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>التحديث الآن</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>جارٍ التحديث…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>جارٍ التحقق من التحديثات…</value></data>
@@ -1055,8 +1066,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>تم تحديث PadForge إلى {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>مضمّنة: عدد التعيينات {0}، نسخة المجتمع بتاريخ {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>مضمّنة: عدد التعيينات {0}، نسخة المجتمع بتاريخ {1}. التنزيل في {2}: الصفوف الجديدة {3}، المتغيرة {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>مضمّنة: عدد التعيينات {1}، نسخة المجتمع بتاريخ {2}. التنزيل في {3} من {4}: الصفوف الجديدة {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>مضمّنة: عدد التعيينات {1}، نسخة المجتمع بتاريخ {2}. التنزيل في {3} من {4}: صف جديد واحد ({0}).</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>لم تتغير قاعدة بيانات المجتمع منذ التحديث الأخير.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>تعذر الوصول إلى GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>تعذر الوصول إلى {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>رفض PadForge التنزيل لأنه ليس قاعدة بيانات وحدات التحكم التي يتوقعها. لم يتغير شيء.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>بدء التشغيل مصغرا</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>التشغيل عند تسجيل الدخول</value></data>
@@ -1227,6 +1241,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>نسخ الملخص</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>تم النسخ</value></data>
   <data name="Review_Save" xml:space="preserve"><value>حفظ…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>حفظ ونشر</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>يحفظ زر حفظ ونشر الملف المضغوط، وينسخ الملخص، ويُظهر الملف في Explorer، ويفتح صفحة PadForge التي تُرسل إليها التقارير. الصق الملخص هناك وأفلت الملف عليها.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>حفظ التسجيل</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>ملفات zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>لم يتم الحفظ. {0}</value></data>
@@ -3246,6 +3262,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>حدث خطأ غير متوقع:
 
 {0}
+
+كتب PadForge التفاصيل في crash.log بجانب PadForge.exe. للإبلاغ عن هذا، ابدأ نقاشا في {2} وأفلت crash.log عليه.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(تم كتم أخطاء إضافية عددها {0})</value></data>
@@ -5798,6 +5816,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>المنتج</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>النوع</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>الإمكانات</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>مجدافا الظهر متوقفان عبر USB وXbox Wireless Adapter. سبب SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>مجدافا الظهر متوقفان عبر Bluetooth. سبب SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>الاتصال</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>البطارية</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>المسار</value></data>
@@ -5974,6 +5994,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>قيد الاستخدام الآن. الصف لك ويتقدم لهذا الجهاز.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>حُفظ كصف لك. يُستخدم متى عمل المحرك واتصل الجهاز.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>لم يقبل SDL الصف. لم يتغير شيء لهذا الجهاز.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>لم يُحفظ. يحتفظ PadForge بما يصل إلى {0:N0} من صفوفك وهو يحتفظ بهذا العدد الآن.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>لصق تعيين SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>لصق تعيين SDL لـ {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>البحث عن تعيين لـ {0}</value></data>
@@ -6007,6 +6028,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>تُحفظ الصفوف كصفوف لك في PadForge.xml وتتقدم لأجهزتها على كل مصدر آخر. مسح، تحت المزيد في صف قاعدة بيانات وحدات التحكم، يزيلها.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} من الصفوف لـ Windows. يُتجاوز {1} لأنظمة أخرى.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>صف واحد لـ Windows ({0}). يُتجاوز {1} لأنظمة أخرى.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>ستُضاف كلها، وعددها {0:N0}. يحتفظ PadForge بما يصل إلى {1:N0} من صفوفك.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>سيُضاف. يحتفظ PadForge بما يصل إلى {1:N0} من صفوفك.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>المحفوظ الآن من صفوفك: {0:N0}، لذلك ستُضاف منها {1:N0} ولن تُضاف {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>المحفوظ الآن من صفوفك صف واحد ({0:N0})، لذلك ستُضاف {1:N0} من هذه ولن تُضاف {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>رُفض {0}. الأول: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>الصق صفا، أو نص ملف gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>النص ليس صفا من قاعدة بيانات وحدات التحكم في SDL: معرّف من 32 رقما سداسيا عشريا، ثم اسم، ثم حقول مثل a:b0.</value></data>
@@ -6019,14 +6044,18 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>يعطي الصف حقلا واحدا مرتين.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>الصف أطول من 1,024 حرفا.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>لا يربط الصف أي عنصر تحكم.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>صفوفك</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>مصدر التنزيل، صفوفك الخاصة</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>صفوفك</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>الصفوف التي تضيفها هنا، أو تلصقها على بطاقة تعيين SDL في جهاز، تتقدم لأجهزتها على كل مصدر آخر وتبقى بعد إعادة الضبط.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>إضافة صفوف من ملف أو من الحافظة…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>الصفوف: {0}، لك قبل كل مصدر آخر لأجهزتها.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>صف واحد ({0})، لك قبل كل مصدر آخر لجهازه.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>الصفوف والأجهزة: {0}، لك قبل كل مصدر آخر.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>صف واحد وجهاز واحد ({0})، لك قبل كل مصدر آخر.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>لا شيء بعد.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>يحتوي متغيرك SDL_GAMECONTROLLERCONFIG على صفوف لا يحتفظ بها PadForge، عددها {0}. يُفتح زر إضافة صفوف من ملف أو من الحافظة بها.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>يحتوي متغيرك SDL_GAMECONTROLLERCONFIG على صف واحد ({0}) لا يحتفظ به PadForge. يُفتح زر إضافة صفوف من ملف أو من الحافظة به.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>قيد الاستخدام فورا.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>التنزيل من</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS فقط. من عنوان غير عنوان المجتمع، يأخذ PadForge الصفوف الجديدة فقط.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>تشغيل</value></data>
   <data name="Web_Header" xml:space="preserve"><value>المساعدون على الويب</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>النفق</value></data>
@@ -6065,7 +6094,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>سُمح به {0}، وآخر استخدام {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>سُمح به {0}، ولم يُستخدم بعد.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>إلغاء السماح</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>لا ينزّل PadForge أي برنامج نفق ولا يحتفظ بمفتاح أي شركة أخرى. يعمل مساعد الويب بالمستوى المذكور أعلاه.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>ينزّل PadForge برنامج نفق فقط لـ ChatGPT Secure MCP Tunnel. يعمل مساعد الويب بالمستوى المذكور أعلاه.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>السماح لـ {0} بالعمل مع PadForge من الويب؟</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>يعود تسجيل دخوله إلى {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>يسمّي نفسه {0}.</value></data>
@@ -6102,4 +6131,35 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>معرّفه للنصوص البرمجية</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>تسمّي النصوص البرمجية عناصر تحكمه {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>تسمّي النصوص البرمجية مفاتيحه KeyA وKeySpace وKeyLeftShift وما شابهها، وكل مفتاح برمزه، من Vk0 إلى Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} على هذه الشبكة من {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>يُعاد تشغيل الإصدار الجديد الموقّع بمفتاح شهادة {0} نفسه من دون الموافقة وإعادة التشغيل. أي تغيير آخر يسألك أولا.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>قبل إصدارا جديدا موقّعا بمفتاح الشهادة نفسه</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>العنوان</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>يقبل PadForge عنوانا يبدأ بـ https:// ويسمّي مضيفا، على المنفذ الافتراضي، من دون اسم مستخدم أو كلمة مرور.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>المنفذ</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>تغيير…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>تعبر الاستدعاءات ومفتاحها هذه الشبكة من دون تشفير. يسمح بها Windows على الشبكات الخاصة فقط.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>المنفذ {0} قيد الاستخدام من برنامج آخر. غيّره للوصول إلى PadForge من هذه الشبكة.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>لم يسمح Windows للمساعد الخاص بـ PadForge بالاستماع على المنفذ {0}. يسمح به PadForge بصلاحيات المسؤول، فشغّل PadForge بها ثم أوقف هذا الخيار وشغّله من جديد.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>تعذر على المساعد الخاص بـ PadForge الاستماع على المنفذ {0}. غيّر المنفذ، أو أوقف هذا الخيار وشغّله من جديد.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>توقف المساعد الخاص بـ PadForge ({0}). أوقف Reach PadForge From This Network ثم شغّله من جديد ليبدأ مرة أخرى.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>الأتمتة متوقفة، فلا يصل أي مساعد على هذه الشبكة إلى PadForge. يبدأ المساعد متى كانت الأتمتة قيد التشغيل.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>لا يملك هذا الكمبيوتر الآن عنوانا على شبكة خاصة.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>المساعدون على هذه الشبكة</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. صُنع مفتاحه {1}، وآخر استخدام {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. صُنع مفتاحه {1}، ولم يُستخدم بعد.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>صنع مفتاح</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>الترويسة</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>تم</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>تغيير المنفذ</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>اختر منفذا من 1024 إلى 49151. يحمل عنوان كل مساعد محفوظ رقم المنفذ، لذلك أضف كل مساعد من جديد بعد التغيير.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>اكتب منفذا من 1024 إلى 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>يتحكم في أجهزته الخاصة و{0}. ما زال يقرأ كل جهاز.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>يتحكم في أجهزته الخاصة فقط. ما زال يقرأ كل جهاز.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>ما زالت الأوامر من سطر الأوامر تصل إلى PadForge، كما تصل من كل برنامج.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>يطلب التحكم في أجهزته الخاصة فقط.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>يسأل مرة واحدة. يمكنك إزالته أو تغيير نطاقه من صفحة الأتمتة.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>يعمل، بصلاحياتك، وهو جاهز. يصل ChatGPT إلى PadForge عبر هذا النفق من دون تسجيل دخول خاص به، ومن مؤسسة OpenAI الخاصة بك فقط. يبدأ من جديد مع PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>يعمل، بصلاحياتك. ينتظر أن تعلن OpenAI أن النفق جاهز.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>يحتفظ PadForge بالمفتاح مشفرا لك وحدك. يمحوه الصندوق الفارغ. يعمل ChatGPT بالمستوى المذكور أعلاه.</value></data>
 </root>

@@ -968,7 +968,7 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Game mod se trigger aur light effect lo.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe ke badle</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Full speed, Custom format</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Dusra assistant, web pe assistant</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Dusra assistant, web pe aur ii network pe assistant</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Use karo</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Key aur Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note aur Control</value></data>
@@ -1197,7 +1197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} connect hoe gais, battery {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} device disconnect hoe gais: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} device connect hoe gais: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} baar baar disconnect hoe hai</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ek minute me {1} baar disconnect bhais</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} wapas aae gais</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} device wapas aae gais: {1}</value></data>
   <data name="Extras_Group_Programs" xml:space="preserve"><value>Dusra program ke saathe</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Launcher, script aur assistant ke PadForge ke saathe kaam kare do.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Program jon device dete hai, uu add karo.</value></data>
@@ -1237,6 +1239,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} ke sign karaa</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, sign nai karaa</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Hoe gais</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Rok diya gais</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nai bhais</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ii level pe allow nai hai</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Abhi nai mile sake</value></data>
@@ -1309,6 +1312,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Device {0} ke control set karo</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Device {0} hataao</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Device {0} ke sab control ke rest pe rakho</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Iske bheja key aur mouse output {0} se rok diya gais, jon administrator ke rup me chale hai</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Iske bheja key aur mouse output ek window se rok diya gais jon administrator ke rup me chale hai</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge se ek program chalwaawe hai.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Ek file, ek folder ya ek web page khole hai.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge se Windows ke key ya mouse input bhejwaawe hai.</value></data>
@@ -1401,11 +1406,13 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{1} me se {0}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} me jawaab nai mile to nai gina jaai.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge administrator rights ke saathe {0} se chale hai, jon folder ke dusra program badle sake hai. Uu wahan PadForge ke settings badle sake hai, aur PadForge apan rights se uske pe kaam kari.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Abhi update karo GitHub se community controller database (SDL_GameControllerDB) download kare hai, aur settings file me uu mapping rakhe hai jon PadForge ke ii version me nai hai. Uu turant use me hai. Naya mapping khali uu controller ke liye use hoi jiske aur koi gamepad jaisan nai padhe, jon assign nai hai aur jon Force Raw Joystick Mode me nai hai. Reset sab download karaa mapping hataawe hai. Aap ke apan row, Aur ke niche, rahi.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Abhi update karo GitHub se, ya Aur ke niche set karaa address se, community controller database (SDL_GameControllerDB) download kare hai, aur settings file me uu mapping rakhe hai jon PadForge ke ii version me nai hai. Uu turant use me hai. Dusra address se ii khali naya mapping rakhe hai. Naya mapping khali uu controller ke liye use hoi jiske aur koi gamepad jaisan nai padhe, jon assign nai hai aur jon Force Raw Joystick Mode me nai hai. Reset sab download karaa mapping hataawe hai aur GitHub se phir download kare hai. Aap ke apan row, Aur ke niche, rahi.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Abhi update karo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Update hoe rahaa…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Andar se: {0} mapping, community copy {1} ke.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Andar se: {0} mapping, community copy {1} ke. {2} ke download bhais: {3} naya row, {4} badla.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Andar se: {1} mapping, community copy {2} ke. {3} ke {4} se download bhais: {0} naya row.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Andar se: {1} mapping, community copy {2} ke. {3} ke {4} se download bhais: {0} naya row.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Pichhla update se community database nai badla hai.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetry se</value></data>
@@ -1523,6 +1530,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Abhi use me hai. Row aap ke hai aur ii device ke liye sab se upar hai.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Aap ke jaisan rakha gais. Engine chale aur device connect hoe pe use me aai.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL row nai lees. Ii device ke liye kuch nai badla.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Nai rakha gais. PadForge aap ke {0:N0} row tak rakhe hai aur abhi utna rakhe hai.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL Mapping paste karo</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} ke liye SDL Mapping paste karo</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} ke liye mapping khojo</value></data>
@@ -1556,6 +1564,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Row sab PadForge.xml me aap ke jaisan rakha jaae hai aur apan device ke liye har dusra source se upar hai. Controller Database row ke Aur ke niche, Saaf karo unke hataawe hai.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows ke liye {0} row. Dusra system ke {1} chhod diya jaae hai.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows ke liye {0} row. Dusra system ke {1} chhod diya jaae hai.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Sab {0:N0} jod diya jaai. PadForge aap ke {1:N0} row tak rakhe hai.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Ii jod diya jaai. PadForge aap ke {1:N0} row tak rakhe hai.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Aap ke {0:N0} abhi rakha hai, to inme se {1:N0} jod diya jaai aur {2:N0} nai.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Aap ke {0:N0} abhi rakha hai, to inme se {1:N0} jod diya jaai aur {2:N0} nai.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} mana bhais. Pahila: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Ek row paste karo, ya gamecontrollerdb.txt file ke text.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ii text SDL ke controller database ke row nai hai: 32 hex digit ke ID, ek naam, phir field jaise a:b0.</value></data>
@@ -1572,6 +1584,8 @@
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Jon row aap hian add karo, ya device ke SDL Mapping card pe paste karo, uu apan device ke liye har dusra source se upar hai aur reset ke baad bhi rahe hai.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>File ya clipboard se row add karo…</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Turant use me hai.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Kahan se download</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Khali HTTPS. Jon address community ke nai hai, uske se PadForge khali naya row lee hai.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>On karo</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Web pe assistant</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
@@ -1610,7 +1624,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} allow bhais, aakhri use {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} allow bhais, abhi tak use nai bhais.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Waapas lo</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge koi tunnel program download nai kare hai aur koi dusra company ke key nai rakhe hai. Web assistant upar wala level pe kaam kare hai.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge khali ChatGPT Secure MCP Tunnel ke liye tunnel program download kare hai. Web assistant upar wala level pe kaam kare hai.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Iske sign in {0} pe lautaawe hai.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ii apan ke {0} bole hai.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Khali tab Allow karo jab iske sign in page ii code dikhaawe:</value></data>
@@ -1646,4 +1660,33 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Iske script ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script iske control ke {0} naam se bulaawe hai.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script iske key ke KeyA, KeySpace, KeyLeftShift jaisan naam deve hai, aur har key ke uske code se, Vk0 se Vk255 tak.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ii network pe {1} se</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Folder me dekhao</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} suru bhais lekin kabhi PadForge se connect nai bhais.</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Address</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge uu address lee hai jon https:// se suru hoe aur ek host ke naam lee, default port pe, aur jisme koi user name ya password nai hoe.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Badlo…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Call aur unke key ii network pe bina encrypt ke jaae hai. Windows unke khali private network pe andar aawe de hai.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} ke dusra program use kare hai. Ii network se PadForge tak pahunche ke liye isse badlo.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows PadForge ke helper ke port {0} pe sune nai dees. PadForge administrator ke adhikar se isse allow kare hai, to PadForge ke unke saathe suru karo aur isse off aur on karo.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge ke helper port {0} pe nai sun sakis. Port badlo, ya isse off aur on karo.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge ke helper ruk gais ({0}). Isse phir suru kare ke liye Reach PadForge From This Network ke off aur on karo.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation off hai, to ii network pe koi assistant PadForge tak nai pahunche hai. Helper tab suru hoi jab Automation on hoi.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Ii PC ke abhi private network pe koi address nai hai.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Ii network pe assistant</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Iske key {1} banaa, aakhri use {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Iske key {1} banaa, abhi tak use nai bhais.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Key banao</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Hoe gais</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Port badlo</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>1024 se 49151 tak ek port chuno. Har assistant ke save karaa address me port ke naam hai, to badle ke baad har ek ke phir se jodo.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>1024 se 49151 tak ek port likho.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Apan device aur {0} ke chalaawe hai. Abhi bhi sab device padhe hai.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Khali apan device chalaawe hai. Abhi bhi sab device padhe hai.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Command line ke command abhi bhi PadForge tak pahunche hai, jaise har program ke liye.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Chale hai, aap ke adhikar ke saathe, aur taiyaar hai. ChatGPT ii tunnel se PadForge tak pahunche hai bina apan sign in ke, aur khali aap ke OpenAI organization se. Ii PadForge ke saathe phir se suru hoi.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Chale hai, aap ke adhikar ke saathe. Ii OpenAI ke bole ke intezaar kare hai ki tunnel taiyaar hai.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge key ke khali aap ke liye encrypt karke rakhe hai. Khali box isse bhula de hai. ChatGPT upar wala level pe kaam kare hai.</value></data>
 </root>

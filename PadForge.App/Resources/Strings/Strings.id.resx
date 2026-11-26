@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tersambung, baterai {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} perangkat terputus: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} perangkat tersambung: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} terus terputus</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} terputus {1} kali dalam semenit</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} kembali</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} perangkat kembali: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambung ulang otomatis, port, identitas penyandingan, sambungkan lewat alamat</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe pengganti</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Kecepatan penuh, Format kustom</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Asisten lain, asisten di web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Asisten lain, asisten di web dan di jaringan ini</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Lihat sekeliling dengan head tracker atau headset VR sementara kedua jempol tetap di tombol.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Petakan kecepatan, pedal, dan gigi yang dikirim game balap, seperti input lainnya.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Kirim gerakan kontroler ke emulator yang membaca sumber gerak DSU.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Tambahkan plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Program dan skrip|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Semua file|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Setujui dan mulai ulang…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Tampilkan di folder</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Percayai versi baru dari penanda tangan ini</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Versi baru yang ditandatangani dengan kunci sertifikat yang sama milik {0} dimulai ulang tanpa Setujui dan mulai ulang. Perubahan lain akan bertanya kepada Anda lebih dulu.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Menerima versi baru yang ditandatangani dengan kunci sertifikat yang sama</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Dimulai bersama mesin</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Memeriksa file sebelum dimulai</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Keluar dengan kode {0}. Dimulai lagi dalam {1} dtk.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Tidak ditandatangani.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Pengaturannya tampil di sini selama plugin berjalan.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Plugin ini tidak mendeklarasikan pengaturan.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Pengaturannya tampil di sini setelah plugin tersambung ke PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Dimulai tetapi tidak pernah tersambung ke PadForge. Dimulai lagi dalam {0} detik.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Dimulai tetapi tidak pernah tersambung ke PadForge. Dimulai lagi dalam {0} detik.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} dimulai tetapi tidak pernah tersambung ke PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Diakhiri semenit setelah dimulai, tidak pernah tersambung ke PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Diubah</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge tidak dapat membaca pengaturannya: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Diakhiri setelah semenit tanpa kabar</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Filenya berubah saat plugin berjalan</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ditandatangani oleh {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, tidak ditandatangani</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Selesai</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Ditahan</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Tidak dilakukan</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Tidak diizinkan di tingkat ini</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tidak tersedia sekarang</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Atur kontrol perangkat {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Hapus perangkat {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Letakkan setiap kontrol perangkat {0} pada posisi diam</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Keluaran tombol dan mouse yang diberikannya ditahan dari {0}, yang berjalan sebagai administrator</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Keluaran tombol dan mouse yang diberikannya ditahan dari jendela yang berjalan sebagai administrator</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Membuat PadForge menjalankan program.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Membuka file, folder, atau halaman web.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Membuat PadForge mengirim tombol atau input mouse ke Windows.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge tetap berjalan saat Anda mengeklik Tutup atau menekan Alt+F4. Gunakan Keluar di menu baki sistem untuk keluar.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Menaruh PadForge di area pemberitahuan saat Anda memperkecil jendela, bukan di bilah tugas.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Jendela tetap tersembunyi saat PadForge dimulai. PadForge berjalan dan memetakan seperti biasa.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Mulai PadForge secara otomatis saat Anda masuk ke Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Mulai PadForge secara otomatis saat Anda masuk ke Windows. Selama ini aktif, PadForge juga dimulai tanpa permintaan Windows dari pintasan, skrip, atau program lain.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge berjalan dari {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ini memerlukan PadForge di folder tersendiri. Foldernya berisi file lain, sehingga PadForge tidak dapat mencegah program lain mengubahnya.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Pindahkan PadForge ke folder tersendiri</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Selalu tampilkan di baki sistem</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikon baki tetap terlihat selama jendela terbuka, sehingga Keluar di menunya selalu hanya sejauh satu klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Pembaruan</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Periksa versi baru PadForge di GitHub dan instal dari sini, serta perbarui database kontroler. PadForge hanya menghubungi GitHub (api.github.com, github.com dan server unduhannya, serta raw.githubusercontent.com untuk database kontroler). Satu-satunya data yang dikirimnya adalah nomor versinya sendiri dan, untuk database kontroler, tag yang diberikan GitHub pada unduhan terakhir.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Periksa versi baru PadForge di GitHub dan instal dari sini, serta perbarui database kontroler. PadForge hanya menghubungi GitHub (api.github.com, github.com dan server unduhannya, serta raw.githubusercontent.com untuk database kontroler), dan alamat yang Anda atur di bawah Unduh dari pada baris Database kontroler. Satu-satunya data yang dikirimnya adalah nomor versinya sendiri dan, untuk database kontroler, tag yang diberikan server pada unduhan terakhir.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Periksa pembaruan secara otomatis</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Memeriksa saat PadForge dimulai dan setiap 12 jam setelahnya.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Instal pembaruan secara otomatis</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instal dan mulai ulang</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Catatan rilis</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database kontroler</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Perbarui sekarang mengunduh database kontroler komunitas (SDL_GameControllerDB) dari GitHub dan menyimpan, di file pengaturan, pemetaan yang tidak dimiliki versi PadForge ini. Pemetaan itu langsung dipakai. Pemetaan baru hanya dipakai untuk kontroler yang tidak dibaca sebagai gamepad oleh yang lain, yang belum ditetapkan, dan yang tidak ada di Paksa mode joystick mentah (lewati pemetaan ulang gamepad). Pengaturan ulang menghapus semua pemetaan yang diunduh. Baris Anda sendiri, di bawah Lainnya, tetap ada.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Perbarui sekarang mengunduh database kontroler komunitas (SDL_GameControllerDB) dari GitHub, atau dari alamat yang diatur di bawah Lainnya, dan menyimpan, di file pengaturan, pemetaan yang tidak dimiliki versi PadForge ini. Pemetaan itu langsung dipakai. Dari alamat lain, hanya pemetaan baru yang disimpan. Pemetaan baru hanya dipakai untuk kontroler yang tidak dibaca sebagai gamepad oleh yang lain, yang belum ditetapkan, dan yang tidak ada di Paksa mode joystick mentah (lewati pemetaan ulang gamepad). Pengaturan ulang menghapus semua pemetaan yang diunduh dan mengunduh dari GitHub lagi. Baris Anda sendiri, di bawah Lainnya, tetap ada.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Perbarui sekarang</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Memperbarui…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Memeriksa pembaruan…</value></data>
@@ -1106,8 +1121,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge telah diperbarui ke {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Bawaan: {0} pemetaan, salinan komunitas per {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Bawaan: {0} pemetaan, salinan komunitas per {1}. Diunduh {2}: {3} baris baru, {4} berubah.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Bawaan: {1} pemetaan, salinan komunitas per {2}. Diunduh {3} dari {4}: {0} baris baru.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Bawaan: {1} pemetaan, salinan komunitas per {2}. Diunduh {3} dari {4}: {0} baris baru.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Database komunitas tidak berubah sejak pembaruan terakhir.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Tidak dapat menjangkau GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Tidak dapat menjangkau {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge menolak unduhan itu karena bukan database kontroler yang diharapkannya. Tidak ada yang berubah.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Mulai diperkecil</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Mulai saat masuk</value></data>
@@ -1278,6 +1296,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Salin ringkasan</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Tersalin</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Simpan…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Simpan dan kirim</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Simpan dan kirim menyimpan zip, menyalin ringkasan, menampilkan file di Explorer, dan membuka halaman PadForge tempat laporan dikirim. Tempel ringkasan di sana dan jatuhkan file ke atasnya.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Simpan rekaman</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>File zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Tidak tersimpan. {0}</value></data>
@@ -1638,6 +1658,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produk</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Jenis</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Kemampuan</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Paddle belakang nonaktif melalui USB dan Xbox Wireless Adapter. Alasan SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Paddle belakang nonaktif melalui Bluetooth. Alasan SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Koneksi</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baterai</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Jalur</value></data>
@@ -3476,6 +3498,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Terjadi kesalahan tak terduga:
 
 {0}
+
+PadForge menulis rinciannya ke crash.log di samping PadForge.exe. Untuk melaporkannya, mulai diskusi di {2} dan jatuhkan crash.log ke atasnya.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} kesalahan tambahan disembunyikan)</value></data>
@@ -6647,6 +6671,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Dipakai sekarang. Baris itu milik Anda dan diutamakan untuk perangkat ini.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Disimpan sebagai milik Anda. Dipakai setelah mesin berjalan dan perangkat tersambung.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tidak menerima baris itu. Tidak ada yang berubah untuk perangkat ini.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Tidak disimpan. PadForge menyimpan hingga {0:N0} baris milik Anda dan saat ini sudah penuh.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Tempel pemetaan SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Tempel pemetaan SDL untuk {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Cari pemetaan untuk {0}</value></data>
@@ -6680,6 +6705,10 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Baris disimpan sebagai milik Anda di PadForge.xml dan diutamakan untuk perangkatnya atas semua sumber lain. Bersihkan, di bawah Lainnya pada baris Database kontroler, menghapusnya.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} baris untuk Windows. {1} untuk sistem lain dilewati.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} baris untuk Windows. {1} untuk sistem lain dilewati.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Semua {0:N0} akan ditambahkan. PadForge menyimpan hingga {1:N0} baris milik Anda.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Baris itu akan ditambahkan. PadForge menyimpan hingga {1:N0} baris milik Anda.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} baris milik Anda tersimpan saat ini, jadi {1:N0} dari baris ini akan ditambahkan dan {2:N0} tidak.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>{0:N0} baris milik Anda tersimpan saat ini, jadi {1:N0} dari baris ini akan ditambahkan dan {2:N0} tidak.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ditolak. Yang pertama: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Tempel sebuah baris, atau teks file gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teks itu bukan baris database kontroler SDL: ID 32 digit heksadesimal, sebuah nama, lalu bidang seperti a:b0.</value></data>
@@ -6692,14 +6721,22 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Baris memberikan satu bidang dua kali.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Baris lebih dari 1.024 karakter.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Baris tidak mengikat kontrol apa pun.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Baris Anda</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Asal unduhan, baris Anda sendiri</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Baris Anda</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Baris yang Anda tambahkan di sini, atau tempel pada kartu Pemetaan SDL sebuah perangkat, diutamakan untuk perangkatnya atas semua sumber lain dan tetap ada setelah pengaturan ulang.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Tambahkan baris dari file atau clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} baris, milik Anda atas semua sumber lain untuk perangkatnya.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} baris, milik Anda atas semua sumber lain untuk perangkatnya.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} baris, satu per perangkat, milik Anda atas semua sumber lain.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} baris untuk satu perangkat, milik Anda atas semua sumber lain.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Belum ada.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Variabel SDL_GAMECONTROLLERCONFIG Anda berisi {0} baris yang tidak disimpan PadForge. Tambahkan baris dari file atau clipboard terbuka dengan baris tersebut.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Variabel SDL_GAMECONTROLLERCONFIG Anda berisi {0} baris yang tidak disimpan PadForge. Tambahkan baris dari file atau clipboard terbuka dengan baris tersebut.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Langsung dipakai.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Unduh dari</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Hanya HTTPS. Dari alamat yang bukan milik komunitas, PadForge hanya mengambil baris baru.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Ubah…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Gunakan file komunitas</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Alamat</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge menerima alamat yang diawali https:// dan menyebut sebuah host, pada port bawaan, tanpa nama pengguna atau kata sandi.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Jangkau PadForge dari web</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Asisten yang berjalan di situs web menjangkau PadForge melalui program terowongan di PC ini. Menyalakannya akan bertanya kepada Anda lebih dulu.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Jangkau PadForge dari web?</value></data>
@@ -6742,7 +6779,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Diizinkan {0}, terakhir dipakai {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Diizinkan {0}, belum dipakai.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Cabut</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge tidak mengunduh program terowongan apa pun dan tidak menyimpan kunci perusahaan lain. Asisten web bekerja pada tingkat di atas.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge mengunduh program terowongan hanya untuk ChatGPT Secure MCP Tunnel. Asisten web bekerja pada tingkat di atas.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Izinkan {0} bekerja dengan PadForge dari web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Proses masuknya kembali ke {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Menyebut dirinya {0}.</value></data>
@@ -6779,6 +6816,97 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID skripnya</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skrip menamai kontrolnya {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skrip menamai tombolnya KeyA, KeySpace, KeyLeftShift dan sejenisnya, dan setiap tombol menurut kodenya, Vk0 sampai Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} di jaringan ini dari {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} meminta, di jaringan ini dari {1}, dengan kunci yang Anda buat hari ini.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} meminta, di jaringan ini dari {1}, dengan kunci yang Anda buat pada {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Jangkau PadForge dari jaringan ini</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>Asisten di PC lain pada jaringan ini menjangkau PadForge dengan kunci yang Anda buat di sini, tanpa program terowongan atau akun luar. Menyalakannya akan bertanya kepada Anda lebih dulu.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Jangkau PadForge dari jaringan ini?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Helper PadForge, yang berjalan tanpa hak administrator, mendengarkan di alamat jaringan PC ini, dan PadForge hanya mengizinkan port-nya masuk di jaringan privat. Asisten di PC lain masuk hanya dengan kunci yang Anda buat di sini. Panggilan dan kuncinya melintasi jaringan tanpa enkripsi.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Ubah…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Panggilan dan kuncinya melintasi jaringan ini tanpa enkripsi. Windows hanya mengizinkannya masuk di jaringan privat.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Port {0} sedang dipakai program lain. Ubah port untuk menjangkau PadForge dari jaringan ini.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows tidak mengizinkan helper PadForge mendengarkan di port {0}. PadForge mengizinkannya dengan hak administrator, jadi mulai PadForge dengan hak itu lalu matikan dan nyalakan lagi pengaturan ini.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Helper PadForge tidak dapat mendengarkan di port {0}. Ubah port, atau matikan dan nyalakan lagi pengaturan ini.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Helper PadForge berhenti ({0}). Matikan lalu nyalakan lagi Jangkau PadForge dari jaringan ini untuk memulainya lagi.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Otomatisasi nonaktif, jadi tidak ada asisten di jaringan ini yang menjangkau PadForge. Helper dimulai setelah Otomatisasi aktif.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>PC ini saat ini tidak memiliki alamat di jaringan privat.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Asisten di jaringan ini</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Kuncinya dibuat {1}, terakhir dipakai {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Kuncinya dibuat {1}, belum dipakai.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>hari ini pukul {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>pada {0} pukul {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>pukul {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Setiap asisten mendapat kuncinya sendiri, dengan nama dan tingkat hingga tingkat di atas. Kunci hanya tampil sekali. Membuatnya di sini berarti persetujuan Anda, jadi panggilan pertamanya tidak menanyakan apa pun kepada Anda.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Tambah asisten jaringan…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Tambah asisten jaringan</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Beri nama PC lain atau asistennya, lalu pilih apa yang boleh dilakukannya. PadForge membuat kuncinya berikutnya.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Nama</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Tingkat</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Buat kunci</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Beri nama.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge menyimpan paling banyak {0} kunci jaringan. Cabut salah satunya lebih dulu.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>Kunci untuk {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>Kunci ini tampil sekali. PadForge hanya menyimpan hash-nya, jadi salin sekarang. Cabut di bawah Asisten di jaringan ini mengakhirinya.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Kunci</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>Untuk</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Host lain mana pun</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Atau Host lain mana pun, untuk alamat dan header yang ditempel di pengaturannya.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>Yang ditempel</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Jalankan di terminal pada PC lain.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Tambahkan server MCP melalui HTTP di pengaturan host dengan alamat dan header ini.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Selesai</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Ubah port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Pilih port dari 1024 sampai 49151. Alamat tersimpan setiap asisten memuat port, jadi tambahkan lagi setiap asisten setelah perubahan.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Ketik port dari 1024 sampai 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Jangkauan</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>Seluruh PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Hanya perangkatnya sendiri dan yang disebut Pilih perangkat</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Pilih perangkat…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Menggerakkan perangkatnya sendiri dan {0}. Program tetap membaca setiap perangkat.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Hanya menggerakkan perangkatnya sendiri. Program tetap membaca setiap perangkat.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Perintah dari command line tetap menjangkau PadForge, seperti untuk setiap program.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Program meminta untuk menggerakkan hanya perangkatnya sendiri.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Program bertanya sekali. Anda dapat menghapusnya atau mengubah jangkauannya di halaman Otomatisasi.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Pilih perangkat</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} boleh menggerakkan perangkatnya sendiri dan yang Anda centang. Program tetap membaca setiap perangkat.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>Tidak ada perangkat di halaman Perangkat.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Berjalan, dengan hak akses Anda, dan siap. ChatGPT menjangkau PadForge melalui terowongan ini tanpa proses masuk sendiri, dan hanya dari organisasi OpenAI Anda. Terowongan dimulai lagi bersama PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Berjalan, dengan hak akses Anda. Menunggu OpenAI menyatakan terowongan siap.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Mengunduh tunnel-client dari OpenAI dan memeriksanya dengan jumlah SHA-256 rilisnya.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client tidak dapat diunduh: {0}. Pilih terowongan lagi untuk mencoba lagi.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Tempel kunci runtime dan ID terowongan di bawah, lalu terowongan dimulai.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Kunci runtime</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Terbatas, dengan Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Buat satu</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>ID terowongan</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Lalu tambahkan terowongan ini di ChatGPT.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Buka ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge menyimpan kunci terenkripsi hanya untuk Anda. Kotak kosong melupakannya. ChatGPT bekerja pada tingkat di atas.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Kunci tidak disimpan: helper web PadForge tidak berjalan, dan hanya helper itu yang dapat mengenkripsi kunci untuk Anda.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Jawab dari perangkat lain</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Jawab pertanyaan PadForge dari ponsel atau PC lain saat Anda jauh dari PC ini.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Hanya berfungsi di jaringan ini, melalui alamat kontroler web.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Pasangkan perangkat…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Dipasangkan {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Terakhir menjawab {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>hari ini pukul {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>pukul {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} pukul {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Perangkat tanpa nama</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Pasangkan perangkat</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Kode untuk dipindai dengan kamera perangkat</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Disembunyikan dari tangkapan layar, jadi hanya Anda yang dapat memindainya.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Atau buka {0} di perangkat dan ketik kode ini:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Kode berlaku sekali, sampai {0}. Lima kali salah menutupnya, dan kode QR tetap berfungsi.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Memulai alamat kontroler web…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Halaman tidak dapat dibuka: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows tidak mau menyembunyikan jendela ini dari tangkapan layar, jadi jendela ini tidak menampilkan kode.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Kode yang diketik ditutup setelah lima kali salah. Kode QR tetap berfungsi sampai {0}.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Kode telah habis. Pasangkan perangkat… membuat yang baru.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge menyimpan paling banyak {0} kunci jaringan. Cabut kunci itu lebih dulu.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Warna yang berubah, seperti siklus warna atau warna yang mengikuti suara, tidak sampai ke sana. Warna yang tetap sama sampai.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Semua file (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>

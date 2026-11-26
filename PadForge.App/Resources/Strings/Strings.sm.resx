@@ -127,6 +127,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, sainia e {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, e le o sainia</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ua uma</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Ua taofia</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>E leʻi faia</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>E le faʻatagaina i lenei tulaga</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>E le o avanoa nei</value></data>
@@ -1340,10 +1341,12 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Ua fesoʻotaʻi {0}, maa {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Ua motusia masini e {0}: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Ua fesoʻotaʻi masini e {0}: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>O loʻo motusia pea {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Na motusia {0} i taimi e {1} i le minute e tasi</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>Ua toe foʻi mai {0}</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Ua toe foʻi mai masini e {0}: {1}</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Faʻataga launcher, script ma fesoasoani e galulue faʻatasi ma PadForge.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Faʻaopoopo masini e saunia e polokalame.</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Isi fesoasoani, fesoasoani i luga o le upega tafaʻilagi</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Isi fesoasoani, fesoasoani i luga o le upega tafaʻilagi ma i lenei fesoʻotaʻiga</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Le igoa o se masini ua tofia pe a motusia.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Le igoa o se masini ua tofia pe a fesoʻotaʻi.</value></data>
   <data name="Extras_Automation_Switch" xml:space="preserve"><value>Faʻataga Polokalame i Fafo</value></data>
@@ -1447,9 +1450,11 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o le {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Afai e leai se tali i le {0}, o le a faitaulia o le leai.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>O loʻo galue PadForge ma aia tatau a le pule mai {0}, o se pusa faila e mafai e isi polokalame ona sui. E mafai ona latou suia faʻatulagaga o PadForge iina, ma e gaoioi PadForge i ai ma ona aia tatau.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>E sii mai e le Update Now le faʻamaumauga o masini taʻalo a le nuʻu (SDL_GameControllerDB) mai GitHub ma teu ai i le faila o faʻatulagaga faʻafanua e le o i ai i lenei lomiga o PadForge. E faʻaaogā loa i le taimi lava lena. E faʻaaogā se faʻafanua fou naʻo mo se masini e leai se isi mea e faitau o se gamepad, e le o tofia ma e le o i le Force Raw Joystick Mode. E aveese e le toe setiina faʻafanua uma na sii mai. E tumau au lava laina, i lalo o le More.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>E sii mai e le Update Now le faʻamaumauga o masini taʻalo a le nuʻu (SDL_GameControllerDB) mai GitHub, po o le tuatusi ua seti i lalo o le More, ma teu ai i le faila o faʻatulagaga faʻafanua e le o i ai i lenei lomiga o PadForge. E faʻaaogā loa i le taimi lava lena. Mai se isi tuatusi e teu ai naʻo faʻafanua fou. E faʻaaogā se faʻafanua fou naʻo mo se masini e leai se isi mea e faitau o se gamepad, e le o tofia ma e le o i le Force Raw Joystick Mode. E aveese e le toe setiina faʻafanua uma na sii mai ma toe sii mai mai GitHub. E tumau au lava laina, i lalo o le More.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}. Na sii mai {2}: laina fou e {3}, suia {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {1}, kopi a le nuʻu o le {2}. Na sii mai {3} mai {4}: laina fou e {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {1}, kopi a le nuʻu o le {2}. Na sii mai {3} mai {4}: le laina fou e {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>E leʻi suia le faʻamaumauga a le nuʻu talu mai le faʻafouga mulimuli.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>counts</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>I taimi uma</value></data>
@@ -1568,6 +1573,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ua faʻaaogā nei. O le laina o lau mea ma e sili mo lenei masini.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Ua teu o lau mea. E faʻaaogā pe a galue le enisini ma fesoʻotaʻi le masini.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>E leʻi talia e SDL le laina. E leai se mea na suia mo lenei masini.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>E leʻi teuina. E teu e PadForge e oʻo atu i le {0:N0} au laina, ma ua atoa nei lena aofaʻi.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Faʻapipiʻi se SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Faʻapipiʻi se SDL Mapping mo {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Saili se Faʻafanua mo {0}</value></data>
@@ -1601,6 +1607,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>E teu laina o au mea i PadForge.xml ma e sili mo a latou masini i isi puna uma. E aveʻese e le Clear, i lalo o le More a le laina Controller Database.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Laina e {0} mo Windows. E pasi atu {1} mo isi faiga.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Laina e {0} mo Windows. E pasi atu {1} mo isi faiga.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>O le a faʻaopoopo uma le {0:N0}. E teu e PadForge e oʻo atu i le {1:N0} au laina.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>O le a faʻaopoopo. E teu e PadForge e oʻo atu i le {1:N0} au laina.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>O loʻo teu nei au laina e {0:N0}, o lea o le a faʻaopoopo le {1:N0} o nei laina ae le faʻaopoopo le {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>O loʻo teu nei lau laina e {0:N0}, o lea o le a faʻaopoopo le {1:N0} o nei laina ae le faʻaopoopo le {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Ua teʻena {0}. Le muamua: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Faʻapipiʻi se laina, poʻo tusitusiga o se faila gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>O le tusitusiga e le o se laina o le faʻamaumauga o masini taʻalo a SDL: o se ID e 32 numera hex, se igoa, ona sosoo ai lea ma vaega e pei o a:b0.</value></data>
@@ -1613,7 +1623,7 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>E faalua ona tuʻuina e le laina se vaega e tasi.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>E silia le laina i mataitusi e 1,024.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>E leai se faʻamau poʻo se pule e fusia e le laina.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Au Laina</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Le mea e sii mai ai, au lava laina</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ua faʻaaogā loa.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Ki</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Fesoasoani i luga o le Upega Tafaʻilagi</value></data>
@@ -1653,7 +1663,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Faʻatagaina {0}, faʻaaogā mulimuli {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Faʻatagaina {0}, e leʻi faʻaaogāina.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Soloia</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>E le sii mai e PadForge se polokalame tunnel ma e le teu se ki a se isi kamupani. E galue se fesoasoani upega i le tulaga o loʻo i luga.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>E sii mai e PadForge se polokalame tunnel naʻo mo ChatGPT Secure MCP Tunnel. E galue se fesoasoani upega i le tulaga o loʻo i luga.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>E toe foʻi lona ulufale i {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>E taʻua e ia o ia lava o {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Faʻataga pe a faʻaali e lona itulau ulufale lenei code:</value></data>
@@ -1687,4 +1697,31 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Lona ID o le script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>E taʻua e script ana mea faʻatonutonu o {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>E taʻua e script ana ki o KeyA, KeySpace, KeyLeftShift ma isi, ma ki uma i lona code, Vk0 i le Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} i lenei fesoʻotaʻiga mai {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Faʻaali i le pusa faila</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Na amata {0} ae e leʻi fesoʻotaʻi lava i PadForge.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Sui…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>O valaau ma la latou ki e ui atu i lenei fesoʻotaʻiga e le faʻalilolilo. E faʻatagaina e Windows i latou naʻo i fesoʻotaʻiga tumaoti.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>O loʻo faʻaaogā le port {0} e se isi polokalame. Sui ina ia oʻo atu ai i PadForge mai lenei fesoʻotaʻiga.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>E leʻi faʻatagaina e Windows le polokalame lagolago a PadForge e faʻalogo i le port {0}. E faʻatagaina e PadForge pe a i ai aia a le pule, o lea amata PadForge ma na aia ona tape ma toe ki lenei mea.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>E leʻi mafai e le polokalame lagolago a PadForge ona faʻalogo i le port {0}. Sui le port, pe tape ma toe ki lenei mea.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ua taofi le polokalame lagolago a PadForge ({0}). Tape ma toe ki le Reach PadForge From This Network e toe amata ai.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Ua tape le Automation, o lea e leai se fesoasoani i lenei fesoʻotaʻiga e oʻo atu i PadForge. E amata le polokalame lagolago pe a ki le Automation.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>E leai nei se tuatusi o lenei PC i se fesoʻotaʻiga tumaoti.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Fesoasoani i lenei fesoʻotaʻiga</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Na faia lona ki {1}, faʻaaogā mulimuli {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Na faia lona ki {1}, e leʻi faʻaaogāina.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Fai se ki</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Ulutala</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Ua uma</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Sui le port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Filifili se port mai le 1024 i le 49151. E taʻua e le tuatusi ua teu o fesoasoani taʻitasi le port, o lea toe faʻaopoopo taʻitasi pe a uma le suiga.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Taina se port mai le 1024 i le 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>E faʻatonu ona lava masini ma {0}. E faitau pea masini uma.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>E faʻatonu naʻo ona lava masini. E faitau pea masini uma.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>E oʻo pea poloaiga mai le laina poloaiga i PadForge, e pei ona faia mo polokalame uma.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>O loʻo galue, ma ou aia, ma ua sauni. E oʻo atu ChatGPT i PadForge e ala i lenei tunnel e aunoa ma sona lava ulufale, ma naʻo mai lau faʻalapotopotoga OpenAI. E toe amata faʻatasi ma PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>O loʻo galue, ma ou aia. O loʻo faʻatali mo OpenAI e taʻu mai ua sauni le tunnel.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>E teu e PadForge le ki ma faʻalilolilo mo oe naʻo oe. Afai e gaogao le pusa, e faʻagalo ai. E galue ChatGPT i le tulaga o loʻo i luga.</value></data>
 </root>

@@ -132,6 +132,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nke {1} bịanyere aka</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, a bịanyeghị aka</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Emechara</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Ejidere ya</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Emeghị ya</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Anaghị ekwe ya n'ọkwa a</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ọ dịghị ugbu a</value></data>
@@ -204,6 +205,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Tọọ njikwa nke ngwaọrụ {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Wepụ ngwaọrụ {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Hapụ njikwa niile nke ngwaọrụ {0} ka ha zuru ike</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>E jidere ihe keyboard na mouse ọ na-enye ka ọ ghara iru {0}, nke na-agba dị ka administrator</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>E jidere ihe keyboard na mouse ọ na-enye ka ọ ghara iru window na-agba dị ka administrator</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Na-eme ka PadForge gbaa mmemme.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Na-emepe faịlụ, folda ma ọ bụ ibe weebụ.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Na-eme ka PadForge zipu igodo ma ọ bụ ntinye mouse na Windows.</value></data>
@@ -757,6 +760,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Njehie a na-atụghị anya mere:
 
 {0}
+
+PadForge detara nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji kọọ nke a, malite mkparịta ụka na {2} ma tinye crash.log na ya.
 
 {1}</value></data>
 
@@ -1459,7 +1464,7 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Gosi menu, layer, mgbanwe profile na njikọ ngwaọrụ mgbe ị na-egwu egwu.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, ihe nnọchi DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Ọsọ zuru ezu, Usoro nke gị</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Assistant ndị ọzọ, assistant na weebụ</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Assistant ndị ọzọ, assistant na weebụ na na netwọk a</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} jikọrọ, mana a naghị eji ya.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Jiri ya</value></data>
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Gịnị ka egwuregwu kwesịrị ịhụ?</value></data>
@@ -1686,7 +1691,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ejikọla, batrị {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Ngwaọrụ {0} akwụsịla njikọ: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Ngwaọrụ {0} ejikọla: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} na-akwụsị njikọ ugboro ugboro</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} kwụsịrị njikọ ugboro {1} n'ime otu nkeji</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} alọghachila</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Ngwaọrụ {0} alọghachila: {1}</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Kwe ka launcher, script na assistant rụọ ọrụ ya na PadForge.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Tinye ngwaọrụ ndị mmemme na-enye.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Aha ngwaọrụ e kenyere mgbe ọ kwụsịrị njikọ.</value></data>
@@ -1733,11 +1740,13 @@
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ọ bụrụ na azaghị n'ime {0}, ọ bụ mba.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda mmemme ndị ọzọ nwere ike ịgbanwe. Ha nwere ike ịgbanwe ntọala PadForge n'ebe ahụ, PadForge ga-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ọdụ data controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. Ha nọ n'ọrụ ozugbo. A na-eji mapping ọhụrụ naanị maka controller nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode. Ntọgharị ahụ na-ewepụ mapping niile e budatara. Ahịrị nke gị, n'okpuru More, na-anọgide.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub, ma ọ bụ site na adreesị e setịrị n'okpuru More, ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. Ha nọ n'ọrụ ozugbo. Site na adreesị ọzọ, ọ na-edebe naanị mapping ọhụrụ. A na-eji mapping ọhụrụ naanị maka controller nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode (Bypass Gamepad Remapping). Ntọgharị ahụ na-ewepụ mapping niile e budatara ma budata ọzọ site na GitHub. Ahịrị nke gị, n'okpuru More, na-anọgide.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Melite ugbu a</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Na-emelite…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Dị n'ime: mapping {0}, oyiri obodo nke {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Dị n'ime: mapping {0}, oyiri obodo nke {1}. E budatara {2}: ahịrị ọhụrụ {3}, agbanwere {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Dị n'ime: mapping {1}, oyiri obodo nke {2}. E budatara {3} site na {4}: ahịrị ọhụrụ {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Dị n'ime: mapping {1}, oyiri obodo nke {2}. E budatara {3} site na {4}: ahịrị ọhụrụ {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ọdụ data obodo agbanwebeghị kemgbe mmelite ikpeazụ.</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge jụrụ ihe e budatara n'ihi na ọ bụghị ọdụ data controller ọ na-atụ anya ya. Ọ dịghị ihe gbanwere.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
@@ -1857,6 +1866,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ọ nọ n'ọrụ ugbu a. Ahịrị ahụ bụ nke gị ma na-ebuli maka ngwaọrụ a.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Edebere ya dị ka nke gị. Ọ ga-anọ n'ọrụ ozugbo engine na-agba ma jikọọ ngwaọrụ ahụ.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL anaraghị ahịrị ahụ. Ọ dịghị ihe gbanwere maka ngwaọrụ a.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Edebeghị ya. PadForge na-edebe ihe ruru ahịrị {0:N0} nke gị, o jidekwala ọnụ ọgụgụ ahụ ugbu a.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Mado Mapping SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Mado Mapping SDL maka {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Chọta mapping maka {0}</value></data>
@@ -1890,6 +1900,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>A na-edebe ahịrị ndị ahụ dị ka nke gị na PadForge.xml, ha na-ebulikwa karịa isi iyi ọ bụla ọzọ maka ngwaọrụ ha. Kpochapụ, n'okpuru More nke ahịrị Ọdụ data controller, na-ewepụ ha.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Ahịrị {0} maka Windows. A gafere {1} maka sistemụ ndị ọzọ.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Ahịrị {0} maka Windows. A gafere {1} maka sistemụ ndị ọzọ.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>A ga-agbakwunye ha {0:N0} niile. PadForge na-edebe ihe ruru ahịrị {1:N0} nke gị.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>A ga-agbakwunye ya. PadForge na-edebe ihe ruru ahịrị {1:N0} nke gị.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>E debere {0:N0} nke gị ugbu a, ya mere a ga-agbakwunye {1:N0} n'ime ndị a, a gaghị agbakwunye {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>E debere {0:N0} nke gị ugbu a, ya mere a ga-agbakwunye {1:N0} n'ime ndị a, a gaghị agbakwunye {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>A jụrụ {0}. Nke mbụ: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Mado ahịrị, ma ọ bụ ederede faịlụ gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ederede ahụ abụghị ahịrị ọdụ data controller SDL: ID nwere ọnụọgụ hex 32, aha, wee mpaghara dị ka a:b0.</value></data>
@@ -1902,14 +1916,18 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Ahịrị ahụ na-enye otu mpaghara ugboro abụọ.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Ahịrị ahụ karịrị mkpụrụedemede 1,024.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Ahịrị ahụ ejikọghị njikwa ọ bụla.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ahịrị gị</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ebe o si ebudata, ahịrị nke gị</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ahịrị gị</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ahịrị ị tinyere ebe a, ma ọ bụ mado na kaadị Mapping SDL nke ngwaọrụ, na-ebuli maka ngwaọrụ ha karịa isi iyi ọ bụla ọzọ ma na-anọgide mgbe ntọgharị gasịrị.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Tinye ahịrị site na faịlụ ma ọ bụ clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Ahịrị {0}, nke gị karịa isi iyi ọ bụla ọzọ maka ngwaọrụ ha.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Ahịrị {0}, nke gị karịa isi iyi ọ bụla ọzọ maka ngwaọrụ ya.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Ahịrị {0}, otu maka ngwaọrụ ọ bụla, nke gị karịa isi iyi ọ bụla ọzọ.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Ahịrị {0} maka otu ngwaọrụ, nke gị karịa isi iyi ọ bụla ọzọ.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ọ dịbeghị.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Variable SDL_GAMECONTROLLERCONFIG gị nwere ahịrị {0} nke PadForge anaghị edebe. Tinye ahịrị site na faịlụ ma ọ bụ clipboard na-emepe ha n'ime ya.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Variable SDL_GAMECONTROLLERCONFIG gị nwere ahịrị {0} nke PadForge anaghị edebe. Tinye ahịrị site na faịlụ ma ọ bụ clipboard na-emepe ahịrị ahụ n'ime ya.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ọ nọ n'ọrụ ozugbo.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Budata site na</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS naanị. Site na adreesị na-abụghị nke obodo, PadForge na-ewere naanị ahịrị ọhụrụ.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Gbanye</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Assistant na weebụ</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
@@ -1948,7 +1966,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Ekwere {0}, ejiri ya mee ihe ikpeazụ {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Ekwere {0}, ejibeghị ya mee ihe.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Wepụ ikike</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge anaghị ebudata mmemme tunnel ọ bụla, anaghịkwa edebe igodo ụlọ ọrụ ọzọ. Assistant weebụ na-arụ ọrụ n'ọkwa dị n'elu.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge na-ebudata mmemme tunnel naanị maka ChatGPT Secure MCP Tunnel. Assistant weebụ na-arụ ọrụ n'ọkwa dị n'elu.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Mbanye ya na-alaghachi na {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ọ na-akpọ onwe ya {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Kwe naanị ma ọ bụrụ na ibe mbanye ya na-egosi koodu a:</value></data>
@@ -1984,4 +2002,33 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID script ya</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script na-akpọ njikwa ya {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script na-akpọ igodo ya KeyA, KeySpace, KeyLeftShift na ndị yiri ha, na igodo ọ bụla site na koodu ya, Vk0 ruo Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} na netwọk a site na {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Gosi na folda</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} malitere, mana ọ dịghị mgbe o jikọrọ na PadForge.</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adreesị</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge na-ewere adreesị malitere na https:// ma kpọọ aha host, na port ndabara, na-enweghị aha onye ọrụ ma ọ bụ paswọọdụ.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Gbanwee…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Oku na igodo ha na-agafe netwọk a n'ezoghị ezo. Windows na-ahapụ ha ka ha banye naanị na netwọk nzuzo.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Mmemme ọzọ na-eji port {0}. Gbanwee ya iji ruo PadForge site na netwọk a.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ekweghị ka helper PadForge gee ntị na port {0}. PadForge na-ekwe ya na ikike administrator, ya mere jiri ha malite PadForge, ma gbanyụọ ma gbanye nke a.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Helper PadForge enweghị ike ige ntị na port {0}. Gbanwee port ahụ, ma ọ bụ gbanyụọ ma gbanye nke a.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Helper PadForge kwụsịrị ({0}). Gbanyụọ ma gbanye Reach PadForge From This Network iji malite ya ọzọ.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation gbanyụrụ, ya mere ọ dịghị assistant na netwọk a na-eru PadForge. Helper ahụ na-amalite ozugbo Automation gbanyere.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>PC a enweghị adreesị na netwọk nzuzo ugbu a.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Assistant na netwọk a</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Emere igodo ya {1}, ejiri ya mee ihe ikpeazụ {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Emere igodo ya {1}, ejibeghị ya mee ihe.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Mee igodo</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Header</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Emechara</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Gbanwee port ahụ</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Họrọ port site na 1024 ruo 49151. Adreesị e debere nke assistant ọ bụla na-akpọ port ahụ, ya mere tinyekwa nke ọ bụla ọzọ mgbe mgbanwe ahụ gasịrị.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Pịnye port site na 1024 ruo 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Na-achị ngwaọrụ nke ya na {0}. Ọ ka na-agụ ngwaọrụ ọ bụla.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Na-achị naanị ngwaọrụ nke ya. Ọ ka na-agụ ngwaọrụ ọ bụla.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Iwu sitere na command line ka na-eru PadForge, dị ka ha na-eme maka mmemme ọ bụla.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Na-agba, na ikike gị, ma dị njikere. ChatGPT na-eru PadForge site na tunnel a na-enweghị mbanye nke ya, naanị site na nzukọ OpenAI gị. Ọ na-amalite ọzọ na PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Na-agba, na ikike gị. Ọ na-eche ka OpenAI kwuo na tunnel ahụ dị njikere.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge na-edebe igodo ahụ ka ezoro ezo maka naanị gị. Igbe efu na-echefu ya. ChatGPT na-arụ ọrụ n'ọkwa dị n'elu.</value></data>
 </root>

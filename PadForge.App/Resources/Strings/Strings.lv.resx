@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Pievienota ierīce {0}, akumulators {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Atvienotās ierīces ({0}): {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Pievienotās ierīces ({0}): {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} atkārtoti atvienojas</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Ierīce {0} atvienojās minūtes laikā. Reizes: {1}</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>Ierīce {0} ir atpakaļ</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Ierīces ir atpakaļ ({0}): {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks. {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automātiska atkārtota savienošana, ports, savienošanas identitāte, savienoties pēc adreses</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Ports, DSX.exe aizstājējs</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porti, Pilns ātrums, Pielāgoti formāti</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Citi asistenti, asistenti tīmeklī</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Citi asistenti, asistenti tīmeklī un šajā tīklā</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Skatieties apkārt ar galvas izsekotāju vai VR brillēm, kamēr abi īkšķi paliek uz pogām.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Piesaistiet ātrumu, pedāļus un pārnesumus, ko sūta braukšanas spēle, kā jebkuru ievadi.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Sūtiet kontrollera kustību emulatoriem, kas lasa DSU kustību avotu.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Pievienot spraudni…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmas un skripti|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Visi faili|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Apstiprināt un restartēt…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Rādīt mapē</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Uzticēties jaunām versijām no šī parakstītāja</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Jauna versija, parakstīta ar {0} tā paša sertifikāta atslēgu, restartējas bez darbības Apstiprināt un restartēt. Jebkura cita izmaiņa vispirms jautā jums.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Pieņēma jaunu versiju, parakstītu ar to pašu sertifikāta atslēgu</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Startē līdz ar dzinēju</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Pārbauda failu pirms startēšanas</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Beidza darbu ar kodu {0}. Startēs vēlreiz pēc {1} s.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nav parakstīts.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Tā iestatījumi tiek rādīti šeit, kamēr tas darbojas.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Tas nedeklarē nevienu iestatījumu.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Tā iestatījumi tiek rādīti šeit, kad tas izveido savienojumu ar PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Startēts, bet nekad nepievienojās PadForge. Tas startēs vēlreiz pēc {0} s.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Startēts, bet nekad nepievienojās PadForge. Tas startēs vēlreiz pēc {0} s.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} tika startēts, bet nekad nepievienojās PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Beidza darbu minūti pēc starta, nekad nepievienojās PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Mainīts</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge nevarēja nolasīt tā iestatījumus: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Beidza darbu pēc minūtes bez atbildes</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Tā fails mainījās, kamēr tas darbojās</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, parakstījis {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, neparakstīts</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Izdarīts</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Aizturēts</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Nav izdarīts</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Šajā līmenī nav atļauts</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Tagad nav pieejams</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Iestatīt ierīces {0} vadīklas</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Noņemt ierīci {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Nolikt visas ierīces {0} vadīklas miera stāvoklī</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Taustiņu un peles izvade, ko tā nodod, tiek aizturēta programmai {0}, kas darbojas kā administrators</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Taustiņu un peles izvade, ko tā nodod, tiek aizturēta logam, kas darbojas kā administrators</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Liek PadForge palaist programmu.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Atver failu, mapi vai tīmekļa lapu.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Liek PadForge sūtīt taustiņus vai peles ievadi uz Windows.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge turpina darboties, kad noklikšķināt uz „Aizvērt” vai nospiežat Alt+F4. Lai izietu, paziņojumu apgabala izvēlnē izmantojiet „Iziet”.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Minimizējot logu, PadForge paliek paziņojumu apgabalā, nevis uzdevumjoslā.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Kad PadForge startē, logs paliek paslēpts. Programma darbojas un piesaista ievadi kā parasti.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automātiski startēt PadForge, kad pierakstāties sistēmā Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automātiski startēt PadForge, kad pierakstāties sistēmā Windows. Kamēr tas ir ieslēgts, PadForge startē arī bez Windows uzaicinājuma no saīsnes, skripta vai citas programmas.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge darbojas no {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tam nepieciešams, lai PadForge atrastos savā mapē. Tās mapē ir citi faili, tāpēc PadForge nevar neļaut citām programmām to mainīt.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Pārvietot PadForge uz savu mapi</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vienmēr rādīt paziņojumu apgabalā</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Paziņojumu apgabala ikona paliek redzama arī tad, kad logs ir atvērts, tāpēc tās izvēlnes vienums „Iziet” vienmēr ir viena klikšķa attālumā.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atjauninājumi</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Pārbaudiet GitHub, vai ir jaunas PadForge versijas, un instalējiet tās no šejienes, kā arī atjauniniet kontrolleru datubāzi. PadForge sazinās tikai ar GitHub (api.github.com, github.com un tā lejupielādes serveriem, kā arī raw.githubusercontent.com kontrolleru datubāzei). Vienīgie dati, ko tas sūta, ir tā paša versijas numurs un, kontrolleru datubāzei, birka, ko GitHub piešķīra pēdējai lejupielādei.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Pārbaudiet GitHub, vai ir jaunas PadForge versijas, un instalējiet tās no šejienes, kā arī atjauniniet kontrolleru datubāzi. PadForge sazinās tikai ar GitHub (api.github.com, github.com un tā lejupielādes serveriem, kā arī raw.githubusercontent.com kontrolleru datubāzei) un ar adresi, ko iestatāt kontrolleru datubāzes rindas sadaļā Lejupielādēt no. Vienīgie dati, ko tas sūta, ir tā paša versijas numurs un, kontrolleru datubāzei, birka, ko serveris piešķīra pēdējai lejupielādei.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Automātiski pārbaudīt atjauninājumus</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Pārbauda, kad PadForge startē, un pēc tam ik pēc 12 stundām.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Automātiski instalēt atjauninājumus</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalēt un restartēt</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Laidiena piezīmes</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrolleru datubāze</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Poga Atjaunināt tagad lejupielādē kopienas kontrolleru datubāzi (SDL_GameControllerDB) no GitHub un iestatījumu failā patur piesaistes, kuru šai PadForge versijai trūkst. Tās tiek izmantotas uzreiz. Jauna piesaiste tiek izmantota tikai kontrollerim, ko nekas cits nelasa kā spēļu pulti, kas nav piešķirts un kam nav ieslēgts Piespiedu neapstrādātas kursorsviras režīms (apiet spēļu pults piesaisti). Atiestatīšana noņem visas lejupielādētās piesaistes. Jūsu pašu rindas sadaļā Vairāk paliek.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Poga Atjaunināt tagad lejupielādē kopienas kontrolleru datubāzi (SDL_GameControllerDB) no GitHub vai no adreses, kas iestatīta sadaļā Vairāk, un iestatījumu failā patur piesaistes, kuru šai PadForge versijai trūkst. Tās tiek izmantotas uzreiz. No citas adreses tā patur tikai jaunas piesaistes. Jauna piesaiste tiek izmantota tikai kontrollerim, ko nekas cits nelasa kā spēļu pulti, kas nav piešķirts un kam nav ieslēgts Piespiedu neapstrādātas kursorsviras režīms (apiet spēļu pults piesaisti). Atiestatīšana noņem visas lejupielādētās piesaistes un no jauna lejupielādē no GitHub. Jūsu pašu rindas sadaļā Vairāk paliek.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Atjaunināt tagad</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Notiek atjaunināšana…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Notiek atjauninājumu meklēšana…</value></data>
@@ -1106,8 +1121,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge tika atjaunināts uz versiju {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Iebūvētas piesaistes: {0}, kopienas kopija no {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Iebūvētas piesaistes: {0}, kopienas kopija no {1}. Lejupielādēts {2}: jaunas rindas {3}, mainītas {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Iebūvētas piesaistes: {1}, kopienas kopija no {2}. Lejupielādēts {3} no {4}: jaunas rindas {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Iebūvētas piesaistes: {1}, kopienas kopija no {2}. Lejupielādēts {3} no {4}: jaunas rindas {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Kopienas datubāze kopš pēdējā atjauninājuma nav mainījusies.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Nevarēja sasniegt GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Nevarēja sasniegt {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge noraidīja lejupielādi, jo tā nav kontrolleru datubāze, ko tas gaida. Nekas nemainījās.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Startēt minimizētu</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Startēt pēc pierakstīšanās</value></data>
@@ -1278,6 +1296,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Kopēt kopsavilkumu</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Nokopēts</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Saglabāt…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Saglabāt un publicēt</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Saglabāt un publicēt saglabā zip failu, nokopē kopsavilkumu, parāda failu programmā Explorer un atver PadForge lapu, kur publicē ziņojumus. Ielīmējiet tur kopsavilkumu un nometiet uz tās failu.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Saglabāt ierakstu</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip faili</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nav saglabāts. {0}</value></data>
@@ -1638,6 +1658,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Produkts</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Veids</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Iespējas</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Aizmugures lāpstiņas ir izslēgtas pa USB un Xbox Wireless Adapter. SDL iemesls: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Aizmugures lāpstiņas ir izslēgtas pa Bluetooth. SDL iemesls: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Savienojums</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Akumulators</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Ceļš</value></data>
@@ -3476,6 +3498,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Radās neparedzēta kļūda:
 
 {0}
+
+PadForge ierakstīja detalizētu informāciju failā crash.log blakus PadForge.exe. Lai par to ziņotu, sāciet diskusiju vietā {2} un nometiet tajā crash.log.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(apslāpētas papildu kļūdas: {0})</value></data>
@@ -6647,6 +6671,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Tagad izmantots. Rinda ir jūsu un šai ierīcei ir noteicošā.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Paturēts kā jūsu. To izmanto, kad dzinējs darbojas un ierīce ir pievienota.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL neņēma rindu. Šai ierīcei nekas nemainījās.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Nav paturēts. Jūsu rindu ierobežojums PadForge ir {0:N0}, un tas jau ir sasniegts.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Ielīmēt SDL piesaisti</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Ielīmēt SDL piesaisti ierīcei {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Atrast piesaisti ierīcei {0}</value></data>
@@ -6680,6 +6705,10 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rindas tiek paturētas kā jūsu failā PadForge.xml un ir noteicošas savām ierīcēm pār katru citu avotu. Notīrīt sadaļā Kontrolleru datubāze rindas Vairāk tās noņem.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Rindas Windows: {0}. Izlaistas rindas citām sistēmām: {1}.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rinda Windows. Izlaistas rindas citām sistēmām: {1}.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Tiks pievienotas visas ({0:N0}). Jūsu rindu ierobežojums PadForge ir {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Tā tiks pievienota. Jūsu rindu ierobežojums PadForge ir {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Jūsu rindas pašlaik: {0:N0}, tāpēc no šīm tiks pievienotas {1:N0}, bet {2:N0} netiks.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Pašlaik paturēta {0:N0} jūsu rinda, tāpēc no šīm tiks pievienotas {1:N0}, bet {2:N0} netiks.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Noraidīto skaits: {0}. Pirmais: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Ielīmējiet rindu vai gamecontrollerdb.txt faila tekstu.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teksts nav SDL kontrolleru datubāzes rinda: ID no 32 heksadecimāliem cipariem, nosaukums, pēc tam lauki, piemēram, a:b0.</value></data>
@@ -6692,14 +6721,22 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Rinda dod vienu lauku divreiz.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Rinda ir garāka par 1 024 rakstzīmēm.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Rinda nepiesaista nevienu vadīklu.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Jūsu rindas</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Kur tā lejupielādē, jūsu pašu rindas</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Jūsu rindas</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rindas, ko pievienojat šeit vai ielīmējat ierīces SDL piesaistes kartītē, ir noteicošas savām ierīcēm pār katru citu avotu un paliek pēc atiestatīšanas.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Pievienot rindas no faila vai starpliktuves…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Rindas: {0}, jūsu, pāri katram citam avotam savām ierīcēm.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rinda, jūsu, pāri katram citam avotam savai ierīcei.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Rindas un ierīces: {0}, jūsu, pāri katram citam avotam.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rinda un ierīce, jūsu, pāri katram citam avotam.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Vēl nav.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Jūsu mainīgajā SDL_GAMECONTROLLERCONFIG ir rindas, ko PadForge nepatur: {0}. Pievienot rindas no faila vai starpliktuves atveras ar tām.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Jūsu mainīgajā SDL_GAMECONTROLLERCONFIG ir {0} rinda, ko PadForge nepatur. Pievienot rindas no faila vai starpliktuves atveras ar to.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Tiek izmantots uzreiz.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Lejupielādēt no</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Tikai HTTPS. No adreses, kas nav kopienas adrese, PadForge ņem tikai jaunas rindas.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Mainīt…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Izmantot kopienas failu</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adrese</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge pieņem adresi, kas sākas ar https:// un norāda resursdatoru, ar noklusējuma portu, bez lietotājvārda un paroles.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Piekļūt PadForge no tīmekļa</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Asistents, kas darbojas tīmekļa vietnē, piekļūst PadForge, izmantojot tuneļa programmu šajā datorā. Ieslēdzot to, vispirms tiek jautāts jums.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Piekļūt PadForge no tīmekļa?</value></data>
@@ -6742,7 +6779,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Atļauts {0}, pēdējo reizi izmantots {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Atļauts {0}, vēl nav izmantots.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Atsaukt</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge nelejupielādē nevienu tuneļa programmu un neglabā nevienas citas kompānijas atslēgu. Tīmekļa asistents strādā augstāk norādītajā līmenī.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge lejupielādē tuneļa programmu tikai priekš ChatGPT Secure MCP Tunnel. Tīmekļa asistents strādā augstāk norādītajā līmenī.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Vai atļaut {0} strādāt ar PadForge no tīmekļa?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Tā pierakstīšanās atgriežas uz {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Tas sauc sevi par {0}.</value></data>
@@ -6779,6 +6816,97 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Tā skripta ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skripti sauc tās vadīklas šādi: {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skripti sauc tās taustiņus KeyA, KeySpace, KeyLeftShift un tamlīdzīgi, un katru taustiņu pēc tā koda, Vk0 līdz Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} šajā tīklā no {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} jautā šajā tīklā no {1} ar atslēgu, ko izveidojāt šodien.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} jautā šajā tīklā no {1} ar atslēgu, ko izveidojāt {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Piekļūt PadForge no šī tīkla</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>Asistents citā datorā šajā tīklā piekļūst PadForge ar atslēgu, ko izveidojat šeit, bez tuneļa programmas un ārēja konta. Ieslēdzot to, vispirms tiek jautāts jums.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Piekļūt PadForge no šī tīkla?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>PadForge palīgs, kas darbojas bez administratora tiesībām, klausās šī datora tīkla adreses, un PadForge atļauj tā portu tikai privātajos tīklos. Asistents citā datorā tiek iekšā tikai ar atslēgu, ko izveidojat šeit. Zvani un to atslēga šķērso tīklu nešifrēti.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Ports</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Mainīt…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Zvani un to atslēga šķērso šo tīklu nešifrēti. Windows tos laiž iekšā tikai privātajos tīklos.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Portu {0} izmanto cita programma. Mainiet to, lai piekļūtu PadForge no šī tīkla.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows neļāva PadForge palīgam klausīties portā {0}. PadForge to atļauj ar administratora tiesībām, tāpēc startējiet PadForge ar tām un izslēdziet un ieslēdziet šo.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge palīgs nevarēja klausīties portā {0}. Mainiet portu vai izslēdziet un ieslēdziet šo.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge palīgs apstājās ({0}). Izslēdziet un ieslēdziet Piekļūt PadForge no šī tīkla, lai to startētu vēlreiz.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatizācija ir izslēgta, tāpēc neviens asistents šajā tīklā nepiekļūst PadForge. Palīgs startē, kad Automatizācija ir ieslēgta.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Šim datoram pašlaik nav adreses privātā tīklā.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Asistenti šajā tīklā</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Tā atslēga izveidota {1}, pēdējo reizi izmantota {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Tā atslēga izveidota {1}, vēl nav izmantota.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>šodien plkst. {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>{0} plkst. {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>plkst. {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Katram asistentam ir sava atslēga ar nosaukumu un līmeni līdz augstāk norādītajam. Atslēga tiek rādīta vienreiz. Tās izveide šeit ir jūsu piekrišana, tāpēc pirmais zvans neko nejautā.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Pievienot tīkla asistentu…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Pievienot tīkla asistentu</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Nosauciet otru datoru vai tā asistentu un izvēlieties, ko tas drīkst darīt. Pēc tam PadForge izveido tā atslēgu.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Nosaukums</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Līmenis</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Izveidot atslēgu</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Dodiet tam nosaukumu.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>Tīkla atslēgu ierobežojums PadForge ir {0}. Vispirms nospiediet Atsaukt.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>Atslēga: {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>Tā tiek rādīta vienreiz. PadForge glabā tikai tās jaucējkodu, tāpēc nokopējiet to tagad. Pogas Atsaukt sadaļā Asistenti šajā tīklā beidz tās darbību.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Atslēga</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>Priekš</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Jebkurš cits resursdators</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Vai Jebkurš cits resursdators, lai iegūtu adresi un galveni, ko ielīmēt tā iestatījumos.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>Ko ielīmēt</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Palaidiet to terminālī otrā datorā.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Resursdatora iestatījumos pievienojiet MCP serveri pa HTTP ar šo adresi un šo galveni.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Galvene</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Gatavs</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Mainīt portu</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Izvēlieties portu no 1024 līdz 49151. Katra asistenta saglabātajā adresē ir norādīts ports, tāpēc pēc maiņas pievienojiet katru vēlreiz.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Ievadiet portu no 1024 līdz 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Piekļuve</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>Viss PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Tikai savas ierīces un šīs</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Izvēlēties ierīces…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Vada savas ierīces un šādas: {0}. Tā joprojām lasa visas ierīces.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Vada tikai savas ierīces. Tā joprojām lasa visas ierīces.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Komandas no komandrindas joprojām sasniedz PadForge, tāpat kā katrai programmai.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Tā lūdz vadīt tikai savas ierīces.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Tā jautā vienreiz. Jūs varat to noņemt vai mainīt tās piekļuvi lapā Automatizācija.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Izvēlēties ierīces</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} drīkst vadīt savas ierīces un tās, kuras atzīmējat. Tā joprojām lasa visas ierīces.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>Lapā Ierīces nav neviena ierīce.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Darbojas, ar jūsu tiesībām, un ir gatavs. ChatGPT piekļūst PadForge caur šo tuneli bez savas pierakstīšanās un tikai no jūsu OpenAI organizācijas. Tas startē vēlreiz kopā ar PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Darbojas, ar jūsu tiesībām. Tas gaida, kad OpenAI paziņos, ka tunelis ir gatavs.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Lejupielādē OpenAI tunnel-client un pārbauda to pēc sava laidiena SHA-256 summām.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client nevarēja lejupielādēt: {0}. Izvēlieties tuneli vēlreiz, lai mēģinātu vēlreiz.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Tālāk ielīmējiet izpildlaika atslēgu un tuneļa ID, un tunelis startēs.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Izpildlaika atslēga</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Ierobežota, ar Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Izveidot</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>Tuneļa ID</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Pēc tam pievienojiet šo tuneli ChatGPT.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Atvērt ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge glabā atslēgu šifrētu tikai jums. Tukša lodziņa vērtība to aizmirst. ChatGPT strādā augstāk norādītajā līmenī.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Atslēga netika paturēta: PadForge tīmekļa palīgs nedarbojas, un tikai tas var šifrēt atslēgu jums.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Atbildēt no citas ierīces</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Atbildiet uz PadForge jautājumiem no tālruņa vai cita datora, kamēr neesat pie šī.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Darbojas tikai šajā tīklā, izmantojot tīmekļa kontrollera adresi.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Savienot ierīci pārī…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Savienota pārī {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Pēdējo reizi atbildēja {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>šodien plkst. {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>plkst. {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} plkst. {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Ierīce bez nosaukuma</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Savienot ierīci pārī</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Kods skenēšanai ar ierīces kameru</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Paslēpts no ekrāna tveršanas, tāpēc to var skenēt tikai jūs.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Vai atveriet {0} ierīcē un ievadiet šo kodu:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Kods darbojas vienreiz, līdz {0}. Pēc pieciem nepareiziem mēģinājumiem tas tiek slēgts, un QR kods joprojām darbojas.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Startē tīmekļa kontrollera adresi…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Lapu nevar atvērt: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows neļāva paslēpt šo logu no ekrāna tveršanas, tāpēc tas nerāda kodu.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Ievadītais kods ir slēgts pēc pieciem nepareiziem mēģinājumiem. QR kods joprojām darbojas līdz {0}.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Kodam beidzies termiņš. Savienot ierīci pārī… izveido jaunu.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>Tīkla atslēgu ierobežojums PadForge ir {0}. Vispirms nospiediet Atsaukt.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Mainīgas krāsas, piemēram, krāsu cikls vai skaņai sekojošas krāsas, tai nenonāk. Nemainīga krāsa nonāk.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Visi faili (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge profils (*{0})|*{0}</value></data>

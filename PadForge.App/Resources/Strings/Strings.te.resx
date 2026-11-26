@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} కనెక్ట్ అయింది, బ్యాటరీ {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} పరికరాలు డిస్కనెక్ట్ అయ్యాయి: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} పరికరాలు కనెక్ట్ అయ్యాయి: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} పదే పదే డిస్కనెక్ట్ అవుతోంది</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ఒక నిమిషంలో {1} సార్లు డిస్కనెక్ట్ అయింది</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} తిరిగి వచ్చింది</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} పరికరాలు తిరిగి వచ్చాయి: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (గరిష్ఠం {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (గరిష్ఠం {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (గరిష్ఠం {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ఆటో రీకనెక్ట్, పోర్ట్, జత చేసే గుర్తింపు, చిరునామా ద్వారా కనెక్ట్</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>పోర్ట్, DSX.exe స్టాండ్ ఇన్</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>పోర్ట్‌లు, పూర్తి వేగం, కస్టమ్ ఫార్మాట్‌లు</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>ఇతర అసిస్టెంట్లు, వెబ్‌లోని అసిస్టెంట్లు</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>ఇతర అసిస్టెంట్లు, వెబ్‌లోని అసిస్టెంట్లు, ఈ నెట్‌వర్క్‌లోని అసిస్టెంట్లు</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>రెండు బొటనవేళ్లు బటన్లపైనే ఉంచి, హెడ్ ట్రాకర్ లేదా VR హెడ్‌సెట్‌తో చుట్టూ చూడండి.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>డ్రైవింగ్ గేమ్ పంపే వేగం, పెడల్స్, గేర్లను ఏ ఇతర ఇన్పుట్‌లాగే మ్యాప్ చేయండి.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU మోషన్ సోర్స్‌ను చదివే ఎమ్యులేటర్లకు కంట్రోలర్ మోషన్‌ను పంపండి.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>ప్లగిన్ జోడించు…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>ప్రోగ్రామ్లు, స్క్రిప్టులు|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|అన్ని ఫైళ్లు|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>ఆమోదించి రీస్టార్ట్ చేయి…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>ఫోల్డర్‌లో చూపు</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>ఈ సంతకందారు నుండి కొత్త వెర్షన్లను నమ్ము</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0} యొక్క అదే సర్టిఫికేట్ కీతో సంతకం చేసిన కొత్త వెర్షన్ ఆమోదించి రీస్టార్ట్ చేయి అనే బటన్ లేకుండానే రీస్టార్ట్ అవుతుంది. ఇతర ఏ మార్పైనా ముందు మిమ్మల్ని అడుగుతుంది.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>అదే సర్టిఫికేట్ కీతో సంతకం చేసిన కొత్త వెర్షన్‌ను తీసుకుంది</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>ఇంజిన్‌తో ప్రారంభమవుతుంది</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>ప్రారంభానికి ముందు ఫైల్‌ను తనిఖీ చేస్తోంది</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>కోడ్ {0} తో ముగిసింది. {1} సెకన్లలో మళ్లీ ప్రారంభమవుతుంది.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>సంతకం లేదు.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>అది నడుస్తున్నప్పుడు దాని సెట్టింగులు ఇక్కడ కనిపిస్తాయి.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>అది ఏ సెట్టింగులనూ ప్రకటించలేదు.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>అది PadForge కు కనెక్ట్ అయ్యాక దాని సెట్టింగులు ఇక్కడ కనిపిస్తాయి.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>ప్రారంభమైంది కానీ PadForge కు ఎప్పుడూ కనెక్ట్ కాలేదు. {0} సెకన్లలో మళ్లీ ప్రారంభమవుతుంది.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>ప్రారంభమైంది కానీ PadForge కు ఎప్పుడూ కనెక్ట్ కాలేదు. {0} సెకనులో మళ్లీ ప్రారంభమవుతుంది.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} ప్రారంభమైంది కానీ PadForge కు ఎప్పుడూ కనెక్ట్ కాలేదు.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>ప్రారంభమైన ఒక నిమిషానికి ముగిసింది, PadForge కు ఎప్పుడూ కనెక్ట్ కాలేదు</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>మారింది</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge దాని సెట్టింగులను చదవలేకపోయింది: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>ఒక నిమిషం పాటు ఏ స్పందనా లేకపోవడంతో ముగిసింది</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>నడుస్తున్నప్పుడు దాని ఫైల్ మారింది</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, సంతకం చేసినది {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, సంతకం లేదు</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>పూర్తయింది</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>ఆపబడింది</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>చేయలేదు</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ఈ స్థాయిలో అనుమతి లేదు</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ఇప్పుడు అందుబాటులో లేదు</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>పరికరం {0} నియంత్రణలను సెట్ చేయి</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>పరికరం {0} ను తొలగించు</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>పరికరం {0} ప్రతి నియంత్రణను విశ్రాంతి స్థితిలో ఉంచు</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>అది ఇచ్చే కీ మరియు మౌస్ అవుట్‌పుట్ నిర్వాహకుడిగా నడిచే {0} కు చేరకుండా ఆపబడింది</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>అది ఇచ్చే కీ మరియు మౌస్ అవుట్‌పుట్ నిర్వాహకుడిగా నడిచే విండోకు చేరకుండా ఆపబడింది</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge ఒక ప్రోగ్రామ్‌ను నడిపేలా చేస్తుంది.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>ఒక ఫైల్‌ను, ఫోల్డర్‌ను లేదా వెబ్ పేజీని తెరుస్తుంది.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge Windows కు కీలు లేదా మౌస్ ఇన్‌పుట్ పంపేలా చేస్తుంది.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>మీరు మూసివేయి క్లిక్ చేసినప్పుడు లేదా Alt+F4 నొక్కినప్పుడు PadForgeను నడుస్తూ ఉంచండి. నిష్క్రమించడానికి సిస్టమ్ ట్రే మెనూలోని నిష్క్రమించు ఉపయోగించండి.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>విండోను మినిమైజ్ చేసినప్పుడు PadForgeను టాస్క్‌బార్‌లో కాకుండా నోటిఫికేషన్ ప్రాంతంలో ఉంచండి.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge ప్రారంభమైనప్పుడు విండోను దాచి ఉంచండి. ఇది యథావిధిగా నడుస్తుంది, మ్యాప్ చేస్తుంది.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>మీరు Windowsలోకి సైన్ ఇన్ అయినప్పుడు PadForgeను ఆటోమేటిక్‌గా ప్రారంభించండి.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>మీరు Windows లోకి సైన్ ఇన్ అయినప్పుడు PadForge ను ఆటోమేటిక్‌గా ప్రారంభించండి. ఇది ఆన్‌లో ఉన్నంతసేపు, షార్ట్‌కట్, స్క్రిప్ట్ లేదా మరొక ప్రోగ్రామ్ నుండి కూడా PadForge Windows ప్రాంప్ట్ లేకుండా ప్రారంభమవుతుంది.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} నుండి నడుస్తోంది.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>దీనికి PadForge కు సొంత ఫోల్డర్ కావాలి. దాని ఫోల్డర్‌లో ఇతర ఫైళ్లు ఉన్నాయి, కాబట్టి ఇతర ప్రోగ్రామ్లు దాన్ని మార్చకుండా PadForge ఆపలేదు.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ను సొంత ఫోల్డర్‌కు తరలించు</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ఎల్లప్పుడూ సిస్టమ్ ట్రేలో చూపించు</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>విండో తెరిచి ఉన్నప్పుడు ట్రే ఐకాన్ కనిపించేలా ఉంచండి, తద్వారా దాని మెనూలోని నిష్క్రమించు ఎప్పుడూ ఒక క్లిక్ దూరంలో ఉంటుంది.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>అప్డేట్లు</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge కొత్త వెర్షన్ల కోసం GitHub లో తనిఖీ చేసి, వాటిని ఇక్కడ నుండి ఇన్స్టాల్ చేయండి, కంట్రోలర్ డేటాబేస్‌ను అప్డేట్ చేయండి. PadForge GitHub ను మాత్రమే సంప్రదిస్తుంది (api.github.com, github.com, దాని డౌన్లోడ్ సర్వర్లు, కంట్రోలర్ డేటాబేస్ కోసం raw.githubusercontent.com). అది పంపే డేటా దాని స్వంత వెర్షన్ నంబర్ మాత్రమే, కంట్రోలర్ డేటాబేస్ కోసం GitHub చివరి డౌన్లోడ్‌కు ఇచ్చిన ట్యాగ్ కూడా.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>PadForge కొత్త వెర్షన్ల కోసం GitHub లో తనిఖీ చేసి, వాటిని ఇక్కడ నుండి ఇన్స్టాల్ చేయండి, కంట్రోలర్ డేటాబేస్‌ను అప్డేట్ చేయండి. PadForge GitHub ను మాత్రమే సంప్రదిస్తుంది (api.github.com, github.com, దాని డౌన్లోడ్ సర్వర్లు, కంట్రోలర్ డేటాబేస్ కోసం raw.githubusercontent.com), అలాగే కంట్రోలర్ డేటాబేస్ వరుసలోని డౌన్లోడ్ మూలం కింద మీరు ఇచ్చిన చిరునామాను. అది పంపే డేటా దాని స్వంత వెర్షన్ నంబర్ మాత్రమే, కంట్రోలర్ డేటాబేస్ కోసం సర్వర్ చివరి డౌన్లోడ్‌కు ఇచ్చిన ట్యాగ్ కూడా.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>అప్డేట్ల కోసం ఆటోమేటిక్‌గా తనిఖీ చేయి</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>PadForge ప్రారంభమైనప్పుడు, ఆ తర్వాత ప్రతి 12 గంటలకు తనిఖీ చేస్తుంది.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>అప్డేట్లను ఆటోమేటిక్‌గా ఇన్స్టాల్ చేయి</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ఇన్స్టాల్ చేసి రీస్టార్ట్ చేయి</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>రిలీజ్ నోట్స్</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>కంట్రోలర్ డేటాబేస్</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ఇప్పుడే అప్డేట్ చేయి బటన్ GitHub నుండి కమ్యూనిటీ కంట్రోలర్ డేటాబేస్ (SDL_GameControllerDB) ను డౌన్లోడ్ చేసి, ఈ PadForge వెర్షన్‌లో లేని మ్యాపింగ్లను సెట్టింగుల ఫైల్‌లో ఉంచుతుంది. అవి వెంటనే వాడుకలోకి వస్తాయి. కొత్త మ్యాపింగ్ మరేదీ గేమ్‌ప్యాడ్‌గా చదవని, కేటాయించని, రా జాయ్స్టిక్ మోడ్ను బలవంతం చేయి (గేమ్ప్యాడ్ రీమ్యాపింగ్ను దాటవేయి) లో లేని కంట్రోలర్‌కు మాత్రమే వాడబడుతుంది. రీసెట్ డౌన్లోడ్ చేసిన ప్రతి మ్యాపింగ్‌ను తొలగిస్తుంది. మీ సొంత వరుసలు, మరిన్ని కింద, అలాగే ఉంటాయి.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ఇప్పుడే అప్డేట్ చేయి బటన్ GitHub నుండి, లేదా మరిన్ని కింద ఇచ్చిన చిరునామా నుండి, కమ్యూనిటీ కంట్రోలర్ డేటాబేస్ (SDL_GameControllerDB) ను డౌన్లోడ్ చేసి, ఈ PadForge వెర్షన్‌లో లేని మ్యాపింగ్లను సెట్టింగుల ఫైల్‌లో ఉంచుతుంది. అవి వెంటనే వాడుకలోకి వస్తాయి. మరొక చిరునామా నుండి అది కొత్త మ్యాపింగ్లను మాత్రమే ఉంచుతుంది. కొత్త మ్యాపింగ్ మరేదీ గేమ్‌ప్యాడ్‌గా చదవని, కేటాయించని, రా జాయ్స్టిక్ మోడ్ను బలవంతం చేయి (గేమ్ప్యాడ్ రీమ్యాపింగ్ను దాటవేయి) లో లేని కంట్రోలర్‌కు మాత్రమే వాడబడుతుంది. రీసెట్ డౌన్లోడ్ చేసిన ప్రతి మ్యాపింగ్‌ను తొలగించి, GitHub నుండి మళ్లీ డౌన్లోడ్ చేస్తుంది. మీ సొంత వరుసలు, మరిన్ని కింద, అలాగే ఉంటాయి.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ఇప్పుడే అప్డేట్ చేయి</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>అప్డేట్ అవుతోంది…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>అప్డేట్ల కోసం తనిఖీ చేస్తోంది…</value></data>
@@ -1106,8 +1121,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0}కు అప్డేట్ చేయబడింది.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>అంతర్నిర్మితం: {0} మ్యాపింగ్లు, {1} నాటి కమ్యూనిటీ కాపీ.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>అంతర్నిర్మితం: {0} మ్యాపింగ్లు, {1} నాటి కమ్యూనిటీ కాపీ. డౌన్లోడ్ {2}: కొత్త వరుసలు {3}, మారినవి {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>అంతర్నిర్మితం: {1} మ్యాపింగ్లు, {2} నాటి కమ్యూనిటీ కాపీ. డౌన్లోడ్ {3}, {4} నుండి: కొత్త వరుసలు {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>అంతర్నిర్మితం: {1} మ్యాపింగ్లు, {2} నాటి కమ్యూనిటీ కాపీ. డౌన్లోడ్ {3}, {4} నుండి: కొత్త వరుస {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>చివరి అప్డేట్ తర్వాత కమ్యూనిటీ డేటాబేస్ మారలేదు.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub ను చేరలేకపోయింది: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} ను చేరలేకపోయింది: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>డౌన్లోడ్ PadForge ఆశించే కంట్రోలర్ డేటాబేస్ కాదు, కాబట్టి PadForge దాన్ని నిరాకరించింది. ఏమీ మారలేదు.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>మినిమైజ్ చేసి ప్రారంభించు</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>లాగిన్ వద్ద ప్రారంభించు</value></data>
@@ -1278,6 +1296,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>సారాంశం కాపీ చేయి</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>కాపీ అయింది</value></data>
   <data name="Review_Save" xml:space="preserve"><value>సేవ్ చేయి…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>సేవ్ చేసి పోస్ట్ చేయి</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>సేవ్ చేసి పోస్ట్ చేయి అనేది జిప్‌ను సేవ్ చేస్తుంది, సారాంశాన్ని కాపీ చేస్తుంది, ఫైల్‌ను Explorer లో చూపుతుంది, నివేదికలు వెళ్లే PadForge పేజీని తెరుస్తుంది. సారాంశాన్ని అక్కడ అతికించి, ఫైల్‌ను దానిపైకి లాగండి.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>రికార్డింగ్‌ను సేవ్ చేయి</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>జిప్ ఫైళ్లు</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>సేవ్ కాలేదు. {0}</value></data>
@@ -1638,6 +1658,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>ఉత్పత్తి</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>రకం</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>సామర్థ్యాలు</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>వెనుక పాడిల్స్ USB మరియు Xbox Wireless Adapter ద్వారా ఆఫ్‌లో ఉన్నాయి. SDL కారణం: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>వెనుక పాడిల్స్ బ్లూటూత్ ద్వారా ఆఫ్‌లో ఉన్నాయి. SDL కారణం: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>కనెక్షన్</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>బ్యాటరీ</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>మార్గం</value></data>
@@ -3476,6 +3498,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>ఊహించని లోపం సంభవించింది:
 
 {0}
+
+PadForge వివరాలను PadForge.exe పక్కన crash.log లో రాసింది. దీన్ని నివేదించడానికి {2} వద్ద ఒక చర్చను ప్రారంభించి, దానిపై crash.log ను వదలండి.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} అదనపు లోపాలు అణచివేయబడ్డాయి)</value></data>
@@ -6647,6 +6671,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ఇప్పుడు వాడుకలో ఉంది. వరుస మీది, ఈ పరికరానికి అదే వర్తిస్తుంది.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>మీదిగా ఉంచబడింది. ఇంజిన్ నడిచి పరికరం కనెక్ట్ అయ్యాక వాడుకలోకి వస్తుంది.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL వరుసను తీసుకోలేదు. ఈ పరికరానికి ఏదీ మారలేదు.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>ఉంచలేదు. PadForge మీవి గరిష్టంగా {0:N0} వరుసలను ఉంచుతుంది, ఇప్పుడు అన్ని ఉన్నాయి.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL మ్యాపింగ్ అతికించు</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} కోసం SDL మ్యాపింగ్ అతికించు</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} కోసం మ్యాపింగ్ వెతుకు</value></data>
@@ -6680,6 +6705,10 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>వరుసలు PadForge.xml లో మీవిగా ఉంచబడతాయి, వాటి పరికరాలకు ఇతర ప్రతి మూలాన్ని మించి వర్తిస్తాయి. కంట్రోలర్ డేటాబేస్ వరుస మరిన్ని కింద ఉన్న క్లియర్ చేయి వాటిని తీసివేస్తుంది.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows కోసం {0} వరుసలు. ఇతర సిస్టమ్‌ల కోసం {1} వదిలివేయబడ్డాయి.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows కోసం {0} వరుస. ఇతర సిస్టమ్‌ల కోసం {1} వదిలివేయబడ్డాయి.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>మొత్తం {0:N0} చేర్చబడతాయి. PadForge మీవి గరిష్టంగా {1:N0} వరుసలను ఉంచుతుంది.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>అది చేర్చబడుతుంది. PadForge మీవి గరిష్టంగా {1:N0} వరుసలను ఉంచుతుంది.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>మీవి {0:N0} ఇప్పుడు ఉంచబడ్డాయి, కాబట్టి వీటిలో {1:N0} చేర్చబడతాయి, {2:N0} చేర్చబడవు.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>మీది {0:N0} ఇప్పుడు ఉంచబడింది, కాబట్టి వీటిలో {1:N0} చేర్చబడతాయి, {2:N0} చేర్చబడవు.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} తిరస్కరించబడ్డాయి. మొదటిది: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>ఒక వరుసను, లేదా gamecontrollerdb.txt ఫైల్ టెక్స్ట్‌ను అతికించండి.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ఆ టెక్స్ట్ SDL కంట్రోలర్ డేటాబేస్‌లోని వరుస కాదు: 32 హెక్స్ అంకెల ID, ఒక పేరు, ఆపై a:b0 వంటి ఫీల్డ్‌లు.</value></data>
@@ -6692,14 +6721,22 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>వరుస ఒకే ఫీల్డ్‌ను రెండుసార్లు ఇచ్చింది.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>వరుస 1,024 అక్షరాల కంటే ఎక్కువ.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>వరుస ఏ నియంత్రణనూ బైండ్ చేయదు.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>మీ వరుసలు</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>ఎక్కడి నుండి డౌన్లోడ్ చేయాలి, మీ సొంత వరుసలు</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>మీ వరుసలు</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>మీరు ఇక్కడ జోడించే లేదా పరికరం SDL మ్యాపింగ్ కార్డ్‌లో అతికించే వరుసలు వాటి పరికరాలకు ఇతర ప్రతి మూలాన్ని మించి వర్తిస్తాయి, రీసెట్ తర్వాత కూడా ఉంటాయి.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ఫైల్ లేదా క్లిప్‌బోర్డ్ నుండి వరుసలను జోడించు…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} వరుసలు, వాటి పరికరాలకు ఇతర ప్రతి మూలం కంటే మీవి.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} వరుస, దాని పరికరానికి ఇతర ప్రతి మూలం కంటే మీది.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} పరికరాలకు {0} వరుసలు, ఇతర ప్రతి మూలం కంటే మీవి.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} పరికరానికి {0} వరుస, ఇతర ప్రతి మూలం కంటే మీది.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>ఇంకా లేవు.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>మీ SDL_GAMECONTROLLERCONFIG వేరియబుల్‌లో PadForge ఉంచని {0} వరుసలు ఉన్నాయి. ఫైల్ లేదా క్లిప్‌బోర్డ్ నుండి వరుసలను జోడించు వాటితో తెరుచుకుంటుంది.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>మీ SDL_GAMECONTROLLERCONFIG వేరియబుల్‌లో PadForge ఉంచని {0} వరుస ఉంది. ఫైల్ లేదా క్లిప్‌బోర్డ్ నుండి వరుసలను జోడించు దానితో తెరుచుకుంటుంది.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>వెంటనే వాడుకలో ఉంది.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>డౌన్లోడ్ మూలం</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS మాత్రమే. కమ్యూనిటీ చిరునామా కాని చిరునామా నుండి PadForge కొత్త వరుసలను మాత్రమే తీసుకుంటుంది.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>మార్చు…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>కమ్యూనిటీ ఫైల్‌ను వాడు</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>చిరునామా</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge https:// తో మొదలై, డిఫాల్ట్ పోర్ట్‌లో హోస్ట్ పేరు ఉన్న, వినియోగదారు పేరు లేదా పాస్‌వర్డ్ లేని చిరునామాను తీసుకుంటుంది.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>వెబ్ నుండి PadForge ను చేరుకోవడం</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>వెబ్‌సైట్‌లో నడిచే అసిస్టెంట్ ఈ PC లోని టన్నెల్ ప్రోగ్రామ్ ద్వారా PadForge ను చేరుతుంది. దీన్ని ఆన్ చేసే ముందు మిమ్మల్ని అడుగుతుంది.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>వెబ్ నుండి PadForge ను చేరుకోవాలా?</value></data>
@@ -6742,7 +6779,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} న అనుమతించారు, చివరిగా వాడింది {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} న అనుమతించారు, ఇంకా వాడలేదు.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ఉపసంహరించు</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ఏ టన్నెల్ ప్రోగ్రామ్‌నూ డౌన్లోడ్ చేయదు, ఇతర కంపెనీ కీని ఉంచుకోదు. వెబ్ అసిస్టెంట్ పై స్థాయిలో పని చేస్తుంది.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ChatGPT Secure MCP Tunnel కోసం మాత్రమే టన్నెల్ ప్రోగ్రామ్‌ను డౌన్లోడ్ చేస్తుంది. వెబ్ అసిస్టెంట్ పై స్థాయిలో పని చేస్తుంది.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ను వెబ్ నుండి PadForge తో పని చేయడానికి అనుమతించాలా?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>దాని సైన్ ఇన్ {0} కు తిరిగి వస్తుంది.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>అది తనను {0} అని పిలుచుకుంటుంది.</value></data>
@@ -6779,6 +6816,97 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>దాని స్క్రిప్ట్ ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>స్క్రిప్ట్‌లు దాని నియంత్రణలను {0} అని పిలుస్తాయి.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>స్క్రిప్ట్‌లు దాని కీలను KeyA, KeySpace, KeyLeftShift వంటి పేర్లతో, ప్రతి కీని దాని కోడ్ Vk0 నుండి Vk255 వరకు పిలుస్తాయి.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>ఈ నెట్‌వర్క్‌లో {1} నుండి {0}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>ఈ నెట్‌వర్క్‌లో {1} నుండి {0} అడుగుతోంది, మీరు ఈ రోజు చేసిన కీతో.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>ఈ నెట్‌వర్క్‌లో {1} నుండి {0} అడుగుతోంది, మీరు {2} న చేసిన కీతో.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>ఈ నెట్‌వర్క్ నుండి PadForge ను చేరుకోవడం</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>ఈ నెట్‌వర్క్‌లోని మరొక PC లో ఉన్న అసిస్టెంట్ మీరు ఇక్కడ చేసే కీతో PadForge ను చేరుతుంది, టన్నెల్ ప్రోగ్రామ్ లేదా బయటి ఖాతా అవసరం లేదు. దీన్ని ఆన్ చేసే ముందు మిమ్మల్ని అడుగుతుంది.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>ఈ నెట్‌వర్క్ నుండి PadForge ను చేరుకోవాలా?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>నిర్వాహక హక్కులు లేకుండా నడిచే PadForge హెల్పర్ ఈ PC యొక్క నెట్‌వర్క్ చిరునామాలలో వింటుంది, PadForge దాని పోర్ట్‌ను ప్రైవేట్ నెట్‌వర్క్‌లలో మాత్రమే అనుమతిస్తుంది. మరొక PC లోని అసిస్టెంట్ మీరు ఇక్కడ చేసే కీతో మాత్రమే లోపలికి వస్తుంది. కాల్స్, వాటి కీ నెట్‌వర్క్‌లో గుప్తీకరణ లేకుండా వెళ్తాయి.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>పోర్ట్</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>మార్చు…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>కాల్స్, వాటి కీ ఈ నెట్‌వర్క్‌లో గుప్తీకరణ లేకుండా వెళ్తాయి. Windows వాటిని ప్రైవేట్ నెట్‌వర్క్‌లలో మాత్రమే అనుమతిస్తుంది.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>పోర్ట్ {0} మరొక ప్రోగ్రామ్ వాడుతోంది. ఈ నెట్‌వర్క్ నుండి PadForge ను చేరడానికి దాన్ని మార్చండి.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>పోర్ట్ {0} లో వినడానికి Windows PadForge హెల్పర్‌ను అనుమతించలేదు. PadForge దాన్ని నిర్వాహక హక్కులతో అనుమతిస్తుంది, కాబట్టి PadForge ను వాటితో ప్రారంభించి, దీన్ని ఆఫ్ చేసి మళ్లీ ఆన్ చేయండి.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>పోర్ట్ {0} లో PadForge హెల్పర్ వినలేకపోయింది. పోర్ట్ మార్చండి, లేదా దీన్ని ఆఫ్ చేసి మళ్లీ ఆన్ చేయండి.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge హెల్పర్ ఆగింది ({0}). మళ్లీ ప్రారంభించడానికి ఈ నెట్‌వర్క్ నుండి PadForge ను చేరుకోవడం ఆఫ్ చేసి మళ్లీ ఆన్ చేయండి.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>ఆటోమేషన్ ఆఫ్‌లో ఉంది, కాబట్టి ఈ నెట్‌వర్క్‌లో ఏ అసిస్టెంట్ PadForge ను చేరలేదు. ఆటోమేషన్ ఆన్ అయ్యాక హెల్పర్ ప్రారంభమవుతుంది.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>ఈ PC కి ఇప్పుడు ప్రైవేట్ నెట్‌వర్క్‌లో చిరునామా లేదు.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>ఈ నెట్‌వర్క్‌లోని అసిస్టెంట్లు</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. దాని కీ {1} చేయబడింది, చివరిగా వాడింది {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. దాని కీ {1} చేయబడింది, ఇంకా వాడలేదు.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>ఈ రోజు {0} కు</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>{0} న {1} కు</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>{0} కు</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>ప్రతి అసిస్టెంట్‌కు దాని సొంత కీ ఉంటుంది, ఒక పేరు, పై పేజీ స్థాయి వరకు ఒక స్థాయితో. కీ ఒకసారి మాత్రమే కనిపిస్తుంది. దీన్ని ఇక్కడ చేయడమే మీ అనుమతి, కాబట్టి దాని మొదటి కాల్ మిమ్మల్ని ఏమీ అడగదు.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>నెట్‌వర్క్ అసిస్టెంట్‌ను చేర్చు…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>నెట్‌వర్క్ అసిస్టెంట్‌ను చేర్చు</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>ఆ మరొక PC కి లేదా దాని అసిస్టెంట్‌కు పేరు పెట్టి, అది ఏం చేయవచ్చో ఎంచుకోండి. తర్వాత PadForge దాని కీని చేస్తుంది.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>పేరు</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>స్థాయి</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>కీ చేయి</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>దానికి ఒక పేరు ఇవ్వండి.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge గరిష్టంగా {0} నెట్‌వర్క్ కీలను ఉంచుతుంది. ముందు ఒకదాన్ని ఉపసంహరించండి.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>{0} కోసం కీ</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>ఇది ఒకసారి మాత్రమే కనిపిస్తుంది. PadForge దాని హ్యాష్‌ను మాత్రమే ఉంచుతుంది, కాబట్టి ఇప్పుడే కాపీ చేయండి. ఈ నెట్‌వర్క్‌లోని అసిస్టెంట్లు కింద ఉపసంహరించు దాన్ని ముగిస్తుంది.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>కీ</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>దీని కోసం</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>ఏదైనా ఇతర హోస్ట్</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>లేదా ఏదైనా ఇతర హోస్ట్, దాని సెట్టింగులలో అతికించాల్సిన చిరునామా, హెడర్ కోసం.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>అతికించాల్సినది</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>మరొక PC లోని టెర్మినల్‌లో దీన్ని నడపండి.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>హోస్ట్ సెట్టింగులలో ఈ చిరునామా, ఈ హెడర్‌తో HTTP ద్వారా ఒక MCP సర్వర్‌ను చేర్చండి.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>హెడర్</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>పూర్తయింది</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>పోర్ట్ మార్చు</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>1024 నుండి 49151 వరకు ఒక పోర్ట్ ఎంచుకోండి. ప్రతి అసిస్టెంట్ సేవ్ చేసిన చిరునామాలో పోర్ట్ ఉంటుంది, కాబట్టి మార్పు తర్వాత ప్రతిదాన్ని మళ్లీ చేర్చండి.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>1024 నుండి 49151 వరకు ఒక పోర్ట్ టైప్ చేయండి.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>చేరిక</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>మొత్తం PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>దాని సొంత పరికరాలు, పరికరాలను ఎంచుకో పేరు పెట్టినవి మాత్రమే</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>పరికరాలను ఎంచుకో…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>దాని సొంత పరికరాలను, {0} ను నడుపుతుంది. అయినా ప్రతి పరికరాన్ని చదువుతుంది.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>దాని సొంత పరికరాలను మాత్రమే నడుపుతుంది. అయినా ప్రతి పరికరాన్ని చదువుతుంది.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>కమాండ్ లైన్ నుండి వచ్చే ఆదేశాలు ప్రతి ప్రోగ్రామ్‌కు లాగే PadForge ను ఇంకా చేరతాయి.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>అది తన సొంత పరికరాలను మాత్రమే నడపాలని అడుగుతోంది.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>ఇది ఒకసారి మాత్రమే అడుగుతుంది. మీరు దీన్ని తొలగించవచ్చు లేదా దాని చేరికను ఆటోమేషన్ పేజీలో మార్చవచ్చు.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>పరికరాలను ఎంచుకో</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} తన సొంత పరికరాలను, మీరు టిక్ చేసిన వాటిని నడపవచ్చు. అయినా ప్రతి పరికరాన్ని చదువుతుంది.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>పరికరాల పేజీలో ఏ పరికరమూ లేదు.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>నడుస్తోంది, మీ హక్కులతో, సిద్ధంగా ఉంది. ChatGPT ఈ టన్నెల్ ద్వారా PadForge ను చేరుతుంది, దానికి సొంత సైన్ ఇన్ అవసరం లేదు, మీ OpenAI సంస్థ నుండి మాత్రమే. ఇది PadForge తో పాటు మళ్లీ ప్రారంభమవుతుంది.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>నడుస్తోంది, మీ హక్కులతో. టన్నెల్ సిద్ధమని OpenAI చెప్పే వరకు వేచి ఉంది.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>OpenAI యొక్క tunnel-client ను డౌన్లోడ్ చేసి, దాని విడుదలలోని SHA-256 మొత్తాలతో సరిచూస్తోంది.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client ను డౌన్లోడ్ చేయలేకపోయింది: {0}. మళ్లీ ప్రయత్నించడానికి టన్నెల్‌ను మళ్లీ ఎంచుకోండి.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>కింద రన్‌టైమ్ కీ, టన్నెల్ ID అతికించండి, టన్నెల్ ప్రారంభమవుతుంది.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>రన్‌టైమ్ కీ</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>పరిమితమైనది, Tunnels Read and Use తో.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>ఒకటి చేయి</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>టన్నెల్ ID</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>తర్వాత ChatGPT లో ఈ టన్నెల్‌ను చేర్చండి.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>ChatGPT తెరువు</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge కీని మీకు మాత్రమే గుప్తీకరించి ఉంచుతుంది. ఖాళీ బాక్స్ దాన్ని మరచిపోతుంది. ChatGPT పై స్థాయిలో పని చేస్తుంది.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>కీ ఉంచబడలేదు: PadForge వెబ్ హెల్పర్ నడవడం లేదు, మీకోసం కీని గుప్తీకరించగలిగేది అదొక్కటే.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>మరొక పరికరం నుండి సమాధానం</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>మీరు ఇక్కడ లేనప్పుడు ఫోన్ లేదా మరొక PC నుండి PadForge ప్రశ్నలకు సమాధానం ఇవ్వండి.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>ఈ నెట్‌వర్క్‌లో మాత్రమే, వెబ్ కంట్రోలర్ చిరునామా ద్వారా పని చేస్తుంది.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>పరికరాన్ని జత చేయి…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>{0} జత చేయబడింది.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>చివరిగా సమాధానం ఇచ్చింది {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>ఈ రోజు {0} కు</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>{0} కు</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} న {1} కు</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>పేరు లేని పరికరం</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>పరికరాన్ని జత చేయి</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>పరికరం కెమెరాతో స్కాన్ చేయాల్సిన కోడ్</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>స్క్రీన్ క్యాప్చర్ నుండి దాచబడింది, కాబట్టి మీరు మాత్రమే స్కాన్ చేయగలరు.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>లేదా పరికరంలో {0} తెరిచి ఈ కోడ్ టైప్ చేయండి:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>కోడ్ ఒకసారి మాత్రమే పని చేస్తుంది, {0} వరకు. ఐదు తప్పు ప్రయత్నాల తర్వాత అది మూసుకుంటుంది, QR కోడ్ ఇంకా పని చేస్తుంది.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>వెబ్ కంట్రోలర్ చిరునామాను ప్రారంభిస్తోంది…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>పేజీ తెరవలేదు: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows ఈ విండోను స్క్రీన్ క్యాప్చర్ నుండి దాచలేదు, కాబట్టి ఇది కోడ్ చూపదు.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>టైప్ చేసే కోడ్ ఐదు తప్పు ప్రయత్నాల తర్వాత మూసుకుంది. QR కోడ్ {0} వరకు ఇంకా పని చేస్తుంది.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>కోడ్ గడువు ముగిసింది. పరికరాన్ని జత చేయి కొత్తది చేస్తుంది.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge గరిష్టంగా {0} నెట్‌వర్క్ కీని ఉంచుతుంది. ముందు దాన్ని ఉపసంహరించండి.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>రంగులు నేరుగా {0}కు వెళ్తాయి. రంగుల చక్రం లేదా ధ్వనిని అనుసరించే రంగుల వంటి మారే రంగులు దానికి చేరవు. మారని రంగు చేరుతుంది.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>అన్ని ఫైళ్లు (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge ప్రొఫైల్ (*{0})|*{0}</value></data>

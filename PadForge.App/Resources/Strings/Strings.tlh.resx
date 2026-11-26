@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>rarpu' {0}, 'ul 'aplo' {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>rarHa'pu' {0} jan: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>rarpu' {0} jan: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>rarHa'qa'taH {0}</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>wa' tupDaq rarHa'pu' {0}: {1}logh</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>cheghpu' {0}</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>cheghpu' {0} jan: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox ({0} neH)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation ({0} neH)</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo ({0} neH)</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>rarqa'meH DuH, vergh, nelmeH ngoq, SIr'o' Daqvo' rar</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>vergh, DSX.exe tamwI'</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>verghmey, naQ Do, chenmoHlu'bogh Qurmey</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>latlh QaHwI'pu', SIr'o' QaHwI'pu'</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>latlh QaHwI'pu', SIr'o' QaHwI'pu', SIr'o'vam QaHwI'pu' je</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>leQmeyDaq ratlhtaHvIS cha' SenwI', nach ghochwI' pagh VR mIv lo'DI' Dat yIbej.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>SeDmeH Quj ngeHbogh Do, tI'varmey, Do patlh je yInel, latlh 'elmoHghach Danelbogh rur.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU vIHtaHghach Hal laDbogh rurwI' nIqHommeyvaD SeHjan vIHtaHghach yIngeH.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>jan chelwI' yIchel…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>nIqHommey ghItlhmey je|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Hoch 'a'baqa'mey|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>yInaD 'ej yItaghqa'…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>'a'baqa' ngaSwI'Daq yI'ang</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>tlhI'wI'vam tlhI'bogh mI'mey chu' tIvoq</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>{0} Qoyje' ngoq rap lo'taHvIS tlhI'lu'bogh mI' chu' taghqa', yInaD 'ej yItaghqa' leQ poQbe'. latlh choH Hoch, wa'DIch Duyu'.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Qoyje' ngoq rap lo'taHvIS tlhI'lu'bogh mI' chu' lajpu'</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>QuQ taghDI' tagh</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>taghpa' 'a'baqa' 'oltaH</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>ngoq {0} lo'taHvIS 'elHa'pu'. {1} lup loS 'ej taghqa'.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>tlhI'lu'be'.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>QaptaHvIS naDev DuHmeyDaj 'anglu'.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>DuHmey ja'be'.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>PadForge rarDI', naDev DuHmeyDaj 'anglu'.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>taghpu' 'ach PadForge not rarpu'. {0} lup loS 'ej taghqa'.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>taghpu' 'ach PadForge not rarpu'. {0} lup loS 'ej taghqa'.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>taghpu' {0} 'ach PadForge not rarpu'.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>wa' tup PadForge rarbe'pu'DI', mevmoHlu'pu'</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>choHlu'pu'</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>DuHmeyDaj laDlaHbe'pu' PadForge: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>wa' tup jatlhbe'pu'DI', mevmoHlu'pu'</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>QaptaHvIS choHpu' 'a'baqa'Daj</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} tlhI'pu'</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, tlhI'lu'be'</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>rInpu'</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>'uchlu'pu'</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>rInbe'</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>patlhvamDaq chaw'lu'be'</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>DaH lo'laHbe'</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>jan {0} SeHwI'mey tIcher</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>jan {0} yIteq</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>jan {0} SeHwI'mey Hoch tIleSmoH</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>loHwI' DIb lo'bogh {0} vaD ngeHlu'be' nIqHom nItlh leQ 'eQway' je mejmoHghach</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>loHwI' DIb lo'bogh QorwaghvaD ngeHlu'be' nIqHom nItlh leQ 'eQway' je mejmoHghach</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>nIqHom QapmoH PadForge.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>'a'baqa', 'a'baqa' ngaSwI', SIr'o' tenwal ghap poSmoH.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Windows Daq nItlh leQmey 'eQway' 'elmoHghach joq ngeH PadForge.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>SoQmoH leQ DarISDI' ghap Alt+F4 Da'uyDI', PadForge yIQapmoHtaH. bupmeH, vep yoS HIDjolevDaq 'elHa' yIlo'.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Qorwagh DamachmoHDI', vep yoSDaq PadForge yIpol, Qu' naQDaq yIpolQo'.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>taghDI' PadForge, Qorwagh yISo'taH. motlh Qap 'ej nel.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows DangaQHa'moHDI', PadForge yItagh.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows DangaQHa'moHDI', PadForge yItagh. Dochvam chu'taHvIS, qIghvo', ghItlhvo' latlh nIqHomvo' ghap PadForge taghlu'DI', Windows yu'meH Qorwagh 'anglu'be'.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>{0} Daq Qap PadForge.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>PadForge neH ngaSbogh 'a'baqa' ngaSwI' poQ Dochvam. latlh 'a'baqa'mey ngaS 'a'baqa' ngaSwI'Daj, vaj latlh nIqHommey 'oH choH 'e' botlaHbe' PadForge.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>'a'baqa' ngaSwI' tlhInDaq PadForge yIngeH</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>reH vep yoSDaq yI'ang</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>poStaHvIS Qorwagh, vep yoSDaq PadForge mIllogh yI'angtaH. vaj reH wa' rISDaq HIDjolevDaj 'elHa' tu'lu'.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>De' chu'mey</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub lo'taHvIS, PadForge nIqHom chu'mey yInej 'ej naDev bIH yIjom, 'ej SeHjan qawHaq yIchu'moH. GitHub neH rar PadForge (api.github.com, github.com, De' HevmeH turwI'meyDaj je, SeHjan qawHaqvaD raw.githubusercontent.com je). nIqHom mI'Daj neH ngeH, 'ej SeHjan qawHaqvaD, Qav Hevlu'pu'bogh De' per nobpu'bogh GitHub je.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>GitHub lo'taHvIS, PadForge nIqHom chu'mey yInej 'ej naDev bIH yIjom, 'ej SeHjan qawHaq yIchu'moH. GitHub (api.github.com, github.com, De' HevmeH turwI'meyDaj je, SeHjan qawHaqvaD raw.githubusercontent.com je), SeHjan qawHaq tlheghDaq SuqmeH Daq bIngDaq Dacherbogh Daq je neH rar PadForge. nIqHom mI'Daj neH ngeH, 'ej SeHjan qawHaqvaD, Qav Hevlu'pu'bogh De' per nobpu'bogh turwI' je.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>reH De' chu'mey yInej</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>taghDI' PadForge nej, 'ej ghIq Hoch 12 rep nej.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>reH De' chu'mey yIjom</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>yIjom 'ej yItaghqa'</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>nIqHom chu' De'</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>SeHjan qawHaq</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>GitHub lo'taHvIS, yuvwan SeHjan qawHaq (SDL_GameControllerDB) Hev DaH yIchu'moH, 'ej PadForge nIqHomvam Hutlhbogh neltaHghachmey DuHmey 'a'baqa'Daq pol. DaH lo'lu'. Quj SeHjan rur latlh Doch laDbe'bogh, noblu'be'bogh, naQ SeHjan lo' tlhol yIlo' lo'be'bogh SeHjanvaD neH neltaHghach chu' lo'lu'. Hevlu'pu'bogh Hoch neltaHghach teq motlhmoHwI'. latlh bIngDaq, tlheghmeylIj ratlh.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>GitHub lo'taHvIS, ghap latlh bIngDaq Dacherbogh Daq lo'taHvIS, yuvwan SeHjan qawHaq (SDL_GameControllerDB) Hev DaH yIchu'moH, 'ej PadForge nIqHomvam Hutlhbogh neltaHghachmey DuHmey 'a'baqa'Daq pol. DaH lo'lu'. latlh Daqvo', neltaHghachmey chu' neH pol. Quj SeHjan rur latlh Doch laDbe'bogh, noblu'be'bogh, naQ SeHjan lo' tlhol yIlo' lo'be'bogh SeHjanvaD neH neltaHghach chu' lo'lu'. Hevlu'pu'bogh Hoch neltaHghach teq motlhmoHwI', 'ej GitHub lo'taHvIS Suqqa'. latlh bIngDaq, tlheghmeylIj ratlh.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>DaH yIchu'moH</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>chu'moHtaH…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>De' chu'mey nejtaH…</value></data>
@@ -1106,8 +1121,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} mojpu' PadForge.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>PadForge ngaS: {0} neltaHghach, {1} yuvwan velqa'.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>PadForge ngaS: {0} neltaHghach, {1} yuvwan velqa'. Suqlu'pu' {2}: {3} tlhegh chu', {4} choHlu'pu'.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>PadForge ngaS: {1} neltaHghach, {2} yuvwan velqa'. Suqlu'pu' {3}, Hal {4}: {0} tlhegh chu'.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>PadForge ngaS: {1} neltaHghach, {2} yuvwan velqa'. Suqlu'pu' {3}, Hal {4}: {0} tlhegh chu'.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>chu'moHlu'pu'DI', choHbe'pu' yuvwan qawHaq.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub rarlaHbe' PadForge: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>{0} rarlaHbe' PadForge: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge pIHbogh SeHjan qawHaq 'oHbe'mo' Hevlu'pu'bogh De' lajQo' PadForge. pagh choHpu'.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>So'taHvIS yItagh</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ngaQHa'moHlu'DI' yItagh</value></data>
@@ -1278,6 +1296,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>ja' ngaj velqa' yIchenmoH</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>velqa' chenmoHlu'pu'</value></data>
   <data name="Review_Save" xml:space="preserve"><value>yIpol…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>yIpol 'ej yIngeH</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>yIpol 'ej yIngeH leQ: zip 'a'baqa' pol, ja' ngaj velqa' chenmoH, Explorer Daq 'a'baqa' 'ang, 'ej Qagh ja'meH PadForge tenwal poSmoH. pa' ja' ngaj yIlan, 'ej 'a'baqa' yIchel.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>ta yIpol</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>zip 'a'baqa'mey</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>pollu'be'. {0}</value></data>
@@ -1638,6 +1658,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Doch</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Segh</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>laHmey</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>USB Xbox Wireless Adapter je lo'lu'DI', chu'Ha'lu' 'em leQmey. SDL meq: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Bluetooth lo'lu'DI', chu'Ha'lu' 'em leQmey. SDL meq: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>'och</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>'ul 'aplo'</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>He</value></data>
@@ -3490,6 +3512,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Qagh pIHbe'lu'bogh qaS:
 
 {0}
+
+PadForge.exe retlhDaq crash.log 'a'baqa'Daq De' ghItlhpu' PadForge. Dochvam Daja'meH, {2} Daq ja'chuqmeH tenwal chu' yIchenmoH 'ej crash.log yIchel.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} latlh Qagh So'lu')</value></data>
@@ -6723,6 +6747,7 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="SdlMapping_Applied" xml:space="preserve"><value>DaH lo'lu'. tlheghlIj 'oH, 'ej janvamvaD latlh tlheghmey juS.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>DochlIj rur 'uchlu'. QaptaHDI' QuQ 'ej rarDI' jan, lo'lu'.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>tlhegh lajbe' SDL. janvamvaD pagh choHpu'.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>'uchlu'be'. {0:N0} tlheghlIj 'aqroS 'uch PadForge, 'ej DaH 'aqroS 'uch.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL neltaHghach yIlan</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>SDL neltaHghach yIlan: {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>neltaHghach yInej: {0}</value></data>
@@ -6756,6 +6781,10 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>PadForge.xml Daq DochlIj rur 'uchlu' tlheghmey, 'ej janmeychajvaD latlh Halmey Hoch juS. SeHjan qawHaq tlhegh latlh bIngDaq, Hoch yIteq leQ, chaH teq.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows tlhegh: {0}. latlh pat tlhegh: {1}, buSHa'lu'.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows tlhegh: {0}. latlh pat tlhegh: {1}, buSHa'lu'.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Hoch {0:N0} chellu'. {1:N0} tlheghlIj 'aqroS 'uch PadForge.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>chellu'. {1:N0} tlheghlIj 'aqroS 'uch PadForge.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>DaH {0:N0} tlheghlIj 'uchlu', vaj {1:N0} tlheghvam chellu', 'ach {2:N0} chellu'be'.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>DaH {0:N0} tlheghlIj 'uchlu', vaj {1:N0} tlheghvam chellu', 'ach {2:N0} chellu'be'.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>lajQo'lu'pu': {0}. wa'DIch: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>tlhegh yIlan, pagh gamecontrollerdb.txt 'a'baqa' ghItlh yIlan.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>SDL SeHjan qawHaq tlhegh 'oHbe' ghItlh: 32 mI'Hom ngu'meH mI', 16 mI' patlh lo'bogh, pong, ghIq 'ay'mey, a:b0 rur.</value></data>
@@ -6768,14 +6797,22 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>wa' 'ay' cha'logh nob tlhegh.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>1,024 ngutlh juS tlhegh.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>pagh SeHwI' nel tlhegh.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>tlheghmeylIj</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>SuqmeH Daq, tlheghmeylIj</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>tlheghmeylIj</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>naDev Dachelbogh tlheghmey, jan SDL neltaHghach 'echletHomDaq Dalanbogh tlheghmey je, janmeychajvaD latlh Halmey Hoch juS, 'ej motlhmoHlu'DI' ratlh.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>'a'baqa'vo' ghap velqa' qawHaqvo' tlheghmey tIchel…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} tlhegh, DochlIj, janmeychajvaD latlh Halmey Hoch juS.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} tlhegh, DochlIj, janDajvaD latlh Halmey Hoch juS.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} janvaD {0} tlhegh, DochlIj, latlh Halmey Hoch juS.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} janvaD {0} tlhegh, DochlIj, latlh Halmey Hoch juS.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>wej pagh.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>PadForge 'uchbe'bogh {0} tlhegh ngaS SDL_GAMECONTROLLERCONFIG DuHlIj. 'a'baqa'vo' ghap velqa' qawHaqvo' tlheghmey tIchel poSDI', chaH ngaS.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>PadForge 'uchbe'bogh {0} tlhegh ngaS SDL_GAMECONTROLLERCONFIG DuHlIj. 'a'baqa'vo' ghap velqa' qawHaqvo' tlheghmey tIchel poSDI', 'oH ngaS.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>DaH lo'lu'.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>SuqmeH Daq</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS neH. yuvwan Daq 'oHbe'bogh Daqvo', tlheghmey chu' neH laj PadForge.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>yIchoH…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>yuvwan 'a'baqa' yIlo'</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Daq</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>https:// tagh, turwI' pong ghaj, motlh vergh lo', lo'wI' pong chaw' ngoq je ghajbe'bogh Daq neH laj PadForge.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>SIr'o'vo' PadForge yInaw'</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>SIr'o' tenwalDaq QaptaHbogh QaHwI', De'wI'vamDaq 'och nIqHom vegh 'ej PadForge naw'. Dochvam Dachu'DI', wa'DIch Duyu'lu'.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>SIr'o'vo' PadForge naw'lu''a'?</value></data>
@@ -6818,7 +6855,7 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>chaw'lu'pu': {0}, Qav lo'lu': {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>chaw'lu'pu': {0}, wej lo'lu'.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>chaw' yIteq</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>'och nIqHom Suqbe' PadForge, 'ej latlh ghom pegh ngoq polbe'. Dung patlhDaq Qap SIr'o' QaHwI'.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>ChatGPT Secure MCP Tunnel vaD neH 'och nIqHom Suq PadForge. Dung patlhDaq Qap SIr'o' QaHwI'.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>SIr'o'vo' PadForge lo' {0} 'e' Dachaw''a'?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>'elmeH mIwDaj chegh: {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>pongDaj: {0}.</value></data>
@@ -6855,4 +6892,95 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ghItlh ngu'meH mI'Daj</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>SeHwI'meyDaj lupong ghItlhmey: {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>nItlh leQmeyDaj lupong ghItlhmey: KeyA, KeySpace, KeyLeftShift, latlh je. Hoch nItlh leQ ngoqDaj lo'taHvIS lupong je: Vk0 vo' Vk255 Daq.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0}, SIr'o'vamvo', Daq: {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>DaHjaj DachenmoHpu'bogh ngoq lo'taHvIS, SIr'o'vamDaq {1} Daqvo' yu' {0}.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{2} DachenmoHpu'bogh ngoq lo'taHvIS, SIr'o'vamDaq {1} Daqvo' yu' {0}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>SIr'o'vamvo' PadForge yInaw'</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>SIr'o'vamDaq latlh De'wI'Daq QaptaHbogh QaHwI', naDev DachenmoHbogh ngoq lo'taHvIS PadForge naw'. 'och nIqHom Hur 'elmeH mIw ghap poQbe'. Dochvam Dachu'DI', wa'DIch Duyu'lu'.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>SIr'o'vamvo' PadForge naw'lu''a'?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>loHwI' DIb ghajbe'bogh PadForge boQ, De'wI'vam SIr'o' Daqmey 'Ij, 'ej pegh SIr'o'meyDaq neH verghDaj poSmoH PadForge. naDev DachenmoHbogh ngoq lo'chugh neH, 'el latlh De'wI' QaHwI'. So'lu'be' chabalmey ngoqchaj je, SIr'o' veghtaHvIS.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>vergh</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>yIchoH…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>So'lu'be' chabalmey ngoqchaj je, SIr'o'vam veghtaHvIS. pegh SIr'o'meyDaq neH chaH 'elmoH Windows.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>vergh {0} lo'taH latlh nIqHom. SIr'o'vamvo' PadForge Danaw'meH, yIchoH.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>vergh {0} 'Ij PadForge boQ 'e' chaw'be' Windows. loHwI' DIb ghajchugh, 'oH chaw' PadForge. vaj loHwI' DIb lo'taHvIS PadForge yItagh, 'ej Dochvam yIchu'Ha' 'ej yIchu'.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>vergh {0} 'IjlaHbe' PadForge boQ. vergh yIchoH, pagh Dochvam yIchu'Ha' 'ej yIchu'.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>mevpu' PadForge boQ ({0}). taghqa'meH, SIr'o'vamvo' PadForge yInaw' yIchu'Ha' 'ej yIchu'.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>chu'Ha' nIqHom SeH, vaj PadForge naw'be' SIr'o'vam QaHwI'. nIqHom SeH chu'lu'DI', tagh boQ.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>DaH pegh SIr'o'Daq Daq ghajbe' De'wI'vam.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>SIr'o'vam QaHwI'pu'</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. ngoqDaj chenmoHlu'pu': {1}, Qav lo'lu': {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. ngoqDaj chenmoHlu'pu': {1}, wej lo'lu'.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>DaHjaj {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>{0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Hoch QaHwI' ngoqDaj Suq, pong patlh je ghajbogh. Dung patlh juSbe' patlhvetlh. wa'logh neH 'anglu' ngoq. naDev DachenmoHDI', Dachaw', vaj wa'DIch chabalDaj Duyu'be'.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>SIr'o'vam QaHwI' yIchel…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>SIr'o'vam QaHwI' yIchel</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>latlh De'wI' ghap QaHwI'Daj yIpong, 'ej ta'laHbogh Dochmey yIwIv. ghIq ngoqDaj chenmoH PadForge.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>pong</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>patlh</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>ngoq yIchenmoH</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>pong yInob.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>{0} SIr'o' ngoq 'aqroS 'uch PadForge. wa'DIch, wa'vaD chaw' yIteq.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>ngoq: {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>wa'logh neH 'anglu'. ngoqvo' chenmoHlu'bogh mI' neH 'uch PadForge, vaj DaH velqa' yIchenmoH. SIr'o'vam QaHwI'pu' bIngDaq, chaw' yIteq leQ 'oH rInmoH.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>ngoq</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>QaHwI'vaD</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>latlh nIqHom</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>pagh latlh nIqHom yIwIv, DuHmeyDajDaq DalanmeH Daq nach ghItlh je DaSuqmeH.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>lanmeH ghItlh</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>latlh De'wI'Daq ra'meH Qorwagh yIpoSmoH 'ej pa' yIQapmoH.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>nIqHom DuHmeyDaq, HTTP lo'bogh MCP turwI' yIchel, Daqvam nach ghItlhvam je lo'taHvIS.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>nach ghItlh</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>pItlh</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>vergh yIchoH</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>1024 49151 je joj vergh yIwIv. Hoch QaHwI' Daq pollu'pu'bogh, vergh ngaS. vaj choHDI', Hoch QaHwI' yIchelqa'.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>1024 49151 je joj vergh yIghItlh.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>SeHlaHghach</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>PadForge Hoch</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>janmeyDaj, janmey tIwIv Daq wIvlu'bogh janmey je neH</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>janmey tIwIv…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>janmeyDaj {0} je SeH. Hoch jan laDtaH.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>janmeyDaj neH SeH. Hoch jan laDtaH.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>ra'meH tlheghvo' ra'meH mu'mey PadForge naw'taH, Hoch nIqHomvaD rur.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>janmeyDaj neH SeH 'e' tlhob.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>wa'logh yu'. nIqHom SeH tenwalDaq DateqlaH, SeHlaHghachDaj DachoHlaH ghap.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>janmey tIwIv</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>janmeyDaj DawIvbogh janmey je SeHlaH {0}. Hoch jan laDtaH.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>janmey tenwalDaq jan tu'lu'be'.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>QaptaH, DIblIj lo', 'ej ghuS. 'ochvam vegh 'ej PadForge naw' ChatGPT, 'elmeH mIwDaj poQbe'. OpenAI ghomlIjvo' neH naw'. PadForge taghDI', taghqa'.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>QaptaH, DIblIj lo'. ghuS 'och 'e' ja'meH OpenAI, loStaH.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>OpenAI tunnel-client SuqtaH, 'ej nobmeH SHA-256 mI'mey lo'taHvIS 'oltaH.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>tunnel-client SuqlaHbe' PadForge: {0}. DanIDqa'meH, 'och yIwIvqa'.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>bIngDaq QapmeH ngoq 'och ngu'meH mI' je yIlan, 'ej tagh 'och.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>QapmeH ngoq</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>veH ghaj, Tunnels Read and Use DIb ghaj.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>wa' yIchenmoH</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>'och ngu'meH mI'</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>ghIq ChatGPT Daq 'ochvam yIchel.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>ChatGPT yIpoSmoH</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>ngoq So' PadForge, 'ej SoHvaD neH 'uch. chImchugh ghItlhmeH Daq, ngoq lIj PadForge. Dung patlhDaq Qap ChatGPT.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>ngoq 'uchlu'be': QaptaHbe' PadForge SIr'o' boQ, 'ej SoHvaD ngoq So'laH 'oH neH.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>latlh janvo' yIjang</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>De'wI'vam DaSIchlaHbe'taHvIS, ghogh HablI'vo' ghap latlh De'wI'vo' PadForge yu'bogh Dochmey tIjang.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>SIr'o'vamDaq neH Qap, SIr'o' SeHjan Daq lo'taHvIS.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>jan yInel…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>nellu'pu': {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Qav jangpu': {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>DaHjaj {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>{0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>pong ghajbe'bogh jan</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>jan yInel</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>jan mIllogh qonwI' lo'taHvIS DaHotlhmeH ngoq</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>jIH qonwI'vo' So'lu', vaj SoH neH DaHotlhlaH.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>pagh janDaq {0} yIpoSmoH 'ej ngoqvam yIghItlh:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>wa'logh neH Qap ngoq, {0} ghoSpa'. vaghlogh muj nIDlu'DI', SoQ, 'ach QaptaH QR ngoq.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>SIr'o' SeHjan Daq taghtaH…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>poSlaHbe' tenwal: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>jIH qonwI'vo' Qorwaghvam So'be' Windows, vaj ngoq 'angbe'.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>vaghlogh muj nIDlu'pu'mo', SoQ ghItlhlu'bogh ngoq. {0} ghoSpa', QaptaH QR ngoq.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>rInpu' ngoq. jan yInel… leQ, ngoq chu' chenmoH.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>{0} SIr'o' ngoq 'aqroS 'uch PadForge. wa'DIch, 'oHvaD chaw' yIteq.</value></data>
 </root>

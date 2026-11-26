@@ -193,7 +193,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} 已连接，电量 {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} 台设备已断开连接：{1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} 台设备已连接：{1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} 反复断开连接</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} 在一分钟内断开了 {1} 次</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} 已恢复</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} 台设备已恢复：{1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox（最多 {0} 台）</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation（最多 {0} 台）</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo（最多 {0} 台）</value></data>
@@ -390,6 +392,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}，签名者：{1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}，未签名</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>已完成</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>已拦下</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>未完成</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>此级别不允许</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>目前不可用</value></data>
@@ -462,6 +465,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>设置设备 {0} 的控件</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>移除设备 {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>把设备 {0} 的所有控件归位</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>它提供的按键和鼠标输出会被拦下，不送往以管理员身份运行的 {0}</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>它提供的按键和鼠标输出会被拦下，不送往以管理员身份运行的窗口</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>让 PadForge 运行一个程序。</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>打开文件、文件夹或网页。</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>让 PadForge 向 Windows 发送按键或鼠标输入。</value></data>
@@ -686,7 +691,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>点击关闭按钮或按 Alt+F4 后，PadForge 将继续运行。要退出程序，请在系统托盘菜单中选择“退出”。</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>最小化窗口时将 PadForge 留在通知区域，而不是任务栏。</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge 启动时保持窗口隐藏。它照常运行并进行映射。</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>登录 Windows 时自动启动 PadForge。</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>登录 Windows 时自动启动 PadForge。启用后，从快捷方式、脚本或其他程序启动 PadForge 时，也不会出现 Windows 的提示。</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge 从 {0} 运行。</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>这需要 PadForge 位于它自己的文件夹中。它所在的文件夹里还有其他文件，因此 PadForge 无法阻止其他程序更改它。</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>把 PadForge 移到专属文件夹</value></data>
@@ -700,7 +705,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>始终显示在系统托盘</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>窗口打开时也保持显示系统托盘图标，随时可以在其菜单中选择“退出”。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>更新</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>在 GitHub 上检查 PadForge 的新版本并从这里安装，也可以更新控制器数据库。PadForge 只连接 GitHub（api.github.com、github.com 及其下载服务器，以及提供控制器数据库的 raw.githubusercontent.com）。发送的数据只有它自己的版本号，更新控制器数据库时还有 GitHub 为上次下载给出的标签。</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>在 GitHub 上检查 PadForge 的新版本并从这里安装，也可以更新控制器数据库。PadForge 只连接 GitHub（api.github.com、github.com 及其下载服务器，以及提供控制器数据库的 raw.githubusercontent.com），以及你在控制器数据库一行的“下载来源”下设置的地址。发送的数据只有它自己的版本号，更新控制器数据库时还有服务器为上次下载给出的标签。</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>自动检查更新</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>在 PadForge 启动时检查，之后每 12 小时检查一次。</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>自动安装更新</value></data>
@@ -711,7 +716,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>安装并重启</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>发行说明</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>控制器数据库</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>“立即更新”会从 GitHub 下载社区控制器数据库（SDL_GameControllerDB），并把此版本 PadForge 所缺少的映射保存在设置文件中。它们会立即生效。新映射只用于没有其他方式识别为手柄、尚未分配且不处于“强制原始摇杆模式（绕过手柄重映射）”的控制器。重置会移除所有已下载的映射。“更多”下你自己的行会保留。</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>“立即更新”会从 GitHub 或“更多”下设置的地址下载社区控制器数据库（SDL_GameControllerDB），并把此版本 PadForge 所缺少的映射保存在设置文件中。它们会立即生效。从其他地址下载时只保存新映射。新映射只用于没有其他方式识别为手柄、尚未分配且不处于“强制原始摇杆模式（绕过手柄重映射）”的控制器。重置会移除所有已下载的映射，并重新从 GitHub 下载。“更多”下你自己的行会保留。</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>立即更新</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>更新中…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>正在检查更新…</value></data>
@@ -741,8 +746,11 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge 已更新到 {0}。</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>内置：{0} 个映射，社区副本日期为 {1}。</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>内置：{0} 个映射，社区副本日期为 {1}。已于 {2} 下载：新增 {3} 行，更改 {4} 行。</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>内置：{1} 个映射，社区副本日期为 {2}。已于 {3} 从 {4} 下载：新增 {0} 行。</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>内置：{1} 个映射，社区副本日期为 {2}。已于 {3} 从 {4} 下载：新增 {0} 行。</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>自上次更新以来，社区数据库没有变化。</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>无法连接 GitHub：{0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>无法连接 {0}：{1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge 拒绝了此次下载，因为它不是 PadForge 所期望的控制器数据库。没有任何更改。</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>启动时最小化</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>登录时自动启动</value></data>
@@ -913,6 +921,8 @@
   <data name="Review_CopySummary" xml:space="preserve"><value>复制摘要</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>已复制</value></data>
   <data name="Review_Save" xml:space="preserve"><value>保存…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>保存并提交</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>“保存并提交”会保存 zip 文件、复制摘要、在 Explorer 中显示该文件，并打开 PadForge 提交报告的页面。请把摘要粘贴到那里，并把文件拖到页面上。</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>保存录制内容</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>zip 文件</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>未保存。{0}</value></data>
@@ -1033,6 +1043,8 @@
   <data name="Devices_Detail_Product" xml:space="preserve"><value>产品</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>类型</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>功能</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>通过 USB 和 Xbox Wireless Adapter 时，背部拨片已关闭。SDL 给出的原因：{0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>通过蓝牙时，背部拨片已关闭。SDL 给出的原因：{0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>连接</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>电量</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>路径</value></data>
@@ -1732,6 +1744,8 @@
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>发生意外错误：
 
 {0}
+
+PadForge 已把详细信息写入 PadForge.exe 旁边的 crash.log。要报告此问题，请在 {2} 发起一个讨论，并把 crash.log 拖到其中。
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>（已隐藏 {0} 个额外错误）</value></data>
@@ -4076,7 +4090,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自动重连、端口、配对身份、通过地址连接</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>端口、DSX.exe 替身程序</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>端口、满速和自定义格式</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>其他助手、网络上的助手</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>其他助手、网络上的助手和这个网络上的助手</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>用头部追踪器或 VR 头显环顾四周，双拇指不必离开按键。</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>把驾驶游戏发送的速度、踏板和档位映射为输入，与其他输入一样使用。</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>把控制器的体感数据发送给读取 DSU 体感源的模拟器。</value></data>
@@ -4240,6 +4254,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>添加插件…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>程序和脚本|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|所有文件|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>批准并重启…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>在文件夹中显示</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>信任此签名者的新版本</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>用 {0} 的同一证书密钥签名的新版本无需“批准并重启”即可重新启动。任何其他更改都会先询问你。</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>已接受用同一证书密钥签名的新版本</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>随引擎启动</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>启动前正在检查文件</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>已退出，退出码 {0}。{1} 秒后重新启动。</value></data>
@@ -4279,6 +4297,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>未签名。</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>插件运行时，它的设置会显示在这里。</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>它没有声明任何设置。</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>它连接到 PadForge 后，它的设置会显示在这里。</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>已启动，但从未连接到 PadForge。{0} 秒后重新启动。</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>已启动，但从未连接到 PadForge。{0} 秒后重新启动。</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} 已启动，但从未连接到 PadForge。</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>启动一分钟后被结束，从未连接到 PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>已更改</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge 无法读取它的设置：{0}。</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>一分钟没有响应，已被结束</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>它的文件在运行期间已更改</value></data>
@@ -6602,6 +6626,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>已在使用。该行属于你，并对此设备优先生效。</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>已保存为你的。引擎运行且设备连接后即生效。</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL 没有接受该行。此设备没有任何变化。</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>未保存。PadForge 最多保存你的 {0:N0} 行，目前已满。</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>粘贴 SDL 映射</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>为 {0} 粘贴 SDL 映射</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>为 {0} 查找映射</value></data>
@@ -6635,6 +6660,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>这些行会以你的名义保存在 PadForge.xml 中，并对它们的设备优先于其他所有来源。“控制器数据库”行的“更多”下的“清除”会移除它们。</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>适用于 Windows 的有 {0} 行。适用于其他系统的 {1} 行被跳过。</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>适用于 Windows 的有 {0} 行。适用于其他系统的 {1} 行被跳过。</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>全部 {0:N0} 行都会被添加。PadForge 最多保存你的 {1:N0} 行。</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>这一行会被添加。PadForge 最多保存你的 {1:N0} 行。</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>目前已保存你的 {0:N0} 行，因此这些行中会添加 {1:N0} 行，{2:N0} 行不会添加。</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>目前已保存你的 {0:N0} 行，因此这些行中会添加 {1:N0} 行，{2:N0} 行不会添加。</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} 行被拒绝。第一条原因：{1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>请粘贴一行，或 gamecontrollerdb.txt 文件的文本。</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>该文本不是 SDL 控制器数据库中的行：应为 32 位十六进制的 ID，然后是名称，再是 a:b0 这样的字段。</value></data>
@@ -6647,14 +6676,22 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>该行把同一个字段给出了两次。</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>该行超过 1,024 个字符。</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>该行没有绑定任何控件。</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>你的行</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>下载来源，你自己的行</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>你的行</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>你在此添加的行，或在设备的“SDL 映射”卡片上粘贴的行，对它们的设备优先于其他所有来源，并在重置后保留。</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>从文件或剪贴板添加行…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} 行，对它们的设备优先于其他所有来源。</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} 行，对其设备优先于其他所有来源。</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} 行，对应 {0} 台设备，优先于其他所有来源。</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} 行，对应 {0} 台设备，优先于其他所有来源。</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>暂无。</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>你的 SDL_GAMECONTROLLERCONFIG 变量包含 {0} 行 PadForge 不保存的内容。“从文件或剪贴板添加行”打开时会带上它们。</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>你的 SDL_GAMECONTROLLERCONFIG 变量包含 {0} 行 PadForge 不保存的内容。“从文件或剪贴板添加行”打开时会带上它。</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>立即生效。</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>下载来源</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>仅限 HTTPS。如果地址不是社区的，PadForge 只接收新增的行。</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>更改…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>使用社区的文件</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>地址</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge 只接收以 https:// 开头、写明主机、使用默认端口且不含用户名和密码的地址。</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>从网络访问 PadForge</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>运行在网站上的助手会通过这台电脑上的隧道程序访问 PadForge。开启前会先询问你。</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>从网络访问 PadForge？</value></data>
@@ -6697,7 +6734,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>于 {0} 允许，上次使用 {1}。</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>于 {0} 允许，尚未使用。</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>撤销</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge 不下载任何隧道程序，也不保存其他公司的密钥。网络助手以上方的级别工作。</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge 只为 ChatGPT Secure MCP Tunnel 下载隧道程序。网络助手以上方的级别工作。</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>允许 {0} 从网络与 PadForge 配合工作吗？</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>它的登录返回到 {0}。</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>它自称 {0}。</value></data>
@@ -6734,6 +6771,97 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>它的脚本 ID</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>脚本把它的控件命名为 {0}。</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>脚本把它的按键命名为 KeyA、KeySpace、KeyLeftShift 等，每个按键也可用代码指代，Vk0 到 Vk255。</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>来自 {1} 的 {0}，在这个网络上</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} 发出请求，在这个网络上来自 {1}，使用你今天创建的密钥。</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} 发出请求，在这个网络上来自 {1}，使用你在 {2} 创建的密钥。</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>从本网络访问 PadForge</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>这个网络上另一台电脑里的助手可以用你在此创建的密钥访问 PadForge，无需隧道程序或外部账户。开启前会先询问你。</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>从本网络访问 PadForge？</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>PadForge 的辅助程序不带管理员权限运行，会在这台电脑的网络地址上监听，PadForge 只在私有网络上放行它的端口。另一台电脑上的助手只有持有你在此创建的密钥才能进入。调用及其密钥在网络上以未加密方式传输。</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>端口</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>更改…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>调用及其密钥在这个网络上以未加密方式传输。Windows 只在私有网络上放行它们。</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>端口 {0} 已被另一个程序占用。请更改端口，以便从本网络访问 PadForge。</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows 不允许 PadForge 的辅助程序监听端口 {0}。PadForge 需要管理员权限才能放行它，请以管理员权限启动 PadForge，然后把此项关闭再打开。</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge 的辅助程序无法监听端口 {0}。请更改端口，或把此项关闭再打开。</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge 的辅助程序已停止（{0}）。请把“从本网络访问 PadForge”关闭再打开以重新启动。</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>“自动化”已关闭，因此这个网络上没有助手能访问 PadForge。“自动化”开启后，辅助程序才会启动。</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>这台电脑目前在私有网络上没有地址。</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>这个网络上的助手</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}。它的密钥创建于 {1}，上次使用于 {2}。</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}。它的密钥创建于 {1}，尚未使用。</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>今天 {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>{0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>每个助手都有自己的密钥，包括名称和不超过上方级别的级别。密钥只显示一次。在这里创建它就是你的同意，所以它第一次调用时不会再询问你。</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>添加网络助手…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>添加网络助手</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>为另一台电脑或它的助手命名，并选择它可以做什么。接下来 PadForge 会创建它的密钥。</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>名称</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>级别</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>创建密钥</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>请给它起个名称。</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge 最多保存 {0} 个网络密钥。请先撤销一个。</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>{0} 的密钥</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>它只显示这一次。PadForge 只保存它的哈希值，所以请现在复制。在“这个网络上的助手”下“撤销”即可使它失效。</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>密钥</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>用于</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>其他任何主机</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>或选“其他任何主机”，获取要粘贴到它设置中的地址和标头。</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>要粘贴的内容</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>在另一台电脑的终端中运行它。</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>在主机的设置中添加一个基于 HTTP 的 MCP 服务器，填入这个地址和这个标头。</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>标头</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>完成</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>更改端口</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>请选择 1024 到 49151 之间的端口。每个助手保存的地址都包含端口，所以更改后请重新添加每一个。</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>请输入 1024 到 49151 之间的端口。</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>范围</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>整个 PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>仅限它自己的设备和这些设备</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>选择设备…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>驱动它自己的设备和 {0}。它仍会读取所有设备。</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>只驱动它自己的设备。它仍会读取所有设备。</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>命令行中的命令仍然能到达 PadForge，所有程序都是如此。</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>它请求只驱动它自己添加的设备。</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>它只询问一次。你可以在“自动化”页面移除它或更改它的范围。</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>选择设备</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} 可以驱动它自己的设备和你勾选的设备。它仍会读取所有设备。</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>“设备”页面上没有设备。</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>正在以你的权限运行，已就绪。ChatGPT 通过这个隧道访问 PadForge，无需自己的登录，并且只限你的 OpenAI 组织。它会随 PadForge 一起重新启动。</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>正在以你的权限运行。它在等待 OpenAI 告知隧道已就绪。</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>正在下载 OpenAI 的 tunnel-client，并用其发行版的 SHA-256 校验和进行核对。</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>无法下载 tunnel-client：{0}。请重新选择该隧道以再试一次。</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>请在下方粘贴运行时密钥和隧道 ID，隧道随即启动。</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>运行时密钥</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>受限，权限为 Tunnels Read and Use。</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>创建一个</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>隧道 ID</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>然后在 ChatGPT 中添加这个隧道。</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>打开 ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge 会把密钥加密保存，仅供你本人使用。留空则忘记它。ChatGPT 以上方的级别工作。</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>密钥未保存：PadForge 的网络辅助程序没有运行，只有它能为你加密密钥。</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>从另一台设备应答</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>你不在这台电脑旁时，可以用手机或另一台电脑回答 PadForge 的询问。</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>仅在这个网络上有效，通过网络控制器的地址。</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>配对设备…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>已于 {0} 配对。</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>上次应答于 {0}。</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>今天 {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>{0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>未命名设备</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>配对设备</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>用设备的摄像头扫描的QR 码</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>已对屏幕截图隐藏，所以只有你能扫描它。</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>或者在设备上打开 {0}，输入这个代码：</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>该代码只能使用一次，有效期到 {0}。输错五次后它会关闭，QR 码仍然有效。</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>正在启动网络控制器的地址…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>页面无法打开：{0}。</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows 不肯对屏幕截图隐藏此窗口，所以它不显示代码。</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>输入的代码在输错五次后已关闭。QR 码在 {0} 之前仍然有效。</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>代码已过期。“配对设备…”会生成一个新的。</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge 最多保存 {0} 个网络密钥。请先撤销它。</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>颜色直接发送到 {0}。颜色循环、随声音变化的颜色等动态颜色无法送达。固定不变的颜色可以。</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>所有文件 (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge 配置文件 (*{0})|*{0}</value></data>

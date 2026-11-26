@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} đã kết nối, pin {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} thiết bị đã ngắt kết nối: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} thiết bị đã kết nối: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} liên tục ngắt kết nối</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} đã ngắt {1} lần trong một phút</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} đã trở lại</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} thiết bị đã trở lại: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (tối đa {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (tối đa {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (tối đa {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Tự động kết nối lại, cổng, danh tính ghép đôi, kết nối bằng địa chỉ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Cổng, DSX.exe thay thế</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Cổng, Tốc độ tối đa, Định dạng tùy chỉnh</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Trợ lý khác, trợ lý trên web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Trợ lý khác, trợ lý trên web và trên mạng này</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Nhìn quanh bằng thiết bị theo dõi đầu hoặc kính VR trong khi hai ngón cái vẫn đặt trên các nút.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Ánh xạ tốc độ, bàn đạp và số mà trò chơi lái xe gửi đến, như mọi đầu vào khác.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Gửi chuyển động của tay cầm đến các trình giả lập đọc nguồn chuyển động DSU.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Thêm một plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Chương trình và tập lệnh|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tất cả tệp|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Chấp thuận và khởi động lại…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Hiện trong thư mục</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Tin cậy các phiên bản mới từ người ký này</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Phiên bản mới được ký bằng cùng khóa chứng chỉ của {0} sẽ khởi động lại mà không cần Chấp thuận và khởi động lại. Mọi thay đổi khác sẽ hỏi bạn trước.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Đã nhận phiên bản mới được ký bằng cùng khóa chứng chỉ</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Khởi động cùng bộ máy</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Đang kiểm tra tệp trước khi khởi động</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Đã thoát với mã {0}. Khởi động lại sau {1} giây.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Chưa được ký.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Thiết lập của nó hiện ở đây khi nó chạy.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Nó không khai báo thiết lập nào.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Thiết lập của nó hiện ở đây khi nó kết nối với PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Đã khởi động nhưng chưa bao giờ kết nối với PadForge. Nó khởi động lại sau {0} giây.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Đã khởi động nhưng chưa bao giờ kết nối với PadForge. Nó khởi động lại sau {0} giây.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} đã khởi động nhưng chưa bao giờ kết nối với PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Đã kết thúc một phút sau khi khởi động, chưa bao giờ kết nối với PadForge</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Đã thay đổi</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge không đọc được thiết lập của nó: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Đã kết thúc sau một phút không có lời nào</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Tệp của nó đã thay đổi khi nó chạy</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, được ký bởi {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, chưa được ký</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Đã xong</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Đã giữ lại</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Chưa thực hiện</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Không được phép ở mức này</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Hiện không khả dụng</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Đặt các điều khiển của thiết bị {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Gỡ thiết bị {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Đưa mọi điều khiển của thiết bị {0} về trạng thái nghỉ</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Đầu ra phím và chuột mà nó cấp bị giữ lại, không đến {0} là chương trình chạy với quyền quản trị</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Đầu ra phím và chuột mà nó cấp bị giữ lại, không đến cửa sổ chạy với quyền quản trị</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Khiến PadForge chạy một chương trình.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Mở một tệp, một thư mục hoặc một trang web.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Khiến PadForge gửi phím hoặc thao tác chuột tới Windows.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Giữ PadForge chạy khi bạn nhấp Đóng hoặc nhấn Alt+F4. Dùng Thoát trong menu khay hệ thống để thoát hẳn.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Giữ PadForge trong vùng thông báo khi bạn thu nhỏ cửa sổ, thay vì trên thanh tác vụ.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Giữ cửa sổ ẩn khi PadForge khởi động. Chương trình vẫn chạy và ánh xạ như thường.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tự động khởi động PadForge khi bạn đăng nhập Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tự động khởi động PadForge khi bạn đăng nhập Windows. Khi mục này bật, PadForge cũng khởi động mà không có lời nhắc của Windows từ một lối tắt, một tập lệnh hoặc chương trình khác.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge chạy từ {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Việc này cần PadForge nằm trong thư mục riêng. Thư mục của nó đang chứa các tệp khác, nên PadForge không thể ngăn các chương trình khác thay đổi nó.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Chuyển PadForge vào thư mục riêng</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Luôn hiện trong khay hệ thống</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Giữ biểu tượng khay luôn hiển thị khi cửa sổ đang mở, để lệnh Thoát trong menu của nó luôn chỉ cách một cú nhấp.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cập nhật</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kiểm tra phiên bản PadForge mới trên GitHub và cài đặt ngay tại đây, đồng thời cập nhật cơ sở dữ liệu tay cầm. PadForge chỉ liên hệ với GitHub (api.github.com, github.com và các máy chủ tải xuống của nó, cùng raw.githubusercontent.com cho cơ sở dữ liệu tay cầm). Dữ liệu duy nhất nó gửi là số phiên bản của chính nó và, với cơ sở dữ liệu tay cầm, thẻ mà GitHub gán cho lần tải trước.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Kiểm tra phiên bản PadForge mới trên GitHub và cài đặt ngay tại đây, đồng thời cập nhật cơ sở dữ liệu tay cầm. PadForge chỉ liên hệ với GitHub (api.github.com, github.com và các máy chủ tải xuống của nó, cùng raw.githubusercontent.com cho cơ sở dữ liệu tay cầm), và địa chỉ bạn đặt trong Tải từ của hàng Cơ sở dữ liệu tay cầm. Dữ liệu duy nhất nó gửi là số phiên bản của chính nó và, với cơ sở dữ liệu tay cầm, thẻ mà máy chủ gán cho lần tải trước.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Tự động kiểm tra cập nhật</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Kiểm tra khi PadForge khởi động và cứ 12 giờ một lần sau đó.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Tự động cài đặt cập nhật</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Cài đặt và khởi động lại</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Ghi chú phát hành</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Cơ sở dữ liệu tay cầm</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cập nhật ngay tải cơ sở dữ liệu tay cầm của cộng đồng (SDL_GameControllerDB) từ GitHub và giữ lại trong tệp thiết lập các ánh xạ mà phiên bản PadForge này còn thiếu. Chúng được dùng ngay. Một ánh xạ mới chỉ được dùng cho tay cầm mà không gì khác nhận là gamepad, chưa được gán và không ở chế độ Buộc dùng chế độ joystick thô (bỏ qua ánh xạ lại tay cầm). Nút đặt lại xóa mọi ánh xạ đã tải. Các hàng của riêng bạn, dưới Thêm, vẫn còn.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Cập nhật ngay tải cơ sở dữ liệu tay cầm của cộng đồng (SDL_GameControllerDB) từ GitHub, hoặc từ địa chỉ đặt trong Thêm, và giữ lại trong tệp thiết lập các ánh xạ mà phiên bản PadForge này còn thiếu. Chúng được dùng ngay. Từ địa chỉ khác, nó chỉ giữ các ánh xạ mới. Một ánh xạ mới chỉ được dùng cho tay cầm mà không gì khác nhận là gamepad, chưa được gán và không ở chế độ Buộc dùng chế độ joystick thô (bỏ qua ánh xạ lại tay cầm). Nút đặt lại xóa mọi ánh xạ đã tải và tải lại từ GitHub. Các hàng của riêng bạn, dưới Thêm, vẫn còn.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Cập nhật ngay</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Đang cập nhật…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Đang kiểm tra cập nhật…</value></data>
@@ -1106,8 +1121,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge đã được cập nhật lên {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Có sẵn: {0} ánh xạ, bản sao cộng đồng ngày {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Có sẵn: {0} ánh xạ, bản sao cộng đồng ngày {1}. Đã tải {2}: {3} hàng mới, {4} đã đổi.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Có sẵn: {1} ánh xạ, bản sao cộng đồng ngày {2}. Đã tải {3} từ {4}: {0} hàng mới.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Có sẵn: {1} ánh xạ, bản sao cộng đồng ngày {2}. Đã tải {3} từ {4}: {0} hàng mới.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Cơ sở dữ liệu cộng đồng không thay đổi kể từ lần cập nhật trước.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Không kết nối được GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Không kết nối được {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge đã từ chối bản tải xuống vì nó không phải cơ sở dữ liệu tay cầm mà PadForge mong đợi. Không có gì thay đổi.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Khởi động thu nhỏ</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Khởi động khi đăng nhập</value></data>
@@ -1278,6 +1296,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Review_CopySummary" xml:space="preserve"><value>Sao chép tóm tắt</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Đã sao chép</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Lưu…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Lưu và đăng</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Lưu và đăng sẽ lưu tệp zip, sao chép tóm tắt, hiện tệp trong Explorer và mở trang của PadForge nơi nhận báo cáo. Hãy dán tóm tắt vào đó và thả tệp lên trang.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Lưu bản ghi</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Tệp zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Chưa lưu. {0}</value></data>
@@ -1638,6 +1658,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Sản phẩm</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Loại</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Khả năng</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Các nút gạt phía sau đang tắt qua USB và Xbox Wireless Adapter. Lý do của SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Các nút gạt phía sau đang tắt qua Bluetooth. Lý do của SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Kết nối</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Pin</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Đường dẫn</value></data>
@@ -3476,6 +3498,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Đã xảy ra lỗi không mong đợi:
 
 {0}
+
+PadForge đã ghi chi tiết vào crash.log cạnh PadForge.exe. Để báo lỗi này, hãy mở một thảo luận tại {2} và thả crash.log lên đó.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(đã ẩn thêm {0} lỗi)</value></data>
@@ -6647,6 +6671,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Đang được dùng. Hàng này là của bạn và thắng cho thiết bị này.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Đã giữ làm của bạn. Nó được dùng khi bộ máy chạy và thiết bị được kết nối.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL không nhận hàng này. Không có gì thay đổi cho thiết bị này.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Chưa giữ. PadForge giữ tối đa {0:N0} hàng của bạn và hiện đã giữ đủ số đó.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Dán một ánh xạ SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Dán một ánh xạ SDL cho {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Tìm một ánh xạ cho {0}</value></data>
@@ -6680,6 +6705,10 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Các hàng được giữ làm của bạn trong PadForge.xml và thắng mọi nguồn khác cho thiết bị của chúng. Xóa, dưới Thêm của hàng Cơ sở dữ liệu tay cầm, sẽ xóa chúng.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} hàng cho Windows. {1} hàng cho hệ thống khác bị bỏ qua.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} hàng cho Windows. {1} hàng cho hệ thống khác bị bỏ qua.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Cả {0:N0} hàng sẽ được thêm. PadForge giữ tối đa {1:N0} hàng của bạn.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Hàng này sẽ được thêm. PadForge giữ tối đa {1:N0} hàng của bạn.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Hiện đang giữ {0:N0} hàng của bạn, nên {1:N0} hàng trong số này sẽ được thêm và {2:N0} hàng sẽ không.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Hiện đang giữ {0:N0} hàng của bạn, nên {1:N0} hàng trong số này sẽ được thêm và {2:N0} hàng sẽ không.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} bị từ chối. Hàng đầu tiên: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Hãy dán một hàng, hoặc nội dung của một tệp gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Văn bản này không phải một hàng của cơ sở dữ liệu tay cầm SDL: một ID gồm 32 chữ số hex, một tên, rồi các trường như a:b0.</value></data>
@@ -6692,14 +6721,22 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Hàng ghi một trường hai lần.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Hàng dài quá 1.024 ký tự.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Hàng không gắn điều khiển nào.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Các hàng của bạn</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Nơi nó tải về, các hàng của riêng bạn</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Các hàng của bạn</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Các hàng bạn thêm tại đây, hoặc dán trên thẻ Ánh xạ SDL của một thiết bị, thắng mọi nguồn khác cho thiết bị của chúng và vẫn còn sau khi đặt lại.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Thêm các hàng từ một tệp hoặc bảng nhớ tạm…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} hàng, của bạn, thắng mọi nguồn khác cho thiết bị của chúng.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} hàng, của bạn, thắng mọi nguồn khác cho thiết bị của nó.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} hàng cho {0} thiết bị, của bạn thắng mọi nguồn khác.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} hàng cho {0} thiết bị, của bạn thắng mọi nguồn khác.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Chưa có.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Biến SDL_GAMECONTROLLERCONFIG của bạn chứa {0} hàng mà PadForge không giữ. Thêm các hàng từ một tệp hoặc bảng nhớ tạm mở ra cùng với chúng.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Biến SDL_GAMECONTROLLERCONFIG của bạn chứa {0} hàng mà PadForge không giữ. Thêm các hàng từ một tệp hoặc bảng nhớ tạm mở ra cùng với nó.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Được dùng ngay.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Tải từ</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Chỉ HTTPS. Từ địa chỉ không phải của cộng đồng, PadForge chỉ nhận các hàng mới.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Thay đổi…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Dùng tệp của cộng đồng</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Địa chỉ</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge nhận địa chỉ bắt đầu bằng https:// và nêu tên một máy chủ, ở cổng mặc định, không có tên người dùng hay mật khẩu.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Truy cập PadForge từ web</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Một trợ lý chạy trên một trang web truy cập PadForge qua một chương trình đường hầm trên PC này. Bật mục này sẽ hỏi bạn trước.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Truy cập PadForge từ web?</value></data>
@@ -6742,7 +6779,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Được cho phép {0}, dùng lần cuối {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Được cho phép {0}, chưa dùng.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Thu hồi</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge không tải chương trình đường hầm nào và không giữ khóa của công ty nào khác. Một trợ lý web làm việc ở mức nêu trên.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge chỉ tải một chương trình đường hầm cho ChatGPT Secure MCP Tunnel. Một trợ lý web làm việc ở mức nêu trên.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Cho phép {0} làm việc với PadForge từ web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Đăng nhập của nó quay về {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Nó tự gọi mình là {0}.</value></data>
@@ -6779,6 +6816,97 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID tập lệnh của nó</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Tập lệnh gọi các điều khiển của nó là {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Tập lệnh gọi các phím của nó là KeyA, KeySpace, KeyLeftShift và tương tự, và mọi phím theo mã của nó, Vk0 đến Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} trên mạng này từ {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} hỏi, trên mạng này từ {1}, với khóa bạn tạo hôm nay.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} hỏi, trên mạng này từ {1}, với khóa bạn tạo vào {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Truy cập PadForge từ mạng này</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>Một trợ lý trên PC khác trong mạng này truy cập PadForge bằng khóa bạn tạo ở đây, không cần chương trình đường hầm hay tài khoản bên ngoài. Bật mục này sẽ hỏi bạn trước.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Truy cập PadForge từ mạng này?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>Trình hỗ trợ của PadForge, chạy không có quyền quản trị, lắng nghe trên các địa chỉ mạng của PC này, và PadForge chỉ cho cổng của nó vào trên mạng riêng. Một trợ lý trên PC khác chỉ vào được bằng khóa bạn tạo ở đây. Các cuộc gọi và khóa của chúng đi qua mạng không được mã hóa.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Cổng</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Thay đổi…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Các cuộc gọi và khóa của chúng đi qua mạng này không được mã hóa. Windows chỉ cho chúng vào trên mạng riêng.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Cổng {0} đang được một chương trình khác dùng. Hãy đổi cổng để truy cập PadForge từ mạng này.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows không cho trình hỗ trợ của PadForge lắng nghe trên cổng {0}. PadForge cho phép điều đó khi có quyền quản trị, nên hãy khởi động PadForge với quyền ấy rồi tắt và bật lại mục này.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Trình hỗ trợ của PadForge không lắng nghe được trên cổng {0}. Hãy đổi cổng, hoặc tắt rồi bật lại mục này.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Trình hỗ trợ của PadForge đã dừng ({0}). Hãy tắt rồi bật lại Truy cập PadForge từ mạng này để khởi động lại nó.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Tự động hóa đang tắt, nên không trợ lý nào trên mạng này truy cập được PadForge. Trình hỗ trợ khởi động khi Tự động hóa bật.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>PC này hiện không có địa chỉ trên mạng riêng.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Trợ lý trên mạng này</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Khóa của nó được tạo {1}, dùng lần cuối {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Khóa của nó được tạo {1}, chưa được dùng.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>hôm nay lúc {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>vào {0} lúc {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>lúc {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Mỗi trợ lý có khóa riêng, với một tên và một mức tối đa bằng mức nêu trên. Khóa chỉ hiện một lần. Tạo nó ở đây là sự đồng ý của bạn, nên lần gọi đầu tiên của nó không hỏi gì bạn.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Thêm trợ lý mạng…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Thêm trợ lý mạng</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Đặt tên cho PC kia hoặc trợ lý của nó, và chọn những gì nó được làm. Tiếp theo PadForge tạo khóa của nó.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Tên</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Mức</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Tạo khóa</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Hãy đặt cho nó một tên.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge giữ tối đa {0} khóa mạng. Hãy Thu hồi một khóa trước.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>Khóa cho {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>Khóa chỉ hiện một lần. PadForge chỉ giữ mã băm của nó, nên hãy sao chép ngay. Thu hồi trong Trợ lý trên mạng này sẽ chấm dứt khóa.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Khóa</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>Dành cho</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Máy chủ khác bất kỳ</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Hoặc Máy chủ khác bất kỳ, để lấy địa chỉ và tiêu đề dán vào thiết lập của nó.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>Nội dung cần dán</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Chạy nó trong một terminal trên PC kia.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Thêm một máy chủ MCP qua HTTP trong thiết lập của máy chủ lưu trữ với địa chỉ này và tiêu đề này.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Tiêu đề</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Xong</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Đổi cổng</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Chọn một cổng từ 1024 đến 49151. Địa chỉ đã lưu của mỗi trợ lý có tên cổng, nên hãy thêm lại từng trợ lý sau khi đổi.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Hãy nhập một cổng từ 1024 đến 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Phạm vi</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>Toàn bộ PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Chỉ thiết bị của chính nó và những thiết bị này</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Chọn thiết bị…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Điều khiển thiết bị của chính nó và {0}. Nó vẫn đọc mọi thiết bị.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Chỉ điều khiển thiết bị của chính nó. Nó vẫn đọc mọi thiết bị.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Lệnh từ dòng lệnh vẫn đến được PadForge, như với mọi chương trình.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Nó xin chỉ điều khiển thiết bị của chính nó.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Nó chỉ hỏi một lần. Bạn có thể gỡ nó hoặc đổi phạm vi của nó trên trang Tự động hóa.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Chọn thiết bị</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} được điều khiển thiết bị của chính nó và những thiết bị bạn đánh dấu. Nó vẫn đọc mọi thiết bị.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>Không có thiết bị nào trên trang Thiết bị.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Đang chạy, với quyền của bạn, và đã sẵn sàng. ChatGPT truy cập PadForge qua đường hầm này mà không cần đăng nhập riêng, và chỉ từ tổ chức OpenAI của bạn. Nó khởi động lại cùng PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Đang chạy, với quyền của bạn. Nó chờ OpenAI báo đường hầm đã sẵn sàng.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Đang tải tunnel-client của OpenAI và đối chiếu với tổng kiểm SHA-256 của bản phát hành.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>Không tải được tunnel-client: {0}. Hãy chọn lại đường hầm để thử lại.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Hãy dán khóa chạy và ID đường hầm bên dưới, rồi đường hầm sẽ khởi động.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Khóa chạy</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Bị hạn chế, với Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Tạo một khóa</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>ID đường hầm</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Sau đó hãy thêm đường hầm này trong ChatGPT.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Mở ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge giữ khóa được mã hóa chỉ cho riêng bạn. Để trống ô sẽ xóa khóa. ChatGPT làm việc ở mức nêu trên.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Khóa chưa được giữ: trình hỗ trợ web của PadForge không chạy, và chỉ nó mới mã hóa được khóa cho bạn.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Trả lời từ thiết bị khác</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Trả lời các câu hỏi của PadForge từ điện thoại hoặc PC khác khi bạn không ở chỗ PC này.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Chỉ dùng được trên mạng này, qua địa chỉ của bộ điều khiển web.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Ghép nối thiết bị…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Đã ghép nối {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Trả lời lần cuối {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>hôm nay lúc {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>lúc {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} lúc {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Thiết bị không tên</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Ghép nối thiết bị</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Mã để quét bằng camera của thiết bị</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Được ẩn khỏi ảnh chụp màn hình, nên chỉ bạn quét được.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Hoặc mở {0} trên thiết bị và nhập mã này:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Mã dùng được một lần, đến {0}. Nhập sai năm lần thì mã đóng lại, còn mã QR vẫn dùng được.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Đang khởi động địa chỉ của bộ điều khiển web…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Không mở được trang: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows không ẩn cửa sổ này khỏi ảnh chụp màn hình, nên nó không hiện mã.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Mã đã nhập bị đóng sau năm lần sai. Mã QR vẫn dùng được đến {0}.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Mã đã hết hạn. Ghép nối thiết bị… sẽ tạo mã mới.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge giữ tối đa {0} khóa mạng. Hãy Thu hồi nó trước.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Màu được gửi thẳng đến {0}. Các màu thay đổi, như màu chuyển vòng hoặc màu theo âm thanh, sẽ không đến được thiết bị. Màu giữ nguyên thì vẫn đến.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Tất cả tệp (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Hồ sơ PadForge (*{0})|*{0}</value></data>

@@ -671,6 +671,8 @@
 
 {0}
 
+PadForge yalemba zambiri mu crash.log pafupi ndi PadForge.exe. Kuti munene vutoli, yambitsani zokambirana pa {2} ndipo ikanipo crash.log.
+
 {1}</value></data>
 
   <!-- ═══ Polling Frequency ═══ -->
@@ -1553,7 +1555,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} yalumikizidwa, batire {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Zipangizo {0} zachotsedwa: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Zipangizo {0} zalumikizidwa: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ikuchotsedwa mobwerezabwereza</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} yachotsedwa kangapo mu mphindi imodzi: {1}</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} yabwerera</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Zipangizo {0} zabwerera: {1}</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Othandizira</value></data>
   <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Onjezani imaika PadForge, pamodzi ndi luso lake, mu wothandizira ameneyo. Kenako amagwira ntchito pa mlingo womwe uli pamwambapa, ndipo mawu ake amaonekera pambali pa zomwe akuloza, pansi pa dzina lake.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Masikiripiti</value></data>
@@ -1574,6 +1578,7 @@
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Sankhani pulagini kuti muone zolemba zake.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Palibe chilichonse mu zolemba za pulaginiyi pano.</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Zachitika</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Zaimitsidwa</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Sizinachitike</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Sizololedwa pa mlingo uwu</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Sizikupezeka pano</value></data>
@@ -1646,6 +1651,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Khazikitsani zowongolera za chipangizo {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Chotsani chipangizo {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Ikani chowongolera chilichonse cha chipangizo {0} popuma</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Zotulutsa za kiyibodi ndi mbewa zomwe imapereka zaimitsidwa kuti zisafike ku {0}, yomwe imayenda ngati woyang'anira</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Zotulutsa za kiyibodi ndi mbewa zomwe imapereka zaimitsidwa kuti zisafike pa zenera lomwe limayenda ngati woyang'anira</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Imapangitsa PadForge kuyendetsa pulogalamu.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Imatsegula fayilo, foda kapena tsamba la intaneti.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Imapangitsa PadForge kutumiza makiyi kapena zochita za mbewa ku Windows.</value></data>
@@ -1733,11 +1740,13 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ndi zina {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} mwa {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ngati palibe yankho mkati mwa {0}, ndiye kuti ayi.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Sinthani tsopano imatsitsa nkhokwe ya makontrola ya anthu onse (SDL_GameControllerDB) kuchokera ku GitHub ndikusunga, mu fayilo ya zokonda, mapu omwe mtundu uwu wa PadForge ulibe. Mapuwo amagwiritsidwa ntchito nthawi yomweyo. Mapu atsopano amagwiritsidwa ntchito pa kontrola yokha yomwe palibe china chimaiwerenga ngati gamepad, yomwe sinaperekedwe ndipo yomwe siili mu Force Raw Joystick Mode. Kubwezeretsa kumachotsa mapu onse otsitsidwa. Mizere yanu, pansi pa More, imakhalabe.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Sinthani tsopano imatsitsa nkhokwe ya makontrola ya anthu onse (SDL_GameControllerDB) kuchokera ku GitHub, kapena kuchokera ku adilesi yokhazikitsidwa pansi pa More, ndikusunga, mu fayilo ya zokonda, mapu omwe mtundu uwu wa PadForge ulibe. Mapuwo amagwiritsidwa ntchito nthawi yomweyo. Kuchokera ku adilesi ina imasunga mapu atsopano okha. Mapu atsopano amagwiritsidwa ntchito pa kontrola yokha yomwe palibe china chimaiwerenga ngati gamepad, yomwe sinaperekedwe ndipo yomwe siili mu Force Raw Joystick Mode. Kubwezeretsa kumachotsa mapu onse otsitsidwa ndikutsitsanso kuchokera ku GitHub. Mizere yanu, pansi pa More, imakhalabe.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Sinthani tsopano</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ikusintha…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Zomangidwa mkati: mapu {0}, kope la anthu onse la {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Zomangidwa mkati: mapu {0}, kope la anthu onse la {1}. Zatsitsidwa {2}: mizere yatsopano {3}, yosinthidwa {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Zomangidwa mkati: mapu {1}, kope la anthu onse la {2}. Zatsitsidwa {3} kuchokera ku {4}: mizere yatsopano {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Zomangidwa mkati: mapu {1}, kope la anthu onse la {2}. Zatsitsidwa {3} kuchokera ku {4}: mzere watsopano {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Nkhokwe ya anthu onse sinasinthe kuyambira pomwe inasinthidwa komaliza.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Kuyenda kwa mbewa X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Kuyenda kwa mbewa Y</value></data>
@@ -1897,6 +1906,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ukugwiritsidwa ntchito tsopano. Mzere ndi wanu ndipo umatsogola pa chipangizo ichi.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wasungidwa ngati wanu. Umagwiritsidwa ntchito injini ikayamba kuyenda ndipo chipangizo chikalumikizidwa.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL sinalandire mzere. Palibe chomwe chasintha pa chipangizo ichi.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Sunasungidwe. PadForge imasunga mizere yanu yokwana {0:N0} ndipo tsopano ili nayo yonseyo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Matani Mapu a SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Matani Mapu a SDL a {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Pezani mapu a {0}</value></data>
@@ -1930,6 +1940,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Mizere imasungidwa ngati yanu mu PadForge.xml ndipo imatsogola pa magwero ena onse a zipangizo zake. Chotsani, pansi pa More ya mzere wa Controller Database, imaichotsa.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Mizere ya Windows: {0}. Ya machitidwe ena: {1}, yadumphidwa.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Mzere {0} wa Windows. Ya machitidwe ena: {1}, yadumphidwa.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Yonse {0:N0} idzawonjezedwa. PadForge imasunga mizere yanu yokwana {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Udzawonjezedwa. PadForge imasunga mizere yanu yokwana {1:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Mizere yanu yosungidwa tsopano: {0:N0}. Choncho yowonjezedwa mwa iyi: {1:N0}, yosawonjezedwa: {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Mzere wanu {0:N0} wasungidwa tsopano. Choncho yowonjezedwa mwa iyi: {1:N0}, yosawonjezedwa: {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Yokanidwa: {0}. Woyamba: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Matani mzere, kapena mawu a fayilo ya gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Mawuwa si mzere wa nkhokwe ya makontrola ya SDL: ID ya manambala a hex 32, dzina, kenako magawo monga a:b0.</value></data>
@@ -1942,11 +1956,13 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Mzere umapereka gawo limodzi kawiri.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Mzere ndi woposa zilembo 1,024.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Mzere sulumikiza chowongolera chilichonse.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Mizere yanu</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Kumene imatsitsa kuchokera, mizere yanu</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Mizere yanu</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Mizere yomwe mwaonjeza pano, kapena mwamata pa khadi la Mapu a SDL la chipangizo, imatsogola pa zipangizo zake kuposa magwero ena onse ndipo imakhalabe pambuyo pobwezeretsa.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Onjezani mizere kuchokera ku fayilo kapena clipboard…</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ikugwiritsidwa ntchito nthawi yomweyo.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Tsitsani kuchokera ku</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS yokha. Kuchokera ku adilesi yomwe si ya anthu onse, PadForge imatenga mizere yatsopano yokha.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Yatsani</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Othandizira pa intaneti</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Ngalande</value></data>
@@ -1985,7 +2001,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Yaloledwa {0}, yagwiritsidwa ntchito komaliza {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Yaloledwa {0}, sinagwiritsidwe ntchito pano.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Chotsani chilolezo</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge sitsitsa pulogalamu ya ngalande ndipo sisunga kiyi ya kampani ina. Wothandizira wa pa intaneti amagwira ntchito pa mlingo womwe uli pamwambapa.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge imatsitsa pulogalamu ya ngalande pa ChatGPT Secure MCP Tunnel yokha. Wothandizira wa pa intaneti amagwira ntchito pa mlingo womwe uli pamwambapa.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Kulowa kwake kumabwerera ku {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Imadzitcha {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Lolani pokhapokha ngati tsamba lake lolowera likuonetsa khodi iyi:</value></data>
@@ -2020,4 +2036,32 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID yake ya sikiripiti</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Masikiripiti amatcha zowongolera zake {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Masikiripiti amatcha makiyi ake KeyA, KeySpace, KeyLeftShift ndi zina zotero, ndipo kiyi iliyonse ndi khodi yake, Vk0 mpaka Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} pa netiweki iyi kuchokera ku {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Onetsani mu foda</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adilesi</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge imatenga adilesi yoyamba ndi https:// yotchula wolandira, pa doko lokhazikika, yopanda dzina la wogwiritsa ntchito kapena mawu achinsinsi.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Doko</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Sinthani…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Mafoni ndi kiyi yawo amadutsa netiweki iyi osabisidwa. Windows imawalola pa manetiweki achinsinsi okha.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Doko {0} likugwiritsidwa ntchito ndi pulogalamu ina. Lisintheni kuti mufike pa PadForge kuchokera pa netiweki iyi.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows sinalole chothandizira cha PadForge kumvetsera pa doko {0}. PadForge imalola zimenezi ndi ufulu wa woyang'anira, choncho yambitsani PadForge ndi ufuluwo ndipo zimitsani ndi kuyatsanso izi.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>Chothandizira cha PadForge sichinathe kumvetsera pa doko {0}. Sinthani doko, kapena zimitsani ndi kuyatsanso izi.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Chothandizira cha PadForge chaima ({0}). Zimitsani ndi kuyatsanso Reach PadForge From This Network kuti chiyambenso.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automation yazimitsidwa, kotero palibe wothandizira pa netiweki iyi amene amafika pa PadForge. Chothandizira chimayamba Automation ikayatsidwa.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>PC iyi ilibe adilesi pa netiweki yachinsinsi pano.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Othandizira pa netiweki iyi</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Kiyi yake inapangidwa {1}, yagwiritsidwa ntchito komaliza {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Kiyi yake inapangidwa {1}, sinagwiritsidwebe ntchito.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Pangani kiyi</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Mutu</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Zachitika</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Sinthani doko</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Sankhani doko kuyambira 1024 mpaka 49151. Adilesi yosungidwa ya wothandizira aliyense imatchula doko, choncho onjezaninso aliyense mukasintha.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Lembani doko kuyambira 1024 mpaka 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Imayendetsa zipangizo zake komanso {0}. Imawerengabe chipangizo chilichonse.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Imayendetsa zipangizo zake zokha. Imawerengabe chipangizo chilichonse.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Malamulo ochokera pa mzere wa malamulo amafikabe pa PadForge, monga momwe amachitira pa pulogalamu iliyonse.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Ikuyenda, ndi ufulu wanu, ndipo ndi yokonzeka. ChatGPT imafika pa PadForge kudzera mu ngalande iyi popanda kulowa kwake, ndipo kuchokera ku bungwe lanu la OpenAI lokha. Imayambanso ndi PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Ikuyenda, ndi ufulu wanu. Ikudikira OpenAI kunena kuti ngalande ndi yokonzeka.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge imasunga kiyi yobisidwa kwa inu nokha. Bokosi lopanda kanthu limaiwala. ChatGPT imagwira ntchito pa mlingo womwe uli pamwambapa.</value></data>
 </root>

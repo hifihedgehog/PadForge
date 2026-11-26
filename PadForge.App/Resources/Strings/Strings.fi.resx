@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} yhdistetty, akku {1} %</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} laitetta: yhteys katkesi: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} laitetta yhdistetty: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0}: yhteys katkeaa toistuvasti</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} katkesi {1} kertaa minuutissa</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} on takaisin</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} laitetta on takaisin: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (enint. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (enint. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (enint. {0})</value></data>
@@ -450,7 +452,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automaattinen uudelleenyhdistys, portti, pariliitoksen tunniste, yhdistäminen osoitteella</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Portti, DSX.exe-korvike</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portit, Täysi nopeus, Mukautetut formaatit</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Muut avustajat, verkon avustajat</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Muut avustajat, verkon avustajat ja tämän verkon avustajat</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Katso ympärillesi päänseurantalaitteella tai VR-laseilla, kun molemmat peukalot pysyvät painikkeilla.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Kohdista ajopelin lähettämät nopeus, polkimet ja vaihteet kuten mikä tahansa syöte.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Lähetä ohjaimen liike emulaattoreille, jotka lukevat DSU-liikelähdettä.</value></data>
@@ -614,6 +616,10 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Lisää laajennus…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Ohjelmat ja skriptit|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Kaikki tiedostot|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Hyväksy ja käynnistä uudelleen…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Näytä kansiossa</value></data>
+  <data name="Plugins_Trust" xml:space="preserve"><value>Luota tämän allekirjoittajan uusiin versioihin</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Uusi versio, joka on allekirjoitettu tahon {0} samalla varmenneavaimella, käynnistyy uudelleen ilman kohtaa Hyväksy ja käynnistä uudelleen. Mikä tahansa muu muutos kysyy ensin sinulta.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Otettiin käyttöön uusi versio, joka oli allekirjoitettu samalla varmenneavaimella</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Käynnistyy moottorin mukana</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Tarkistetaan tiedostoa ennen käynnistystä</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Päättyi koodilla {0}. Käynnistyy uudelleen {1} s kuluttua.</value></data>
@@ -653,6 +659,12 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ei allekirjoitettu.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Sen asetukset näkyvät tässä, kun se on käynnissä.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>Se ei ilmoita asetuksia.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Sen asetukset näkyvät tässä, kun se yhdistää PadForge-sovellukseen.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>Käynnistyi mutta ei koskaan yhdistänyt PadForge-sovellukseen. Se käynnistyy uudelleen {0} sekunnin kuluttua.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>Käynnistyi mutta ei koskaan yhdistänyt PadForge-sovellukseen. Se käynnistyy uudelleen {0} sekunnin kuluttua.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} käynnistyi mutta ei koskaan yhdistänyt PadForge-sovellukseen.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Päättyi minuutin kuluttua käynnistyksestä, ei koskaan yhdistänyt PadForge-sovellukseen</value></data>
+  <data name="Plugins_Setting_Changed" xml:space="preserve"><value>Muutettu</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge ei voinut lukea sen asetuksia: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Päätettiin minuutin hiljaisuuden jälkeen</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Sen tiedosto muuttui, kun se oli käynnissä</value></data>
@@ -723,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, allekirjoittaja {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ei allekirjoitettu</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Tehty</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Pidätetty</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Ei tehty</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Ei sallittu tällä tasolla</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Ei käytettävissä nyt</value></data>
@@ -795,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Aseta laitteen {0} ohjauselementit</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Poista laite {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Aseta laitteen {0} kaikki ohjauselementit lepoasentoon</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Sen syöttämä näppäin- ja hiirituloste pidätetään ohjelmalta {0}, joka toimii järjestelmänvalvojana</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Sen syöttämä näppäin- ja hiirituloste pidätetään ikkunalta, joka toimii järjestelmänvalvojana</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Saa PadForge-sovelluksen käynnistämään ohjelman.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Avaa tiedoston, kansion tai verkkosivun.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Saa PadForge-sovelluksen lähettämään näppäinsyötteitä tai hiirisyötteitä Windowsille.</value></data>
@@ -1051,7 +1066,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Pidä PadForge käynnissä, kun valitset Sulje tai painat Alt+F4. Lopeta ohjelma ilmaisinalueen valikon Lopeta-komennolla.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Pidä PadForge ilmaisinalueella tehtäväpalkin sijaan, kun pienennät ikkunan.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Pidä ikkuna piilossa, kun PadForge käynnistyy. Ohjelma toimii ja tekee määritykset tavalliseen tapaan.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Käynnistä PadForge automaattisesti, kun kirjaudut Windowsiin.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Käynnistä PadForge automaattisesti, kun kirjaudut Windowsiin. Kun tämä on päällä, PadForge käynnistyy myös ilman Windowsin kehotetta pikakuvakkeesta, komentosarjasta tai toisesta ohjelmasta.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge suoritetaan sijainnista {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tämä vaatii, että PadForge on omassa kansiossaan. Sen kansiossa on muita tiedostoja, joten PadForge ei voi estää muita ohjelmia muuttamasta sitä.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Siirrä PadForge omaan kansioonsa</value></data>
@@ -1065,7 +1080,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Näytä aina ilmaisinalueella</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pidä ilmaisinalueen kuvake näkyvissä myös ikkunan ollessa auki, jotta sen valikon Lopeta-komento on aina yhden napsautuksen päässä.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Päivitykset</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Tarkista PadForge-sovelluksen uudet versiot GitHub-palvelusta ja asenna ne täältä sekä päivitä ohjainten tietokanta. PadForge ottaa yhteyttä vain GitHub-palveluun (api.github.com, github.com ja sen latauspalvelimet sekä raw.githubusercontent.com ohjainten tietokantaa varten). Ainoa tieto, jonka se lähettää, on sen oma versionumero ja ohjainten tietokannan osalta tunniste, jonka GitHub antoi viimeiselle lataukselle.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Tarkista PadForge-sovelluksen uudet versiot GitHub-palvelusta ja asenna ne täältä sekä päivitä ohjainten tietokanta. PadForge ottaa yhteyttä vain GitHub-palveluun (api.github.com, github.com ja sen latauspalvelimet sekä raw.githubusercontent.com ohjainten tietokantaa varten) ja osoitteeseen, jonka asetat Ohjainten tietokanta -rivin kohdassa Lataa osoitteesta. Ainoa tieto, jonka se lähettää, on sen oma versionumero ja ohjainten tietokannan osalta tunniste, jonka palvelin antoi viimeiselle lataukselle.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Tarkista päivitykset automaattisesti</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Tarkistaa PadForge-sovelluksen käynnistyessä ja sen jälkeen 12 tunnin välein.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Asenna päivitykset automaattisesti</value></data>
@@ -1076,7 +1091,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Asenna ja käynnistä uudelleen</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Julkaisutiedot</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ohjainten tietokanta</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Päivitä nyt lataa yhteisön ohjainten tietokannan (SDL_GameControllerDB) GitHub-palvelusta ja säilyttää asetustiedostossa ne määritykset, joita tästä PadForge-versiosta puuttuu. Ne ovat käytössä heti. Uutta määritystä käytetään vain ohjaimelle, jota mikään muu ei lue peliohjaimena, jota ei ole liitetty ja joka ei ole tilassa Pakota raaka ohjaussauvatila (ohita peliohjaimen uudelleenmääritys). Palautus poistaa kaikki ladatut määritykset. Omat rivisi, kohdassa Lisää, säilyvät.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Päivitä nyt lataa yhteisön ohjainten tietokannan (SDL_GameControllerDB) GitHub-palvelusta tai kohdassa Lisää asetetusta osoitteesta ja säilyttää asetustiedostossa ne määritykset, joita tästä PadForge-versiosta puuttuu. Ne ovat käytössä heti. Toisesta osoitteesta se ottaa vain uudet määritykset. Uutta määritystä käytetään vain ohjaimelle, jota mikään muu ei lue peliohjaimena, jota ei ole liitetty ja joka ei ole tilassa Pakota raaka ohjaussauvatila (ohita peliohjaimen uudelleenmääritys). Palautus poistaa kaikki ladatut määritykset ja lataa uudelleen GitHub-palvelusta. Omat rivisi, kohdassa Lisää, säilyvät.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Päivitä nyt</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Päivitetään…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Tarkistetaan päivityksiä…</value></data>
@@ -1106,8 +1121,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge päivitettiin versioon {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Sisäänrakennettu: {0} määritystä, yhteisön kopio päivämäärältä {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Sisäänrakennettu: {0} määritystä, yhteisön kopio päivämäärältä {1}. Ladattu {2}: uusia rivejä {3}, muuttuneita {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Sisäänrakennettu: {1} määritystä, yhteisön kopio päivämäärältä {2}. Ladattu {3} osoitteesta {4}: uusia rivejä {0}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Sisäänrakennettu: {1} määritystä, yhteisön kopio päivämäärältä {2}. Ladattu {3} osoitteesta {4}: uusia rivejä {0}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Yhteisön tietokanta ei ole muuttunut viime päivityksen jälkeen.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-palveluun ei saatu yhteyttä: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>Osoitteeseen {0} ei saatu yhteyttä: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge hylkäsi latauksen, koska se ei ole ohjainten tietokanta, jota se odottaa. Mikään ei muuttunut.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Käynnistä pienennettynä</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Käynnistä kirjauduttaessa</value></data>
@@ -1278,6 +1296,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Kopioi yhteenveto</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Kopioitu</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Tallenna…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Tallenna ja julkaise</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Tallenna ja julkaise tallentaa zip-tiedoston, kopioi yhteenvedon, näyttää tiedoston Explorerissa ja avaa PadForge-sovelluksen sivun, jonne raportit kuuluvat. Liitä yhteenveto sinne ja pudota tiedosto sen päälle.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Tallenna tallenne</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-tiedostot</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ei tallennettu. {0}</value></data>
@@ -1638,6 +1658,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Tuote</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Tyyppi</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Ominaisuudet</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Takapaddlet ovat pois käytöstä USB:n ja Xbox Wireless Adapterin kautta. SDL:n syy: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Takapaddlet ovat pois käytöstä Bluetoothin kautta. SDL:n syy: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Yhteys</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Akku</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Polku</value></data>
@@ -3476,6 +3498,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>Tapahtui odottamaton virhe:
 
 {0}
+
+PadForge kirjoitti tiedot tiedostoon crash.log PadForge.exe-tiedoston viereen. Ilmoita tästä aloittamalla keskustelu osoitteessa {2} ja pudottamalla crash.log siihen.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(lisävirheitä piilotettu: {0})</value></data>
@@ -6647,6 +6671,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Käytössä nyt. Rivi on sinun ja ohittaa muut tälle laitteelle.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Säilytetty omanasi. Se on käytössä, kun moottori on käynnissä ja laite yhdistetty.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ei ottanut riviä. Tälle laitteelle ei muuttunut mikään.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Ei säilytetty. PadForge säilyttää enintään {0:N0} omaa riviäsi, ja niitä on nyt juuri niin monta.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Liitä SDL-määritys</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Liitä SDL-määritys laitteelle {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Etsi määritys laitteelle {0}</value></data>
@@ -6680,6 +6705,10 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rivit säilytetään omina rivinäsi PadForge.xml-tiedostossa, ja ne ohittavat kaikki muut lähteet laitteilleen. Tyhjennä, Ohjainten tietokanta -rivin kohdassa Lisää, poistaa ne.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} riviä Windowsille. {1} muille järjestelmille ohitetaan.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rivi Windowsille. {1} muille järjestelmille ohitetaan.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>Kaikki {0:N0} lisätään. PadForge säilyttää enintään {1:N0} omaa riviäsi.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>Se lisätään. PadForge säilyttää enintään {1:N0} omaa riviäsi.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Omia rivejäsi säilytetään nyt: {0:N0}. Näistä lisätään {1:N0} ja jätetään lisäämättä {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Omia rivejäsi säilytetään nyt: {0:N0}. Näistä lisätään {1:N0} ja jätetään lisäämättä {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} hylättiin. Ensimmäinen: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Liitä rivi tai gamecontrollerdb.txt-tiedoston teksti.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teksti ei ole SDL:n ohjaintietokannan rivi: 32 heksadesimaalinumeron tunniste, nimi ja sitten kenttiä, kuten a:b0.</value></data>
@@ -6692,14 +6721,22 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Rivi antaa saman kentän kahdesti.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Rivi on yli 1 024 merkkiä pitkä.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Rivi ei sido yhtään ohjauselementtiä.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Omat rivisi</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Mistä se lataa, omat rivisi</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Omat rivisi</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Tähän lisäämäsi tai laitteen SDL-määritys-kortille liittämäsi rivit ohittavat kaikki muut lähteet laitteilleen ja säilyvät palautuksen yli.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Lisää rivejä tiedostosta tai leikepöydältä…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} riviä, sinun, ohittavat kaikki muut lähteet laitteilleen.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rivi, sinun, ohittaa kaikki muut lähteet laitteelleen.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} riviä, yksi laitetta kohden, sinun, ohittavat kaikki muut lähteet.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rivi, yhdelle laitteelle, sinun, ohittaa kaikki muut lähteet.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ei vielä yhtään.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Muuttujassasi SDL_GAMECONTROLLERCONFIG on {0} riviä, joita PadForge ei säilytä. Lisää rivejä tiedostosta tai leikepöydältä avautuu niiden kanssa.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Muuttujassasi SDL_GAMECONTROLLERCONFIG on {0} rivi, jota PadForge ei säilytä. Lisää rivejä tiedostosta tai leikepöydältä avautuu sen kanssa.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Käytössä heti.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Lataa osoitteesta</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Vain HTTPS. Muusta kuin yhteisön osoitteesta PadForge ottaa vain uudet rivit.</value></data>
+  <data name="ControllerDatabase_DownloadFromChange" xml:space="preserve"><value>Muuta…</value></data>
+  <data name="ControllerDatabase_UseCommunityFile" xml:space="preserve"><value>Käytä yhteisön tiedostoa</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Osoite</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge hyväksyy osoitteen, joka alkaa https://, nimeää isännän, käyttää oletusporttia eikä sisällä käyttäjänimeä tai salasanaa.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Tavoita PadForge verkosta</value></data>
   <data name="Web_Reach_Hint" xml:space="preserve"><value>Verkkosivustolla toimiva avustaja tavoittaa PadForge-sovelluksen tässä tietokoneessa olevan tunneliohjelman kautta. Tämän kytkeminen päälle kysyy ensin sinulta.</value></data>
   <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Tavoitetaanko PadForge verkosta?</value></data>
@@ -6742,7 +6779,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Sallittu {0}, viimeksi käytetty {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Sallittu {0}, ei vielä käytetty.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Peruuta lupa</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ei lataa tunneliohjelmaa eikä säilytä toisen yrityksen avainta. Verkkoavustaja toimii yllä olevalla tasolla.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge lataa tunneliohjelman vain ChatGPT Secure MCP Tunnelia varten. Verkkoavustaja toimii yllä olevalla tasolla.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Sallitaanko, että {0} toimii PadForge-sovelluksen kanssa verkosta?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sen kirjautuminen palaa osoitteeseen {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Se kutsuu itseään nimellä {0}.</value></data>
@@ -6779,6 +6816,97 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Sen skriptin tunniste</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skriptit nimeävät sen ohjauselementit {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skriptit nimeävät sen näppäimet KeyA, KeySpace, KeyLeftShift ja vastaavasti, ja jokaisen näppäimen koodillaan, Vk0 … Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} tässä verkossa osoitteesta {1}</value></data>
+  <data name="Net_Asks_Today_Format" xml:space="preserve"><value>{0} kysyy tässä verkossa osoitteesta {1} tänään tekemälläsi avaimella.</value></data>
+  <data name="Net_Asks_Format" xml:space="preserve"><value>{0} kysyy tässä verkossa osoitteesta {1} avaimella, jonka teit {2}.</value></data>
+  <data name="Net_Reach_Label" xml:space="preserve"><value>Tavoita PadForge tästä verkosta</value></data>
+  <data name="Net_Reach_Hint" xml:space="preserve"><value>Toisen tietokoneen avustaja tässä verkossa tavoittaa PadForge-sovelluksen tässä luomallasi avaimella ilman tunneliohjelmaa tai ulkopuolista tiliä. Tämän kytkeminen päälle kysyy ensin sinulta.</value></data>
+  <data name="Net_Reach_Ask_Title" xml:space="preserve"><value>Tavoitetaanko PadForge tästä verkosta?</value></data>
+  <data name="Net_Reach_Ask_Body" xml:space="preserve"><value>PadForge-sovelluksen apuohjelma, joka toimii ilman järjestelmänvalvojan oikeuksia, kuuntelee tämän tietokoneen verkko-osoitteita, ja PadForge päästää sen portin läpi vain yksityisissä verkoissa. Toisen tietokoneen avustaja pääsee sisään vain tässä luomallasi avaimella. Kutsut ja niiden avain kulkevat verkossa salaamattomina.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Portti</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Muuta…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Kutsut ja niiden avain kulkevat tässä verkossa salaamattomina. Windows päästää ne läpi vain yksityisissä verkoissa.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Portti {0} on toisen ohjelman käytössä. Vaihda se, jos haluat tavoittaa PadForge-sovelluksen tästä verkosta.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows ei sallinut PadForge-sovelluksen apuohjelman kuunnella porttia {0}. PadForge sallii sen järjestelmänvalvojan oikeuksilla, joten käynnistä PadForge niillä ja kytke tämä pois ja päälle.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>PadForge-sovelluksen apuohjelma ei voinut kuunnella porttia {0}. Vaihda portti tai kytke tämä pois ja päälle.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-sovelluksen apuohjelma pysähtyi ({0}). Käynnistä se uudelleen kytkemällä Tavoita PadForge tästä verkosta pois ja päälle.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automaatio on pois päältä, joten mikään tämän verkon avustaja ei tavoita PadForge-sovellusta. Apuohjelma käynnistyy, kun Automaatio on päällä.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Tällä tietokoneella ei ole nyt osoitetta yksityisessä verkossa.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Avustajat tässä verkossa</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Sen avain luotiin {1}, viimeksi käytetty {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Sen avain luotiin {1}, ei vielä käytetty.</value></data>
+  <data name="Net_When_Today_Format" xml:space="preserve"><value>tänään klo {0}</value></data>
+  <data name="Net_When_Day_Format" xml:space="preserve"><value>{0} klo {1}</value></data>
+  <data name="Net_When_Time_Format" xml:space="preserve"><value>klo {0}</value></data>
+  <data name="Net_Keys_Hint" xml:space="preserve"><value>Jokainen avustaja saa oman avaimensa, jolla on nimi ja taso enintään yllä olevaan asti. Avain näkyy vain kerran. Sen luominen tässä on suostumuksesi, joten sen ensimmäinen kutsu ei kysy sinulta mitään.</value></data>
+  <data name="Net_Add" xml:space="preserve"><value>Lisää verkkoavustaja…</value></data>
+  <data name="Net_Add_Title" xml:space="preserve"><value>Lisää verkkoavustaja</value></data>
+  <data name="Net_Add_Subtitle" xml:space="preserve"><value>Anna toiselle tietokoneelle tai sen avustajalle nimi ja valitse, mitä se saa tehdä. PadForge luo sen avaimen seuraavaksi.</value></data>
+  <data name="Net_Add_Name" xml:space="preserve"><value>Nimi</value></data>
+  <data name="Net_Add_Level" xml:space="preserve"><value>Taso</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Luo avain</value></data>
+  <data name="Net_Add_NoName" xml:space="preserve"><value>Anna sille nimi.</value></data>
+  <data name="Net_Add_Full_Format" xml:space="preserve"><value>PadForge säilyttää enintään {0} verkkoavainta. Peruuta ensin lupa yhdeltä.</value></data>
+  <data name="Net_Key_Title_Format" xml:space="preserve"><value>Avain: {0}</value></data>
+  <data name="Net_Key_Subtitle" xml:space="preserve"><value>Se näkyy vain kerran. PadForge säilyttää vain sen tiivisteen, joten kopioi se nyt. Peruuta lupa kohdassa Avustajat tässä verkossa päättää sen.</value></data>
+  <data name="Net_Key_Label" xml:space="preserve"><value>Avain</value></data>
+  <data name="Net_Key_For" xml:space="preserve"><value>Kohde</value></data>
+  <data name="Net_Key_Other" xml:space="preserve"><value>Mikä tahansa muu isäntä</value></data>
+  <data name="Net_Key_ForHint" xml:space="preserve"><value>Tai Mikä tahansa muu isäntä, jos haluat osoitteen ja otsikon liitettäväksi sen asetuksiin.</value></data>
+  <data name="Net_Key_Line_Label" xml:space="preserve"><value>Liitettävä teksti</value></data>
+  <data name="Net_Key_RunHint" xml:space="preserve"><value>Suorita se päätteessä toisella tietokoneella.</value></data>
+  <data name="Net_Key_OtherHint" xml:space="preserve"><value>Lisää isännän asetuksiin MCP-palvelin HTTP:n yli tällä osoitteella ja tällä otsikolla.</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Otsikko</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Valmis</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Vaihda portti</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Valitse portti väliltä 1024 ja 49151. Jokaisen avustajan tallennettu osoite sisältää portin, joten lisää jokainen uudelleen muutoksen jälkeen.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Kirjoita portti väliltä 1024 ja 49151.</value></data>
+  <data name="Reach_Label" xml:space="preserve"><value>Ulottuvuus</value></data>
+  <data name="Reach_All" xml:space="preserve"><value>Koko PadForge</value></data>
+  <data name="Reach_Own" xml:space="preserve"><value>Vain omat laitteet ja nämä</value></data>
+  <data name="Reach_Pick" xml:space="preserve"><value>Valitse laitteet…</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Ohjaa omia laitteitaan ja {0}. Se lukee silti kaikkia laitteita.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Ohjaa vain omia laitteitaan. Se lukee silti kaikkia laitteita.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Komentorivin komennot tavoittavat PadForge-sovelluksen edelleen, kuten kaikilla ohjelmilla.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Se pyytää lupaa ohjata vain omia laitteitaan.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Se kysyy vain kerran. Voit poistaa sen tai muuttaa sen ulottuvuutta Automaatio-sivulla.</value></data>
+  <data name="Reach_Pick_Title" xml:space="preserve"><value>Valitse laitteet</value></data>
+  <data name="Reach_Pick_Subtitle_Format" xml:space="preserve"><value>{0} saa ohjata omia laitteitaan ja rastittamiasi laitteita. Se lukee silti kaikkia laitteita.</value></data>
+  <data name="Reach_Pick_None" xml:space="preserve"><value>Laitteet-sivulla ei ole laitteita.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>Käynnissä, sinun oikeuksillasi, ja valmis. ChatGPT tavoittaa PadForge-sovelluksen tämän tunnelin kautta ilman omaa kirjautumista ja vain OpenAI-organisaatiostasi. Se käynnistyy uudelleen PadForge-sovelluksen mukana.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>Käynnissä, sinun oikeuksillasi. Se odottaa, että OpenAI ilmoittaa tunnelin olevan valmis.</value></data>
+  <data name="Web_ChatGpt_Downloading" xml:space="preserve"><value>Ladataan OpenAI:n tunnel-client-ohjelmaa ja tarkistetaan se julkaisun SHA-256-summia vasten.</value></data>
+  <data name="Web_ChatGpt_DownloadFailed_Format" xml:space="preserve"><value>Ohjelmaa tunnel-client ei voitu ladata: {0}. Valitse tunneli uudelleen yrittääksesi uudelleen.</value></data>
+  <data name="Web_ChatGpt_Needs" xml:space="preserve"><value>Liitä alle ajoavain ja tunnelin tunnus, niin tunneli käynnistyy.</value></data>
+  <data name="Web_ChatGpt_KeyLabel" xml:space="preserve"><value>Ajoavain</value></data>
+  <data name="Web_ChatGpt_KeyHint" xml:space="preserve"><value>Rajoitettu, oikeuksilla Tunnels Read and Use.</value></data>
+  <data name="Web_ChatGpt_MakeOne" xml:space="preserve"><value>Luo yksi</value></data>
+  <data name="Web_ChatGpt_IdLabel" xml:space="preserve"><value>Tunnelin tunnus</value></data>
+  <data name="Web_ChatGpt_Then" xml:space="preserve"><value>Lisää sitten tämä tunneli ChatGPT:ssä.</value></data>
+  <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Avaa ChatGPT</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge säilyttää avaimen salattuna vain sinua varten. Tyhjä kenttä unohtaa sen. ChatGPT toimii yllä olevalla tasolla.</value></data>
+  <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>Avainta ei säilytetty: PadForge-sovelluksen verkkoapuohjelma ei ole käynnissä, ja vain se voi salata avaimen sinua varten.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Vastaa toiselta laitteelta</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Vastaa PadForge-sovelluksen kysymyksiin puhelimesta tai toiselta tietokoneelta, kun et ole tämän ääressä.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Toimii vain tässä verkossa verkko-ohjaimen osoitteen kautta.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Yhdistä laite…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Yhdistetty {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Viimeksi vastannut {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>tänään klo {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>klo {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} klo {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Nimetön laite</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Yhdistä laite</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Koodi, joka skannataan laitteen kameralla</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Piilotettu ruudunkaappaukselta, joten vain sinä voit skannata sen.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Tai avaa {0} laitteella ja kirjoita tämä koodi:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>Koodi toimii kerran, kello {0} asti. Viisi väärää yritystä sulkee sen, ja QR-koodi toimii silti.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Käynnistetään verkko-ohjaimen osoitetta…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>Sivua ei voi avata: {0}.</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows ei piilottanut tätä ikkunaa ruudunkaappaukselta, joten se ei näytä koodia.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>Kirjoitettu koodi suljettiin viiden väärän yrityksen jälkeen. QR-koodi toimii silti kello {0} asti.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>Koodi vanheni. Yhdistä laite… luo uuden.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge säilyttää enintään {0} verkkoavaimen. Peruuta ensin sen lupa.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Muuttuvat värit, kuten värikierto tai ääntä seuraavat värit, eivät pääse perille. Muuttumaton väri pääsee.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profiili (*{0})|*{0}</value></data>

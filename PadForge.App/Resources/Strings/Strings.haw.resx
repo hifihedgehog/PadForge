@@ -1215,6 +1215,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, kākau inoa ʻia e {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, ʻaʻole i kākau inoa ʻia</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Ua pau</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Kāohi ʻia</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>ʻAʻole i hana ʻia</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>ʻAʻole ʻae ʻia ma kēia pae</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>ʻAʻole loaʻa i kēia manawa</value></data>
@@ -1287,6 +1288,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Hoʻonoho i nā mana hoʻokele o ka hāmeʻa {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Wehe i ka hāmeʻa {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Hoʻomaha i nā mana hoʻokele a pau o ka hāmeʻa {0}</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Kāohi ʻia ke kī a me ka ʻiole āna e hoʻouna ai mai {0}, e holo ana ma ke ʻano luna hoʻomalu</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Kāohi ʻia ke kī a me ka ʻiole āna e hoʻouna ai mai kekahi pukaaniani e holo ana ma ke ʻano luna hoʻomalu</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Kauoha iā PadForge e holo i kekahi polokalamu.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Wehe i kekahi faila, kekahi waihona faila a i ʻole kekahi ʻaoʻao pūnaewele.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Kauoha iā PadForge e hoʻouna i nā kī a i ʻole ka hoʻokomo ʻiole iā Windows.</value></data>
@@ -1537,6 +1540,7 @@
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ke hoʻohana ʻia nei. Nou ka lālani a lanakila ia no kēia hāmeʻa.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Mālama ʻia nou. Hoʻohana ʻia ia ke holo ka ʻenekini a pili ka hāmeʻa.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>ʻAʻole i lawe ʻo SDL i ka lālani. ʻAʻohe mea i loli no kēia hāmeʻa.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>ʻAʻole i mālama ʻia. Mālama ʻo PadForge a hiki i {0:N0} o kāu mau lālani a ua piha ia i kēia manawa.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Hoʻopili i kekahi hoʻonohonoho pihi SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Hoʻopili i kekahi hoʻonohonoho pihi SDL no {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Huli i kekahi hoʻonohonoho pihi no {0}</value></data>
@@ -1570,6 +1574,10 @@
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Mālama ʻia nā lālani nou ma PadForge.xml a lanakila lākou no ko lākou mau hāmeʻa ma luna o nā kumu ʻē aʻe a pau. Wehe ʻo “Holoi”, ma lalo o “Hou aku” o ka lālani Controller Database, iā lākou.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} lālani no Windows. Ua hala ʻia he {1} no nā ʻōnaehana ʻē aʻe.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} lālani no Windows. Ua hala ʻia he {1} no nā ʻōnaehana ʻē aʻe.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>E hoʻohui ʻia nā {0:N0} a pau. Mālama ʻo PadForge a hiki i {1:N0} o kāu mau lālani.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>E hoʻohui ʻia ia. Mālama ʻo PadForge a hiki i {1:N0} o kāu mau lālani.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Ua mālama ʻia he {0:N0} o kāu i kēia manawa, no laila e hoʻohui ʻia he {1:N0} o kēia mau mea a ʻaʻole e hoʻohui ʻia he {2:N0}.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Ua mālama ʻia he {0:N0} o kāu i kēia manawa, no laila e hoʻohui ʻia he {1:N0} o kēia mau mea a ʻaʻole e hoʻohui ʻia he {2:N0}.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Ua hōʻole ʻia he {0}. Ka mua: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>E hoʻopili i kekahi lālani, a i ʻole ka kikokikona o kekahi faila gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ʻAʻole he lālani kēia kikokikona o ka waihona ʻikepili controller o SDL: he ID o 32 huahelu hex, he inoa, a laila nā kahua e like me a:b0.</value></data>
@@ -1582,7 +1590,7 @@
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Hāʻawi ka lālani i hoʻokahi kahua ʻelua manawa.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>ʻOi aku ka lālani ma mua o 1,024 hua.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>ʻAʻohe mana hoʻokele i hoʻopaʻa ʻia e ka lālani.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Kāu mau lālani</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Kahi e hoʻoiho ai, kāu mau lālani ponoʻī</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Kāu mau lālani</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>ʻO nā lālani āu e hoʻohui ai ma ʻaneʻi, a i ʻole e hoʻopili ai ma ke kāleka “Hoʻonohonoho pihi SDL” o kekahi hāmeʻa, lanakila lākou no ko lākou mau hāmeʻa ma luna o nā kumu ʻē aʻe a pau a noho mau ma hope o ka hoʻihoʻi hou ʻana.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Hoʻohui i nā lālani mai kekahi faila a i ʻole ka papa kope…</value></data>
@@ -1624,7 +1632,7 @@
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Ua ʻae ʻia {0}, hoʻohana hope ʻia {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Ua ʻae ʻia {0}, ʻaʻole i hoʻohana ʻia i kēia manawa.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Hoʻopau</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>ʻAʻole hoʻoiho ʻo PadForge i kekahi polokalamu tunnel a ʻaʻole mālama i ke kī o kekahi hui ʻē aʻe. Hana ke kōkua AI pūnaewele ma ka pae ma luna.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>Hoʻoiho ʻo PadForge i kekahi polokalamu tunnel no ChatGPT Secure MCP Tunnel wale nō. Hana ke kōkua AI pūnaewele ma ka pae ma luna.</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Hoʻi kona komo ʻana i {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Kapa ʻo ia iā ia iho ʻo {0}.</value></data>
   <data name="Web_Ask_CodeLead" xml:space="preserve"><value>E ʻae wale nō inā hōʻike kona ʻaoʻao komo i kēia helu:</value></data>
@@ -1658,4 +1666,35 @@
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>Kona ID script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Kapa nā script i kona mau mana hoʻokele ʻo {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Kapa nā script i kona mau kī ʻo KeyA, KeySpace, KeyLeftShift a me nā mea like, a me kēlā me kēia kī ma kona helu, Vk0 a hiki i Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} ma kēia pūnaewele kūloko mai {1}</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Hōʻike i loko o ka waihona</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Ua hoʻomaka ʻo {0} akā ʻaʻole loa i pili iā PadForge.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Hoʻoiho mai</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS wale nō. Mai kahi helu wahi ʻaʻole na ke kaiāulu, lawe ʻo PadForge i nā lālani hou wale nō.</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Helu wahi</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>Lawe ʻo PadForge i ka helu wahi e hoʻomaka ana me https:// a e kapa ana i kekahi kamepiula hoʻokipa, ma ke awa paʻamau, me ka ʻole o ka inoa mea hoʻohana a i ʻole ka ʻōlelo huna.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Awa</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Hoʻololi…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Hele nā noi a me ko lākou kī ma kēia pūnaewele kūloko me ka hoʻopāʻālua ʻole. Hoʻokomo ʻo Windows iā lākou ma nā pūnaewele pilikino wale nō.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>Ke hoʻohana ʻia nei ke awa {0} e kekahi polokalamu ʻē aʻe. E hoʻololi iā ia e hōʻea iā PadForge mai kēia pūnaewele kūloko.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>ʻAʻole i ʻae ʻo Windows i ka mea kōkua o PadForge e hoʻolohe ma ke awa {0}. ʻAe ʻo PadForge iā ia me nā kuleana luna hoʻomalu, no laila e hoʻomaka iā PadForge me ia mau kuleana a e hoʻopio a hoʻā hou i kēia.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>ʻAʻole hiki i ka mea kōkua o PadForge ke hoʻolohe ma ke awa {0}. E hoʻololi i ke awa, a i ʻole e hoʻopio a hoʻā hou i kēia.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>Ua kū ka mea kōkua o PadForge ({0}). E hoʻopio a hoʻā hou iā “Reach PadForge From This Network” e hoʻomaka hou iā ia.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Ua pio ʻo Automation, no laila ʻaʻohe kōkua AI ma kēia pūnaewele kūloko e hōʻea iā PadForge. Hoʻomaka ka mea kōkua ke ā ʻo Automation.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>ʻAʻohe helu wahi o kēia PC ma kekahi pūnaewele pilikino i kēia manawa.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Nā kōkua AI ma kēia pūnaewele kūloko</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. Ua hana ʻia kona kī {1}, hoʻohana hope ʻia {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. Ua hana ʻia kona kī {1}, ʻaʻole i hoʻohana ʻia a hiki i kēia manawa.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Hana i ke kī</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Poʻo</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Ua pau</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Hoʻololi i ke awa</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>E koho i kekahi awa mai 1024 a 49151. Kapa ka helu wahi i mālama ʻia o kēlā me kēia kōkua AI i ke awa, no laila e hoʻohui hou i kēlā me kēia ma hope o ka hoʻololi ʻana.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>E kikokiko i kekahi awa mai 1024 a 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Hoʻokele i kāna mau hāmeʻa ponoʻī a me {0}. Heluhelu nō ia i nā hāmeʻa a pau.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Hoʻokele i kāna mau hāmeʻa ponoʻī wale nō. Heluhelu nō ia i nā hāmeʻa a pau.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Hōʻea nō nā kauoha mai ka laina kauoha iā PadForge, e like me ia no nā polokalamu a pau.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>E holo ana, me kou mau kuleana, a mākaukau. Hōʻea ʻo ChatGPT iā PadForge ma o kēia tunnel me ke komo ʻole ʻana nona iho, a mai kāu hui OpenAI wale nō. Hoʻomaka hou ia me PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>E holo ana, me kou mau kuleana. Kali ia iā OpenAI e ʻōlelo ua mākaukau ka tunnel.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>Mālama ʻo PadForge i ke kī me ka hoʻopāʻālua ʻia nou wale nō. Poina ka pahu hakahaka iā ia. Hana ʻo ChatGPT ma ka pae ma luna.</value></data>
 </root>

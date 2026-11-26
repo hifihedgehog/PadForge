@@ -184,7 +184,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>S'ha connectat {0}, bateria al {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} dispositius desconnectats: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} dispositius connectats: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} no para de desconnectar-se</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} s'ha desconnectat {1} vegades en un minut</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} ha tornat</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} dispositius han tornat: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (màx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (màx. {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (màx. {0})</value></data>
@@ -431,7 +433,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconnexió automàtica, port, identitat d'aparellament, connexió per adreça</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut de DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Velocitat màxima, Formats personalitzats</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>Altres assistents, assistents al web</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Altres assistents, assistents al web i en aquesta xarxa</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Mira al teu voltant amb un seguidor del cap o uns cascos de RV mentre tens els dos polzes als botons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Assigna la velocitat, els pedals i les marxes que envia un joc de conducció, com qualsevol entrada.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Envia el moviment del comandament als emuladors que llegeixen una font de moviment DSU.</value></data>
@@ -595,6 +597,7 @@
   <data name="Plugins_Add" xml:space="preserve"><value>Afegeix un complement…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programes i scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tots els fitxers|*.*</value></data>
   <data name="Plugins_Approve" xml:space="preserve"><value>Aprova i reinicia…</value></data>
+  <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Mostra a la carpeta</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>S'inicia amb el motor</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>S'està comprovant el fitxer abans d'iniciar-lo</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ha acabat amb el codi {0}. S'inicia de nou d'aquí a {1} s.</value></data>
@@ -634,6 +637,11 @@
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Sense signar.</value></data>
   <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Les seves opcions es mostren aquí mentre s'executa.</value></data>
   <data name="Plugins_Missing_None" xml:space="preserve"><value>No declara cap opció.</value></data>
+  <data name="Plugins_Missing_NotConnected" xml:space="preserve"><value>Les seves opcions es mostren aquí quan es connecta a PadForge.</value></data>
+  <data name="Plugins_State_NeverConnected_Format" xml:space="preserve"><value>S'ha iniciat però mai s'ha connectat a PadForge. S'inicia de nou d'aquí a {0} segons.</value></data>
+  <data name="Plugins_State_NeverConnected_One_Format" xml:space="preserve"><value>S'ha iniciat però mai s'ha connectat a PadForge. S'inicia de nou d'aquí a {0} segon.</value></data>
+  <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>{0} s'ha iniciat però mai s'ha connectat a PadForge.</value></data>
+  <data name="Plugins_Log_NeverConnected" xml:space="preserve"><value>Finalitzat un minut després de l'inici, mai s'ha connectat a PadForge</value></data>
   <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge no ha pogut llegir les seves opcions: {0}.</value></data>
   <data name="Plugins_Log_Silent" xml:space="preserve"><value>Finalitzat després d'un minut sense resposta</value></data>
   <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>El seu fitxer ha canviat mentre s'executava</value></data>
@@ -704,6 +712,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signat per {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, sense signar</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Fet</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Retingut</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>No fet</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>No permès en aquest nivell</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>No disponible ara</value></data>
@@ -776,6 +785,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Defineix els controls del dispositiu {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Treu el dispositiu {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Posa tots els controls del dispositiu {0} en repòs</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>La sortida de tecles i ratolí que alimenta es reté per a {0}, que s'executa com a administrador</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>La sortida de tecles i ratolí que alimenta es reté per a una finestra que s'executa com a administrador</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Fa que PadForge executi un programa.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Obre un fitxer, una carpeta o una pàgina web.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Fa que PadForge enviï tecles o entrada de ratolí a Windows.</value></data>
@@ -994,7 +1005,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Manté PadForge en execució quan fas clic a Tanca o prems Alt+F4. Per sortir, fes servir Surt al menú de la safata del sistema.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Manté PadForge a l'àrea de notificació quan minimitzes la finestra, en lloc de a la barra de tasques.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Manté la finestra amagada quan s'inicia PadForge. S'executa i assigna com sempre.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicia PadForge automàticament quan inicies la sessió a Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicia PadForge automàticament quan inicies la sessió a Windows. Mentre això estigui activat, PadForge també s'inicia sense l'avís de Windows des d'una drecera, un script o un altre programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge s'executa des de {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Això requereix PadForge en una carpeta pròpia. La seva carpeta conté altres fitxers, així que PadForge no pot evitar que altres programes la canviïn.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Mou PadForge a la seva pròpia carpeta</value></data>
@@ -1008,7 +1019,7 @@
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostra sempre a la safata del sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Manté la icona de la safata visible mentre la finestra està oberta, de manera que l'opció Surt del seu menú sempre és a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualitzacions</value></data>
-  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cerca versions noves de PadForge a GitHub i instal·la-les des d'aquí, i actualitza la base de dades de comandaments. PadForge només contacta amb GitHub (api.github.com, github.com i els seus servidors de baixada, i raw.githubusercontent.com per a la base de dades de comandaments). Les úniques dades que envia són el seu propi número de versió i, per a la base de dades de comandaments, l'etiqueta que GitHub va donar a l'última baixada.</value></data>
+  <data name="Settings_UpdatesDesc" xml:space="preserve"><value>Cerca versions noves de PadForge a GitHub i instal·la-les des d'aquí, i actualitza la base de dades de comandaments. PadForge només contacta amb GitHub (api.github.com, github.com i els seus servidors de baixada, i raw.githubusercontent.com per a la base de dades de comandaments), i l'adreça que indiquis a Baixa de, a la fila Base de dades de comandaments. Les úniques dades que envia són el seu propi número de versió i, per a la base de dades de comandaments, l'etiqueta que el servidor va donar a l'última baixada.</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Cerca actualitzacions automàticament</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Comprova quan s'inicia PadForge i, després, cada 12 hores.</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Instal·la les actualitzacions automàticament</value></data>
@@ -1019,7 +1030,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instal·la i reinicia</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Notes de la versió</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Base de dades de comandaments</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualitza ara baixa la base de dades de comandaments de la comunitat (SDL_GameControllerDB) de GitHub i conserva, al fitxer de configuració, les assignacions que aquesta versió de PadForge no té. S'usen de seguida. Una assignació nova només s'usa per a un comandament que cap altra cosa llegeix com a comandament, que no està assignat i que no està en Força el mode de joystick en brut (omet la reassignació de comandament). El restabliment elimina totes les assignacions baixades. Les teves files, a Més, es queden.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualitza ara baixa la base de dades de comandaments de la comunitat (SDL_GameControllerDB) de GitHub, o de l'adreça indicada a Més, i conserva, al fitxer de configuració, les assignacions que aquesta versió de PadForge no té. S'usen de seguida. D'una altra adreça només conserva assignacions noves. Una assignació nova només s'usa per a un comandament que cap altra cosa llegeix com a comandament, que no està assignat i que no està en Força el mode de joystick en brut. El restabliment elimina totes les assignacions baixades i torna a baixar de GitHub. Les teves files, a Més, es queden.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Actualitza ara</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>S'està actualitzant…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>S'estan cercant actualitzacions…</value></data>
@@ -1049,8 +1060,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge s'ha actualitzat a la versió {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Inclòs: {0} assignacions, còpia de la comunitat del {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Inclòs: {0} assignacions, còpia de la comunitat del {1}. Baixat el {2}: {3} files noves, {4} canviades.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_Format" xml:space="preserve"><value>Inclòs: {1} assignacions, còpia de la comunitat del {2}. Baixat el {3} de {4}: {0} files noves.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdatedFrom_One_Format" xml:space="preserve"><value>Inclòs: {1} assignacions, còpia de la comunitat del {2}. Baixat el {3} de {4}: {0} fila nova.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>La base de dades de la comunitat no ha canviat des de l'última actualització.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>No s'ha pogut contactar amb GitHub: {0}</value></data>
+  <data name="ControllerDatabase_NoNetworkAt_Format" xml:space="preserve"><value>No s'ha pogut contactar amb {0}: {1}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ha refusat la baixada perquè no és la base de dades de comandaments que espera. No ha canviat res.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Inicia minimitzat</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Executa en iniciar la sessió</value></data>
@@ -1221,6 +1235,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Copia el resum</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Copiat</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Desa…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Desa i publica</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Desa i publica desa el zip, copia el resum, mostra el fitxer a l'Explorer i obre la pàgina de PadForge on van els informes. Enganxa-hi el resum i deixa-hi anar el fitxer.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Desa la gravació</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Fitxers zip</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>No s'ha desat. {0}</value></data>
@@ -3241,6 +3257,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>S'ha produït un error inesperat:
 
 {0}
+
+PadForge ha escrit els detalls a crash.log al costat de PadForge.exe. Per informar-ne, comença una discussió a {2} i deixa-hi anar crash.log.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>(errors addicionals suprimits: {0})</value></data>
@@ -5793,6 +5811,8 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Producte</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Tipus</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Capacitats</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>Les palanques posteriors estan desactivades per USB i amb l'Xbox Wireless Adapter. Motiu d'SDL: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>Les palanques posteriors estan desactivades per Bluetooth. Motiu d'SDL: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Enllaç</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Camí</value></data>
@@ -5973,6 +5993,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="SdlMapping_Applied" xml:space="preserve"><value>En ús ara. La fila és teva i preval per a aquest dispositiu.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Conservada com a teva. S'usa quan el motor s'executa i el dispositiu és connectat.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL no ha pres la fila. No ha canviat res per a aquest dispositiu.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>No conservada. PadForge conserva fins a {0:N0} files teves i ara en té aquest màxim.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Enganxa una assignació SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Enganxa una assignació SDL per a {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Cerca una assignació per a {0}</value></data>
@@ -6006,6 +6027,10 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Les files es conserven com a teves a PadForge.xml i prevalen per als seus dispositius sobre qualsevol altra font. Esborra, a Més de la fila Base de dades de comandaments, les elimina.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} files per a Windows. {1} per a altres sistemes s'ometen.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} fila per a Windows. {1} per a altres sistemes s'ometen.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>S'afegiran les {0:N0}. PadForge conserva fins a {1:N0} files teves.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>S'afegirà. PadForge conserva fins a {1:N0} files teves.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>Ara en tens {0:N0} de conservades, per tant s'afegiran {1:N0} d'aquestes i {2:N0} no.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>Ara en tens {0:N0} de conservada, per tant s'afegiran {1:N0} d'aquestes i {2:N0} no.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} rebutjades. La primera: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Enganxa una fila o el text d'un fitxer gamecontrollerdb.txt.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>El text no és cap fila de la base de dades de comandaments de SDL: un ID de 32 dígits hexadecimals, un nom i camps com a:b0.</value></data>
@@ -6018,14 +6043,18 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>La fila dona un camp dues vegades.</value></data>
   <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>La fila supera els 1.024 caràcters.</value></data>
   <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>La fila no enllaça cap control.</value></data>
-  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Les teves files</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>D'on baixa, les teves pròpies files</value></data>
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Les teves files</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Les files que afegeixes aquí, o enganxes a la targeta Assignació SDL d'un dispositiu, prevalen per als seus dispositius sobre qualsevol altra font i es conserven després del restabliment.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Afegeix files d'un fitxer o del porta-retalls…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} files, teves per sobre de qualsevol altra font per als seus dispositius.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} fila, teva per sobre de qualsevol altra font per al seu dispositiu.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} files i dispositius, teves per sobre de qualsevol altra font.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} fila i dispositiu, teva per sobre de qualsevol altra font.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Cap encara.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>La teva variable SDL_GAMECONTROLLERCONFIG conté {0} files que PadForge no conserva. Afegeix files d'un fitxer o del porta-retalls s'obre amb elles.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>La teva variable SDL_GAMECONTROLLERCONFIG conté {0} fila que PadForge no conserva. Afegeix files d'un fitxer o del porta-retalls s'obre amb ella.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>En ús de seguida.</value></data>
+  <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Baixa de</value></data>
+  <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>Només HTTPS. D'una adreça que no és la de la comunitat, PadForge només pren files noves.</value></data>
   <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Activa</value></data>
   <data name="Web_Header" xml:space="preserve"><value>Assistents al web</value></data>
   <data name="Web_Tunnel_Label" xml:space="preserve"><value>Túnel</value></data>
@@ -6064,7 +6093,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permès {0}, últim ús {1}.</value></data>
   <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permès {0}, encara no usat.</value></data>
   <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoca</value></data>
-  <data name="Web_Footnote" xml:space="preserve"><value>PadForge no baixa cap programa de túnel i no guarda la clau de cap altra empresa. Un assistent web treballa al nivell d'aquí a dalt.</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge només baixa un programa de túnel per a ChatGPT Secure MCP Tunnel. Un assistent web treballa al nivell d'aquí a dalt.</value></data>
   <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Vols permetre que {0} treballi amb PadForge des del web?</value></data>
   <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>El seu inici de sessió torna a {0}.</value></data>
   <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Es diu {0}.</value></data>
@@ -6101,4 +6130,35 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Devices_More_ScriptId" xml:space="preserve"><value>El seu ID de script</value></data>
   <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Els scripts anomenen els seus controls {0}.</value></data>
   <data name="Devices_ScriptKeys" xml:space="preserve"><value>Els scripts anomenen les seves tecles KeyA, KeySpace, KeyLeftShift i similars, i cada tecla pel seu codi, de Vk0 a Vk255.</value></data>
+  <data name="Net_Caller_Format" xml:space="preserve"><value>{0} en aquesta xarxa des de {1}</value></data>
+  <data name="Plugins_Trust_Note_Format" xml:space="preserve"><value>Una versió nova signada amb la mateixa clau de certificat de {0} es reinicia sense Aprova i reinicia. Qualsevol altre canvi et pregunta primer.</value></data>
+  <data name="Plugins_Log_TrustedVersion" xml:space="preserve"><value>Ha acceptat una versió nova signada amb la mateixa clau de certificat</value></data>
+  <data name="ControllerDatabase_DownloadFromBox" xml:space="preserve"><value>Adreça</value></data>
+  <data name="ControllerDatabase_DownloadFromRefused" xml:space="preserve"><value>PadForge accepta una adreça que comença per https:// i indica un amfitrió, al port per defecte, sense nom d'usuari ni contrasenya.</value></data>
+  <data name="Net_Port_Label" xml:space="preserve"><value>Port</value></data>
+  <data name="Net_Port_Change" xml:space="preserve"><value>Canvia…</value></data>
+  <data name="Net_Note" xml:space="preserve"><value>Les crides i la seva clau creuen aquesta xarxa sense xifrar. Windows només les deixa entrar a xarxes privades.</value></data>
+  <data name="Net_Port_Taken_Format" xml:space="preserve"><value>El port {0} l'utilitza un altre programa. Canvia'l per accedir a PadForge des d'aquesta xarxa.</value></data>
+  <data name="Net_Port_Denied_Format" xml:space="preserve"><value>Windows no ha deixat que l'ajudant de PadForge escolti al port {0}. PadForge ho permet amb drets d'administrador, així que inicia PadForge amb ells i desactiva i torna a activar això.</value></data>
+  <data name="Net_Port_Failed_Format" xml:space="preserve"><value>L'ajudant de PadForge no ha pogut escoltar al port {0}. Canvia el port o desactiva i torna a activar això.</value></data>
+  <data name="Net_Helper_Stopped_Format" xml:space="preserve"><value>L'ajudant de PadForge s'ha aturat ({0}). Desactiva i torna a activar Reach PadForge From This Network per tornar-lo a iniciar.</value></data>
+  <data name="Net_Helper_AutomationOff" xml:space="preserve"><value>Automatització està desactivada, així que cap assistent d'aquesta xarxa accedeix a PadForge. L'ajudant s'inicia quan Automatització s'activa.</value></data>
+  <data name="Net_NoAddress" xml:space="preserve"><value>Aquest PC ara no té cap adreça en una xarxa privada.</value></data>
+  <data name="Net_Keys_Label" xml:space="preserve"><value>Assistents en aquesta xarxa</value></data>
+  <data name="Net_Key_Line_Format" xml:space="preserve"><value>{0}. La seva clau es va fer {1}, últim ús {2}.</value></data>
+  <data name="Net_Key_LineNew_Format" xml:space="preserve"><value>{0}. La seva clau es va fer {1}, encara no s'ha usat.</value></data>
+  <data name="Net_Add_Make" xml:space="preserve"><value>Fes la clau</value></data>
+  <data name="Net_Key_Header" xml:space="preserve"><value>Capçalera</value></data>
+  <data name="Net_Key_Done" xml:space="preserve"><value>Fet</value></data>
+  <data name="Net_Port_Title" xml:space="preserve"><value>Canvia el port</value></data>
+  <data name="Net_Port_Subtitle" xml:space="preserve"><value>Tria un port de 1024 a 49151. L'adreça desada de cada assistent inclou el port, així que torna a afegir-los tots després del canvi.</value></data>
+  <data name="Net_Port_Wrong" xml:space="preserve"><value>Escriu un port de 1024 a 49151.</value></data>
+  <data name="Reach_Line_Format" xml:space="preserve"><value>Controla els seus propis dispositius i {0}. Continua llegint tots els dispositius.</value></data>
+  <data name="Reach_Line_Own" xml:space="preserve"><value>Controla només els seus propis dispositius. Continua llegint tots els dispositius.</value></data>
+  <data name="Reach_LocalCommands" xml:space="preserve"><value>Les ordres de la línia d'ordres continuen arribant a PadForge, com per a tots els programes.</value></data>
+  <data name="Automation_Consent_OwnDevices" xml:space="preserve"><value>Demana controlar només els seus propis dispositius.</value></data>
+  <data name="Automation_Consent_AsksOnceReach" xml:space="preserve"><value>Ho pregunta una sola vegada. Pots eliminar-lo o canviar-ne l'abast a la pàgina Automatització.</value></data>
+  <data name="Web_ChatGpt_Ready" xml:space="preserve"><value>En execució, amb els teus permisos, i a punt. ChatGPT accedeix a PadForge a través d'aquest túnel sense cap inici de sessió propi, i només des de la teva organització d'OpenAI. S'inicia de nou amb PadForge.</value></data>
+  <data name="Web_ChatGpt_Running" xml:space="preserve"><value>En execució, amb els teus permisos. Espera que OpenAI digui que el túnel és a punt.</value></data>
+  <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge guarda la clau xifrada només per a tu. Un quadre buit l'oblida. ChatGPT treballa al nivell d'aquí a dalt.</value></data>
 </root>

@@ -137,6 +137,19 @@ namespace PadForge.Engine
         public const ushort ProgramVendorId = 0xBEEF;
         public const ushort ProgramProductId = 0xC0DE;
 
+        private volatile int _ownerSession;
+        private volatile bool _padForgeOwn;
+
+        /// <summary>The number of the session that owns the device, 0 when
+        /// none is known. Its input counts as that program's wherever it
+        /// leads to key and mouse output.</summary>
+        public int OwnerSession { get => _ownerSession; set => _ownerSession = value; }
+
+        /// <summary>Whether the device is one of PadForge's own built-in
+        /// ones, whose input counts as the person's own. False for every
+        /// device a program declares.</summary>
+        public bool PadForgeOwn { get => _padForgeOwn; set => _padForgeOwn = value; }
+
         private readonly object _stateLock = new object();
         // Not volatile: it is read with Volatile.Read by reference, which a
         // volatile field refuses (CS0420), as WebControllerDevice notes.

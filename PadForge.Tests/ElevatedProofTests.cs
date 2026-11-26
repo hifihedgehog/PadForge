@@ -208,19 +208,19 @@ namespace PadForge.Tests
                 ProgramInputGate.PointerWindowSeam = () => under;
                 ProgramInputGate.ForgetForTest();
 
-                Assert.True(ProgramInputGate.KeysBlocked);
-                Assert.True(ProgramInputGate.ButtonsBlocked);
+                Assert.True(ProgramInputGate.HoldsKeys());
+                Assert.True(ProgramInputGate.HoldsButtons());
 
                 front = shell;
                 under = mine;
-                Assert.False(ProgramInputGate.KeysBlocked);
-                Assert.True(ProgramInputGate.ButtonsBlocked);
+                Assert.False(ProgramInputGate.HoldsKeys());
+                Assert.True(ProgramInputGate.HoldsButtons());
 
                 // The control: the desktop shell in front and under the
                 // pointer holds nothing back.
                 under = shell;
-                Assert.False(ProgramInputGate.KeysBlocked);
-                Assert.False(ProgramInputGate.ButtonsBlocked);
+                Assert.False(ProgramInputGate.HoldsKeys());
+                Assert.False(ProgramInputGate.HoldsButtons());
                 Assert.True(ProgramInputGate.IntegrityReads >= 2);
             }
             finally

@@ -2054,6 +2054,21 @@ namespace PadForge.Services.Automation
             Add(session, ask, result, ok, time);
         }
 
+        /// <summary>Output session <paramref name="number"/> fed was held
+        /// for the first time, from a window of
+        /// <paramref name="windowProgram"/> (null when Windows would not
+        /// name it), which runs with administrator rights (#600). Activity
+        /// gets one line for it.</summary>
+        internal void NoteHeld(int number, string windowProgram)
+        {
+            foreach (var session in Snapshot())
+            {
+                if (session.Number != number) continue;
+                Add(session, new AutomationAsk(AutomationAskKind.Held, windowProgram), "err output-held", false);
+                return;
+            }
+        }
+
         private void Add(AutomationSession session, AutomationAsk ask, string result, bool ok, DateTimeOffset? time = null)
         {
             try

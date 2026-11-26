@@ -89,11 +89,19 @@ namespace PadForge.Tests
 
         // ── 2b. Output to windows with rights ──
 
+        /// <summary>The person's own output goes out to any window, and
+        /// output a program fed, or nothing proved the person's own, keeps
+        /// its releases alone for a window with rights after the program
+        /// stops driving PadForge (#600).</summary>
         [Fact]
-        public void TheGate_SendsEverything_WhileNoProgramDrivesPadForge()
+        public void TheGate_SendsTheOwnOutputEverywhere_AndHoldsAProgramsAfterItStopsDriving()
         {
             using var windows = new Windows { InForce = false, Front = High, UnderPointer = High };
-            Assert.Equal(AClickAKeyAMoveAndATurn, InputManager.GateForTest(AClickAKeyAMoveAndATurn));
+            Assert.Equal(AClickAKeyAMoveAndATurn, InputManager.GateForTest(OutputCause.Own, AClickAKeyAMoveAndATurn));
+            Assert.Equal(new[] { Key(0x41, up: true), Mouse(LeftUp), Mouse(XUp, data: 1) },
+                InputManager.GateForTest(OutputCause.Program(3), AClickAKeyAMoveAndATurn));
+            Assert.Equal(new[] { Key(0x41, up: true), Mouse(LeftUp), Mouse(XUp, data: 1) },
+                InputManager.GateForTest(default(OutputCause), AClickAKeyAMoveAndATurn));
         }
 
         [Fact]
@@ -101,8 +109,8 @@ namespace PadForge.Tests
         {
             using var windows = new Windows();
             Assert.Equal(AClickAKeyAMoveAndATurn, InputManager.GateForTest(AClickAKeyAMoveAndATurn));
-            Assert.False(ProgramInputGate.KeysBlocked);
-            Assert.False(ProgramInputGate.ButtonsBlocked);
+            Assert.False(ProgramInputGate.HoldsKeys());
+            Assert.False(ProgramInputGate.HoldsButtons());
         }
 
         [Fact]
@@ -125,19 +133,19 @@ namespace PadForge.Tests
         public void TheGate_HoldsBack_WhenNoWindowIsInFront_OrItsProcessCannotBeRead()
         {
             using var windows = new Windows { Front = IntPtr.Zero };
-            Assert.True(ProgramInputGate.KeysBlocked);
+            Assert.True(ProgramInputGate.HoldsKeys());
             windows.Front = (IntPtr)33;   // a process whose token is not read
-            Assert.True(ProgramInputGate.KeysBlocked);
+            Assert.True(ProgramInputGate.HoldsKeys());
         }
 
         [Fact]
         public void TheGate_ReadsAProcessOnce_UntilTheWindowInFrontChanges()
         {
             using var windows = new Windows();
-            for (int i = 0; i < 100; i++) Assert.False(ProgramInputGate.KeysBlocked);
+            for (int i = 0; i < 100; i++) Assert.False(ProgramInputGate.HoldsKeys());
             Assert.Equal(1, ProgramInputGate.IntegrityReads);
             windows.Front = High;
-            for (int i = 0; i < 100; i++) Assert.True(ProgramInputGate.KeysBlocked);
+            for (int i = 0; i < 100; i++) Assert.True(ProgramInputGate.HoldsKeys());
             Assert.Equal(2, ProgramInputGate.IntegrityReads);
         }
 
@@ -190,15 +198,15 @@ namespace PadForge.Tests
         public void EveryOutputThatReachesWindows_AsksTheGate()
         {
             string macros = OffLimitsSource.Read("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs");
-            string sendQueued = FenceSource.Body(macros, "private static void SendQueued(INPUT[] inputs, int count)");
-            Assert.Contains("if (ProgramInputGate.InForce) count = KeepWhatTheGateAllows(inputs, count);", sendQueued);
+            string sendQueued = FenceSource.Body(macros, "private static void SendQueued(INPUT[] inputs, int count, OutputCause cause)");
+            Assert.Contains("if (!cause.IsOwn) count = KeepWhatTheGateAllows(inputs, count, cause);", sendQueued);
             Assert.True(sendQueued.IndexOf("KeepWhatTheGateAllows", StringComparison.Ordinal) < sendQueued.IndexOf("SendInput(", StringComparison.Ordinal));
             string hid = OffLimitsSource.Read("PadForge.App/Common/Input/KbmHidDevices.cs");
-            Assert.Contains("Send(ProgramInputGate.KeysBlocked ? Nothing(f.Consumer) : f);", hid);
-            Assert.Contains("byte buttons = Effective(out bool keysBlocked, out bool buttonsBlocked);", hid);
-            Assert.Contains("!ProgramInputGate.KeysBlocked && SetCursorPosNative(x, y)",
+            Assert.Contains("Send(Allowed(f));", hid);
+            Assert.Contains("byte buttons = Effective(marked != default, out bool keysHeld, out bool buttonsHeld);", hid);
+            Assert.Contains("!ProgramInputGate.HoldsKeys(cause) && SetCursorPosNative(x, y)",
                 OffLimitsSource.Read("PadForge.App/Common/Input/KeyboardMouseVirtualController.cs"));
-            Assert.Contains("!PadForge.Common.Input.ProgramInputGate.KeysBlocked && SetCursorPosNative(X, Y)",
+            Assert.Contains("!PadForge.Common.Input.ProgramInputGate.HoldsKeys(cause) && SetCursorPosNative(X, Y)",
                 OffLimitsSource.Read("PadForge.App/Services/CursorControlService.cs"));
         }
 

@@ -482,8 +482,8 @@ namespace PadForge.Tests
             new object[] { Hooks, "private static IntPtr SetWindowsHookExW(int idHook, LowLevelHookProc lpfn, IntPtr hMod, uint dwThreadId)", "OffLimitsForTest ? IntPtr.Zero : SetWindowsHookExNative(idHook, lpfn, hMod, dwThreadId);" },
             new object[] { Hooks, "private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)", "OffLimitsForTest ? 0 : SendInputNative(nInputs, pInputs, cbSize);" },
             new object[] { Macros, "private static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize)", "PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits ? 0 : SendInputNative(nInputs, pInputs, cbSize);" },
-            new object[] { Kbm, "private static bool SetCursorPos(int x, int y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !ProgramInputGate.KeysBlocked && SetCursorPosNative(x, y);" },
-            new object[] { Cursor, "private static bool SetCursorPos(int X, int Y)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !PadForge.Common.Input.ProgramInputGate.KeysBlocked && SetCursorPosNative(X, Y);" },
+            new object[] { Kbm, "private static bool SetCursorPos(int x, int y, OutputCause cause)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !ProgramInputGate.HoldsKeys(cause) && SetCursorPosNative(x, y);" },
+            new object[] { Cursor, "private static bool SetCursorPos(int X, int Y, OutputCause cause)", "!PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !PadForge.Common.Input.ProgramInputGate.HoldsKeys(cause) && SetCursorPosNative(X, Y);" },
 
             // The logon task.
             new object[] { Startup, "private static void DeleteLegacyRunEntry()", "if (OffLimitsForTest) return;" },

@@ -735,6 +735,7 @@
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signed by {1}</value></data>
   <data name="Automation_Program_NotSigned_Format" xml:space="preserve"><value>{0}, not signed</value></data>
   <data name="Automation_Result_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Automation_Result_Held" xml:space="preserve"><value>Held</value></data>
   <data name="Automation_Result_NotDone" xml:space="preserve"><value>Not done</value></data>
   <data name="Automation_Result_NotAllowed" xml:space="preserve"><value>Not allowed at this level</value></data>
   <data name="Automation_Result_NotAvailable" xml:space="preserve"><value>Not available now</value></data>
@@ -807,6 +808,8 @@
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Set the controls of device {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Remove the device {0}</value></data>
   <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Put every control of device {0} at rest</value></data>
+  <data name="Automation_Asked_Held_Format" xml:space="preserve"><value>Key and mouse output it feeds is held back from {0}, which runs as administrator</value></data>
+  <data name="Automation_Asked_Held" xml:space="preserve"><value>Key and mouse output it feeds is held back from a window that runs as administrator</value></data>
   <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Makes PadForge run a program.</value></data>
   <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Opens a file, a folder or a web page.</value></data>
   <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Makes PadForge send keys or mouse input to Windows.</value></data>
@@ -1652,6 +1655,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_Detail_Product" xml:space="preserve"><value>Product</value></data>
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Type</value></data>
   <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Capabilities</value></data>
+  <data name="Devices_Detail_PaddlesOff_Format" xml:space="preserve"><value>The back paddles are off over USB and the Xbox Wireless Adapter. SDL’s reason: {0}</value></data>
+  <data name="Devices_Detail_PaddlesOffBluetooth_Format" xml:space="preserve"><value>The back paddles are off over Bluetooth. SDL’s reason: {0}</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Link</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Battery</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>

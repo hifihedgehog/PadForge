@@ -446,6 +446,41 @@ namespace PadForge.Engine
             return text;
         }
 
+        /// <summary>The properties the SDL PadForge ships sets on an Xbox
+        /// Elite's joystick for its paddle route (SDL_xinput_paddle.cpp): the
+        /// route's data is available, and why it is not.</summary>
+        internal const string PaddleDataAvailableProperty = "SDL.joystick.xinput.paddle.data_available";
+        internal const string PaddleErrorProperty = "SDL.joystick.xinput.paddle.error";
+
+        /// <summary>A count the fork's route publishes on every report of a
+        /// route that runs (SDL_xinput_paddle.cpp, Report). Its presence
+        /// means the route started.</summary>
+        internal const string PaddleReceivedProperty = "SDL.joystick.xinput.paddle.received_20";
+
+        /// <summary>The reason SDL gives, in its own words, when the paddle
+        /// route of this device did not start, or null while it runs, after
+        /// it ran, or when the device has none. Reads the properties at the
+        /// call and changes nothing. A route that ran is left out: its data
+        /// reads unavailable for a moment at each re-arm while a reason from
+        /// before can still be set, and the line would then say "off" for a
+        /// route that runs.</summary>
+        public string PaddleRouteOffReason()
+        {
+            var joystick = Joystick;
+            if (joystick == IntPtr.Zero) return null;
+            uint props = SDL_GetJoystickProperties(joystick);
+            if (props == 0) return null;
+            // An absent property reads its default, true: no route, no line.
+            if (SDL_GetNumberProperty(props, PaddleReceivedProperty, -1) != -1) return null;
+            return PaddleReasonOf(SDL_GetBooleanProperty(props, PaddleDataAvailableProperty, true),
+                SDL_GetStringProperty(props, PaddleErrorProperty, null));
+        }
+
+        /// <summary>The reason to show: SDL's text while it says the route's
+        /// data is not available and gives a reason, else null.</summary>
+        public static string PaddleReasonOf(bool dataAvailable, string error)
+            => dataAvailable || string.IsNullOrWhiteSpace(error) ? null : error.Trim();
+
         private static string ReadFirmwareText(IntPtr joystick)
         {
             uint props = SDL_GetJoystickProperties(joystick);

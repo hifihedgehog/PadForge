@@ -516,6 +516,29 @@ namespace PadForge.ViewModels
         /// <summary>Localized device type description for display, derived from DeviceTypeKey.</summary>
         public string DeviceType => Common.DeviceTypeGlyph.NameFor(DeviceTypeKey);
 
+        private string _paddleNote;
+
+        /// <summary>The line under Capabilities while an Xbox Elite's paddle
+        /// route is off: where, and SDL's reason in its own words (#600).
+        /// Null otherwise.</summary>
+        public string PaddleNote
+        {
+            get => _paddleNote;
+            set
+            {
+                if (SetProperty(ref _paddleNote, value)) OnPropertyChanged(nameof(HasPaddleNote));
+            }
+        }
+
+        public bool HasPaddleNote => !string.IsNullOrEmpty(_paddleNote);
+
+        /// <summary>The paddle line for SDL's <paramref name="reason"/>, or
+        /// null for none.</summary>
+        internal static string PaddleNoteOf(string reason, bool bluetooth)
+            => string.IsNullOrEmpty(reason) ? null
+            : string.Format(bluetooth ? Strings.Instance.Devices_Detail_PaddlesOffBluetooth_Format
+                : Strings.Instance.Devices_Detail_PaddlesOff_Format, reason);
+
         private bool _hasRumble;
 
         /// <summary>Whether the device supports rumble vibration.</summary>

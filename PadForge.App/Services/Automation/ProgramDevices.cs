@@ -463,6 +463,7 @@ namespace PadForge.Services.Automation
                     e.OfflineAtMs = 0;
                     e.Asleep = false;
                     e.Owner = session;
+                    e.Device.OwnerSession = session.Number;
                     entry = e;
                 }
                 else
@@ -479,6 +480,7 @@ namespace PadForge.Services.Automation
                     var device = new ProgramDevice(guid, ProgramDeviceDeclaration.ProductGuid(kind, program, key),
                         "program://" + id, name, shape);
                     device.SetAttached(true);
+                    device.OwnerSession = session.Number;
                     e = new Entry { Guid = guid, Id = id, Kind = kind, Program = program, Key = key, Device = device, Owner = session };
                     Wire(e);
                     _entries[guid] = e;
@@ -779,6 +781,7 @@ namespace PadForge.Services.Automation
                     _entries[guid] = entry;
                 }
                 entry.Device.ProductName = productName;
+                entry.Device.PadForgeOwn = true;
                 entry.BuiltIn = true;
                 entry.OfflineAtMs = 0;
                 engine = _engine;

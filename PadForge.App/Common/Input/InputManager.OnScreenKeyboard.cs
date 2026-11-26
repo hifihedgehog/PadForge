@@ -814,10 +814,23 @@ namespace PadForge.Common.Input
             if (_osk != null) return _osk;
             var windows = OnScreenKeyboardOutputOverride ?? new OskWindowsOutput(
                 ForegroundOrAppliedLayout,
-                () => _oskSlot < 0 || !IsSlotRestricted(_oskSlot));
+                () => _oskSlot < 0 || !IsSlotRestricted(_oskSlot),
+                OnScreenKeyboardCause);
             _oskWindowsOut = windows;
             _osk = new OskEngine(new OskRouter(this, windows));
             return _osk;
+        }
+
+        /// <summary>The cause of what the On-Screen Keyboard types now
+        /// (#600). It reads the devices that drive it before any hold, so a
+        /// program reaches it only through a device of its own: a program's
+        /// while one of those drives it, else the person's own.</summary>
+        internal OutputCause OnScreenKeyboardCause()
+        {
+            var cause = OutputCause.Own;
+            foreach (var g in _oskMasks.Keys)
+                if (ProgramMarkOf(g) is { Whole: true } mark) cause = cause.And(mark.Cause);
+            return cause;
         }
 
         private IntPtr ForegroundOrAppliedLayout()

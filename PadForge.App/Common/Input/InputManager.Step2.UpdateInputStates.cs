@@ -81,6 +81,7 @@ namespace PadForge.Common.Input
             // Programs' holds and claims (#600 item 22): the steps due land
             // before any device is read, one change per control per pass.
             ControlHolds.BeginPass();
+            BeginProgramMarks();
 
             long gyroTiltTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
             for (int si = 0; si < snapshotCount; si++)
@@ -170,6 +171,9 @@ namespace PadForge.Common.Input
                     // the same point, and the device's own state stays for
                     // whoever follows it.
                     newState = ControlHolds.Apply(ud.InstanceGuid, newState);
+                    // What of it a program fed (#600), which its key and
+                    // mouse output carries to ProgramInputGate.
+                    NoteProgramMarks(ud, rawState);
 
                     // Atomic reference swap, safe for cross-thread reading.
                     ud.ReadInputState = rawState;

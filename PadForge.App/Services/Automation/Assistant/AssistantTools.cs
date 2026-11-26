@@ -78,6 +78,12 @@ namespace PadForge.Services.Automation
 
         [Description("What each level above this connection's would add: its tools with their arguments. Only the user can raise the level.")]
         public List<AssistantLevelTools> HigherLevels { get; set; }
+
+        [Description("While a program drives PadForge: that the key and mouse output programs feed is held back from windows that run with administrator rights, and the program of the window it was held from.")]
+        public string HeldBack { get; set; }
+
+        [Description("When Continue Polling When Window Loses Focus is off: that the engine stops while PadForge is not the program in front.")]
+        public string EngineBehind { get; set; }
     }
 
     /// <summary>One level's tools, for status (#600).</summary>
@@ -863,7 +869,7 @@ namespace PadForge.Services.Automation
         {
             // ── Commands ──
             Tool<NoArguments, StatusResult>("status", "PadForge's Status",
-                "Says what PadForge is doing: the engine, the profile in force, the window, each virtual controller, what this connection's level allows, and at Read the polling rate and drivers. It lists what each higher level would add, with its arguments. Call it first, and again when a call is refused.",
+                "Says what PadForge is doing: the engine, the profile in force, the window, each virtual controller, what this connection's level allows, and at Read the polling rate and drivers. It lists what each higher level would add, with its arguments. It says while key and mouse output a program feeds is held back from windows with administrator rights, and when the engine stops while PadForge is behind. Call it first, and again when a call is refused.",
                 AutomationLevel.Commands, true, false, true, Status),
             Tool<SwitchProfileArgs, SwitchProfileResult>("switch_profile", "Switch Profile",
                 "Puts a profile in force and holds it against switching by game, or with no profile lets go and returns to the default profile.",
@@ -1070,8 +1076,35 @@ namespace PadForge.Services.Automation
                 result.Message = "PadForge asks the user on its question card whether this program may work at the level it asked for. Until they answer it works at the Commands level.";
             if (inv.Allows(AutomationLevel.Read)) result.System = inv.OnUi(inv.App.ReadSystem);
             result.HigherLevels = HigherLevels(level);
+            result.HeldBack = HeldBackWords();
+            if (root.TryGetProperty("stops_behind", out var behind) && behind.ValueKind == JsonValueKind.True)
+                result.EngineBehind = EngineBehindWords;
             return Task.FromResult(result);
         }
+
+        /// <summary>What an assistant is told once, when its call puts the
+        /// gate in force (#600).</summary>
+        internal const string GateNotice = "While you drive PadForge, the key and mouse output you feed is held back from any window that runs with administrator rights. The user's own keys and mouse still go out.";
+
+        internal const string EngineBehindWords = "Continue Polling When Window Loses Focus is off, so the engine stops while PadForge is not the program in front.";
+
+        /// <summary>What status says while the gate holds: while a program
+        /// drives PadForge, or output still carries a program's mark, naming
+        /// the program of the window in front when output was held from it
+        /// (#600). Null otherwise.</summary>
+        internal static string HeldBackWords()
+        {
+            if (!PadForge.Common.Input.ProgramInputGate.InForce && !PadForge.Common.Input.ProgramInputGate.MarksKept) return null;
+            string name = PadForge.Common.Input.ProgramInputGate.ProgramNameOf(
+                PadForge.Common.Input.ProgramInputGate.HeldFromWindowInFront());
+            return name == null ? GateNotice
+                : GateNotice + " Output was held from " + name + ", which runs as administrator and is in front now.";
+        }
+
+        /// <summary>A call's words, with the gate's notice after them when
+        /// the gate was not in force before it (#600).</summary>
+        private static string WithGateNotice(string message, bool wasInForce)
+            => wasInForce ? message : message + " " + GateNotice;
 
         /// <summary>The tools each level above <paramref name="level"/> would
         /// add, with their arguments (#600).</summary>
@@ -1761,12 +1794,13 @@ namespace PadForge.Services.Automation
             var body = new StringBuilder("declare key=").Append(a.Key ?? string.Empty);
             if (!string.IsNullOrWhiteSpace(a.Name)) body.Append(" name=").Append(AutomationLine.Quote(a.Name));
             body.Append(' ').Append(json);
+            bool wasInForce = PadForge.Common.Input.ProgramInputGate.InForce;
             string answer = await Line(inv, body.ToString()).ConfigureAwait(false);
             string id = answer.StartsWith("id=", StringComparison.Ordinal) ? answer.Substring(3) : answer;
             return new AddDeviceResult
             {
                 Device = id,
-                Message = "The device is on the Devices page. Assign it to a controller with assign_device, then drive it with set_device_inputs.",
+                Message = WithGateNotice("The device is on the Devices page. Assign it to a controller with assign_device, then drive it with set_device_inputs.", wasInForce),
             };
         }
 
@@ -1809,8 +1843,9 @@ namespace PadForge.Services.Automation
                         throw new AssistantRefusal("bad-argument", "A hat's directions are Up, Right, Down and Left, two joined by +.");
                     Add("h", k, PlainUnits.DirectionsText(directions));
                 }
+            bool wasInForce = PadForge.Common.Input.ProgramInputGate.InForce;
             await Line(inv, body.ToString()).ConfigureAwait(false);
-            return new DoneResult { Message = "Set." };
+            return new DoneResult { Message = WithGateNotice("Set.", wasInForce) };
         }
 
         private static async Task<DoneResult> RemoveDevice(AssistantInvocation inv, DeviceOnlyArgs a, CancellationToken ct)
@@ -1832,8 +1867,9 @@ namespace PadForge.Services.Automation
                 return new DoneResult { Message = "Released. The control reads the device again." };
             }
             if (a.Value == null) throw new AssistantRefusal("bad-argument", "Give the value to hold the control at, or release.");
+            bool wasInForce = PadForge.Common.Input.ProgramInputGate.InForce;
             await Line(inv, "own " + a.Device + " " + control + "=" + HoldValue(control[0], a.Value.Value)).ConfigureAwait(false);
-            return new DoneResult { Message = "Held until it is released or this connection ends." };
+            return new DoneResult { Message = WithGateNotice("Held until it is released or this connection ends.", wasInForce) };
         }
 
         /// <summary>A hold's value in plain units, as the pipe's own line
@@ -1982,8 +2018,9 @@ namespace PadForge.Services.Automation
             }
             if (a.Value is not double value || double.IsNaN(value) || double.IsInfinity(value))
                 throw new AssistantRefusal("bad-argument", "Give the value as a number, or release.");
+            bool wasInForce = PadForge.Common.Input.ProgramInputGate.InForce;
             await Line(inv, "var " + name + "=" + value.ToString("R", CultureInfo.InvariantCulture)).ConfigureAwait(false);
-            return new DoneResult { Message = "Set until it is released or this connection ends." };
+            return new DoneResult { Message = WithGateNotice("Set until it is released or this connection ends.", wasInForce) };
         }
 
         private static Task<ProfileChangeResult> CreateProfile(AssistantInvocation inv, CreateProfileArgs a, CancellationToken ct)

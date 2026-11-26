@@ -2877,7 +2877,17 @@
                                         </DockPanel>
                                         <DockPanel Margin="0,5">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Capabilities, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
+                                                <!-- An Xbox Elite's paddle route that is off:
+                                                     where, and SDL's reason in its words. -->
+                                                <TextBlock Style="{StaticResource DetailValue}"
+                                                           common:Reach.Class="Free"
+                                                           Margin="0,4,0,0"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           Text="{Binding SelectedDevice.PaddleNote, Mode=OneWay}"
+                                                           Visibility="{Binding SelectedDevice.HasPaddleNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            </StackPanel>
                                         </DockPanel>
                                         <!-- VID:PID, App GUID and SDL GUID are the
                                              same tokens in every language. -->

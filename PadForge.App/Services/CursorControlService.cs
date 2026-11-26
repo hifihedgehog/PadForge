@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using PadForge.Common.Input;
 using PadForge.Engine.Common.Mapping;
 using PadForge.ViewModels;
 
@@ -51,11 +52,11 @@ namespace PadForge.Services
 
         /// <summary>The one way this service moves the cursor. The test host
         /// moves none (InputHookManager.DesktopInputOffLimits) and is
-        /// answered a refused move. While a program drives PadForge and the
-        /// window in front runs with rights, the cursor stays where it is
+        /// answered a refused move. A move not proven the person's own leaves
+        /// the cursor where it is while the window in front runs with rights
         /// (ProgramInputGate).</summary>
-        private static bool SetCursorPos(int X, int Y)
-            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !PadForge.Common.Input.ProgramInputGate.KeysBlocked && SetCursorPosNative(X, Y);
+        private static bool SetCursorPos(int X, int Y, OutputCause cause)
+            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !PadForge.Common.Input.ProgramInputGate.HoldsKeys(cause) && SetCursorPosNative(X, Y);
 
         [DllImport("user32.dll")]
         private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
@@ -89,6 +90,9 @@ namespace PadForge.Services
         // so the timer reads stable values.
         private volatile bool _isPinned;
         private CursorPinMode _pinMode;
+        // What turned the pin and the clamp on, which every write they make
+        // carries (ProgramInputGate).
+        private OutputCause _pinCause, _clampCause;
         private int _pinX, _pinY;
 
         private volatile bool _isClamped;
@@ -229,24 +233,24 @@ namespace PadForge.Services
         /// once per macro press by the MouseRecenter action. The next 200 Hz tick
         /// (≤5 ms later) re-samples, so the mapped "Mouse Position" source reports 0
         /// on the recentered axes.</summary>
-        public void RecenterCursor(bool centerX, bool centerY)
+        internal void RecenterCursor(bool centerX, bool centerY, OutputCause cause)
         {
             if (_disposed) return;
             if (!TryGetPrimaryRect(out RECT r)) return;
             int cx = (r.Left + r.Right) / 2;
             int cy = (r.Top + r.Bottom) / 2;
             if (!GetCursorPos(out POINT p)) { p.X = cx; p.Y = cy; }
-            SetCursorPos(centerX ? cx : p.X, centerY ? cy : p.Y);
+            SetCursorPos(centerX ? cx : p.X, centerY ? cy : p.Y, cause);
         }
 
         /// <summary>Warps the desktop cursor to an absolute primary-monitor pixel
         /// (issue #9). Fired once per macro press by the MoveMouseToScreenPosition
         /// action. The coordinate is already clamped on-screen by the action's
         /// MouseX / MouseY setters, so this is a straight SetCursorPos.</summary>
-        public void MoveCursorTo(int x, int y)
+        internal void MoveCursorTo(int x, int y, OutputCause cause)
         {
             if (_disposed) return;
-            SetCursorPos(x, y);
+            SetCursorPos(x, y, cause);
         }
 
         /// <summary>Toggles the sticky cursor pin (issue #109). First call engages
@@ -254,10 +258,11 @@ namespace PadForge.Services
         /// axes; the next 200 Hz tick starts writing the cursor there before
         /// sampling. A second call releases it. Config is published before the
         /// enable flag so the timer never reads a half-set target.</summary>
-        public void TogglePin(CursorPinMode mode, int x, int y)
+        internal void TogglePin(CursorPinMode mode, int x, int y, OutputCause cause)
         {
             if (_disposed) return;
             if (_isPinned) { _isPinned = false; return; }
+            _pinCause = cause;
             _pinMode = mode;
             _pinX = x;
             _pinY = y;
@@ -271,8 +276,8 @@ namespace PadForge.Services
         /// the clamp with the given per-edge insets for the selected axes; each tick
         /// then keeps the cursor inside the inset rectangle, writing only when a
         /// clamped axis is outside. A second call releases it.</summary>
-        public void ToggleClamp(CursorClampMode mode, int insetX, int insetY, int offsetX = 0, int offsetY = 0)
-            => SetClamp(!_isClamped, mode, insetX, insetY, offsetX, offsetY);
+        internal void ToggleClamp(CursorClampMode mode, int insetX, int insetY, int offsetX, int offsetY, OutputCause cause)
+            => SetClamp(!_isClamped, mode, insetX, insetY, offsetX, offsetY, cause);
 
         /// <summary>Sets the clamp to an explicit state. The toggle above flips,
         /// which is right for a one-button clamp and wrong for an engage and
@@ -281,10 +286,11 @@ namespace PadForge.Services
         /// dropped, leaving the cursor trapped with nothing holding the trigger.
         /// An explicit state is idempotent, so a repeated engage or an orphaned
         /// release still lands where the trigger says.</summary>
-        public void SetClamp(bool engaged, CursorClampMode mode, int insetX, int insetY, int offsetX = 0, int offsetY = 0)
+        internal void SetClamp(bool engaged, CursorClampMode mode, int insetX, int insetY, int offsetX, int offsetY, OutputCause cause)
         {
             if (_disposed) return;
             if (!engaged) { _isClamped = false; return; }
+            _clampCause = cause;
             _clampMode = mode;
             _clampInsetX = insetX;
             _clampInsetY = insetY;
@@ -302,7 +308,7 @@ namespace PadForge.Services
             if (!GetCursorPos(out POINT p)) return;
             int tx = _pinMode != CursorPinMode.YOnly ? _pinX : p.X;
             int ty = _pinMode != CursorPinMode.XOnly ? _pinY : p.Y;
-            if (tx != p.X || ty != p.Y) SetCursorPos(tx, ty);
+            if (tx != p.X || ty != p.Y) SetCursorPos(tx, ty, _pinCause);
         }
 
         /// <summary>Keeps the cursor inside the inset rectangle on the clamped axes
@@ -314,7 +320,7 @@ namespace PadForge.Services
             if (!GetCursorPos(out POINT p)) return;
             var (nx, ny) = ClampPoint(p.X, p.Y, r.Left, r.Top, r.Right, r.Bottom,
                 _clampMode, _clampInsetX, _clampInsetY, _clampOffsetX, _clampOffsetY);
-            if (nx != p.X || ny != p.Y) SetCursorPos(nx, ny);
+            if (nx != p.X || ny != p.Y) SetCursorPos(nx, ny, _clampCause);
         }
 
         /// <summary>The point held inside the region: the screen inset on each

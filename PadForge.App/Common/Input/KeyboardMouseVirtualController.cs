@@ -344,8 +344,11 @@ namespace PadForge.Common.Input
         /// Sends keyboard and mouse input based on the KBM raw state.
         /// Uses change detection to only send key down/up on transitions.
         /// </summary>
-        public void SubmitKbmState(KbmRawState raw)
+        /// <summary>Sends the slot's state, each part with its cause
+        /// (<paramref name="cause"/>), which ProgramInputGate reads.</summary>
+        public void SubmitKbmState(KbmRawState raw, KbmCause cause)
         {
+            _cause = cause;
             // Wall-clock dt for the rate lanes (cursor, scroll): measured
             // here rather than passed in, so the contract cannot drift when a
             // caller forgets, and the first submit credits zero.
@@ -363,7 +366,18 @@ namespace PadForge.Common.Input
             // its key-up and a later release of the winner lets the still-
             // held loser's bit through again as a fresh key-down (Snap Tap
             // re-press, hitboxer's OPPOSITE mode).
+            ulong k0 = raw.Keys0, k1 = raw.Keys1, k2 = raw.Keys2, k3 = raw.Keys3;
             _socd.Apply(ref raw.Keys0, ref raw.Keys1, ref raw.Keys2, ref raw.Keys3);
+            // A key SOCD presses or lets go because of another key carries
+            // that key's cause: while any key is not proven own, every key
+            // the cleaning changed loses its proof.
+            if (_cause.AnyMarked)
+            {
+                _cause.OwnKeys0 &= ~(k0 ^ raw.Keys0);
+                _cause.OwnKeys1 &= ~(k1 ^ raw.Keys1);
+                _cause.OwnKeys2 &= ~(k2 ^ raw.Keys2);
+                _cause.OwnKeys3 &= ~(k3 ^ raw.Keys3);
+            }
 
             // --- Keyboard keys (change detection per VK) ---
             // A virtual HID keyboard takes the whole state: one report
@@ -372,7 +386,7 @@ namespace PadForge.Common.Input
             var hidKeyboard = _hidKeyboard;
             if (hidKeyboard != null)
             {
-                hidKeyboard.Submit(raw.Keys0, raw.Keys1, raw.Keys2, raw.Keys3);
+                hidKeyboard.Submit(raw.Keys0, raw.Keys1, raw.Keys2, raw.Keys3, _cause);
             }
             else
             {
@@ -397,7 +411,7 @@ namespace PadForge.Common.Input
 
             // --- Mouse buttons (change detection) ---
             var hidMouse = _hidMouse;
-            if (hidMouse != null) hidMouse.SetButtons(raw.MouseButtons);
+            if (hidMouse != null) hidMouse.SetButtons(raw.MouseButtons, _cause);
             else ProcessMouseButtons(raw.MouseButtons);
             _prevMouseButtons = raw.MouseButtons;
 
@@ -519,7 +533,7 @@ namespace PadForge.Common.Input
                 // regression. Only write when the target pixel actually moved.
                 if (px != _lastAbsCursorX || py != _lastAbsCursorY)
                 {
-                    SetCursorPos(px, py);
+                    SetCursorPos(px, py, _cause.Pointer);
                     _lastAbsCursorX = px;
                     _lastAbsCursorY = py;
                 }
@@ -541,8 +555,8 @@ namespace PadForge.Common.Input
                 _scrollAccumulator -= scroll;
                 if (scroll != 0)
                 {
-                    if (hidMouse != null) hidMouse.AddWheel(scroll);
-                    else InputManager.AccumulateMouseScrollInput(scroll * 120); // 120 = WHEEL_DELTA
+                    if (hidMouse != null) hidMouse.AddWheel(scroll, _cause.Pointer);
+                    else InputManager.AccumulateMouseScrollInput(scroll * 120, _cause.Pointer); // 120 = WHEEL_DELTA
                 }
             }
 
@@ -556,8 +570,8 @@ namespace PadForge.Common.Input
                 _scrollAccumulatorH -= scrollH;
                 if (scrollH != 0)
                 {
-                    if (hidMouse != null) hidMouse.AddPan(scrollH);
-                    else InputManager.AccumulateMouseScrollHInput(scrollH * 120); // 120 = WHEEL_DELTA
+                    if (hidMouse != null) hidMouse.AddPan(scrollH, _cause.Pointer);
+                    else InputManager.AccumulateMouseScrollHInput(scrollH * 120, _cause.Pointer); // 120 = WHEEL_DELTA
                 }
             }
         }
@@ -568,9 +582,13 @@ namespace PadForge.Common.Input
         private void Move(int dx, int dy)
         {
             var hidMouse = _hidMouse;
-            if (hidMouse != null) hidMouse.AddMotion(dx, dy);
-            else InputManager.AccumulateMouseMoveInput(dx, dy);
+            if (hidMouse != null) hidMouse.AddMotion(dx, dy, _cause.Pointer);
+            else InputManager.AccumulateMouseMoveInput(dx, dy, _cause.Pointer);
         }
+
+        // The causes of the state being submitted, poll thread only.
+        // Releases go out as the person's own: the gate never holds one.
+        private KbmCause _cause;
 
         public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates)
         {
@@ -607,7 +625,8 @@ namespace PadForge.Common.Input
             for (int bit = 0; bit < 64; bit++)
             {
                 if ((phaseBits & (1UL << bit)) == 0) continue;
-                SendKeyboard((ushort)(baseVk + bit), !releases);
+                int vk = baseVk + bit;
+                SendKeyboard((ushort)vk, !releases, releases ? OutputCause.Own : _cause.Key(vk));
             }
         }
 
@@ -618,25 +637,31 @@ namespace PadForge.Common.Input
 
             // Bit 0 = LMB
             if ((changed & 1) != 0)
-                SendMouseButton(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, (current & 1) != 0);
+                SendMouseButton(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, (current & 1) != 0, ButtonCause(current, 0));
             // Bit 1 = RMB
             if ((changed & 2) != 0)
-                SendMouseButton(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, (current & 2) != 0);
+                SendMouseButton(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, (current & 2) != 0, ButtonCause(current, 1));
             // Bit 2 = MMB
             if ((changed & 4) != 0)
-                SendMouseButton(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP, (current & 4) != 0);
+                SendMouseButton(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP, (current & 4) != 0, ButtonCause(current, 2));
             // Bit 3 = X1
             if ((changed & 8) != 0)
-                SendMouseButtonX(XBUTTON1, (current & 8) != 0);
+                SendMouseButtonX(XBUTTON1, (current & 8) != 0, ButtonCause(current, 3));
             // Bit 4 = X2
             if ((changed & 16) != 0)
-                SendMouseButtonX(XBUTTON2, (current & 16) != 0);
+                SendMouseButtonX(XBUTTON2, (current & 16) != 0, ButtonCause(current, 4));
         }
+
+        /// <summary>A button's cause: its own when it goes down, the
+        /// person's own when it goes up.</summary>
+        private OutputCause ButtonCause(byte current, int bit)
+            => (current & (1 << bit)) != 0 ? _cause.Button(bit) : OutputCause.Own;
 
         private void ReleaseAll()
         {
             // Release all held keys (current = 0, so only the release
             // phase has work).
+            _cause = KbmCause.AllOwn;
             if (_hidKeyboard != null)
             {
                 _hidKeyboard.ReleaseAll();
@@ -651,7 +676,7 @@ namespace PadForge.Common.Input
             _prevKeys0 = _prevKeys1 = _prevKeys2 = _prevKeys3 = 0;
 
             // Release all mouse buttons
-            if (_hidMouse != null) _hidMouse.SetButtons(0);
+            if (_hidMouse != null) _hidMouse.SetButtons(0, KbmCause.AllOwn);
             else ProcessMouseButtons(0);
             _prevMouseButtons = 0;
         }
@@ -683,11 +708,11 @@ namespace PadForge.Common.Input
         private static extern bool SetCursorPosNative(int x, int y);
 
         /// <summary>The one way this controller moves the cursor. The test
-        /// host moves none and is answered a refused move. While a program
-        /// drives PadForge and the window in front runs with rights, the
-        /// cursor stays where it is (ProgramInputGate).</summary>
-        private static bool SetCursorPos(int x, int y)
-            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !ProgramInputGate.KeysBlocked && SetCursorPosNative(x, y);
+        /// host moves none and is answered a refused move. A move not proven
+        /// the person's own leaves the cursor where it is while the window in
+        /// front runs with rights (ProgramInputGate).</summary>
+        private static bool SetCursorPos(int x, int y, OutputCause cause)
+            => !PadForge.Engine.Common.InputHookManager.DesktopInputOffLimits && !ProgramInputGate.HoldsKeys(cause) && SetCursorPosNative(x, y);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct POINT
@@ -724,17 +749,17 @@ namespace PadForge.Common.Input
 
         /// <summary>Queues one key event (InputManager.QueueKeyboardOutput).
         /// Each slot's restriction was applied at its submit.</summary>
-        private static void SendKeyboard(ushort vk, bool down)
+        private static void SendKeyboard(ushort vk, bool down, OutputCause cause)
         {
             var (outVk, scan, flags) = KeyEvent(vk, down);
-            InputManager.QueueKeyboardOutput(outVk, scan, flags);
+            InputManager.QueueKeyboardOutput(outVk, scan, flags, cause);
         }
 
-        private static void SendMouseButton(uint downFlag, uint upFlag, bool down)
-            => InputManager.QueueMouseButtonOutput(down ? downFlag : upFlag, 0);
+        private static void SendMouseButton(uint downFlag, uint upFlag, bool down, OutputCause cause)
+            => InputManager.QueueMouseButtonOutput(down ? downFlag : upFlag, 0, cause);
 
-        private static void SendMouseButtonX(uint xButton, bool down)
-            => InputManager.QueueMouseButtonOutput(down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP, xButton);
+        private static void SendMouseButtonX(uint xButton, bool down, OutputCause cause)
+            => InputManager.QueueMouseButtonOutput(down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP, xButton, cause);
 
     }
 }

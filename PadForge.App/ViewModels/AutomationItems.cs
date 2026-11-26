@@ -324,6 +324,7 @@ namespace PadForge.ViewModels
             new Dictionary<string, Func<Strings, string>>(StringComparer.Ordinal)
             {
                 ["not-allowed"] = s => s.Automation_Result_NotAllowed,
+                ["output-held"] = s => s.Automation_Result_Held,
                 ["not-available"] = s => s.Automation_Result_NotAvailable,
                 ["busy"] = s => s.Automation_Result_Busy,
                 ["bad-argument"] = s => s.Automation_Result_BadArgument,

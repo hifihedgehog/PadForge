@@ -1,0 +1,63 @@
+{
+ "new": [
+  {
+   "key": "Automation_Asked_Held_Format",
+   "english": "Key and mouse output it feeds is held back from {0}, which runs as administrator",
+   "sibling": [
+    "Automation_Asked_Rest_Format",
+    "Automation_Asked_Held"
+   ],
+   "where": "Extras, Automation, Activity, the middle column of one line the first time key and mouse output a program fed is held back; {0} is the program of the window in front that runs as administrator, as Windows names its file (\"Registry Editor\")",
+   "keep": [
+    "{0}"
+   ]
+  },
+  {
+   "key": "Automation_Asked_Held",
+   "english": "Key and mouse output it feeds is held back from a window that runs as administrator",
+   "sibling": [
+    "Automation_Asked_Held_Format"
+   ],
+   "where": "Extras, Automation, Activity, the same line when Windows does not name the window’s program",
+   "keep": []
+  },
+  {
+   "key": "Automation_Result_Held",
+   "english": "Held",
+   "sibling": [
+    "Automation_Result_Done",
+    "Automation_Result_NotDone"
+   ],
+   "where": "Extras, Automation, Activity, the right column of the line above: the output was held back",
+   "keep": []
+  },
+  {
+   "key": "Devices_Detail_PaddlesOff_Format",
+   "english": "The back paddles are off over USB and the Xbox Wireless Adapter. SDL’s reason: {0}",
+   "sibling": [
+    "Devices_Detail_Capabilities",
+    "Devices_Detail_PaddlesOffBluetooth_Format"
+   ],
+   "where": "Devices, an Xbox Elite’s panel, Details card, the gray line under Capabilities while its paddle route over USB or the Xbox Wireless Adapter is off; {0} is SDL’s reason, English text from SDL, kept as it comes",
+   "keep": [
+    "{0}",
+    "SDL",
+    "USB",
+    "Xbox Wireless Adapter"
+   ]
+  },
+  {
+   "key": "Devices_Detail_PaddlesOffBluetooth_Format",
+   "english": "The back paddles are off over Bluetooth. SDL’s reason: {0}",
+   "sibling": [
+    "Devices_Detail_PaddlesOff_Format"
+   ],
+   "where": "Devices, an Xbox Elite’s panel, Details card, the same line for an Elite on Bluetooth",
+   "keep": [
+    "{0}",
+    "SDL",
+    "Bluetooth"
+   ]
+  }
+ ]
+}

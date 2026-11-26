@@ -544,6 +544,7 @@ namespace PadForge.Services.Automation
                 json.WriteEndObject();
 
                 json.WriteBoolean("recording", _host.Recording?.Invoke() ?? false);
+                json.WriteBoolean("stops_behind", state.StopsBehind);
 
                 json.WriteStartArray("controllers");
                 foreach (var controller in state.Controllers)

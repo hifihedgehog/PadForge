@@ -85,6 +85,11 @@ namespace PadForge.Services.Automation
         /// <summary>The created virtual controllers in the interface's
         /// order.</summary>
         public IReadOnlyList<AutomationControllerState> Controllers { get; init; } = Array.Empty<AutomationControllerState>();
+
+        /// <summary>Whether Continue Polling When Window Loses Focus is off,
+        /// so the engine stops while PadForge is not the program in front
+        /// (#600).</summary>
+        public bool StopsBehind { get; init; }
     }
 
     /// <summary>

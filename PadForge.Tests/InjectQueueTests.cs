@@ -33,6 +33,9 @@ namespace PadForge.Tests
 
         public InjectQueueTests()
         {
+            // These follow the queue's order, not the gate: every event is
+            // the person's own (OutputCauseTests covers the gate).
+            CauseField.SetValue(null, OutputCause.Own);
             InputManager.FlushPendingInput();
             InputManager.SentForTest = batch =>
             {
@@ -48,22 +51,26 @@ namespace PadForge.Tests
         {
             InputManager.SentForTest = null;
             RestrictedField.SetValue(null, false);
+            CauseField.SetValue(null, default(OutputCause));
         }
+
+        private static readonly FieldInfo CauseField = typeof(InputManager)
+            .GetField("_currentMacroCause", BindingFlags.NonPublic | BindingFlags.Static);
 
         private static readonly FieldInfo RestrictedField = typeof(InputManager)
             .GetField("_currentMacroSlotRestricted", BindingFlags.NonPublic | BindingFlags.Static);
 
         private static void Invoke(Type type, string name, params object[] args)
         {
-            var method = type.GetMethod(name, BindingFlags.NonPublic | BindingFlags.Static);
-            Assert.NotNull(method);
+            var method = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
+                .Single(m => m.Name == name && m.GetParameters().Length == args.Length);
             method.Invoke(null, args);
         }
 
         private static void MacroKey(ushort vk, bool up) => Invoke(typeof(InputManager), "SendKeyInput", vk, up);
         private static void MacroButton(MacroMouseButton b, bool down) => Invoke(typeof(InputManager), "SendMouseButtonInput", b, down);
         private static void MacroText(string text) => Invoke(typeof(InputManager), "SendTextInput", text, 0, text.Length);
-        private static void KbmKey(ushort vk, bool down) => Invoke(typeof(KeyboardMouseVirtualController), "SendKeyboard", vk, down);
+        private static void KbmKey(ushort vk, bool down) => Invoke(typeof(KeyboardMouseVirtualController), "SendKeyboard", vk, down, OutputCause.Own);
 
         private bool IsMine(InputManager.InjectedEvent e)
             => (!e.Keyboard && (e.Dx is MarkA or MarkB or MarkC || (e.Flags & XDown) != 0 && e.Data == 2))
@@ -82,14 +89,14 @@ namespace PadForge.Tests
         [Fact]
         public void EventsGoOutInTheOrderQueued_WithAMoveSealedAheadOfAClick()
         {
-            InputManager.AccumulateMouseMoveInput(MarkA, 0);
+            InputManager.AccumulateMouseMoveInput(MarkA, 0, OutputCause.Own);
             MacroButton(MacroMouseButton.X2, down: true);
-            InputManager.AccumulateMouseMoveInput(MarkB, 0);
+            InputManager.AccumulateMouseMoveInput(MarkB, 0, OutputCause.Own);
             KbmKey(F24, down: true);
             MacroText(Snowman.ToString());
-            new OskWindowsOutput(() => IntPtr.Zero, () => true).TypeText(Comet.ToString());
+            new OskWindowsOutput(() => IntPtr.Zero, () => true, () => OutputCause.Own).TypeText(Comet.ToString());
             MacroKey(F24, up: true);
-            InputManager.AccumulateMouseMoveInput(MarkC, 0);
+            InputManager.AccumulateMouseMoveInput(MarkC, 0, OutputCause.Own);
 
             Assert.Equal(0, _callsOnThisThread);
             Assert.Empty(Mine());
@@ -121,9 +128,9 @@ namespace PadForge.Tests
             MacroText("x");
             KbmKey(F23, down: true);
             KbmKey(F23, down: false);
-            Invoke(typeof(KeyboardMouseVirtualController), "SendMouseButtonX", 2u, true);
-            Invoke(typeof(KeyboardMouseVirtualController), "SendMouseButtonX", 2u, false);
-            new OskWindowsOutput(() => IntPtr.Zero, () => true).TypeText("y");
+            Invoke(typeof(KeyboardMouseVirtualController), "SendMouseButtonX", 2u, true, OutputCause.Own);
+            Invoke(typeof(KeyboardMouseVirtualController), "SendMouseButtonX", 2u, false, OutputCause.Own);
+            new OskWindowsOutput(() => IntPtr.Zero, () => true, () => OutputCause.Own).TypeText("y");
             Assert.Equal(0, _callsOnThisThread);
 
             InputManager.FlushPendingInput();

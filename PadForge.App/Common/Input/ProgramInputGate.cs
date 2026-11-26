@@ -6,33 +6,37 @@ namespace PadForge.Common.Input
 {
     /// <summary>
     /// Holds PadForge's keyboard and mouse output back from windows that run
-    /// with rights while a program drives PadForge (#597).
+    /// with rights when a program fed it (#597, #600).
     ///
     /// <para>PadForge runs with administrator rights, so the keys and clicks
     /// it sends reach windows that a program without rights cannot reach
     /// itself: Windows' UIPI lets input down the integrity levels only. A
     /// program at Send Inputs can drive that output through a hold on a
-    /// control, a device of its own or a script value a macro reads. While
-    /// any of those is in force (<see cref="InForce"/>), a key press, a
-    /// button press, a wheel turn or a move is not sent while the window in
-    /// front belongs to a process above medium integrity, and a button press
-    /// or a wheel turn is not sent while the window under the pointer does
-    /// either, since a click lands where the pointer is. Releases always go
-    /// out, so nothing stays held. With no window in front at all, as on the
-    /// secure desktop of a Windows prompt or the lock screen, nothing but a
-    /// release goes out either.</para>
+    /// control, a device of its own or a script value a macro reads. Every
+    /// event PadForge sends carries its cause (OutputCause): the person's
+    /// own devices alone, a program's session, or nothing proven. An event
+    /// not proven the person's own is held when it is a key press, a button
+    /// press, a wheel turn or a move and the window in front belongs to a
+    /// process above medium integrity, and a button press or a wheel turn is
+    /// held as well while the window under the pointer does, since a click
+    /// lands where the pointer is. Releases always go out, so nothing stays
+    /// held. With no window in front at all, as on the secure desktop of a
+    /// Windows prompt or the lock screen, nothing of it but a release goes
+    /// out. The person's own output goes out whatever window is in front,
+    /// while a program drives PadForge or not.</para>
     ///
     /// <para>The window's process is read when the window changes and not on
     /// every send, the way ForegroundMonitorService reads the program in
     /// front: the window and its process ID are two cheap calls, and the
     /// token is opened only for a pair not seen last time. A process whose
-    /// token cannot be read counts as above medium.</para>
+    /// token cannot be read counts as above medium. A batch of the person's
+    /// own output, or of releases alone, never asks for the window.</para>
     ///
     /// <para>Every way PadForge's output reaches Windows asks here: the
     /// output queue's send (InputManager.SendQueued, which carries the
     /// macros, the Keyboard + Mouse virtual controller and the On-Screen
     /// Keyboard), the virtual HID keyboard and mouse senders
-    /// (KbmHidKeyboard, KbmHidMouse) and the two cursor moves
+    /// (KbmHidKeyboard, KbmHidMouse) and the cursor writes
     /// (KeyboardMouseVirtualController.SetCursorPos,
     /// CursorControlService.SetCursorPos). The handheld chord's replays are
     /// left alone: they replay keys the user pressed on the PC's own
@@ -86,6 +90,11 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Whether some slot's output carries a program's mark on
+        /// the last pass, which can outlast every hold, device and value
+        /// (#600). Written by the poll thread.</summary>
+        internal static volatile bool MarksKept;
+
         /// <summary>A registry of program devices changed its count of
         /// devices online by <paramref name="delta"/>.</summary>
         internal static void ProgramDevicesChanged(int delta)
@@ -93,16 +102,86 @@ namespace PadForge.Common.Input
             if (delta != 0) Interlocked.Add(ref _liveProgramDevices, delta);
         }
 
-        /// <summary>Whether a key press or a pointer move is held back now:
-        /// a program drives PadForge and the window in front runs above
-        /// medium integrity.</summary>
-        internal static bool KeysBlocked => InForce && Foreground.AboveMedium(ForegroundWindow());
+        /// <summary>Whether a key press or a move not proven the person's
+        /// own is held now: the window in front runs above medium
+        /// integrity.</summary>
+        internal static bool HoldsKeys() => Foreground.AboveMedium(ForegroundWindow());
 
-        /// <summary>Whether a button press or a wheel turn is held back now:
-        /// as <see cref="KeysBlocked"/>, or the window under the pointer runs
-        /// above medium integrity.</summary>
-        internal static bool ButtonsBlocked
-            => InForce && (Foreground.AboveMedium(ForegroundWindow()) || Pointer.AboveMedium(PointerWindow()));
+        /// <summary>Whether a button press or a wheel turn not proven the
+        /// person's own is held now: as <see cref="HoldsKeys()"/>, or the
+        /// window under the pointer runs above medium integrity.</summary>
+        internal static bool HoldsButtons() => HoldsKeys() || Pointer.AboveMedium(PointerWindow());
+
+        /// <summary>Whether a key press or a move of
+        /// <paramref name="cause"/> is held now.</summary>
+        internal static bool HoldsKeys(OutputCause cause) => !cause.IsOwn && HoldsKeys();
+
+        /// <summary>Whether a button press or a wheel turn of
+        /// <paramref name="cause"/> is held now.</summary>
+        internal static bool HoldsButtons(OutputCause cause) => !cause.IsOwn && HoldsButtons();
+
+        private static int _heldCount;
+        private static int _lastHeldProcess;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, byte> _sessionsHeld = new();
+
+        /// <summary>Raised the first time output a session fed is held, with
+        /// the session's number and the process ID of the window with rights
+        /// it was held from, on the thread that held it. Must not
+        /// block.</summary>
+        internal static event Action<int, uint> FirstHeld;
+
+        /// <summary>How many sends held something since PadForge
+        /// started.</summary>
+        internal static int HeldCount => Volatile.Read(ref _heldCount);
+
+        /// <summary>The process ID of the window with rights output was held
+        /// from last, 0 when none was.</summary>
+        internal static uint LastHeldProcess => (uint)Volatile.Read(ref _lastHeldProcess);
+
+        /// <summary>A sender held output of <paramref name="cause"/> from
+        /// the window in front, or from the one under the pointer.</summary>
+        internal static void NoteHeld(OutputCause cause)
+        {
+            Interlocked.Increment(ref _heldCount);
+            uint process = Foreground.LastAboveProcess;
+            if (process == 0) process = Pointer.LastAboveProcess;
+            Volatile.Write(ref _lastHeldProcess, (int)process);
+            int session = cause.Session;
+            if (session > 0 && _sessionsHeld.TryAdd(session, 0)) FirstHeld?.Invoke(session, process);
+        }
+
+        /// <summary>The process of the window in front when it runs with
+        /// rights and output was held from it last, else 0. Reads the window
+        /// as the gate last read it, with no new probe.</summary>
+        internal static uint HeldFromWindowInFront()
+        {
+            uint held = LastHeldProcess;
+            return held != 0 && held == Foreground.LastAboveProcess ? held : 0;
+        }
+
+        /// <summary>Test seam: a program's name by process ID. Null in the
+        /// app.</summary>
+        internal static Func<uint, string> ProgramNameSeam;
+
+        /// <summary>A process's program name as Windows describes its file
+        /// ("Registry Editor"), else its image name. Null when the process
+        /// is gone or 0.</summary>
+        internal static string ProgramNameOf(uint process)
+        {
+            if (process == 0) return null;
+            var seam = ProgramNameSeam;
+            if (seam != null) return seam(process);
+            string path = ProcessImage.PathOf(process);
+            if (string.IsNullOrEmpty(path)) return null;
+            try
+            {
+                string description = System.Diagnostics.FileVersionInfo.GetVersionInfo(path).FileDescription;
+                if (!string.IsNullOrWhiteSpace(description)) return description.Trim();
+            }
+            catch (System.IO.IOException) { }
+            catch (UnauthorizedAccessException) { }
+            return System.IO.Path.GetFileNameWithoutExtension(path);
+        }
 
         /// <summary>Whether the message the interface's thread handles now
         /// is PadForge's own output while a program drives PadForge. The
@@ -154,6 +233,17 @@ namespace PadForge.Common.Input
                 return above;
             }
 
+            /// <summary>The process of the last window read when it ran
+            /// above medium integrity, else 0.</summary>
+            public uint LastAboveProcess
+            {
+                get
+                {
+                    var seen = Volatile.Read(ref _seen);
+                    return seen != null && seen.Above ? seen.Process : 0;
+                }
+            }
+
             public void Forget() => Volatile.Write(ref _seen, null);
         }
 
@@ -167,6 +257,9 @@ namespace PadForge.Common.Input
             Foreground.Forget();
             Pointer.Forget();
             IntegrityReads = 0;
+            Volatile.Write(ref _heldCount, 0);
+            Volatile.Write(ref _lastHeldProcess, 0);
+            _sessionsHeld.Clear();
         }
 
         private static IntPtr ForegroundWindow()

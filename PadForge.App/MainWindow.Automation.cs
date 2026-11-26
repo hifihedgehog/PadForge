@@ -510,6 +510,7 @@ namespace PadForge
                         : _window.WindowState == WindowState.Minimized ? AutomationWindowState.Minimized
                         : AutomationWindowState.Shown,
                     Controllers = controllers,
+                    StopsBehind = _window._viewModel.Settings?.EnablePollingOnFocusLoss == false,
                 };
             }
         }

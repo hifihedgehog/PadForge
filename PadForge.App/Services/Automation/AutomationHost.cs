@@ -120,6 +120,7 @@ namespace PadForge.Services.Automation
             _control = new ExternalControlService(AnswerControlLine, controlPipeName);
             _control.StateChanged += OnControlPipeEnded;
             Sessions = new AutomationSessions(this, ui);
+            PadForge.Common.Input.ProgramInputGate.FirstHeld += OnFirstHeld;
             _pipe = new AutomationPipe(Sessions.ServeAsync, automationPipeName);
             _pipe.StateChanged += OnControlPipeEnded;
             _retry = new Timer(_ => RetryControlPipe(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
@@ -482,7 +483,18 @@ namespace PadForge.Services.Automation
                 _pipe.StateChanged -= OnControlPipeEnded;
                 _pipe.Dispose();
             }
+            PadForge.Common.Input.ProgramInputGate.FirstHeld -= OnFirstHeld;
             Sessions.Dispose();
         }
+
+        /// <summary>The gate held a session's output for the first time, on
+        /// the sending thread: the window's program is named and Activity
+        /// told on a worker, so the send waits on no file read.</summary>
+        private void OnFirstHeld(int session, uint process)
+            => ThreadPool.QueueUserWorkItem(_ =>
+            {
+                if (Volatile.Read(ref _disposed) != 0) return;
+                Sessions.NoteHeld(session, PadForge.Common.Input.ProgramInputGate.ProgramNameOf(process));
+            });
     }
 }

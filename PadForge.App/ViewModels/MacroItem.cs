@@ -2677,6 +2677,11 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsExecuting { get; set; }
 
+        /// <summary>The cause of the run under way (#600): what its trigger
+        /// read when it started, joined with what it read on every pass
+        /// since. Its later and timed steps send with it.</summary>
+        internal PadForge.Common.Input.OutputCause RunCause;
+
         /// <summary>Current position in the action sequence during execution.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public int CurrentActionIndex { get; set; }
@@ -5779,6 +5784,10 @@ namespace PadForge.ViewModels
         /// tick. Never serialized.</summary>
         [System.Xml.Serialization.XmlIgnore]
         internal bool KeyToggleLatched { get; set; }
+
+        /// <summary>The cause of the run that last wrote this action's latch
+        /// (#600), which the latched key, button or wheel sends with.</summary>
+        internal PadForge.Common.Input.OutputCause LatchCause;
 
         /// <summary>Volatile latch bit for
         /// <see cref="MacroActionType.ToggleMouseButton"/> (v18). While set,

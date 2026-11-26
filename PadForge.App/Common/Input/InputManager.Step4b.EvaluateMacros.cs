@@ -250,6 +250,11 @@ namespace PadForge.Common.Input
         // static SendInput emission helpers can read it.
         private static bool _currentMacroSlotRestricted;
 
+        /// <summary>The cause of the output the macro evaluated now sends
+        /// (#600): set before each slot macro runs, and unproven, so held,
+        /// anywhere else.</summary>
+        private static OutputCause _currentMacroCause;
+
         /// <summary>Macro pass counter (#390 macro cells): incremented once
         /// per EvaluateMacros pass. The menu runtime's walk stamps
         /// <see cref="ViewModels.MacroItem.MenuTriggerTick"/> with the
@@ -294,8 +299,7 @@ namespace PadForge.Common.Input
             // sending inputs at flip time) is what releases a latched key
             // when its macro is disabled, deleted, or replaced by a profile
             // switch: the key simply stops appearing in the desired set.
-            _desiredLatchedKeys.Clear();
-            _desiredLatchedMouseButtons.Clear();
+            BeginLatchWants();
 
             // Menu direct bindings (#9 B-17) run BEFORE the macro pass so a
             // macro triggering on a virtual button can see and consume a
@@ -362,6 +366,35 @@ namespace PadForge.Common.Input
         /// internal for the PadForge.Tests dispatch pins. Poll thread only.</summary>
         internal readonly HashSet<ushort> _desiredLatchedKeys = new();
 
+        // The cause of each key and mouse button the latches and menu cells
+        // want held this frame (#600): own only when every wish for it is.
+        private readonly Dictionary<ushort, OutputCause> _desiredLatchCauses = new();
+        private readonly Dictionary<MacroMouseButton, OutputCause> _desiredMouseLatchCauses = new();
+
+        /// <summary>Starts a frame's wants: no key or mouse button is wanted
+        /// held until a latch or a menu cell wants it.</summary>
+        internal void BeginLatchWants()
+        {
+            _desiredLatchedKeys.Clear();
+            _desiredLatchedMouseButtons.Clear();
+            _desiredLatchCauses.Clear();
+            _desiredMouseLatchCauses.Clear();
+        }
+
+        /// <summary>Wants <paramref name="vk"/> held this frame, for output
+        /// of <paramref name="cause"/>.</summary>
+        internal void DesireLatchedKey(ushort vk, OutputCause cause)
+        {
+            _desiredLatchedKeys.Add(vk);
+            _desiredLatchCauses[vk] = _desiredLatchCauses.TryGetValue(vk, out var had) ? had.And(cause) : cause;
+        }
+
+        private void DesireLatchedMouseButton(MacroMouseButton button, OutputCause cause)
+        {
+            _desiredLatchedMouseButtons.Add(button);
+            _desiredMouseLatchCauses[button] = _desiredMouseLatchCauses.TryGetValue(button, out var had) ? had.And(cause) : cause;
+        }
+
         /// <summary>Keys this engine currently holds logically down via the
         /// reconcile. Internal for the PadForge.Tests dispatch pins. Poll
         /// thread only (plus the engine-stop release).</summary>
@@ -395,7 +428,7 @@ namespace PadForge.Common.Input
             foreach (var vk in _desiredLatchedKeys)
             {
                 if (_latchedKeysDown.Add(vk))
-                    SendKeyInput(vk, keyUp: false);
+                    SendKeyInput(vk, keyUp: false, _desiredLatchCauses.TryGetValue(vk, out var cause) ? cause : default);
             }
         }
 
@@ -528,6 +561,7 @@ namespace PadForge.Common.Input
             // reachable from the action executor).
             _evalMacros = macros;
             _preMacroGp = gp;
+            var chainCause = MacroChainCause(macros);
             // Fresh slot-device resolution per evaluator call (#9 B-9):
             // device-free trigger entries resolve against the slot's
             // CURRENT online devices, refilled lazily on first need.
@@ -847,6 +881,7 @@ namespace PadForge.Common.Input
                     macro.AwaitReleaseAfterBreak = false;
 
                 // Start new execution if triggered and not already executing.
+                var triggerCause = MacroTriggerCause(macro, chainCause);
                 if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak
                     // R5 (round four): an empty macro must never START. The
                     // advance routine is gated on Actions.Count > 0, so a
@@ -867,6 +902,7 @@ namespace PadForge.Common.Input
                     if (macro.PairId != 0)
                         CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
+                    macro.RunCause = triggerCause;
                     // A deferred single firing with the button already up
                     // must run its sequence ONE full pass: the UntilRelease
                     // stop below would otherwise kill it the same frame
@@ -946,6 +982,8 @@ namespace PadForge.Common.Input
                 if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro);
                 if (macro.IsExecuting && macro.Actions.Count > 0)
                 {
+                    macro.RunCause = macro.RunCause.And(triggerCause);
+                    _currentMacroCause = macro.RunCause;
                     ExecuteMacroActions(ref gp, macro);
                 }
 
@@ -1746,7 +1784,7 @@ namespace PadForge.Common.Input
                     {
                         var codes = a.ParsedKeyCodes;
                         for (int k = 0; k < codes.Length; k++)
-                            _desiredLatchedKeys.Add((ushort)codes[k]);
+                            DesireLatchedKey((ushort)codes[k], a.LatchCause);
                     }
                 }
                 else if (a.Type == MacroActionType.ToggleVcAxis || a.Type == MacroActionType.AxisSetLatched)
@@ -1769,7 +1807,7 @@ namespace PadForge.Common.Input
                     // branch was the one latch that ignored the flag and
                     // held solid).
                     if (a.MouseToggleLatched && LatchPhaseOn(macro, a) && !_currentMacroSlotRestricted)
-                        _desiredLatchedMouseButtons.Add(a.MouseButton);
+                        DesireLatchedMouseButton(a.MouseButton, a.LatchCause);
                 }
                 else if (a.Type == MacroActionType.ToggleWheel)
                 {
@@ -1779,7 +1817,12 @@ namespace PadForge.Common.Input
                     {
                         int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
                         if (ShouldFireOneShot(a, interval, ReadTurboPressure(macro, a)))
+                        {
+                            var runCause = _currentMacroCause;
+                            _currentMacroCause = a.LatchCause;
                             ExecuteMouseWheelTap(a);
+                            _currentMacroCause = runCause;
+                        }
                     }
                 }
             }
@@ -1903,9 +1946,82 @@ namespace PadForge.Common.Input
             }
             foreach (var b in _desiredLatchedMouseButtons)
             {
-                if (_latchedMouseButtonsDown.Add(b))
-                    SendMouseButtonInput(b, down: true);
+                if (!_latchedMouseButtonsDown.Add(b)) continue;
+                var runCause = _currentMacroCause;
+                _currentMacroCause = _desiredMouseLatchCauses.TryGetValue(b, out var cause) ? cause : default;
+                SendMouseButtonInput(b, down: true);
+                _currentMacroCause = runCause;
             }
+        }
+
+        /// <summary>The cause of what a slot macro's trigger reads on this
+        /// pass (#600): its slot's (SlotMacroCauses), a program's when its
+        /// Custom Expression reads a script value a program set, and that of
+        /// any run or latch of the slot a program marked
+        /// (<paramref name="chainCause"/>), since one macro's output can
+        /// start another.</summary>
+        private OutputCause MacroTriggerCause(MacroItem macro, OutputCause chainCause)
+        {
+            int slot = macro.PadIndex;
+            var cause = (uint)slot < (uint)SlotMacroCauses.Length ? SlotMacroCauses[slot] : default;
+            cause = cause.And(chainCause);
+            if (macro.TriggerMode == MacroTriggerMode.CustomExpression && macro.TriggerExpressionVariables is { } vars)
+            {
+                for (int i = 0; i < vars.Count; i++)
+                {
+                    var v = vars[i];
+                    if (v?.Source == MacroTriggerSource.ScriptValue)
+                    {
+                        int setter = ScriptValues.SetterOf(v.ScriptValue);
+                        if (setter > 0) cause = cause.And(OutputCause.Program(setter));
+                    }
+                    // A program's device that comes and goes is the
+                    // program's, online or not.
+                    else if (v?.Source == MacroTriggerSource.DeviceConnection
+                        && ProgramDeviceOf(v.DeviceGuid) is { } program)
+                        cause = cause.And(OutputCause.Program(program.OwnerSession));
+                }
+            }
+            return cause;
+        }
+
+        /// <summary>The program device a row holds, online or not, or null
+        /// for a device of the person's own or PadForge's.</summary>
+        private static ProgramDevice ProgramDeviceOf(Guid device)
+        {
+            if (device == Guid.Empty) return null;
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return null;
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                    if (ud != null && ud.InstanceGuid == device)
+                        return ud.Device is ProgramDevice { PadForgeOwn: false } program ? program : null;
+            }
+            return null;
+        }
+
+        /// <summary>The cause a slot's runs and latches a program marked lend
+        /// every macro of the slot on this pass, own when none is
+        /// marked.</summary>
+        private static OutputCause MacroChainCause(MacroItem[] macros)
+        {
+            var cause = OutputCause.Own;
+            foreach (var macro in macros)
+            {
+                if (macro == null) continue;
+                if (macro.IsExecuting && !macro.RunCause.IsOwn) cause = cause.And(macro.RunCause);
+                var actions = macro.Actions;
+                for (int i = 0; i < actions.Count; i++)
+                {
+                    var a = actions[i];
+                    if (a == null || a.LatchCause.IsOwn) continue;
+                    if (a.KeyToggleLatched || a.MouseToggleLatched || a.VcToggleLatched
+                        || a.VcAxisToggleLatched || a.WheelToggleLatched)
+                        cause = cause.And(a.LatchCause);
+                }
+            }
+            return cause;
         }
 
         /// <summary>Evaluates a macro's <see cref="MacroTriggerMode.CustomExpression"/>
@@ -1980,8 +2096,7 @@ namespace PadForge.Common.Input
         /// always.</summary>
         internal void EvaluateConnectionMacros()
         {
-            _desiredLatchedKeys.Clear();
-            _desiredLatchedMouseButtons.Clear();
+            BeginLatchWants();
             for (int i = 0; i < MaxPads; i++)
             {
                 var macros = MacroSnapshots[i];
@@ -3751,7 +3866,7 @@ namespace PadForge.Common.Input
                     var m = action.CursorRecenterMode;
                     if (!_currentMacroSlotRestricted)
                         CursorControlService.Active?.RecenterCursor(
-                        m != CursorRecenterMode.YOnly, m != CursorRecenterMode.XOnly);
+                        m != CursorRecenterMode.YOnly, m != CursorRecenterMode.XOnly, _currentMacroCause);
                     AdvanceAction(macro);
                     break;
                 }
@@ -3762,7 +3877,7 @@ namespace PadForge.Common.Input
                     // thread enforces the target each tick while engaged.
                     if (!_currentMacroSlotRestricted)
                         CursorControlService.Active?.TogglePin(
-                        action.CursorPinMode, action.CursorPinX, action.CursorPinY);
+                        action.CursorPinMode, action.CursorPinX, action.CursorPinY, _currentMacroCause);
                     AdvanceAction(macro);
                     break;
                 }
@@ -3782,12 +3897,12 @@ namespace PadForge.Common.Input
                         if (action.LatchDirection == ViewModels.MacroLatchDirection.Toggle)
                             cursor?.ToggleClamp(action.CursorClampMode,
                                 action.CursorClampInsetX, action.CursorClampInsetY,
-                                action.CursorClampOffsetX, action.CursorClampOffsetY);
+                                action.CursorClampOffsetX, action.CursorClampOffsetY, _currentMacroCause);
                         else
                             cursor?.SetClamp(action.LatchDirection == ViewModels.MacroLatchDirection.On,
                                 action.CursorClampMode,
                                 action.CursorClampInsetX, action.CursorClampInsetY,
-                                action.CursorClampOffsetX, action.CursorClampOffsetY);
+                                action.CursorClampOffsetX, action.CursorClampOffsetY, _currentMacroCause);
                     }
                     AdvanceAction(macro);
                     break;
@@ -3798,7 +3913,7 @@ namespace PadForge.Common.Input
                     // target on press. Coord is already clamped on-screen by the
                     // action's MouseX / MouseY setters.
                     if (!_currentMacroSlotRestricted)
-                        CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY);
+                        CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY, _currentMacroCause);
                     AdvanceAction(macro);
                     break;
 
@@ -3842,6 +3957,7 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ToggleVcAxis:
                     action.VcAxisToggleLatched = !action.VcAxisToggleLatched;
+                    action.LatchCause = _currentMacroCause;
                     if (action.VcAxisToggleLatched) ResetLatchPulsePhase(action);
                     AdvanceAction(macro);
                     break;
@@ -3866,6 +3982,7 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ToggleWheel:
                     action.WheelToggleLatched = !action.WheelToggleLatched;
+                    action.LatchCause = _currentMacroCause;
                     if (action.WheelToggleLatched)
                     {
                         action.RepeatKeyLastFireUtc = DateTime.MinValue;
@@ -4012,6 +4129,7 @@ namespace PadForge.Common.Input
         /// leg's Set is what holds the key down.</summary>
         private void ApplyKeyLatchWrite(MacroItem macro, MacroAction action)
         {
+            action.LatchCause = _currentMacroCause;
             switch (action.LatchDirection)
             {
                 case MacroLatchDirection.On:
@@ -4041,6 +4159,7 @@ namespace PadForge.Common.Input
         /// the boundary transitions.</summary>
         private void ApplyMouseLatchWrite(MacroItem macro, MacroAction action)
         {
+            action.LatchCause = _currentMacroCause;
             switch (action.LatchDirection)
             {
                 case MacroLatchDirection.On:
@@ -4070,6 +4189,7 @@ namespace PadForge.Common.Input
         /// where flipping would leave each action's own latch set.</summary>
         private void ApplyVcButtonLatchWrite(MacroItem macro, MacroAction action)
         {
+            action.LatchCause = _currentMacroCause;
             switch (action.LatchDirection)
             {
                 case MacroLatchDirection.On:
@@ -5139,9 +5259,9 @@ namespace PadForge.Common.Input
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
             int ticks = action.AxisValue == 0 ? 1 : action.AxisValue;
             if (action.WheelHorizontal)
-                AccumulateMouseScrollHInput(ticks * 120);
+                AccumulateMouseScrollHInput(ticks * 120, _currentMacroCause);
             else
-                AccumulateMouseScrollInput(ticks * 120);
+                AccumulateMouseScrollInput(ticks * 120, _currentMacroCause);
         }
 
         /// <summary>One fixed-pixel cursor nudge (v16): the signed
@@ -5152,7 +5272,7 @@ namespace PadForge.Common.Input
         private static void ExecuteMouseNudge(MacroAction action)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
-            AccumulateMouseMoveInput(action.NudgeDx, action.NudgeDy);
+            AccumulateMouseMoveInput(action.NudgeDx, action.NudgeDy, _currentMacroCause);
         }
 
         /// <summary>Steam's Scroll Wheel List step (v16). Executes the
@@ -5211,11 +5331,11 @@ namespace PadForge.Common.Input
                     }
                     case 'W':
                         if (first && !_currentMacroSlotRestricted)
-                            AccumulateMouseScrollInput((p.Value == 0 ? 1 : p.Value) * 120);
+                            AccumulateMouseScrollInput((p.Value == 0 ? 1 : p.Value) * 120, _currentMacroCause);
                         break;
                     case 'H':
                         if (first && !_currentMacroSlotRestricted)
-                            AccumulateMouseScrollHInput((p.Value == 0 ? 1 : p.Value) * 120);
+                            AccumulateMouseScrollHInput((p.Value == 0 ? 1 : p.Value) * 120, _currentMacroCause);
                         break;
                     case 'B':
                         // The raw evaluator calls this helper with a THROWAWAY
@@ -5298,6 +5418,7 @@ namespace PadForge.Common.Input
             System.Array.Clear(_macroPassConsumedWords, 0, _macroPassConsumedWords.Length);
             System.Array.Clear(_macroPassOutputWords, 0, _macroPassOutputWords.Length);
             _evalMacros = macros;   // #251 cross-macro latch release, see above
+            var chainCause = MacroChainCause(macros);
             // Resolve the slot's ACTUAL axis packing for this call (audit
             // 2026-07-25, C34). All macros in a snapshot share the slot.
             int laySlot = -1;
@@ -5615,6 +5736,7 @@ namespace PadForge.Common.Input
                 if (macro.AwaitReleaseAfterBreak && breakGuardOpen)
                     macro.AwaitReleaseAfterBreak = false;
 
+                var triggerCause = MacroTriggerCause(macro, chainCause);
                 if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak
                     // R5 (round four): an empty macro must never START. The
                     // advance routine is gated on Actions.Count > 0, so a
@@ -5628,6 +5750,7 @@ namespace PadForge.Common.Input
                     if (macro.PairId != 0)
                         CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
+                    macro.RunCause = triggerCause;
                     // A deferred single firing with the button already up
                     // must run its sequence ONE full pass: the UntilRelease
                     // stop below would otherwise kill it the same frame
@@ -5696,7 +5819,11 @@ namespace PadForge.Common.Input
 
                 if (macro.IsExecuting && macro.Actions.Count == 0) EndMacroRun(macro); // X14 twin
                 if (macro.IsExecuting && macro.Actions.Count > 0)
+                {
+                    macro.RunCause = macro.RunCause.And(triggerCause);
+                    _currentMacroCause = macro.RunCause;
                     ExecuteMacroActionsExtended(ref raw, macro);
+                }
 
                 // Consume trigger buttons. Toggle keys on the RAW button for
                 // the same reason as the Gamepad loop above: its unlatch
@@ -5772,7 +5899,7 @@ namespace PadForge.Common.Input
                     {
                         var codes = a.ParsedKeyCodes;
                         for (int k = 0; k < codes.Length; k++)
-                            _desiredLatchedKeys.Add((ushort)codes[k]);
+                            DesireLatchedKey((ushort)codes[k], a.LatchCause);
                     }
                 }
                 else if (a.Type == MacroActionType.ToggleVcAxis || a.Type == MacroActionType.AxisSetLatched)
@@ -5793,7 +5920,7 @@ namespace PadForge.Common.Input
                 {
                     // LatchPhaseOn: the Gamepad-path twin's rationale (M3).
                     if (a.MouseToggleLatched && LatchPhaseOn(macro, a) && !_currentMacroSlotRestricted)
-                        _desiredLatchedMouseButtons.Add(a.MouseButton);
+                        DesireLatchedMouseButton(a.MouseButton, a.LatchCause);
                 }
                 else if (a.Type == MacroActionType.ToggleWheel)
                 {
@@ -5801,7 +5928,12 @@ namespace PadForge.Common.Input
                     {
                         int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
                         if (ShouldFireOneShot(a, interval, ReadTurboPressure(macro, a)))
+                        {
+                            var runCause = _currentMacroCause;
+                            _currentMacroCause = a.LatchCause;
                             ExecuteMouseWheelTap(a);
+                            _currentMacroCause = runCause;
+                        }
                     }
                 }
             }
@@ -6312,7 +6444,7 @@ namespace PadForge.Common.Input
                     var m = action.CursorRecenterMode;
                     if (!_currentMacroSlotRestricted)
                         CursorControlService.Active?.RecenterCursor(
-                        m != CursorRecenterMode.YOnly, m != CursorRecenterMode.XOnly);
+                        m != CursorRecenterMode.YOnly, m != CursorRecenterMode.XOnly, _currentMacroCause);
                     AdvanceAction(macro);
                     break;
                 }
@@ -6321,7 +6453,7 @@ namespace PadForge.Common.Input
                 {
                     if (!_currentMacroSlotRestricted)
                         CursorControlService.Active?.TogglePin(
-                        action.CursorPinMode, action.CursorPinX, action.CursorPinY);
+                        action.CursorPinMode, action.CursorPinX, action.CursorPinY, _currentMacroCause);
                     AdvanceAction(macro);
                     break;
                 }
@@ -6339,12 +6471,12 @@ namespace PadForge.Common.Input
                         if (action.LatchDirection == ViewModels.MacroLatchDirection.Toggle)
                             cursor?.ToggleClamp(action.CursorClampMode,
                                 action.CursorClampInsetX, action.CursorClampInsetY,
-                                action.CursorClampOffsetX, action.CursorClampOffsetY);
+                                action.CursorClampOffsetX, action.CursorClampOffsetY, _currentMacroCause);
                         else
                             cursor?.SetClamp(action.LatchDirection == ViewModels.MacroLatchDirection.On,
                                 action.CursorClampMode,
                                 action.CursorClampInsetX, action.CursorClampInsetY,
-                                action.CursorClampOffsetX, action.CursorClampOffsetY);
+                                action.CursorClampOffsetX, action.CursorClampOffsetY, _currentMacroCause);
                     }
                     AdvanceAction(macro);
                     break;
@@ -6353,7 +6485,7 @@ namespace PadForge.Common.Input
                 case MacroActionType.MoveMouseToScreenPosition:
                     // System-wide cursor warp (#9), identical to the Gamepad path.
                     if (!_currentMacroSlotRestricted)
-                        CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY);
+                        CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY, _currentMacroCause);
                     AdvanceAction(macro);
                     break;
 
@@ -6467,6 +6599,7 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ToggleVcAxis:
                     action.VcAxisToggleLatched = !action.VcAxisToggleLatched;
+                    action.LatchCause = _currentMacroCause;
                     if (action.VcAxisToggleLatched) ResetLatchPulsePhase(action);
                     AdvanceAction(macro);
                     break;
@@ -6491,6 +6624,7 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ToggleWheel:
                     action.WheelToggleLatched = !action.WheelToggleLatched;
+                    action.LatchCause = _currentMacroCause;
                     if (action.WheelToggleLatched)
                     {
                         action.RepeatKeyLastFireUtc = DateTime.MinValue;
@@ -6793,12 +6927,17 @@ namespace PadForge.Common.Input
 
         /// <summary>Posts the System Volume target for the worker. Never
         /// waits on the audio service. Poll thread.</summary>
+        // The cause of the macro that posted the System Volume target, which
+        // the worker's volume keys send with (#600).
+        private OutputCause _systemVolumeCause;
+
         internal void PostSystemVolume(float volume, bool showOsd)
         {
             lock (_volumeLock)
             {
                 _systemVolumeTarget = volume;
                 _systemVolumeOsd = showOsd;
+                _systemVolumeCause = _currentMacroCause;
                 _systemVolumePosted = true;
                 NoteVolumePostLocked();
             }
@@ -6950,10 +7089,12 @@ namespace PadForge.Common.Input
                     var now = DateTime.UtcNow;
                     if ((now - _lastOsdTriggerTime).TotalMilliseconds >= 200)
                     {
-                        SendKeyInput(VK_VOLUME_UP, keyUp: false);
-                        SendKeyInput(VK_VOLUME_UP, keyUp: true);
-                        SendKeyInput(VK_VOLUME_DOWN, keyUp: false);
-                        SendKeyInput(VK_VOLUME_DOWN, keyUp: true);
+                        OutputCause cause;
+                        lock (_volumeLock) cause = _systemVolumeCause;
+                        SendKeyInput(VK_VOLUME_UP, keyUp: false, cause);
+                        SendKeyInput(VK_VOLUME_UP, keyUp: true, cause);
+                        SendKeyInput(VK_VOLUME_DOWN, keyUp: false, cause);
+                        SendKeyInput(VK_VOLUME_DOWN, keyUp: true, cause);
                         // Re-set exact volume to undo the ±2% from the key events.
                         _audioEndpointVolume.SetMasterVolumeLevelScalar(volume, ref emptyGuid);
                         _lastOsdTriggerTime = now;
@@ -7219,6 +7360,16 @@ namespace PadForge.Common.Input
         private static int _pendingScrollH;
         private static readonly INPUT[] _mouseInjectBuf = new INPUT[1];
 
+        // The same four lanes for movement a program fed or nothing proved
+        // the person's own (OutputCause), kept apart so ProgramInputGate
+        // can hold them while the person's own movement goes out. The cause
+        // is the last such producer's, read with the deltas.
+        private static int _markedMouseDx;
+        private static int _markedMouseDy;
+        private static int _markedScroll;
+        private static int _markedScrollH;
+        private static int _markedCause;
+
         // The ordered output queue. Every key and button event PadForge
         // injects (the macros, the Keyboard + Mouse virtual controller, the
         // On-Screen Keyboard) goes in here, never to SendInput on the thread
@@ -7242,6 +7393,8 @@ namespace PadForge.Common.Input
         // a slow hook would give both one timestamp, a press of no length
         // (Individual calls, docs virtual-controllers.md).
         private static int[] _injectEntries = new int[256];
+        // Each entry's cause (OutputCause.Raw), beside its length.
+        private static int[] _injectEntryCauses = new int[256];
         private static int _injectEntryHead;
         private static int _injectEntryCount;
 
@@ -7270,7 +7423,7 @@ namespace PadForge.Common.Input
         private static void SendMouseMoveInput(int dx, int dy)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
-            AccumulateMouseMoveInput(dx, dy);
+            AccumulateMouseMoveInput(dx, dy, _currentMacroCause);
         }
 
         /// <summary>Restriction-agnostic accumulate for the mouse-move lane.
@@ -7278,11 +7431,20 @@ namespace PadForge.Common.Input
         /// delta through here. Step 5 already zeroes a restricted slot's
         /// whole KbmRawState, so the macro-context flag above must not
         /// apply here (it holds whatever the LAST macro slot set).</summary>
-        internal static void AccumulateMouseMoveInput(int dx, int dy)
+        internal static void AccumulateMouseMoveInput(int dx, int dy, OutputCause cause)
         {
             if (dx == 0 && dy == 0) return;
-            Interlocked.Add(ref _pendingMouseDx, dx);
-            Interlocked.Add(ref _pendingMouseDy, dy);
+            if (cause.IsOwn)
+            {
+                Interlocked.Add(ref _pendingMouseDx, dx);
+                Interlocked.Add(ref _pendingMouseDy, dy);
+            }
+            else
+            {
+                Volatile.Write(ref _markedCause, cause.Raw);
+                Interlocked.Add(ref _markedMouseDx, dx);
+                Interlocked.Add(ref _markedMouseDy, dy);
+            }
             SignalMouseWork();
         }
 
@@ -7306,7 +7468,11 @@ namespace PadForge.Common.Input
             || System.Threading.Volatile.Read(ref _pendingMouseDx) != 0
             || System.Threading.Volatile.Read(ref _pendingMouseDy) != 0
             || System.Threading.Volatile.Read(ref _pendingScroll) != 0
-            || System.Threading.Volatile.Read(ref _pendingScrollH) != 0;
+            || System.Threading.Volatile.Read(ref _pendingScrollH) != 0
+            || System.Threading.Volatile.Read(ref _markedMouseDx) != 0
+            || System.Threading.Volatile.Read(ref _markedMouseDy) != 0
+            || System.Threading.Volatile.Read(ref _markedScroll) != 0
+            || System.Threading.Volatile.Read(ref _markedScrollH) != 0;
 
         private static INPUT MouseOutput(int dx, int dy, uint mouseData, uint flags) => new()
         {
@@ -7339,45 +7505,62 @@ namespace PadForge.Common.Input
         /// accumulated after the last seal stay in the accumulators and batch
         /// as before. The events are one entry, one SendInput call, split
         /// only past <see cref="MaxEventsPerEntry"/>.</summary>
-        private static void QueueInputs(ReadOnlySpan<INPUT> events)
+        private static void QueueInputs(ReadOnlySpan<INPUT> events, OutputCause cause)
         {
             if (events.Length == 0) return;
             bool wake;
             lock (_injectQueueLock)
             {
                 wake = _injectQueueCount == 0;
-                int dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
-                int dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
-                int scroll = Interlocked.Exchange(ref _pendingScroll, 0);
-                int scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
-                if (dx != 0 || dy != 0) { AppendQueued(MouseOutput(dx, dy, 0, MOUSEEVENTF_MOVE)); AppendEntry(1); }
-                if (scroll != 0) { AppendQueued(MouseOutput(0, 0, (uint)scroll, MOUSEEVENTF_WHEEL)); AppendEntry(1); }
-                if (scrollH != 0) { AppendQueued(MouseOutput(0, 0, (uint)scrollH, MOUSEEVENTF_HWHEEL)); AppendEntry(1); }
+                SealMotion(ref _pendingMouseDx, ref _pendingMouseDy, ref _pendingScroll, ref _pendingScrollH, OutputCause.Own);
+                SealMotion(ref _markedMouseDx, ref _markedMouseDy, ref _markedScroll, ref _markedScrollH,
+                    OutputCause.FromRaw(Volatile.Read(ref _markedCause)));
                 for (int off = 0; off < events.Length; off += MaxEventsPerEntry)
                 {
                     int n = Math.Min(MaxEventsPerEntry, events.Length - off);
                     for (int i = 0; i < n; i++) AppendQueued(events[off + i]);
-                    AppendEntry(n);
+                    AppendEntry(n, cause);
                 }
             }
             if (wake) MouseWorkSignal.Set();
         }
 
+        /// <summary>Under <see cref="_injectQueueLock"/>: one lane set's
+        /// accumulated move and wheel deltas, each lane as its own entry
+        /// with <paramref name="cause"/>.</summary>
+        private static void SealMotion(ref int dxLane, ref int dyLane, ref int scrollLane, ref int scrollHLane, OutputCause cause)
+        {
+            int dx = Interlocked.Exchange(ref dxLane, 0);
+            int dy = Interlocked.Exchange(ref dyLane, 0);
+            int scroll = Interlocked.Exchange(ref scrollLane, 0);
+            int scrollH = Interlocked.Exchange(ref scrollHLane, 0);
+            if (dx != 0 || dy != 0) { AppendQueued(MouseOutput(dx, dy, 0, MOUSEEVENTF_MOVE)); AppendEntry(1, cause); }
+            if (scroll != 0) { AppendQueued(MouseOutput(0, 0, (uint)scroll, MOUSEEVENTF_WHEEL)); AppendEntry(1, cause); }
+            if (scrollH != 0) { AppendQueued(MouseOutput(0, 0, (uint)scrollH, MOUSEEVENTF_HWHEEL)); AppendEntry(1, cause); }
+        }
+
         /// <summary>Under <see cref="_injectQueueLock"/>: closes an entry of
         /// <paramref name="length"/> events just appended, doubling the entry
         /// ring when it is full.</summary>
-        private static void AppendEntry(int length)
+        private static void AppendEntry(int length, OutputCause cause)
         {
             var ring = _injectEntries;
+            var causes = _injectEntryCauses;
             if (_injectEntryCount == ring.Length)
             {
                 var grown = new int[ring.Length * 2];
+                var grownCauses = new int[ring.Length * 2];
                 for (int i = 0; i < _injectEntryCount; i++)
+                {
                     grown[i] = ring[(_injectEntryHead + i) & (ring.Length - 1)];
+                    grownCauses[i] = causes[(_injectEntryHead + i) & (ring.Length - 1)];
+                }
                 _injectEntries = ring = grown;
+                _injectEntryCauses = causes = grownCauses;
                 _injectEntryHead = 0;
             }
             ring[(_injectEntryHead + _injectEntryCount) & (ring.Length - 1)] = length;
+            causes[(_injectEntryHead + _injectEntryCount) & (ring.Length - 1)] = cause.Raw;
             _injectEntryCount++;
         }
 
@@ -7401,32 +7584,32 @@ namespace PadForge.Common.Input
         /// <summary>A key event for the output queue, tagged as PadForge's
         /// own output. The Keyboard + Mouse virtual controller and the
         /// On-Screen Keyboard queue their keys here, after their own checks.</summary>
-        internal static void QueueKeyboardOutput(ushort vk, ushort scan, uint flags)
+        internal static void QueueKeyboardOutput(ushort vk, ushort scan, uint flags, OutputCause cause)
         {
             var e = KeyOutput(vk, scan, flags);
-            QueueInputs(new ReadOnlySpan<INPUT>(in e));
+            QueueInputs(new ReadOnlySpan<INPUT>(in e), cause);
         }
 
         /// <summary>Several key events queued as one batch, so the injector
         /// sends them in one SendInput: a tap with its modifiers, a typed
         /// string.</summary>
-        internal static void QueueKeyboardOutputs(ReadOnlySpan<(ushort Vk, ushort Scan, uint Flags)> keys)
+        internal static void QueueKeyboardOutputs(ReadOnlySpan<(ushort Vk, ushort Scan, uint Flags)> keys, OutputCause cause)
         {
             lock (_batchInputScratch)
             {
                 _batchInputScratch.Clear();
                 foreach (var (vk, scan, flags) in keys) _batchInputScratch.Add(KeyOutput(vk, scan, flags));
-                QueueInputs(CollectionsMarshal.AsSpan(_batchInputScratch));
+                QueueInputs(CollectionsMarshal.AsSpan(_batchInputScratch), cause);
             }
         }
 
         /// <summary>A mouse button event for the output queue, tagged as
         /// PadForge's own output: MOUSEEVENTF flags, and the X button in
         /// <paramref name="mouseData"/>.</summary>
-        internal static void QueueMouseButtonOutput(uint flags, uint mouseData)
+        internal static void QueueMouseButtonOutput(uint flags, uint mouseData, OutputCause cause)
         {
             var e = MouseOutput(0, 0, mouseData, flags);
-            QueueInputs(new ReadOnlySpan<INPUT>(in e));
+            QueueInputs(new ReadOnlySpan<INPUT>(in e), cause);
         }
 
         /// <summary>The injector thread's send, and Stop's last one: sends
@@ -7455,6 +7638,8 @@ namespace PadForge.Common.Input
                 while (true)
                 {
                     int n = 0, dx = 0, dy = 0, scroll = 0, scrollH = 0;
+                    int mdx = 0, mdy = 0, mscroll = 0, mscrollH = 0;
+                    var cause = OutputCause.Own;
                     lock (_injectQueueLock)
                     {
                         if (_injectQueueCount > 0)
@@ -7463,6 +7648,7 @@ namespace PadForge.Common.Input
                             var ring = _injectQueue;
                             var entries = _injectEntries;
                             n = entries[_injectEntryHead];
+                            cause = OutputCause.FromRaw(_injectEntryCauses[_injectEntryHead]);
                             _injectEntryHead = (_injectEntryHead + 1) & (entries.Length - 1);
                             _injectEntryCount--;
                             for (int i = 0; i < n; i++)
@@ -7480,13 +7666,19 @@ namespace PadForge.Common.Input
                             dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
                             scroll = Interlocked.Exchange(ref _pendingScroll, 0);
                             scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
-                            if (dx == 0 && dy == 0 && scroll == 0 && scrollH == 0)
+                            mdx = Interlocked.Exchange(ref _markedMouseDx, 0);
+                            mdy = Interlocked.Exchange(ref _markedMouseDy, 0);
+                            mscroll = Interlocked.Exchange(ref _markedScroll, 0);
+                            mscrollH = Interlocked.Exchange(ref _markedScrollH, 0);
+                            cause = OutputCause.FromRaw(Volatile.Read(ref _markedCause));
+                            if (dx == 0 && dy == 0 && scroll == 0 && scrollH == 0
+                                && mdx == 0 && mdy == 0 && mscroll == 0 && mscrollH == 0)
                                 return injectedAny;
                         }
                     }
                     if (n > 0)
                     {
-                        SendQueued(_injectSendBuf, n);
+                        SendQueued(_injectSendBuf, n, cause);
                         injectedAny = true;
                         continue;
                     }
@@ -7496,26 +7688,34 @@ namespace PadForge.Common.Input
                     // queue once more before it returns.
                     motionSent = true;
                     injectedAny = true;
-                    if (dx != 0 || dy != 0)
-                    {
-                        _mouseInjectBuf[0] = MouseOutput(dx, dy, 0, MOUSEEVENTF_MOVE);
-                        SendQueued(_mouseInjectBuf, 1);
-                    }
-                    if (scroll != 0)
-                    {
-                        _mouseInjectBuf[0] = MouseOutput(0, 0, (uint)scroll, MOUSEEVENTF_WHEEL);
-                        SendQueued(_mouseInjectBuf, 1);
-                    }
-                    if (scrollH != 0)
-                    {
-                        _mouseInjectBuf[0] = MouseOutput(0, 0, (uint)scrollH, MOUSEEVENTF_HWHEEL);
-                        SendQueued(_mouseInjectBuf, 1);
-                    }
+                    SendMotion(dx, dy, scroll, scrollH, OutputCause.Own);
+                    SendMotion(mdx, mdy, mscroll, mscrollH, cause);
                 }
             }
             finally
             {
                 Monitor.Exit(_injectDrainLock);
+            }
+        }
+
+        /// <summary>The drain's send of one lane set's unsealed deltas, each
+        /// lane as one event.</summary>
+        private static void SendMotion(int dx, int dy, int scroll, int scrollH, OutputCause cause)
+        {
+            if (dx != 0 || dy != 0)
+            {
+                _mouseInjectBuf[0] = MouseOutput(dx, dy, 0, MOUSEEVENTF_MOVE);
+                SendQueued(_mouseInjectBuf, 1, cause);
+            }
+            if (scroll != 0)
+            {
+                _mouseInjectBuf[0] = MouseOutput(0, 0, (uint)scroll, MOUSEEVENTF_WHEEL);
+                SendQueued(_mouseInjectBuf, 1, cause);
+            }
+            if (scrollH != 0)
+            {
+                _mouseInjectBuf[0] = MouseOutput(0, 0, (uint)scrollH, MOUSEEVENTF_HWHEEL);
+                SendQueued(_mouseInjectBuf, 1, cause);
             }
         }
 
@@ -7533,7 +7733,7 @@ namespace PadForge.Common.Input
                 case MacroMouseButton.X2:     flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; mouseData = 2; break;
                 default: return;
             }
-            QueueMouseButtonOutput(flags, mouseData);
+            QueueMouseButtonOutput(flags, mouseData, _currentMacroCause);
         }
 
         /// <summary>Poll thread: accumulate the desired scroll amount. Like
@@ -7543,7 +7743,7 @@ namespace PadForge.Common.Input
         private static void SendMouseScrollInput(int amount)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
-            AccumulateMouseScrollInput(amount);
+            AccumulateMouseScrollInput(amount, _currentMacroCause);
         }
 
         /// <summary>Restriction-agnostic accumulate for the vertical scroll
@@ -7551,20 +7751,30 @@ namespace PadForge.Common.Input
         /// <see cref="AccumulateMouseMoveInput"/>: the KBM virtual
         /// controller's continuous scroll rides this, restriction handled
         /// upstream at the Step 5 submit.</summary>
-        internal static void AccumulateMouseScrollInput(int amount)
+        internal static void AccumulateMouseScrollInput(int amount, OutputCause cause)
         {
             if (amount == 0) return;
-            Interlocked.Add(ref _pendingScroll, amount);
+            if (cause.IsOwn) Interlocked.Add(ref _pendingScroll, amount);
+            else
+            {
+                Volatile.Write(ref _markedCause, cause.Raw);
+                Interlocked.Add(ref _markedScroll, amount);
+            }
             SignalMouseWork();
         }
 
         /// <summary>Horizontal-scroll twin of
         /// <see cref="AccumulateMouseScrollInput"/> (issue #154 tilt wheel).
         /// Flushed as MOUSEEVENTF_HWHEEL, positive = scroll right.</summary>
-        internal static void AccumulateMouseScrollHInput(int amount)
+        internal static void AccumulateMouseScrollHInput(int amount, OutputCause cause)
         {
             if (amount == 0) return;
-            Interlocked.Add(ref _pendingScrollH, amount);
+            if (cause.IsOwn) Interlocked.Add(ref _pendingScrollH, amount);
+            else
+            {
+                Volatile.Write(ref _markedCause, cause.Raw);
+                Interlocked.Add(ref _markedScrollH, amount);
+            }
             SignalMouseWork();
         }
 
@@ -7573,16 +7783,16 @@ namespace PadForge.Common.Input
         /// horizontal) in WHEEL_DELTA units. The injector thread normally
         /// flushes these; the tests observe them here instead.</summary>
         internal static (int Vertical, int Horizontal) DrainPendingScrollForTests()
-            => (Interlocked.Exchange(ref _pendingScroll, 0),
-                Interlocked.Exchange(ref _pendingScrollH, 0));
+            => (Interlocked.Exchange(ref _pendingScroll, 0) + Interlocked.Exchange(ref _markedScroll, 0),
+                Interlocked.Exchange(ref _pendingScrollH, 0) + Interlocked.Exchange(ref _markedScrollH, 0));
 
         /// <summary>Test pin (v16 MouseNudge): drains the pending
         /// mouse-move lane without SendInput, returning the batched
         /// (dx, dy) in pixels. Same contract as
         /// <see cref="DrainPendingScrollForTests"/>.</summary>
         internal static (int Dx, int Dy) DrainPendingMouseMoveForTests()
-            => (Interlocked.Exchange(ref _pendingMouseDx, 0),
-                Interlocked.Exchange(ref _pendingMouseDy, 0));
+            => (Interlocked.Exchange(ref _pendingMouseDx, 0) + Interlocked.Exchange(ref _markedMouseDx, 0),
+                Interlocked.Exchange(ref _pendingMouseDy, 0) + Interlocked.Exchange(ref _markedMouseDy, 0));
 
         /// <summary>
         /// Reads a source axis as a signed float (-1.0..+1.0) for mouse delta calculation.
@@ -7639,10 +7849,13 @@ namespace PadForge.Common.Input
         }
 
         private static void SendKeyInput(ushort virtualKeyCode, bool keyUp)
+            => SendKeyInput(virtualKeyCode, keyUp, _currentMacroCause);
+
+        private static void SendKeyInput(ushort virtualKeyCode, bool keyUp, OutputCause cause)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no keystrokes
             var (vk, scanCode, flags) = MacroKeyEvent(virtualKeyCode, keyUp);
-            QueueKeyboardOutput(vk, scanCode, flags);
+            QueueKeyboardOutput(vk, scanCode, flags, cause);
         }
 
         // ─────────────────────────────────────────────
@@ -7707,7 +7920,7 @@ namespace PadForge.Common.Input
                     else if (c == '\t') AppendVkPair(inputs, VK_TAB);
                     else AppendUnicodePair(inputs, c);
                 }
-                QueueInputs(CollectionsMarshal.AsSpan(inputs));
+                QueueInputs(CollectionsMarshal.AsSpan(inputs), _currentMacroCause);
             }
         }
 
@@ -7747,11 +7960,11 @@ namespace PadForge.Common.Input
         /// <summary>The drain's send (<see cref="FlushPendingInput"/>), never
         /// the poll thread's: the first <paramref name="count"/> events of
         /// <paramref name="inputs"/> in one SendInput call.</summary>
-        private static void SendQueued(INPUT[] inputs, int count)
+        private static void SendQueued(INPUT[] inputs, int count, OutputCause cause)
         {
-            // While a program drives PadForge, output for a window that runs
-            // with rights keeps its releases alone (ProgramInputGate).
-            if (ProgramInputGate.InForce) count = KeepWhatTheGateAllows(inputs, count);
+            // Output not proven the person's own keeps its releases alone
+            // for a window that runs with rights (ProgramInputGate).
+            if (!cause.IsOwn) count = KeepWhatTheGateAllows(inputs, count, cause);
             if (count == 0) return;
             SentForTest?.Invoke(Decode(inputs, (uint)count));
             SendInput((uint)count, inputs, Marshal.SizeOf<INPUT>());
@@ -7769,18 +7982,20 @@ namespace PadForge.Common.Input
         /// button that goes up always goes out, so nothing stays held. A
         /// mouse event that carries both keeps only its releases.
         /// </summary>
-        private static int KeepWhatTheGateAllows(INPUT[] inputs, int count)
+        private static int KeepWhatTheGateAllows(INPUT[] inputs, int count, OutputCause cause)
         {
-            bool keys = ProgramInputGate.KeysBlocked;
-            bool buttons = keys || ProgramInputGate.ButtonsBlocked;
+            if (!AnyPressOrMotion(inputs, count)) return count;
+            bool keys = ProgramInputGate.HoldsKeys();
+            bool buttons = keys || ProgramInputGate.HoldsButtons();
             if (!keys && !buttons) return count;
             int kept = 0;
+            bool held = false;
             for (int i = 0; i < count; i++)
             {
                 var e = inputs[i];
                 if (e.type == INPUT_KEYBOARD)
                 {
-                    if (keys && (e.u.ki.dwFlags & KEYEVENTF_KEYUP) == 0) continue;
+                    if (keys && (e.u.ki.dwFlags & KEYEVENTF_KEYUP) == 0) { held = true; continue; }
                 }
                 else
                 {
@@ -7790,6 +8005,7 @@ namespace PadForge.Common.Input
                         flags &= ~MOUSEEVENTF_MOVE;
                         e.u.mi.dx = 0;
                         e.u.mi.dy = 0;
+                        held = true;
                     }
                     if (buttons && (flags & MouseDownsAndWheels) != 0)
                     {
@@ -7797,19 +8013,42 @@ namespace PadForge.Common.Input
                         // it.
                         if ((flags & (MOUSEEVENTF_WHEEL | MOUSEEVENTF_HWHEEL)) != 0) e.u.mi.mouseData = 0;
                         flags &= ~MouseDownsAndWheels;
+                        held = true;
                     }
                     if (flags == 0) continue;
                     e.u.mi.dwFlags = flags;
                 }
                 inputs[kept++] = e;
             }
+            if (held) ProgramInputGate.NoteHeld(cause);
             return kept;
+        }
+
+        /// <summary>Whether any of the first <paramref name="count"/> events
+        /// is a key or button going down, a move or a wheel turn, the only
+        /// events the gate holds. A batch of releases alone never asks for
+        /// the window.</summary>
+        private static bool AnyPressOrMotion(INPUT[] inputs, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var e = inputs[i];
+                if (e.type == INPUT_KEYBOARD) { if ((e.u.ki.dwFlags & KEYEVENTF_KEYUP) == 0) return true; }
+                else if ((e.u.mi.dwFlags & (MOUSEEVENTF_MOVE | MouseDownsAndWheels)) != 0) return true;
+            }
+            return false;
         }
 
         /// <summary>Test seam: the gate's work on a list of events, built
         /// the way the output queue builds them. True in each place for a
         /// key, false for a mouse event.</summary>
         internal static InjectedEvent[] GateForTest(params InjectedEvent[] events)
+            => GateForTest(OutputCause.Program(1), events);
+
+        /// <summary>Test seam: as above, for output of
+        /// <paramref name="cause"/>, through the send's own test of the
+        /// cause.</summary>
+        internal static InjectedEvent[] GateForTest(OutputCause cause, params InjectedEvent[] events)
         {
             var inputs = new INPUT[events.Length];
             for (int i = 0; i < events.Length; i++)
@@ -7817,7 +8056,7 @@ namespace PadForge.Common.Input
                 var e = events[i];
                 inputs[i] = e.Keyboard ? KeyOutput(e.Vk, e.Scan, e.Flags) : MouseOutput(e.Dx, e.Dy, e.Data, e.Flags);
             }
-            int kept = KeepWhatTheGateAllows(inputs, inputs.Length);
+            int kept = cause.IsOwn ? inputs.Length : KeepWhatTheGateAllows(inputs, inputs.Length, cause);
             return Decode(inputs, (uint)kept);
         }
 

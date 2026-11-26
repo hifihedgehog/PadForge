@@ -3001,21 +3001,17 @@ namespace PadForge.Services
             padVm.ClearPipelineLiveness();
         }
 
-        /// <summary>The consumer for "Continue polling when window loses
-        /// focus" (EnablePollingOnFocusLoss).
+        /// <summary>The display half of "Continue polling when window loses
+        /// focus" (EnablePollingOnFocusLoss): when it is off and PadForge is
+        /// not the foreground process, the interface's mirror lanes stop
+        /// rather than merely throttling.
         ///
-        /// <para>The label predates this code and reads broader than it can
-        /// safely be. The poll loop carries virtual-controller submits,
-        /// macros, rumble return, the DSU broadcast and Remote Link -- and
-        /// being unfocused IS the working state, because the user alt-tabs
-        /// into the game. Gating THAT on focus would stop input reaching the
-        /// game the moment the user started playing.</para>
-        ///
-        /// <para>So the setting gates the DISPLAY mirror instead: when it is
-        /// off and PadForge is not the foreground process, the UI lanes stop
-        /// rather than merely throttling. Input is untouched. That is also
-        /// what the x360ce heritage this checkbox came from actually did:
-        /// focus gated its UI frame rate, never its read thread.</para></summary>
+        /// <para>The engine half is pushed in the UI tick
+        /// (InputManager.SuspendWhenBackground and HostIsForeground), and the
+        /// poll loop acts on it: while the box is off and PadForge is behind,
+        /// the engine stops, its outputs go to rest, latched macro keys are
+        /// let go and rumble stops (InputManager.ApplyFocusSuspension). With
+        /// the box on, its default, neither half does anything.</para></summary>
         private bool BackgroundUiSuspended()
             => _mainVm?.Settings != null
                && !_mainVm.Settings.EnablePollingOnFocusLoss
@@ -17428,6 +17424,12 @@ namespace PadForge.Services
                     || switch2Pad
                     || PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud)))
                 || PadForge.Common.Input.Peripherals.PeripheralOutputs.IsHapticPeripheral(ud);
+            // An Xbox Elite's paddle route that is off says why, read from
+            // SDL at this refresh (#600). Reading only: nothing here touches
+            // how the paddles are read.
+            row.PaddleNote = ud.IsOnline && ud.Device is PadForge.Engine.SdlDeviceWrapper sdlPad
+                ? DeviceRowViewModel.PaddleNoteOf(sdlPad.PaddleRouteOffReason(), row.IsBluetoothLink)
+                : null;
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.HasTouchpad = ud.HasTouchpad;

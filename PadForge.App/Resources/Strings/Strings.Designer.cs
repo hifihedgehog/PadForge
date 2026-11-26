@@ -904,6 +904,7 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Program_Signed_Format => Get("Automation_Program_Signed_Format");
     public string Automation_Program_NotSigned_Format => Get("Automation_Program_NotSigned_Format");
     public string Automation_Result_Done => Get("Automation_Result_Done");
+    public string Automation_Result_Held => Get("Automation_Result_Held");
     public string Automation_Result_NotDone => Get("Automation_Result_NotDone");
     public string Automation_Result_NotAllowed => Get("Automation_Result_NotAllowed");
     public string Automation_Result_NotAvailable => Get("Automation_Result_NotAvailable");
@@ -976,6 +977,8 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Asked_Set_Format => Get("Automation_Asked_Set_Format");
     public string Automation_Asked_Gone_Format => Get("Automation_Asked_Gone_Format");
     public string Automation_Asked_Rest_Format => Get("Automation_Asked_Rest_Format");
+    public string Automation_Asked_Held_Format => Get("Automation_Asked_Held_Format");
+    public string Automation_Asked_Held => Get("Automation_Asked_Held");
     public string Automation_Ask_RunsProgram => Get("Automation_Ask_RunsProgram");
     public string Automation_Ask_OpensPlace => Get("Automation_Ask_OpensPlace");
     public string Automation_Ask_SendsInput => Get("Automation_Ask_SendsInput");
@@ -2108,6 +2111,8 @@ public class Strings : INotifyPropertyChanged
     public string Devices_Detail_Product => Get("Devices_Detail_Product");
     public string Devices_Detail_Type => Get("Devices_Detail_Type");
     public string Devices_Detail_Capabilities => Get("Devices_Detail_Capabilities");
+    public string Devices_Detail_PaddlesOff_Format => Get("Devices_Detail_PaddlesOff_Format");
+    public string Devices_Detail_PaddlesOffBluetooth_Format => Get("Devices_Detail_PaddlesOffBluetooth_Format");
     public string Devices_Detail_Link => Get("Devices_Detail_Link");
     public string Devices_Detail_Battery => Get("Devices_Detail_Battery");
     public string Devices_Detail_Path => Get("Devices_Detail_Path");

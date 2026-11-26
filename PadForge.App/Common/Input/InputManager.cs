@@ -2328,6 +2328,10 @@ namespace PadForge.Common.Input
                                 // connection (#600 item 43): the engine idles
                                 // once the last device drops, which is the
                                 // moment they are most often made for.
+                                // Their output carries the causes of this
+                                // pass (#600), worked out as an active pass
+                                // does.
+                                WorkOutOutputCauses();
                                 EvaluateConnectionMacros();
 
                                 // An open On-Screen Keyboard (#566) keeps
@@ -2464,6 +2468,7 @@ namespace PadForge.Common.Input
                             _pollLoad.Mark(PollStep.Engage);
                             UpdateOutputStates();
                             CombineOutputStates();
+                            WorkOutOutputCauses();
                             _pollLoad.Mark(PollStep.Map);
                             EvaluateMacros();
                             // The On-Screen Keyboard (#566) runs after the

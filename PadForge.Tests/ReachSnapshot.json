@@ -385,6 +385,7 @@
   "Views/DevicesPage.xaml \u003CTextBlock\u003E Text:SelectedDevice.ProductName = Free",
   "Views/DevicesPage.xaml \u003CTextBlock\u003E Text:SelectedDevice.DeviceType = Free",
   "Views/DevicesPage.xaml \u003CTextBlock\u003E Text:SelectedDevice.CapabilitiesSummary = Free",
+  "Views/DevicesPage.xaml \u003CTextBlock\u003E Text:SelectedDevice.PaddleNote = Free",
   "Views/DevicesPage.xaml \u003CRun\u003E Text:SelectedDevice.VendorIdHex = Free",
   "Views/DevicesPage.xaml \u003CRun\u003E Text:SelectedDevice.ProductIdHex = Free",
   "Views/DevicesPage.xaml \u003CTextBlock\u003E AutomationProperties.Name:SelectedDevice.LinkText = Free",

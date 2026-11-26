@@ -116,6 +116,12 @@ namespace PadForge.Services.Automation
         /// <summary><c>maximize</c>, the line of <c>--maximized</c>
         /// (#600 item 44). Appended.</summary>
         MaximizeWindow,
+
+        /// <summary>Key and mouse output the program fed was held back from
+        /// a window that runs with administrator rights, the first time in
+        /// its session (#600): the argument is that window's program.
+        /// Appended.</summary>
+        Held,
     }
 
     /// <summary>
@@ -195,6 +201,8 @@ namespace PadForge.Services.Automation
                     AutomationAskKind.Call => string.Format(s.Automation_Asked_Call_Format, argument),
                     AutomationAskKind.Tool => AssistantToolWords.Asked(Argument, Detail),
                     AutomationAskKind.Rest => string.Format(s.Automation_Asked_Rest_Format, argument),
+                    AutomationAskKind.Held => argument.Length == 0 ? s.Automation_Asked_Held
+                        : string.Format(s.Automation_Asked_Held_Format, argument),
                     _ => string.Format(s.Automation_Asked_Unknown_Format, argument),
                 };
             }

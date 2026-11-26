@@ -77,6 +77,11 @@ namespace PadForge.Common.Input
         internal static float Read(string name)
             => !string.IsNullOrEmpty(name) && Values.TryGetValue(name, out var held) ? held.Value : 0f;
 
+        /// <summary>The session that set a name's value last, 0 while no
+        /// program's value is set. Called on the poll thread.</summary>
+        internal static int SetterOf(string name)
+            => !string.IsNullOrEmpty(name) && Values.TryGetValue(name, out var held) ? held.Owner : 0;
+
         /// <summary>Sets a value for program <paramref name="owner"/>. False
         /// for a name that cannot be used, or a new name while
         /// <see cref="MostNames"/> are held.</summary>

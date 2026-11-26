@@ -153,14 +153,18 @@ namespace PadForge.Common.Input.OnScreenKeyboard
 
         private readonly Func<IntPtr> _layout;
         private readonly Func<bool> _allowed;
+        private readonly Func<PadForge.Common.Input.OutputCause> _cause;
 
         /// <param name="layout">The foreground layout, for the virtual keys.</param>
         /// <param name="allowed">False while typing must not happen (a slot fed
         /// by a restricted Remote Link peer).</param>
-        public OskWindowsOutput(Func<IntPtr> layout, Func<bool> allowed)
+        /// <param name="cause">The cause of what it types now: a program's
+        /// while a device of a program drives the keyboard (#600).</param>
+        internal OskWindowsOutput(Func<IntPtr> layout, Func<bool> allowed, Func<PadForge.Common.Input.OutputCause> cause)
         {
             _layout = layout;
             _allowed = allowed;
+            _cause = cause;
         }
 
         /// <summary>A key event for InputManager's output queue, which tags
@@ -210,7 +214,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
             // Queued as one batch, sent by the injector thread: this runs on
             // the poll thread, where SendInput would wait on every program's
             // low-level hook.
-            InputManager.QueueKeyboardOutputs(inputs);
+            InputManager.QueueKeyboardOutputs(inputs, _cause());
         }
 
         public void TypeText(string text)
@@ -230,7 +234,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
                 inputs.Add((0, c, KEYEVENTF_UNICODE));
                 inputs.Add((0, c, KEYEVENTF_UNICODE | KEYEVENTF_KEYUP));
             }
-            InputManager.QueueKeyboardOutputs(CollectionsMarshal.AsSpan(inputs));
+            InputManager.QueueKeyboardOutputs(CollectionsMarshal.AsSpan(inputs), _cause());
         }
     }
 }

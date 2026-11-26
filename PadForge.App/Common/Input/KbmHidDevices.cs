@@ -126,6 +126,8 @@ namespace PadForge.Common.Input
         // Poll-thread state: the usage each key index pressed, and the
         // usages in the order they went down, each with how many keys hold it.
         private readonly KbmHidKeyMap.HidKey[] _pressedAs = new KbmHidKeyMap.HidKey[256];
+        // Each key index's cause while it is down.
+        private readonly OutputCause[] _causeAs = new OutputCause[256];
         private ulong _k0, _k1, _k2, _k3;
         private readonly List<int> _wantOrder = new();
         private readonly Dictionary<int, int> _wantCount = new();
@@ -151,7 +153,8 @@ namespace PadForge.Common.Input
         {
             public readonly int Key;
             public readonly int Index;
-            public Entry(int key, int index) { Key = key; Index = index; }
+            public readonly OutputCause Cause;
+            public Entry(int key, int index, OutputCause cause) { Key = key; Index = index; Cause = cause; }
         }
 
         /// <summary>The whole keyboard or consumer state of one report.</summary>
@@ -207,22 +210,23 @@ namespace PadForge.Common.Input
 
         /// <summary>Poll thread: the slot's keys after SOCD, as the
         /// KbmRawState words carry them.</summary>
-        public void Submit(ulong k0, ulong k1, ulong k2, ulong k3)
+        public void Submit(ulong k0, ulong k1, ulong k2, ulong k3, KbmCause cause)
         {
             if (k0 == _k0 && k1 == _k1 && k2 == _k2 && k3 == _k3) return;
-            bool changed = Apply(ref _k0, k0, 0);
-            changed |= Apply(ref _k1, k1, 64);
-            changed |= Apply(ref _k2, k2, 128);
-            changed |= Apply(ref _k3, k3, 192);
+            bool changed = Apply(ref _k0, k0, 0, cause);
+            changed |= Apply(ref _k1, k1, 64, cause);
+            changed |= Apply(ref _k2, k2, 128, cause);
+            changed |= Apply(ref _k3, k3, 192, cause);
             if (changed) Publish();
         }
 
         /// <summary>Poll thread: lets go of every key.</summary>
-        public void ReleaseAll() => Submit(0, 0, 0, 0);
+        public void ReleaseAll() => Submit(0, 0, 0, 0, KbmCause.AllOwn);
 
-        /// <summary>Records the keys that went down or up in one word. True
-        /// when a usage the device can send was pressed or released.</summary>
-        private bool Apply(ref ulong held, ulong now, int baseIndex)
+        /// <summary>Records the keys that went down or up in one word, each
+        /// press with its cause. True when a usage the device can send was
+        /// pressed or released.</summary>
+        private bool Apply(ref ulong held, ulong now, int baseIndex, KbmCause cause)
         {
             ulong changed = held ^ now;
             held = now;
@@ -254,6 +258,7 @@ namespace PadForge.Common.Input
                         : usage.IsConsumer && _caps.CanSendConsumer(usage.Usage);
                     if (!sendable) continue;
                     _pressedAs[index] = usage;
+                    _causeAs[index] = cause.Key(index);
                     int key = KeyOf(usage);
                     if (_wantCount.TryGetValue(key, out int n)) _wantCount[key] = n + 1;
                     else
@@ -276,6 +281,16 @@ namespace PadForge.Common.Input
             return -1;
         }
 
+        /// <summary>The cause of <paramref name="key"/>: own only when every
+        /// key index that holds it is.</summary>
+        private OutputCause CauseOf(int key)
+        {
+            var cause = OutputCause.Own;
+            for (int i = 0; i < 256; i++)
+                if (!_pressedAs[i].IsNone && KeyOf(_pressedAs[i]) == key) cause = cause.And(_causeAs[i]);
+            return cause;
+        }
+
         private void Publish()
         {
             var keyboard = new List<Entry>(8);
@@ -291,7 +306,7 @@ namespace PadForge.Common.Input
                         if (keySlots >= _caps.KeyArraySlots) continue;
                         keySlots++;
                     }
-                    keyboard.Add(new Entry(key, HoldingIndex(key)));
+                    keyboard.Add(new Entry(key, HoldingIndex(key), CauseOf(key)));
                 }
                 else
                 {
@@ -300,7 +315,7 @@ namespace PadForge.Common.Input
                         if (consumerSlots >= _caps.ConsumerArraySlots) continue;
                         consumerSlots++;
                     }
-                    consumer.Add(new Entry(key, HoldingIndex(key)));
+                    consumer.Add(new Entry(key, HoldingIndex(key), CauseOf(key)));
                 }
             }
 
@@ -367,15 +382,15 @@ namespace PadForge.Common.Input
         {
             while (!_stop)
             {
-                // A key held while a program drives PadForge is checked
-                // against the window in front often, so it is let go before
-                // Windows repeats it into a window with rights.
-                _wake.WaitOne(SentAny && ProgramInputGate.InForce ? GateCheckMs : 250);
+                // A key a program fed is checked against the window in front
+                // often while it is held, so it is let go before Windows
+                // repeats it into a window with rights.
+                _wake.WaitOne(SentAny && (Marked(_wantKeyboard) || Marked(_wantConsumer)) ? GateCheckMs : 250);
                 while (!_stop && _queue.TryDequeue(out var f))
                 {
                     if (f.Consumer) _wantConsumer = f;
                     else _wantKeyboard = f;
-                    Send(ProgramInputGate.KeysBlocked ? Nothing(f.Consumer) : f);
+                    Send(Allowed(f));
                 }
                 if (!_stop) Reconcile();
             }
@@ -397,14 +412,39 @@ namespace PadForge.Common.Input
 
         private static Frame Nothing(bool consumer) => new Frame { Consumer = consumer, Entries = Array.Empty<Entry>() };
 
+        /// <summary>Whether a frame holds a key not proven the person's
+        /// own.</summary>
+        private static bool Marked(Frame f)
+        {
+            if (f == null) return false;
+            foreach (var e in f.Entries) if (!e.Cause.IsOwn) return true;
+            return false;
+        }
+
+        /// <summary>Sender thread: the frame as the gate lets the device hold
+        /// it, without the keys not proven the person's own while the window
+        /// in front runs with rights.</summary>
+        private static Frame Allowed(Frame f)
+        {
+            if (!Marked(f) || !ProgramInputGate.HoldsKeys()) return f;
+            var kept = new List<Entry>(f.Entries.Length);
+            OutputCause held = OutputCause.Own;
+            foreach (var e in f.Entries)
+            {
+                if (e.Cause.IsOwn) kept.Add(e);
+                else held = held.And(e.Cause);
+            }
+            ProgramInputGate.NoteHeld(held);
+            return new Frame { Consumer = f.Consumer, Entries = kept.ToArray() };
+        }
+
         /// <summary>Sender thread: while the gate holds keys back the device
-        /// holds none, and once it opens the device holds what the slot asks
-        /// for again.</summary>
+        /// holds none of them, and once it opens the device holds what the
+        /// slot asks for again.</summary>
         private void Reconcile()
         {
-            bool blocked = ProgramInputGate.KeysBlocked;
-            Send(blocked ? Nothing(false) : _wantKeyboard ?? Nothing(false));
-            Send(blocked ? Nothing(true) : _wantConsumer ?? Nothing(true));
+            Send(Allowed(_wantKeyboard ?? Nothing(false)));
+            Send(Allowed(_wantConsumer ?? Nothing(true)));
         }
 
         /// <summary>Sender thread: one report, when it differs from what
@@ -524,13 +564,18 @@ namespace PadForge.Common.Input
         private readonly KbmDeviceCaps _caps;
         private readonly Thread _thread;
         private readonly AutoResetEvent _wake = new(false);
-        private readonly ConcurrentQueue<byte> _buttonStates = new();
+        // Each queued change: the buttons, and above them the buttons not
+        // proven the person's own.
+        private readonly ConcurrentQueue<ushort> _buttonStates = new();
         private volatile bool _stop;
         private int _disposed;
         private int _armed;
 
         private int _dx, _dy, _wheel, _pan;
-        private byte _lastButtons;      // poll thread
+        // Movement and turns not proven the person's own, apart, with the
+        // cause of the last one.
+        private int _markedDx, _markedDy, _markedWheel, _markedPan, _markedCause;
+        private ushort _lastButtons;    // poll thread
         private byte _sentButtons;      // sender thread, under _buttonLock
         private readonly object _buttonLock = new();
 
@@ -565,40 +610,64 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Poll thread: the slot's mouse buttons.</summary>
-        public void SetButtons(byte buttons)
+        public void SetButtons(byte buttons, KbmCause cause)
         {
             buttons = Sendable(buttons);
-            if (buttons == _lastButtons) return;
-            _lastButtons = buttons;
+            byte marked = 0;
+            for (int i = 0; i < KbmDeviceCaps.WindowsMouseButtons; i++)
+                if ((buttons & (1 << i)) != 0 && !cause.Button(i).IsOwn) marked |= (byte)(1 << i);
+            if (marked != 0) Volatile.Write(ref _markedCause, cause.Other.Raw);
+            ushort state = (ushort)(buttons | (marked << 8));
+            if (state == _lastButtons) return;
+            _lastButtons = state;
             if (_buttonStates.Count >= MaxQueuedButtonStates)
                 while (_buttonStates.TryDequeue(out _)) { }
-            _buttonStates.Enqueue(buttons);
+            _buttonStates.Enqueue(state);
             Signal();
         }
 
         /// <summary>Poll thread: relative movement in counts.</summary>
-        public void AddMotion(int dx, int dy)
+        public void AddMotion(int dx, int dy, OutputCause cause)
         {
             if (dx == 0 && dy == 0) return;
-            Interlocked.Add(ref _dx, dx);
-            Interlocked.Add(ref _dy, dy);
+            if (cause.IsOwn)
+            {
+                Interlocked.Add(ref _dx, dx);
+                Interlocked.Add(ref _dy, dy);
+            }
+            else
+            {
+                Volatile.Write(ref _markedCause, cause.Raw);
+                Interlocked.Add(ref _markedDx, dx);
+                Interlocked.Add(ref _markedDy, dy);
+            }
             Signal();
         }
 
         /// <summary>Poll thread: wheel detents, positive away from the
         /// user.</summary>
-        public void AddWheel(int detents)
+        public void AddWheel(int detents, OutputCause cause)
         {
             if (detents == 0 || !_caps.HasWheel) return;
-            Interlocked.Add(ref _wheel, detents);
+            if (cause.IsOwn) Interlocked.Add(ref _wheel, detents);
+            else
+            {
+                Volatile.Write(ref _markedCause, cause.Raw);
+                Interlocked.Add(ref _markedWheel, detents);
+            }
             Signal();
         }
 
         /// <summary>Poll thread: tilt detents, positive to the right.</summary>
-        public void AddPan(int detents)
+        public void AddPan(int detents, OutputCause cause)
         {
             if (detents == 0 || !_caps.HasPan) return;
-            Interlocked.Add(ref _pan, detents);
+            if (cause.IsOwn) Interlocked.Add(ref _pan, detents);
+            else
+            {
+                Volatile.Write(ref _markedCause, cause.Raw);
+                Interlocked.Add(ref _markedPan, detents);
+            }
             Signal();
         }
 
@@ -628,54 +697,61 @@ namespace PadForge.Common.Input
         {
             while (!_stop)
             {
-                // A button held while a program drives PadForge is checked
-                // against the windows often, so it is let go before it can
-                // drag into a window with rights.
-                _wake.WaitOne(_sentButtons != 0 && ProgramInputGate.InForce ? KbmHidKeyboard.GateCheckMs : 250);
+                // A button a program fed is checked against the windows often
+                // while it is held, so it is let go before it can drag into a
+                // window with rights.
+                _wake.WaitOne(_sentButtons != 0 && (_wantButtons >> 8) != 0 ? KbmHidKeyboard.GateCheckMs : 250);
                 // Cleared before the drain, so a change that lands while it runs
                 // signals again rather than waiting out the timeout.
                 Volatile.Write(ref _armed, 0);
                 while (!_stop)
                 {
-                    bool haveButtons = _buttonStates.TryDequeue(out byte buttons);
+                    bool haveButtons = _buttonStates.TryDequeue(out ushort buttons);
                     if (haveButtons) _wantButtons = buttons;
-                    int dx = Interlocked.Exchange(ref _dx, 0);
-                    int dy = Interlocked.Exchange(ref _dy, 0);
-                    int wheel = Interlocked.Exchange(ref _wheel, 0);
-                    int pan = Interlocked.Exchange(ref _pan, 0);
-                    if (!haveButtons && dx == 0 && dy == 0 && wheel == 0 && pan == 0) break;
-                    Submit(dx, dy, wheel, pan);
+                    var own = (Dx: Interlocked.Exchange(ref _dx, 0), Dy: Interlocked.Exchange(ref _dy, 0),
+                        Wheel: Interlocked.Exchange(ref _wheel, 0), Pan: Interlocked.Exchange(ref _pan, 0));
+                    var marked = (Dx: Interlocked.Exchange(ref _markedDx, 0), Dy: Interlocked.Exchange(ref _markedDy, 0),
+                        Wheel: Interlocked.Exchange(ref _markedWheel, 0), Pan: Interlocked.Exchange(ref _markedPan, 0));
+                    if (!haveButtons && own == default && marked == default) break;
+                    Submit(own, marked);
                 }
                 // The buttons follow the gate even when nothing moved: let go
                 // while it holds them back, pressed again as the slot asks
                 // once it opens.
-                if (!_stop && Effective(out _, out _) != _sentButtons) Submit(0, 0, 0, 0);
+                if (!_stop && Effective(false, out _, out _) != _sentButtons) Submit(default, default);
             }
         }
 
-        // Sender-thread state: the buttons the slot asks for, which the
-        // device presses again once the gate opens.
-        private byte _wantButtons;
+        // Sender-thread state: the buttons the slot asks for, and above them
+        // those not proven the person's own, which the device presses again
+        // once the gate opens.
+        private ushort _wantButtons;
 
         /// <summary>Sender thread: the buttons the device is to hold now. A
-        /// press waits, and a held button is let go, while the gate holds
-        /// buttons back.</summary>
-        private byte Effective(out bool keysBlocked, out bool buttonsBlocked)
+        /// press a program fed waits, and such a held button is let go,
+        /// while the gate holds buttons back.</summary>
+        private byte Effective(bool markedMotion, out bool keysHeld, out bool buttonsHeld)
         {
-            keysBlocked = ProgramInputGate.KeysBlocked;
-            buttonsBlocked = keysBlocked || ProgramInputGate.ButtonsBlocked;
-            return buttonsBlocked ? (byte)0 : _wantButtons;
+            bool any = markedMotion || _wantButtons >> 8 != 0;
+            keysHeld = any && ProgramInputGate.HoldsKeys();
+            buttonsHeld = any && (keysHeld || ProgramInputGate.HoldsButtons());
+            byte want = (byte)_wantButtons;
+            return buttonsHeld ? (byte)(want & ~(_wantButtons >> 8)) : want;
         }
 
         /// <summary>Sender thread: one report with the buttons the gate
-        /// lets the device hold, the movement it lets through while the
-        /// window in front runs at medium integrity or below, and the wheel
-        /// turns it lets through while buttons go too.</summary>
-        private void Submit(int dx, int dy, int wheel, int pan)
+        /// lets the device hold, the person's own movement and turns, the
+        /// movement a program fed while the window in front runs at medium
+        /// integrity or below, and the turns a program fed while buttons go
+        /// too.</summary>
+        private void Submit((int Dx, int Dy, int Wheel, int Pan) own, (int Dx, int Dy, int Wheel, int Pan) marked)
         {
-            byte buttons = Effective(out bool keysBlocked, out bool buttonsBlocked);
-            if (keysBlocked) dx = dy = 0;
-            if (buttonsBlocked) wheel = pan = 0;
+            byte buttons = Effective(marked != default, out bool keysHeld, out bool buttonsHeld);
+            bool held = (byte)_wantButtons != buttons;
+            if (keysHeld && (marked.Dx != 0 || marked.Dy != 0)) { marked.Dx = marked.Dy = 0; held = true; }
+            if (buttonsHeld && (marked.Wheel != 0 || marked.Pan != 0)) { marked.Wheel = marked.Pan = 0; held = true; }
+            if (held) ProgramInputGate.NoteHeld(OutputCause.FromRaw(Volatile.Read(ref _markedCause)));
+            int dx = own.Dx + marked.Dx, dy = own.Dy + marked.Dy, wheel = own.Wheel + marked.Wheel, pan = own.Pan + marked.Pan;
             if (buttons == _sentButtons && dx == 0 && dy == 0 && wheel == 0 && pan == 0) return;
             lock (_buttonLock)
             {

@@ -307,10 +307,12 @@ namespace PadForge.Tests
             return w;
         }
 
-        private static void Press(KbmHidKeyboard kb, params int[] vks)
+        private static void Press(KbmHidKeyboard kb, params int[] vks) => Press(kb, KbmCause.AllOwn, vks);
+
+        private static void Press(KbmHidKeyboard kb, KbmCause cause, params int[] vks)
         {
             var w = Keys(vks);
-            kb.Submit(w[0], w[1], w[2], w[3]);
+            kb.Submit(w[0], w[1], w[2], w[3], cause);
         }
 
         [Fact]
@@ -341,11 +343,11 @@ namespace PadForge.Tests
             Assert.Equal(1, sink.Disposes);
         }
 
-        /// <summary>While a program drives PadForge and the window in front
-        /// runs with rights (#597), the virtual keyboard holds no key: a key
-        /// held goes up, a new one waits, and once the window in front runs
-        /// at medium integrity again the keyboard holds what the slot asks
-        /// for.</summary>
+        /// <summary>While the window in front runs with rights (#597, #600),
+        /// the virtual keyboard holds no key a program fed: such a key held
+        /// goes up, a new one waits, and once the window in front runs at
+        /// medium integrity again the keyboard holds what the slot asks for.
+        /// The person's own key goes down all the while.</summary>
         [Fact]
         public void Keyboard_HoldsNothing_WhileTheGateHoldsKeysBack_AndTakesTheKeysAgainAfter()
         {
@@ -361,15 +363,22 @@ namespace PadForge.Tests
                 KbmHidKeyMap.Nominal);
             try
             {
-                Press(kb, 0x41);                 // A, to a window at medium
+                var program = KbmCause.All(OutputCause.Program(7));
+                Press(kb, program, 0x41);        // A, to a window at medium
                 Assert.Equal("K 00:04", sink.WaitFor(1)[0]);
                 above = true;                    // an administrator's console comes in front
                 Assert.Equal("K 00:", sink.WaitFor(2)[1]);
-                Press(kb, 0x41, 0x42);           // B waits
+                Press(kb, program, 0x41, 0x42);  // B waits
                 Thread.Sleep(200);
                 Assert.Equal(2, sink.Log.Length);
                 above = false;
                 Assert.Equal("K 00:04,05", sink.WaitFor(3)[2]);
+                above = true;                    // the person's own C goes down in front of it
+                Assert.Equal("K 00:", sink.WaitFor(4)[3]);
+                var mixed = program;
+                mixed.OwnKeys1 |= 1UL << (0x43 - 64);
+                Press(kb, mixed, 0x41, 0x42, 0x43);
+                Assert.Equal("K 00:06", sink.WaitFor(5)[4]);
             }
             finally
             {
@@ -401,16 +410,19 @@ namespace PadForge.Tests
             var mouse = new KbmHidMouse(sink, KbmDeviceCaps.For(Profile("logitech-g502-hero")), "g502", 0);
             try
             {
-                mouse.SetButtons(0b1);
+                var program = OutputCause.Program(7);
+                mouse.SetButtons(0b1, KbmCause.All(program));
                 Assert.Equal("M 1 0 0 0 0", sink.WaitFor(1)[0]);
                 above = true;
                 Assert.Equal("M 0 0 0 0 0", sink.WaitFor(2)[1]);
-                mouse.AddMotion(10, 10);
-                mouse.AddWheel(1);
+                mouse.AddMotion(10, 10, program);
+                mouse.AddWheel(1, program);
                 Thread.Sleep(200);
                 Assert.Equal(2, sink.Log.Length);
+                mouse.AddMotion(3, 4, OutputCause.Own);   // the person's own move goes
+                Assert.Equal("M 0 3 4 0 0", sink.WaitFor(3)[2]);
                 above = false;
-                Assert.Equal("M 1 0 0 0 0", sink.WaitFor(3)[2]);
+                Assert.Equal("M 1 0 0 0 0", sink.WaitFor(4)[3]);
             }
             finally
             {
@@ -544,9 +556,9 @@ namespace PadForge.Tests
             var mouse = new KbmHidMouse(sink, KbmDeviceCaps.For(Profile("apple-pro-mouse")), "pro", 0);
             try
             {
-                mouse.SetButtons(0b11);          // left and right
-                mouse.AddWheel(2);
-                mouse.AddMotion(5, -3);
+                mouse.SetButtons(0b11, KbmCause.AllOwn);          // left and right
+                mouse.AddWheel(2, OutputCause.Own);
+                mouse.AddMotion(5, -3, OutputCause.Own);
                 // The sender may take the buttons and the motion in one report
                 // or two, so the totals are what the device was told.
                 string[] log = null;
@@ -577,10 +589,10 @@ namespace PadForge.Tests
             var mouse = new KbmHidMouse(sink, KbmDeviceCaps.For(Profile("logitech-g502-hero")), "g502", 0);
             try
             {
-                mouse.SetButtons(0b1);
-                mouse.SetButtons(0b0);
-                mouse.SetButtons(0b1);
-                mouse.SetButtons(0b0);
+                mouse.SetButtons(0b1, KbmCause.AllOwn);
+                mouse.SetButtons(0b0, KbmCause.AllOwn);
+                mouse.SetButtons(0b1, KbmCause.AllOwn);
+                mouse.SetButtons(0b0, KbmCause.AllOwn);
                 var log = sink.WaitFor(4);
                 Assert.Equal(new[] { "M 1 0 0 0 0", "M 0 0 0 0 0", "M 1 0 0 0 0", "M 0 0 0 0 0" }, log);
             }
@@ -613,7 +625,7 @@ namespace PadForge.Tests
                 var raw = new KbmRawState();
                 raw.SetKey(0x41, true);
                 raw.SetMouseButton(0, true);
-                vc.SubmitKbmState(raw);
+                vc.SubmitKbmState(raw, KbmCause.AllOwn);
                 Assert.Equal(new[] { "K 00:04" }, sinks["padforge:pad3:KeyboardMouse:keyboard"].WaitFor(1));
                 Assert.Equal(new[] { "M 1 0 0 0 0" }, sinks["padforge:pad3:KeyboardMouse:mouse"].WaitFor(1));
                 vc.Disconnect();

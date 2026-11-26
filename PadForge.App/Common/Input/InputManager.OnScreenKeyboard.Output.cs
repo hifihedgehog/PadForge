@@ -202,13 +202,20 @@ namespace PadForge.Common.Input
                 if (o.Kind == OskDestKind.Slot)
                 {
                     if (o.Slot >= 0 && o.Slot < MaxPads)
-                        foreach (var vk in o.Keys) CombinedKbmRawStates[o.Slot].SetKey(vk, true);
+                    {
+                        var cause = OnScreenKeyboardCause();
+                        foreach (var vk in o.Keys)
+                        {
+                            CombinedKbmRawStates[o.Slot].SetKey(vk, true);
+                            if (!cause.IsOwn) CombinedKbmCauses[o.Slot].MarkKey(vk, cause);
+                        }
+                    }
                 }
                 else if (o.Menu?.Vc is { } vc)
                 {
                     var raw = new KbmRawState();
                     foreach (var vk in o.Keys) raw.SetKey(vk, true);
-                    vc.SubmitKbmState(raw);
+                    vc.SubmitKbmState(raw, KbmCause.All(OnScreenKeyboardCause()));
                     o.Menu.KeysDown = o.Keys.Length > 0;
                 }
                 break;
@@ -223,7 +230,7 @@ namespace PadForge.Common.Input
             foreach (var m in _oskHid.Values)
             {
                 if (!m.KeysDown || m.Vc == null) continue;
-                try { m.Vc.SubmitKbmState(default); } catch { /* the device is going away */ }
+                try { m.Vc.SubmitKbmState(default, KbmCause.AllOwn); } catch { /* the device is going away */ }
                 m.KeysDown = false;
             }
         }

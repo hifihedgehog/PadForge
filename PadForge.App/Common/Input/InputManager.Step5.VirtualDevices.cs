@@ -2313,7 +2313,7 @@ namespace PadForge.Common.Input
                             // releases anything held) instead of its mapped state.
                             var kbmOut = IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex];
                             if (rec != null) RecordOut(rec, padIndex, in kbmOut);
-                            kbmVc.SubmitKbmState(kbmOut);
+                            kbmVc.SubmitKbmState(kbmOut, CombinedKbmCauses[padIndex]);
                         }
                         else if (vc is HMaestroVRController vrVc)
                         {

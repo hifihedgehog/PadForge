@@ -223,6 +223,7 @@ namespace PadForge.Common.Input
                 Buttons = b.ToArray();
                 Axes = a.ToArray();
                 Hats = h.ToArray();
+                Controls = ControlsOf(this);
             }
 
             internal DeviceHolds((int, Hold)[] buttons, (int, Hold)[] axes, (int, Hold)[] hats,
@@ -236,6 +237,30 @@ namespace PadForge.Common.Input
                 ClaimedButtons = claimedButtons;
                 ClaimedDirections = claimedDirections;
                 Lines = lines;
+                Controls = ControlsOf(this);
+            }
+
+            /// <summary>The session that holds or claims the device's
+            /// controls, the first one when several do. 0 when none is
+            /// known.</summary>
+            public int Owner { get; init; }
+
+            /// <summary>Every control held or claimed, as the output causes
+            /// name it: <c>b</c> and a button, <c>a</c> and an axis (a slider
+            /// counts on past the axes), <c>h</c> and a hat.</summary>
+            public readonly HashSet<(char Kind, int Index)> Controls;
+
+            private static HashSet<(char Kind, int Index)> ControlsOf(DeviceHolds d)
+            {
+                var set = new HashSet<(char, int)>();
+                foreach (var (i, _) in d.Buttons) set.Add(('b', i));
+                foreach (var (i, _) in d.Axes) set.Add(('a', i));
+                foreach (var (i, _) in d.Hats) set.Add(('h', i));
+                foreach (var (hat, _) in d.Directions) set.Add(('h', hat));
+                foreach (int i in d.ClaimedButtons) set.Add(('b', i));
+                foreach (var (hat, _) in d.ClaimedDirections) set.Add(('h', hat));
+                foreach (var line in d.Lines) set.Add(('a', line.Axis));
+                return set;
             }
 
             /// <summary>Buttons by index, below 256.</summary>
@@ -686,7 +711,7 @@ namespace PadForge.Common.Input
                 if (LeftOut(owner)) continue;
                 foreach (var ((device, kind, index), value) in held)
                 {
-                    if (!byDevice.TryGetValue(device, out var parts)) byDevice[device] = parts = new Parts();
+                    if (!byDevice.TryGetValue(device, out var parts)) byDevice[device] = parts = new Parts { Owner = owner };
                     switch (kind)
                     {
                         case HoldButton: parts.Buttons.Add((index, (Hold)value)); break;
@@ -711,7 +736,8 @@ namespace PadForge.Common.Input
                 var directions = new List<(int, HatDirections)>();
                 foreach (var (hat, d) in parts.Directions) directions.Add((hat, d));
                 table[device] = new DeviceHolds(parts.Buttons.ToArray(), parts.Axes.ToArray(), parts.Hats.ToArray(),
-                    HeldByHat(parts.HeldDirections), parts.Claimed.ToArray(), directions.ToArray(), parts.Lines.ToArray());
+                    HeldByHat(parts.HeldDirections), parts.Claimed.ToArray(), directions.ToArray(), parts.Lines.ToArray())
+                { Owner = parts.Owner };
             }
             Volatile.Write(ref _current, table.Count == 0 ? null : table);
         }
@@ -738,6 +764,7 @@ namespace PadForge.Common.Input
             public readonly List<int> Claimed = new();
             public readonly Dictionary<int, HatDirections> Directions = new();
             public readonly List<Line> Lines = new();
+            public int Owner;
         }
 
         /// <summary>Step 2, for every device read: the state mappings read.

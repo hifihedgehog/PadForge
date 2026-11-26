@@ -1359,7 +1359,7 @@ namespace PadForge.Common.Input
                         if (!IsMenuItemFired(slot, null, def.MenuId, item.Index)) continue;
                         if (item.VirtualKey > 0
                             && IsMenuItemFiredByUnrestricted(slot, def.MenuId, item.Index, restrictedDevices))
-                            _desiredLatchedKeys.Add((ushort)item.VirtualKey);
+                            DesireLatchedKey((ushort)item.VirtualKey, SlotMacroCauses[slot]);
 
                         // Cross-type equivalence (MacroButtonNames.
                         // NumberedMaskOrder): a slot's output-type switch

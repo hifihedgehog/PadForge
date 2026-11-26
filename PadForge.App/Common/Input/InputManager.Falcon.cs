@@ -99,6 +99,9 @@ namespace PadForge.Common.Input
                     foreach (int id in gone)
                     {
                         var dev = _falconOpen[id];
+                        // The feature switched off is PadForge's own work: no
+                        // connection note (#600 item 42).
+                        if (!enabled) PadForge.Engine.OwnDrops.Row(dev.InstanceGuid);
                         RetireFalconRow(dev);
                         DisposeFalconAsync(dev);
                         _falconOpen.Remove(id);

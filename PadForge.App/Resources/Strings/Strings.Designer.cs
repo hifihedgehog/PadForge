@@ -365,6 +365,8 @@ public class Strings : INotifyPropertyChanged
     public string Main_DevicesDisconnectedNamed_Format => Get("Main_DevicesDisconnectedNamed_Format");
     public string Main_DevicesConnectedNamed_Format => Get("Main_DevicesConnectedNamed_Format");
     public string Main_DeviceKeepsDisconnecting_Format => Get("Main_DeviceKeepsDisconnecting_Format");
+    public string Main_DeviceIsBack_Format => Get("Main_DeviceIsBack_Format");
+    public string Main_DevicesAreBack_Format => Get("Main_DevicesAreBack_Format");
     public string Main_Xbox_Max_Format => Get("Main_Xbox_Max_Format");
     public string Main_PlayStation_Max_Format => Get("Main_PlayStation_Max_Format");
     public string Main_Nintendo_Max_Format => Get("Main_Nintendo_Max_Format");

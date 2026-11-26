@@ -653,6 +653,9 @@ namespace PadForge.Services
                 // other one's ceremony, which would break its ordinary HID
                 // input for no reason.
                 string hwid = @"USB\VID_054C&" + pidToken;
+                // The pad leaves and comes back on WinUSB: the connection
+                // notes wait for it to settle (#600 item 42).
+                PadForge.Engine.OwnDrops.Settle();
                 if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, hwid,
                         infPath, INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
                 {
@@ -1387,6 +1390,9 @@ namespace PadForge.Services
         public static void CycleBluetoothRadio(Action<string> log)
         {
             if (OffLimitsForTest) return;
+            // Every Bluetooth device drops for seconds: the connection notes
+            // wait for them to settle (#600 item 42).
+            PadForge.Engine.OwnDrops.Settle();
             try
             {
                 lock (_cycleLock)
@@ -2597,6 +2603,9 @@ namespace PadForge.Services
         internal static void RestartOffRadio(Action<string> log)
         {
             if (OffLimitsForTest) return;
+            // Every Bluetooth device drops for seconds: the connection notes
+            // wait for them to settle (#600 item 42).
+            PadForge.Engine.OwnDrops.Settle();
             bool restarting = false;
             try
             {

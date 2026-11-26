@@ -78,6 +78,8 @@ namespace PadForge.Tests
             ["ControllerDatabase_BuiltInUpdated_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount, and {3} and {4} stand before no noun",
             ["Main_DevicesDisconnectedNamed_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
             ["Main_DevicesConnectedNamed_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
+            ["Main_DevicesAreBack_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
+            ["Main_DeviceKeepsDisconnecting_Format"] = "{1} is three or more: the count begins at the third drop in a minute (DeviceNoteDirector.Decide)",
             ["ExeFolder_TargetTaken_Format"] = "{0} is a folder's path, and holds is the verb",
             ["Plugins_Device_Settings_Format"] = "{0} is a plugin's name, and Settings is the dialog's title",
         };

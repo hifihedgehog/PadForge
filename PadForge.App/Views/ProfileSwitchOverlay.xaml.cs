@@ -72,6 +72,10 @@ namespace PadForge.Views
         // state leaves the window to the one shown since.
         private int _shows;
 
+        // A slide away runs: the dismiss timer has fired and the window has
+        // not yet been hidden.
+        private bool _slidingAway;
+
         /// <summary>Whether the flyout shows anything.</summary>
         public bool IsUp => _showing != Showing.Nothing;
 
@@ -255,6 +259,45 @@ namespace PadForge.Views
             _dismissTimer.Start();
         }
 
+        /// <summary>Changes the device note on screen in place (#600 item
+        /// 42): a device it names came back ("is back", the check in green),
+        /// dropped again, or dropped once more on its count. The window does
+        /// not slide in again. <paramref name="restartTime"/> gives the note
+        /// its full time from now, as the new state's own note would have,
+        /// and false keeps the time it has left, for a count that grew. A
+        /// note that was sliding away stands again where it shows, and the
+        /// end of that slide hides nothing. With no device note up, it is
+        /// shown as a new one.</summary>
+        public void UpdateDeviceNote(string text, bool connected, bool restartTime)
+        {
+            if (_showing != Showing.DeviceNote)
+            {
+                ShowDeviceNote(text, connected);
+                return;
+            }
+            if (_slidingAway)
+            {
+                _shows++;
+                _slidingAway = false;
+                _slideTransform.BeginAnimation(TranslateTransform.YProperty, null);
+                _slideTransform.Y = 0;
+                restartTime = true;
+            }
+
+            StatusIcon.Text = connected ? VCsEnabledIcon : OfflineIcon;
+            StatusIcon.Foreground = new SolidColorBrush(connected ? EnabledGreen : OfflineAmber);
+            StatusText.Text = text;
+            if (!restartTime) return;
+
+            _dismissTimer.Stop();
+            _dismissTimer.Tick -= OnDismissThenClose;
+            _dismissTimer.Tick -= OnDismissThenMonitorInit;
+            _dismissTimer.Tick -= OnDismissThenCheckOffline;
+            _dismissTimer.Tick += OnDismissThenClose;
+            _dismissTimer.Interval = DeviceNoteTime(connected);
+            _dismissTimer.Start();
+        }
+
         public void ShowProfileName(string profileName)
         {
             _dismissTimer.Stop();
@@ -390,9 +433,11 @@ namespace PadForge.Views
         private void SlideAway()
         {
             int shows = _shows;
+            _slidingAway = true;
             SlideOut(() =>
             {
                 if (shows != _shows) return;
+                _slidingAway = false;
                 Hide();
                 ApplyTheme();
                 _showing = Showing.Nothing;
@@ -404,6 +449,7 @@ namespace PadForge.Views
             // The monitor of the window in front (#600 item 42).
             var area = FlyoutPlacement.Front();
             _shows++;
+            _slidingAway = false;
 
             // One line that fits that monitor: a long name is cut with an
             // ellipsis where the flyout would run past the work area. The

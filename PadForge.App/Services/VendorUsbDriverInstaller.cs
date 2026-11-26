@@ -440,6 +440,9 @@ namespace PadForge.Services
         {
             // The test host changes no driver (NoDriverChangesForTest).
             if (NoDriverChangesForTest) return false;
+            // The device leaves and comes back on Windows' driver: the
+            // connection notes wait for it to settle (#600 item 42).
+            PadForge.Engine.OwnDrops.Settle();
             try
             {
                 bool present = ServiceOf(instanceId) != null;
@@ -665,6 +668,9 @@ namespace PadForge.Services
         {
             // The test host changes no driver (NoDriverChangesForTest).
             if (NoDriverChangesForTest) return false;
+            // The device leaves and comes back on another driver: the
+            // connection notes wait for it to settle (#600 item 42).
+            PadForge.Engine.OwnDrops.Settle();
             bool xusb = plan.Driver == BindDriver.Xusb22;
             string service = xusb ? "xusb22" : "WINUSB";
             string driverName = xusb ? "xusb22" : "WinUSB";

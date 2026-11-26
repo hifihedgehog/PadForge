@@ -24,7 +24,7 @@ using Strings = PadForge.Resources.Strings.Strings;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The rule for one device of the device notes (#597),
+    /// The rule for one device of the device notes (#597, #600 item 42),
     /// <see cref="DeviceNoteDirector.Decide"/>: what is said of a mapped
     /// device that disconnects or connects, and when. Pure, so each test
     /// names what a walk reads at each moment and reads what is said.
@@ -32,12 +32,16 @@ namespace PadForge.Tests
     public class DeviceNoteDecisionTests
     {
         /// <summary>One device read every quarter second, and what was said
-        /// of it with the moment it was said.</summary>
+        /// of it with the moment it was said. <see cref="Own"/> is the stamp
+        /// of PadForge's own work that covers it, and <see cref="Screen"/>
+        /// what the note on screen says of it.</summary>
         private sealed class Device
         {
             public DeviceNoteState State;
             public bool Drops = true, Returns = true, Waiting;
             public long Now;
+            public long Own = DeviceNoteDirector.Never;
+            public DeviceNoteScreen Screen;
             public readonly List<string> Said = new List<string>();
 
             public Device(bool online) => State = DeviceNoteState.Seed(online, 0);
@@ -49,29 +53,29 @@ namespace PadForge.Tests
                 while (Now < untilMs)
                 {
                     Now += DeviceNoteDirector.WalkMs;
-                    var (next, note) = DeviceNoteDirector.Decide(State, online, Now, Drops, Returns, Waiting);
+                    var (next, note, inPlace) = DeviceNoteDirector.Decide(State, online, Now, Drops, Returns, Waiting, Own, Screen);
                     State = next;
-                    if (note != Kind.None) Said.Add(Now + " " + note);
+                    if (note != Kind.None) Said.Add(Now + " " + note + (inPlace ? " in place" : ""));
                 }
                 return this;
             }
         }
 
+        /// <summary>A drop is said at the first walk that reads it (#600
+        /// item 42), a quarter second away included, and counted.</summary>
         [Fact]
-        public void ADropThatHolds_IsSaidOnce_AndAShorterOneNever()
+        public void ADrop_IsSaidAtTheFirstWalkThatReadsIt_AShortOneToo()
         {
-            // First read away at 1250, so it has held a second and a half at 2750.
-            var held = new Device(online: true).Read(true, 1000).Read(false, 2500);
-            Assert.Empty(held.Said);
+            var held = new Device(online: true).Read(true, 1000).Read(false, 1250);
+            Assert.Equal(new[] { "1250 Disconnected" }, held.Said);
+            Assert.Equal(1250, held.State.Drop1);
             held.Read(false, 30_000);
-            Assert.Equal(new[] { "2750 Disconnected" }, held.Said);
-            Assert.Equal(2750, held.State.Drop1);
+            Assert.Single(held.Said);
 
-            // Away for a second and a quarter: nothing is said, then or
-            // later, and it counts as no drop.
-            var brief = new Device(online: true).Read(true, 1000).Read(false, 2250).Read(true, 30_000);
-            Assert.Empty(brief.Said);
-            Assert.Equal(DeviceNoteDirector.Never, brief.State.Drop1);
+            // Away for one walk: said and counted all the same.
+            var brief = new Device(online: true).Read(true, 1000).Read(false, 1250).Read(true, 30_000);
+            Assert.Equal(new[] { "1250 Disconnected", "11250 Connected" }, brief.Said);
+            Assert.Equal(1250, brief.State.Drop1);
         }
 
         [Fact]
@@ -86,46 +90,48 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "60250 Connected" }, device.Said);
         }
 
-        /// <summary>One note for a device in ten seconds. A return inside
-        /// that time is said when the time ends, so the last thing said of
-        /// the device is true.</summary>
+        /// <summary>One new note for a device in ten seconds. A return
+        /// inside that time, with no note on screen to change, is said when
+        /// the time ends, so the last thing said of the device is
+        /// true.</summary>
         [Fact]
         public void ADeviceIsNamedOnceInTenSeconds_AndWhatStillStandsIsSaidAfter()
         {
             var device = new Device(online: true).Read(false, 2000);
-            Assert.Equal(new[] { "1750 Disconnected" }, device.Said);
+            Assert.Equal(new[] { "250 Disconnected" }, device.Said);
 
-            // Back at 2250, and nothing more is said until 11750.
-            device.Read(true, 11_500);
+            // Back at 2250, and nothing more is said until 10250.
+            device.Read(true, 10_000);
             Assert.Single(device.Said);
-            device.Read(true, 12_000);
-            Assert.Equal(new[] { "1750 Disconnected", "11750 Connected" }, device.Said);
+            device.Read(true, 10_500);
+            Assert.Equal(new[] { "250 Disconnected", "10250 Connected" }, device.Said);
         }
 
-        /// <summary>A return that ends inside the ten seconds is never said:
-        /// what the user was told last still stands.</summary>
+        /// <summary>A return that ends inside the ten seconds is never said
+        /// as a new note: what the user was told last still stands. Its
+        /// drop counts.</summary>
         [Fact]
-        public void AChangeThatEndsInsideTheTenSeconds_IsNeverSaid()
+        public void AChangeThatEndsInsideTheTenSeconds_IsNeverSaid_AndItsDropCounts()
         {
             var device = new Device(online: true).Read(false, 2000).Read(true, 4000).Read(false, 30_000);
-            Assert.Equal(new[] { "1750 Disconnected" }, device.Said);
-            // The second drop held and was counted all the same.
-            Assert.Equal(5750, device.State.Drop1);
-            Assert.Equal(1750, device.State.Drop2);
+            Assert.Equal(new[] { "250 Disconnected" }, device.Said);
+            Assert.Equal(4250, device.State.Drop1);
+            Assert.Equal(250, device.State.Drop2);
         }
 
         [Fact]
-        public void ThreeDropsInAMinute_AreSaidOnceAsKeepsDisconnecting_ThenFiveMinutesOfSilence()
+        public void ThreeDropsInAMinute_AreSaidOnceWithTheCount_ThenFiveMinutesOfSilence()
         {
             var device = new Device(online: true)
-                .Read(false, 2000).Read(true, 20_000)      // the first drop, counted at 1750
-                .Read(false, 22_000).Read(true, 40_000)    // the second, at 21750
-                .Read(false, 42_000);                      // the third, at 41750
+                .Read(false, 2000).Read(true, 20_000)      // the first drop, at 250
+                .Read(false, 22_000).Read(true, 40_000)    // the second, at 20250
+                .Read(false, 42_000);                      // the third, at 40250
             Assert.Equal(new[]
             {
-                "1750 Disconnected", "11750 Connected", "21750 Disconnected", "31750 Connected", "41750 KeepsDisconnecting",
+                "250 Disconnected", "10250 Connected", "20250 Disconnected", "30250 Connected", "40250 KeepsDisconnecting",
             }, device.Said);
-            Assert.Equal(41_750 + DeviceNoteDirector.SilenceMs, device.State.SilentUntil);
+            Assert.Equal(3, device.State.KeepsCount);
+            Assert.Equal(40_250 + DeviceNoteDirector.SilenceMs, device.State.SilentUntil);
 
             // Five minutes in which it comes and goes and nothing is said.
             device.Said.Clear();
@@ -141,6 +147,21 @@ namespace PadForge.Tests
             Assert.False(device.State.KeepsOwed);
         }
 
+        /// <summary>Five drops of a second each, twelve seconds apart, the
+        /// bad cable the hold used to hide: the first is said and the third
+        /// is the count.</summary>
+        [Fact]
+        public void ShortDropsTwelveSecondsApart_ReachTheCount()
+        {
+            var device = new Device(online: true).Read(true, 1000);
+            for (int i = 0; i < 5; i++)
+                device.Read(false, device.Now + 1000).Read(true, device.Now + 11_000);
+            // The second drop falls inside the ten seconds of the return's
+            // note: counted, not said.
+            Assert.Equal(new[] { "1250 Disconnected", "11250 Connected", "25250 KeepsDisconnecting" }, device.Said);
+            Assert.Equal(3, device.State.KeepsCount);
+        }
+
         [Fact]
         public void ThreeDropsOverMoreThanAMinute_AreThreePlainNotes()
         {
@@ -153,22 +174,26 @@ namespace PadForge.Tests
             Assert.Equal(DeviceNoteDirector.Never, device.State.SilentUntil);
         }
 
-        /// <summary>Keeps disconnecting is one note too, so a third drop
-        /// that comes inside the ten seconds of the last note is said when
-        /// they end.</summary>
+        /// <summary>The count is one note too, so a third drop that comes
+        /// inside the ten seconds of the last note is said when they end,
+        /// and a drop while it waits adds to the count.</summary>
         [Fact]
-        public void KeepsDisconnecting_WaitsOutTheTenSeconds()
+        public void TheCount_WaitsOutTheTenSeconds_AndGrowsWhileItWaits()
         {
             var device = new Device(online: true)
-                .Read(false, 2000).Read(true, 4000)     // counted at 1750, said
-                .Read(false, 6000).Read(true, 8000)     // counted at 5750
-                .Read(false, 11_000);                   // counted at 9750
-            Assert.Equal(new[] { "1750 Disconnected" }, device.Said);
+                .Read(false, 1000).Read(true, 2000)     // counted at 250, said
+                .Read(false, 3000).Read(true, 4000)     // counted at 2250
+                .Read(false, 5000);                     // counted at 4250: the third
+            Assert.Equal(new[] { "250 Disconnected" }, device.Said);
             Assert.True(device.State.KeepsOwed);
+            Assert.Equal(3, device.State.KeepsCount);
 
-            device.Read(false, 12_000);
-            Assert.Equal(new[] { "1750 Disconnected", "11750 KeepsDisconnecting" }, device.Said);
-            Assert.Equal(11_750 + DeviceNoteDirector.SilenceMs, device.State.SilentUntil);
+            device.Read(true, 6000).Read(false, 7000).Read(true, 10_000);    // a fourth at 6250
+            Assert.Equal(4, device.State.KeepsCount);
+            Assert.Single(device.Said);
+            device.Read(true, 11_000);
+            Assert.Equal(new[] { "250 Disconnected", "10250 KeepsDisconnecting" }, device.Said);
+            Assert.Equal(10_250 + DeviceNoteDirector.SilenceMs, device.State.SilentUntil);
         }
 
         /// <summary>A note that is off is taken as said: it uses up no ten
@@ -186,7 +211,7 @@ namespace PadForge.Tests
 
             var dropsOnly = new Device(online: true) { Returns = false };
             dropsOnly.Read(false, 2000).Read(true, 4000);
-            Assert.Equal(new[] { "1750 Disconnected" }, dropsOnly.Said);
+            Assert.Equal(new[] { "250 Disconnected" }, dropsOnly.Said);
             Assert.True(dropsOnly.State.Told);
             // Turned on now, the note has nothing to say of that return.
             dropsOnly.Returns = true;
@@ -204,7 +229,7 @@ namespace PadForge.Tests
             device.Read(false, 2000).Read(true, 20_000)
                   .Read(false, 22_000).Read(true, 40_000)
                   .Read(false, 42_000);
-            Assert.Equal(new[] { "2250 Connected", "22250 Connected", "41750 Silenced" }, device.Said);
+            Assert.Equal(new[] { "2250 Connected", "22250 Connected", "40250 Silenced" }, device.Said);
 
             device.Said.Clear();
             device.Read(true, 100_000).Read(false, 200_000).Read(true, 300_000);
@@ -212,8 +237,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>While the flyout shows a profile switch nothing is
-        /// decided. A drop that outlasts the wait is said after it, counted
-        /// from when it began, and one that ends inside it never is.</summary>
+        /// decided. A drop that outlasts the wait is said after it, and one
+        /// that ends inside it never is.</summary>
         [Fact]
         public void WhileNotesWait_AnAbsenceKeepsItsStart_AndNothingIsDecided()
         {
@@ -232,6 +257,118 @@ namespace PadForge.Tests
             ends.Read(true, 30_000);
             Assert.Empty(ends.Said);
             Assert.Equal(DeviceNoteDirector.Never, ends.State.Drop1);
+        }
+
+        // ── PadForge's own work ────────────────────────────────────────
+
+        /// <summary>A drop that begins within five seconds of a stamp of
+        /// PadForge's own work (a virtual controller's creation, a MIDI
+        /// backend change) says nothing and counts toward nothing, however
+        /// often it comes.</summary>
+        [Fact]
+        public void AnOwnWorkDrop_SaysNothing_AndCountsTowardNothing()
+        {
+            var device = new Device(online: true).Read(true, 1000);
+            for (int i = 0; i < 5; i++)
+            {
+                device.Own = device.Now - 100;
+                device.Read(false, device.Now + 2000).Read(true, device.Now + 3000);
+            }
+            Assert.Empty(device.Said);
+            Assert.Equal(DeviceNoteDirector.Never, device.State.Drop1);
+            Assert.False(device.State.KeepsOwed);
+            Assert.True(device.State.Told);
+        }
+
+        /// <summary>A row an own cause took away that is still away when the
+        /// five seconds from the stamp end is a drop then: said and
+        /// counted.</summary>
+        [Fact]
+        public void AnOwnWorkDropThatOutlastsItsWindow_IsSaidWhenItEnds()
+        {
+            var device = new Device(online: true) { Own = 1000 }.Read(true, 1000).Read(false, 10_000);
+            Assert.Equal(new[] { "6000 Disconnected" }, device.Said);
+            Assert.Equal(6000, device.State.Drop1);
+        }
+
+        /// <summary>A stamp more than five seconds old, or one made after the
+        /// drop began, excuses nothing.</summary>
+        [Fact]
+        public void AStampOutsideTheWindow_ExcusesNothing()
+        {
+            var old = new Device(online: true) { Own = 1000 }.Read(true, 6250).Read(false, 6500);
+            Assert.Equal(new[] { "6500 Disconnected" }, old.Said);
+
+            var later = new Device(online: true) { Own = 2000 }.Read(true, 1000).Read(false, 1250);
+            Assert.Equal(new[] { "1250 Disconnected" }, later.Said);
+        }
+
+        // ── the note on screen ─────────────────────────────────────────
+
+        /// <summary>While the note on screen names the device alone, the
+        /// note follows it in place with no ten seconds to wait: back, away
+        /// again, back, and the third drop turns it to the count, which
+        /// then grows in place.</summary>
+        [Fact]
+        public void TheNoteOnScreen_TurnsToTheReturn_BackToTheDrop_AndToTheCount()
+        {
+            var device = new Device(online: true).Read(false, 250);
+            Assert.Equal(new[] { "250 Disconnected" }, device.Said);
+            device.Screen = DeviceNoteScreen.Alone;
+            device.Read(false, 1000).Read(true, 1250);
+            device.Read(true, 2000).Read(false, 2250);
+            device.Read(false, 2500).Read(true, 2750);
+            device.Read(true, 3000).Read(false, 3250);
+            Assert.Equal(new[]
+            {
+                "250 Disconnected", "1250 IsBack in place", "2250 Disconnected in place", "2750 IsBack in place", "3250 KeepsDisconnecting in place",
+            }, device.Said);
+            Assert.Equal(3, device.State.KeepsCount);
+            Assert.Equal(3250 + DeviceNoteDirector.SilenceMs, device.State.SilentUntil);
+
+            // Its count on screen grows with each drop, and its returns
+            // leave it as it is.
+            device.Screen = DeviceNoteScreen.Keeps;
+            device.Read(true, 3500).Read(false, 3750).Read(true, 4000);
+            Assert.Equal("3750 KeepsDisconnecting in place", device.Said.Last());
+            Assert.Equal(4, device.State.KeepsCount);
+
+            // Gone from the screen: the silence.
+            device.Screen = DeviceNoteScreen.None;
+            device.Said.Clear();
+            device.Read(false, 5000).Read(true, 6000);
+            Assert.Empty(device.Said);
+        }
+
+        /// <summary>The turn to "is back" belongs to the drop note, so the
+        /// Device Disconnected Note gates it, not the connected one.</summary>
+        [Fact]
+        public void TheTurnInPlace_FollowsTheDisconnectedNote()
+        {
+            var noReturns = new Device(online: true) { Returns = false }.Read(false, 250);
+            noReturns.Screen = DeviceNoteScreen.Alone;
+            noReturns.Read(true, 500);
+            Assert.Equal(new[] { "250 Disconnected", "500 IsBack in place" }, noReturns.Said);
+
+            var noDrops = new Device(online: true) { Drops = false, Screen = DeviceNoteScreen.Alone };
+            noDrops.Read(false, 250).Read(true, 500);
+            Assert.DoesNotContain(noDrops.Said, s => s.EndsWith("in place", StringComparison.Ordinal));
+        }
+
+        /// <summary>One device of a burst on screen turns in place too, and
+        /// a burst cannot become one device's count: a third drop there
+        /// waits for its own line.</summary>
+        [Fact]
+        public void ADeviceOfABurstOnScreen_TurnsInPlace_AndItsCountWaits()
+        {
+            var device = new Device(online: true).Read(false, 250);
+            device.Screen = DeviceNoteScreen.InBurst;
+            device.Read(true, 500).Read(false, 750).Read(true, 1000).Read(false, 1250);
+            Assert.Equal(new[] { "250 Disconnected", "500 IsBack in place", "750 Disconnected in place", "1000 IsBack in place", "1250 Disconnected in place" }, device.Said);
+            Assert.True(device.State.KeepsOwed);
+            device.Screen = DeviceNoteScreen.None;
+            device.Read(false, 12_000);
+            Assert.Equal("11250 KeepsDisconnecting", device.Said.Last());
         }
     }
 
@@ -260,7 +397,15 @@ namespace PadForge.Tests
             public long? RowsReadAt;
             public bool Drops = true, Returns = true, Waiting, Free = true;
 
-            public Stage() => Director.Silenced = device => Quieted.Add(Names[device]);
+            /// <summary>Plays the flyout: a line shows for its time (a drop
+            /// or a count four seconds, a return two), the walk is told it is
+            /// up, and a line in place gives it its time again unless only
+            /// the count grew. Off, <see cref="Free"/> is set by hand and no
+            /// note is ever up.</summary>
+            public bool Screen;
+            private long _upUntil = DeviceNoteDirector.Never;
+
+            public Stage() => Director.Silenced = (device, drops) => Quieted.Add(Names[device]);
 
             public Guid Add(string name, bool online, int slots = 1, bool raises = true)
             {
@@ -270,20 +415,28 @@ namespace PadForge.Tests
                 return device;
             }
 
-            public void Set(Guid device, bool online)
+            /// <summary>The device's row as the next walk reads it, with the
+            /// stamp of PadForge's own work that covers it.</summary>
+            public void Set(Guid device, bool online, long own = DeviceNoteDirector.Never)
             {
                 int at = Mapped.FindIndex(r => r.Device == device);
-                Mapped[at] = new DeviceNoteReading(device, online, Mapped[at].Slots, Mapped[at].RaisesNotes);
+                Mapped[at] = new DeviceNoteReading(device, online, Mapped[at].Slots, Mapped[at].RaisesNotes, own);
             }
 
             public void Remove(Guid device) => Mapped.RemoveAll(r => r.Device == device);
 
             public void Tick()
             {
-                var note = Director.Tick(Now, RowsReadAt ?? Now, Mapped, Drops, Returns, Waiting, Free);
+                bool shown = Screen && Now < _upUntil;
+                if (Screen) Free = !shown;
+                var note = Director.Tick(Now, RowsReadAt ?? Now, Mapped, Drops, Returns, Waiting, Free, shown);
                 if (note.Kind == Kind.None) return;
+                if (Screen && !note.Grows)
+                    _upUntil = Now + (note.Kind is Kind.Connected or Kind.IsBack ? 2000 : 4000);
                 string line = Now + " " + note.Kind + (note.Count == 1 ? " " + Names[note.Device] : " x" + note.Count);
                 if (note.EmptiedSlot >= 0) line += " empties " + note.EmptiedSlot;
+                if (note.Times > 0) line += " times " + note.Times;
+                if (note.InPlace) line += " in place";
                 Said.Add(line);
                 if (note.Count > 1)
                 {
@@ -367,7 +520,7 @@ namespace PadForge.Tests
             stage.RowsReadAt = null;
             stage.Set(pad, false);
             stage.Walk(123_000);
-            Assert.Equal(new[] { "122250 Disconnected Pad" }, stage.Said);
+            Assert.Equal(new[] { "120750 Disconnected Pad" }, stage.Said);
         }
 
         /// <summary>An engine stop forgets every device and every line, so
@@ -378,9 +531,9 @@ namespace PadForge.Tests
             var stage = new Stage();
             var pad = stage.Add("Pad", online: true);
             stage.Walk(1000);
-            // A drop that has held and waits out its half second.
+            // A drop that is decided and waits out its half second.
             stage.Set(pad, false);
-            stage.Walk(2750);
+            stage.Walk(1250);
             Assert.Empty(stage.Said);
 
             stage.Director.Reset();
@@ -558,7 +711,7 @@ namespace PadForge.Tests
             stage.Walk(2250);
             stage.Set(four, false);
             stage.Walk(6000);
-            Assert.Equal(new[] { "3250 Disconnected x3", "4500 Disconnected Four empties 3" }, stage.Said);
+            Assert.Equal(new[] { "1750 Disconnected x3", "3000 Disconnected Four empties 3" }, stage.Said);
             // The line names the three the hub took (#600 item 42).
             Assert.Equal(new[] { "One,Two,Three" }, stage.Named);
 
@@ -596,9 +749,9 @@ namespace PadForge.Tests
             stage.Walk(12_000);
             Assert.Equal(new[]
             {
-                "3250 Disconnected Pad",
-                "6250 Disconnected Wheel empties 0",
-                "10250 Disconnected Stick",
+                "1750 Disconnected Pad",
+                "4750 Disconnected Wheel empties 0",
+                "8750 Disconnected Stick",
             }, stage.Said);
         }
 
@@ -656,7 +809,7 @@ namespace PadForge.Tests
             var pad = stage.Add("Pad", online: true);
             stage.Walk(1000);
             stage.Set(pad, false);
-            stage.Walk(2750);
+            stage.Walk(1250);
             var reading = stage.Mapped.Single();
             stage.Remove(pad);
             stage.Walk(10_000);
@@ -756,6 +909,112 @@ namespace PadForge.Tests
                 Assert.DoesNotContain(stage.Said, s => long.Parse(s.Split(' ')[0]) > 45_000);
             }
         }
+
+        // ── the note on screen and PadForge's own work ─────────────────
+
+        /// <summary>A drop is said half a second after the walk that reads
+        /// it, and while its note shows, the pad's return turns the same
+        /// note to "is back" with no new note (#600 item 42).</summary>
+        [Fact]
+        public void TheNoteOnScreen_TurnsToTheReturnInPlace()
+        {
+            var stage = new Stage { Screen = true };
+            var pad = stage.Add("DualSense", online: true);
+            stage.Walk(1000);
+            stage.Set(pad, false);
+            stage.Walk(2250);
+            stage.Set(pad, true);
+            stage.Walk(30_000);
+            Assert.Equal(new[] { "1750 Disconnected DualSense empties 0", "2500 IsBack DualSense in place" }, stage.Said);
+
+            // Once the note has left, a return waits out the ten seconds and
+            // is a note of its own.
+            stage.Said.Clear();
+            stage.Set(pad, false);
+            stage.Walk(30_250);
+            stage.Walk(35_000);
+            stage.Set(pad, true);
+            stage.Walk(45_000);
+            Assert.Equal(new[] { "30750 Disconnected DualSense empties 0", "40750 Connected DualSense" }, stage.Said);
+        }
+
+        /// <summary>A burst on screen follows its devices: one back leaves
+        /// the other named, and both back turn it to the return.</summary>
+        [Fact]
+        public void ABurstOnScreen_FollowsEachDevice()
+        {
+            var stage = new Stage { Screen = true };
+            var one = stage.Add("DualSense", online: true, slots: 1);
+            var two = stage.Add("T.16000M", online: true, slots: 2);
+            stage.Walk(1000);
+            stage.Set(one, false);
+            stage.Set(two, false);
+            stage.Walk(2000);
+            stage.Set(one, true);
+            stage.Walk(2500);
+            stage.Set(two, true);
+            stage.Walk(20_000);
+            Assert.Equal(new[]
+            {
+                "1750 Disconnected x2", "2250 Disconnected T.16000M empties 1 in place", "2750 IsBack x2 in place",
+            }, stage.Said);
+            Assert.Equal("DualSense,T.16000M", stage.Named.Last());
+        }
+
+        /// <summary>A pad that drops three times while its note shows turns
+        /// the note to the count, which grows in place without giving the
+        /// note more time.</summary>
+        [Fact]
+        public void TheCount_ComesInPlace_AndGrows()
+        {
+            var stage = new Stage { Screen = true };
+            var pad = stage.Add("DualSense", online: true);
+            stage.Walk(1000);
+            foreach (long at in new long[] { 1000, 2000, 3000, 4000 })
+            {
+                stage.Set(pad, false);
+                stage.Walk(at + 500);
+                stage.Set(pad, true);
+                stage.Walk(at + 1000);
+            }
+            Assert.Equal(new[]
+            {
+                // Said though the pad was back a walk before it: the drop
+                // was decided, and the next walk turns it to the return.
+                "1750 Disconnected DualSense", "2000 IsBack DualSense in place",
+                "2250 Disconnected DualSense empties 0 in place", "2750 IsBack DualSense in place",
+                "3250 KeepsDisconnecting DualSense times 3 in place",
+                "4250 KeepsDisconnecting DualSense times 4 in place",
+            }, stage.Said);
+            Assert.Equal(new[] { "DualSense" }, stage.Quieted);
+        }
+
+        /// <summary>A drop PadForge's own work causes says nothing and
+        /// counts nothing, and a pad that never left says nothing when it
+        /// is read back.</summary>
+        [Fact]
+        public void AnOwnWorkDrop_IsNeverNews()
+        {
+            var stage = new Stage { Screen = true };
+            var pad = stage.Add("Xbox Wireless Controller", online: true);
+            stage.Walk(10_000);
+            for (int i = 0; i < 4; i++)
+            {
+                long stamped = stage.Now;
+                stage.Set(pad, false, own: stamped);
+                stage.Walk(stamped + 1500);
+                stage.Set(pad, true, own: stamped);
+                stage.Walk(stamped + 3000);
+            }
+            Assert.Empty(stage.Said);
+            Assert.Empty(stage.Quieted);
+            Assert.Equal(DeviceNoteDirector.Never, stage.Director.StateOf(pad).Drop1);
+
+            // The next drop with no stamp is said.
+            stage.Set(pad, false);
+            stage.Walk(stage.Now + 1000);
+            Assert.Single(stage.Said);
+        }
     }
 
     /// <summary>
@@ -782,7 +1041,11 @@ namespace PadForge.Tests
             // A burst names the devices it took (#600 item 42).
             Assert.Equal("{0} devices disconnected: {1}", English("Main_DevicesDisconnectedNamed_Format"));
             Assert.Equal("{0} devices connected: {1}", English("Main_DevicesConnectedNamed_Format"));
-            Assert.Equal("{0} keeps disconnecting", English("Main_DeviceKeepsDisconnecting_Format"));
+            // The Notes board's words: the count grows in the same note
+            // (#600 item 42).
+            Assert.Equal("{0} dropped {1} times in a minute", English("Main_DeviceKeepsDisconnecting_Format"));
+            Assert.Equal("{0} is back", English("Main_DeviceIsBack_Format"));
+            Assert.Equal("{0} devices are back: {1}", English("Main_DevicesAreBack_Format"));
             Assert.Equal("Device Disconnected Note", English("Dashboard_DeviceDisconnectedNote"));
             Assert.Equal("Device Connected Note", English("Dashboard_DeviceConnectedNote"));
         }
@@ -794,7 +1057,7 @@ namespace PadForge.Tests
             var pad = Guid.NewGuid();
             var burst = new[] { "DualSense", "T.16000M", "G29" };
             string Text(Kind kind, int count, string controller = null, int battery = -1, int slot = -1)
-                => DeviceNoteDirector.Text(new DeviceNote(kind, count, count == 1 ? pad : Guid.Empty, slot), count == 1 ? "DualSense" : null, controller, battery,
+                => DeviceNoteDirector.Text(new DeviceNote(kind, count, count == 1 ? pad : Guid.Empty, slot) { Times = 3 }, count == 1 ? "DualSense" : null, controller, battery,
                     count == 1 ? null : burst.Take(count).ToArray());
 
             Assert.Equal(string.Format(s.Main_DeviceDisconnected_Format, "DualSense"), Text(Kind.Disconnected, 1));
@@ -809,7 +1072,10 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(s.Main_DeviceConnectedBattery_Format, "DualSense", 0), Text(Kind.Connected, 1, battery: 0));
             Assert.Equal(string.Format(s.Main_DevicesConnectedNamed_Format, 2, "DualSense, T.16000M"), Text(Kind.Connected, 2, battery: 80));
 
-            Assert.Equal(string.Format(s.Main_DeviceKeepsDisconnecting_Format, "DualSense"), Text(Kind.KeepsDisconnecting, 1));
+            Assert.Equal(string.Format(s.Main_DeviceKeepsDisconnecting_Format, "DualSense", 3), Text(Kind.KeepsDisconnecting, 1));
+            Assert.Equal("DualSense dropped 3 times in a minute", Text(Kind.KeepsDisconnecting, 1));
+            Assert.Equal(string.Format(s.Main_DeviceIsBack_Format, "DualSense"), Text(Kind.IsBack, 1));
+            Assert.Equal(string.Format(s.Main_DevicesAreBack_Format, 2, "DualSense, T.16000M"), Text(Kind.IsBack, 2));
             Assert.Equal(string.Empty, Text(Kind.None, 1));
             Assert.Equal(string.Empty, Text(Kind.Silenced, 1));
 
@@ -1015,8 +1281,10 @@ namespace PadForge.Tests
 
             // A name the user gave the device is the one the list shows.
             pad.DisplayName = "Player One";
-            Assert.Equal(string.Format(s.Main_DeviceKeepsDisconnecting_Format, "Player One"),
-                svc.DeviceNoteText(new DeviceNote(Kind.KeepsDisconnecting, 1, pad.InstanceGuid, -1)));
+            Assert.Equal(string.Format(s.Main_DeviceKeepsDisconnecting_Format, "Player One", 4),
+                svc.DeviceNoteText(new DeviceNote(Kind.KeepsDisconnecting, 1, pad.InstanceGuid, -1) { Times = 4 }));
+            Assert.Equal(string.Format(s.Main_DeviceIsBack_Format, "Player One"),
+                svc.DeviceNoteText(new DeviceNote(Kind.IsBack, 1, pad.InstanceGuid, -1) { InPlace = true }));
 
             // A device with no row has no line.
             Assert.Null(svc.DeviceNoteText(new DeviceNote(Kind.Disconnected, 1, Guid.NewGuid(), -1)));
@@ -1404,20 +1672,30 @@ namespace PadForge.Tests
             Assert.Contains("private bool DeviceNoteIsUp => _switchOverlay != null && _switchOverlay.IsShowingDeviceNote;", notes);
 
             // The walk itself: four times a second, a port PadForge cycled
-            // marked, the engine's own word on when its rows were read, and
-            // the flyout's word on what it shows.
+            // and its other settling work marked before the rows are read,
+            // the engine's own word on when its rows were read, the
+            // flyout's word on what it shows, and a line in place changing
+            // the note on screen without showing it again (#600 item 42).
             string update = Body(notes, "        private void UpdateDeviceNotes(bool noteDrops, bool noteReturns)\n");
             Assert.Contains("if (now - _lastDeviceNoteWalk < DeviceNoteDirector.WalkMs) return;", update);
             Assert.Contains("long cycled = _controllerRelease.LastCycleAt;", update);
             Assert.Contains("_deviceNotes.Mark(cycled);", update);
+            int settled = update.IndexOf("long settled = OwnDrops.SettleAt;", StringComparison.Ordinal);
+            int read = update.IndexOf("ReadMappedDevices(_deviceNoteReadings, ref _deviceNoteRows);", StringComparison.Ordinal);
+            Assert.True(settled > 0 && read > settled, "a settle is not marked before the rows are read");
+            Assert.Contains("_deviceNotes.Mark(settled);", update);
             Assert.Contains("_inputManager?.DevicesEnumeratedSince ?? DeviceNoteDirector.Never,", update);
-            Assert.Contains("waiting: up && !_switchOverlay.IsShowingDeviceNote, free: !up);", update);
-            Assert.Contains("SwitchOverlay().ShowDeviceNote(text, note.Kind == DeviceNoteKind.Connected);", update);
+            Assert.Contains("bool shown = up && _switchOverlay.IsShowingDeviceNote;", update);
+            Assert.Contains("waiting: up && !shown, free: !up, shown: shown);", update);
+            int inPlace = update.IndexOf("SwitchOverlay().UpdateDeviceNote(text, note.Kind == DeviceNoteKind.IsBack, restartTime: !note.Grows);", StringComparison.Ordinal);
+            int shows = update.IndexOf("SwitchOverlay().ShowDeviceNote(text, note.Kind == DeviceNoteKind.Connected);", StringComparison.Ordinal);
+            Assert.True(inPlace > 0 && shows > inPlace, "a line in place is not handed to the note on screen");
+            Assert.Contains("OwnDrops.At(ud.InstanceGuid)", notes);
 
             // A profile switch, and the one line to the diagnostics log.
             Assert.Contains("_deviceNotes.Reset();", Body(service, "        public void ApplyProfile(ProfileData profile)\n"));
             Assert.Contains("_deviceNotes.Silenced = LogDeviceNoteSilence;", service);
-            Assert.Contains("PadForge.Engine.SdlDiagLog.WriteLine(", Body(notes, "        private void LogDeviceNoteSilence(Guid device)\n"));
+            Assert.Contains("PadForge.Engine.SdlDiagLog.WriteLine(", Body(notes, "        private void LogDeviceNoteSilence(Guid device, int drops)\n"));
         }
 
         /// <summary>The engine says when the enumeration its rows come from
@@ -1695,6 +1973,85 @@ namespace PadForge.Tests
                 {
                     first.StopTimers();
                     first.Close();
+                }
+            }, TimeSpan.FromMinutes(2), "The flyout test timed out.");
+        }
+
+        /// <summary>A note changed in place (#600 item 42) keeps its place on
+        /// screen: it does not slide in again, its glyph and words turn to
+        /// the return, and it takes the return's two seconds from then. A
+        /// count that grows keeps the time left. A note changed while it
+        /// slides away stands again, and the end of that slide hides
+        /// nothing.</summary>
+        [Fact]
+        public void TheNote_ChangesInPlace_WithNoSlide()
+        {
+            PageRenderDumpPages.WithApp((app, dispatcher) =>
+            {
+                var flyout = new ProfileSwitchOverlay();
+                try
+                {
+                    void OffScreen()
+                    {
+                        flyout.Left = -32000;
+                        flyout.Top = -32000;
+                    }
+                    var slide = (TranslateTransform)flyout.FlyoutPanel.RenderTransform;
+                    bool Until(Func<bool> done, int limitMs)
+                    {
+                        for (int waited = 0; waited < limitMs && !done(); waited += 10) Pump(dispatcher, 10);
+                        return done();
+                    }
+
+                    flyout.ShowDeviceNote("DualSense disconnected", connected: false);
+                    OffScreen();
+                    Assert.True(Until(() => slide.Y == 0, 3000), "the note never slid in");
+
+                    // The pad is back: the same note, in place.
+                    var clock = System.Diagnostics.Stopwatch.StartNew();
+                    flyout.UpdateDeviceNote("DualSense is back", connected: true, restartTime: true);
+                    Assert.Equal(0, slide.Y);
+                    Pump(dispatcher, 100);
+                    Assert.Equal(0, slide.Y);
+                    Assert.True(flyout.IsShowingDeviceNote);
+                    Assert.Equal("DualSense is back", flyout.StatusText.Text);
+                    Assert.Equal("\uE73E", flyout.StatusIcon.Text);
+                    Assert.Equal(Color.FromRgb(0x37, 0xC8, 0x52), Assert.IsType<SolidColorBrush>(flyout.StatusIcon.Foreground).Color);
+
+                    // It leaves two seconds after the change.
+                    Assert.True(Until(() => slide.Y > 1, 4000), "the note never started to slide away");
+                    Assert.True(clock.ElapsedMilliseconds >= 1900, "the return's note left after " + clock.ElapsedMilliseconds + " ms");
+
+                    // Changed while it slides away: it stands again where it
+                    // shows, and stays past the end of that slide.
+                    flyout.UpdateDeviceNote("DualSense disconnected", connected: false, restartTime: false);
+                    Assert.Equal(0, slide.Y);
+                    Pump(dispatcher, 600);
+                    Assert.True(flyout.IsVisible, "the old slide hid the note changed while it ran");
+                    Assert.True(flyout.IsShowingDeviceNote);
+                    Assert.Equal(0, slide.Y);
+                    Assert.Equal("\uE7BA", flyout.StatusIcon.Text);
+
+                    // A count that grows keeps the time the note has left.
+                    flyout.UpdateDeviceNote("DualSense dropped 3 times in a minute", connected: false, restartTime: true);
+                    var count = System.Diagnostics.Stopwatch.StartNew();
+                    Pump(dispatcher, 2000);
+                    flyout.UpdateDeviceNote("DualSense dropped 4 times in a minute", connected: false, restartTime: false);
+                    Assert.True(Until(() => slide.Y > 1, 5000), "the count never left");
+                    Assert.True(count.ElapsedMilliseconds < 3500 + 1500, "the count's growth gave it more time: " + count.ElapsedMilliseconds + " ms");
+                    Assert.Equal("DualSense dropped 4 times in a minute", flyout.StatusText.Text);
+                    Assert.True(Until(() => !flyout.IsVisible, 3000), "the note never left");
+
+                    // With no device note up, a change in place is a new note.
+                    flyout.UpdateDeviceNote("DualSense is back", connected: true, restartTime: true);
+                    OffScreen();
+                    Assert.True(flyout.IsShowingDeviceNote);
+                    Assert.Equal(80, slide.Y);
+                }
+                finally
+                {
+                    flyout.StopTimers();
+                    flyout.Close();
                 }
             }, TimeSpan.FromMinutes(2), "The flyout test timed out.");
         }

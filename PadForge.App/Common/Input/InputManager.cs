@@ -1586,6 +1586,9 @@ namespace PadForge.Common.Input
             {
                 for (int i = 0; i < 8 && !_disposed; i++)
                 {
+                    // SDL closes and reopens the Wii devices: PadForge's own
+                    // drop, with no connection note (#600 item 42).
+                    PadForge.Engine.OwnDrops.Every();
                     SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "0");
                     Thread.Sleep(200);
                     SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, "1");
@@ -1651,6 +1654,9 @@ namespace PadForge.Common.Input
         /// takes them the other way around.</summary>
         private static bool WriteFlydigiHintUnderJoystickLock(string value)
         {
+            // The driver's hint callback closes and reopens its devices:
+            // PadForge's own drop, with no connection note (#600 item 42).
+            PadForge.Engine.OwnDrops.Every();
             try
             {
                 SDL_LockJoysticks();
@@ -1814,8 +1820,13 @@ namespace PadForge.Common.Input
         /// written again before the next update, since the driver must not
         /// stay off.</para>
         /// </summary>
-        internal static void AdvanceUsioReopen(long owner) => AdvanceUsioReopen(owner,
-            value => WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO, value));
+        internal static void AdvanceUsioReopen(long owner) => AdvanceUsioReopen(owner, value =>
+        {
+            // The board closes and reopens: PadForge's own drop, with no
+            // connection note (#600 item 42).
+            PadForge.Engine.OwnDrops.Every();
+            return WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO, value);
+        });
 
         internal static void AdvanceUsioReopen(long owner, Func<string, bool> writeDriverHint)
         {
@@ -1878,6 +1889,9 @@ namespace PadForge.Common.Input
         /// drops the hint with the rest.</summary>
         public static bool HoldXbox360HidapiDriver(bool off)
         {
+            // Its pads close and reopen: PadForge's own drop, with no
+            // connection note (#600 item 42).
+            PadForge.Engine.OwnDrops.Every();
             bool accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_XBOX_360, off ? "0" : "1");
             Engine.SdlDiagLog.WriteLine($"XBOX360 hint {SDL_HINT_JOYSTICK_HIDAPI_XBOX_360}={(off ? 0 : 1)} accepted={accepted}");
             return accepted;

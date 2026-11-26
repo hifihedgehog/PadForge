@@ -620,6 +620,41 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The drop of the inputs on a new backend is PadForge's
+        /// own (#600 item 42): each row is stamped before it goes offline,
+        /// so its connection note says nothing of it.</summary>
+        [Fact]
+        public void TheInputSweep_StampsTheRowsItDropsForANewBackend()
+        {
+            var savedSettings = SettingsManager.UserSettings;
+            var savedDevices = SettingsManager.UserDevices;
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                var backend = Use(new FakeBackend(MidiApiKind.InBox));
+                backend.NormalEndpoints.Add((KeysId, "Test Keys"));
+                var im = new InputManager();
+                var sweep = typeof(InputManager).GetMethod("UpdateMidiInputDevices", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(sweep);
+                bool Sweep() => (bool)sweep.Invoke(im, null);
+                Assert.True(SpinWait.SpinUntil(Sweep, 5_000));
+                var row = Assert.Single(SettingsManager.UserDevices.Items, d => d.IsOnline);
+
+                long before = Environment.TickCount64;
+                Thread.Sleep(20);
+                MidiVirtualController.ResetAvailability();
+                Assert.True(MidiVirtualController.IsAvailable());
+                Assert.True(SpinWait.SpinUntil(Sweep, 5_000));
+                Assert.True(OwnDrops.At(row.InstanceGuid) > before);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = savedSettings;
+                SettingsManager.UserDevices = savedDevices;
+            }
+        }
+
         /// <summary>An input that failed to open on the old backend is not
         /// held to the minute-long backoff on the new one. The sweep tries it
         /// again at once.</summary>

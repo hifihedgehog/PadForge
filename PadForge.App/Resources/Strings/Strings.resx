@@ -197,7 +197,9 @@
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} connected, battery {1}%</value></data>
   <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} devices disconnected: {1}</value></data>
   <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} devices connected: {1}</value></data>
-  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} keeps disconnecting</value></data>
+  <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} dropped {1} times in a minute</value></data>
+  <data name="Main_DeviceIsBack_Format" xml:space="preserve"><value>{0} is back</value></data>
+  <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>{0} devices are back: {1}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max {0})</value></data>

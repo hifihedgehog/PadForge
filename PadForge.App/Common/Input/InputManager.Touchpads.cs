@@ -122,6 +122,9 @@ public partial class InputManager
             _touchpadMice.Remove(path);
             _touchpadMouseIds.TryRemove(path, out _);
             _touchpadTreeDue.Remove(path);
+            // The capture stopped and the row comes back on Raw Input:
+            // PadForge's own work, with no connection note (#600 item 42).
+            PadForge.Engine.OwnDrops.Row(device.InstanceGuid);
             RetireTouchpadMouse(device);
             MarkChanged(ref changed, "touchpad", $"- pointer of {path}");
         }

@@ -1962,6 +1962,8 @@ namespace PadForge.Common.Input
                     var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
                     if (ud != null)
                     {
+                        // PadForge's own close: no connection note (#600 item 42).
+                        PadForge.Engine.OwnDrops.Row(ud.InstanceGuid);
                         ud.IsOnline = false;
                         ud.Device = null;
                         // Same neutralize the unplug path performs. This is not
@@ -2024,6 +2026,10 @@ namespace PadForge.Common.Input
                     var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
                     if (ud != null)
                     {
+                        // The endpoint is still there and the sweep opens it
+                        // again: PadForge's own drop, with no connection note
+                        // (#600 item 42).
+                        PadForge.Engine.OwnDrops.Row(ud.InstanceGuid);
                         ud.IsOnline = false;
                         ud.Device = null;
                         NeutralizeMappedOutputsFor(ud);
@@ -2061,6 +2067,9 @@ namespace PadForge.Common.Input
                     var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
                     if (ud != null)
                     {
+                        // PadForge's own endpoint, closed by PadForge: no
+                        // connection note (#600 item 42).
+                        PadForge.Engine.OwnDrops.Row(ud.InstanceGuid);
                         ud.IsOnline = false;
                         ud.Device = null;
                         // Closing one endpoint while the app runs on. Same
@@ -3474,6 +3483,9 @@ namespace PadForge.Common.Input
                         var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
                         if (ud != null)
                         {
+                            // The feature switched off is PadForge's own
+                            // work: no connection note (#600 item 42).
+                            if (!enabled) PadForge.Engine.OwnDrops.Row(ud.InstanceGuid);
                             ud.IsOnline = false;
                             ud.Device = null;
                             // A key held at retire time would stay stamped on

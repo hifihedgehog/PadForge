@@ -158,11 +158,16 @@ internal static class TabletNative
         stop.ThrowIfCancellationRequested();
         uint result = CM_Locate_DevNode(out uint node, instance, 0);
         if (result != 0) throw new InvalidOperationException($"Locate HID collection failed (CR 0x{result:X}).");
+        // The collection's rows go and come back: PadForge's own drop, with
+        // no connection note, stamped before the disable and after the
+        // enable (#600 item 42).
+        OwnDrops.Every();
         result = CM_Disable_DevNode(node, 0);
         if (result != 0) throw new InvalidOperationException($"Restart HID collection failed (CR 0x{result:X}).");
         // Re-enable even if the request was canceled after the disable completed.
         result = CM_Enable_DevNode(node, 0);
         if (result != 0) throw new InvalidOperationException($"Enable HID collection failed (CR 0x{result:X}).");
+        OwnDrops.Every();
         stop.ThrowIfCancellationRequested();
     }
 

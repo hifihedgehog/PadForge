@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Win32;
 using PadForge.Common;
 using PadForge.Common.Input;
+using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
 
@@ -30,8 +31,10 @@ namespace PadForge.Services
         private long _lastDeviceNoteWalk;
 
         // The last USB port cycle of PadForge's own that the notes were
-        // told of (HiddenControllerRelease.LastCycleAt).
+        // told of (HiddenControllerRelease.LastCycleAt), and the last other
+        // work of its own that drops devices for a while (OwnDrops.Settle).
         private long _deviceNoteCycleSeen = DeviceNoteDirector.Never;
+        private long _deviceNoteSettleSeen = DeviceNoteDirector.Never;
 
         /// <summary>Whether a device's row is a connection, one that can
         /// raise a note. The Devices page's own rule for a device a person
@@ -51,8 +54,10 @@ namespace PadForge.Services
         /// <summary>Reads every mapped device into <paramref name="into"/>:
         /// each device assigned to a virtual controller that exists and is
         /// on, with those controllers as bits, whether it is online and
-        /// whether it raises notes. Each list is held only for its copy, and
-        /// neither inside the other, as the dashboard's walk reads them
+        /// whether it raises notes, with the stamp of PadForge's own work that
+        /// covers it (<see cref="OwnDrops"/>), read after the row so a row
+        /// read away has its stamp seen. Each list is held only for its copy,
+        /// and neither inside the other, as the dashboard's walk reads them
         /// (<see cref="CopyDeviceRows"/>).</summary>
         internal static void ReadMappedDevices(List<DeviceNoteReading> into, ref UserDevice[] rows)
         {
@@ -83,7 +88,10 @@ namespace PadForge.Services
                 if (ud == null) continue;
                 int at = IndexOfReading(into, ud.InstanceGuid);
                 if (at >= 0)
-                    into[at] = new DeviceNoteReading(ud.InstanceGuid, ud.IsOnline, into[at].Slots, RaisesDeviceNotes(ud));
+                {
+                    bool online = ud.IsOnline;
+                    into[at] = new DeviceNoteReading(ud.InstanceGuid, online, into[at].Slots, RaisesDeviceNotes(ud), OwnDrops.At(ud.InstanceGuid));
+                }
             }
         }
 
@@ -114,6 +122,14 @@ namespace PadForge.Services
                     _deviceNoteCycleSeen = cycled;
                     _deviceNotes.Mark(cycled);
                 }
+                // A Bluetooth radio or a device's driver PadForge restarted:
+                // the same, for every device.
+                long settled = OwnDrops.SettleAt;
+                if (settled > _deviceNoteSettleSeen)
+                {
+                    _deviceNoteSettleSeen = settled;
+                    _deviceNotes.Mark(settled);
+                }
 
                 if (noteDrops || noteReturns) ReadMappedDevices(_deviceNoteReadings, ref _deviceNoteRows);
                 else _deviceNoteReadings.Clear();
@@ -121,16 +137,25 @@ namespace PadForge.Services
                 // The flyout shows one thing at a time. A profile switch or
                 // the controllers turned on or off holds every decision
                 // until it has left, and a note that is up holds the next
-                // line.
+                // line. A note that is up changes in place as the devices it
+                // names change.
                 bool up = _switchOverlay != null && _switchOverlay.IsUp;
+                bool shown = up && _switchOverlay.IsShowingDeviceNote;
                 var note = _deviceNotes.Tick(now,
                     _inputManager?.DevicesEnumeratedSince ?? DeviceNoteDirector.Never,
                     _deviceNoteReadings, noteDrops, noteReturns,
-                    waiting: up && !_switchOverlay.IsShowingDeviceNote, free: !up);
+                    waiting: up && !shown, free: !up, shown: shown);
                 if (note.Kind == DeviceNoteKind.None) return;
 
                 string text = DeviceNoteText(note);
                 if (string.IsNullOrEmpty(text)) return;
+                if (note.InPlace)
+                {
+                    // The same note, its words and glyph changed with no
+                    // slide in (#600 item 42).
+                    SwitchOverlay().UpdateDeviceNote(text, note.Kind == DeviceNoteKind.IsBack, restartTime: !note.Grows);
+                    return;
+                }
                 // On the monitor of the window in front, clicks passing
                 // through, a drop for four seconds (#600 item 42).
                 SwitchOverlay().ShowDeviceNote(text, note.Kind == DeviceNoteKind.Connected);
@@ -164,7 +189,7 @@ namespace PadForge.Services
                 }
                 if (names.Count == 0) return null;
                 if (names.Count == 1)
-                    return DeviceNoteText(new DeviceNote(note.Kind, 1, only, -1));
+                    return DeviceNoteText(new DeviceNote(note.Kind, 1, only, -1) { Times = note.Times });
                 return DeviceNoteDirector.Text(new DeviceNote(note.Kind, names.Count, Guid.Empty, -1, note.Devices),
                     null, null, -1, names);
             }
@@ -216,12 +241,12 @@ namespace PadForge.Services
         }
 
         /// <summary>The one diagnostics line for a device that dropped three
-        /// times in a minute and now says nothing for five.</summary>
-        private void LogDeviceNoteSilence(Guid device)
+        /// times or more in a minute and now says nothing for five.</summary>
+        private void LogDeviceNoteSilence(Guid device, int drops)
         {
             string name = LocalizedDeviceName(FindUserDevice(device)) ?? device.ToString();
             PadForge.Engine.SdlDiagLog.WriteLine(
-                $"DEVNOTE {name} dropped three times in a minute. Its notes rest for five minutes.");
+                $"DEVNOTE {name} dropped {drops} times in a minute. Its notes rest for five minutes.");
         }
     }
 }

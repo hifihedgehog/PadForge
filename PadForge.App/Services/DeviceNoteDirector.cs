@@ -10,28 +10,48 @@ namespace PadForge.Services
     {
         /// <summary>Nothing.</summary>
         None,
-        /// <summary>The device dropped and stayed away.</summary>
+        /// <summary>The device dropped.</summary>
         Disconnected,
         /// <summary>The device connected.</summary>
         Connected,
         /// <summary>The device dropped three times in a minute. Said once,
-        /// and the device says nothing more for five minutes.</summary>
+        /// with the count, and the device says nothing more for five
+        /// minutes.</summary>
         KeepsDisconnecting,
         /// <summary>The same three drops with the Device Disconnected Note
         /// off: the five minutes begin and no line shows.</summary>
         Silenced,
+        /// <summary>A device the note on screen names as dropped came back:
+        /// the note turns to its return in place (#600 item 42).</summary>
+        IsBack,
+    }
+
+    /// <summary>What the note on screen says of one device, for
+    /// <see cref="DeviceNoteDirector.Decide"/>.</summary>
+    internal enum DeviceNoteScreen
+    {
+        /// <summary>No note on screen names it.</summary>
+        None,
+        /// <summary>The note names it alone: a drop, a return or "is
+        /// back".</summary>
+        Alone,
+        /// <summary>The note names it among others.</summary>
+        InBurst,
+        /// <summary>The note is its count of drops.</summary>
+        Keeps,
     }
 
     /// <summary>One device assigned to a virtual controller that exists and
     /// is on, as one walk reads it.</summary>
     internal readonly struct DeviceNoteReading
     {
-        public DeviceNoteReading(Guid device, bool online, int slots, bool raisesNotes)
+        public DeviceNoteReading(Guid device, bool online, int slots, bool raisesNotes, long ownDropAt = DeviceNoteDirector.Never)
         {
             Device = device;
             Online = online;
             Slots = slots;
             RaisesNotes = raisesNotes;
+            OwnDropAt = ownDropAt;
         }
 
         public Guid Device { get; }
@@ -46,6 +66,10 @@ namespace PadForge.Services
         /// an extra feeds raises no note of its own, and still keeps a
         /// controller from reading as empty while it is online.</summary>
         public bool RaisesNotes { get; }
+
+        /// <summary>The latest stamp of PadForge's own work that covers the
+        /// row (PadForge.Engine.OwnDrops), or Never.</summary>
+        public long OwnDropAt { get; }
     }
 
     /// <summary>What the walk keeps of one device between two reads. Made by
@@ -61,9 +85,13 @@ namespace PadForge.Services
         /// connected.</summary>
         public long AwaySince;
 
-        /// <summary>Whether that absence has held and been counted as a
-        /// drop.</summary>
+        /// <summary>Whether that absence has been counted as a drop, or
+        /// needs no count.</summary>
         public bool DropCounted;
+
+        /// <summary>When the absence that runs now stops being PadForge's
+        /// own work, or Never when it is none of it.</summary>
+        public long OwnUntil;
 
         /// <summary>When a note last named the device, or Never.</summary>
         public long LastNote;
@@ -79,6 +107,10 @@ namespace PadForge.Services
         /// is still to be said.</summary>
         public bool KeepsOwed;
 
+        /// <summary>The drops its keeps-disconnecting line counts: three,
+        /// and every drop after them while the line waits or shows.</summary>
+        public int KeepsCount;
+
         /// <summary>When the five minutes of silence end, or Never.</summary>
         public long SilentUntil;
 
@@ -91,6 +123,7 @@ namespace PadForge.Services
             Told = online,
             AwaySince = online ? DeviceNoteDirector.Never : nowMs,
             DropCounted = !online,
+            OwnUntil = DeviceNoteDirector.Never,
             LastNote = DeviceNoteDirector.Never,
             Drop1 = DeviceNoteDirector.Never,
             Drop2 = DeviceNoteDirector.Never,
@@ -132,6 +165,17 @@ namespace PadForge.Services
         /// changed, so a burst names the devices it took (#600 item
         /// 42).</summary>
         public IReadOnlyList<Guid> Devices { get; }
+
+        /// <summary>The drops a keeps-disconnecting line counts.</summary>
+        public int Times { get; init; }
+
+        /// <summary>The line changes the note on screen in place, which does
+        /// not slide in again (#600 item 42).</summary>
+        public bool InPlace { get; init; }
+
+        /// <summary>In place, only the count of drops grew: the note keeps
+        /// the time it has left.</summary>
+        public bool Grows { get; init; }
     }
 
     /// <summary>
@@ -145,21 +189,29 @@ namespace PadForge.Services
     /// <see cref="Decide"/>, a pure function in the form of the battery
     /// alerts' (InputService.BatteryEdgeDecision).
     ///
-    /// <para>What keeps it quiet:</para>
+    /// <para>A drop is said at the first walk that reads it, with no wait
+    /// (#600 item 42): every walk a row is away is input its controller did
+    /// not get. What keeps it quiet:</para>
     /// <list type="bullet">
     /// <item>Nothing is said of a state the user never saw change. The first
     /// read of a device is what is known of it, at an engine start, after a
     /// profile switch and for a device assigned since.</item>
+    /// <item>A drop PadForge's own work causes says nothing and counts
+    /// toward nothing: an absence that begins within <see cref="OwnWorkMs"/>
+    /// of a stamp of that work (PadForge.Engine.OwnDrops), for as long as
+    /// that window lasts.</item>
     /// <item>After an engine start, a sleep or a USB port PadForge cycled
     /// itself, the rows are not believed until an enumeration that began
     /// <see cref="SettleMs"/> later has finished. Then every device is read
     /// as for the first time.</item>
-    /// <item>A drop has to hold <see cref="HoldMs"/>.</item>
-    /// <item>A device is named once in <see cref="RateMs"/>. A change that
-    /// falls inside that time is said when it ends, if it still stands
-    /// then.</item>
-    /// <item>Three drops in a minute are said once, as keeps disconnecting,
-    /// and the device says nothing for five minutes.</item>
+    /// <item>A device is named by a new note once in <see cref="RateMs"/>.
+    /// A change that falls inside that time is said when it ends, if it
+    /// still stands then.</item>
+    /// <item>The note on screen follows the devices it names: one that comes
+    /// back turns it to its return, one that drops again turns it back, in
+    /// place and with no new note.</item>
+    /// <item>Every drop counts. The third in a minute is said once, with
+    /// the count, and the device says nothing for five minutes.</item>
     /// <item>Devices that change within half a second share one line,
     /// which names them.</item>
     /// <item>Nothing is decided while the flyout shows a profile switch or
@@ -176,11 +228,7 @@ namespace PadForge.Services
         /// <summary>How often InputService reads the rows.</summary>
         internal const int WalkMs = 250;
 
-        /// <summary>How long a device has to stay away before its drop is
-        /// counted and said.</summary>
-        internal const int HoldMs = 1500;
-
-        /// <summary>The least time between two notes that name one
+        /// <summary>The least time between two new notes that name one
         /// device.</summary>
         internal const int RateMs = 10_000;
 
@@ -204,6 +252,14 @@ namespace PadForge.Services
         /// moment to return after sleep or after its port was cycled.</summary>
         internal const int SettleMs = 5000;
 
+        /// <summary>An absence that begins this long after a stamp of
+        /// PadForge's own work is that work's, and stays unsaid for as long
+        /// again from the stamp. The settle's five seconds: a row an own
+        /// cause took away comes back at Step 1's next enumeration, two
+        /// seconds apart, after SDL has opened the device again. One still
+        /// away when the window ends is read as a drop then.</summary>
+        internal const int OwnWorkMs = SettleMs;
+
         /// <summary>A walk that comes this long after the one before it
         /// stood still: the PC slept without a word, or the process was
         /// held. What the rows said before is old.</summary>
@@ -223,6 +279,14 @@ namespace PadForge.Services
         // The lines that wait for the flyout, the oldest first.
         private readonly List<DeviceNote> _lines = new List<DeviceNote>();
 
+        // The note on screen: the devices it names, in order, the ones of
+        // them it says are away, and whether it is a device's count of
+        // drops. Empty while no device note shows.
+        private readonly List<Guid> _screen = new List<Guid>();
+        private readonly HashSet<Guid> _screenAway = new HashSet<Guid>();
+        private bool _screenKeeps;
+        private int _screenTimes;
+
         // The moment the rows were last known to be old, and whether an
         // enumeration from after it is still awaited.
         private long _mark = Never;
@@ -231,13 +295,16 @@ namespace PadForge.Services
         private long _lastTick = Never;
 
         /// <summary>Told of a device that went quiet for five minutes, with
-        /// or without its line. InputService writes the diagnostics line
-        /// there.</summary>
-        internal Action<Guid> Silenced { get; set; }
+        /// or without its line, and how many drops it counted. InputService
+        /// writes the diagnostics line there.</summary>
+        internal Action<Guid, int> Silenced { get; set; }
 
         /// <summary>Whether a device has been read since the last time
         /// everything was forgotten. For the tests.</summary>
         internal bool Knows(Guid device) => _states.ContainsKey(device);
+
+        /// <summary>What the walk keeps of a device. For the tests.</summary>
+        internal DeviceNoteState StateOf(Guid device) => _states[device];
 
         /// <summary>Forgets every device and every line, so the next walk
         /// reads each device as for the first time: a profile switch, which
@@ -250,12 +317,22 @@ namespace PadForge.Services
             _droppedSince = Never;
             _returnedSince = Never;
             _lines.Clear();
+            ClearScreen();
+        }
+
+        private void ClearScreen()
+        {
+            _screen.Clear();
+            _screenAway.Clear();
+            _screenKeeps = false;
+            _screenTimes = 0;
         }
 
         /// <summary>The rows are old from <paramref name="atMs"/> on: the
         /// engine started, Windows said it is going to sleep or has woken,
-        /// or PadForge cycled a USB port. Everything is forgotten, and
-        /// nothing is read until an enumeration that began
+        /// or PadForge cycled a USB port or did other work that drops
+        /// devices for a while (PadForge.Engine.OwnDrops.Settle). Everything
+        /// is forgotten, and nothing is read until an enumeration that began
         /// <see cref="SettleMs"/> after the latest mark has finished. A
         /// sleep is marked at both ends, so the rows of the moments before
         /// it and of the moments after it are both left unread.</summary>
@@ -271,14 +348,17 @@ namespace PadForge.Services
         /// (InputManager.DevicesEnumeratedSince), or <see cref="Never"/>
         /// while the engine has listed nothing. <paramref name="waiting"/>
         /// holds every decision while the flyout shows something else.
-        /// <paramref name="free"/> says the flyout can take a line now. The
-        /// answer is that line, or one whose kind is None.</summary>
+        /// <paramref name="free"/> says the flyout can take a line now.
+        /// <paramref name="shown"/> says a device note is on screen, the last
+        /// one answered. The answer is a line, one that changes the note on
+        /// screen in place, or one whose kind is None.</summary>
         internal DeviceNote Tick(long nowMs, long rowsReadAt, IReadOnlyList<DeviceNoteReading> mapped,
-            bool noteDrops, bool noteReturns, bool waiting, bool free)
+            bool noteDrops, bool noteReturns, bool waiting, bool free, bool shown = false)
         {
             bool stood = _lastTick != Never && nowMs - _lastTick > StallMs;
             _lastTick = nowMs;
             if (stood) Mark(nowMs);
+            if (!shown) ClearScreen();
             if (rowsReadAt == Never) return default;
             if (_settling)
             {
@@ -294,6 +374,7 @@ namespace PadForge.Services
                 return default;
             }
 
+            bool changed = false, grows = true;
             _read.Clear();
             for (int i = 0; i < mapped.Count; i++)
             {
@@ -305,8 +386,34 @@ namespace PadForge.Services
                     _states[reading.Device] = DeviceNoteState.Seed(reading.Online, nowMs);
                     continue;
                 }
-                var (next, note) = Decide(state, reading.Online, nowMs, noteDrops, noteReturns, waiting);
+                var (next, note, inPlace) = Decide(state, reading.Online, nowMs, noteDrops, noteReturns, waiting,
+                    reading.OwnDropAt, ScreenOf(reading.Device));
                 _states[reading.Device] = next;
+                if (inPlace)
+                {
+                    changed = true;
+                    switch (note)
+                    {
+                        case DeviceNoteKind.KeepsDisconnecting:
+                            if (!_screenKeeps) grows = false;
+                            if (!_screenKeeps) Silenced?.Invoke(reading.Device, next.KeepsCount);
+                            _screen.Clear();
+                            _screen.Add(reading.Device);
+                            _screenAway.Clear();
+                            _screenKeeps = true;
+                            _screenTimes = next.KeepsCount;
+                            break;
+                        case DeviceNoteKind.Disconnected:
+                            grows = false;
+                            _screenAway.Add(reading.Device);
+                            break;
+                        case DeviceNoteKind.IsBack:
+                            grows = false;
+                            _screenAway.Remove(reading.Device);
+                            break;
+                    }
+                    continue;
+                }
                 switch (note)
                 {
                     case DeviceNoteKind.Disconnected:
@@ -318,11 +425,11 @@ namespace PadForge.Services
                         _returned.Add(reading.Device);
                         break;
                     case DeviceNoteKind.KeepsDisconnecting:
-                        _lines.Add(new DeviceNote(DeviceNoteKind.KeepsDisconnecting, 1, reading.Device, -1));
-                        Silenced?.Invoke(reading.Device);
+                        _lines.Add(new DeviceNote(DeviceNoteKind.KeepsDisconnecting, 1, reading.Device, -1) { Times = next.KeepsCount });
+                        Silenced?.Invoke(reading.Device, next.KeepsCount);
                         break;
                     case DeviceNoteKind.Silenced:
-                        Silenced?.Invoke(reading.Device);
+                        Silenced?.Invoke(reading.Device, next.KeepsCount);
                         break;
                 }
             }
@@ -351,6 +458,10 @@ namespace PadForge.Services
                 _returnedSince = Never;
             }
 
+            // The note on screen changed: it is said again in place, ahead of
+            // any line that waits.
+            if (changed) return OnScreen(mapped, grows);
+
             while (free && _lines.Count > 0)
             {
                 var line = _lines[0];
@@ -368,13 +479,60 @@ namespace PadForge.Services
                         if (_states.ContainsKey(device)) kept.Add(device);
                     if (kept.Count == 0) continue;
                     if (kept.Count == 1)
-                        return new DeviceNote(line.Kind, 1, kept[0],
-                            line.Kind == DeviceNoteKind.Disconnected ? EmptiedSlot(mapped, kept[0]) : -1);
-                    if (kept.Count < line.Count) return new DeviceNote(line.Kind, kept.Count, Guid.Empty, -1, kept);
+                        return Shows(new DeviceNote(line.Kind, 1, kept[0],
+                            line.Kind == DeviceNoteKind.Disconnected ? EmptiedSlot(mapped, kept[0]) : -1));
+                    if (kept.Count < line.Count) return Shows(new DeviceNote(line.Kind, kept.Count, Guid.Empty, -1, kept));
                 }
-                return line;
+                if (line.Kind == DeviceNoteKind.KeepsDisconnecting)
+                    line = new DeviceNote(line.Kind, 1, line.Device, -1) { Times = _states[line.Device].KeepsCount };
+                return Shows(line);
             }
             return default;
+        }
+
+        /// <summary>What the note on screen says of a device.</summary>
+        private DeviceNoteScreen ScreenOf(Guid device)
+        {
+            if (_screen.Count == 0 || !_screen.Contains(device)) return DeviceNoteScreen.None;
+            if (_screenKeeps) return DeviceNoteScreen.Keeps;
+            return _screen.Count == 1 ? DeviceNoteScreen.Alone : DeviceNoteScreen.InBurst;
+        }
+
+        /// <summary>A line handed to the flyout as a new note: it is the
+        /// note on screen from now.</summary>
+        private DeviceNote Shows(DeviceNote line)
+        {
+            ClearScreen();
+            _screen.AddRange(line.Devices);
+            switch (line.Kind)
+            {
+                case DeviceNoteKind.Disconnected:
+                    foreach (var device in line.Devices) _screenAway.Add(device);
+                    break;
+                case DeviceNoteKind.KeepsDisconnecting:
+                    _screenKeeps = true;
+                    _screenTimes = line.Times;
+                    break;
+            }
+            return line;
+        }
+
+        /// <summary>The note on screen as it reads now: the count of drops,
+        /// the devices it names that are still away, or all of them back.</summary>
+        private DeviceNote OnScreen(IReadOnlyList<DeviceNoteReading> mapped, bool grows)
+        {
+            if (_screenKeeps)
+                return new DeviceNote(DeviceNoteKind.KeepsDisconnecting, 1, _screen[0], -1) { Times = _screenTimes, InPlace = true, Grows = grows };
+            if (_screenAway.Count == 0)
+                return _screen.Count == 1
+                    ? new DeviceNote(DeviceNoteKind.IsBack, 1, _screen[0], -1) { InPlace = true }
+                    : new DeviceNote(DeviceNoteKind.IsBack, _screen.Count, Guid.Empty, -1, _screen.ToArray()) { InPlace = true };
+            var away = new List<Guid>(_screenAway.Count);
+            foreach (var device in _screen)
+                if (_screenAway.Contains(device)) away.Add(device);
+            return away.Count == 1
+                ? new DeviceNote(DeviceNoteKind.Disconnected, 1, away[0], EmptiedSlot(mapped, away[0])) { InPlace = true }
+                : new DeviceNote(DeviceNoteKind.Disconnected, away.Count, Guid.Empty, -1, away) { InPlace = true };
         }
 
         /// <summary>Makes one line of the devices that changed together and
@@ -401,54 +559,86 @@ namespace PadForge.Services
 
         /// <summary>
         /// The rule for one device, pure so the tests pin it with no device:
-        /// what the walk keeps of it, what it reads now, and the clock give
-        /// what it keeps next and what, if anything, is said.
+        /// what the walk keeps of it, what it reads now, the clock, the
+        /// stamp of PadForge's own work that covers it and what the note on
+        /// screen says of it give what it keeps next, what, if anything, is
+        /// said, and whether that changes the note on screen in place.
         ///
-        /// <para>A return stands at once and a drop once it has held
-        /// <see cref="HoldMs"/>. What stands is said when it differs from
-        /// what the user was last told and the device has not been named for
+        /// <para>A drop and a return stand at once. An absence that begins
+        /// within <see cref="OwnWorkMs"/> of <paramref name="ownDropAt"/> is
+        /// PadForge's own work: nothing is said or counted of it while the
+        /// window lasts, and one still away when it ends is a drop
+        /// then.</para>
+        ///
+        /// <para>Every other drop counts. The third within
+        /// <see cref="FlapWindowMs"/> is the device that keeps disconnecting,
+        /// with a count of three, and each drop while its line waits or
+        /// shows adds one. After that line the device says nothing for
+        /// <see cref="SilenceMs"/>, during which what the user was told
+        /// follows what is true.</para>
+        ///
+        /// <para>While the Device Disconnected Note is on and the note on
+        /// screen names the device, a change of the device changes that note
+        /// in place, with no ten seconds to wait: a return turns it to "is
+        /// back", a drop back to the drop, and the third drop to the count.
+        /// Otherwise what stands is said when it differs from what the user
+        /// was last told and the device has not been named for
         /// <see cref="RateMs"/>. Inside that time nothing is said, and the
         /// difference is said when the time ends if it still stands, so the
         /// last thing said of a device is never left wrong. A note that is
         /// off is taken as said.</para>
-        ///
-        /// <para>The third drop counted within <see cref="FlapWindowMs"/>
-        /// is said as keeps disconnecting in place of its own line, and the
-        /// device then says nothing for <see cref="SilenceMs"/>, during
-        /// which what the user was told follows what is true.</para>
         ///
         /// <para><paramref name="waiting"/> keeps the start of an absence
         /// and decides nothing: the flyout shows a profile switch. A drop
         /// that outlasts the wait is said after it, and one that ends inside
         /// it never is.</para>
         /// </summary>
-        internal static (DeviceNoteState Next, DeviceNoteKind Note) Decide(
-            DeviceNoteState state, bool online, long nowMs, bool noteDrops, bool noteReturns, bool waiting)
+        internal static (DeviceNoteState Next, DeviceNoteKind Note, bool InPlace) Decide(
+            DeviceNoteState state, bool online, long nowMs, bool noteDrops, bool noteReturns, bool waiting,
+            long ownDropAt = Never, DeviceNoteScreen screen = DeviceNoteScreen.None)
         {
             var s = state;
             if (online)
             {
                 s.AwaySince = Never;
                 s.DropCounted = false;
+                s.OwnUntil = Never;
             }
             else if (s.AwaySince == Never)
             {
                 s.AwaySince = nowMs;
                 s.DropCounted = false;
+                s.OwnUntil = ownDropAt != Never && ownDropAt <= nowMs && nowMs - ownDropAt <= OwnWorkMs
+                    ? ownDropAt + OwnWorkMs
+                    : Never;
             }
-            if (waiting) return (s, DeviceNoteKind.None);
+            if (waiting) return (s, DeviceNoteKind.None, false);
 
-            bool held = !online && nowMs - s.AwaySince >= HoldMs;
+            // PadForge's own work: nothing is said or counted while it runs.
+            if (!online && s.OwnUntil != Never && nowMs < s.OwnUntil) return (s, DeviceNoteKind.None, false);
+
             bool silent = s.SilentUntil != Never && nowMs < s.SilentUntil;
-
-            if (held && !s.DropCounted)
+            bool dropped = !online && !s.DropCounted;
+            if (dropped)
             {
                 s.DropCounted = true;
+                // The count on screen grows with the drop.
+                if (screen == DeviceNoteScreen.Keeps)
+                {
+                    s.KeepsCount++;
+                    s.LastNote = nowMs;
+                    return (s, DeviceNoteKind.KeepsDisconnecting, true);
+                }
                 if (!silent)
                 {
-                    if (s.Drop2 != Never && nowMs - s.Drop2 <= FlapWindowMs)
+                    if (s.KeepsOwed)
+                    {
+                        s.KeepsCount++;
+                    }
+                    else if (s.Drop2 != Never && nowMs - s.Drop2 <= FlapWindowMs)
                     {
                         s.KeepsOwed = true;
+                        s.KeepsCount = 3;
                         s.Drop1 = Never;
                         s.Drop2 = Never;
                     }
@@ -460,35 +650,61 @@ namespace PadForge.Services
                 }
             }
 
-            bool stands = online || held;
+            // The note on screen names the device: it follows the device in
+            // place. A burst cannot become one device's count, so a third
+            // drop there waits for its own line.
+            if (noteDrops && (screen == DeviceNoteScreen.Alone || screen == DeviceNoteScreen.InBurst))
+            {
+                if (s.KeepsOwed && screen == DeviceNoteScreen.Alone)
+                {
+                    s.KeepsOwed = false;
+                    s.SilentUntil = nowMs + SilenceMs;
+                    s.Told = online;
+                    s.LastNote = nowMs;
+                    return (s, DeviceNoteKind.KeepsDisconnecting, true);
+                }
+                if (dropped)
+                {
+                    s.Told = false;
+                    s.LastNote = nowMs;
+                    return (s, DeviceNoteKind.Disconnected, true);
+                }
+                if (online && !s.Told)
+                {
+                    s.Told = true;
+                    s.LastNote = nowMs;
+                    return (s, DeviceNoteKind.IsBack, true);
+                }
+            }
+
             if (silent)
             {
-                if (stands) s.Told = online;
-                return (s, DeviceNoteKind.None);
+                s.Told = online;
+                return (s, DeviceNoteKind.None, false);
             }
 
             bool named = s.LastNote != Never && nowMs - s.LastNote < RateMs;
             if (s.KeepsOwed)
             {
-                if (noteDrops && named) return (s, DeviceNoteKind.None);
+                if (noteDrops && named) return (s, DeviceNoteKind.None, false);
                 s.KeepsOwed = false;
                 s.SilentUntil = nowMs + SilenceMs;
-                if (stands) s.Told = online;
-                if (!noteDrops) return (s, DeviceNoteKind.Silenced);
+                s.Told = online;
+                if (!noteDrops) return (s, DeviceNoteKind.Silenced, false);
                 s.LastNote = nowMs;
-                return (s, DeviceNoteKind.KeepsDisconnecting);
+                return (s, DeviceNoteKind.KeepsDisconnecting, false);
             }
 
-            if (!stands || s.Told == online) return (s, DeviceNoteKind.None);
+            if (s.Told == online) return (s, DeviceNoteKind.None, false);
             if (!(online ? noteReturns : noteDrops))
             {
                 s.Told = online;
-                return (s, DeviceNoteKind.None);
+                return (s, DeviceNoteKind.None, false);
             }
-            if (named) return (s, DeviceNoteKind.None);
+            if (named) return (s, DeviceNoteKind.None, false);
             s.Told = online;
             s.LastNote = nowMs;
-            return (s, online ? DeviceNoteKind.Connected : DeviceNoteKind.Disconnected);
+            return (s, online ? DeviceNoteKind.Connected : DeviceNoteKind.Disconnected, false);
         }
 
         /// <summary>The lowest controller a device's drop left with no
@@ -523,7 +739,9 @@ namespace PadForge.Services
         /// <paramref name="batteryPercent"/> is the returned device's level,
         /// or negative when PadForge does not know it. A line for several
         /// names each of <paramref name="deviceNames"/>, in the order they
-        /// changed (#600 item 42).</summary>
+        /// changed (#600 item 42). A device that keeps disconnecting is said
+        /// with its count of drops, and a note turned to a return says the
+        /// device is back.</summary>
         internal static string Text(DeviceNote note, string deviceName, string controllerName, int batteryPercent,
             IReadOnlyList<string> deviceNames = null)
         {
@@ -542,7 +760,11 @@ namespace PadForge.Services
                         ? string.Format(s.Main_DeviceConnectedBattery_Format, deviceName, batteryPercent)
                         : string.Format(s.Main_DeviceConnected_Format, deviceName);
                 case DeviceNoteKind.KeepsDisconnecting:
-                    return string.Format(s.Main_DeviceKeepsDisconnecting_Format, deviceName);
+                    return string.Format(s.Main_DeviceKeepsDisconnecting_Format, deviceName, note.Times);
+                case DeviceNoteKind.IsBack:
+                    return note.Count > 1
+                        ? string.Format(s.Main_DevicesAreBack_Format, note.Count, names)
+                        : string.Format(s.Main_DeviceIsBack_Format, deviceName);
                 default:
                     return string.Empty;
             }

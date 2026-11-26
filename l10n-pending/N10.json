@@ -1,0 +1,27 @@
+{
+  "new": [
+    {
+      "key": "Review_SaveAndPost",
+      "english": "Save and Post",
+      "sibling": ["Review_Save", "Review_CopySummary"],
+      "where": "Settings, Diagnostics, Read Your Recording (the review), the button row, the last button: saves the zip, copies the summary, shows the file and opens the page where reports go",
+      "keep": []
+    },
+    {
+      "key": "Review_SaveAndPost_Line",
+      "english": "Save and Post saves the zip, copies the summary, shows the file in Explorer and opens PadForge’s page where reports go. Paste the summary there and drop the file on it.",
+      "sibling": ["Review_SaveAndPost", "Review_Footnote"],
+      "where": "Read Your Recording, the line under the button row, above the footnote",
+      "keep": ["PadForge", "Explorer"]
+    }
+  ],
+  "changed": [
+    {
+      "key": "App_UnexpectedError_Format",
+      "english": "An unexpected error occurred:\n\n{0}\n\nPadForge wrote the details to crash.log beside PadForge.exe. To report this, start a discussion at {2} and drop crash.log on it.\n\n{1}",
+      "sibling": ["App_FatalError", "App_Error"],
+      "where": "The Windows message box shown when PadForge meets an error it did not expect: {0} is the error's message, {1} its stack, {2} the address of a new Q&A discussion on PadForge's GitHub page. The new sentence sits between the message and the stack, since a message box cuts off what does not fit the screen.",
+      "keep": ["crash.log", "PadForge.exe", "PadForge", "{0}", "{1}", "{2}"]
+    }
+  ]
+}

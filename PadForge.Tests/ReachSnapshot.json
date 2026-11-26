@@ -3415,6 +3415,7 @@
   "Views/RecordingReviewView.xaml \u003CButton\u003E id:Review_Delete = UsersOwn",
   "Views/RecordingReviewView.xaml \u003CButton\u003E id:Review_CopySummary = UsersOwn",
   "Views/RecordingReviewView.xaml \u003CButton\u003E id:Review_Save = UsersOwn",
+  "Views/RecordingReviewView.xaml \u003CButton\u003E id:Review_SaveAndPost = UsersOwn",
   "Views/RecordingReviewView.xaml \u003CTextBlock\u003E Text:Status = UsersOwn",
   "Views/RecordingWaitingCard.xaml \u003CTextBlock\u003E name:HomeRecordingWaitingLine = UsersOwn",
   "Views/RecordingWaitingCard.xaml \u003CButton\u003E id:HomeRecordingReview = UsersOwn",

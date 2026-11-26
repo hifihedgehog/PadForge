@@ -166,7 +166,7 @@
             </Border>
         </Grid>
 
-        <!-- Delete at the start, Copy Summary and Save… at the end. -->
+        <!-- Delete at the start, Copy Summary, Save… and Save and Post at the end. -->
         <Grid Margin="24,18,24,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -182,11 +182,15 @@
                            AutomationProperties.AutomationId="Review_CopySummary"
                            AutomationProperties.Name="{Binding Review_CopySummary, Source={x:Static strings:Strings.Instance}}"/>
                 <ui:Button x:Name="SaveButton" Padding="18,0" MinHeight="40" Margin="12,0,0,0" Click="Save_Click" IsEnabled="{Binding CanSave}"
-                           Style="{StaticResource EmberPrimaryButton}"
                            Content="{Binding Review_Save, Source={x:Static strings:Strings.Instance}}"
                            AutomationProperties.AutomationId="Review_Save"/>
+                <ui:Button x:Name="SaveAndPostButton" Padding="18,0" MinHeight="40" Margin="12,0,0,0" Click="SaveAndPost_Click" IsEnabled="{Binding CanSave}"
+                           Content="{Binding Review_SaveAndPost, Source={x:Static strings:Strings.Instance}}"
+                           AutomationProperties.AutomationId="Review_SaveAndPost"/>
             </StackPanel>
         </Grid>
+        <TextBlock Text="{Binding Review_SaveAndPost_Line, Source={x:Static strings:Strings.Instance}}" Margin="24,12,24,0"
+                   FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
         <TextBlock Text="{Binding Status, Mode=OneWay}" Margin="24,10,24,0" FontSize="14" TextWrapping="Wrap" common:LiveText.Polite="True"
                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                    Visibility="{Binding Status, Converter={StaticResource StringToVisibility}}"/>

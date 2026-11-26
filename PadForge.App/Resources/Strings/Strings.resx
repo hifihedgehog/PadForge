@@ -1288,6 +1288,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Review_CopySummary" xml:space="preserve"><value>Copy Summary</value></data>
   <data name="Review_Copied" xml:space="preserve"><value>Copied</value></data>
   <data name="Review_Save" xml:space="preserve"><value>Save…</value></data>
+  <data name="Review_SaveAndPost" xml:space="preserve"><value>Save and Post</value></data>
+  <data name="Review_SaveAndPost_Line" xml:space="preserve"><value>Save and Post saves the zip, copies the summary, shows the file in Explorer and opens PadForge’s page where reports go. Paste the summary there and drop the file on it.</value></data>
   <data name="Review_SaveTitle" xml:space="preserve"><value>Save the Recording</value></data>
   <data name="Review_SaveFilter" xml:space="preserve"><value>Zip files</value></data>
   <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Not saved. {0}</value></data>
@@ -3500,6 +3502,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="App_UnexpectedError_Format" xml:space="preserve"><value>An unexpected error occurred:
 
 {0}
+
+PadForge wrote the details to crash.log beside PadForge.exe. To report this, start a discussion at {2} and drop crash.log on it.
 
 {1}</value></data>
   <data name="App_SuppressedErrors_Format" xml:space="preserve"><value>({0} additional error(s) suppressed)</value></data>

@@ -58,6 +58,12 @@ namespace PadForge.Views
             if (model != null) await model.SaveAsync();
         }
 
+        private async void SaveAndPost_Click(object sender, RoutedEventArgs e)
+        {
+            var model = Model;
+            if (model != null) await model.SaveAndPostAsync();
+        }
+
         private void CopySummary_Click(object sender, RoutedEventArgs e) => Model?.CopySummary();
 
         private void Delete_Click(object sender, RoutedEventArgs e) => Model?.Delete();

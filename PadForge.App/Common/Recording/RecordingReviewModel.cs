@@ -16,9 +16,9 @@ namespace PadForge.Common.Recording
 {
     /// <summary>What the review dialog binds to (#600): a recording's parts
     /// with their switches and sizes, the part shown, the scrub check, and
-    /// Save…, Copy Summary and Delete. The window hands it what it needs of
-    /// Windows (the save box, the clipboard, Explorer), so a test runs it
-    /// with none.</summary>
+    /// Save…, Save and Post, Copy Summary and Delete. The window hands it
+    /// what it needs of Windows (the save box, the clipboard, Explorer, the
+    /// browser), so a test runs it with none.</summary>
     public sealed class RecordingReviewModel : INotifyPropertyChanged, IDisposable
     {
         /// <summary>One part's row: its switch, its name and its size.</summary>
@@ -76,12 +76,13 @@ namespace PadForge.Common.Recording
         private readonly PrivacyEnvironment _environment;
 
         /// <summary>The window's share: the save box (the file picked, or
-        /// null), the copy as the user, Explorer, the clipboard, and what a
-        /// save or a delete leaves behind.</summary>
+        /// null), the copy as the user, Explorer, the clipboard, the browser,
+        /// and what a save or a delete leaves behind.</summary>
         internal Func<string, string, string> PickTarget;
         internal Func<string, string, Task<string>> SaveAsUser = RecordingSave.AsUserAsync;
         internal Action<string> ShowInExplorer;
         internal Action<string> CopyText;
+        internal Action<string> OpenPage;
         internal Action<string> Saved;
         internal Action Closed;
 
@@ -248,7 +249,7 @@ namespace PadForge.Common.Recording
             RunCheck();
         }
 
-        // ── Save, Copy Summary, Delete ──
+        // ── Save, Save and Post, Copy Summary, Delete ──
 
         private string _status = string.Empty;
         public string Status
@@ -274,7 +275,16 @@ namespace PadForge.Common.Recording
         /// <summary>Save…: the save box, then a copy with the kept parts when
         /// some are off, then the copy as the user, then the waiting
         /// recording leaves the folder and Explorer shows the file.</summary>
-        internal async Task SaveAsync()
+        internal Task SaveAsync() => SaveAsync(post: false);
+
+        /// <summary>Save and Post (#600 item 29): Save… as it is, then the
+        /// summary on the clipboard, the file in Explorer and the page where
+        /// reports go (<see cref="UpdateService.ReportPage"/>), for the
+        /// person to paste the summary and drop the file there. A save that
+        /// did not happen copies and opens nothing.</summary>
+        internal Task SaveAndPostAsync() => SaveAsync(post: true);
+
+        private async Task SaveAsync(bool post)
         {
             if (!CanSave) return;
             string target = PickTarget?.Invoke(SaveFolder, Path.GetFileName(_review.Path));
@@ -296,7 +306,10 @@ namespace PadForge.Common.Recording
                 Status = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Settings_RecordProblem_Saved_Format, Path.GetFileName(target));
                 SaveFolder = Path.GetDirectoryName(target);
                 Saved?.Invoke(target);
+                // The summary is read before the close lets the review go.
+                if (post) CopySummary();
                 ShowInExplorer?.Invoke(target);
+                if (post) OpenPage?.Invoke(UpdateService.ReportPage);
                 Close(deleteRecording: true);
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException)

@@ -1554,6 +1554,8 @@ public class Strings : INotifyPropertyChanged
     public string Review_CopySummary => Get("Review_CopySummary");
     public string Review_Copied => Get("Review_Copied");
     public string Review_Save => Get("Review_Save");
+    public string Review_SaveAndPost => Get("Review_SaveAndPost");
+    public string Review_SaveAndPost_Line => Get("Review_SaveAndPost_Line");
     public string Review_SaveTitle => Get("Review_SaveTitle");
     public string Review_SaveFilter => Get("Review_SaveFilter");
     public string Review_SaveFailed_Format => Get("Review_SaveFailed_Format");

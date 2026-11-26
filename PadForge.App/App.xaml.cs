@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using Wpf.Ui.Appearance;
 using PadForge.Common.Input;
 using PadForge.Resources.Strings;
+using PadForge.Services;
 
 namespace PadForge
 {
@@ -723,7 +724,7 @@ namespace PadForge
             {
                 MessageBox.Show(
                     string.Format(Strings.Instance.App_UnexpectedError_Format,
-                        ExceptionMessageChain(ex), ExceptionStackChain(ex)),
+                        ExceptionMessageChain(ex), ExceptionStackChain(ex), UpdateService.ReportPage),
                     Strings.Instance.App_FatalError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -821,7 +822,7 @@ namespace PadForge
 
             MessageBox.Show(
                 string.Format(Strings.Instance.App_UnexpectedError_Format,
-                    signature, ExceptionStackChain(e.Exception)) + suppressed,
+                    signature, ExceptionStackChain(e.Exception), UpdateService.ReportPage) + suppressed,
                 Strings.Instance.App_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);

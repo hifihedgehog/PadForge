@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PadForge.Common;
 using PadForge.Common.Recording;
@@ -218,6 +219,121 @@ namespace PadForge.Tests
                 Assert.Equal(string.Join(Environment.NewLine, reader.Summary), copied);
             model.Delete();
             Assert.False(File.Exists(zip));
+        }
+
+        /// <summary>Save and Post (#600 item 29): the save as Save… makes
+        /// it, then the summary on the clipboard, the file in Explorer and
+        /// the page where reports go, in that order, before the review
+        /// closes.</summary>
+        [Fact]
+        public async Task SaveAndPost_SavesFirst_ThenCopiesTheSummary_ShowsTheFile_AndOpensTheReportPage()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            string target = Path.Combine(host.Dir, "posted", "mine.zip");
+            Directory.CreateDirectory(Path.GetDirectoryName(target));
+            string[] summary;
+            using (var reader = RecordingReader.Open(zip)) summary = reader.Summary.ToArray();
+            var model = new RecordingReviewModel(RecordingReview.Open(zip), () => Array.Empty<(PrivateKind, string)>(), host.Environment());
+            var steps = new List<string>();
+            string copied = null, page = null;
+            model.PickTarget = (folder, name) => target;
+            model.SaveAsUser = (from, to) =>
+            {
+                steps.Add("save");
+                File.Copy(from, to, overwrite: true);
+                return Task.FromResult<string>(null);
+            };
+            model.CopyText = text => { steps.Add("copy"); copied = text; };
+            model.ShowInExplorer = path => steps.Add("explorer " + Path.GetFileName(path));
+            model.OpenPage = url => { steps.Add("page"); page = url; };
+            model.Closed = () => steps.Add("closed");
+
+            await model.SaveAndPostAsync();
+
+            Assert.Equal(new[] { "save", "copy", "explorer mine.zip", "page", "closed" }, steps);
+            Assert.Equal(string.Join(Environment.NewLine, summary), copied);
+            Assert.Equal(UpdateService.ReportPage, page);
+            Assert.True(File.Exists(target));
+            Assert.False(File.Exists(zip));
+        }
+
+        /// <summary>A save box closed with no file, a save that fails and a
+        /// review whose check fails copy nothing and open nothing.</summary>
+        [Fact]
+        public async Task SaveAndPost_CopiesAndOpensNothing_WhenNothingWasSaved()
+        {
+            var (host, zip) = Recorded();
+            using var owned = host;
+            var live = new List<(PrivateKind, string)>();
+            var model = new RecordingReviewModel(RecordingReview.Open(zip), () => live, host.Environment());
+            var steps = new List<string>();
+            model.CopyText = _ => steps.Add("copy");
+            model.ShowInExplorer = _ => steps.Add("explorer");
+            model.OpenPage = _ => steps.Add("page");
+
+            // The box closed with no file.
+            model.PickTarget = (folder, name) => null;
+            await model.SaveAndPostAsync();
+            Assert.Empty(steps);
+
+            // The save as the user failed.
+            model.PickTarget = (folder, name) => Path.Combine(host.Dir, "failed.zip");
+            model.SaveAsUser = (from, to) => Task.FromResult("refused");
+            await model.SaveAndPostAsync();
+            Assert.Empty(steps);
+            Assert.Contains("refused", model.Status, StringComparison.Ordinal);
+            Assert.True(File.Exists(zip));
+
+            // The scrub check found this PC's value in a kept part.
+            live.Add((PrivateKind.DeviceName, "planted-word-zz"));
+            model.PartsChanged();
+            Assert.False(model.CanSave);
+            model.SaveAsUser = (from, to) => { steps.Add("save"); return Task.FromResult<string>(null); };
+            await model.SaveAndPostAsync();
+            Assert.Empty(steps);
+            model.Close();
+        }
+
+        /// <summary>The page Save and Post and the crash box send a report
+        /// to is the one the repository's own forms name first: a Q&amp;A
+        /// discussion, which the bug form requires before a bug report. It
+        /// carries no title or body, since GitHub documents those query
+        /// parameters for a new issue and not for a new
+        /// discussion.</summary>
+        [Fact]
+        public void TheReportPage_IsTheQandADiscussionTheRepositorysFormsName()
+        {
+            Assert.Equal("https://github.com/" + UpdateService.Repo + "/discussions/new?category=q-a", UpdateService.ReportPage);
+            string root = OffLimitsSource.RepoRoot();
+            string chooser = File.ReadAllText(Path.Combine(root, ".github", "ISSUE_TEMPLATE", "config.yml"));
+            string bug = File.ReadAllText(Path.Combine(root, ".github", "ISSUE_TEMPLATE", "bug_report.yml"));
+            Assert.Contains("url: " + UpdateService.ReportPage, chooser, StringComparison.Ordinal);
+            Assert.Contains("(" + UpdateService.ReportPage + ")", bug, StringComparison.Ordinal);
+            Assert.DoesNotContain("title=", UpdateService.ReportPage, StringComparison.Ordinal);
+            Assert.DoesNotContain("body=", UpdateService.ReportPage, StringComparison.Ordinal);
+        }
+
+        /// <summary>The crash box (#600 item 29) says, after the error and
+        /// above its stack, that the details are in crash.log beside
+        /// PadForge.exe and where to send that file. Both boxes that show it
+        /// hand it the report page. The stack goes last because a message box
+        /// cuts off what does not fit the screen.</summary>
+        [Fact]
+        public void TheCrashBox_NamesCrashLog_AndThePageWhereReportsGo_AboveTheStack()
+        {
+            var resx = System.Xml.Linq.XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"));
+            string format = (string)resx.Root.Elements("data").Single(d => (string)d.Attribute("name") == "App_UnexpectedError_Format").Element("value");
+            string box = string.Format(format, "MESSAGE", "STACK", UpdateService.ReportPage);
+            int message = box.IndexOf("MESSAGE", StringComparison.Ordinal);
+            int log = box.IndexOf("crash.log beside PadForge.exe", StringComparison.Ordinal);
+            int page = box.IndexOf(UpdateService.ReportPage, StringComparison.Ordinal);
+            int stack = box.IndexOf("STACK", StringComparison.Ordinal);
+            Assert.True(message >= 0 && log > message && page > log && stack > page, box);
+
+            string app = ExtrasPageTests.RepoText("PadForge.App", "App.xaml.cs");
+            Assert.Equal(2, Regex.Matches(app, @"string\.Format\(Strings\.Instance\.App_UnexpectedError_Format,").Count);
+            Assert.Equal(2, Regex.Matches(app, @"ExceptionStackChain\([^)]*\), UpdateService\.ReportPage\)").Count);
         }
 
         [Theory]

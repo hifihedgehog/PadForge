@@ -307,6 +307,13 @@ namespace PadForge
                     try { PadForge.Common.ShellLaunch.SetClipboardText(text); }
                     catch (System.Runtime.InteropServices.ExternalException) { }
                 },
+                // Save and Post's page, in the browser, as About's GitHub
+                // button opens the repository.
+                OpenPage = url =>
+                {
+                    try { PadForge.Common.ShellLaunch.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }); }
+                    catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException) { }
+                },
             };
             model.Saved = target =>
             {

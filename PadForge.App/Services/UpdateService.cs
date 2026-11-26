@@ -295,6 +295,14 @@ namespace PadForge.Services
     internal static class UpdateService
     {
         internal const string Repo = "hifihedgehog/PadForge";
+
+        /// <summary>The page where a report goes: a new Q&amp;A discussion,
+        /// the first stop the issue chooser and the bug form name
+        /// (.github/ISSUE_TEMPLATE/config.yml, bug_report.yml). GitHub
+        /// documents title and body query parameters for a new issue and
+        /// none for a new discussion, so the address carries neither and the
+        /// summary goes on the clipboard (#600 item 29).</summary>
+        internal const string ReportPage = "https://github.com/" + Repo + "/discussions/new?category=q-a";
         internal const string ApplyUpdateSwitch = "--apply-update";
         /// <summary>After the PID, marks the exchange that has the ready and
         /// commit handshake. A copy from before it puts the relaunch arguments

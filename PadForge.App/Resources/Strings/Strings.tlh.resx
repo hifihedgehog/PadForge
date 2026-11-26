@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>choHHa'meH Doch tu'lu'be'</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>SoH neH DachoHlaH</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>'oHvaD Dacherpu'bogh SeHlaHghach juS</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>tlhobpu'bogh SeHlaHghach juS</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>'a'baqa' poSmoHlu'be'</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>mIwvetlh tu'lu'be'</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>tlhoy law' DuloStaHbogh chabalmey</value></data>

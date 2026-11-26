@@ -28,15 +28,12 @@ namespace PadForge.Services.Automation
         /// <summary>Whether a device is one of the picked.</summary>
         internal bool Picked(Guid device) => Devices.Any(d => d.Id == device);
 
-        /// <summary>The narrower of two reaches, either null for all of
-        /// PadForge: a hello may narrow what the user kept and never widen
-        /// it. Both limited, the devices both pick.</summary>
-        internal static ProgramReach Narrowest(ProgramReach a, ProgramReach b)
-        {
-            if (a == null) return b;
-            if (b == null) return a;
-            return new ProgramReach { Devices = a.Devices.Where(d => b.Picked(d.Id)).ToList() };
-        }
+        /// <summary>The reach a connection works within: the one the user
+        /// kept, or the program's own devices while that is all of PadForge
+        /// and its hello asked for them. A hello never widens what the user
+        /// kept, and never drops the devices the user picked, which only the
+        /// user changes. Either may be null, for all of PadForge.</summary>
+        internal static ProgramReach Within(ProgramReach kept, ProgramReach asked) => kept ?? asked;
 
         /// <summary>The reach as PadForge.xml keeps it: null for all of
         /// PadForge.</summary>

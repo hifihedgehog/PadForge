@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Нема шта да се опозове</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ово можете променити само ви</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Изван домета који сте му поставили</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Изван домета који је тражио</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Датотека није могла да се отвори</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Нема таквог макроа</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Превише питања је чекало на вас</value></data>

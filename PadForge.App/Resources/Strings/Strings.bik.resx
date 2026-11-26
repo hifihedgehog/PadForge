@@ -1496,6 +1496,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Mayong i-undo</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ika sana an puwedeng magliwat kaini</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Labas sa sakop na itinao mo para kaini</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Labas sa sakop na hinagad kaini</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Dai nabukasan an file</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Mayong arog kaining macro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Grabe kadakol na hapot an naghahalat sa saimo</value></data>

@@ -756,6 +756,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>പഴയപടിയാക്കാൻ ഒന്നുമില്ല</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ഇത് നിങ്ങൾക്ക് മാത്രമേ മാറ്റാൻ കഴിയൂ</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>നിങ്ങൾ സജ്ജമാക്കിയ പരിധിക്ക് പുറത്ത്</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>അത് ആവശ്യപ്പെട്ട പരിധിക്ക് പുറത്ത്</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ഫയൽ തുറക്കാനായില്ല</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>അങ്ങനെയൊരു മാക്രോ ഇല്ല</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>നിങ്ങൾക്കായി വളരെയധികം ചോദ്യങ്ങൾ കാത്തിരിക്കുകയായിരുന്നു</value></data>

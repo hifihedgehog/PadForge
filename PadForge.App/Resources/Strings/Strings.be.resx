@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Няма чаго адмяняць</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Гэта можаце змяніць толькі вы</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Па-за ахопам, які вы для яе задалі</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Па-за ахопам, пра які яна прасіла</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Не ўдалося адкрыць файл</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Такога макраса няма</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Вас чакала занадта шмат пытанняў</value></data>

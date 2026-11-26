@@ -54,7 +54,7 @@ A script asks for **Send Inputs** unless it connects first with another level. I
     Connect-PadForge 'Steer Assist' -Level send-inputs -Reach own
     ```
 
-The level is `read`, `send-inputs` or `change-settings`. The reach is `own`, or `all`, the default, which leaves the reach to the script's row. With `own`, the script drives and changes only the devices it adds, none of the ones you picked on its row, and it still reads every device. A script can narrow its reach this way and never widen it.
+The level is `read`, `send-inputs` or `change-settings`. The reach is `own`, or `all`, the default, which leaves the reach to the script's row. With `own`, the script never has all of PadForge: it drives and changes the devices it adds and the ones you pick on its row, and it still reads every device. A script can narrow its reach this way and never widen it.
 
 ---
 

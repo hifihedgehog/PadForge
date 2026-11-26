@@ -756,6 +756,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ຍ້ອນກັບ</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ມີແຕ່ທ່ານທີ່ປ່ຽນສິ່ງນີ້ໄດ້</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>ຢູ່ນອກຂອບເຂດທີ່ທ່ານຕັ້ງໄວ້ໃຫ້ມັນ</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>ຢູ່ນອກຂອບເຂດທີ່ມັນຂໍໄວ້</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ເປີດໄຟລ໌ບໍ່ໄດ້</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ບໍ່ມີມາໂຄຣນີ້</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>ມີຄຳຖາມລໍຖ້າທ່ານຫຼາຍເກີນໄປ</value></data>

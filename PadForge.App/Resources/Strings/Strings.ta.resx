@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>செயல்தவிர்க்க எதுவும் இல்லை</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>இதை நீங்கள் மட்டுமே மாற்ற முடியும்</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>நீங்கள் அமைத்த எட்டும் எல்லைக்கு வெளியே</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>அது கேட்ட எட்டும் எல்லைக்கு வெளியே</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>கோப்பைத் திறக்க முடியவில்லை</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>அப்படி ஒரு மேக்ரோ இல்லை</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>உங்களுக்காக மிக அதிகக் கேள்விகள் காத்திருந்தன</value></data>

@@ -848,6 +848,7 @@ PadForge a makkei porousen ei lón crash.log arun PadForge.exe. Ren om kopwe rip
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Esor met epwe liwinsefál</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>En chök ka tongeni siwili ei</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Lukun ia ka mwúttiri pwe epwe tori</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Lukun ia a tingor pwe epwe tori</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ese tongeni suuki ewe file</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Esor ena macro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>A fókkun chómmóng kapas eis ra witiwituk</value></data>

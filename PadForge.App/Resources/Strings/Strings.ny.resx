@@ -1616,6 +1616,7 @@ PadForge yalemba zambiri mu crash.log pafupi ndi PadForge.exe. Kuti munene vutol
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Palibe choti mubweze</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Inu nokha ndi amene mungasinthe izi</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Kunja kwa malire omwe mwaikira pulogalamuyi</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Kunja kwa malire omwe pulogalamuyi inapempha</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fayiloyo sinatseguke</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Palibe macro yotere</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Mafunso ambiri kwambiri anali kukudikirani</value></data>

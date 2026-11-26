@@ -40,8 +40,9 @@ namespace PadForge.Services.Automation
                 // By the store's key: scripts share their interpreter's
                 // path, and each is its own program.
                 var connected = _sessions?.ConnectedKeys() ?? new HashSet<string>();
+                var asking = _sessions?.HeldByItsAskKeys() ?? new HashSet<string>();
                 return _store.Programs.Select(p => new AllowedProgramView(p.Key, p.Name ?? ShortName(p.Path), WhoOf(p), p.Level,
-                    p.LastUsed, connected.Contains(p.Key), p.Reach)).ToList();
+                    p.LastUsed, connected.Contains(p.Key), p.Reach, asking.Contains(p.Key))).ToList();
             }
         }
 
@@ -55,8 +56,10 @@ namespace PadForge.Services.Automation
         public void SetReach(string key, ProgramReach reach)
         {
             if (string.IsNullOrEmpty(key)) return;
-            _store.SetReach(key, reach);
+            // The sessions first: the store's change redraws the row, which
+            // reads whether a session's own ask now holds it.
             _sessions?.SetReach(key, reach);
+            _store.SetReach(key, reach);
         }
 
         public void AllowAssistant(string hostKey, string hostName, string program)

@@ -128,12 +128,14 @@ namespace PadForge.Services.Automation
                 if (at >= 0)
                 {
                     // The reach the user set on its row stays (#600
-                    // DESIGN-2 N3), unless the program asks for a narrower one.
+                    // DESIGN-2 N3), with the devices picked. A row with all
+                    // of PadForge takes the own devices a program asked for
+                    // on the card the user allowed.
                     var old = _programs[at];
                     _programs[at] = program with
                     {
                         Level = (AutomationLevel)Math.Max((int)old.Level, (int)program.Level), Allowed = old.Allowed,
-                        Reach = ProgramReach.Narrowest(old.Reach, program.Reach),
+                        Reach = ProgramReach.Within(old.Reach, program.Reach),
                     };
                 }
                 else

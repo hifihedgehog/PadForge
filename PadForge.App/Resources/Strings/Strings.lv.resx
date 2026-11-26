@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nav ko atsaukt</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Šo var mainīt tikai jūs</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ārpus jūsu tai iestatītās piekļuves</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ārpus piekļuves, ko tā lūdza</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Failu nevarēja atvērt</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Šāda makrosa nav</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Uz jums gaidīja pārāk daudz jautājumu</value></data>

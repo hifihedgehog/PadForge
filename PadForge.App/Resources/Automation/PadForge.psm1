@@ -2268,8 +2268,8 @@ namespace PadForgeAutomation
         }
 
         // reach own asks to drive and change only the devices the script
-        // adds. PowerShell passes an empty string for a reach it was not
-        // given.
+        // adds and the ones the user picks for it. PowerShell passes an
+        // empty string for a reach it was not given.
         public Client(string name, string pipe, string level, string reach) : this(name, pipe, level, null, 0, reach)
         {
         }
@@ -2959,9 +2959,10 @@ function Invoke-PadForgeCall([scriptblock]$Do) {
 function Connect-PadForge {
     <# Makes the script's connection with a name and the level it asks for:
        read, send-inputs (the default) or change-settings. With -Reach own
-       the script asks to drive and change only the devices it adds, and it
-       still reads every device. Call it before anything else to choose
-       them. It does not wait for PadForge. #>
+       the script asks to drive and change only the devices it adds and the
+       ones the user picks for it, and it still reads every device. Call it
+       before anything else to choose them. It does not wait for
+       PadForge. #>
     param(
         [Parameter(Position = 0)][string]$Name,
         [ValidateSet('read', 'send-inputs', 'change-settings')][string]$Level = 'send-inputs',

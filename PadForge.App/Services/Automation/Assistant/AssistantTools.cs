@@ -861,8 +861,15 @@ namespace PadForge.Services.Automation
             if (session?.Reach == null) return;
             Guid? device = inv.OnUi(() => inv.Catalog.DeviceHolding(id));
             if (device is not Guid held || !inv.Host.Sessions.ReachTakes(session, held))
+            {
+                // Its own ask holds it while the user kept all of PadForge
+                // for it (#600 DESIGN-2 N3), and the words say so.
+                if (session.HeldByItsAsk)
+                    throw new AssistantRefusal("outside-ask", "This program asked to drive and change only its own devices, and "
+                        + id + " belongs to none of them. It still reads every device. Without that ask it works within the reach the user set, on PadForge's Automation page.");
                 throw new AssistantRefusal("outside-reach", "This program's reach is its own devices and the ones the user picked, and "
                     + id + " belongs to none of them. It still reads every device. Only the user can widen its reach, on PadForge's Automation page.");
+            }
         }
 
         private static IReadOnlyList<AssistantToolDefinition> Build() => new[]

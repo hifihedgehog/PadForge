@@ -430,6 +430,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nichts rückgängig zu machen</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Das kann nur der Benutzer ändern</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Außerhalb der Reichweite, die Sie dafür festgelegt haben</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Außerhalb der Reichweite, um die es gebeten hat</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Die Datei konnte nicht geöffnet werden</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Kein solches Makro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Zu viele Fragen warteten auf Sie</value></data>

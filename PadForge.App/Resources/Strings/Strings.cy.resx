@@ -756,6 +756,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Dim i'w ddadwneud</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Dim ond chi all newid hyn</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Y tu allan i'r cyrhaeddiad a osodwyd ar ei gyfer</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Y tu allan i'r cyrhaeddiad y gofynnodd amdano</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Nid oedd modd agor y ffeil</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Dim macro o'r fath</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Roedd gormod o gwestiynau'n aros amdanoch</value></data>

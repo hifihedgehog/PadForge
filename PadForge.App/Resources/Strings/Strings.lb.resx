@@ -750,6 +750,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Näischt réckgängeg ze maachen</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Nëmmen Dir kënnt dat änneren</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ausserhalb vun der Reechwäit, déi Dir him ginn hutt</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ausserhalb vun der Reechwäit, déi en ugefrot huet</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>D'Datei konnt net opgemaach ginn</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Dëse Makro gëtt et net</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ze vill Froen hunn op Iech gewaart</value></data>

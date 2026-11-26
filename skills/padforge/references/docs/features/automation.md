@@ -105,7 +105,7 @@ Each row has **Reach**: **All of PadForge**, the default, or **Only Its Own Devi
 
 A program on this PC can still send the one-line commands of the [command line](../reference/command-line.md) through `PadForge.Control`, as every program can, and its row says that too: **Commands from the command line still reach PadForge, as they do for every program.**
 
-A program may ask, when it connects, to drive only its own devices, and its question card then says **It asks to drive only its own devices.** It then drives none of the devices you picked on its row. What it asks for can narrow the reach on its row and never widen it. Network keys and web assistants carry the same **Reach** on their rows of the [Assistants](assistants.md) card.
+A program may ask, when it connects, to drive only its own devices, and its question card then says **It asks to drive only its own devices.** It then never has all of PadForge: with **All of PadForge** on its row it drives its own devices alone, the row says **It asks to drive only its own devices.** while it is connected, and **Activity** shows **Outside the reach it asked for** for a call outside them. The devices you pick on its row still apply. What it asks for can narrow the reach on its row and never widen it. Network keys and web assistants carry the same **Reach** on their rows of the [Assistants](assistants.md) card.
 
 ## Activity
 

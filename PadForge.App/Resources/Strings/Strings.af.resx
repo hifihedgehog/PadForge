@@ -756,6 +756,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Niks om te ontdoen nie</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Net jy kan dit verander</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Buite die bereik wat jy daarvoor gestel het</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Buite die bereik waarvoor dit gevra het</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Die lêer kon nie oopgemaak word nie</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Geen sodanige makro nie</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Te veel vrae het op jou gewag</value></data>

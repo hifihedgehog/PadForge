@@ -2385,8 +2385,8 @@ def connect(name=None, level="send-inputs", pipe=None, reach=None):
     """Makes the script's connection with a name and the level it asks for:
     "read", "send-inputs" (the default) or "change-settings". With
     reach="own" the script asks to drive and change only the devices it
-    adds, and it still reads every device. Call it before anything else to
-    choose them."""
+    adds and the ones the user picks for it, and it still reads every
+    device. Call it before anything else to choose them."""
     global _default
     with _default_lock:
         if _default is not None:

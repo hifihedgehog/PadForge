@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nie ma czego cofać</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Tylko ty możesz to zmienić</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Poza zasięgiem ustawionym dla niego</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Poza zasięgiem, o jaki prosił</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Nie udało się otworzyć pliku</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Nie ma takiego makra</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Zbyt wiele pytań czekało na twoją odpowiedź</value></data>

@@ -756,6 +756,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>የሚቀለበስ ነገር የለም</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ይህንን መቀየር የሚችሉት እርስዎ ብቻ ነዎት</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>ለእሱ ካዘጋጁት የመድረሻ ወሰን ውጭ</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>ራሱ ከጠየቀው የመድረሻ ወሰን ውጭ</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ፋይሉ ሊከፈት አልቻለም</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>እንደዚህ ያለ ማክሮ የለም</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>እርስዎን የሚጠብቁ በጣም ብዙ ጥያቄዎች ነበሩ</value></data>

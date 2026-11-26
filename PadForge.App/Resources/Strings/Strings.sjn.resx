@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Alnad an dangar</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Le ero pol gwista hen</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ú-vi raeth i sestannen an hon</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ú-vi raeth i gethant</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>I parlas ú-edrannen</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Carthas ú-sinnen</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Othovor mabedad dartha an le</value></data>

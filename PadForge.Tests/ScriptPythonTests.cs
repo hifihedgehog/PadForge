@@ -853,7 +853,7 @@ namespace PadForge.Tests
                 using var run = Start(script, rig.PipeName);
                 Assert.Equal("level True send-inputs", run.Expect("level "));
                 Assert.Equal("state True", run.Expect("state "));
-                Assert.Equal("refused outside-reach PadForge refused activate: " + AutomationSessions.OutsideReachWords + " (outside-reach).",
+                Assert.Equal("refused outside-ask PadForge refused activate: " + AutomationSessions.OutsideAskWords + " (outside-ask).",
                     run.Expect("refused "));
                 Assert.DoesNotContain("error ", run.Seen);
             }

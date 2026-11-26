@@ -168,6 +168,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Awan ti maisubli</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Sika laeng ti makabaliw iti daytoy</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ruar ti sakup nga inkeddengmo para iti daytoy</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ruar ti sakup a dinawatna</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Saan a mailukat ti file</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Awan ti kasta a macro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Adu unay a saludsod ti agur-uray kenka</value></data>

@@ -155,13 +155,28 @@ namespace PadForge.Services.Automation
         internal Task<bool> Consent { get; set; }
 
         /// <summary>What the session may drive and change (#600 DESIGN-2
-        /// N3), null for all of PadForge: the narrower of what the user kept
-        /// for the program and what its hello asked.</summary>
-        internal ProgramReach Reach { get; set; }
+        /// N3), null for all of PadForge: the reach the user kept for the
+        /// program, or its own devices while that is all of PadForge and its
+        /// hello asked for them. <see cref="HoldWithin"/> sets it.</summary>
+        internal ProgramReach Reach { get; private set; }
+
+        /// <summary>Whether the program's own ask holds the session: its
+        /// hello asked for its own devices, and the reach the user kept is
+        /// all of PadForge. A refusal then names the ask, and the program's
+        /// row says it asks to drive only its own devices.</summary>
+        internal bool HeldByItsAsk { get; private set; }
 
         /// <summary>The reach the hello asked for: its own devices, or null
         /// when it named none or all.</summary>
         internal ProgramReach WantedReach { get; private set; }
+
+        /// <summary>Works within the reach the user kept for the program,
+        /// null for all of PadForge, as its hello's ask holds it.</summary>
+        internal void HoldWithin(ProgramReach kept)
+        {
+            Reach = ProgramReach.Within(kept, WantedReach);
+            HeldByItsAsk = kept == null && WantedReach != null;
+        }
 
         /// <summary>The line the question card names a network caller by
         /// (#600 item 53): its key's name, the address it called from and

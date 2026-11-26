@@ -104,9 +104,13 @@ namespace PadForge.Services.Automation
             {
                 // A program held to its own devices and the ones picked
                 // (#600 DESIGN-2 N3) reads all of PadForge and changes none
-                // of the rest of it.
-                outcome = AssistantOutcome.Failure("outside-reach", "This program's reach is its own devices and the ones the user picked, so "
-                    + name + ", which acts on the rest of PadForge, is refused. It still reads every device. Only the user can widen its reach, on PadForge's Automation page.");
+                // of the rest of it. Its own ask holds it while the user
+                // kept all of PadForge for it, and the words say so.
+                outcome = caller.Session.HeldByItsAsk
+                    ? AssistantOutcome.Failure("outside-ask", "This program asked to drive and change only its own devices, so "
+                        + name + ", which acts on the rest of PadForge, is refused. It still reads every device. Without that ask it works within the reach the user set, on PadForge's Automation page.")
+                    : AssistantOutcome.Failure("outside-reach", "This program's reach is its own devices and the ones the user picked, so "
+                        + name + ", which acts on the rest of PadForge, is refused. It still reads every device. Only the user can widen its reach, on PadForge's Automation page.");
             }
             else if (!TakeRate(caller.Key))
             {

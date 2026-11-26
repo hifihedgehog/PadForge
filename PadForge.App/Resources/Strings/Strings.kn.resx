@@ -750,6 +750,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ರದ್ದುಮಾಡಲು ಏನೂ ಇಲ್ಲ</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ಇದನ್ನು ನೀವು ಮಾತ್ರ ಬದಲಿಸಬಹುದು</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>ನೀವು ಅದಕ್ಕೆ ಹೊಂದಿಸಿದ ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>ಅದು ಕೇಳಿದ ವ್ಯಾಪ್ತಿಯ ಹೊರಗೆ</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ಫೈಲ್ ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ಅಂತಹ ಮ್ಯಾಕ್ರೋ ಇಲ್ಲ</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>ತುಂಬಾ ಪ್ರಶ್ನೆಗಳು ನಿಮಗಾಗಿ ಕಾಯುತ್ತಿದ್ದವು</value></data>

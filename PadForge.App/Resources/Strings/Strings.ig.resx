@@ -170,6 +170,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ọ dịghị ihe a ga-emegharị</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Naanị gị nwere ike ịgbanwe nke a</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ọ gafere oke i setịrị maka ya</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ọ gafere oke ọ rịọrọ maka ya</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Enweghị ike imepe faịlụ ahụ</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Enweghị macro dị otu a</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ajụjụ karịrị akarị na-echere gị</value></data>

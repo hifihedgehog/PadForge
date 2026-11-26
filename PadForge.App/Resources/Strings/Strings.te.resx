@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>అన్‌డూ చేయడానికి ఏమీ లేదు</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>దీన్ని మీరు మాత్రమే మార్చగలరు</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>మీరు దానికి నిర్ణయించిన చేరిక వెలుపల</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>అది అడిగిన చేరిక వెలుపల</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ఫైల్‌ను తెరవలేకపోయింది</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>అలాంటి మాక్రో లేదు</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>మీ కోసం చాలా ప్రశ్నలు ఎదురుచూస్తున్నాయి</value></data>

@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ไม่มีอะไรให้เลิกทำ</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>มีเพียงคุณที่เปลี่ยนสิ่งนี้ได้</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>นอกขอบเขตที่คุณตั้งไว้ให้</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>นอกขอบเขตที่มันขอไว้</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>เปิดไฟล์ไม่ได้</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ไม่มีแมโครนี้</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>มีคำถามรอคุณอยู่มากเกินไป</value></data>

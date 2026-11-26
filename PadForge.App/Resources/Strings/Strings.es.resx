@@ -430,6 +430,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nada que deshacer</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Solo tú puedes cambiar esto</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Fuera del alcance que definiste para él</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Fuera del alcance que pidió</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>No se pudo abrir el archivo</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>No existe esa macro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Había demasiadas preguntas esperándote</value></data>

@@ -361,6 +361,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Akukho okungahlehliswa</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Nguwe kuphela ongashintsha lokhu</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ngaphandle kokufinyelela okulisethele kona</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ngaphandle kokufinyelela elikucelile</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ifayela alikwazanga ukuvulwa</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ayikho i-macro enjalo</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Bekunemibuzo eminingi kakhulu ekulindile</value></data>

@@ -1722,6 +1722,7 @@ PadForge sau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yog xav qhi
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Tsis muaj dab tsi yuav thim rov qab</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Tsuas yog koj thiaj hloov tau qhov no</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Dhau qhov ciam uas koj teeb rau nws</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Dhau qhov ciam uas nws tau thov</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Qhib tsis tau daim ntawv</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Tsis muaj macro no</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Muaj lus nug ntau dhau tos koj</value></data>

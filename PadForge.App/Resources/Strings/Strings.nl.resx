@@ -430,6 +430,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Niets om ongedaan te maken</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Alleen jij kunt dit wijzigen</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Buiten het bereik dat je ervoor instelde</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Buiten het bereik waarom het vroeg</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Het bestand kon niet worden geopend</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Die macro bestaat niet</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Te veel vragen wachtten op jou</value></data>

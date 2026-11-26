@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>چیزی برای واگرد نیست</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>فقط شما می‌توانید این را تغییر دهید</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>خارج از «دسترسی» که برای آن تعیین کرده‌اید</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>خارج از «دسترسی» که خودش درخواست کرده بود</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>فایل باز نشد</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>چنین ماکرویی وجود ندارد</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>پرسش‌های منتظر شما بیش از حد بود</value></data>

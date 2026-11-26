@@ -756,6 +756,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>අහෝසි කිරීමට කිසිවක් නැත</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>මෙය වෙනස් කළ හැක්කේ ඔබට පමණි</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>ඔබ එයට සැකසූ ප්‍රවේශ පරාසයෙන් පිටත</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>එය ඇසූ ප්‍රවේශ පරාසයෙන් පිටත</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ගොනුව විවෘත කළ නොහැකි විය</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>එවැනි මැක්‍රෝවක් නැත</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>ඔබ වෙනුවෙන් ප්‍රශ්න වැඩි ගණනක් රැඳී තිබුණි</value></data>

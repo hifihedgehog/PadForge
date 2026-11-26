@@ -1277,6 +1277,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Undo kare ke kuch nai hai</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Khali aap ii badle sakta</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Aap iske liye jon hadd set karaa, uske bahar</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ii jon hadd maangis, uske bahar</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>File khule nai sakaa</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Aisan koi macro nai hai</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Aap ke intazaar me bahut sawaal rahaa</value></data>

@@ -430,6 +430,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>실행 취소할 것이 없음</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>사용자만 바꿀 수 있음</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>설정한 접근 범위 밖임</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>요청한 접근 범위 밖임</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>파일을 열 수 없었습니다</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>해당 매크로 없음</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>답변을 기다리는 질문이 너무 많았습니다</value></data>

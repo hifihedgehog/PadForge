@@ -2262,6 +2262,7 @@ PadForge bal'ina isaa crash.log kan PadForge.exe cinaa jiru keessatti barreessee
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Wanti duubatti deebi'u hin jiru</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Kana kan jijjiiruu danda'u ati qofa</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Daangaa ati isaaf kaa'te ala</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Daangaa inni ofii isaatiif gaafate ala</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faayiliin banamuu hin dandeenye</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Maakiroon akkasii hin jiru</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Gaaffiileen baay'een si eeggachaa turan</value></data>

@@ -364,6 +364,9 @@ namespace PadForge.ViewModels
                 // A program held to its own devices and the picked ones that
                 // drove or changed something else (#600 DESIGN-2 N3).
                 ["outside-reach"] = s => s.Automation_Result_OutsideReach,
+                // The same, held by its own ask for its own devices while the
+                // user kept all of PadForge for it.
+                ["outside-ask"] = s => s.Automation_Result_OutsideAsk,
                 ["no-file"] = s => s.Automation_Result_NoFile,
                 ["unknown-macro"] = s => s.Automation_Result_UnknownMacro,
                 ["too-many-questions"] = s => s.Automation_Result_TooManyQuestions,
@@ -580,6 +583,10 @@ namespace PadForge.ViewModels
             // A local program can still send commands through the control
             // pipe, which asks no consent, so its row says so.
             if (_reach != null) Line += " " + ReachWords.Line(_reach) + " " + s.Reach_LocalCommands;
+            // With all of PadForge kept for it, a connection that asked for
+            // its own devices is held to them by that ask, which the row
+            // names while it lasts.
+            else if (program.AsksOwnNow) Line += " " + s.Automation_Consent_OwnDevices;
             RemoveCommand = new RelayCommand(() => remove?.Invoke(Key));
             PickCommand = new RelayCommand(() =>
             {

@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Tidak ada yang diurungkan</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Hanya Anda yang dapat mengubah ini</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Di luar jangkauan yang Anda atur untuknya</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Di luar jangkauan yang diminta olehnya</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>File tidak dapat dibuka</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Makro tidak ditemukan</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Terlalu banyak pertanyaan yang menunggu Anda</value></data>

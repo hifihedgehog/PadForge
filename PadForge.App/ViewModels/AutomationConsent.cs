@@ -20,8 +20,11 @@ namespace PadForge.ViewModels
     /// <param name="ConnectedNow">Whether it is connected now.</param>
     /// <param name="Reach">What it may drive and change (#600 DESIGN-2 N3),
     /// null for all of PadForge.</param>
+    /// <param name="AsksOwnNow">Whether a connection of it asked to drive
+    /// only its own devices while its reach is all of PadForge, so that ask
+    /// holds it.</param>
     internal sealed record AllowedProgramView(string Key, string Name, string Who, AutomationLevel Level,
-        DateTimeOffset? LastUsed, bool ConnectedNow, ProgramReach Reach = null);
+        DateTimeOffset? LastUsed, bool ConnectedNow, ProgramReach Reach = null, bool AsksOwnNow = false);
 
     /// <summary>
     /// The consent store the Automation page shows and changes (#600 items 5

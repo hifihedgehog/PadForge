@@ -591,9 +591,10 @@ namespace PadForge.Services.Automation
             }
             var store = Consent ?? AutomationConsent.Shared;
             var allowed = store.Find(who.Key);
-            // The reach the user kept, narrowed by the one the hello asked
-            // (#600 DESIGN-2 N3), before any line past the hello runs.
-            session.Reach = ProgramReach.Narrowest(allowed?.Reach, session.WantedReach);
+            // The reach the user kept, or the own devices the hello asked
+            // for while that is all of PadForge (#600 DESIGN-2 N3), before
+            // any line past the hello runs.
+            session.HoldWithin(allowed?.Reach);
             if (wanted <= AutomationLevel.Commands) { session.Granted = AutomationLevel.Commands; return; }
             if (allowed != null && allowed.Level >= wanted) { session.Granted = wanted; return; }
             session.Granted = allowed?.Level ?? AutomationLevel.Commands;
@@ -617,7 +618,7 @@ namespace PadForge.Services.Automation
         /// </summary>
         internal void BeginWeb(AutomationSession session, AutomationLevel level = AutomationLevel.ChangeSettings, ProgramReach reach = null)
         {
-            session.Reach = ProgramReach.Narrowest(reach, session.WantedReach);
+            session.HoldWithin(reach);
             session.CallerKey = session.Number;
             string key = session.Who?.Key;
             if (session.Resume != null && key != null)
@@ -713,6 +714,9 @@ namespace PadForge.Services.Automation
             }
             if (answer != ApprovalAnswer.Allowed) return false;
             store.Allow(who with { Level = wanted, Allowed = _host.Now(), LastUsed = _host.Now(), Reach = session.WantedReach });
+            // The row the card wrote holds every open session of the
+            // program, the user's answer to a card that named the ask.
+            SetReach(who.Key, store.Find(who.Key)?.Reach);
             // Every open session of the program works at its level before
             // the answer is out, so a line that waited for it runs at it.
             Raise(who.Key, wanted);
@@ -768,6 +772,33 @@ namespace PadForge.Services.Automation
         internal const string OutsideReachWords = "this program's reach is its own devices and the ones the user picked, and this is outside it."
             + " It still reads every device. Only the user can widen its reach, on PadForge's Automation page.";
 
+        /// <summary>The words a refusal gives a program that its own ask
+        /// holds: its hello asked for its own devices, and the user kept all
+        /// of PadForge for it.</summary>
+        internal const string OutsideAskWords = "this program asked to drive and change only its own devices, and this is outside what it asked for."
+            + " It still reads every device. Without that ask it works within the reach the user set, on PadForge's Automation page.";
+
+        /// <summary>Refuses a line outside the session's reach, in the words
+        /// of what holds it: the reach the user set, or the program's own
+        /// ask.</summary>
+        private void FailOutside(AutomationSession session, AutomationRequest r, AutomationAskKind kind, string argument)
+        {
+            if (session.HeldByItsAsk) Fail(session, r, kind, argument, "outside-ask", OutsideAskWords);
+            else Fail(session, r, kind, argument, "outside-reach", OutsideReachWords);
+        }
+
+        /// <summary>The consent keys of the programs connected now that their
+        /// own ask holds to their own devices while the user kept all of
+        /// PadForge for them, which their rows say.</summary>
+        internal HashSet<string> HeldByItsAskKeys()
+        {
+            var keys = new HashSet<string>(StringComparer.Ordinal);
+            lock (_sync)
+                foreach (var session in _sessions)
+                    if (!session.IsPlugin && session.HeldByItsAsk && session.Who?.Key is { } key) keys.Add(key);
+            return keys;
+        }
+
         /// <summary>The user changed a program's reach on its row: every open
         /// session of it works within the new one at once, and lets go of
         /// the holds and values outside it.</summary>
@@ -778,7 +809,7 @@ namespace PadForge.Services.Automation
                 foreach (var session in _sessions)
                 {
                     if (session.IsPlugin || session.Who?.Key != key) continue;
-                    session.Reach = ProgramReach.Narrowest(reach, session.WantedReach);
+                    session.HoldWithin(reach);
                     if (session.Reach == null) continue;
                     ScriptValues.ReleaseOwner(session.Number);
                     foreach (var device in _held.DevicesOf(session))
@@ -962,7 +993,7 @@ namespace PadForge.Services.Automation
             // that read (#600 DESIGN-2 N3).
             if (session.Reach != null && !session.IsPlugin && r.Verb is not ("state" or "query" or "version"))
             {
-                Fail(session, r, AutomationCommands.Describe(r.Verb).Kind, r.Verb, "outside-reach", OutsideReachWords);
+                FailOutside(session, r, AutomationCommands.Describe(r.Verb).Kind, r.Verb);
                 return;
             }
             var words = new StringBuilder(r.Verb);
@@ -1728,7 +1759,7 @@ namespace PadForge.Services.Automation
             var (ud, entry) = FindDevice(id);
             Guid device = ud?.InstanceGuid ?? entry?.Guid ?? Guid.Empty;
             if (device == Guid.Empty) { Fail(session, r, AutomationAskKind.Own, id, "unknown-device"); return; }
-            if (!ReachTakes(session, device)) { Fail(session, r, AutomationAskKind.Own, id, "outside-reach", OutsideReachWords); return; }
+            if (!ReachTakes(session, device)) { FailOutside(session, r, AutomationAskKind.Own, id); return; }
             int after = AfterOf(r, out bool fromNow);
             if (after < 0) { Fail(session, r, AutomationAskKind.Own, id, "bad-argument", "after= or in= is 0 to 60000 ms, and one of them"); return; }
             if ((r.Get("after") != null || r.Get("in") != null) && NotConnected(ud, entry)) { Fail(session, r, AutomationAskKind.Own, id, "offline"); return; }
@@ -1888,7 +1919,7 @@ namespace PadForge.Services.Automation
             if (!Allows(session, AutomationLevel.SendInputs)) { Refuse(session, r, AutomationAskKind.Value, what); return; }
             // A value feeds every Custom Expression, so a program held to its
             // own devices sets none (#600 DESIGN-2 N3).
-            if (session.Reach != null && !session.IsPlugin) { Fail(session, r, AutomationAskKind.Value, what, "outside-reach", OutsideReachWords); return; }
+            if (session.Reach != null && !session.IsPlugin) { FailOutside(session, r, AutomationAskKind.Value, what); return; }
             AfterTheLevelCheck?.Invoke();
             if (pairs.Count == 0) { Fail(session, r, AutomationAskKind.Value, what, "bad-argument", "var takes name=number"); return; }
             string full = null;

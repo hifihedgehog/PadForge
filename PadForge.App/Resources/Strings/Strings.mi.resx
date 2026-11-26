@@ -225,6 +225,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Kāore he mea hei wetekina</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Māu anake tēnei e huri</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Kei waho i te whānuitanga i tautuhia e koe mōna</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Kei waho i te whānuitanga i tonoa e ia</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Kāore i taea te huaki i te kōnae</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Kāore he mākoro pērā</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>He maha rawa ngā pātai e tatari ana ki a koe</value></data>

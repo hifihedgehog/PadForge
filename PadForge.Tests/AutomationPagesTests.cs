@@ -500,7 +500,7 @@ namespace PadForge.Tests
                     @"""err ([a-z][a-z-]*)",
                     @"Error\(""([a-z][a-z-]*)""",
                     @"[Ee]rror = ""([a-z][a-z-]*)""",
-                    @"Fail\(session, r, AutomationAskKind\.\w+, [^,]+, ""([a-z][a-z-]*)""",
+                    @"Fail\(session, r, [^,]+, [^,]+, ""([a-z][a-z-]*)""",
                     @"AssistantRefusal\(\s*""([a-z][a-z-]*)""",
                     @"Failure\(""([a-z][a-z-]*)""",
                 })
@@ -519,7 +519,7 @@ namespace PadForge.Tests
                          "unknown-slot", "unknown-command", "empty", "internal" })
                 Assert.Contains(known, words);
             foreach (string known in new[] { "refused", "denied", "engine-stopped", "busy", "unknown-device", "not-owner",
-                         "rate-limited", "too-long", "hello-first", "bad-tag" })
+                         "rate-limited", "too-long", "hello-first", "bad-tag", "outside-reach", "outside-ask" })
                 Assert.Contains(known, pipeCodes);
             // And the assistants' tools' codes.
             foreach (string known in new[] { "unknown-tool", "stale", "unknown-setting", "out-of-range", "declined", "timed-out",

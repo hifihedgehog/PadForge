@@ -430,6 +430,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Niente da annullare</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Solo tu puoi cambiarlo</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Fuori dalla portata che hai impostato per lui</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Fuori dalla portata che ha chiesto</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Impossibile aprire il file</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Macro inesistente</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Troppe domande erano in attesa di te</value></data>

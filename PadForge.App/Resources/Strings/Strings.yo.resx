@@ -233,6 +233,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Kò sí nǹkan láti dá padà</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ìwọ nìkan ló lè yí èyí padà</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ó kọjá ààlà tí o ṣètò fún un</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Ó kọjá ààlà tí ó béèrè fún</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>A kò lè ṣí fáìlì náà</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Kò sí irú macro bẹ́ẹ̀</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ìbéèrè tí ń dúró dè ọ́ pọ̀ jù</value></data>

@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>واپس کرنے کے لیے کچھ نہیں</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>اسے صرف آپ بدل سکتے ہیں</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>آپ کی طے کی ہوئی رسائی سے باہر</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>اس کی مانگی ہوئی رسائی سے باہر</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>فائل کھولی نہیں جا سکی</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ایسا کوئی میکرو نہیں</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>آپ کے انتظار میں بہت سے سوالات تھے</value></data>

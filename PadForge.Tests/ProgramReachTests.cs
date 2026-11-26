@@ -41,14 +41,16 @@ namespace PadForge.Tests
             Assert.StartsWith("ok id=", declared);
             string own = declared.Substring(6).Split(' ')[0];
             Assert.Equal("ok", scoped.Final("own " + own + " A=1"));
+            // All of PadForge is kept for it, so its own ask holds it, and
+            // the words name the ask.
             string refused = scoped.Final("own " + padId + " B=1");
-            Assert.StartsWith("err outside-reach ", refused);
-            Assert.Contains("its own devices and the ones the user picked", refused);
+            Assert.StartsWith("err outside-ask ", refused);
+            Assert.Contains("asked to drive and change only its own devices", refused);
             Assert.Contains("still reads every device", refused);
-            Assert.StartsWith("err outside-reach", scoped.Final("var speed=4"));
-            Assert.StartsWith("err outside-reach", scoped.Final("engine stop"));
-            Assert.StartsWith("err outside-reach", scoped.Final("activate default"));
-            Assert.StartsWith("err outside-reach", scoped.Final("exit"));
+            Assert.StartsWith("err outside-ask", scoped.Final("var speed=4"));
+            Assert.StartsWith("err outside-ask", scoped.Final("engine stop"));
+            Assert.StartsWith("err outside-ask", scoped.Final("activate default"));
+            Assert.StartsWith("err outside-ask", scoped.Final("exit"));
             // Reads stay whole, keyboards and mice included.
             var devices = scoped.Ask("devices");
             Assert.Contains(devices, d => d.Contains(padId, StringComparison.Ordinal));
@@ -99,7 +101,7 @@ namespace PadForge.Tests
             string device = declared.Substring(6).Split(' ')[0];
 
             using var other = rig.Open("Steer Assist", " reach=own");
-            Assert.StartsWith("err outside-reach", other.Final("own " + device + " A=1"));
+            Assert.StartsWith("err outside-ask", other.Final("own " + device + " A=1"));
             Assert.Equal("ok", first.Final("own " + device + " A=1"));
         }
 
@@ -152,8 +154,114 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A program that asked for its own devices drives the ones
+        /// the user then picks on its row, and asking again at a higher
+        /// level keeps them on the row.</summary>
         [Fact]
-        public void TheReach_RoundTripsThroughTheFile_AndAHelloNarrowsButNeverWidens()
+        public async Task AProgramThatAskedForItsOwnDevices_DrivesTheOnesPickedOnItsRow_AndAskingAgainKeepsThem()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.ChangeSettings);
+            var consent = TestConsent.Empty(rig.Host);
+            AsTheSteerScript(rig);
+            try
+            {
+                var pad = rig.AddDevice(InputDeviceType.Gamepad, "Xbox Wireless Controller");
+                string padId = AutomationPipeRig.IdOf(pad);
+                var page = new AutomationConsentForPage(consent, rig.Host.Sessions, null);
+                using var client = await AllowedAsking(rig, AutomationLevel.SendInputs);
+                string key = consent.Programs.Single().Key;
+                Assert.Equal(ProgramReach.OwnDevices, consent.Programs.Single().Reach);
+                Assert.StartsWith("err outside-reach", client.Final("own " + padId + " A=1"));
+
+                var picked = new ProgramReach { Devices = new[] { new ReachDevice(pad.InstanceGuid, "Xbox Wireless Controller") } };
+                page.SetReach(key, picked);
+                Assert.Equal("ok", client.Final("own " + padId + " A=1"));
+
+                using var again = await AllowedAsking(rig, AutomationLevel.ChangeSettings);
+                Assert.Equal(AutomationLevel.ChangeSettings, consent.Programs.Single().Level);
+                Assert.Equal(picked, consent.Programs.Single().Reach);
+                Assert.Equal("ok", again.Final("own " + padId + " B=1"));
+            }
+            finally
+            {
+                AutomationConsent.CommandLineSeam = null;
+            }
+        }
+
+        /// <summary>All of PadForge on the row of a program whose connection
+        /// asked for its own devices holds it to them again, by its own ask:
+        /// the picked device's hold goes, the refusal names the ask in its
+        /// words and in Activity, and the row says it asks to drive only its
+        /// own devices while that connection lasts.</summary>
+        [Fact]
+        public async Task AllOfPadForgeOnTheRow_OfAProgramThatAskedForItsOwnDevices_HoldsItToThemByItsAsk_AndTheRowSaysSo()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.ChangeSettings);
+            var consent = TestConsent.Empty(rig.Host);
+            AsTheSteerScript(rig);
+            try
+            {
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                var pad = rig.AddDevice(InputDeviceType.Gamepad, "Xbox Wireless Controller");
+                string padId = AutomationPipeRig.IdOf(pad);
+                var page = new AutomationConsentForPage(consent, rig.Host.Sessions, null);
+                var client = await AllowedAsking(rig, AutomationLevel.SendInputs);
+                string key = consent.Programs.Single().Key;
+                page.SetReach(key, new ProgramReach { Devices = new[] { new ReachDevice(pad.InstanceGuid, "Xbox Wireless Controller") } });
+                Assert.Equal("ok", client.Final("own " + padId + " A=1"));
+                Assert.True(ControlHolds.Current.ContainsKey(pad.InstanceGuid));
+                Assert.DoesNotContain(s.Automation_Consent_OwnDevices, new AllowedProgramItem(page.Allowed.Single(), _ => { }).Line);
+
+                page.SetReach(key, null);
+                await AutomationPipeRig.Until(() => ControlHolds.Current == null || !ControlHolds.Current.TryGetValue(pad.InstanceGuid, out var held)
+                    || held.Buttons == null || held.Buttons.Length == 0);
+                string refused = client.Final("own " + padId + " A=1");
+                Assert.StartsWith("err outside-ask ", refused);
+                Assert.Contains("asked to drive and change only its own devices", refused);
+                Assert.Contains("Without that ask it works within the reach the user set", refused);
+                Assert.StartsWith("ok", client.Final("version"));
+                var entry = rig.Host.Activity.Snapshot().Last(e => e.Result != null && e.Result.StartsWith("err outside-", StringComparison.Ordinal));
+                Assert.Equal(s.Automation_Result_OutsideAsk, AutomationActivityItem.RefusalWords(entry.Result));
+                var row = new AllowedProgramItem(page.Allowed.Single(), _ => { });
+                Assert.Equal(0, row.SelectedReach);
+                Assert.EndsWith(" " + s.Automation_Consent_OwnDevices, row.Line);
+
+                // With that connection gone, the row says nothing of its ask.
+                client.Dispose();
+                await AutomationPipeRig.Until(() => !rig.Host.Sessions.HeldByItsAskKeys().Contains(key));
+                Assert.DoesNotContain(s.Automation_Consent_OwnDevices, new AllowedProgramItem(page.Allowed.Single(), _ => { }).Line);
+            }
+            finally
+            {
+                AutomationConsent.CommandLineSeam = null;
+            }
+        }
+
+        /// <summary>Every connection from here on is the steer.ahk script that
+        /// AutoHotkey runs, each in a process of its own.</summary>
+        private static void AsTheSteerScript(AutomationPipeRig rig)
+        {
+            int next = 524300;
+            rig.Host.AutomationPipe.ProcessOf = _ => AutomationClientProcess.ForTest(Interlocked.Increment(ref next), @"C:\AutoHotkey\AutoHotkey64.exe");
+            AutomationConsent.CommandLineSeam = _ => "\"C:\\AutoHotkey\\AutoHotkey64.exe\" C:\\Scripts\\steer.ahk";
+        }
+
+        /// <summary>Connects asking for its own devices at a level, allows it
+        /// on its question card, and waits until it works at that
+        /// level.</summary>
+        private static async Task<AutomationTestClient> AllowedAsking(AutomationPipeRig rig, AutomationLevel level)
+        {
+            var client = rig.Connect();
+            string word = level == AutomationLevel.ChangeSettings ? "change-settings" : "send-inputs";
+            Assert.StartsWith("ok", client.Final("hello name=\"Steer Assist\" kind=script level=" + word + " reach=own"));
+            await AutomationPipeRig.Until(() => rig.Host.Approvals.Pending.Count == 1);
+            Assert.True(rig.Host.Approvals.Answer(rig.Host.Approvals.Pending[0].Id, true));
+            await AutomationPipeRig.Until(() => rig.Host.Sessions.Snapshot().Any(s => s.Granted == level));
+            return client;
+        }
+
+        [Fact]
+        public void TheReach_RoundTripsThroughTheFile_AndAHelloNeitherWidensItNorDropsTheDevicesPicked()
         {
             var store = new AutomationConsent();
             var picked = new ProgramReach { Devices = new[] { new ReachDevice(Guid.NewGuid(), "Xbox Wireless Controller") } };
@@ -165,16 +273,25 @@ namespace PadForge.Tests
             back.Load((AllowedProgramData[])xml.Deserialize(new StringReader(text.ToString())));
             Assert.Equal(picked, back.Programs.Single().Reach);
             Assert.Equal("Xbox Wireless Controller", back.Programs.Single().Reach.Devices.Single().Name);
-            // A program allowed again keeps the reach its row has.
+            // A program allowed again keeps the reach its row has, with the
+            // devices picked, whatever its hello asked.
             back.Allow(back.Programs.Single() with { Reach = null, Level = AutomationLevel.ChangeSettings });
+            Assert.Equal(picked, back.Programs.Single().Reach);
+            back.Allow(back.Programs.Single() with { Reach = ProgramReach.OwnDevices });
             Assert.Equal(picked, back.Programs.Single().Reach);
             Assert.True(back.SetReach("script|X", null));
             Assert.Null(back.Programs.Single().Reach);
+            // A row with all of PadForge takes the own devices a program
+            // asked for, on the card the user allowed.
+            back.Allow(back.Programs.Single() with { Reach = ProgramReach.OwnDevices });
+            Assert.Equal(ProgramReach.OwnDevices, back.Programs.Single().Reach);
 
-            Assert.Null(ProgramReach.Narrowest(null, null));
-            Assert.Equal(ProgramReach.OwnDevices, ProgramReach.Narrowest(null, ProgramReach.OwnDevices));
-            Assert.Equal(picked, ProgramReach.Narrowest(picked, null));
-            Assert.Empty(ProgramReach.Narrowest(picked, ProgramReach.OwnDevices).Devices);
+            // A hello's ask holds a connection to its own devices only while
+            // the reach kept is all of PadForge.
+            Assert.Null(ProgramReach.Within(null, null));
+            Assert.Equal(ProgramReach.OwnDevices, ProgramReach.Within(null, ProgramReach.OwnDevices));
+            Assert.Equal(picked, ProgramReach.Within(picked, null));
+            Assert.Equal(picked, ProgramReach.Within(picked, ProgramReach.OwnDevices));
         }
 
         /// <summary>Every tool has its verdict under a reach. A tool added
@@ -249,6 +366,19 @@ namespace PadForge.Tests
             Assert.DoesNotContain("Drives", whole.Line);
             whole.SelectedReach = 1;
             Assert.Equal(ProgramReach.OwnDevices, set.Last().Item2);
+
+            // A connection whose own ask holds it, while the row keeps all
+            // of PadForge, is named on the row. A limited row says its own
+            // reach alone, which holds that connection.
+            string asks = PadForge.Resources.Strings.Strings.Instance.Automation_Consent_OwnDevices;
+            var asking = new AllowedProgramItem(new AllowedProgramView("a", "Steer Assist", "AutoHotkey64.exe", AutomationLevel.SendInputs, null, true,
+                null, AsksOwnNow: true), _ => { });
+            Assert.EndsWith(" " + asks, asking.Line);
+            Assert.Equal(0, asking.SelectedReach);
+            var limited = new AllowedProgramItem(new AllowedProgramView("l", "Steer Assist", "AutoHotkey64.exe", AutomationLevel.SendInputs, null, true,
+                picked, AsksOwnNow: true), _ => { });
+            Assert.DoesNotContain(asks, limited.Line);
+            Assert.Contains("Drives its own devices and Xbox Wireless Controller.", limited.Line);
         }
     }
 }

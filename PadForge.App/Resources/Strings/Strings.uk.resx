@@ -756,6 +756,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Нічого відміняти</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Це можете змінити лише ви</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Поза охопленням, яке ви для неї задали</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Поза охопленням, якого вона просила</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Файл не вдалося відкрити</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Такого макросу немає</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Забагато запитань чекало на вас</value></data>

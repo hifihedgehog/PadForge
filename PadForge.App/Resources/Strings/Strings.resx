@@ -773,6 +773,7 @@
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nothing to undo</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Only you can change this</value></data>
   <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Outside the reach you set for it</value></data>
+  <data name="Automation_Result_OutsideAsk" xml:space="preserve"><value>Outside the reach it asked for</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>The file could not be opened</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>No such macro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Too many questions were waiting for you</value></data>

@@ -483,6 +483,45 @@ namespace PadForge.Tests
             Assert.Null(run.SignerKey);
         }
 
+        /// <summary>A plugin approved before keys were kept: at its next
+        /// start, while its file is still the approved bytes, the key is read
+        /// on the handle that was hashed and kept, so the trust switch shows
+        /// with no new approval. A file approved as unsigned, or changed
+        /// since, gets none.</summary>
+        [Fact]
+        public void AnOldApproval_GetsItsKeyAtItsNextStart_FromTheHashedFile()
+        {
+            string core = typeof(object).Assembly.Location;
+            string path = Path.Combine(_dir, "signed.dll");
+            File.Copy(core, path);
+#pragma warning disable SYSLIB0057
+            using var certificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(
+                System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(core));
+#pragma warning restore SYSLIB0057
+            string expected = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(certificate.PublicKey.ExportSubjectPublicKeyInfo()));
+
+            var run = _manager.Add(path, PluginFile.Sha256(path), "Example Studio", null);
+            string copy = Path.Combine(_dir, "unsigned-approval.dll");
+            File.Copy(core, copy);
+            var unsignedApproval = _manager.Add(copy, PluginFile.Sha256(copy), null, null);
+            Assert.Null(run.SignerKey);
+            _manager.SetPluginsOn(true);
+            _manager.SetEngine(true);
+            Assert.Equal(PluginStatus.Running, run.Status);
+            Assert.Equal(expected, run.SignerKey);
+            Assert.Equal(expected, _manager.Save().Single(d => d.Path == run.Path).SignerKey);
+            Assert.False(run.TrustSigner);
+            Assert.Null(unsignedApproval.SignerKey);
+
+            // A file changed since its approval: no key from it.
+            string other = Path.Combine(_dir, "changed.dll");
+            File.Copy(core, other);
+            var changed = _manager.Add(other, "00", "Example Studio", null);
+            _manager.StartAgain(changed);
+            Assert.Equal(PluginStatus.Changed, changed.Status);
+            Assert.Null(changed.SignerKey);
+        }
+
         [Fact]
         public void AChangedFile_IsNotStarted_AndApprovingItsNewBytesStartsIt()
         {

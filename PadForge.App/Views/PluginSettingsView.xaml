@@ -17,7 +17,9 @@
          PadForge read them. A setting whose value differs from its default
          shows its name in ember, as the SDL Mapping card colors the
          user's own row, and its control's UI Automation item status says
-         Changed. Its reset shows either way. -->
+         Changed. Its reset shows either way. Only kept settings take the
+         mark: a pad, a button, a status and the Test Controller's live By
+         Hand controls never do. -->
     <UserControl.Resources>
         <Style x:Key="PluginLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="{Binding LabelWidth, ElementName=Root}"/>
@@ -32,8 +34,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <!-- A compact declaration's name, under its pad or beside its
-             slider. -->
+        <!-- A compact slider's name. -->
         <Style x:Key="PluginCompactName" TargetType="TextBlock">
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -133,8 +134,7 @@
             <controls:PluginPad Position="{Binding Pad, Mode=TwoWay}" Stay="{Binding Stay}" Margin="0,4,0,4"
                                 AutomationProperties.AutomationId="{Binding AutomationId}"
                                 AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
-                                AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
-                                AutomationProperties.ItemStatus="{Binding ChangedStatus}"/>
+                                AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
         </DataTemplate>
         <DataTemplate x:Key="KindInput" DataType="{x:Type vm:PluginSettingItem}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -242,9 +242,9 @@
                             <StackPanel Margin="0,8,26,8">
                                 <controls:PluginPad Position="{Binding Pad, Mode=TwoWay}" Stay="{Binding Stay}"
                                                     AutomationProperties.AutomationId="{Binding AutomationId}"
-                                                    AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
-                                                    AutomationProperties.ItemStatus="{Binding ChangedStatus}"/>
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource PluginCompactName}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                                    AutomationProperties.Name="{Binding Name, TargetNullValue=''}"/>
+                                <TextBlock Text="{Binding Name}" FontSize="13" HorizontalAlignment="Center" Margin="0,8,0,0"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

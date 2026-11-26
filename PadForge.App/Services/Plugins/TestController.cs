@@ -221,6 +221,8 @@ namespace PadForge.Services.Plugins
                 {
                     var d = PluginDeclarations.Read(words, json, out string error)
                             ?? throw new InvalidOperationException("The Test Controller's declaration of " + words["key"] + " was refused: " + error);
+                    // What By Hand shows is moved live with the mouse.
+                    d.Live = d.When == KeyHand;
                     set.Declare(d, out _);
                 }
                 finally { doc?.Dispose(); }

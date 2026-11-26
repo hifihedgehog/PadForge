@@ -121,7 +121,11 @@ namespace PadForge.ViewModels
         /// <summary>The setting's value differs from its default, which is
         /// when the plugin's settings keep a value for it: its name shows in
         /// ember and a screen reader hears <see cref="ChangedStatus"/>. Its
-        /// reset shows either way (<see cref="CanReset"/>).</summary>
+        /// reset shows either way (<see cref="CanReset"/>). Only a kept
+        /// setting takes the mark (a switch, a number, a choice, text or an
+        /// input): a pad is moved, a button pressed and a status read, and a
+        /// live control (<see cref="PluginDeclaration.Live"/>) is moved
+        /// too.</summary>
         public bool IsChanged
         {
             get => _isChanged;
@@ -130,6 +134,9 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _isChanged, value)) OnPropertyChanged(nameof(ChangedStatus));
             }
         }
+
+        private bool Marks => !Declaration.Live && Declaration.Kind is PluginSettingKind.Switch or PluginSettingKind.Number
+            or PluginSettingKind.Choice or PluginSettingKind.Text or PluginSettingKind.Input;
 
         /// <summary>"Changed" while <see cref="IsChanged"/>, as the row's UI
         /// Automation item status, else empty.</summary>
@@ -257,7 +264,7 @@ namespace PadForge.ViewModels
             }
             else if (!SameChoices(_choices, declaration.Choices)) Choices = Convert(declaration.Choices);
             Value = _host.Set.ValueOf(_host.Device, Key);
-            IsChanged = Declaration.HoldsValue && _host.Set.Keeps(_host.Device, Key);
+            IsChanged = Marks && _host.Set.Keeps(_host.Device, Key);
         }
 
         /// <summary>A choice's list opens: the plugin is asked for the list

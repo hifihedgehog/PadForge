@@ -651,6 +651,7 @@ namespace PadForge.Services.Plugins
             try { (held, sha) = _openHeld(run.Path); }
             catch { (held, sha) = (null, null); }
             var trusted = Trusted(run, held, sha);
+            string key = KeyToKeep(run, held, sha);
             bool changed = true, adopted = false;
             lock (_sync)
             {
@@ -670,7 +671,7 @@ namespace PadForge.Services.Plugins
                         if (run.Status == PluginStatus.Checking) run.Status = PluginStatus.Stopped;
                         if (_runs.Contains(run)) Evaluate(run);
                     }
-                    else adopted = Launch(run, held, sha, trusted);
+                    else adopted = Launch(run, held, sha, trusted, key);
                 }
             }
             RunChecks();
@@ -702,6 +703,25 @@ namespace PadForge.Services.Plugins
             return signature?.Key != null ? signature : null;
         }
 
+        /// <summary>
+        /// Outside the lock: the key of a plugin approved before keys were
+        /// kept, read on the handle that was hashed while the file is the
+        /// approved bytes, so its trust switch shows with no new approval.
+        /// Only an approval that saw a signer is read. Null for anything
+        /// else. The run is checked again under the lock before it is kept
+        /// (<see cref="Launch"/>).
+        /// </summary>
+        private string KeyToKeep(PluginRun run, FileStream held, string sha)
+        {
+            if (held == null || sha == null) return null;
+            lock (_sync)
+            {
+                if (run.SignerKey != null || run.Signer == null || !string.Equals(sha, run.Sha256, StringComparison.OrdinalIgnoreCase)) return null;
+            }
+            try { return PluginFile.KeyOf(run.Path, held); }
+            catch { return null; }
+        }
+
         /// <summary>Under the lock: whether the run still trusts the key the
         /// signature was checked against.</summary>
         private static bool TakesTrusted(PluginRun run, AuthenticodeSignature trusted)
@@ -719,9 +739,10 @@ namespace PadForge.Services.Plugins
         }
 
         /// <summary>Under the lock: the rest of a start, from the hash just
-        /// read to the running process. True when it took a new version
-        /// signed with the trusted key.</summary>
-        private bool Launch(PluginRun run, FileStream held, string sha, AuthenticodeSignature trusted)
+        /// read to the running process. True when what PadForge.xml keeps of
+        /// it changed: it took a new version signed with the trusted key, or
+        /// kept the key of an approval from before keys were kept.</summary>
+        private bool Launch(PluginRun run, FileStream held, string sha, AuthenticodeSignature trusted, string key)
         {
             if (held == null)
             {
@@ -739,6 +760,11 @@ namespace PadForge.Services.Plugins
                     return false;
                 }
                 TakeTrusted(run, sha, trusted);
+                adopted = true;
+            }
+            else if (key != null && run.SignerKey == null)
+            {
+                run.SignerKey = key.ToUpperInvariant();
                 adopted = true;
             }
             PluginCommand command;

@@ -460,7 +460,7 @@ namespace PadForge.Tests
             // checked, and the test host asks no server: even a file that
             // carries a valid signature gives none here.
             Assert.Contains("using (var held = PluginFile.OpenHeld(full, out sha))", controller);
-            Assert.Contains("key = held == null ? null : AuthenticodeSigner.SignedHeld(full, held.SafeFileHandle)?.Key;", controller);
+            Assert.Contains("key = PluginFile.KeyOf(full, held);", controller);
             // The key is the SHA-256 of the signing certificate's
             // SubjectPublicKeyInfo, read here from a file that carries a
             // signature and checked against .NET's own reading of it.
@@ -492,6 +492,32 @@ namespace PadForge.Tests
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
             Assert.Contains("ConfirmDialog.Show(owner, s.Plugins_Confirm_Title, s.Plugins_Confirm_Message, s.Plugins_Confirm_Add,", code);
         }
+        /// <summary>A trusted update needs revocation actually checked:
+        /// WinVerifyTrust passes under Windows' default policy when a
+        /// revocation server cannot be reached, so a chain whose revocation
+        /// status is unknown, or offline or stale (CERT_TRUST_STATUS: 0x40,
+        /// 0x01000000), is not taken and the update asks. The test host
+        /// verifies nothing over the network, so the rule is tested on fake
+        /// chain statuses, and the revocation-checked read is pinned to go
+        /// through it.</summary>
+        [Fact]
+        public void ATrustedUpdate_NeedsRevocationActuallyChecked()
+        {
+            const uint Unknown = 0x00000040, Offline = 0x01000000;
+            Assert.NotNull(AuthenticodeSigner.Signature(0, "Example Studio", "AB", true, 0));
+            Assert.Null(AuthenticodeSigner.Signature(0, "Example Studio", "AB", true, Unknown));
+            Assert.Null(AuthenticodeSigner.Signature(0, "Example Studio", "AB", true, Offline));
+            Assert.Null(AuthenticodeSigner.Signature(0, "Example Studio", "AB", true, Offline | Unknown));
+            // Read without revocation, as the confirmation reads the key, the
+            // chain's revocation status is not asked about.
+            Assert.NotNull(AuthenticodeSigner.Signature(0, "Example Studio", "AB", false, Offline | Unknown));
+            Assert.Null(AuthenticodeSigner.Signature(unchecked((int)0x800B0100), "Example Studio", "AB", true, 0));
+            Assert.Null(AuthenticodeSigner.Signature(0, null, "AB", true, 0));
+            Assert.Null(AuthenticodeSigner.Signature(0, "Example Studio", null, true, 0));
+            string engine = ExtrasPageTests.RepoText("PadForge.Engine", "Common", "AuthenticodeSigner.cs");
+            Assert.Contains("return Signature(result, signer, key, revocation, chainError);", engine);
+        }
+
         /// <summary>Add a Plugin… and Approve… read the file for their
         /// confirmation off the interface's thread, so a large file's hash
         /// holds no page, and a second press while it is read does

@@ -83,6 +83,13 @@ namespace PadForge.Services.Plugins
         /// <summary>The declaration's place in the order it was given.</summary>
         public int Order { get; set; }
 
+        /// <summary>A control moved live rather than a setting kept: the
+        /// Test Controller's By Hand sticks, triggers and buttons, set with
+        /// the mouse while By Hand is on. It takes no changed mark. Set by
+        /// PadForge's own built-ins, never read from a plugin's
+        /// line.</summary>
+        internal bool Live { get; set; }
+
         /// <summary>Whether it holds a value the user sets and PadForge
         /// keeps.</summary>
         public bool HoldsValue => Kind is PluginSettingKind.Switch or PluginSettingKind.Number or PluginSettingKind.Choice

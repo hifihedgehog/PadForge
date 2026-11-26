@@ -669,7 +669,7 @@ namespace PadForge.Services.Plugins
             // signer: with no revocation check and nothing fetched.
             string sha, key;
             using (var held = PluginFile.OpenHeld(full, out sha))
-                key = held == null ? null : AuthenticodeSigner.SignedHeld(full, held.SafeFileHandle)?.Key;
+                key = PluginFile.KeyOf(full, held);
             return sha == null ? null : new PluginApproval(full, AuthenticodeSigner.Of(full), sha, key);
         }
 

@@ -68,6 +68,14 @@ namespace PadForge.Services.Plugins
         internal static PadForge.Engine.Common.AuthenticodeSignature SignatureOf(string path, FileStream held)
             => held == null ? null : PadForge.Engine.Common.AuthenticodeSigner.VerifiedHeld(path, held.SafeFileHandle);
 
+        /// <summary>The key that signed the held file, read on the handle that
+        /// was hashed as the confirmation reads the signer: no revocation
+        /// check and nothing fetched
+        /// (<see cref="PadForge.Engine.Common.AuthenticodeSigner.SignedHeld"/>).
+        /// Null for a file whose own signature does not hold.</summary>
+        internal static string KeyOf(string path, FileStream held)
+            => held == null ? null : PadForge.Engine.Common.AuthenticodeSigner.SignedHeld(path, held.SafeFileHandle)?.Key;
+
         /// <summary>The file's SHA-256 as hex, or null when it cannot be
         /// read.</summary>
         internal static string Sha256(string path)

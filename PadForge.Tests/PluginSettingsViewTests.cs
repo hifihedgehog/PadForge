@@ -120,7 +120,9 @@ namespace PadForge.Tests
         /// card and on a device's, in the full row and in a compact one. It
         /// turns back on its reset and on a value typed back to its default,
         /// since the set keeps only a value that differs from its default.
-        /// Its reset stays on its row either way.</summary>
+        /// Its reset stays on its row either way. Only kept settings take it
+        /// (switch, number, choice, text and input): a pad, a button and a
+        /// status never do.</summary>
         [Fact]
         public void AChangedValue_ShowsItsNameInEmber_AndSaysChanged_UntilItIsAtItsDefaultAgain()
         {
@@ -167,7 +169,9 @@ namespace PadForge.Tests
                 device.Item("clutch").IsOn = true;
                 Lay(cardView);
                 Lay(deviceView);
-                foreach (string key in new[] { "dead", "curve", "trigger", "stick" }) Marked(cardView, card.Item(key), true);
+                foreach (string key in new[] { "dead", "curve", "trigger" }) Marked(cardView, card.Item(key), true);
+                // A pad is moved, not kept as a setting: no mark.
+                Marked(cardView, card.Item("stick"), false);
                 Marked(deviceView, device.Item("clutch"), true);
 
                 // A compact toggle off its default says so, and in ember while
@@ -189,6 +193,38 @@ namespace PadForge.Tests
                 Marked(cardView, card.Item("trigger"), true);
                 Assert.True(card.Item("dead").CanReset);
                 Assert.True(card.Item("curve").CanReset);
+            });
+        }
+
+        /// <summary>The Test Controller's By Hand switch is a kept setting
+        /// and turns ember when on. The sticks, triggers and buttons it shows
+        /// are moved live with the mouse and take no mark.</summary>
+        [Fact]
+        public void TheTestControllersByHandControls_TakeNoMark_ButByHandItselfDoes()
+        {
+            WithAppResources(dispatcher =>
+            {
+                var set = new PluginSettingSet();
+                TestControllerPattern.Declare(set);
+                var host = new PluginSettingsHost(set, null, "Plugins_TestController", dispatcher);
+                var view = new PluginSettingsView { DataContext = host };
+                host.Item(TestControllerPattern.KeyHand).IsOn = true;
+                host.Item(TestControllerPattern.KeyLeftStick).Pad = new Point(40, -60);
+                host.Item(TestControllerPattern.KeyRightTrigger).Number = 70;
+                host.Item("hand-a").IsOn = true;
+                Lay(view);
+                Assert.True(host.Item(TestControllerPattern.KeyHand).IsChanged);
+                Assert.Equal("Changed", host.Item(TestControllerPattern.KeyHand).ChangedStatus);
+                foreach (string key in new[] { TestControllerPattern.KeyLeftStick, TestControllerPattern.KeyRightTrigger, "hand-a" })
+                {
+                    Assert.True(set.Keeps(null, key), key + " is not kept");
+                    Assert.False(host.Item(key).IsChanged, key + " is marked");
+                    Assert.Equal(string.Empty, host.Item(key).ChangedStatus);
+                }
+                var ember = ((SolidColorBrush)Application.Current.FindResource("EmberTextBrush")).Color;
+                var trigger = Under(view).OfType<System.Windows.Controls.TextBlock>()
+                    .First(t => ReferenceEquals(t.DataContext, host.Item(TestControllerPattern.KeyRightTrigger)) && t.Text == host.Item(TestControllerPattern.KeyRightTrigger).Name);
+                Assert.False(trigger.Foreground is SolidColorBrush b && b.Color == ember);
             });
         }
 

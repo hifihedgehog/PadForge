@@ -217,8 +217,11 @@ namespace PadForge.Services.Install
         {
             var seam = HasRightsSeam;
             if (seam != null) return seam();
-            using var self = Process.GetCurrentProcess();
-            return PluginLauncher.HasAdministratorRights(self.SafeHandle) != false;
+            // Rights read for certain, and nothing less, start the install
+            // again as the user. A copy that cannot read its own token runs
+            // the install here, so the run as the user never starts itself
+            // again.
+            return PluginLauncher.ThisProcessHasAdministratorRights() == true;
         }
 
         /// <summary>Test seam: whether the desktop shell has administrator

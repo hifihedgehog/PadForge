@@ -1,5 +1,7 @@
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using Microsoft.Win32.SafeHandles;
 
 namespace PadForge.PluginProbe
 {
@@ -12,8 +14,10 @@ namespace PadForge.PluginProbe
     /// names, whether it has administrator rights, the key and pipe name
     /// PadForge gave it, the probe variable the test set in its own
     /// environment (which a plugin never gets), its Path and its folder,
-    /// then waits a minute, so the test sees it end only when its job is
-    /// closed.
+    /// whether it may open its own process again by its ID, as
+    /// Process.SafeHandle does, and whether its token, read through the
+    /// handle GetCurrentProcess gives, is elevated, then waits a minute, so
+    /// the test sees it end only when its job is closed.
     /// <c>serve &lt;pipe&gt;</c> stands in for PadForge's side of its web
     /// helper's pipe, under a test's own name (<see cref="Serve"/>).
     /// </summary>
@@ -48,12 +52,57 @@ namespace PadForge.PluginProbe
                 .Append("mine=").Append(Environment.GetEnvironmentVariable("PADFORGE_PROBE_MINE")).Append('\n')
                 .Append("path=").Append(Environment.GetEnvironmentVariable("Path")).Append('\n')
                 .Append("folder=").Append(Environment.CurrentDirectory).Append('\n')
+                .Append("selfopen=").Append(SelfOpen()).Append('\n')
+                .Append("owntoken=").Append(OwnToken()).Append('\n')
                 .Append("done\n");
             File.WriteAllText(report + ".part", text.ToString());
             File.Move(report + ".part", report, overwrite: true);
             Thread.Sleep(60000);
             return 0;
         }
+
+        /// <summary>0 when this process opens its own process again by its
+        /// ID, as Process.SafeHandle does, or the error Windows gave.</summary>
+        private static int SelfOpen()
+        {
+            try
+            {
+                using var self = System.Diagnostics.Process.GetCurrentProcess();
+                return self.SafeHandle.IsInvalid ? -1 : 0;
+            }
+            catch (System.ComponentModel.Win32Exception e)
+            {
+                return e.NativeErrorCode;
+            }
+        }
+
+        /// <summary>1 or 0, whether this process's token is elevated, read
+        /// through the handle GetCurrentProcess gives, which needs no rights
+        /// on the process. "error n" when Windows refused.</summary>
+        private static string OwnToken()
+        {
+            if (!OpenProcessToken(GetCurrentProcess(), TokenQuery, out SafeAccessTokenHandle token))
+                return "error " + Marshal.GetLastWin32Error();
+            using (token)
+            {
+                return GetTokenInformation(token, TokenElevation, out int elevated, sizeof(int), out _)
+                    ? (elevated != 0 ? "1" : "0")
+                    : "error " + Marshal.GetLastWin32Error();
+            }
+        }
+
+        private const uint TokenQuery = 0x0008;
+        private const int TokenElevation = 20;
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentProcess();
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool OpenProcessToken(IntPtr process, uint access, out SafeAccessTokenHandle token);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool GetTokenInformation(SafeAccessTokenHandle token, int infoClass, out int information,
+            int length, out int returned);
 
         /// <summary>
         /// PadForge's side of its web helper's pipe, as far as the helper

@@ -57,6 +57,7 @@ namespace PadForge.Services
         private Action _exit;
         private bool _showOwed;
         private bool _exitOwed;
+        private bool _closing;
         private DispatcherFrame _switchesWait;
         private string[] _switches;
 
@@ -184,9 +185,14 @@ namespace PadForge.Services
 
         /// <summary>This copy is closing: the ready window goes, and the
         /// signal window stays to the end, so a copy that waits for this
-        /// one's exit still finds its process.</summary>
+        /// one's exit still finds its process. From here a show is taken and
+        /// dropped, and one that waited for the window is forgotten: a window
+        /// in its shutdown is never shown again, and on 2026-11-26 a second
+        /// start's show reached one after its tray icon was gone.</summary>
         public void MarkClosing()
         {
+            _closing = true;
+            _showOwed = false;
             _ready?.Dispose();
             _ready = null;
         }
@@ -206,6 +212,7 @@ namespace PadForge.Services
             if (_showMessage != 0 && taken == _showMessage)
             {
                 handled = true;
+                if (_closing) return IntPtr.Zero;
                 if (_show != null) _show();
                 else _showOwed = true;
             }

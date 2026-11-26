@@ -143,6 +143,30 @@ namespace PadForge.Tests
             Assert.Equal(new[] { ClientRun.NoAnswerText }, deaf.Errors);
         }
 
+        /// <summary>A start with no switch while the copy is closing waits for
+        /// its end and goes on to become the app, as a switch's line does when
+        /// the copy closes first. On 2026-11-26 such a start was handed to the
+        /// closing copy and no PadForge was left running. A ready copy, or one
+        /// still starting, is asked to show its window.</summary>
+        [Fact]
+        public void WithACopyThatIsClosing_NoSwitchWaitsForItsEnd_AndBecomesTheApp()
+        {
+            var closing = new Run { Settled = RunningCopy.Settled.Gone };
+            Assert.Equal((false, ClientRun.Done), closing.Go());
+            Assert.Equal(1, closing.Settles);
+            Assert.Equal(0, closing.Shown);
+            Assert.Empty(closing.Sent);
+            Assert.Empty(closing.Said.Concat(closing.Errors).Concat(closing.Told).Concat(closing.ToldErrors));
+
+            foreach (var settled in new[] { RunningCopy.Settled.Ready, RunningCopy.Settled.Starting })
+            {
+                var run = new Run { Settled = settled };
+                Assert.Equal((true, ClientRun.Done), run.Go());
+                Assert.Equal(1, run.Settles);
+                Assert.Equal(new[] { "show" }, run.Order);
+            }
+        }
+
         [Fact]
         public void WithACopy_EachSwitchIsSentAsItsLine_AndItsAnswerPrinted()
         {

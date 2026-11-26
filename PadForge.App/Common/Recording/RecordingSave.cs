@@ -67,8 +67,7 @@ namespace PadForge.Common.Recording
         {
             var seam = RightsSeam;
             if (seam != null) return seam();
-            using var self = System.Diagnostics.Process.GetCurrentProcess();
-            if (PluginLauncher.HasAdministratorRights(self.SafeHandle) == false) return false;
+            if (PluginLauncher.ThisProcessHasAdministratorRights() == false) return false;
             using var shell = PluginLauncher.OpenShell();
             return shell != null && PluginLauncher.HasAdministratorRights(shell) == false;
         }

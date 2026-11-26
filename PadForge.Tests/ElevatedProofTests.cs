@@ -43,11 +43,14 @@ namespace PadForge.Tests
     /// PadForge's name, the private-namespace lock works, a process with
     /// rights reads as high integrity, the program-input gate holds back
     /// output while a real window of a process with rights is in front or
-    /// under the pointer, and a program started through the desktop shell
-    /// runs at medium integrity. Nothing here starts PadForge, opens its
-    /// pipes or touches its windows: every pipe and lock name is the test's
-    /// own, and the only program started is cmd.exe writing whoami's lines
-    /// to a file of the test's own.
+    /// under the pointer, a program started through the desktop shell
+    /// runs at medium integrity, and a program PadForge starts as the user
+    /// may not open its own process again by its ID and reads its token
+    /// through its own handle. Nothing here starts PadForge, opens its pipes
+    /// or touches its windows: every pipe and lock name is the test's own,
+    /// and the programs started are cmd.exe writing whoami's lines to a file
+    /// of the test's own and the tests' own helper writing its facts to
+    /// another.
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public class ElevatedProofTests
@@ -273,6 +276,55 @@ namespace PadForge.Tests
             }
             finally
             {
+                try { Directory.Delete(dir, true); } catch (IOException) { }
+            }
+        }
+
+        /// <summary>A program PadForge starts as the user through the desktop
+        /// shell (PluginLauncher) may not open its own process again by its
+        /// ID: Windows answers access denied. On 2026-11-26 the library check
+        /// that runs in such a copy read its rights that way, and every check
+        /// the Scripts card started ended on an exception nothing caught. The
+        /// same program reads its token through the handle GetCurrentProcess
+        /// gives, as PadForge now reads its own rights
+        /// (PluginLauncher.ThisProcessHasAdministratorRights), and finds it
+        /// not elevated. The refusal is the control: without it the token
+        /// read would show nothing. The program is the tests' own helper,
+        /// from the test folder, the one folder the launcher's fence lets a
+        /// test start a program from.</summary>
+        [ElevatedFact]
+        public void AProgramStartedAsTheUser_IsRefusedItsOwnProcessByItsID_AndReadsItsTokenThroughItsOwnHandle()
+        {
+            string probe = PluginLauncherTests.ProbeExe;
+            Assert.True(File.Exists(probe), "the helper was not built beside the tests: " + probe);
+            string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.AsTheUser." + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            string report = Path.Combine(dir, "report.txt");
+            PadForge.Services.Plugins.IPluginProcess process = null;
+            try
+            {
+                var launch = new PadForge.Services.Plugins.PluginLauncher().Start(
+                    new PadForge.Services.Plugins.PluginCommand(probe,
+                        PadForge.Services.Plugins.PluginFile.Quote(probe) + " rights", Path.GetDirectoryName(probe)),
+                    new System.Collections.Generic.Dictionary<string, string> { ["PADFORGE_PROBE_REPORT"] = report });
+                Assert.True(launch.Process != null, "not started: " + launch.Refusal + ", error " + launch.Error);
+                process = launch.Process;
+                Assert.True(SpinWait.SpinUntil(() => File.Exists(report), 20000), "the helper wrote no report");
+                var facts = new System.Collections.Generic.Dictionary<string, string>();
+                foreach (string line in File.ReadAllLines(report))
+                {
+                    int equals = line.IndexOf('=');
+                    if (equals > 0) facts[line.Substring(0, equals)] = line.Substring(equals + 1);
+                }
+                Assert.Equal("0", facts["privileged"]);
+                // 5 is access denied.
+                Assert.Equal("5", facts["selfopen"]);
+                Assert.Equal("0", facts["owntoken"]);
+            }
+            finally
+            {
+                process?.Stop();
+                process?.Dispose();
                 try { Directory.Delete(dir, true); } catch (IOException) { }
             }
         }

@@ -254,6 +254,60 @@ namespace PadForge.Tests
             Assert.DoesNotContain("ShellExecute", source);
         }
 
+        /// <summary>PadForge reads its own rights through the handle
+        /// GetCurrentProcess gives, never by opening its own process again
+        /// by its ID, which a copy it starts as the user may not do
+        /// (2026-11-26, ElevatedProofTests): every read of this process's
+        /// rights is ThisProcessHasAdministratorRights, and
+        /// HasAdministratorRights is given only the desktop shell or the
+        /// child the launcher made.</summary>
+        [Fact]
+        public void ThisProcessesRights_AreReadThroughItsOwnHandle_AndNoCallerOpensItsProcessAgain()
+        {
+            Assert.Equal(Environment.IsPrivilegedProcess, PluginLauncher.ThisProcessHasAdministratorRights());
+            string launcher = OffLimitsSource.Read("PadForge.App/Services/Plugins/PluginLauncher.cs");
+            Assert.Contains("internal static bool? ThisProcessHasAdministratorRights()\n"
+                + "            => OpenProcessToken(GetCurrentProcess(), TokenQuery, out var token) ? RightsOf(token) : null;", launcher);
+
+            // The control: the read the check made before is one the census
+            // sees.
+            Assert.Equal("self.SafeHandle", GivenRights.Match("return PluginLauncher.HasAdministratorRights(self.SafeHandle) != false;").Groups[1].Value);
+
+            var own = new List<string>();
+            var given = new List<string>();
+            foreach (string path in OffLimitsSource.Sources("PadForge.App"))
+            {
+                string name = Path.GetFileName(path);
+                foreach (string raw in File.ReadAllLines(path))
+                {
+                    string line = raw.Trim();
+                    if (line.StartsWith("//", StringComparison.Ordinal) || line.StartsWith("internal static", StringComparison.Ordinal)) continue;
+                    if (line.Contains("ThisProcessHasAdministratorRights()", StringComparison.Ordinal)) own.Add(name + ": " + line);
+                    foreach (Match m in GivenRights.Matches(line)) given.Add(name + ": " + m.Groups[1].Value);
+                }
+            }
+            Assert.Equal(new[]
+            {
+                "RecordingFolder.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
+                "RecordingFolder.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
+                "RecordingSave.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() == false) return false;",
+                "UserInstall.cs: return PluginLauncher.ThisProcessHasAdministratorRights() == true;",
+            }, own.OrderBy(s => s, StringComparer.Ordinal));
+            Assert.Equal(new[]
+            {
+                "PluginLauncher.cs: process",
+                "PluginLauncher.cs: shellProcess",
+                "RecordingFolder.cs: shell",
+                "RecordingFolder.cs: shell",
+                "RecordingSave.cs: shell",
+                "UserInstall.cs: shell",
+            }, given.OrderBy(s => s, StringComparer.Ordinal));
+        }
+
+        /// <summary>A call of HasAdministratorRights and what it is
+        /// given.</summary>
+        private static readonly Regex GivenRights = new(@"\bHasAdministratorRights\(([^)]*)\)");
+
         // ── Real starts of the tests' helper ──
 
         internal static string ProbeExe => Path.Combine(AppContext.BaseDirectory, "PluginProbe", "PadForge.PluginProbe.exe");

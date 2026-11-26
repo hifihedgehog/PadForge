@@ -264,6 +264,39 @@ namespace PadForge.Tests
             Assert.Equal(2, shown);
         });
 
+        /// <summary>A copy that is closing takes a show and drops it, and a
+        /// show that waited for the window is forgotten, so nothing brings
+        /// back a window in its shutdown. On 2026-11-26 a second start's show
+        /// reached the window after its tray icon was gone and threw.</summary>
+        [Fact]
+        public void AShowWhileTheCopyCloses_IsDropped_AndOneThatWaitedIsForgotten() => OnSta(() =>
+        {
+            var names = TestNames();
+            using var signal = new InstanceSignal(names.Signal, names.Ready, names.Show, names.Exit);
+            Assert.True(signal.Open());
+            int shown = 0;
+            signal.Attach(() => shown++, null);
+            // The control: a show before the close is honored.
+            Assert.True(PostMessageW(signal.SignalWindow, signal.ShowMessage, IntPtr.Zero, IntPtr.Zero));
+            Pump();
+            Assert.Equal(1, shown);
+            signal.MarkClosing();
+            Assert.True(PostMessageW(signal.SignalWindow, signal.ShowMessage, IntPtr.Zero, IntPtr.Zero));
+            Pump();
+            Assert.Equal(1, shown);
+
+            // A show that came before the window, then the close: forgotten.
+            var later = TestNames();
+            using var starting = new InstanceSignal(later.Signal, later.Ready, later.Show, later.Exit);
+            Assert.True(starting.Open());
+            Assert.True(PostMessageW(starting.SignalWindow, starting.ShowMessage, IntPtr.Zero, IntPtr.Zero));
+            Pump();
+            starting.MarkClosing();
+            int shownLater = 0;
+            starting.Attach(() => shownLater++, null);
+            Assert.Equal(0, shownLater);
+        });
+
         /// <summary>No message but the one registered show message does
         /// anything, and none is remembered.</summary>
         [Fact]

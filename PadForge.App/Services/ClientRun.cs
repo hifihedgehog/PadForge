@@ -283,9 +283,15 @@ namespace PadForge.Services
 
             if (!seams.CopyRuns()) return NoCopy(request, seams, out exitCode);
 
-            // A copy runs. Started again with no switch, PadForge shows it.
+            // A copy runs. Started again with no switch, PadForge shows it. A
+            // copy that is closing takes no show, so this start waits for its
+            // end and becomes the app in its place, as a switch's line does
+            // when the copy closes first (2026-11-26: the show went to the
+            // closing copy and no PadForge was left running). A copy still
+            // starting shows its window once it is ready.
             if (request.Empty)
             {
+                if (seams.Settle() == RunningCopy.Settled.Gone) return NoCopy(request, seams, out exitCode);
                 if (seams.ShowWindow()) return true;
                 seams.SayError(NoAnswerText);
                 exitCode = AnsweredAnError;

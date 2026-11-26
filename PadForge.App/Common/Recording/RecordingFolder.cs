@@ -76,8 +76,7 @@ namespace PadForge.Common.Recording
         /// process's own otherwise.</summary>
         private static string UserTemp()
         {
-            using var self = System.Diagnostics.Process.GetCurrentProcess();
-            if (PluginLauncher.HasAdministratorRights(self.SafeHandle) != false)
+            if (PluginLauncher.ThisProcessHasAdministratorRights() != false)
             {
                 using var shell = PluginLauncher.OpenShell();
                 if (shell != null && PluginLauncher.HasAdministratorRights(shell) == false)
@@ -116,8 +115,7 @@ namespace PadForge.Common.Recording
             if (OffLimitsForTest && DownloadsSeam == null) return null;
             var seam = DownloadsSeam;
             if (seam != null) return seam();
-            using var self = System.Diagnostics.Process.GetCurrentProcess();
-            if (PluginLauncher.HasAdministratorRights(self.SafeHandle) != false)
+            if (PluginLauncher.ThisProcessHasAdministratorRights() != false)
             {
                 using var shell = PluginLauncher.OpenShell();
                 if (shell != null && PluginLauncher.HasAdministratorRights(shell) == false)

@@ -262,8 +262,22 @@ namespace PadForge.Services.Plugins
         /// administrator does with UAC off. Null when its token cannot be
         /// read, which a caller takes as yes.</summary>
         internal static bool? HasAdministratorRights(SafeProcessHandle process)
+            => OpenProcessToken(process, TokenQuery, out var token) ? RightsOf(token) : null;
+
+        /// <summary>Whether this process's own token has administrator
+        /// rights, read as <see cref="HasAdministratorRights"/> reads any
+        /// process's, through the handle GetCurrentProcess gives, as
+        /// Privileges does. That handle needs no rights on the process
+        /// object. Opening this process again by its ID does: a copy PadForge
+        /// starts as the user (<see cref="Start"/>) is refused its own
+        /// process, and the install check's read of its rights through
+        /// Process.SafeHandle failed there with access denied on
+        /// 2026-11-26.</summary>
+        internal static bool? ThisProcessHasAdministratorRights()
+            => OpenProcessToken(GetCurrentProcess(), TokenQuery, out var token) ? RightsOf(token) : null;
+
+        private static bool? RightsOf(SafeAccessTokenHandle token)
         {
-            if (!OpenProcessToken(process, TokenQuery, out var token)) return null;
             using (token)
             {
                 int? elevated = AutomationClientIdentity.ReadInt(token, TokenElevation);
@@ -487,6 +501,12 @@ namespace PadForge.Services.Plugins
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool OpenProcessToken(SafeProcessHandle process, uint access, out SafeAccessTokenHandle token);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool OpenProcessToken(IntPtr process, uint access, out SafeAccessTokenHandle token);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentProcess();
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool InitializeProcThreadAttributeList(IntPtr list, int count, int flags, ref IntPtr size);

@@ -8078,6 +8078,12 @@ namespace PadForge
             // reckoning, so with Always Show in System Tray on, the tray's Show
             // and its double-click did nothing at all.
             if (_isRestoring) return;
+            // A window in its shutdown is never brought back: the close shows
+            // it itself, under the shutdown overlay, and has let go of the
+            // tray icon. A second start's show, maximize, the window hotkey
+            // and an assistant's bring-forward all reach this, and one that
+            // came during a shutdown threw on the gone icon (2026-11-26).
+            if (_shutdownStarted) return;
             _isRestoring = true;
             try
             {
@@ -8093,7 +8099,7 @@ namespace PadForge
                 Activate();
                 // (#439) The icon stays up with Always Show in System Tray on, so
                 // Exit in its menu is one click away without closing the window.
-                _notifyIcon.Visible = _viewModel.Settings.AlwaysShowTrayIcon;
+                if (_notifyIcon != null) _notifyIcon.Visible = _viewModel.Settings.AlwaysShowTrayIcon;
                 if (_isFullScreen && forceForward)
                     ForceToForeground(new System.Windows.Interop.WindowInteropHelper(this).Handle);
 

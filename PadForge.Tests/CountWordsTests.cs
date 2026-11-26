@@ -50,6 +50,8 @@ namespace PadForge.Tests
         {
             "is", "as", "was", "has", "does", "its", "this", "ms", "needs", "reads", "sets", "reaches",
             "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches", "keeps", "wants", "asks",
+            // "{0} of yours": a pronoun, not a plural noun (#600).
+            "yours",
         };
 
         // Strings whose value before a plural is never one, with the reason.
@@ -74,6 +76,7 @@ namespace PadForge.Tests
             ["MacroAction_ShowKeyboardScreen_Format"] = "{0} is the screen's name",
             ["MacroAction_ShowKeyboardScreen_Hold_Format"] = "{0} is the screen's name",
             ["Import_ExtrasMacro_Format"] = "{0} is an input's label, as in its siblings {0} lightbar and {0} range",
+            ["SdlMapping_Full_Format"] = "{0} is the most rows of the user's PadForge keeps (ControllerDatabaseMine.MaxRows)",
             ["ControllerDatabase_BuiltIn_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount: SDL's own Windows rows and the community's",
             ["ControllerDatabase_BuiltInUpdated_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount, and {3} and {4} stand before no noun",
             ["Main_DevicesDisconnectedNamed_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
@@ -119,6 +122,7 @@ namespace PadForge.Tests
             int[] neverOne =
             {
                 PadForge.Common.Input.InputManager.MaxPads,
+                PadForge.Common.Input.ControllerDatabaseMine.MaxRows,
                 PadForge.MainWindow.KeepDriverSeconds,
                 PadForge.Common.Input.Twitch.ChatCommandRegistry.MaxWordLength,
                 PadForge.Common.Input.Twitch.ChatCommandRegistry.MaxWords,

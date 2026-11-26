@@ -110,6 +110,13 @@ namespace PadForge.Views
         internal static string Prefill(Mode mode, string clipboard, string deviceGuid) =>
             clipboard != null && Verdict(mode, clipboard, deviceGuid, out _, out _).Ok ? clipboard : null;
 
+        /// <summary>What Add Rows opens with: the clipboard's text when it
+        /// passes the check, else the rows of the user's own
+        /// SDL_GAMECONTROLLERCONFIG variable PadForge does not keep (#600),
+        /// else nothing.</summary>
+        internal static string AddRowsText(string clipboard, string profileRows) =>
+            Prefill(Mode.AddRows, clipboard, null) ?? (string.IsNullOrEmpty(profileRows) ? null : profileRows);
+
         /// <summary>Opens the dialog over the window and answers whether the
         /// person pressed its primary button.</summary>
         internal static bool Show(SdlMappingDialog dialog, Window owner)
@@ -140,7 +147,28 @@ namespace PadForge.Views
             VerdictLead.Foreground = (System.Windows.Media.Brush)FindResource(verdict.Ok ? "ColdBrush" : "WaitBrush");
             VerdictDetail.Text = verdict.Detail ?? string.Empty;
             PrimaryButton.IsEnabled = verdict.Ok;
-            ShowChange(verdict.Ok && _mode != Mode.AddRows);
+            if (_mode == Mode.AddRows)
+            {
+                // How many of the rows will be added, and how many will not
+                // past the cap (#600).
+                var mine = ControllerDatabaseMine.Current;
+                ChangeLine.Visibility = verdict.Ok ? Visibility.Visible : Visibility.Collapsed;
+                if (verdict.Ok) ChangeLine.Text = AddCountWords(rows.Count, mine.AddCount(rows), mine.Count);
+                return;
+            }
+            ShowChange(verdict.Ok);
+        }
+
+        /// <summary>The Add Rows count (#600): every row will be added, or how
+        /// many of the user's are kept now and how many of the text's will
+        /// and will not be added. A row under an ID kept already replaces it
+        /// and counts as added.</summary>
+        internal static string AddCountWords(int rows, int added, int kept)
+        {
+            var culture = CultureInfo.CurrentCulture;
+            if (added >= rows)
+                return string.Format(culture, Strings.CountFormat(nameof(Strings.SdlMappingDialog_AddAll_Format), rows), rows, ControllerDatabaseMine.MaxRows);
+            return string.Format(culture, Strings.CountFormat(nameof(Strings.SdlMappingDialog_AddSome_Format), kept), kept, added, rows - added);
         }
 
         private void ShowChange(bool show)

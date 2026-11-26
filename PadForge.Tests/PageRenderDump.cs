@@ -131,6 +131,7 @@ namespace PadForge.Tests
                     if (Draws("devices")) WithBoardLinks(() => DrawDevicesPage(app, dispatcher, dir, scale, Step));
                     if (Draws("sticks")) DrawSticksSection(app, dispatcher, dir, scale, Step);
                     if (Draws("mouse")) DrawMouseSteering(app, dispatcher, dir, scale, Step);
+                    if (Draws("database")) DrawControllerDatabaseRow(app, dispatcher, dir, scale, Step);
                     if (!Draws("pad")) return;
 
                     var vm = new PadViewModel(0);
@@ -1078,6 +1079,50 @@ namespace PadForge.Tests
         /// page's width beside the sidebar in a window of the default 1100, of 1280, of 1440 and of
         /// 1720, and of the least 900. A page in no window has no device, so the two groups are put
         /// up by hand.</summary>
+        /// <summary>The Controller Database row of Settings, General, with its
+        /// More open, as the Database board draws it (#600): Download From
+        /// naming a mirror, and Your Rows with the line on the rows of the
+        /// user's own SDL_GAMECONTROLLERCONFIG variable. The page is drawn tall
+        /// and whole, and the row is the Updates card's last.</summary>
+        private static void DrawControllerDatabaseRow(App app, Dispatcher dispatcher, string dir, double scale, Action<string> step)
+        {
+            string from = PadForge.Common.Input.SettingsManager.ControllerDatabaseFrom;
+            var mine = PadForge.Common.Input.ControllerDatabaseMine.Current;
+            try
+            {
+                // Three rows of the user's, so Clear shows as the board draws it.
+                var three = PadForge.Common.Input.ControllerDatabaseMine.Empty;
+                for (int i = 1; i <= 3; i++)
+                {
+                    PadForge.Common.Input.SdlMappingRow.TryParse(ControllerDatabaseFixture.Row(0x3000, i, "Pad " + i), out var row, out _);
+                    three = three.With(new PadForge.Common.Input.ControllerDatabaseMineRow(row.Guid, row, DateTime.UtcNow, string.Empty, Guid.Empty,
+                        Array.Empty<PadForge.Common.Input.ControllerDatabaseBefore>()));
+                }
+                PadForge.Common.Input.ControllerDatabaseMine.Current = three;
+                PadForge.Common.Input.SettingsManager.ControllerDatabaseFrom = "https://mirror.example.net/sdl/gamecontrollerdb.txt";
+                var settings = new SettingsViewModel();
+                settings.SetControllerDatabaseStatus(() =>
+                    "Built in: 1,250 mappings, community copy of 2026-09-24. Downloaded 2026-11-25 from mirror.example.net: 64 new rows.");
+                settings.SetControllerDatabaseResult(() => PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_InUseAtOnce);
+                settings.SetControllerDatabaseMine(() => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_Mine_Format, 3),
+                    () => System.Threading.Tasks.Task.CompletedTask, _ => System.Threading.Tasks.Task.FromResult(0));
+                settings.SetControllerDatabaseProfileRows(
+                    () => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_ProfileRows_Format, 2), () => null);
+                settings.RaiseControllerDatabaseAddress();
+                var page = new SettingsPage { DataContext = settings };
+                var ground = Ground(app, page);
+                step("the Settings page is made");
+                var more = (System.Windows.Controls.Expander)page.FindName("ControllerDatabaseMore");
+                Shoot(ground, dispatcher, dir, scale, "settings-database-more.png", 1176, 2600, () => more.IsExpanded = true, step);
+                more.IsExpanded = false;
+            }
+            finally
+            {
+                PadForge.Common.Input.SettingsManager.ControllerDatabaseFrom = from;
+                PadForge.Common.Input.ControllerDatabaseMine.Current = mine;
+            }
+        }
+
         private static void DrawSticksSection(App app, Dispatcher dispatcher, string dir, double scale, Action<string> step)
         {
             var vm = new PadViewModel(0);

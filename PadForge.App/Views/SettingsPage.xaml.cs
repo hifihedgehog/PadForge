@@ -314,7 +314,10 @@ namespace PadForge.Views
         private async void AddDatabaseRows_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not ViewModels.SettingsViewModel vm) return;
-            var dialog = new SdlMappingDialog(SdlMappingDialog.Mode.AddRows, null, null, null);
+            // A row on the clipboard first, then the rows of the user's own
+            // SDL_GAMECONTROLLERCONFIG variable PadForge does not keep.
+            string text = SdlMappingDialog.AddRowsText(SdlMappingDialog.ReadClipboard(), vm.ControllerDatabaseProfileRowsText);
+            var dialog = new SdlMappingDialog(SdlMappingDialog.Mode.AddRows, null, null, null, text);
             if (!SdlMappingDialog.Show(dialog, Window.GetWindow(this))) return;
             await vm.AddControllerDatabaseRows(dialog.PickedRows);
         }

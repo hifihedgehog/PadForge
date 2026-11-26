@@ -3581,6 +3581,7 @@
   "Views/SettingsPage.xaml \u003CButton\u003E id:Settings_ControllerDatabase_ChangeAddress = UsersOwn",
   "Views/SettingsPage.xaml \u003CButton\u003E id:Settings_ControllerDatabase_UseCommunity = UsersOwn",
   "Views/SettingsPage.xaml \u003CTextBlock\u003E Text:ControllerDatabaseMineStatus = Free",
+  "Views/SettingsPage.xaml \u003CTextBlock\u003E Text:ControllerDatabaseProfileRowsStatus = Free",
   "Views/SettingsPage.xaml \u003CButton\u003E id:Settings_ControllerDatabase_AddRows = Free",
   "Views/SettingsPage.xaml \u003CButton\u003E id:Settings_ControllerDatabase_ClearMine = Free",
   "Views/SettingsPage.xaml \u003CButton\u003E id:Settings_ResetAll_InputEngine = Free",

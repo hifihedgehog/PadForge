@@ -53,6 +53,10 @@ namespace PadForge.Services
         AtStart,
         /// <summary>SDL did not take the row.</summary>
         Refused,
+        /// <summary>Not kept: the user's rows are at their most
+        /// (ControllerDatabaseMine.MaxRows) and the row replaces none of
+        /// them. SDL was not given it.</summary>
+        Full,
         /// <summary>A device SDL does not read, mapped through the row in
         /// PadForge.</summary>
         InPadForge,
@@ -86,6 +90,11 @@ namespace PadForge.Services
         /// itself in its own order.</summary>
         internal Action<Action> SettleAfterSwitch;
 
+        /// <summary>The text of the user's own SDL_GAMECONTROLLERCONFIG
+        /// variable, read from the signed-in user's profile, replaceable in
+        /// tests.</summary>
+        internal Func<string> ProfileVariable = ControllerDatabaseProfileRows.Read;
+
         private void StartDevices()
         {
             _ui = System.Threading.SynchronizationContext.Current;
@@ -94,6 +103,7 @@ namespace PadForge.Services
             SettingsManager.ActiveProfileChanged += OnActiveProfileChanged;
             _vm.Devices.SdlMapping.Host = this;
             _vm.Settings.SetControllerDatabaseMine(MineStatus, ClearMineAsync, AddRowsAsync);
+            _vm.Settings.SetControllerDatabaseProfileRows(ProfileRowsLine, ProfileRowsText);
             _catalog = CatalogItems;
             LiveCatalog.AddProvider(_catalog);
         }
@@ -343,7 +353,7 @@ namespace PadForge.Services
                 {
                     Mapped = new[] { ControllerDatabaseMineRow.Key(instance, ControllerDatabaseMineRow.ActiveProfile) },
                 };
-                ControllerDatabaseMine.Change(m => m.With(kept));
+                if (!ControllerDatabaseMine.Change(m => m.With(kept))) return SdlApplyResult.Full;
                 _markDirty();
                 Remap(instance);
                 return SdlApplyResult.InPadForge;
@@ -376,7 +386,8 @@ namespace PadForge.Services
             // they were made for.
             var keptRow = new ControllerDatabaseMineRow(id, row.With(guid: id), MineNow(), old, Guid.Empty,
                 sameId ? earlierRow.Before : Snapshot(instance));
-            ControllerDatabaseMine.Change(m => m.With(keptRow));
+            // A row past the cap is not kept, and SDL is not given it.
+            if (!ControllerDatabaseMine.Change(m => m.With(keptRow))) return SdlApplyResult.Full;
             _markDirty();
             ControllerDatabaseEngine.SetReadsRaw(id, false);
             var applied = await ControllerDatabaseEngine.Post(e => e.ApplySdlRows(new[] { keptRow.Text }, false), ControllerDatabaseApplied.NotRunning);
@@ -619,17 +630,24 @@ namespace PadForge.Services
         /// Add Rows From a File or the Clipboard (#600 item 49): each Windows
         /// row is kept as the user's own under its own ID, for every device of
         /// that ID, and given to SDL at once. A device SDL reads through one
-        /// now is read again. Returns how many rows were kept.
+        /// now is read again. A row past the cap
+        /// (<see cref="ControllerDatabaseMine.MaxRows"/>) that replaces none
+        /// of the user's is not kept and not given to SDL, and no kept row
+        /// is dropped for it. Returns how many rows were kept.
         /// </summary>
         internal async Task<int> AddRowsAsync(IReadOnlyList<SdlMappingRow> rows)
         {
             if (rows == null || rows.Count == 0) return 0;
             var texts = new List<string>(rows.Count);
             var matched = new List<Guid>();
+            int keptCount = 0;
             foreach (var row in rows)
             {
                 var earlier = ControllerDatabaseMine.Current.ForSdlDevice(row.Guid);
                 bool sameId = earlier != null && string.Equals(earlier.Id, row.Guid, StringComparison.OrdinalIgnoreCase);
+                // Checked first, so a row that will not be kept asks SDL and
+                // the devices nothing.
+                if (!sameId && ControllerDatabaseMine.Current.Count >= ControllerDatabaseMine.MaxRows) continue;
                 string old = sameId ? earlier.OldRow : null;
                 var before = new List<ControllerDatabaseBefore>(sameId ? earlier.Before : Array.Empty<ControllerDatabaseBefore>());
                 // Each connected device of the row's ID keeps what it had, for
@@ -653,10 +671,12 @@ namespace PadForge.Services
                 {
                     Mapped = sameId ? earlier.Mapped : Array.Empty<string>(),
                 };
-                ControllerDatabaseMine.Change(m => m.With(kept));
+                if (!ControllerDatabaseMine.Change(m => m.With(kept))) continue;
+                keptCount++;
                 ControllerDatabaseEngine.SetReadsRaw(row.Guid, false);
                 texts.Add(kept.Text);
             }
+            if (keptCount == 0) return 0;
             _markDirty();
             var applied = await ControllerDatabaseEngine.Post(e => e.ApplySdlRows(texts, false), ControllerDatabaseApplied.NotRunning);
             if (applied.Ran)
@@ -668,7 +688,7 @@ namespace PadForge.Services
                 }
             _vm.Settings.RaiseControllerDatabaseMine();
             _vm.Devices.SdlMapping.Refresh();
-            return rows.Count;
+            return keptCount;
         }
 
         /// <summary>The connected devices SDL reads that a row's ID maps.</summary>
@@ -691,6 +711,29 @@ namespace PadForge.Services
             return count == 0
                 ? Strings.Instance.ControllerDatabase_MineNone
                 : string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.ControllerDatabase_Mine_Format), count), count);
+        }
+
+        /// <summary>The rows of the user's own SDL_GAMECONTROLLERCONFIG
+        /// variable that PadForge does not keep (#600 item 49).</summary>
+        private List<SdlMappingRow> ProfileRows() =>
+            ControllerDatabaseProfileRows.NotKept(ProfileVariable?.Invoke(), ControllerDatabaseMine.Current);
+
+        /// <summary>The Your Rows line on the variable's rows, empty while it
+        /// holds none PadForge does not keep.</summary>
+        private string ProfileRowsLine()
+        {
+            int count = ProfileRows().Count;
+            return count == 0 ? string.Empty
+                : string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.ControllerDatabase_ProfileRows_Format), count), count);
+        }
+
+        /// <summary>What Add Rows opens with when the clipboard holds no row:
+        /// the variable's rows PadForge does not keep, one per line, or
+        /// null.</summary>
+        private string ProfileRowsText()
+        {
+            var rows = ProfileRows();
+            return rows.Count == 0 ? null : string.Join("\n", rows.Select(r => r.Text));
         }
 
         /// <summary>

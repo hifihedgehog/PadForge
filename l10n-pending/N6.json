@@ -86,6 +86,88 @@
       ],
       "where": "The same line when the download kept one new row. {0} is 1, {1} mappings built in, {2} and {3} dates, {4} the address's host",
       "keep": []
+    },
+    {
+      "key": "ControllerDatabase_ProfileRows_Format",
+      "english": "Your SDL_GAMECONTROLLERCONFIG variable holds {0} rows PadForge does not keep. Add Rows opens with them.",
+      "sibling": [
+        "ControllerDatabase_ProfileRows_One_Format",
+        "ControllerDatabase_Mine_Format"
+      ],
+      "where": "Settings, General, Updates card, Controller Database row, More, Your Rows: the second gray line, shown while the user's own SDL_GAMECONTROLLERCONFIG environment variable holds rows PadForge does not keep. {0} the number of rows",
+      "keep": [
+        "SDL_GAMECONTROLLERCONFIG",
+        "PadForge",
+        "Add Rows"
+      ]
+    },
+    {
+      "key": "ControllerDatabase_ProfileRows_One_Format",
+      "english": "Your SDL_GAMECONTROLLERCONFIG variable holds {0} row PadForge does not keep. Add Rows opens with it.",
+      "sibling": [
+        "ControllerDatabase_ProfileRows_Format"
+      ],
+      "where": "The same line when the variable holds one such row. {0} is 1",
+      "keep": [
+        "SDL_GAMECONTROLLERCONFIG",
+        "PadForge",
+        "Add Rows"
+      ]
+    },
+    {
+      "key": "SdlMappingDialog_AddAll_Format",
+      "english": "All {0:N0} will be added. PadForge keeps up to {1:N0} rows of yours.",
+      "sibling": [
+        "SdlMappingDialog_AddAll_One_Format",
+        "SdlMappingDialog_AddSome_Format",
+        "SdlMappingDialog_AddFound_Format"
+      ],
+      "where": "The Add Rows From a File or the Clipboard dialog: the white line under the count of rows found, when every row fits. {0} the rows that will be added, {1} the most rows of the user's PadForge keeps (2,048). Keep the :N0 in each place, which writes 2,048 with its separator",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "SdlMappingDialog_AddAll_One_Format",
+      "english": "It will be added. PadForge keeps up to {1:N0} rows of yours.",
+      "sibling": [
+        "SdlMappingDialog_AddAll_Format"
+      ],
+      "where": "The same line when the text holds one row. {1} the most rows of the user's PadForge keeps (2,048)",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "SdlMappingDialog_AddSome_Format",
+      "english": "{0:N0} of yours are kept now, so {1:N0} of these will be added and {2:N0} will not.",
+      "sibling": [
+        "SdlMappingDialog_AddSome_One_Format",
+        "SdlMappingDialog_AddAll_Format"
+      ],
+      "where": "The Add Rows dialog: the white line when the rows would pass the most PadForge keeps (2,048). {0} rows of the user's kept now, {1} rows of the text that will be added, {2} rows that will not",
+      "keep": []
+    },
+    {
+      "key": "SdlMappingDialog_AddSome_One_Format",
+      "english": "{0:N0} of yours is kept now, so {1:N0} of these will be added and {2:N0} will not.",
+      "sibling": [
+        "SdlMappingDialog_AddSome_Format"
+      ],
+      "where": "The same line when one row of the user's is kept now. {0} is 1",
+      "keep": []
+    },
+    {
+      "key": "SdlMapping_Full_Format",
+      "english": "Not kept. PadForge keeps up to {0:N0} rows of yours and holds that many now.",
+      "sibling": [
+        "SdlMapping_SdlRefused",
+        "SdlMapping_AppliesAtStart"
+      ],
+      "where": "Devices, a device's SDL Mapping card: the line after Paste, Find a Mapping or Guess a Layout when the user's rows are at their most and the row replaces none of them. {0} the most rows PadForge keeps (2,048)",
+      "keep": [
+        "PadForge"
+      ]
     }
   ],
   "changed": [
@@ -127,6 +209,25 @@
         "PadForge",
         "Force Raw Joystick Mode"
       ]
+    },
+    {
+      "key": "ControllerDatabase_Mine_Format",
+      "english": "{0} rows for {0} devices, yours over every other source.",
+      "sibling": [
+        "ControllerDatabase_Mine_One_Format",
+        "ControllerDatabase_ProfileRows_Format"
+      ],
+      "where": "Settings, Controller Database row, More, Your Rows: the first gray line, how many rows of the user's PadForge keeps. Each row is for one device or model, so {0} is both counts",
+      "keep": []
+    },
+    {
+      "key": "ControllerDatabase_Mine_One_Format",
+      "english": "{0} row for {0} device, yours over every other source.",
+      "sibling": [
+        "ControllerDatabase_Mine_Format"
+      ],
+      "where": "The same line for one row. {0} is 1",
+      "keep": []
     }
   ]
 }

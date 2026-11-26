@@ -723,12 +723,12 @@
                                             <controls:SettingItem Rule="{x:Null}" x:Name="ControllerDatabaseFrom" common:Reach.Class="UsersOwn">
                                                 <Grid Margin="20,12,10,12">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="270"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Style="{StaticResource DzLabel}" Text="{Binding ControllerDatabase_DownloadFrom, Source={x:Static strings:Strings.Instance}}"
                                                                ToolTip="{Binding ControllerDatabase_DownloadFromNote, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <StackPanel Grid.Column="1">
+                                                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
                                                         <TextBlock Text="{Binding ControllerDatabaseAddress}" Foreground="{DynamicResource EmberHotBrush}"
                                                                    TextWrapping="Wrap" AutomationProperties.AutomationId="Settings_ControllerDatabase_Address"/>
                                                         <TextBlock Text="{Binding ControllerDatabase_DownloadFromNote, Source={x:Static strings:Strings.Instance}}"
@@ -749,15 +749,24 @@
                                             <controls:SettingItem>
                                                 <Grid Margin="20,12,10,12">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="270"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Style="{StaticResource DzLabel}" Text="{Binding ControllerDatabase_YourRows, Source={x:Static strings:Strings.Instance}}"
                                                                ToolTip="{Binding ControllerDatabase_YourRowsTip, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <StackPanel Grid.Column="1">
+                                                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
                                                         <TextBlock common:LiveText.Polite="True" Text="{Binding ControllerDatabaseMineStatus}"
                                                                    FontSize="13" TextWrapping="Wrap" Typography.NumeralAlignment="Tabular"
                                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                        <!-- The rows of the user's own SDL_GAMECONTROLLERCONFIG
+                                                             variable PadForge does not keep, read from the
+                                                             signed-in user's profile. The engine never reads the
+                                                             variable. Add Rows opens with them when the clipboard
+                                                             holds no row. -->
+                                                        <TextBlock common:LiveText.Polite="True" Text="{Binding ControllerDatabaseProfileRowsStatus}"
+                                                                   FontSize="13" TextWrapping="Wrap" Typography.NumeralAlignment="Tabular"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   Visibility="{Binding ControllerDatabaseProfileRowsStatus, Converter={StaticResource StringToVisibility}}"/>
                                                         <controls:FlexLinePanel Gap="12" LineGap="12" Margin="0,10,0,0">
                                                             <Button Content="{Binding ControllerDatabase_AddRows, Source={x:Static strings:Strings.Instance}}"
                                                                     Click="AddDatabaseRows_Click"

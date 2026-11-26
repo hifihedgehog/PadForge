@@ -142,6 +142,9 @@ namespace PadForge.ViewModels
             // And the Controller Database row's two lines (#597).
             OnPropertyChanged(nameof(ControllerDatabaseStatus));
             OnPropertyChanged(nameof(ControllerDatabaseResult));
+            // And the Your Rows lines under its More (#600).
+            OnPropertyChanged(nameof(ControllerDatabaseMineStatus));
+            OnPropertyChanged(nameof(ControllerDatabaseProfileRowsStatus));
             // A failed SDL read is worded from the string table on every read.
             OnPropertyChanged(nameof(SdlVersion));
 
@@ -1388,11 +1391,32 @@ namespace PadForge.ViewModels
             RaiseControllerDatabaseMine();
         }
 
-        /// <summary>The user's rows changed: the line and Clear are read
+        private Func<string> _controllerDatabaseProfileRows;
+        private Func<string> _controllerDatabaseProfileRowsText;
+
+        /// <summary>The Your Rows line on the rows of the user's own
+        /// SDL_GAMECONTROLLERCONFIG variable that PadForge does not keep,
+        /// empty while there are none.</summary>
+        public string ControllerDatabaseProfileRowsStatus => _controllerDatabaseProfileRows?.Invoke() ?? string.Empty;
+
+        /// <summary>Those rows as Add Rows opens with them, or null.</summary>
+        internal string ControllerDatabaseProfileRowsText => _controllerDatabaseProfileRowsText?.Invoke();
+
+        /// <summary>Sets what the variable's line reads and the text Add
+        /// Rows opens with.</summary>
+        internal void SetControllerDatabaseProfileRows(Func<string> line, Func<string> text)
+        {
+            _controllerDatabaseProfileRows = line;
+            _controllerDatabaseProfileRowsText = text;
+            OnPropertyChanged(nameof(ControllerDatabaseProfileRowsStatus));
+        }
+
+        /// <summary>The user's rows changed: the lines and Clear are read
         /// again.</summary>
         internal void RaiseControllerDatabaseMine()
         {
             OnPropertyChanged(nameof(ControllerDatabaseMineStatus));
+            OnPropertyChanged(nameof(ControllerDatabaseProfileRowsStatus));
             OnPropertyChanged(nameof(HasControllerDatabaseMine));
             _clearControllerDatabaseMineCommand?.NotifyCanExecuteChanged();
         }

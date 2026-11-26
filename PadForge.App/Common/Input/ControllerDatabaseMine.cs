@@ -99,8 +99,11 @@ namespace PadForge.Common.Input
     /// </summary>
     internal sealed class ControllerDatabaseMine
     {
-        /// <summary>At most this many rows, one per device and model.</summary>
-        internal const int MaxRows = 512;
+        /// <summary>At most this many rows, one per device and model: above
+        /// the community's whole Windows file (about 870 rows), so Add Rows of
+        /// that file keeps every row. A row past it is not added, and a kept
+        /// row is never dropped to make room (#600).</summary>
+        internal const int MaxRows = 2048;
 
         private const string TimeFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
@@ -199,14 +202,48 @@ namespace PadForge.Common.Input
         internal ControllerDatabaseMineRow For(Guid instance, string sdlGuid) =>
             string.IsNullOrEmpty(sdlGuid) ? ForPadForgeDevice(instance) : ForSdlDevice(sdlGuid);
 
+        /// <summary>Whether <paramref name="row"/> would be kept: it replaces
+        /// a row under the same ID or for the same device, or the list holds
+        /// fewer than <see cref="MaxRows"/>.</summary>
+        internal bool HasRoomFor(ControllerDatabaseMineRow row)
+        {
+            if (Rows.Count < MaxRows) return true;
+            foreach (var r in Rows)
+                if (SameKey(r, row)) return true;
+            return false;
+        }
+
+        /// <summary>How many of <paramref name="rows"/> Add Rows would keep,
+        /// as it keeps them in order: a row under an ID kept already, or
+        /// earlier in the text, replaces that row and takes no room, and a new
+        /// ID takes room while the list has some.</summary>
+        internal int AddCount(IReadOnlyList<SdlMappingRow> rows)
+        {
+            var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var r in Rows)
+                if (!r.ForPadForgeDevice) ids.Add(r.Id);
+            int room = MaxRows - Rows.Count, added = 0;
+            foreach (var row in rows ?? Array.Empty<SdlMappingRow>())
+            {
+                if (ids.Contains(row.Guid)) { added++; continue; }
+                if (room <= 0) continue;
+                ids.Add(row.Guid);
+                room--;
+                added++;
+            }
+            return added;
+        }
+
         /// <summary>These rows with one added, replacing a row under the same
-        /// ID or for the same device.</summary>
+        /// ID or for the same device, or these rows themselves when the list
+        /// is full and the row replaces none: no kept row is dropped to make
+        /// room.</summary>
         internal ControllerDatabaseMine With(ControllerDatabaseMineRow row)
         {
+            if (!HasRoomFor(row)) return this;
             var rows = new List<ControllerDatabaseMineRow>(Rows.Count + 1);
             foreach (var r in Rows)
                 if (!SameKey(r, row)) rows.Add(r);
-            if (rows.Count >= MaxRows) rows.RemoveAt(0);
             rows.Add(row);
             return new ControllerDatabaseMine(rows, PutBacks);
         }

@@ -6747,6 +6747,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="SdlMapping_Applied" xml:space="preserve"><value>In use now. The row is yours and wins for this device.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kept as yours. It is in use once the engine runs and the device is connected.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL did not take the row. Nothing changed for this device.</value></data>
+  <data name="SdlMapping_Full_Format" xml:space="preserve"><value>Not kept. PadForge keeps up to {0:N0} rows of yours and holds that many now.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Paste an SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Paste an SDL Mapping for {0}</value></data>
   <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Find a Mapping for {0}</value></data>
@@ -6780,6 +6781,10 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>The rows are kept as yours in PadForge.xml and win for their devices over every other source. Clear, under the Controller Database row’s More, removes them.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rows for Windows. {1} for other systems are passed over.</value></data>
   <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} row for Windows. {1} for other systems are passed over.</value></data>
+  <data name="SdlMappingDialog_AddAll_Format" xml:space="preserve"><value>All {0:N0} will be added. PadForge keeps up to {1:N0} rows of yours.</value></data>
+  <data name="SdlMappingDialog_AddAll_One_Format" xml:space="preserve"><value>It will be added. PadForge keeps up to {1:N0} rows of yours.</value></data>
+  <data name="SdlMappingDialog_AddSome_Format" xml:space="preserve"><value>{0:N0} of yours are kept now, so {1:N0} of these will be added and {2:N0} will not.</value></data>
+  <data name="SdlMappingDialog_AddSome_One_Format" xml:space="preserve"><value>{0:N0} of yours is kept now, so {1:N0} of these will be added and {2:N0} will not.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} refused. The first: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Paste a row, or the text of a gamecontrollerdb.txt file.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>The text is no row of SDL’s controller database: an ID of 32 hex digits, a name, then fields such as a:b0.</value></data>
@@ -6796,9 +6801,11 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Your Rows</value></data>
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rows you add here, or paste on a device’s SDL Mapping card, win for their devices over every other source and stay through the reset.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Add Rows From a File or the Clipboard…</value></data>
-  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rows, yours over every other source for their devices.</value></data>
-  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} row, yours over every other source for its device.</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rows for {0} devices, yours over every other source.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} row for {0} device, yours over every other source.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>None yet.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Your SDL_GAMECONTROLLERCONFIG variable holds {0} rows PadForge does not keep. Add Rows opens with them.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Your SDL_GAMECONTROLLERCONFIG variable holds {0} row PadForge does not keep. Add Rows opens with it.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>In use at once.</value></data>
   <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Download From</value></data>
   <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS only. From an address that is not the community’s, PadForge takes new rows only.</value></data>

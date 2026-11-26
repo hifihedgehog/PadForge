@@ -328,6 +328,8 @@ namespace PadForge.ViewModels
             SdlApplyResult.InUse => Strings.Instance.SdlMapping_Applied,
             SdlApplyResult.InPadForge => Strings.Instance.SdlMapping_Applied,
             SdlApplyResult.AtStart => Strings.Instance.SdlMapping_AppliesAtStart,
+            SdlApplyResult.Full => string.Format(CultureInfo.CurrentCulture, Strings.Instance.SdlMapping_Full_Format,
+                PadForge.Common.Input.ControllerDatabaseMine.MaxRows),
             _ => Strings.Instance.SdlMapping_SdlRefused,
         };
     }

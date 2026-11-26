@@ -16,7 +16,7 @@ Select a gamepad or joystick on the **Devices** page. The **SDL Mapping** card s
 | Line | What it says |
 |---|---|
 | **Read as** | **A gamepad, "…"** with the name in SDL's mapping, **A joystick. SDL has no mapping for it.**, or **A joystick. PadForge reads it raw, so SDL’s mapping is not used.** A device that is not connected says **SDL reads devices while the engine runs.** |
-| **From** | Where the mapping came from: **SDL**, **The community copy built in** with its date, **Downloaded** with its date, **PadForge’s own file**, **Yours, added** with its date, or **The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add**. |
+| **From** | Where the mapping came from: **SDL**, **The community copy built in** with its date, **Downloaded** with its date, **PadForge’s own file**, or **Yours, added** with its date. |
 | **ID** | The device's ID as SDL reports it. |
 
 The buttons under it:
@@ -55,7 +55,7 @@ To share a mapping with everyone, send the row to the community database. **Comm
 
 A row is refused, with the reason, when it is empty, over 1,024 characters, not a row of SDL's database, has an ID that is not 32 hex digits, a name over 128 characters, a platform other than Windows, a hint or Android field, a field or binding SDL does not know, or a field given twice.
 
-**Paste** keeps the row as yours in PadForge.xml under this device's own ID and hands it to SDL at once, while the engine runs and the device is connected. Otherwise it is kept and used once both are true. Your row wins for that device over every other source except the `SDL_GAMECONTROLLERCONFIG` variable, which SDL keeps above it, and the card says so. The **From** line then reads **Yours, added …**.
+**Paste** keeps the row as yours in PadForge.xml under this device's own ID and hands it to SDL at once, while the engine runs and the device is connected. Otherwise it is kept and used once both are true. Your row wins for that device over every other source. The **From** line then reads **Yours, added …**.
 
 The device's rows on its controllers are mapped again from the new layout once SDL reads the device through your row. Profile shortcuts that read the device keep the inputs they were set to.
 
@@ -88,6 +88,8 @@ Under the row's **More**, **Download From** shows the address **Update Now** dow
 
 ### Your Rows
 
-Under the row's **More**, **Your Rows** lists how many rows of yours PadForge keeps. **Add Rows From a File or the Clipboard…** takes many rows at once, for many devices, through the same check as Paste, and keeps each as yours under its own ID. **Clear** removes them all and gives each device back its reading. Your rows win for their devices over every other source and stay through the download's reset. PadForge keeps up to 512.
+Under the row's **More**, **Your Rows** lists how many rows of yours PadForge keeps. **Add Rows From a File or the Clipboard…** takes many rows at once, for many devices, through the same check as Paste, and keeps each as yours under its own ID. **Clear** removes them all and gives each device back its reading. Your rows win for their devices over every other source and stay through the download's reset. PadForge keeps up to 2,048 and never drops one to make room: past that, a row for a new device is not added. The dialog's count says how many rows will be added, and how many will not when they would pass 2,048. Paste on a device's card says **Not kept** in the same case.
+
+PadForge does not read the `SDL_GAMECONTROLLERCONFIG` environment variable that other SDL programs take rows from: it runs with administrator rights and keeps only the variables it needs. When the variable in your Windows profile holds rows PadForge does not keep, such as the one SDL2 Gamepad Tool's **Set Mapping As Environment Variable** writes, **Your Rows** says how many, and **Add Rows From a File or the Clipboard…** opens with them when the clipboard holds no row. Click **Add** to keep them as yours.
 
 See also: [Devices](devices.md), [SDL3 Integration](https://padforge.org/docs/reference/sdl3-integration/).

@@ -174,6 +174,9 @@ public class Strings : INotifyPropertyChanged
         [nameof(SdlMappingDialog_Detail_Guess_Format)] = nameof(SdlMappingDialog_Detail_Guess_One_Format),
         [nameof(SdlMappingDialog_AddFound_Format)] = nameof(SdlMappingDialog_AddFound_One_Format),
         [nameof(ControllerDatabase_Mine_Format)] = nameof(ControllerDatabase_Mine_One_Format),
+        [nameof(ControllerDatabase_ProfileRows_Format)] = nameof(ControllerDatabase_ProfileRows_One_Format),
+        [nameof(SdlMappingDialog_AddAll_Format)] = nameof(SdlMappingDialog_AddAll_One_Format),
+        [nameof(SdlMappingDialog_AddSome_Format)] = nameof(SdlMappingDialog_AddSome_One_Format),
         [nameof(ControllerDatabase_BuiltInUpdatedFrom_Format)] = nameof(ControllerDatabase_BuiltInUpdatedFrom_One_Format),
     };
 
@@ -6497,6 +6500,7 @@ public class Strings : INotifyPropertyChanged
     public string SdlMapping_Applied => Get("SdlMapping_Applied");
     public string SdlMapping_AppliesAtStart => Get("SdlMapping_AppliesAtStart");
     public string SdlMapping_SdlRefused => Get("SdlMapping_SdlRefused");
+    public string SdlMapping_Full_Format => Get("SdlMapping_Full_Format");
     public string SdlMappingDialog_Title => Get("SdlMappingDialog_Title");
     public string SdlMappingDialog_PasteTitle_Format => Get("SdlMappingDialog_PasteTitle_Format");
     public string SdlMappingDialog_FindTitle_Format => Get("SdlMappingDialog_FindTitle_Format");
@@ -6530,6 +6534,10 @@ public class Strings : INotifyPropertyChanged
     public string SdlMappingDialog_AddNote => Get("SdlMappingDialog_AddNote");
     public string SdlMappingDialog_AddFound_Format => Get("SdlMappingDialog_AddFound_Format");
     public string SdlMappingDialog_AddFound_One_Format => Get("SdlMappingDialog_AddFound_One_Format");
+    public string SdlMappingDialog_AddAll_Format => Get("SdlMappingDialog_AddAll_Format");
+    public string SdlMappingDialog_AddAll_One_Format => Get("SdlMappingDialog_AddAll_One_Format");
+    public string SdlMappingDialog_AddSome_Format => Get("SdlMappingDialog_AddSome_Format");
+    public string SdlMappingDialog_AddSome_One_Format => Get("SdlMappingDialog_AddSome_One_Format");
     public string SdlMappingDialog_AddRefused_Format => Get("SdlMappingDialog_AddRefused_Format");
     public string SdlMappingDialog_Refused_Empty => Get("SdlMappingDialog_Refused_Empty");
     public string SdlMappingDialog_Refused_NotARow => Get("SdlMappingDialog_Refused_NotARow");
@@ -6549,6 +6557,8 @@ public class Strings : INotifyPropertyChanged
     public string ControllerDatabase_Mine_Format => Get("ControllerDatabase_Mine_Format");
     public string ControllerDatabase_Mine_One_Format => Get("ControllerDatabase_Mine_One_Format");
     public string ControllerDatabase_MineNone => Get("ControllerDatabase_MineNone");
+    public string ControllerDatabase_ProfileRows_Format => Get("ControllerDatabase_ProfileRows_Format");
+    public string ControllerDatabase_ProfileRows_One_Format => Get("ControllerDatabase_ProfileRows_One_Format");
     public string ControllerDatabase_InUseAtOnce => Get("ControllerDatabase_InUseAtOnce");
     public string ControllerDatabase_DownloadFrom => Get("ControllerDatabase_DownloadFrom");
     public string ControllerDatabase_DownloadFromNote => Get("ControllerDatabase_DownloadFromNote");

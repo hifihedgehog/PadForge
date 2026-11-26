@@ -152,6 +152,8 @@ public class Strings : INotifyPropertyChanged
         [nameof(Workshop_Tr_GameActionsNotSupported)] = nameof(Workshop_Tr_GameActionsNotSupported_One),
         [nameof(MacroAction_ToggleWheel_Format)] = nameof(MacroAction_ToggleWheel_One_Format),
         [nameof(MacroAction_CycleTapList_Format)] = nameof(MacroAction_CycleTapList_One_Format),
+        [nameof(Net_Add_Full_Format)] = nameof(Net_Add_Full_One_Format),
+        [nameof(Plugins_State_NeverConnected_Format)] = nameof(Plugins_State_NeverConnected_One_Format),
         [nameof(Workshop_Tr_MenuEmitted)] = nameof(Workshop_Tr_MenuEmitted_One),
         [nameof(Pad_Audio_EqImport_Ok_Format)] = nameof(Pad_Audio_EqImport_Ok_One_Format),
         [nameof(MacroAction_ClearKeyColors_Format)] = nameof(MacroAction_ClearKeyColors_One_Format),
@@ -6735,4 +6737,5 @@ public class Strings : INotifyPropertyChanged
     public string Answer_Pair_NotHidden => Get("Answer_Pair_NotHidden");
     public string Answer_Pair_CodeClosed_Format => Get("Answer_Pair_CodeClosed_Format");
     public string Answer_Pair_Ended_Expired => Get("Answer_Pair_Ended_Expired");
+    public string Net_Add_Full_One_Format => Get("Net_Add_Full_One_Format");
 }

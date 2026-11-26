@@ -6982,4 +6982,5 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows would not hide this window from screen capture, so it shows no code.</value></data>
   <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>The typed code is closed after five wrong tries. The QR code still works until {0}.</value></data>
   <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>The code ran out. Pair a Device… makes a new one.</value></data>
+  <data name="Net_Add_Full_One_Format" xml:space="preserve"><value>PadForge keeps {0} network key at most. Revoke it first.</value></data>
 </root>

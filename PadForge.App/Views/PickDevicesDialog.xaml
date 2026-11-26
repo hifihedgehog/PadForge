@@ -22,7 +22,7 @@
         </controls:FlexLinePanel>
     </views:DialogWindow.Foot>
 
-    <StackPanel>
+    <StackPanel common:InitialFocus.First="True">
         <TextBlock x:Name="NoneText" FontSize="13" TextWrapping="Wrap" Visibility="Collapsed"
                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                    Text="{Binding Reach_Pick_None, Source={x:Static strings:Strings.Instance}}"/>
@@ -30,7 +30,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <CheckBox Content="{Binding Name}" IsChecked="{Binding Picked, Mode=TwoWay}" Margin="0,4,0,4"
-                              AutomationProperties.Name="{Binding Name}"/>
+                              AutomationProperties.Name="{Binding Name, TargetNullValue='', FallbackValue=''}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

@@ -463,7 +463,7 @@ namespace PadForge.Services.Plugins
                 PluginStatus.Restarting => run.Refusal != PluginRefusal.None
                     ? string.Format(CultureInfo.CurrentCulture, s.Plugins_State_Retry_Format, Seconds(run.PauseMs))
                     : run.NeverConnected
-                    ? string.Format(CultureInfo.CurrentCulture, Seconds(run.PauseMs) == 1 ? s.Plugins_State_NeverConnected_One_Format : s.Plugins_State_NeverConnected_Format, Seconds(run.PauseMs))
+                    ? string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.Plugins_State_NeverConnected_Format), Seconds(run.PauseMs)), Seconds(run.PauseMs))
                     : string.Format(CultureInfo.CurrentCulture, s.Plugins_State_Exited_Format, run.ExitCode ?? 0, Seconds(run.PauseMs)),
                 PluginStatus.Changed => s.Plugins_State_Changed,
                 PluginStatus.Failed => s.Plugins_State_Failed,

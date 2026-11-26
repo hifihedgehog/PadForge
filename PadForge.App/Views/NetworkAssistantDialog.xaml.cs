@@ -124,7 +124,7 @@ namespace PadForge.Views
             }
             if (_full)
             {
-                Say(string.Format(CultureInfo.CurrentCulture, s.Net_Add_Full_Format, NetworkDoor.MostKeys));
+                Say(string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.Net_Add_Full_Format), NetworkDoor.MostKeys), NetworkDoor.MostKeys));
                 return;
             }
             KeyName = name;

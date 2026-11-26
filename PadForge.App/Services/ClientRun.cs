@@ -79,6 +79,11 @@ namespace PadForge.Services
             /// pipe.</summary>
             public Func<RunningCopy.Closing> ExitCopy = () => RunningCopy.Exit();
 
+            /// <summary>Takes hold of the running copy before <c>exit</c>
+            /// goes down the pipe, and answers with the wait for its end, or
+            /// null when it cannot be held.</summary>
+            public Func<Func<bool>> HoldForClose = RunningCopy.HoldForClose;
+
             /// <summary>An answer. It goes to standard output or the caller's
             /// console, and nowhere when the caller gave neither: a launcher
             /// never gets a window for a command it sent.</summary>
@@ -160,6 +165,7 @@ namespace PadForge.Services
                 seams.LendForeground = () => { };
                 seams.Watch = () => null;
                 seams.ExitCopy = () => RunningCopy.Closing.NotRunning;
+                seams.HoldForClose = () => null;
                 seams.Tell = seams.Say;
                 seams.TellError = seams.SayError;
                 seams.ServeAssistant = () => AssistantMirror.Run(pipe);
@@ -395,6 +401,8 @@ namespace PadForge.Services
             // to the front. A line cannot carry that right, so it is lent
             // first. --maximized shows the window too (#600 item 44).
             if (line is "show" or "maximize") seams.LendForeground();
+            // The copy told to exit is the one waited for (#600 item 44).
+            var closing = line == "exit" ? seams.HoldForClose() : null;
 
             string reply = seams.Exchange(line);
             if (reply == ControlPipeClient.NotPadForge) return NotPadForge(line, seams);
@@ -437,6 +445,13 @@ namespace PadForge.Services
 
             if (reply.StartsWith("ok", StringComparison.Ordinal))
             {
+                // --exit returns once PadForge has closed, as over the
+                // window.
+                if (closing != null && !closing())
+                {
+                    seams.SayError(DidNotCloseText);
+                    return AnsweredAnError;
+                }
                 // The state is JSON for a script to read, so it is printed
                 // alone. Every other answer is printed as the pipe gave it.
                 if (line == "state" && reply.Length > 3)

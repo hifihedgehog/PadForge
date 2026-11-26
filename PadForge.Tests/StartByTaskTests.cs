@@ -85,7 +85,10 @@ namespace PadForge.Tests
             Assert.DoesNotContain("SecurityDescriptor>", RepoText("PadForge.App", "Services", "LogonStart.cs"), StringComparison.Ordinal);
 
             Assert.False(StartupHelper.RunTask());
+            Assert.False(StartupHelper.TaskStartsThisExe());
             Assert.False(StartupHelper.AuditTask());
+            string starts = FenceSource.Body(source, "internal static bool TaskStartsThisExe()");
+            Assert.Contains("IsCurrent(RunSchtasksOutput($\"/Query /TN \\\"{TaskName}\\\" /XML\"), exe, CurrentUserSid(), FileLength(exe), ProtectedFolder.Natives)", starts, StringComparison.Ordinal);
         }
 
         // ── The start set ──
@@ -138,6 +141,8 @@ namespace PadForge.Tests
             public readonly List<string> Errors = new List<string>();
             public IReadOnlyList<string> Handed;
             public bool TaskRuns = true;
+            public bool Split = true;
+            public bool StartsThis = true;
             public bool CopyComes = true;
             public bool Takes = true;
             public bool Held;
@@ -148,6 +153,8 @@ namespace PadForge.Tests
             {
                 Seams = new StartByTask.Seams
                 {
+                    TokenIsSplit = () => { Order.Add("split?"); return Split; },
+                    TaskStartsThis = () => { Order.Add("starts this exe?"); return StartsThis; },
                     MarkPending = () => { Held = true; Order.Add("pending"); return new Release(() => { Held = false; Order.Add("released"); }); },
                     RunTask = () => { Order.Add(Held ? "run task while pending" : "run task"); return TaskRuns; },
                     WaitForCopy = () => { Order.Add("wait for copy"); return CopyComes; },
@@ -176,7 +183,7 @@ namespace PadForge.Tests
         {
             var run = new Run();
             Assert.Equal((true, 0), run.Go("--profile Racing --tray"));
-            Assert.Equal(new[] { "pending", "run task while pending", "wait for copy", "hand while pending", "released" }, run.Order);
+            Assert.Equal(new[] { "split?", "starts this exe?", "pending", "run task while pending", "wait for copy", "hand while pending", "released" }, run.Order);
             Assert.Equal(new[] { "--profile", "Racing", "--tray" }, run.Handed);
             Assert.Empty(run.Errors);
 
@@ -194,7 +201,19 @@ namespace PadForge.Tests
         {
             var refused = new Run { TaskRuns = false };
             Assert.Equal((false, 0), refused.Go("--minimized"));
-            Assert.Equal(new[] { "pending", "run task while pending", "released" }, refused.Order);
+            Assert.Equal(new[] { "split?", "starts this exe?", "pending", "run task while pending", "released" }, refused.Order);
+
+            // A task that starts another copy of PadForge, or this exe at
+            // another size, is never run.
+            var elsewhere = new Run { StartsThis = false };
+            Assert.Equal((false, 0), elsewhere.Go("--minimized"));
+            Assert.Equal(new[] { "split?", "starts this exe?" }, elsewhere.Order);
+
+            // A user who is no administrator gets PadForge without rights
+            // from the task, which would come back here and run it again.
+            var standard = new Run { Split = false };
+            Assert.Equal((false, 0), standard.Go(""));
+            Assert.Equal(new[] { "split?" }, standard.Order);
 
             var noCopy = new Run { CopyComes = false };
             Assert.Equal((false, 0), noCopy.Go("--minimized"));

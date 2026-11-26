@@ -20,9 +20,10 @@ namespace PadForge.Services
     /// (<see cref="InstanceSignal.TakeStartSwitches"/>).</para>
     ///
     /// <para>Every failure keeps Windows' prompt: a line with a switch the
-    /// start set does not hold, no task, a task this user may not run, or a
-    /// copy that never came up, as when the task's action holds back an exe
-    /// whose size changed (LogonStart.Action).</para>
+    /// start set does not hold, a user whose token Windows did not split (the
+    /// task would start PadForge without rights, which would come back here),
+    /// a task that does not start this exe at its size, a task this user may
+    /// not run, or a copy that never came up.</para>
     ///
     /// <para>Runs before WPF loads and uses none of it.</para>
     /// </summary>
@@ -39,10 +40,14 @@ namespace PadForge.Services
 
         internal const string NotHandedText = "PadForge started without its switches.";
 
+        private const int TokenElevationType = 18;
+
         /// <summary>The run's ways out to the machine, each a test's to
         /// replace.</summary>
         internal sealed class Seams
         {
+            public Func<bool> TokenIsSplit = StartByTask.TokenIsSplit;
+            public Func<bool> TaskStartsThis = StartupHelper.TaskStartsThisExe;
             public Func<IDisposable> MarkPending = () => RunningCopy.MarkStartPending();
             public Func<bool> RunTask = StartupHelper.RunTask;
             public Func<bool> WaitForCopy = () => RunningCopy.WaitForStartedCopy(StartWithRights.AppWindowWaitMs);
@@ -72,7 +77,7 @@ namespace PadForge.Services
         internal static bool TryRun(IReadOnlyList<string> args, Seams seams, out int exitCode)
         {
             exitCode = 0;
-            if (!CommandLineSwitches.CrossesToTheTask(args)) return false;
+            if (!CommandLineSwitches.CrossesToTheTask(args) || !seams.TokenIsSplit() || !seams.TaskStartsThis()) return false;
             // Held from before the run until the switches are handed, so the
             // started copy waits for them and a logon start does not.
             using (seams.MarkPending())
@@ -88,6 +93,16 @@ namespace PadForge.Services
             if (CommandLineSwitches.Parse(args).Wait)
                 exitCode = seams.Watch()?.Invoke() ?? StartWithRights.NotStarted;
             return true;
+        }
+
+        /// <summary>Whether Windows split this user's token at logon
+        /// (TokenElevationTypeLimited), the one case where the task's run
+        /// starts PadForge with the linked token's rights
+        /// (LogonStart.TokenToRun).</summary>
+        internal static bool TokenIsSplit()
+        {
+            using var me = System.Security.Principal.WindowsIdentity.GetCurrent();
+            return Automation.AutomationClientIdentity.ReadInt(me.AccessToken, TokenElevationType) == LogonStart.TokenElevationTypeLimited;
         }
     }
 }

@@ -393,6 +393,21 @@ namespace PadForge.Common
         internal static bool RunTask() => RunSchtasks($"/Run /TN \"{TaskName}\"") == 0;
 
         /// <summary>
+        /// Whether the task, in its current form, starts this exe at its size
+        /// for this user. A start without rights runs it only then: run from
+        /// another copy of PadForge it would start that copy, and after the
+        /// exe's size changed its action starts nothing
+        /// (<see cref="LogonStart.Action"/>). The user may read the task
+        /// while it carries the run right. False when it cannot be read.
+        /// </summary>
+        internal static bool TaskStartsThisExe()
+        {
+            string exe = Environment.ProcessPath;
+            return !string.IsNullOrEmpty(exe)
+                && IsCurrent(RunSchtasksOutput($"/Query /TN \"{TaskName}\" /XML"), exe, CurrentUserSid(), FileLength(exe), ProtectedFolder.Natives);
+        }
+
+        /// <summary>
         /// The task's discretionary access list, read through Task
         /// Scheduler's own interface, or null. schtasks registers a
         /// definition's SecurityDescriptor element as text and applies none

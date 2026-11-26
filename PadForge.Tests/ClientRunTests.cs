@@ -35,6 +35,7 @@ namespace PadForge.Tests
             public int Served;
             public int Settles;
             public int Exits;
+            public bool? Closes = true;
             public RunningCopy.Closing Closing = RunningCopy.Closing.Closed;
             public RunningCopy.Settled Settled = RunningCopy.Settled.Ready;
             public Func<string, string> Answer = line => "ok";
@@ -59,6 +60,7 @@ namespace PadForge.Tests
                     LendForeground = () => { Lent++; Order.Add("lend"); },
                     Watch = () => { Order.Add("watch"); return Wait; },
                     ExitCopy = () => { Exits++; Order.Add("exit"); return Closing; },
+                    HoldForClose = () => { Order.Add("hold"); return Closes is { } ends ? () => { Order.Add("wait for the end"); return ends; } : null; },
                     Say = Said.Add,
                     SayError = Errors.Add,
                     Tell = Told.Add,
@@ -244,6 +246,33 @@ namespace PadForge.Tests
             Assert.Equal(0, hide.Exits);
         }
 
+        /// <summary>Over the pipe too, <c>--exit</c> returns once the copy
+        /// it held before the line went has ended, and gives 1 when it still
+        /// runs at the end of the wait. A copy that cannot be held is
+        /// answered as the pipe answers.</summary>
+        [Fact]
+        public void AnExitOverThePipe_WaitsForTheCopyItHeld()
+        {
+            var on = new Run();
+            Assert.Equal((true, 0), on.Go("--exit"));
+            Assert.Equal(new[] { "hold", "send exit", "wait for the end" }, on.Order);
+            Assert.Equal(new[] { "ok" }, on.Said);
+
+            var stays = new Run { Closes = false };
+            Assert.Equal((true, 1), stays.Go("--exit"));
+            Assert.Equal(new[] { ClientRun.DidNotCloseText }, stays.Errors);
+            Assert.Empty(stays.Said);
+
+            var unheld = new Run { Closes = null };
+            Assert.Equal((true, 0), unheld.Go("--exit"));
+            Assert.Equal(new[] { "ok" }, unheld.Said);
+
+            // No other line takes a hold.
+            var other = new Run();
+            other.Go("--engine", "on");
+            Assert.DoesNotContain("hold", other.Order);
+        }
+
         /// <summary>A copy that is still there at the end of the wait gives
         /// 1, and one that is gone before the ask gives 4. With
         /// <c>--wait</c> the code is the copy's own.</summary>
@@ -368,7 +397,7 @@ namespace PadForge.Tests
             // The copy is taken hold of before the line that closes it.
             var exits = new Run { Wait = () => 0 };
             Assert.Equal((true, 0), exits.Go("--exit", "--wait"));
-            Assert.Equal(new[] { "watch", "send exit" }, exits.Order);
+            Assert.Equal(new[] { "watch", "hold", "send exit", "wait for the end" }, exits.Order);
 
             // A copy that cannot be watched leaves the lines' own result.
             var blind = new Run { Wait = null };
@@ -472,6 +501,7 @@ namespace PadForge.Tests
             Assert.False(seams.ShowWindow());
             Assert.Null(seams.Watch());
             Assert.Equal(RunningCopy.Closing.NotRunning, seams.ExitCopy());
+            Assert.Null(seams.HoldForClose());
             var errors = new List<string>();
             Assert.Equal(PadForge.Services.Install.UserInstall.Failed,
                 seams.Install(new PadForge.Services.Install.InstallRequest(PadForge.Services.Install.InstallWhat.Skill, @"C:\Skills"), _ => { }, errors.Add));

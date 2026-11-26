@@ -606,6 +606,7 @@ namespace PadForge.Tests
             new object[] { StartByTaskFile, "internal static bool TryRun(IReadOnlyList<string> args, out int exitCode)", "if (OffLimitsForTest)" },
             new object[] { Startup, "private static string WithTask(Func<object, string> use)", "if (OffLimitsForTest) return null;" },
             new object[] { RunningCopyFile, "internal static IDisposable MarkStartPending(string signalName = SignalWindowName)", "if (OffLimitsForTest && IsTheAppsOwn(signalName)) return null;" },
+            new object[] { RunningCopyFile, "internal static Func<bool> HoldForClose()", "if (OffLimitsForTest) return null;" },
 
             // A plugin's start under the desktop shell (#597): only the
             // tests' own helper, from the test host's folder.

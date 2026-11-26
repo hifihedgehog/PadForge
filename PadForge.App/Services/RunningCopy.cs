@@ -279,6 +279,25 @@ namespace PadForge.Services
         internal static Closing Exit(int waitMs = 10000)
             => OffLimitsForTest ? Closing.NotRunning : Exit(SignalWindowName, ExitMessageName, waitMs, CloseWaitMs);
 
+        /// <summary>A hold on the running copy's process, taken before
+        /// <c>exit</c> goes down the control pipe, and the wait of up to
+        /// <see cref="CloseWaitMs"/> for its end, true when it ended (#600 item
+        /// 44). Null when no copy can be held.</summary>
+        internal static Func<bool> HoldForClose()
+        {
+            if (OffLimitsForTest) return null;
+            IntPtr hwnd = Find(SignalWindowName);
+            if (hwnd == IntPtr.Zero) return null;
+            GetWindowThreadProcessId(hwnd, out uint pid);
+            IntPtr process = pid == 0 ? IntPtr.Zero : OpenProcess(SYNCHRONIZE | PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+            if (process == IntPtr.Zero) return null;
+            return () =>
+            {
+                try { return WaitForSingleObject(process, (uint)CloseWaitMs) == WAIT_OBJECT_0; }
+                finally { CloseHandle(process); }
+            };
+        }
+
         /// <summary>The same ask, to the signal window and message of the
         /// names given. A test gives names of its own, and the fence in
         /// <see cref="FindChecked"/> keeps the app's from the test

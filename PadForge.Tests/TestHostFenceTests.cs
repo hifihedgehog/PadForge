@@ -230,6 +230,7 @@ namespace PadForge.Tests
         private const string WebTunnelsFile = Services + "Automation/Web/WebTunnels.cs";
         private const string WebDocuments = Services + "Automation/Web/WebClientDocuments.cs";
         private const string RecorderReadersFile = "PadForge.App/Common/Recording/RecorderReaders.cs";
+        private const string DialogWindowFile = "PadForge.App/Views/DialogWindow.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -286,6 +287,7 @@ namespace PadForge.Tests
             (ReadBackFile, "XInputReadBack"),
             (WebTunnelsFile, "WebTunnels"),
             (RecorderReadersFile, "RecorderReaders"),
+            (DialogWindowFile, "DialogWindow"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -351,6 +353,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Recording.ForceActuators.OffLimitsForTest);
             Assert.True(PadForge.Services.Automation.Web.WebTunnels.OffLimitsForTest);
             Assert.True(PadForge.Common.Recording.RecorderReaders.OffLimitsForTest);
+            Assert.True(PadForge.Views.DialogWindow.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no

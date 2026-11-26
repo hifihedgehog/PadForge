@@ -33,6 +33,71 @@ namespace PadForge.Tests
             protected override void OnCloseRequested() => CloseAsked++;
         }
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, int flags);
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct WindowRect { public int Left, Top, Right, Bottom; }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hwnd, out WindowRect rect);
+
+        /// <summary>A dialog a test shows lies off every monitor, where no
+        /// click on the desktop reaches it: centered on an owner off screen,
+        /// or on the screen with no owner, Windows would put it in a
+        /// monitor's work area, in front of the user's windows. The test
+        /// host's fence (DialogWindow.OffLimitsForTest) keeps it off, modal
+        /// or not.</summary>
+        [Fact]
+        public void ADialogATestShows_LiesOffEveryMonitor()
+        {
+            DialogTestHost.Run(() =>
+            {
+                var owner = new Window
+                {
+                    Width = 400, Height = 300, Left = -10000, Top = -10000,
+                    ShowActivated = false, ShowInTaskbar = false, WindowStyle = WindowStyle.None,
+                };
+                owner.Show();
+                try
+                {
+                    string Where(Window shown)
+                    {
+                        IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(shown).Handle;
+                        GetWindowRect(hwnd, out var r);
+                        // MONITOR_DEFAULTTONULL: no monitor holds any of it.
+                        return MonitorFromWindow(hwnd, 0) == IntPtr.Zero ? null : r.Left + "," + r.Top + " to " + r.Right + "," + r.Bottom;
+                    }
+
+                    var centered = new DialogWindow { Owner = owner, Left = -20000, Top = -20000, ShowActivated = false };
+                    centered.Show();
+                    string onOwner = Where(centered);
+                    centered.Close();
+                    Assert.True(onOwner == null, "a dialog centered on its owner sits on a monitor at " + onOwner);
+
+                    var alone = new DialogWindow { WindowStartupLocation = WindowStartupLocation.CenterScreen, ShowActivated = false };
+                    alone.Show();
+                    string onScreen = Where(alone);
+                    alone.Close();
+                    Assert.True(onScreen == null, "a dialog centered on the screen sits on a monitor at " + onScreen);
+
+                    var modal = new DialogWindow { Owner = owner, ShowActivated = false };
+                    string asDialog = "never shown";
+                    modal.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, new Action(() =>
+                    {
+                        asDialog = Where(modal);
+                        modal.Close();
+                    }));
+                    modal.ShowDialog();
+                    Assert.True(asDialog == null, "a modal dialog sits on a monitor at " + asDialog);
+                }
+                finally
+                {
+                    owner.Close();
+                }
+            });
+        }
+
         [Fact]
         public void TheFrameShowsItsParts()
         {

@@ -126,8 +126,23 @@ namespace PadForge.Views
             return false;
         }
 
+        /// <summary>Set by the test host: a dialog lies off every monitor, where
+        /// no click on the desktop reaches it. Centered on an owner or on the
+        /// screen, Windows puts it in a monitor's work area, so a dialog a test
+        /// shows would sit in front of the user's windows and take their
+        /// clicks.</summary>
+        internal static bool OffLimitsForTest;
+
         protected override void OnSourceInitialized(EventArgs e)
         {
+            // The window has its place now and shows after this. Manual keeps
+            // the later passes that center a sized-to-content window from
+            // moving it back.
+            if (OffLimitsForTest)
+            {
+                WindowStartupLocation = WindowStartupLocation.Manual;
+                Left = Top = -32000;
+            }
             base.OnSourceInitialized(e);
             // A long list scrolls inside the body rather than running off the
             // screen of the monitor the dialog opens on: its owner's, which it

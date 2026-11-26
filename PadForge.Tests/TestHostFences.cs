@@ -121,6 +121,14 @@ namespace PadForge.Tests
         internal static void Set() => InputHookManager.OffLimitsForTest = true;
     }
 
+    /// <summary>No dialog a test shows lies on a monitor, where the desktop's
+    /// clicks would reach it.</summary>
+    internal static class DialogPlaceOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Views.DialogWindow.OffLimitsForTest = true;
+    }
+
     /// <summary>The logon task and the legacy Run value are left
     /// alone.</summary>
     internal static class StartupOffLimits

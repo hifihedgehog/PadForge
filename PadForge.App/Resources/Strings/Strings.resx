@@ -6804,8 +6804,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rows for {0} devices, yours over every other source.</value></data>
   <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} row for {0} device, yours over every other source.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>None yet.</value></data>
-  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Your SDL_GAMECONTROLLERCONFIG variable holds {0} rows PadForge does not keep. Add Rows opens with them.</value></data>
-  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Your SDL_GAMECONTROLLERCONFIG variable holds {0} row PadForge does not keep. Add Rows opens with it.</value></data>
+  <data name="ControllerDatabase_ProfileRows_Format" xml:space="preserve"><value>Your SDL_GAMECONTROLLERCONFIG variable holds {0} rows PadForge does not keep. Add Rows From a File or the Clipboard opens with them.</value></data>
+  <data name="ControllerDatabase_ProfileRows_One_Format" xml:space="preserve"><value>Your SDL_GAMECONTROLLERCONFIG variable holds {0} row PadForge does not keep. Add Rows From a File or the Clipboard opens with it.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>In use at once.</value></data>
   <data name="ControllerDatabase_DownloadFrom" xml:space="preserve"><value>Download From</value></data>
   <data name="ControllerDatabase_DownloadFromNote" xml:space="preserve"><value>HTTPS only. From an address that is not the community’s, PadForge takes new rows only.</value></data>

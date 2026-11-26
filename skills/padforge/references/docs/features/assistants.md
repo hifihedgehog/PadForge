@@ -136,7 +136,7 @@ When the address changes, the assistant has to be added again with the new one. 
 
 ### ChatGPT Secure MCP Tunnel
 
-**ChatGPT Secure MCP Tunnel** in the **Tunnel** list connects ChatGPT through OpenAI's own tunnel program, tunnel-client, with no public address and no sign-in here. PadForge uses a copy on the PATH. Otherwise it downloads the latest Windows release from OpenAI's tunnel-client repository on GitHub into its protected folder, and uses it only when its SHA-256 matches the release's own list of sums.
+**ChatGPT Secure MCP Tunnel** in the **Tunnel** list connects ChatGPT through OpenAI's own tunnel program, tunnel-client, with no public address and no sign-in here. PadForge uses a copy on the PATH, or the one it downloaded before. Otherwise it downloads the latest Windows release from OpenAI's tunnel-client repository on GitHub into its protected folder, and uses it only when its SHA-256 matches the release's own list of sums.
 
 While it is picked, two boxes take the place of the address and the sign-in rows:
 

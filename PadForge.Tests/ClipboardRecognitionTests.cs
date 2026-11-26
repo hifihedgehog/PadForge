@@ -16,7 +16,9 @@ public sealed class ClipboardRecognitionTests
     [MemberData(nameof(ExportedScalars))]
     public void EachExportedScalarIsRecognizedOnItsOwn(string key, string value)
     {
-        var parsed = PadSetting.FromJson(JsonSerializer.Serialize(new Dictionary<string, string> { [key] = value }));
+        // Beside the layout key every PadForge copy since 2.1.0 carries, which
+        // marks the text as PadForge's own (#600) and is no content itself.
+        var parsed = PadSetting.FromJson(JsonSerializer.Serialize(new Dictionary<string, string> { [key] = value, ["__OutputType"] = "0" }));
         Assert.NotNull(parsed);
         Assert.Equal(value, typeof(PadSetting).GetProperty(key)!.GetValue(parsed));
     }
@@ -33,6 +35,8 @@ public sealed class ClipboardRecognitionTests
     [InlineData("[]")]
     [InlineData("null")]
     [InlineData("{\"ButtonA\":true}")]
+    // A name PadForge shares with another program's preset, alone (#600).
+    [InlineData("{\"ButtonA\":\"Button 1\",\"LeftThumbDeadZoneX\":\"8000\"}")]
     public void UnrelatedOrNonExportDictionariesAreRejected(string json)
         => Assert.Null(PadSetting.FromJson(json));
 

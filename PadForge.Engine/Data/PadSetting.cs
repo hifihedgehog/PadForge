@@ -2382,6 +2382,25 @@ namespace PadForge.Engine.Data
         //  JSON serialization for copy/paste
         // ─────────────────────────────────────────────
 
+        /// <summary>
+        /// Names every PadForge release's copy has carried since 1.0.0 and no
+        /// other program's preset carries (#600). Every release's ToJson
+        /// writes every name of its <see cref="CopyablePropertyNames"/>, empty
+        /// or not, and these nine are in the list of every release from 1.0.0
+        /// on (read from each release's tag). A copy from 2.1.0 on also
+        /// carries __OutputType. Another program's preset may share names
+        /// such as ButtonA, which must not make it paste: its bindings bind
+        /// nothing here and its tuning is in its own units.
+        /// </summary>
+        internal static readonly IReadOnlyList<string> OwnCopyNames = new[]
+        {
+            nameof(AxisToButtonThreshold),
+            nameof(LeftThumbAntiDeadZone), nameof(RightThumbAntiDeadZone),
+            nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),
+            nameof(RightThumbAxisXInvert), nameof(RightThumbAxisYInvert),
+            nameof(LeftThumbLinear), nameof(RightThumbLinear),
+        };
+
         /// <summary>Names of all copyable properties (excludes identity and game-specific fields).</summary>
         private static readonly string[] CopyablePropertyNames = new[]
         {
@@ -2830,6 +2849,12 @@ namespace PadForge.Engine.Data
                 var ps = new PadSetting();
                 var type = typeof(PadSetting);
                 bool recognizedContent = false;
+                // Only PadForge's own copy pastes (#600): it carries
+                // __OutputType, a section only PadForge writes, or one of the
+                // names every release's copy carries (OwnCopyNames).
+                bool own = dict.ContainsKey("__OutputType");
+                foreach (string name in OwnCopyNames)
+                    own |= dict.ContainsKey(name);
 
                 foreach (var kvp in dict)
                 {
@@ -2921,6 +2946,7 @@ namespace PadForge.Engine.Data
                         else
                             continue;
                         recognizedContent = true;
+                        own = true;
                         continue;
                     }
                     var prop = type.GetProperty(kvp.Key);
@@ -2932,8 +2958,9 @@ namespace PadForge.Engine.Data
                     }
                 }
 
-                // Layout metadata alone carries no settings to apply.
-                return recognizedContent ? ps : null;
+                // Layout metadata alone carries no settings to apply, and
+                // another program's text is not PadForge's copy.
+                return recognizedContent && own ? ps : null;
             }
             catch
             {

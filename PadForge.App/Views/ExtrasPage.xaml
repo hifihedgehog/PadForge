@@ -2878,6 +2878,8 @@
                                 <ContentControl x:Name="AssistantsWebHost" Focusable="False">
                                     <views:AssistantsWebSwitch DataContext="{Binding WebAccess}"/>
                                 </ContentControl>
+                                <!-- Answer From Another Device (#600). -->
+                                <views:AssistantsAnswerRow DataContext="{Binding AnswerAccess}"/>
                             </StackPanel>
                         </controls:MoreRow>
                     </StackPanel>

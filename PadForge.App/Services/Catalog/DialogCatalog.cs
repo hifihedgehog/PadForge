@@ -56,7 +56,7 @@ namespace PadForge.Services.Catalog
         /// LiveCatalog.AddProvider.</summary>
         internal static readonly IReadOnlySet<string> NoPageOpener = new HashSet<string>(StringComparer.Ordinal)
         {
-            "AddControllerView", "AutomationRequestCard", "BlissBoxPlayerDialog", "ConfirmDialog",
+            "AddControllerView", "AnswerPairDialog", "AutomationRequestCard", "BlissBoxPlayerDialog", "ConfirmDialog",
             "DreamcastScreenDialog", "FlydigiScreenDialog", "ImportConfigDialog", "KeepDriverDialog",
             "KeyboardScreenDialog", "PairDeviceDialog", "PickSoundDialog", "RecordingReviewView", "ReleaseTestDialog", "ProfileDialog", "RemoteAssignmentsDialog", "RemoteLinkPairDialog",
             "RemoteLinkPasswordDialog", "SearchPanel", "ThemeBuilderDialog", "TouchpadGestureRecorderDialog",

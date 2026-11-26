@@ -92,6 +92,9 @@ namespace PadForge.Services
             // The ChatGPT tunnel's runtime key as its blob (#600 DESIGN-2 N4).
             into.Add((PrivateKind.Key, PadForge.Services.Automation.Web.WebAccessStore.Shared.RuntimeKeyBlob));
             Input?.CollectPrivateValues(into);
+            // An open pairing's secret and code, and the paired devices'
+            // key hashes and names (#600).
+            WebAnswer.Shared.PrivateValues(into);
             // Every microphone and speaker Windows lists. A Bluetooth
             // headset carries the name its owner gave it. Kept until Windows
             // reports a change (AudioMuteService.EndpointNames).

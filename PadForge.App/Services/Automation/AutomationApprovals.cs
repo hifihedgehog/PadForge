@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -79,13 +81,22 @@ namespace PadForge.Services.Automation
     /// <param name="Request">The question.</param>
     /// <param name="Asked">When it was put.</param>
     /// <param name="Expires">When it ends unanswered.</param>
-    internal sealed record PendingApproval(int Id, ApprovalRequest Request, DateTimeOffset Asked, DateTimeOffset Expires);
+    internal sealed record PendingApproval(int Id, ApprovalRequest Request, DateTimeOffset Asked, DateTimeOffset Expires)
+    {
+        /// <summary>32 random hex digits of this question alone (#600), which
+        /// an answer from another device names beside <see cref="Id"/>
+        /// (<see cref="AutomationApprovals.AnswerNamed"/>). IDs start again
+        /// at 1 each run, so an ID alone could name a later question.</summary>
+        public string Nonce { get; init; }
+    }
 
     /// <summary>
     /// Asks the user before a change a program must not make by itself, and
     /// waits (#597). A call on a worker thread puts its question here and
     /// awaits the answer. The interface shows what waits and answers through
-    /// <see cref="Answer"/>, which no outside program can reach. A question
+    /// <see cref="Answer"/>, and a device the user paired answers through
+    /// <see cref="AnswerNamed"/> on PadForge's own listener (#600). No
+    /// program reaches either. A question
     /// nobody answers in two minutes ends as <see cref="ApprovalAnswer.TimedOut"/>.
     ///
     /// <para>The precedent is the pairing question of Remote Link
@@ -184,7 +195,10 @@ namespace PadForge.Services.Automation
                     return Task.FromResult(ApprovalAnswer.TooMany);
                 }
                 var asked = _now();
-                waiting.Pending = new PendingApproval(++_lastId, request, asked, asked + _wait);
+                waiting.Pending = new PendingApproval(++_lastId, request, asked, asked + _wait)
+                {
+                    Nonce = Convert.ToHexString(RandomNumberGenerator.GetBytes(16)),
+                };
                 _waiting.Add(waiting);
             }
             // Read before the caller's token is watched: a token canceled in
@@ -223,13 +237,40 @@ namespace PadForge.Services.Automation
             }
         }
 
-        /// <summary>The user's answer, from the interface. False when no
-        /// question of that ID waits any more: it was answered, it timed out,
-        /// or its program went away.</summary>
+        /// <summary>The user's answer, from the card or the page on this PC.
+        /// False when no question of that ID waits any more: it was answered,
+        /// it timed out, or its program went away.</summary>
         public bool Answer(int id, bool allowed)
         {
             Waiting waiting;
             lock (_sync) waiting = _waiting.Find(w => w.Pending.Id == id);
+            return End(waiting, allowed);
+        }
+
+        /// <summary>
+        /// The user's answer from a device they paired (#600): it names the
+        /// question by its ID and its <see cref="PendingApproval.Nonce"/>, and
+        /// is taken once. False when no question waits with both, so a
+        /// replayed answer, or one that names another question, changes
+        /// nothing. <paramref name="may"/> says which questions a device may
+        /// answer at all. The question is found and judged under the lock
+        /// that takes it.
+        /// </summary>
+        public bool AnswerNamed(int id, string nonce, bool allowed, Predicate<PendingApproval> may)
+        {
+            if (string.IsNullOrEmpty(nonce)) return false;
+            Waiting waiting;
+            lock (_sync)
+            {
+                waiting = _waiting.Find(w => w.Pending.Id == id
+                    && CryptographicOperations.FixedTimeEquals(Encoding.ASCII.GetBytes(w.Pending.Nonce ?? string.Empty), Encoding.ASCII.GetBytes(nonce)));
+                if (waiting != null && may != null && !may(waiting.Pending)) waiting = null;
+            }
+            return End(waiting, allowed);
+        }
+
+        private bool End(Waiting waiting, bool allowed)
+        {
             if (waiting == null || !Take(waiting)) return false;
             waiting.Done.TrySetResult(allowed ? ApprovalAnswer.Allowed : ApprovalAnswer.Denied);
             return true;

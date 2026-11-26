@@ -1,0 +1,64 @@
+<UserControl common:Reach.Class="UsersOwn" x:Class="PadForge.Views.AssistantsAnswerRow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
+    <!--
+        Answer From Another Device (#600), a row under the Assistants card's
+        More beside the Reach rows, as the Assistants-Web board draws it: the
+        label, the row's two lines, Pair a Device…, and under it each paired
+        device with Remove. It shows while a web assistant is allowed or a
+        network key exists. Every control is the user's alone. The data
+        context is an AnswerAccessViewModel.
+    -->
+    <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0"
+            AutomationProperties.AutomationId="Answer_Row"
+            Visibility="{Binding ShowsRow, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+        <StackPanel>
+            <Grid Margin="0,8,0,8" MinHeight="44">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Answer_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,20,0">
+                    <TextBlock Text="{Binding Answer_Hint, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding Answer_Where, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                </StackPanel>
+                <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding PairCommand}"
+                        AutomationProperties.AutomationId="Answer_Pair"
+                        AutomationProperties.HelpText="{Binding Answer_Hint, Source={x:Static strings:Strings.Instance}}"
+                        Content="{Binding Answer_Pair, Source={x:Static strings:Strings.Instance}}"/>
+            </Grid>
+            <!-- Each paired device: its name, when it was paired and last
+                 answered, and Remove, whose next request is refused. -->
+            <ItemsControl ItemsSource="{Binding Devices}" IsTabStop="False" AutomationProperties.AutomationId="Answer_Devices">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,0,8" MinHeight="44">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{DynamicResource DzLabel}"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,20,0">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap" common:LiveText.Polite="True"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            </StackPanel>
+                            <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding RemoveCommand}"
+                                    AutomationProperties.AutomationId="{Binding RemoveId}"
+                                    AutomationProperties.HelpText="{Binding Name}"
+                                    Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
+</UserControl>

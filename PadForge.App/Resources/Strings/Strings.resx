@@ -6941,4 +6941,24 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Web_ChatGpt_Open" xml:space="preserve"><value>Open ChatGPT</value></data>
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge keeps the key encrypted for you alone. An empty box forgets it. ChatGPT works at the level above.</value></data>
   <data name="Web_ChatGpt_KeyNotKept" xml:space="preserve"><value>The key was not kept: PadForge’s web helper is not running, and only it can encrypt the key for you.</value></data>
+  <data name="Answer_Label" xml:space="preserve"><value>Answer From Another Device</value></data>
+  <data name="Answer_Hint" xml:space="preserve"><value>Answer PadForge’s questions from a phone or another PC while you are away from this one.</value></data>
+  <data name="Answer_Where" xml:space="preserve"><value>Works on this network only, through the web controller’s address.</value></data>
+  <data name="Answer_Pair" xml:space="preserve"><value>Pair a Device…</value></data>
+  <data name="Answer_Device_Paired_Format" xml:space="preserve"><value>Paired {0}.</value></data>
+  <data name="Answer_Device_Answered_Format" xml:space="preserve"><value>Last answered {0}.</value></data>
+  <data name="Answer_When_Today_Format" xml:space="preserve"><value>today at {0}</value></data>
+  <data name="Answer_When_At_Format" xml:space="preserve"><value>at {0}</value></data>
+  <data name="Answer_When_Day_Format" xml:space="preserve"><value>{0} at {1}</value></data>
+  <data name="Answer_Device_Unnamed" xml:space="preserve"><value>Unnamed device</value></data>
+  <data name="Answer_Pair_Title" xml:space="preserve"><value>Pair a Device</value></data>
+  <data name="Answer_Pair_Qr" xml:space="preserve"><value>Code to scan with the device’s camera</value></data>
+  <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Hidden from screen capture, so only you can scan it.</value></data>
+  <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Or open {0} on the device and type this code:</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>The code works once, until {0}. Five wrong tries close the pairing.</value></data>
+  <data name="Answer_Pair_Starting" xml:space="preserve"><value>Starting the web controller’s address…</value></data>
+  <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>The page cannot open: {0}</value></data>
+  <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows would not hide this window from screen capture, so it shows no code.</value></data>
+  <data name="Answer_Pair_Ended_Tries" xml:space="preserve"><value>Five wrong tries closed the pairing. Pair a Device… makes a new code.</value></data>
+  <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>The code ran out. Pair a Device… makes a new one.</value></data>
 </root>

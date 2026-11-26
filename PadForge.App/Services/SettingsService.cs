@@ -477,6 +477,9 @@ namespace PadForge.Services
                 // Reach PadForge From the Web and the web assistants allowed
                 // (#600 item 11), from the file alone for the same reason.
                 Automation.Web.WebAccessStore.Shared.Load(data.AppSettings?.WebAccess);
+                // The devices paired to answer PadForge's questions (#600),
+                // from the file alone for the same reason.
+                WebAnswer.Shared.Load(data.AppSettings?.AnswerDevices);
 
                 // Publish user-imported HIDMaestro profiles to the catalog
                 // so they appear in the Extended dropdown alongside the
@@ -5283,6 +5286,7 @@ namespace PadForge.Services
                 Plugins = _mainVm.Dashboard.PluginRecords is { Length: > 0 } plugins ? plugins : null,
                 AllowedPrograms = Automation.AutomationConsent.Shared.Save(),
                 WebAccess = Automation.Web.WebAccessStore.Shared.Save(),
+                AnswerDevices = WebAnswer.Shared.Save(),
                 TestControllerOn = _mainVm.Dashboard.TestControllerOn,
                 TestControllerValues = _mainVm.Dashboard.TestControllerValues is { Length: > 0 } testValues ? testValues : null,
                 ReplayOn = _mainVm.Dashboard.ReplayOn,
@@ -7707,6 +7711,14 @@ namespace PadForge.Services
         [XmlElement("WebAccess")]
         public Automation.Web.WebAccessData WebAccess { get; set; }
         public bool ShouldSerializeWebAccess() => WebAccess != null;
+
+        /// <summary>The devices paired to answer PadForge's questions (#600),
+        /// each with its key as a SHA-256 hash only. Written only when the
+        /// list holds one.</summary>
+        [XmlArray("AnswerDevices")]
+        [XmlArrayItem("Device")]
+        public AnswerDeviceData[] AnswerDevices { get; set; }
+        public bool ShouldSerializeAnswerDevices() => AnswerDevices != null && AnswerDevices.Length > 0;
 
         /// <summary>The built-in Test Controller's switch (#597). Off, and
         /// left out of the file, until the user turns it on.</summary>

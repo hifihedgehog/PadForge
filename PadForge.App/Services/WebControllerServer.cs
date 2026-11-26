@@ -145,6 +145,9 @@ namespace PadForge.Services
         private int _port;
         private string _localIp;
         private bool _https;
+        /// <summary>Whether the controller pages are served, false while the
+        /// listener runs for the answer page alone (#600).</summary>
+        private volatile bool _controls = true;
         /// <summary>Why the main address serves HTTP. Kept as a kind, not
         /// text, so the status line follows a language change.</summary>
         private HttpsFallback _httpsFallback;
@@ -208,6 +211,16 @@ namespace PadForge.Services
         /// <summary>True when serving HTTPS (a secure context, required for the
         /// phone motion sensors, #296 phase 0).</summary>
         public bool IsHttps => _https;
+
+        /// <summary>Whether this run serves the controller pages. False while
+        /// it runs for the answer page alone, with the web controller off
+        /// (#600).</summary>
+        internal bool ServesControls => _controls;
+
+        /// <summary>The answer page and its pairing (#600), served at
+        /// /answer on the main address while it serves HTTPS, or null. Set by
+        /// InputService.</summary>
+        internal WebAnswer Answers { get; set; }
 
         /// <summary>The optional second address, served over plain HTTP on its
         /// own port beside the main one. It is for browsers that refuse
@@ -370,8 +383,12 @@ namespace PadForge.Services
             return WebControllerTls.AcquireBinding(port);
         }
 
-        public bool Start(int port = DefaultPort, PlainHttpOptions plain = null)
+        /// <param name="controls">False to serve the answer page alone
+        /// (#600): no controller page, socket, picture page or plain
+        /// address.</param>
+        public bool Start(int port = DefaultPort, PlainHttpOptions plain = null, bool controls = true)
         {
+            if (!controls) plain = null;
             long generation;
             lock (_lifecycleLock)
             {
@@ -381,6 +398,9 @@ namespace PadForge.Services
                 _starting = true;
                 generation = ++_startGeneration;
                 _portInUse = false;
+                // Set first, so a refusal this start reports is read as the
+                // answer page's alone when it runs for that.
+                _controls = controls;
             }
 
             IWebControllerListener pending = null;
@@ -718,6 +738,10 @@ namespace PadForge.Services
                     try { ctx?.Response.Close(); } catch { }
                     break;
                 }
+                // The answer page (#600) and, while the listener runs for it
+                // alone, the two files its page links. Judged before the
+                // plain address's code, which the answer page never takes.
+                if (TakeAnswerRoute(ctx, plain.Value)) continue;
                 // Admission reads only the request line and headers, so it runs
                 // here. A refusal is written on the pool like any other page.
                 bool viaPlain;
@@ -756,6 +780,112 @@ namespace PadForge.Services
                     var captured = ctx;
                     _ = Task.Run(() => ServeStaticFile(captured));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Routes a request the answer page owns (#600), on the pool, and
+        /// refuses what a run for the answer page alone does not serve. The
+        /// page is served only on the main address while it serves HTTPS:
+        /// its device key rides a Secure cookie, and the plain address has
+        /// no certificate. True when the request was taken here.
+        /// <paramref name="plain"/> is this listener's own plain address, as
+        /// Admit reads it.
+        /// </summary>
+        private bool TakeAnswerRoute(HttpListenerContext ctx, PlainHttpOptions plain)
+        {
+            string path;
+            try { path = ctx.Request.Url?.AbsolutePath ?? "/"; }
+            catch { path = "/"; }
+            if (WebAnswer.IsRoute(path))
+            {
+                var answers = Answers;
+                bool main = plain == null || ctx.Request.LocalEndPoint?.Port != plain.Port;
+                if (answers == null || !_https || !main) _ = Task.Run(() => NotFound(ctx));
+                else _ = Task.Run(() => ServeAnswer(ctx, answers));
+                return true;
+            }
+            if (_controls) return false;
+            bool linked = !ctx.Request.IsWebSocketRequest
+                          && (path == "/css/padforge.css" || path == "/img/" + HomeMarkPath);
+            if (!linked) _ = Task.Run(() => NotFound(ctx));
+            return !linked;
+        }
+
+        private static void NotFound(HttpListenerContext ctx)
+        {
+            try
+            {
+                ctx.Response.StatusCode = 404;
+                ctx.Response.Close();
+            }
+            catch
+            {
+                try { ctx.Response.Abort(); } catch { }
+            }
+        }
+
+        /// <summary>One request to the answer page, read with a body of at
+        /// most <see cref="WebAnswer.LongestBody"/> bytes and answered by
+        /// <see cref="WebAnswer.Handle"/>. The page itself is served as the
+        /// web controller's pages are, under no-store, with no referrer and
+        /// in no frame. Nothing of the request is logged: its body can carry
+        /// a pairing code.</summary>
+        private void ServeAnswer(HttpListenerContext ctx, WebAnswer answers)
+        {
+            try
+            {
+                var request = ctx.Request;
+                var response = ctx.Response;
+                string body = null;
+                if (request.HasEntityBody)
+                {
+                    var buffer = new byte[WebAnswer.LongestBody + 1];
+                    int read = 0, n;
+                    while (read < buffer.Length && (n = request.InputStream.Read(buffer, read, buffer.Length - read)) > 0) read += n;
+                    if (read > WebAnswer.LongestBody)
+                    {
+                        response.StatusCode = 413;
+                        response.Close();
+                        return;
+                    }
+                    body = Encoding.UTF8.GetString(buffer, 0, read);
+                }
+                var reply = answers.Handle(new AnswerRequest(request.HttpMethod, request.Url?.AbsolutePath, request.Headers["Host"],
+                    request.Headers["Origin"], request.Headers["Cookie"], body, request.RemoteEndPoint?.Address));
+                response.Headers["Cache-Control"] = "no-store";
+                response.Headers["Referrer-Policy"] = "no-referrer";
+                response.Headers["X-Frame-Options"] = "DENY";
+                response.Headers["X-Content-Type-Options"] = "nosniff";
+                byte[] bytes;
+                if (reply.Page)
+                {
+                    using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(WebAssetPrefix + "answer.html");
+                    if (stream == null)
+                    {
+                        response.StatusCode = 404;
+                        response.Close();
+                        return;
+                    }
+                    using var ms = new MemoryStream();
+                    stream.CopyTo(ms);
+                    bytes = PadForge.Common.Themes.WebThemeSheet.Dress("/answer.html", ms.ToArray());
+                    response.ContentType = "text/html; charset=utf-8";
+                }
+                else
+                {
+                    bytes = Encoding.UTF8.GetBytes(reply.Json ?? "{}");
+                    response.ContentType = "application/json; charset=utf-8";
+                }
+                if (reply.SetCookie != null) response.AppendHeader("Set-Cookie", reply.SetCookie);
+                response.StatusCode = reply.Status;
+                response.ContentLength64 = bytes.Length;
+                response.OutputStream.Write(bytes, 0, bytes.Length);
+                response.Close();
+            }
+            catch
+            {
+                try { ctx.Response.Abort(); } catch { }
             }
         }
 

@@ -6690,4 +6690,24 @@ public class Strings : INotifyPropertyChanged
     public string Web_ChatGpt_Open => Get("Web_ChatGpt_Open");
     public string Web_ChatGpt_Footnote => Get("Web_ChatGpt_Footnote");
     public string Web_ChatGpt_KeyNotKept => Get("Web_ChatGpt_KeyNotKept");
+    public string Answer_Label => Get("Answer_Label");
+    public string Answer_Hint => Get("Answer_Hint");
+    public string Answer_Where => Get("Answer_Where");
+    public string Answer_Pair => Get("Answer_Pair");
+    public string Answer_Device_Paired_Format => Get("Answer_Device_Paired_Format");
+    public string Answer_Device_Answered_Format => Get("Answer_Device_Answered_Format");
+    public string Answer_When_Today_Format => Get("Answer_When_Today_Format");
+    public string Answer_When_At_Format => Get("Answer_When_At_Format");
+    public string Answer_When_Day_Format => Get("Answer_When_Day_Format");
+    public string Answer_Device_Unnamed => Get("Answer_Device_Unnamed");
+    public string Answer_Pair_Title => Get("Answer_Pair_Title");
+    public string Answer_Pair_Qr => Get("Answer_Pair_Qr");
+    public string Answer_Pair_Hidden => Get("Answer_Pair_Hidden");
+    public string Answer_Pair_Open_Format => Get("Answer_Pair_Open_Format");
+    public string Answer_Pair_Until_Format => Get("Answer_Pair_Until_Format");
+    public string Answer_Pair_Starting => Get("Answer_Pair_Starting");
+    public string Answer_Pair_NoPage_Format => Get("Answer_Pair_NoPage_Format");
+    public string Answer_Pair_NotHidden => Get("Answer_Pair_NotHidden");
+    public string Answer_Pair_Ended_Tries => Get("Answer_Pair_Ended_Tries");
+    public string Answer_Pair_Ended_Expired => Get("Answer_Pair_Ended_Expired");
 }

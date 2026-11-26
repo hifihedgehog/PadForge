@@ -8250,6 +8250,28 @@
     "under_more": false
   },
   {
+    "id": "dialog.dialog/AnswerPairDialog/Answer_Pair_Title",
+    "page": "Dialogs",
+    "place": "AnswerPairDialog",
+    "card": null,
+    "words": "Pair a Device",
+    "kind": "dialog",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/AnswerPairDialog/CancelButton/Common_Cancel",
+    "page": "Dialogs",
+    "place": "AnswerPairDialog",
+    "card": null,
+    "words": "Cancel",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
     "id": "dialog.dialog/AutomationRequestCard/Extras_Automation_Card_Waiting",
     "page": "Dialogs",
     "place": "AutomationRequestCard",

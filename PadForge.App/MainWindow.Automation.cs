@@ -92,6 +92,8 @@ namespace PadForge
             StartAssistants();
             // Reach PadForge From the Web (#600 item 11).
             StartWebDoor();
+            // Answer From Another Device (#600).
+            StartAnswerPage();
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableAutomation)

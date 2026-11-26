@@ -488,6 +488,23 @@ namespace PadForge.Tests
                 dash.CopyAutomationMessageCommand.Execute(null);
                 drawing.Picture(ground, "automation-more.png", Board, 1250, () => more.IsExpanded = true);
                 more.IsExpanded = false;
+                // Answer From Another Device under the More, with a device
+                // paired, and its pairing window (#600, board Assistants-Web).
+                var answers = new PadForge.Services.WebAnswer(() => now) { RowShows = () => true };
+                answers.Load(new[]
+                {
+                    new PadForge.Services.AnswerDeviceData
+                    {
+                        Id = "d1", Name = "Pixel 8", KeyHash = new string('a', 64),
+                        Paired = now.AddMinutes(-24).UtcDateTime, LastAnswered = now.AddMinutes(-3).UtcDateTime,
+                    },
+                });
+                dash.AnswerAccess = new AnswerAccessViewModel(answers, () => now);
+                drawing.Picture(ground, "automation-more-answer.png", Board, 1400, () => more.IsExpanded = true);
+                more.IsExpanded = false;
+                answers.SetAddress("https://192.168.1.24:8080", null);
+                drawing.PictureWindow(new AnswerPairDialog(answers), "automation-answer-pairing.png");
+                dash.AnswerAccess = null;
 
                 // On and busy: two programs connected, a question waiting,
                 // the rows in each state, two programs allowed, and a record

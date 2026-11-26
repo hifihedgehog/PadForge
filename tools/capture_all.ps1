@@ -27,6 +27,11 @@
     stopped on an error or over a settings backup, and 0 otherwise. An -Only
     run ends the same way. A run stopped with CTRL+C still puts the settings
     back, and Windows PowerShell 5.1 then ends it with exit code 0.
+
+    The Pair a Device window (Automation, Answer From Another Device) asks
+    Windows to leave it out of every screen capture (SetWindowDisplayAffinity
+    with WDA_EXCLUDEFROMCAPTURE), so a shot of it renders black. The run
+    takes none: its look is the Assistants-Web board's.
 #>
 
 param(

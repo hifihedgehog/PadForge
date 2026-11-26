@@ -147,7 +147,9 @@ namespace PadForge.Tests
         {
             var expected = new[]
             {
+                "Views/AnswerPairDialog.xaml <DialogWindow>",             // a pairing's QR code and six digits (#600)
                 "Views/AssistantCallout.xaml <UserControl>",              // the guided pointer's callout and its Close (#600)
+                "Views/AssistantsAnswerRow.xaml <UserControl>",           // Answer From Another Device: Pair a Device…, each device's Remove (#600)
                 "Views/AssistantsWebCard.xaml <UserControl>",             // Assistants on the Web: its tunnel, Accept, Revoke (#600 item 11)
                 "Views/AssistantsWebSwitch.xaml <UserControl>",           // Reach PadForge From the Web, the web switch (#600 item 11)
                 "Views/AutomationRequestCard.xaml <Window>",              // the request card

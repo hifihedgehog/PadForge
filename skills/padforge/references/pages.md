@@ -835,6 +835,11 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - AddControllerView: dialog, free. `dialog.dialog/AddControllerView/==AddControllerView`
 - Close: action, free. `dialog.action/AddControllerView/CloseButton/Common_Close`
 
+### AnswerPairDialog
+
+- Pair a Device: dialog, yours-alone. `dialog.dialog/AnswerPairDialog/Answer_Pair_Title`
+- Cancel: action, yours-alone. `dialog.action/AnswerPairDialog/CancelButton/Common_Cancel`
+
 ### AutomationRequestCard
 
 - Waiting for You: dialog, yours-alone. `dialog.dialog/AutomationRequestCard/Extras_Automation_Card_Waiting`

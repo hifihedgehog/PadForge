@@ -11938,17 +11938,17 @@ namespace PadForge.Services
             }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
             {
-                if (_mainVm.Dashboard.EnableWebController)
-                    StartWebServerIfEnabled();
-                else
-                    StopWebServer();
+                // A run for the answer page alone (#600) gives way to the
+                // web controller's, and comes back when it goes off.
+                StopWebServer();
+                StartWebServerIfEnabled();
             }
             else if (e.PropertyName is nameof(DashboardViewModel.WebControllerPort)
                      or nameof(DashboardViewModel.EnableWebControllerPlainHttp)
                      or nameof(DashboardViewModel.WebControllerPlainHttpPort)
                      or nameof(DashboardViewModel.WebControllerPlainHttpLocalOnly))
             {
-                if (_mainVm.Dashboard.EnableWebController)
+                if (_mainVm.Dashboard.EnableWebController || AnswerRouteWanted)
                 {
                     StopWebServer();
                     StartWebServerIfEnabled();
@@ -12483,9 +12483,34 @@ namespace PadForge.Services
         //  Web Controller Server lifecycle
         // ─────────────────────────────────────────────
 
+        /// <summary>The answer page and its pairing (#600), which the web
+        /// controller's listener serves. A test gives its own.</summary>
+        internal WebAnswer Answers { get; set; } = WebAnswer.Shared;
+
+        /// <summary>Whether the listener runs for the answer page while the
+        /// web controller is off.</summary>
+        private bool AnswerRouteWanted => Answers?.Wanted == true;
+
+        /// <summary>
+        /// Starts or stops the listener's run for the answer page alone
+        /// (#600) as the page comes to be wanted or not, while the web
+        /// controller is off. With it on, its own run serves the page. Called
+        /// on the interface's thread when the page's state changes.
+        /// </summary>
+        internal void ApplyAnswerRoute()
+        {
+            if (_mainVm.Dashboard.EnableWebController) return;
+            bool running = _webServer != null;
+            if (AnswerRouteWanted && !running) StartWebServerIfEnabled();
+            else if (!AnswerRouteWanted && running) StopWebServer();
+        }
+
         private void StartWebServerIfEnabled()
         {
-            if (!_mainVm.Dashboard.EnableWebController || _inputManager == null)
+            // The web controller, or the answer page alone while it is off
+            // (#600). Either stops with the engine.
+            bool controls = _mainVm.Dashboard.EnableWebController;
+            if (!(controls || AnswerRouteWanted) || _inputManager == null)
                 return;
 
             if (_webServer != null)
@@ -12528,7 +12553,8 @@ namespace PadForge.Services
             // The code goes in before the start, so a new code set while the
             // server starts replaces it instead of being overwritten by it.
             _webServer.SetPlainAccessCode(_mainVm.Dashboard.WebControllerAccessCode);
-            var plain = _mainVm.Dashboard.EnableWebControllerPlainHttp
+            _webServer.Answers = Answers;
+            var plain = controls && _mainVm.Dashboard.EnableWebControllerPlainHttp
                 ? new WebControllerServer.PlainHttpOptions(
                     _mainVm.Dashboard.WebControllerPlainHttpPort, _mainVm.Dashboard.WebControllerPlainHttpLocalOnly)
                 : null;
@@ -12543,13 +12569,13 @@ namespace PadForge.Services
             System.Threading.Tasks.Task.Run(() =>
             {
                 bool ok = false;
-                try { ok = launching.Start(port, plain); }
+                try { ok = launching.Start(port, plain, controls); }
                 catch { ok = false; }
                 _dispatcher.BeginInvoke(() =>
                 {
                     // The user may have switched the toggle off, or changed the
                     // port (which stops and restarts), while this was starting.
-                    bool wanted = _mainVm.Dashboard.EnableWebController
+                    bool wanted = (_mainVm.Dashboard.EnableWebController || AnswerRouteWanted)
                                   && ReferenceEquals(_webServer, launching);
                     if (ok && wanted)
                     {
@@ -12606,6 +12632,13 @@ namespace PadForge.Services
         internal void ApplyWebServerStatus(WebControllerServer server, WebControllerServer.Status status)
         {
             if (!ReferenceEquals(_webServer, server) || server.Generation != status.Generation) return;
+            // The answer page's address (#600): the main address while it
+            // serves HTTPS, and why not otherwise.
+            Answers?.SetAddress(server.IsRunning && server.IsHttps ? server.Url : null,
+                server.IsRunning ? server.HttpsUnavailable : status.Text);
+            // A run for the answer page alone leaves the web controller's
+            // card as the switch has it: off.
+            if (!server.ServesControls) return;
             _mainVm.Dashboard.WebControllerStatus = status.Text;
             _mainVm.Dashboard.WebControllerClientCount = server.ClientCount;
             _mainVm.Dashboard.IsWebControllerRunning = server.IsRunning;
@@ -12709,6 +12742,7 @@ namespace PadForge.Services
             _webServer.StatusChanged -= OnWebServerStatusChanged;
             _webServer.Dispose();
             _webServer = null;
+            Answers?.SetAddress(null, null);
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
             // The server raised each disconnect after its own clear, so the

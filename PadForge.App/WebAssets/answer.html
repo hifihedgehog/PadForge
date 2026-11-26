@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PadForge - Answer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0a0e15">
+    <meta name="referrer" content="no-referrer">
+    <link rel="stylesheet" href="/css/padforge.css">
+    <style>
+        /* The answer page (#600, board Answer-Page). Its colors are
+           css/padforge.css's, the app's dark brushes, as on every page of
+           the web controller, and its parts are the phone home page's:
+           the brand row, the field, the ember button and the cards. */
+        *, *::before, *::after { box-sizing: border-box; }
+        [hidden] { display: none !important; }
+        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        body {
+            margin: 0;
+            background: var(--ground);
+            color: var(--text-1);
+            font-family: var(--font);
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        p { margin: 0; }
+        button, input {
+            margin: 0;
+            font: inherit;
+            color: inherit;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        button {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+        .home {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0 auto;
+            padding: 20px 20px 24px;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; }
+        .mark { flex: none; width: 30px; height: 30px; object-fit: contain; }
+        .brand .pf-status { margin-left: auto; font-weight: 400; }
+        .ti { font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
+        .line { font-size: 13px; color: var(--text-2); }
+        .note { font-size: 12px; color: var(--text-3); }
+        .head { font-size: 13px; font-weight: 600; color: var(--text-2); }
+
+        .field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-2); }
+        .field input {
+            width: 100%;
+            height: 46px;
+            padding: 0 14px;
+            border-radius: 10px;
+            border: 1px solid var(--field-edge);
+            background: var(--field);
+            font-size: 16px;
+            letter-spacing: 4px;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-1);
+        }
+
+        .go {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 64px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 0;
+            background: var(--ember);
+            color: var(--ember-ink);
+            font-size: 17px;
+            font-weight: 600;
+        }
+        .go:active { background: var(--ember-press); }
+        .no {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--field-edge);
+            background: var(--raised);
+            font-weight: 600;
+        }
+        .no:active { background: var(--card-lift); }
+        button:disabled { opacity: 0.6; cursor: default; }
+
+        .list { display: flex; flex-direction: column; gap: 12px; }
+        .q {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--card-edge);
+            background: var(--card);
+        }
+        .k { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 10px; margin: 4px 0 0; font-size: 13px; }
+        .k dt { color: var(--text-3); }
+        .k dd { margin: 0; overflow-wrap: anywhere; }
+        .detail { margin: 6px 0 0; padding: 0; list-style: none; font-size: 13px; color: var(--text-2); }
+        .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+        .two .go { min-height: 52px; }
+
+        @media (hover: hover) {
+            .go:hover { background: var(--ember-lift); }
+            .go:active { background: var(--ember-press); }
+            .no:hover { background: var(--card-lift); }
+        }
+    </style>
+</head>
+<body>
+<!-- The answer page (#600). PadForge serves it itself, with its rights, on
+     the web controller's HTTPS address. A device pairs once, with the code
+     Pair a Device… shows on the PC or the QR code beside it, which opens
+     this page with the pairing's secret after the #, never sent in an
+     address. A paired device lists each question waiting with the words of
+     PadForge's card and answers it by its request number. Like every web
+     controller page it is English, whatever the language PadForge shows,
+     and every word a question carries is set as text, never as markup. -->
+<main class="home">
+    <div class="brand"><img class="mark" src="/img/Resources/PadForge-icon.png" alt="" width="30" height="30">PadForge<span id="pairedMark" class="pf-status live" hidden>Paired</span></div>
+
+    <section id="pairSection" hidden>
+        <div class="ti">Pair This Device</div>
+        <p id="pairLine" class="line" style="margin-top: 6px">Type the six digits PadForge shows. Or scan its code with this phone’s camera, which opens this page paired.</p>
+    </section>
+    <form id="pairForm" class="home-form" hidden style="display: flex; flex-direction: column; gap: 18px">
+        <label class="field">Code
+            <input id="codeInput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="7" spellcheck="false" enterkeyhint="done" placeholder="000 000">
+        </label>
+        <button id="pairButton" class="go" type="submit">Pair</button>
+    </form>
+    <p id="pairNote" class="note" hidden>Five wrong tries close the pairing. This page works on PadForge’s network only.</p>
+
+    <section id="waitSection" hidden>
+        <div class="head">Waiting for You</div>
+        <div id="list" class="list" style="margin-top: 10px" aria-live="polite"></div>
+        <p id="none" class="line" hidden>Nothing waits for you now.</p>
+    </section>
+    <p id="waitNote" class="note" hidden>An answer here is the same as one on PadForge’s card. A question answered on the PC leaves this list.</p>
+
+    <p id="said" class="line" role="status" aria-live="polite"></p>
+</main>
+<script>
+(function () {
+    "use strict";
+    var $ = function (id) { return document.getElementById(id); };
+    var questions = [];
+    var fetchedAt = 0;
+    var busy = false;
+
+    function show(paired) {
+        $("pairedMark").hidden = !paired;
+        $("pairSection").hidden = paired;
+        $("pairForm").hidden = paired;
+        $("pairNote").hidden = paired;
+        $("waitSection").hidden = !paired;
+        $("waitNote").hidden = !paired;
+    }
+
+    function say(text) { $("said").textContent = text || ""; }
+
+    function post(path, body) {
+        return fetch(path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            cache: "no-store",
+            body: JSON.stringify(body)
+        }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; });
+        });
+    }
+
+    // The name the PC lists this device by: its model where the browser
+    // gives one, else the kind of device its browser names.
+    function deviceName() {
+        var ua = navigator.userAgent || "";
+        var guess = /iPhone/.test(ua) ? "iPhone" : /iPad/.test(ua) ? "iPad" : /Android/.test(ua) ? "Android phone"
+            : /Windows/.test(ua) ? "Windows PC" : /Macintosh/.test(ua) ? "Mac" : "";
+        var data = navigator.userAgentData;
+        if (!data || !data.getHighEntropyValues) return Promise.resolve(guess);
+        return data.getHighEntropyValues(["model"]).then(function (v) { return (v && v.model) || guess; }, function () { return guess; });
+    }
+
+    function pair(proof) {
+        if (busy) return;
+        busy = true;
+        $("pairButton").disabled = true;
+        deviceName().then(function (name) {
+            proof.name = name;
+            return post("/answer/pair", proof);
+        }).then(function (r) {
+            if (r.status === 200) { say(""); $("codeInput").value = ""; refresh(); return; }
+            if (r.status === 401 && r.body.left) say("Wrong code. " + r.body.left + (r.body.left === 1 ? " try is" : " tries are") + " left.");
+            else if (r.status === 409) say("PadForge keeps eight paired devices. Remove one on the PC first.");
+            else say("The pairing is closed. Pair a Device… on the PC makes a new code.");
+        }, function () {
+            say("PadForge did not answer. This page works on PadForge’s network only.");
+        }).then(function () {
+            busy = false;
+            $("pairButton").disabled = false;
+        });
+    }
+
+    function waits(seconds) {
+        var s = Math.max(0, seconds);
+        var m = Math.floor(s / 60), r = s % 60;
+        return "Waits " + m + ":" + (r < 10 ? "0" : "") + r + " for you.";
+    }
+
+    function row(dl, name, value) {
+        if (!value) return;
+        var dt = document.createElement("dt");
+        dt.textContent = name;
+        var dd = document.createElement("dd");
+        dd.textContent = value;
+        dl.appendChild(dt);
+        dl.appendChild(dd);
+    }
+
+    function render() {
+        var list = $("list");
+        while (list.firstChild) list.removeChild(list.firstChild);
+        $("none").hidden = questions.length > 0;
+        var gone = Math.floor((Date.now() - fetchedAt) / 1000);
+        questions.forEach(function (q) {
+            var card = document.createElement("div");
+            card.className = "q";
+            var number = document.createElement("span");
+            number.className = "note";
+            number.textContent = "Request " + q.id;
+            card.appendChild(number);
+            var title = document.createElement("span");
+            title.className = "ti";
+            title.textContent = q.title;
+            card.appendChild(title);
+            var dl = document.createElement("dl");
+            dl.className = "k";
+            row(dl, "Program", q.program);
+            row(dl, "Path", q.path);
+            if (q.path) row(dl, "Signer", q.signer || "Not signed");
+            if (dl.firstChild) card.appendChild(dl);
+            if (q.detail && q.detail.length) {
+                var ul = document.createElement("ul");
+                ul.className = "detail";
+                q.detail.forEach(function (line) {
+                    var li = document.createElement("li");
+                    li.textContent = line;
+                    ul.appendChild(li);
+                });
+                card.appendChild(ul);
+            }
+            var time = document.createElement("span");
+            time.className = "note";
+            time.dataset.waits = String(q.waits);
+            time.textContent = waits(q.waits - gone);
+            card.appendChild(time);
+            var two = document.createElement("div");
+            two.className = "two";
+            var no = document.createElement("button");
+            no.type = "button";
+            no.className = "no";
+            no.textContent = "Don’t Allow";
+            no.addEventListener("click", function () { answer(q, false, card); });
+            var yes = document.createElement("button");
+            yes.type = "button";
+            yes.className = "go";
+            yes.textContent = "Allow";
+            yes.addEventListener("click", function () { answer(q, true, card); });
+            two.appendChild(no);
+            two.appendChild(yes);
+            card.appendChild(two);
+            list.appendChild(card);
+        });
+    }
+
+    function answer(q, allow, card) {
+        card.querySelectorAll("button").forEach(function (b) { b.disabled = true; });
+        post("/answer/answer", { id: q.id, nonce: q.nonce, allow: allow }).then(function (r) {
+            if (r.status === 200) say(allow ? "Allowed request " + q.id + "." : "Did not allow request " + q.id + ".");
+            else if (r.status === 401) say("This device is no longer paired.");
+            else say("Request " + q.id + " was answered already or ended.");
+            refresh();
+        }, function () {
+            say("PadForge did not answer. This page works on PadForge’s network only.");
+            card.querySelectorAll("button").forEach(function (b) { b.disabled = false; });
+        });
+    }
+
+    function refresh() {
+        fetch("/answer/state", { credentials: "same-origin", cache: "no-store" }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; });
+        }).then(function (r) {
+            if (r.status === 200) {
+                show(true);
+                var before = questions.map(function (q) { return q.id + q.nonce; }).join();
+                questions = r.body.questions || [];
+                fetchedAt = Date.now();
+                if (questions.map(function (q) { return q.id + q.nonce; }).join() !== before || !$("list").firstChild) render();
+                else tick();
+            } else {
+                show(false);
+                questions = [];
+                if (r.status === 401 && !r.body.pairing)
+                    $("pairLine").textContent = "No pairing is open. Pair a Device… on the PC shows a code for five minutes.";
+                else
+                    $("pairLine").textContent = "Type the six digits PadForge shows. Or scan its code with this phone’s camera, which opens this page paired.";
+            }
+        }, function () {
+            say("PadForge did not answer. This page works on PadForge’s network only.");
+        });
+    }
+
+    function tick() {
+        var gone = Math.floor((Date.now() - fetchedAt) / 1000);
+        document.querySelectorAll("[data-waits]").forEach(function (el) {
+            el.textContent = waits(parseInt(el.dataset.waits, 10) - gone);
+        });
+    }
+
+    $("pairForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var code = $("codeInput").value.replace(/\D/g, "");
+        if (code.length !== 6) { say("The code is six digits."); return; }
+        pair({ code: code });
+    });
+
+    // The QR code opens this page with the secret after the #. It leaves
+    // the address bar and the history at once, and goes to PadForge in a
+    // POST.
+    var m = /^#pair=([A-Za-z0-9_-]{20,128})$/.exec(location.hash);
+    if (m) {
+        history.replaceState(null, "", location.pathname);
+        pair({ secret: m[1] });
+    }
+    refresh();
+    setInterval(function () { if (!document.hidden) refresh(); }, 2000);
+    setInterval(tick, 1000);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(); });
+})();
+</script>
+</body>
+</html>

@@ -325,11 +325,9 @@ namespace PadForge.Tests
             Assert.False(WebAnswer.ShowsRow(0, false));
             Assert.True(WebAnswer.ShowsRow(1, false));
             Assert.True(WebAnswer.ShowsRow(0, true));
-            // The network door keeps no keys yet.
-            Assert.False(WebAnswer.NetworkKeyExists());
-
             var store = new WebAccessStore();
-            var answers = new WebAnswer { RowShows = () => WebAnswer.ShowsRow(store.Grants.Count, WebAnswer.NetworkKeyExists()) };
+            Assert.False(WebAnswer.NetworkKeyExists(store));
+            var answers = new WebAnswer { RowShows = () => WebAnswer.ShowsRow(store.Grants.Count, WebAnswer.NetworkKeyExists(store)) };
             var view = new AnswerAccessViewModel(answers);
             Assert.False(view.ShowsRow);
             Assert.Empty(view.CatalogItems());

@@ -107,13 +107,48 @@ namespace PadForge.ViewModels
     /// <summary>One allowed web assistant on the Assistants on the Web card.</summary>
     public sealed class WebAllowedItem
     {
-        internal WebAllowedItem(string id, string origin, string line, Action<string> revoke)
+        private readonly ProgramReach _reach;
+        private readonly Action<string, ProgramReach> _setReach;
+
+        internal WebAllowedItem(string id, string origin, string line, Action<string> revoke,
+            ProgramReach reach = null, Action<string, ProgramReach> setReach = null, Func<string, ProgramReach, ProgramReach> pick = null)
         {
             Id = id;
             Origin = origin;
-            Line = line;
+            _reach = reach;
+            _setReach = setReach;
+            // Its reach (#600 DESIGN-2 N3), said as a network key's row says it.
+            Line = reach == null ? line : line + " " + ReachWords.Line(reach);
             RevokeCommand = new RelayCommand(() => revoke?.Invoke(id));
+            PickCommand = new RelayCommand(() =>
+            {
+                var picked = pick?.Invoke(origin, _reach ?? ProgramReach.OwnDevices);
+                if (picked != null) _setReach?.Invoke(id, picked);
+            });
         }
+
+        public IReadOnlyList<string> ReachChoices => ReachWords.Choices;
+
+        /// <summary>0 for All of PadForge, 1 for Only Its Own Devices and
+        /// These. Picking the second keeps the devices picked before.</summary>
+        public int SelectedReach
+        {
+            get => _reach == null ? 0 : 1;
+            set
+            {
+                if (value == SelectedReach) return;
+                _setReach?.Invoke(Id, value == 0 ? null : _reach ?? ProgramReach.OwnDevices);
+            }
+        }
+
+        /// <summary>Whether Pick Devices… shows.</summary>
+        public bool IsLimited => _reach != null;
+
+        public RelayCommand PickCommand { get; }
+
+        public string ReachId => "Web_Reach_" + Id;
+
+        public string PickId => "Web_Pick_" + Id;
 
         public string Id { get; }
 
@@ -609,8 +644,9 @@ namespace PadForge.ViewModels
                     : s.Web_Accept_Off;
                 AcceptWords = armed ? s.Web_Accept_Stop : s.Web_Accept_Start;
 
-                var items = _store.Grants.Select(g => new WebAllowedItem(g.Id, g.Origin, AllowedLine(g, s, culture), id => _door.Revoke(id))).ToList();
-                if (!Allowed.Select(a => a.Id + a.Line).SequenceEqual(items.Select(a => a.Id + a.Line)))
+                var items = _store.Grants.Select(g => new WebAllowedItem(g.Id, g.Origin, AllowedLine(g, s, culture), id => _door.Revoke(id),
+                    g.Reach, (id, reach) => _door.SetGrantReach(id, reach), PickReachDevices)).ToList();
+                if (!Allowed.Select(a => a.Id + a.Line + a.SelectedReach).SequenceEqual(items.Select(a => a.Id + a.Line + a.SelectedReach)))
                 {
                     Allowed.Clear();
                     foreach (var item in items) Allowed.Add(item);

@@ -141,10 +141,12 @@ namespace PadForge.Services
         /// </summary>
         internal static bool ShowsRow(int webGrants, bool networkKey) => webGrants > 0 || networkKey;
 
-        /// <summary>Whether a key for an assistant on this network exists.
-        /// None does: the network door keeps no keys yet, and this is the
-        /// one place the row asks.</summary>
-        internal static bool NetworkKeyExists() => false;
+        /// <summary>Whether a key for an assistant on this network exists in
+        /// the store (#600 item 53), the app's own when none is given. Making
+        /// or revoking a key raises the store's Changed, which the window
+        /// follows for this row and its listener as it does for a web
+        /// grant.</summary>
+        internal static bool NetworkKeyExists(WebAccessStore store = null) => (store ?? WebAccessStore.Shared).Keys.Count > 0;
 
         /// <summary>Hands the route the questions it lists and answers, once
         /// Automation's host is made.</summary>

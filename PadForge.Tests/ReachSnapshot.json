@@ -68,6 +68,8 @@
   "Views/AssistantsWebCard.xaml \u003CItemsControl\u003E id:Web_AllowedList = UsersOwn",
   "Views/AssistantsWebCard.xaml \u003CTextBlock\u003E Text:Origin = UsersOwn",
   "Views/AssistantsWebCard.xaml \u003CTextBlock\u003E Text:Line = UsersOwn",
+  "Views/AssistantsWebCard.xaml \u003CComboBox\u003E id:{Binding ReachId} = UsersOwn",
+  "Views/AssistantsWebCard.xaml \u003CButton\u003E id:{Binding PickId} = UsersOwn",
   "Views/AssistantsWebCard.xaml \u003CButton\u003E id:{Binding RevokeId} = UsersOwn",
   "Views/AssistantsWebCard.xaml \u003CTextBlock\u003E id:Web_Footnote = UsersOwn",
   "Views/AssistantsWebSwitch.xaml \u003CCheckBox\u003E id:Web_Reach = UsersOwn",

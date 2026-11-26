@@ -552,6 +552,14 @@ namespace PadForge.Services.Automation.Web
         /// <summary>The longest name a key takes.</summary>
         internal const int NetworkKeyNameLength = 40;
 
+        /// <summary>Sets a web assistant's reach (#600 DESIGN-2 N3): its
+        /// open connection works within it at once.</summary>
+        public void SetGrantReach(string id, ProgramReach reach)
+        {
+            if (!_store.SetGrantReach(id, reach)) return;
+            _host.Sessions.SetReach(WebKey(id), reach);
+        }
+
         /// <summary>Sets a key's reach (#600 DESIGN-2 N3): its open
         /// connections work within it at once.</summary>
         public void SetKeyReach(string id, ProgramReach reach)

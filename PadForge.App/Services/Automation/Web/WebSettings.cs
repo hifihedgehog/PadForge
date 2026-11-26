@@ -358,6 +358,20 @@ namespace PadForge.Services.Automation.Web
                 return true;
             });
 
+        /// <summary>Sets a web assistant's reach (#600 DESIGN-2 N3).</summary>
+        internal bool SetGrantReach(string id, ProgramReach reach)
+        {
+            bool changed = false;
+            Change(() =>
+            {
+                int i = _grants.FindIndex(g => g.Id == id);
+                if (i < 0 || Equals(_grants[i].Reach, reach)) return false;
+                _grants[i] = _grants[i] with { Reach = reach };
+                return changed = true;
+            });
+            return changed;
+        }
+
         internal bool Revoke(string id)
         {
             bool removed = false;

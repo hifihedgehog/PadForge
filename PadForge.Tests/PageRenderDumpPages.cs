@@ -2026,6 +2026,12 @@ namespace PadForge.Tests
                 {
                     Id = "g1", Origin = "claude.ai", Name = "Claude", Allowed = now.AddMinutes(-3), LastUsed = now,
                 });
+                // Its reach, held to its own devices and one picked, as the
+                // board draws the row.
+                door.SetGrantReach("g1", new PadForge.Services.Automation.ProgramReach
+                {
+                    Devices = new[] { new PadForge.Services.Automation.ReachDevice(Guid.NewGuid(), "Xbox Wireless Controller") },
+                });
                 door.Arm();
                 view.Refresh();
                 drawing.Picture(ground, "web-on.png", Board, 2100, () => { page.Show("Automation"); more.IsExpanded = true; });

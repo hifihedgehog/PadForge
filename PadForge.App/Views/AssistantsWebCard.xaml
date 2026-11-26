@@ -182,10 +182,23 @@
                                             <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
-                                        <Button Grid.Column="1" Style="{DynamicResource ExtraButton}" Command="{Binding RevokeCommand}" VerticalAlignment="Center"
-                                                AutomationProperties.AutomationId="{Binding RevokeId}"
-                                                AutomationProperties.HelpText="{Binding Origin}"
-                                                Content="{Binding Web_Allowed_Revoke, Source={x:Static strings:Strings.Instance}}"/>
+                                        <!-- Its reach (#600 DESIGN-2 N3), as a network key's
+                                             row gives it, before Revoke. The user's alone. -->
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <ComboBox Width="260" ItemsSource="{Binding ReachChoices}" SelectedIndex="{Binding SelectedReach, Mode=TwoWay}" VerticalAlignment="Center"
+                                                      AutomationProperties.AutomationId="{Binding ReachId}"
+                                                      AutomationProperties.Name="{Binding Reach_Label, Source={x:Static strings:Strings.Instance}}"
+                                                      AutomationProperties.HelpText="{Binding Origin}"/>
+                                            <Button Style="{DynamicResource ExtraButton}" Command="{Binding PickCommand}" Margin="14,0,0,0"
+                                                    Visibility="{Binding IsLimited, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                    AutomationProperties.AutomationId="{Binding PickId}"
+                                                    AutomationProperties.HelpText="{Binding Origin}"
+                                                    Content="{Binding Reach_Pick, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Button Style="{DynamicResource ExtraButton}" Command="{Binding RevokeCommand}" Margin="14,0,0,0"
+                                                    AutomationProperties.AutomationId="{Binding RevokeId}"
+                                                    AutomationProperties.HelpText="{Binding Origin}"
+                                                    Content="{Binding Web_Allowed_Revoke, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

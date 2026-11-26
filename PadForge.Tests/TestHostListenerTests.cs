@@ -327,8 +327,10 @@ namespace PadForge.Tests
                 ["PadForge.App/Services/GameModServer.cs"] = 2,
                 // The web helper (#600 item 11): its HttpListener on a
                 // 127.0.0.1 prefix, past NetworkListenerGate.EnterPrefix, and
-                // the loopback probe that finds it a free port.
-                ["PadForge.App/Services/Automation/Web/WebHelper.cs"] = 2,
+                // the loopback probe that finds it a free port. The network
+                // door's listener (#600 item 53) on http://+:port/ passes the
+                // same gate first, so the test host never binds it.
+                ["PadForge.App/Services/Automation/Web/WebHelper.cs"] = 3,
                 // No listener: the outbound socket that fetches a web
                 // assistant's client document from a public address, past
                 // OutboundNetworkGate.RefusesHost, which the test host closes.

@@ -6960,10 +6960,10 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Answer_Pair_Qr" xml:space="preserve"><value>Code to scan with the device’s camera</value></data>
   <data name="Answer_Pair_Hidden" xml:space="preserve"><value>Hidden from screen capture, so only you can scan it.</value></data>
   <data name="Answer_Pair_Open_Format" xml:space="preserve"><value>Or open {0} on the device and type this code:</value></data>
-  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>The code works once, until {0}. Five wrong tries close the pairing.</value></data>
+  <data name="Answer_Pair_Until_Format" xml:space="preserve"><value>The code works once, until {0}. Five wrong tries close it, and the QR code still works.</value></data>
   <data name="Answer_Pair_Starting" xml:space="preserve"><value>Starting the web controller’s address…</value></data>
   <data name="Answer_Pair_NoPage_Format" xml:space="preserve"><value>The page cannot open: {0}.</value></data>
   <data name="Answer_Pair_NotHidden" xml:space="preserve"><value>Windows would not hide this window from screen capture, so it shows no code.</value></data>
-  <data name="Answer_Pair_Ended_Tries" xml:space="preserve"><value>Five wrong tries closed the pairing. Pair a Device… makes a new code.</value></data>
+  <data name="Answer_Pair_CodeClosed_Format" xml:space="preserve"><value>The typed code is closed after five wrong tries. The QR code still works until {0}.</value></data>
   <data name="Answer_Pair_Ended_Expired" xml:space="preserve"><value>The code ran out. Pair a Device… makes a new one.</value></data>
 </root>

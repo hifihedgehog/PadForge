@@ -146,7 +146,7 @@
         </label>
         <button id="pairButton" class="go" type="submit">Pair</button>
     </form>
-    <p id="pairNote" class="note" hidden>Five wrong tries close the pairing. This page works on PadForge’s network only.</p>
+    <p id="pairNote" class="note" hidden>Five wrong codes close the typed code, and the QR code still works. This page works on PadForge’s network only.</p>
 
     <section id="waitSection" hidden>
         <div class="head">Waiting for You</div>
@@ -210,6 +210,8 @@
             if (r.status === 200) { say(""); $("codeInput").value = ""; refresh(); return; }
             if (r.status === 401 && r.body.left) say("Wrong code. " + r.body.left + (r.body.left === 1 ? " try is" : " tries are") + " left.");
             else if (r.status === 409) say("PadForge keeps eight paired devices. Remove one on the PC first.");
+            else if (r.status === 410 && r.body.codeClosed) say("Five wrong tries closed the typed code. Scan the QR code PadForge shows with this phone’s camera.");
+            else if (r.status === 401 && r.body.secret === false) say("This QR code is not the one PadForge shows now. Scan the one on the PC.");
             else say("The pairing is closed. Pair a Device… on the PC makes a new code.");
         }, function () {
             say("PadForge did not answer. This page works on PadForge’s network only.");

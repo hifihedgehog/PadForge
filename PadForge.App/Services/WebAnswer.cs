@@ -40,7 +40,7 @@ namespace PadForge.Services
     internal sealed record AnswerPairing(string Secret, string Code, DateTimeOffset Until);
 
     /// <summary>How a pairing ended.</summary>
-    internal enum AnswerPairingEnd { Paired, Canceled, TooManyTries, Expired }
+    internal enum AnswerPairingEnd { Paired, Canceled, Expired }
 
     /// <summary>One request to the answer route, as the listener read it.</summary>
     internal sealed record AnswerRequest(string Method, string Path, string Host, string Origin, string Cookie, string Body, IPAddress Remote);
@@ -61,8 +61,11 @@ namespace PadForge.Services
     /// <para>Pairing: Pair a Device… opens a pairing for five minutes. Its QR
     /// code carries the page's address with a long secret after the #, which
     /// the browser never sends, and the page hands it back in a POST. Six
-    /// digits typed on the page are the other way in. Either works once, and
-    /// five wrong tries close the pairing. A paired device keeps a key of 32
+    /// digits typed on the page are the other way in. Either works once. Five
+    /// wrong typed codes close the typed code alone: the QR code's secret,
+    /// 32 random bytes, cannot be guessed, so anyone on the network who
+    /// spends the five tries cannot close the pairing, and the QR code works
+    /// until it is used or its five minutes end. A paired device keeps a key of 32
     /// random bytes in an HttpOnly, Secure, SameSite=Strict cookie, as the
     /// web controller's access code is kept (WebControllerAccess.SetCookieValue),
     /// and PadForge keeps its hash.</para>
@@ -84,7 +87,8 @@ namespace PadForge.Services
         /// <summary>How long a pairing lasts.</summary>
         internal static readonly TimeSpan PairingLife = TimeSpan.FromMinutes(5);
 
-        /// <summary>How many wrong codes or secrets close a pairing.</summary>
+        /// <summary>How many wrong typed codes close the typed code. The
+        /// QR code's secret stays open.</summary>
         internal const int MostWrongTries = 5;
 
         /// <summary>The most devices kept.</summary>
@@ -281,6 +285,14 @@ namespace PadForge.Services
 
         private AnswerPairing OpenPairing() => _pairing != null && _now() < _pairing.Until ? _pairing : null;
 
+        /// <summary>Whether the open pairing's typed code is closed after
+        /// <see cref="MostWrongTries"/> wrong tries. Its QR code still
+        /// works.</summary>
+        internal bool TypedCodeClosed
+        {
+            get { lock (_sync) return OpenPairing() != null && _wrong >= MostWrongTries; }
+        }
+
         /// <summary>Opens a new pairing for <see cref="PairingLife"/>, in
         /// place of one that is open. A secret of 32 random bytes and six
         /// random digits, both from the system's random source.</summary>
@@ -400,24 +412,29 @@ namespace PadForge.Services
             string secret = Text(body, "secret");
             string code = Text(body, "code")?.Replace(" ", string.Empty);
             string name = CleanName(Text(body, "name"));
+            if (secret == null && code == null) return Json(400, new { error = "A code or the QR code's secret." });
             AnswerPairing pairing = Pairing;
             if (pairing == null) return Json(410, new { closed = true });
-            bool right = secret != null ? Same(secret, pairing.Secret) : code != null && Same(code, pairing.Code);
+            bool bySecret = secret != null;
+            bool right = bySecret ? Same(secret, pairing.Secret) : Same(code, pairing.Code);
             string key = null;
             AnswerPairingEnd? ended = null;
             int left = 0;
+            bool codeClosed = false;
             lock (_sync)
             {
                 // Judged again under the lock: another try may have closed it.
                 if (!ReferenceEquals(_pairing, pairing)) return Json(410, new { closed = true });
+                // A closed typed code refuses every code, the right one too.
+                if (!bySecret && _wrong >= MostWrongTries) return Json(410, new { codeClosed = true });
                 if (!right)
                 {
+                    // A wrong secret counts toward nothing: it cannot be
+                    // guessed, and counting it would let anyone close the QR
+                    // code's way in.
+                    if (bySecret) return Json(401, new { secret = false });
                     left = MostWrongTries - ++_wrong;
-                    if (left <= 0)
-                    {
-                        _pairing = null;
-                        ended = AnswerPairingEnd.TooManyTries;
-                    }
+                    codeClosed = left <= 0;
                 }
                 else if (_devices.Count >= MostDevices)
                 {
@@ -433,8 +450,9 @@ namespace PadForge.Services
             }
             if (key != null) Changed?.Invoke(this, EventArgs.Empty);
             if (ended != null) End(ended.Value);
+            if (codeClosed) StateChanged?.Invoke(this, EventArgs.Empty);
             if (key == null)
-                return left > 0 ? Json(401, new { left }) : Json(410, new { closed = true });
+                return left > 0 ? Json(401, new { left }) : Json(410, new { codeClosed = true });
             return Json(200, new { paired = true }, SetCookieValue(key));
         }
 

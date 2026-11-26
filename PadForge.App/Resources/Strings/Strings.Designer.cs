@@ -6713,6 +6713,6 @@ public class Strings : INotifyPropertyChanged
     public string Answer_Pair_Starting => Get("Answer_Pair_Starting");
     public string Answer_Pair_NoPage_Format => Get("Answer_Pair_NoPage_Format");
     public string Answer_Pair_NotHidden => Get("Answer_Pair_NotHidden");
-    public string Answer_Pair_Ended_Tries => Get("Answer_Pair_Ended_Tries");
+    public string Answer_Pair_CodeClosed_Format => Get("Answer_Pair_CodeClosed_Format");
     public string Answer_Pair_Ended_Expired => Get("Answer_Pair_Ended_Expired");
 }

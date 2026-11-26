@@ -31,28 +31,32 @@
                    AutomationProperties.Name="{Binding Answer_Pair_Qr, Source={x:Static strings:Strings.Instance}}"/>
             <TextBlock Style="{StaticResource DialogNote}" FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap"
                        Text="{Binding Answer_Pair_Hidden, Source={x:Static strings:Strings.Instance}}"/>
-            <TextBlock x:Name="OpenText" Margin="0,14,0,0" TextWrapping="Wrap" FontSize="14"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-            <!-- The six digits spaced as the board draws them, one cell
-                 each, as the request card shows a sign-in's code. -->
-            <ItemsControl x:Name="CodeDigits" Margin="0,8,0,0" Focusable="False" IsTabStop="False">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="30" FontWeight="SemiBold" Margin="0,0,6,0"
-                                   Typography.NumeralAlignment="Tabular"
-                                   Foreground="{DynamicResource LinkHoverBrush}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <TextBlock x:Name="UntilText" Style="{StaticResource DialogNote}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+            <!-- The typed way in, hidden once five wrong codes close it. -->
+            <StackPanel x:Name="TypedPanel">
+                <TextBlock x:Name="OpenText" Margin="0,14,0,0" TextWrapping="Wrap" FontSize="14"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <!-- The six digits spaced as the board draws them, one cell
+                     each, as the request card shows a sign-in's code. -->
+                <ItemsControl x:Name="CodeDigits" Margin="0,8,0,0" Focusable="False" IsTabStop="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontSize="30" FontWeight="SemiBold" Margin="0,0,6,0"
+                                       Typography.NumeralAlignment="Tabular"
+                                       Foreground="{DynamicResource LinkHoverBrush}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock x:Name="UntilText" Style="{StaticResource DialogNote}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
         </StackPanel>
         <!-- Why no code shows: the address is starting, the page cannot
-             open, Windows would not hide the window, or the pairing ended. -->
+             open, Windows would not hide the window, the pairing ended, or
+             the typed code closed while the QR code still works. -->
         <TextBlock x:Name="StateText" Style="{StaticResource DialogNote}" TextWrapping="Wrap" common:LiveText.Polite="True"
                    AutomationProperties.AutomationId="Answer_Pair_State"/>
     </StackPanel>

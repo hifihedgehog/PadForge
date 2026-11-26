@@ -136,10 +136,9 @@
     },
     {
       "key": "Answer_Pair_Until_Format",
-      "english": "The code works once, until {0}. Five wrong tries close the pairing.",
+      "english": "The code works once, until {0}. Five wrong tries close it, and the QR code still works.",
       "sibling": [
-        "Answer_Pair_Open_Format",
-        "Answer_Pair_Ended_Tries"
+        "Answer_Pair_Open_Format"
       ],
       "where": "the Pair a Device window, opened by Pair a Device… on the Answer From Another Device row under Extras, Automation, the Assistants card, More, the line under the six digits. {0} is a time such as 12:54 PM",
       "keep": []
@@ -174,21 +173,9 @@
       ]
     },
     {
-      "key": "Answer_Pair_Ended_Tries",
-      "english": "Five wrong tries closed the pairing. Pair a Device… makes a new code.",
-      "sibling": [
-        "Answer_Pair_Until_Format",
-        "Answer_Pair_Ended_Expired",
-        "Answer_Pair"
-      ],
-      "where": "the Pair a Device window, opened by Pair a Device… on the Answer From Another Device row under Extras, Automation, the Assistants card, More, shown in place of the code after the fifth wrong try",
-      "keep": []
-    },
-    {
       "key": "Answer_Pair_Ended_Expired",
       "english": "The code ran out. Pair a Device… makes a new one.",
       "sibling": [
-        "Answer_Pair_Ended_Tries",
         "Answer_Pair"
       ],
       "where": "the Pair a Device window, opened by Pair a Device… on the Answer From Another Device row under Extras, Automation, the Assistants card, More, shown in place of the code after five minutes",

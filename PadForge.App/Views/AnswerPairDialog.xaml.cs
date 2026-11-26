@@ -91,7 +91,6 @@ namespace PadForge.Views
                         _pairing = null;
                         Close();
                         return;
-                    case AnswerPairingEnd.TooManyTries: _ended = s.Answer_Pair_Ended_Tries; break;
                     case AnswerPairingEnd.Expired: _ended = s.Answer_Pair_Ended_Expired; break;
                     default: return;
                 }
@@ -105,8 +104,9 @@ namespace PadForge.Views
         }
 
         /// <summary>The code and its lines while the pairing is open and the
-        /// page has an address, and otherwise the one line that says
-        /// why not.</summary>
+        /// page has an address, and otherwise the one line that says why not.
+        /// Once five wrong typed codes have closed the typed code, the QR code
+        /// stays and the line under it says until when it works.</summary>
         private void ShowState()
         {
             var s = Strings.Instance;
@@ -125,7 +125,13 @@ namespace PadForge.Views
             else state = null;
 
             bool showCode = _hidden && _ended == null && _pairing != null && address != null;
+            bool typedClosed = showCode && _answers.TypedCodeClosed;
+            if (typedClosed)
+                state = string.Format(culture, s.Answer_Pair_CodeClosed_Format, _pairing.Until.ToLocalTime().ToString("t", culture));
             CodePanel.Visibility = showCode ? Visibility.Visible : Visibility.Collapsed;
+            TypedPanel.Visibility = typedClosed ? Visibility.Collapsed : Visibility.Visible;
+            // Under the QR code the line keeps the gap the address line had.
+            StateText.Margin = typedClosed ? new Thickness(0, 14, 0, 0) : new Thickness(0);
             if (showCode)
             {
                 string link = WebAnswer.PairingLink(address, _pairing);
@@ -135,11 +141,11 @@ namespace PadForge.Views
                     _shownLink = link;
                 }
                 OpenText.Text = string.Format(culture, s.Answer_Pair_Open_Format, address);
-                string code = WebSecrets.Spaced(_pairing.Code);
+                string code = typedClosed ? null : WebSecrets.Spaced(_pairing.Code);
                 if (!Equals(CodeDigits.ItemsSource, code))
                 {
                     CodeDigits.ItemsSource = code;
-                    System.Windows.Automation.AutomationProperties.SetName(CodeDigits, code);
+                    System.Windows.Automation.AutomationProperties.SetName(CodeDigits, code ?? string.Empty);
                 }
                 UntilText.Text = string.Format(culture, s.Answer_Pair_Until_Format, _pairing.Until.ToLocalTime().ToString("t", culture));
             }

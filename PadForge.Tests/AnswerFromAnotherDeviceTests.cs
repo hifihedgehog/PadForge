@@ -220,29 +220,91 @@ namespace PadForge.Tests
             Assert.False(asked.IsCompleted);
         }
 
+        /// <summary>Five wrong typed codes close the typed code alone: the
+        /// sixth, and then the right one, are refused, while the QR code's
+        /// secret, which cannot be guessed, still pairs, once. A wrong secret
+        /// counts toward nothing.</summary>
         [Fact]
-        public void FiveWrongCodes_CloseThePairing_AndTheRightCodeIsThenRefused()
+        public void FiveWrongCodes_CloseTheTypedCodeAlone_AndTheQrSecretStillPairsOnce()
         {
             var rig = new Rig();
-            // A device paired before keeps the route on, so the refusals
-            // below are the pairing's own.
-            rig.Pair("Office laptop");
             var ended = new List<AnswerPairingEnd>();
             rig.Answers.PairingEnded += (_, how) => ended.Add(how);
             var pairing = rig.Answers.StartPairing();
             string wrong = pairing.Code == "000000" ? "111111" : "000000";
+            AnswerReply Code(string code) => rig.Send("POST", "/answer/pair", JsonSerializer.Serialize(new { code }));
+            AnswerReply Secret(string secret) => rig.Send("POST", "/answer/pair", JsonSerializer.Serialize(new { secret }));
             for (int i = 1; i <= 4; i++)
             {
-                var reply = rig.Send("POST", "/answer/pair", JsonSerializer.Serialize(new { code = wrong }));
+                var reply = Code(wrong);
                 Assert.Equal(401, reply.Status);
                 Assert.Equal(5 - i, JsonNode.Parse(reply.Json)["left"].GetValue<int>());
             }
+            Assert.False(rig.Answers.TypedCodeClosed);
+            var fifth = Code(wrong);
+            Assert.Equal(410, fifth.Status);
+            Assert.True(JsonNode.Parse(fifth.Json)["codeClosed"].GetValue<bool>());
+            Assert.True(rig.Answers.TypedCodeClosed);
+            // The pairing stays open for the QR code.
             Assert.Empty(ended);
-            Assert.Equal(410, rig.Send("POST", "/answer/pair", JsonSerializer.Serialize(new { code = wrong })).Status);
-            Assert.Equal(new[] { AnswerPairingEnd.TooManyTries }, ended);
-            Assert.Null(rig.Answers.Pairing);
-            Assert.Equal(410, rig.Send("POST", "/answer/pair", JsonSerializer.Serialize(new { code = pairing.Code })).Status);
+            Assert.Same(pairing, rig.Answers.Pairing);
+            Assert.True(rig.Answers.Wanted);
+            // The sixth wrong code, and the right one, are refused.
+            Assert.Equal(410, Code(wrong).Status);
+            Assert.Equal(410, Code(pairing.Code).Status);
+            Assert.Empty(rig.Answers.Devices);
+            // A wrong secret is refused and closes nothing.
+            Assert.Equal(401, Secret(WebSecrets.New()).Status);
+            Assert.Same(pairing, rig.Answers.Pairing);
+            // The QR code's secret pairs, once.
+            var paired = Secret(pairing.Secret);
+            Assert.Equal(200, paired.Status);
+            Assert.NotNull(paired.SetCookie);
             Assert.Single(rig.Answers.Devices);
+            Assert.Equal(new[] { AnswerPairingEnd.Paired }, ended);
+            Assert.Null(rig.Answers.Pairing);
+            Assert.Equal(410, Secret(pairing.Secret).Status);
+            Assert.Single(rig.Answers.Devices);
+        }
+
+        /// <summary>The pairing window says when the typed code has closed,
+        /// with the time the QR code works until, and keeps the QR code while
+        /// it hides the six digits.</summary>
+        [Fact]
+        public void ThePairingWindow_SaysTheTypedCodeClosed_AndKeepsTheQrCode()
+        {
+            DialogTestHost.Run(() =>
+            {
+                var now = DateTimeOffset.Now;
+                var answers = new WebAnswer(() => now) { RowShows = () => true };
+                answers.SetAddress("https://192.168.1.24:8080", null);
+                var dialog = new AnswerPairDialog(answers);
+                try
+                {
+                    new WindowInteropHelper(dialog).EnsureHandle();
+                    var pairing = answers.Pairing;
+                    Assert.NotNull(pairing);
+                    var state = (System.Windows.Controls.TextBlock)dialog.FindName("StateText");
+                    var qr = (System.Windows.Controls.Image)dialog.FindName("QrImage");
+                    var digits = (System.Windows.Controls.ItemsControl)dialog.FindName("CodeDigits");
+                    Assert.Equal(System.Windows.Visibility.Collapsed, state.Visibility);
+                    Assert.NotNull(digits.ItemsSource);
+                    string wrong = pairing.Code == "000000" ? "111111" : "000000";
+                    for (int i = 0; i < WebAnswer.MostWrongTries; i++)
+                        answers.Handle(new AnswerRequest("POST", "/answer/pair", Host, "https://" + Host, null, JsonSerializer.Serialize(new { code = wrong }), Phone));
+                    var culture = System.Globalization.CultureInfo.CurrentCulture;
+                    Assert.Equal(string.Format(culture, PadForge.Resources.Strings.Strings.Instance.Answer_Pair_CodeClosed_Format,
+                        pairing.Until.ToLocalTime().ToString("t", culture)), state.Text);
+                    Assert.Equal(System.Windows.Visibility.Visible, state.Visibility);
+                    Assert.NotNull(qr.Source);
+                    Assert.Null(digits.ItemsSource);
+                    Assert.Same(pairing, answers.Pairing);
+                }
+                finally
+                {
+                    dialog.Close();
+                }
+            });
         }
 
         [Fact]

@@ -118,12 +118,12 @@ The card shows under Assistants while the switch is on.
 
 | Row | What it does |
 |---|---|
-| **Tunnel** | **None**, each tunnel program found on this PC, or **An Address I Paste**. Picking one starts it, with your rights, inside the helper's job. Picking another, or turning the switch off, stops it. |
+| **Tunnel** | **None**, each tunnel program found on this PC, **ChatGPT Secure MCP Tunnel**, or **An Address I Paste**. Picking one starts it, with your rights, inside the helper's job. Picking another, or turning the switch off, stops it. |
 | **Address** | The public address to give the assistant, ending in `/mcp`, with **Copy** and a button that opens one web assistant's own add page with the address filled in. |
 | **Accept a New Web Assistant** | **Start Accepting** opens the door for five minutes: **Accepting until 21:40.** **Stop Accepting** closes it. One allowed sign-in closes it too. |
-| **Allowed on the Web** | Each web assistant you allowed, with where its sign-in returned, when it was allowed and last used, and **Revoke**. |
+| **Allowed on the Web** | Each web assistant you allowed, with where its sign-in returned, when it was allowed and last used, its **Reach** and **Revoke**. **Reach** holds it to the devices you pick, as [a program's reach](automation.md#a-programs-reach) does. |
 
-PadForge finds four tunnel programs, on the PATH or in their usual install folders, and downloads none:
+PadForge finds four tunnel programs, on the PATH or in their usual install folders, and downloads none of them:
 
 | Program | Keeps its address |
 |---|---|
@@ -134,7 +134,20 @@ PadForge finds four tunnel programs, on the PATH or in their usual install folde
 
 When the address changes, the assistant has to be added again with the new one. To use a tunnel that keeps its address, such as a named Cloudflare tunnel or a persistent dev tunnel, run it yourself to `http://127.0.0.1:<port>` (the card gives the port), pick **An Address I Paste** and paste its https address.
 
-One maker's own tunnel runs PadForge's stdio command directly, with no address or sign-in here. Its row has **Copy Command**, which copies `"<path to PadForge.exe>" --mcp` for that tunnel's setup.
+### ChatGPT Secure MCP Tunnel
+
+**ChatGPT Secure MCP Tunnel** in the **Tunnel** list connects ChatGPT through OpenAI's own tunnel program, tunnel-client, with no public address and no sign-in here. PadForge uses a copy on the PATH. Otherwise it downloads the latest Windows release from OpenAI's tunnel-client repository on GitHub into its protected folder, and uses it only when its SHA-256 matches the release's own list of sums.
+
+While it is picked, two boxes take the place of the address and the sign-in rows:
+
+| Box | What it takes |
+|---|---|
+| **Runtime Key** | An OpenAI API key, masked. **Make One** opens OpenAI's API keys page. Make it **Restricted, with Tunnels Read and Use.** |
+| **Tunnel ID** | The tunnel's ID. **Make One** opens OpenAI's tunnel management. |
+
+With both filled, the tunnel starts with your rights and runs `PadForge.exe --mcp`. The line under **Tunnel** says when OpenAI reports the tunnel ready. Under the ID, **Then add this tunnel in ChatGPT.** sits beside **Open ChatGPT**. The tunnel starts again each time PadForge starts.
+
+The web helper encrypts the key for your Windows account, and PadForge.xml keeps only the encrypted copy. An empty box forgets it. tunnel-client gets the key and the ID in its environment, never on its command line. Picking the tunnel is your consent for the copy of PadForge it starts, and ChatGPT works at the level on the page, from your OpenAI organization alone.
 
 ### Signing in
 
@@ -148,6 +161,54 @@ The helper runs its own OAuth 2.1 sign-in: authorization code with PKCE, client 
 Outside the five minutes a sign-in is refused, and nothing asks you. A sign-in page lasts three minutes. A web assistant is named by the address its sign-in returns to, never by the name it gives, which the card shows only as **It calls itself …**. A sign-in that returns to a program on this PC carries a warning, since any program here could claim that address.
 
 PadForge keeps up to eight web assistants. Their tokens are kept in PadForge.xml as SHA-256 hashes, never the tokens themselves. An access token lasts an hour, and a refresh token 30 days, replaced on every use. **Revoke** removes the assistant and closes its connection at once. While a web assistant is connected, the [connected mark](automation.md#the-connected-mark) shows a globe.
+
+---
+
+## Assistants on this network
+
+An assistant on another PC in your home reaches PadForge over your network with a key you make here, with no tunnel program and no outside account.
+
+### Turn it on
+
+Under the Assistants card's **More**, turn on **Reach PadForge From This Network**. PadForge asks first:
+
+> **Reach PadForge from this network?** PadForge’s helper, which runs without administrator rights, listens on this PC’s network addresses, and PadForge lets its port in on private networks only. An assistant on another PC gets in only with a key you make here. Calls and their key cross the network unencrypted.
+
+**Turn On** starts the same helper as the web route, `PadForge.exe --web`, with your ordinary rights. It listens at a port PadForge picks once, from 1024 to 49151, outside the ranges Windows reserves and away from ports other programs use. With its own rights, PadForge reserves that address for your Windows account alone and adds a firewall rule, **PadForge Assistants on This Network**, that lets the port in on private networks only. Both go when you turn the row off or change the port. While Automation is off, the helper waits, and the row says so.
+
+| Row | What it shows |
+|---|---|
+| **Address** | `http://<address>:<port>/mcp` for each private address of this PC, each with **Copy**. |
+| **Port** | The port, with **Change…**, which takes another from 1024 to 49151. Each assistant's saved address names the port, so add each one again after a change. |
+
+Under the port: **Calls and their key cross this network unencrypted. Windows lets them in on private networks only.** When another program holds the port, the row says **Port … is in use by another program.** PadForge never moves to another port by itself, since the reservation, the rule and every assistant's saved address name it.
+
+### Add a network assistant
+
+**Add a Network Assistant…** asks for a name, such as the other PC's, and a level up to the one on the page. **Make Key** makes its key and shows it once. PadForge keeps only the key's SHA-256 hash, so copy it then. **For** picks what to paste:
+
+| For | What to paste |
+|---|---|
+| **Claude Code** | `claude mcp add --transport http padforge http://<address>:<port>/mcp --header "Authorization: Bearer <key>"`, run in a terminal on the other PC. |
+| **Any Other Host** | The address and the `Authorization: Bearer <key>` header, added as an MCP server over HTTP in that program's settings. |
+
+Making the key is your consent, so the assistant's first call asks nothing. PadForge keeps up to eight keys. **Assistants on This Network** lists each with its level, when its key was made and last used, its **Reach** and **Revoke**. **Revoke** closes its connection and refuses its next call.
+
+Every call from another PC needs a valid key, and must name this PC by one of its private addresses, its computer name or its `.local` name. A call from a web page is refused. Keys are the only way in on this route, and signing in stays with the web route.
+
+An assistant on this network is named by its key's name and the address it called from, as **Office PC on this network from 192.168.1.30**, on the question card, in **Waiting for You**, in **Activity** and in the connected mark, which shows a network sign while one is connected.
+
+---
+
+## Answer from another device
+
+A change that asks can be answered from a phone or another PC on the same network, so an assistant on another PC does not wait out its question while you are away from this one. The row **Answer From Another Device** shows under the Assistants card's **More** while a web assistant is allowed or a network key exists.
+
+**Pair a Device…** opens a window with a QR code for five minutes. Windows hides that window from screen capture, so a program that reads the screen cannot pair itself, and the window shows no code when Windows will not hide it. Scan the code with the device's camera app, and its page opens already paired. On a device without a camera, open the address the window gives and type the six-digit code. A code works once. Five wrong tries close the typed code, and the QR code still works until the five minutes end.
+
+The page is served by PadForge itself at the [Web Controller](../guides/web-controller.md)'s HTTPS address, with the Web Controller's self-signed certificate, on this network only, so the device shows the same one-time certificate warning. While the Web Controller is off, PadForge serves this page alone at that address. The page lists each question waiting, with the words the card shows and its request number, and **Allow** and **Don’t Allow**. An answer names its request and counts once: a replay, or an answer for another request, is refused. A web sign-in and a request to show you a place are answered on this PC only.
+
+The device keeps its key in a secure cookie for 400 days, and PadForge keeps only the key's hash. PadForge keeps up to eight devices. The row lists each, with when it was paired and last answered, and **Remove**.
 
 ---
 

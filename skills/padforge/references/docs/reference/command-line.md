@@ -84,8 +84,8 @@ A launcher can skip PadForge.exe and talk to the pipe directly. The pipe serves 
 
 | Line | Answer |
 |---|---|
-| `activate <name or id>` | `ok <name>`, or `error unknown-profile` |
-| `deactivate` | `ok default` |
+| `activate <name or id>` | `ok <name>`, or `error unknown-profile`. `error waiting`: the switch would turn on an extra that listens on the network, and waits for your answer on the question card. `error too-many-questions`: the card holds too many questions to put this one, and nothing changed |
+| `deactivate` | `ok default`, or `error waiting` or `error too-many-questions`, which mean what they mean for `activate` |
 | `query` | `ok <name> pinned` or `ok <name> unpinned`, with `default` when no profile is active |
 | `state` | `ok` and one line of JSON |
 | `version` | `ok <version> r<build> <commit>` |
@@ -98,6 +98,8 @@ A launcher can skip PadForge.exe and talk to the pipe directly. The pipe serves 
 | `record start`, `record stop`, `record mark [words]` | `ok recording` after a start, or after a mark while recording, `ok waiting-for-review` after a stop, or `error busy`. A program may start one recording every ten seconds |
 
 Other answers: `error unknown-command`, `error bad-argument`, `error empty` for a blank line, `error not-allowed` when the level is too low, `error refused` for a program outside your Windows session or below medium integrity, and `error internal`. PadForge answers every connection, a blank line included.
+
+A program's `activate` or `deactivate` that would turn on an extra that listens on the network and is off now (Web Controller, Motion Server, Game Mods, Game Telemetry or Head Tracking's UDP input) is answered at once with `error waiting`. PadForge asks you on its question card first, naming the program, the profile and each extra, and makes the switch if you allow it. If you don't, or nobody answers in two minutes, the profile stays as it was. `error too-many-questions` means the card already holds too many questions to put this one, and nothing changed. A switch that turns on nothing new answers at once. `--profile` and `--default-profile` hand these answers back with exit code 1.
 
 ### Check the pipe is PadForge's
 

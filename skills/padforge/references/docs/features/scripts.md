@@ -32,7 +32,7 @@ The **Scripts** card on the Automation page has a row for each language. Each ro
 
 Documents moved to OneDrive counts. With several Pythons, the row names which ones the library is installed for. Under the card's **More**, **Save a Library…** writes one library where you pick, and **Remove All** takes out every installed copy. `PadForge.exe --install autohotkey`, `powershell` or `python` does the same from the [command line](../reference/command-line.md#-install), with `--remove` or `--check`.
 
-Turn on Automation at the level the script needs: **Read** to follow devices, **Send Inputs** to hold controls, take them in hotkeys and add controllers. A script that asks for more than Commands asks once, on PadForge's question card, which names its interpreter and its script file.
+Turn on Automation at the level the script needs: **Read** to follow devices, **Send Inputs** to hold controls, take them in hotkeys and add controllers. A script that asks for more than Commands asks once, on PadForge's question card, which names its interpreter and its script file. Once it is allowed, its row under **Allowed Programs** can hold it to [its own devices and the ones you pick](automation.md#a-programs-reach). It still reads every device.
 
 ---
 
@@ -69,7 +69,7 @@ Values are plain units:
 | Button | true or false |
 | Stick | -100 to 100, 0 at rest |
 | Trigger, slider | 0 to 100 |
-| Hat | Degrees clockwise from up, or -1 at rest. `HatUp`, `HatRight`, `HatDown` and `HatLeft` (`DPadUp` and so on, on a pad) read as buttons |
+| Hat | Degrees clockwise from up, or -1 at rest. `HatUp`, `HatRight`, `HatDown` and `HatLeft` (`DPadUp` and so on, on a pad) read and set as buttons do |
 | Half an axis | `LeftXPlus` and `LeftXMinus`, 0 to 100 each |
 
 A read costs nothing: the library keeps the device's whole state, which PadForge sends in full when the script starts following it. A device that is not connected reads nothing (`""` in AutoHotkey, `None` in Python, `$null` in PowerShell), and its `Connected` property is false.
@@ -85,6 +85,8 @@ Setting a property holds the control at that value for the game. Setting it to n
 | | AutoHotkey | Python | PowerShell |
 |---|---|---|---|
 | Hold | `pad.A := true` | `pad.A = True` | `$pad.A = $true` |
+| Hold several at once | `pad.Hold("LeftX", 50, "LeftY", -20)` | `pad.hold("LeftX", 50, "LeftY", -20)` | `$pad.Hold('LeftX', 50, 'LeftY', -20)` |
+| Hold a hat's direction | `pad.DPadUp := true` | `pad.DPadUp = True` | `$pad.DPadUp = $true` |
 | Give back | `pad.A := ""` or `pad.Release("A")` | `pad.A = None` or `pad.release("A")` | `$pad.A = $null` or `$pad.Release('A')` |
 | Put a value once | `pad.Set("LeftX", 40)` | `pad.set("LeftX", 40)` | `$pad.Set('LeftX', 40)` |
 | Tap | `pad.Tap("A", 50)` | `pad.tap("A", 50)` | `$pad.Tap('A', 50)` |
@@ -92,11 +94,17 @@ Setting a property holds the control at that value for the game. Setting it to n
 
 In Python, `False` and `0` are values like any other, so `pad.A = False` holds A up.
 
+A hat's direction is held as a button is, beside the hat's other directions: true presses it, false holds it released, and setting it to nothing gives it back. The held directions go over the hat as it stands, held whole or the device's own, so `DPad` held at Down with `DPadRight` held reads Down and Right. Up and Down together cancel, as Left and Right do.
+
 **Set** puts a value once, until the device's own input moves that control. **Tap** and **Sequence** are timed on PadForge's own clock, not the script's. PadForge applies one change per control per pass, so a tap sent between two of its passes still lands, the press on one pass and the release on the next.
+
+What a script holds or sets reaches a game as any input does. Key and mouse output it feeds through a mapping or a macro is [held back from windows that run as administrator](automation.md#output-held-from-administrator-windows), while your own devices' output goes out.
 
 ### A script's life
 
 A script and PadForge start in either order. While PadForge is not running, the library says why it waits and keeps trying. When PadForge starts again, the library puts back what the script held, claimed and followed, its controllers and its values.
+
+Before its device is found, and while PadForge is not running, setting a property, **Hold** and **Set** wait under the control's name and apply when the device is found, a **Set** once. A **Tap** or a **Sequence** is refused instead, with an error that says why: `PadForge is not connected` while PadForge does not run, and `the device is not connected` while PadForge runs and the device is not connected. A tap sent later, at a moment the script did not choose, is not the tap it asked for. A **Tap** or a **Sequence** on a controller of the script's own is refused the same way until PadForge has added the controller, and while PadForge is not running.
 
 The library beats on a timer of its own, every 31 ms, so a script busy in its own code keeps its holds. A script that stops beating for 250 ms lets go of what it held and claimed, and gets it back when it beats again. Its controllers go offline after 5 seconds of silence, and a second and a half after its pipe closes unless it comes back.
 
@@ -126,7 +134,7 @@ In Python, callbacks run one at a time, in order, on a thread of the library's o
 - `SetValue("pull", 40)` hands a named value to Custom Expression macro triggers. It is set again after PadForge restarts.
 - The commands of the [Commands level](automation.md#the-level): switch and release a profile, start and stop the engine, turn controllers on and off, show and hide the window, take a snapshot, and read the state.
 - `Outputs(1)` reads what virtual controller 1 sends the game now.
-- `Devices()` lists every device with its controls.
+- `Devices()` lists every device with its controls. A listed device is the same object `Device()` gives for its script ID, and it follows itself on its first use of any kind: a read, a hotkey, a change callback, a hold, **Set**, **Tap** or **Sequence**. As with `Device()`, reads give nothing until PadForge sends the device's state, on its next pass.
 - `Tool("press", '{"id":"..."}')` runs any [assistant tool](assistants.md), at the tool's own level.
 
 ---

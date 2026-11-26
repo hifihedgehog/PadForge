@@ -265,7 +265,7 @@ Where Windows MIDI Services does not run (Windows 10, Windows 11 before 24H2, Le
 1. UAC is expected while Start at Login is off. PadForge always runs as administrator. HIDMaestro driver registration, HidHide whitelist edits, and the polling loop all run in that one elevated process.
 2. Clicking "No" on UAC blocks startup. Windows does not start an administrator-required app when the user declines the prompt. Run PadForge again and accept the prompt.
 3. PadForge allows only one instance. Check Task Manager for existing PadForge processes.
-4. Check for `crash.log` next to `PadForge.exe`. It appears only after a crash and records the error. Attach it to a bug report.
+4. Check for `crash.log` next to `PadForge.exe`. It appears only after a crash and records the error. The crash message names it and the page where reports go, a new Q&A discussion on PadForge's GitHub page: start one there and drop `crash.log` on it.
 5. PadForge ships as a single self-contained `PadForge.exe` with the .NET runtime and SDL3 embedded. Nothing needs installing separately. If startup still fails with no `crash.log`, the download may be truncated or corrupt. Re-download `PadForge.exe` from the [release page](https://github.com/hifihedgehog/PadForge/releases).
 
 ---
@@ -793,7 +793,7 @@ SDL3's gamepad mapping does not match the device's HID report layout (common wit
 PadForge writes no log files on its own. A healthy session leaves nothing on disk unless you ask for it. Next to `PadForge.exe`:
 
 - `PadForge.xml` holds your settings.
-- `crash.log` appears only after a crash. It records the error plus a tail of recent internal diagnostics. This is the file to attach to a bug report.
+- `crash.log` appears only after a crash. It records the error plus a tail of recent internal diagnostics. This is the file to attach to a bug report, and the crash message says where reports go.
 
 If PadForge has not crashed there is no `crash.log`, and that is normal.
 

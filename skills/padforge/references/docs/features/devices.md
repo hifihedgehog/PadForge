@@ -97,7 +97,7 @@ The device's tools stand at the card's foot: the [Switch Driver buttons](#switch
 |-----|-------------|
 | **Product** | Product name from hardware |
 | **Type** | Device category |
-| **Capabilities** | The axis, button and POV counts, each in the singular when it is one ("1 axis, 12 buttons, 1 POV"), then Rumble, Gyro, Accelerometer, Touchpad (a gamepad with a touch surface) and NFC (a Switch controller with a tag reader) where the device has them |
+| **Capabilities** | The axis, button and POV counts, each in the singular when it is one ("1 axis, 12 buttons, 1 POV"), then Rumble, Gyro, Accelerometer, Touchpad (a gamepad with a touch surface) and NFC (a Switch controller with a tag reader) where the device has them. On an Xbox Elite whose back-paddle route never started, a gray line under it gives SDL's own reason, as **The back paddles are off over USB and the Xbox Wireless Adapter. SDL’s reason: …**, or **over Bluetooth** for an Elite on Bluetooth |
 | **VID:PID** | Vendor and Product ID in hex (`054C:0CE6` for a DualSense). Left out for merged and virtual sources that report no ID. |
 | **Link** | Bluetooth, USB, PS/2 or I2C, as the Link tile names it. Bluetooth keeps its mark. |
 | **Battery** | The level as a picture, the percentage, and charging when it is. Shown only when the device reports a battery. |

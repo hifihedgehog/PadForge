@@ -50,13 +50,16 @@ When you stop, the recording opens over the page as **Read Your Recording**: whe
 
 The left side lists the **Summary** and the eight parts. Click a part to see it as it will be shared, with its size as text and in the zip. Turn a part's switch off to leave it out of what you save.
 
-The scrub check line says what PadForge replaced: **Scrub check: PadForge replaced 12 values of 3 private kinds. None of this PC’s names, serials or addresses is in the parts you keep.** It runs again each time you turn a part off or on. If one of this PC's own values is still in a part you keep, the line says so and **Save…** stays off until you turn that part off.
+The scrub check line says what PadForge replaced: **Scrub check: PadForge replaced 12 values of 3 private kinds. None of this PC’s names, serials or addresses is in the parts you keep.** It runs again each time you turn a part off or on. If one of this PC's own values is still in a part you keep, the line says so, and **Save…** and **Save and Post** stay off until you turn that part off.
 
 | Button | What it does |
 |---|---|
+| **Delete** | Deletes the recording. |
 | **Copy Summary** | Puts the summary on the clipboard, for the body of a bug report. |
 | **Save…** | Saves the zip where you pick, to Downloads the first time and then where you last saved, and shows it in Explorer. It is written as you, even while PadForge runs as administrator. With parts turned off, the saved zip holds only the parts you kept. |
-| **Delete** | Deletes the recording. |
+| **Save and Post** | Saves the zip as **Save…** does, then copies the summary, shows the file in Explorer and opens a new Q&A discussion on PadForge's GitHub page, where reports go. Paste the summary there and drop the file on it. If you cancel the save, nothing is copied or opened. |
+
+PadForge sends nothing itself. It runs no server, so a report reaches the developer only when you post it.
 
 ### A recording that waits for you
 

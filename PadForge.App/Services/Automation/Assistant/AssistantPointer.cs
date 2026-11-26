@@ -201,6 +201,11 @@ namespace PadForge.Services.Automation
         {
             Unring();
             _advanceTimer?.Stop();
+            // Work queued for the step that ends here (a check after the
+            // user's key or click, a landing, a look for its place) belongs
+            // to that step. A new generation drops it, so a second key's
+            // check never reads the next step as done and ends the walk.
+            _generation++;
             _at++;
             // A click on the way that the user has made already is passed.
             while (_at < _steps.Count && _steps[_at].Done?.Invoke() == true) _at++;

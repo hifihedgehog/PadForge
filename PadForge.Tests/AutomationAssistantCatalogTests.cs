@@ -928,6 +928,62 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>Two keys typed in the ringed box before the pointer has
+        /// heard either: the second empties the box. The first key's check,
+        /// still queued when the walk goes on to the row, belongs to the box's
+        /// step and never acts on the row's step, which would end the walk
+        /// past its last step and take the callout away.</summary>
+        [Fact]
+        public void TwoKeysInTheRingedBox_HeardTogether_GoOnToTheRowOnce()
+        {
+            WithPages(p =>
+            {
+                var window = new Window
+                {
+                    Content = p.Devices, Width = 1456, Height = 985, Left = -10000, Top = -10000,
+                    ShowActivated = false, ShowInTaskbar = false, WindowStyle = WindowStyle.None,
+                };
+                var online = new DeviceRowViewModel { DeviceName = "Online Pad", InstanceGuid = Guid.NewGuid(), IsHidHideAvailable = true, IsOnline = true };
+                p.Vm.Devices.Devices.Add(online);
+                window.Show();
+                p.Window = window;
+                var ended = new List<string>();
+                p.Pointer.Ended += (_, _) => ended.Add(Environment.StackTrace);
+                try
+                {
+                    p.Vm.Devices.EnsureListViews();
+                    p.Vm.SelectedNavTag = "Devices";
+                    p.Vm.Devices.SearchText = "No Such Device";
+                    PageRenderDump.Settle(window.Dispatcher);
+                    var box = (System.Windows.Controls.TextBox)p.Devices.FindName("DeviceSearchBox");
+                    Assert.True(p.Catalog.Show(new AssistantShowRequest
+                    {
+                        Program = "Claude Code",
+                        Walk = true,
+                        Steps = new[] { new AssistantShowStep { Place = "device/" + AutomationDevices.IdOf(online.InstanceGuid), Words = "Here.", Advance = AssistantAdvance.Next } },
+                    }).Shown);
+                    Until(window, () => ReferenceEquals(p.Pointer.Target, box));
+                    Assert.Same(box, p.Pointer.Target);
+                    // No pump between the two keys: both checks are queued
+                    // when the first one runs.
+                    box.RaiseEvent(new System.Windows.Input.KeyEventArgs(System.Windows.Input.Keyboard.PrimaryDevice, PresentationSource.FromVisual(box), 0, System.Windows.Input.Key.A)
+                    {
+                        RoutedEvent = System.Windows.Input.Keyboard.PreviewKeyDownEvent,
+                    });
+                    TypeInto(box, string.Empty);
+                    Until(window, () => p.Pointer.Target is System.Windows.Controls.ListBoxItem { DataContext: var row } && ReferenceEquals(row, online));
+                    Assert.True(p.Pointer.Callout != null, "the callout ended " + ended.Count + " time(s):\n" + string.Join("\n----\n", ended));
+                    Assert.Equal("Here.", p.Pointer.Callout.Words);
+                }
+                finally
+                {
+                    p.Pointer.Clear();
+                    p.Vm.Devices.SearchText = string.Empty;
+                    window.Close();
+                }
+            });
+        }
+
         /// <summary>A segment of the Devices page by its automation
         /// ID.</summary>
         private static System.Windows.Controls.RadioButton Segment(FrameworkElement page, string automationId)

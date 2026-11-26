@@ -25,8 +25,10 @@
     <StackPanel>
         <StackPanel x:Name="CodePanel" Visibility="Collapsed">
             <!-- The code's own white ground and quiet zone come with it
-                 (WebControllerServer.RenderQr). -->
-            <Image x:Name="QrImage" Width="174" Height="174" HorizontalAlignment="Left" Stretch="Uniform"
+                 (WebControllerServer.RenderQr). Left to right in every
+                 language, as the web controller's codes are: a mirrored QR
+                 code does not scan. -->
+            <Image x:Name="QrImage" FlowDirection="LeftToRight" Width="174" Height="174" HorizontalAlignment="Left" Stretch="Uniform"
                    RenderOptions.BitmapScalingMode="NearestNeighbor"
                    AutomationProperties.Name="{Binding Answer_Pair_Qr, Source={x:Static strings:Strings.Instance}}"/>
             <TextBlock Style="{StaticResource DialogNote}" FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap"

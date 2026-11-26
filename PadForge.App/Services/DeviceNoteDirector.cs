@@ -45,13 +45,15 @@ namespace PadForge.Services
     /// is on, as one walk reads it.</summary>
     internal readonly struct DeviceNoteReading
     {
-        public DeviceNoteReading(Guid device, bool online, int slots, bool raisesNotes, long ownDropAt = DeviceNoteDirector.Never)
+        public DeviceNoteReading(Guid device, bool online, int slots, bool raisesNotes,
+            long ownEveryAt = DeviceNoteDirector.Never, long ownRowAt = DeviceNoteDirector.Never)
         {
             Device = device;
             Online = online;
             Slots = slots;
             RaisesNotes = raisesNotes;
-            OwnDropAt = ownDropAt;
+            OwnEveryAt = ownEveryAt;
+            OwnRowAt = ownRowAt;
         }
 
         public Guid Device { get; }
@@ -67,9 +69,14 @@ namespace PadForge.Services
         /// controller from reading as empty while it is online.</summary>
         public bool RaisesNotes { get; }
 
-        /// <summary>The latest stamp of PadForge's own work that covers the
-        /// row (PadForge.Engine.OwnDrops), or Never.</summary>
-        public long OwnDropAt { get; }
+        /// <summary>The latest stamp of PadForge's own work that can take
+        /// any row offline (PadForge.Engine.OwnDrops.EveryAt), or
+        /// Never.</summary>
+        public long OwnEveryAt { get; }
+
+        /// <summary>The latest stamp of PadForge's own work that took this
+        /// row offline (PadForge.Engine.OwnDrops.RowAt), or Never.</summary>
+        public long OwnRowAt { get; }
     }
 
     /// <summary>What the walk keeps of one device between two reads. Made by
@@ -90,7 +97,9 @@ namespace PadForge.Services
         public bool DropCounted;
 
         /// <summary>When the absence that runs now stops being PadForge's
-        /// own work, or Never when it is none of it.</summary>
+        /// own work: <see cref="DeviceNoteDirector.UntilBack"/> for a row
+        /// PadForge took offline itself, or Never when it is none of
+        /// it.</summary>
         public long OwnUntil;
 
         /// <summary>When a note last named the device, or Never.</summary>
@@ -198,8 +207,9 @@ namespace PadForge.Services
     /// profile switch and for a device assigned since.</item>
     /// <item>A drop PadForge's own work causes says nothing and counts
     /// toward nothing: an absence that begins within <see cref="OwnWorkMs"/>
-    /// of a stamp of that work (PadForge.Engine.OwnDrops), for as long as
-    /// that window lasts.</item>
+    /// of a stamp of that work (PadForge.Engine.OwnDrops), until the row
+    /// returns when the stamp names the row, and for as long as that
+    /// window lasts when it covers every row.</item>
     /// <item>After an engine start, a sleep or a USB port PadForge cycled
     /// itself, the rows are not believed until an enumeration that began
     /// <see cref="SettleMs"/> later has finished. Then every device is read
@@ -259,6 +269,10 @@ namespace PadForge.Services
         /// seconds apart, after SDL has opened the device again. One still
         /// away when the window ends is read as a drop then.</summary>
         internal const int OwnWorkMs = SettleMs;
+
+        /// <summary>An absence that is PadForge's own work until the row
+        /// returns: the row's own stamp names it.</summary>
+        internal const long UntilBack = long.MaxValue;
 
         /// <summary>A walk that comes this long after the one before it
         /// stood still: the PC slept without a word, or the process was
@@ -387,7 +401,7 @@ namespace PadForge.Services
                     continue;
                 }
                 var (next, note, inPlace) = Decide(state, reading.Online, nowMs, noteDrops, noteReturns, waiting,
-                    reading.OwnDropAt, ScreenOf(reading.Device));
+                    reading.OwnEveryAt, ScreenOf(reading.Device), reading.OwnRowAt);
                 _states[reading.Device] = next;
                 if (inPlace)
                 {
@@ -565,10 +579,12 @@ namespace PadForge.Services
         /// said, and whether that changes the note on screen in place.
         ///
         /// <para>A drop and a return stand at once. An absence that begins
-        /// within <see cref="OwnWorkMs"/> of <paramref name="ownDropAt"/> is
-        /// PadForge's own work: nothing is said or counted of it while the
-        /// window lasts, and one still away when it ends is a drop
-        /// then.</para>
+        /// within <see cref="OwnWorkMs"/> of a stamp of PadForge's own work is
+        /// that work's, and nothing is said or counted of it: until the row
+        /// returns for <paramref name="ownRowAt"/>, a stamp that names the
+        /// row, and while the window lasts for <paramref name="ownEveryAt"/>,
+        /// one that covers every row, after which a row still away is a drop.
+        /// A stamp read after the walk's clock is as recent as can be.</para>
         ///
         /// <para>Every other drop counts. The third within
         /// <see cref="FlapWindowMs"/> is the device that keeps disconnecting,
@@ -595,7 +611,7 @@ namespace PadForge.Services
         /// </summary>
         internal static (DeviceNoteState Next, DeviceNoteKind Note, bool InPlace) Decide(
             DeviceNoteState state, bool online, long nowMs, bool noteDrops, bool noteReturns, bool waiting,
-            long ownDropAt = Never, DeviceNoteScreen screen = DeviceNoteScreen.None)
+            long ownEveryAt = Never, DeviceNoteScreen screen = DeviceNoteScreen.None, long ownRowAt = Never)
         {
             var s = state;
             if (online)
@@ -608,8 +624,8 @@ namespace PadForge.Services
             {
                 s.AwaySince = nowMs;
                 s.DropCounted = false;
-                s.OwnUntil = ownDropAt != Never && ownDropAt <= nowMs && nowMs - ownDropAt <= OwnWorkMs
-                    ? ownDropAt + OwnWorkMs
+                s.OwnUntil = Recent(ownRowAt, nowMs) ? UntilBack
+                    : Recent(ownEveryAt, nowMs) ? ownEveryAt + OwnWorkMs
                     : Never;
             }
             if (waiting) return (s, DeviceNoteKind.None, false);
@@ -706,6 +722,10 @@ namespace PadForge.Services
             s.LastNote = nowMs;
             return (s, online ? DeviceNoteKind.Connected : DeviceNoteKind.Disconnected, false);
         }
+
+        /// <summary>Whether a stamp is recent enough to own an absence that
+        /// begins now.</summary>
+        private static bool Recent(long stampMs, long nowMs) => stampMs != Never && nowMs - stampMs <= OwnWorkMs;
 
         /// <summary>The lowest controller a device's drop left with no
         /// device connected, or -1. Every row assigned to the controller

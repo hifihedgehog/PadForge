@@ -646,7 +646,7 @@ namespace PadForge.Tests
                 MidiVirtualController.ResetAvailability();
                 Assert.True(MidiVirtualController.IsAvailable());
                 Assert.True(SpinWait.SpinUntil(Sweep, 5_000));
-                Assert.True(OwnDrops.At(row.InstanceGuid) > before);
+                Assert.True(OwnDrops.RowAt(row.InstanceGuid) > before);
             }
             finally
             {

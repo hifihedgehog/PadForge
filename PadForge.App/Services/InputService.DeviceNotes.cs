@@ -90,7 +90,8 @@ namespace PadForge.Services
                 if (at >= 0)
                 {
                     bool online = ud.IsOnline;
-                    into[at] = new DeviceNoteReading(ud.InstanceGuid, online, into[at].Slots, RaisesDeviceNotes(ud), OwnDrops.At(ud.InstanceGuid));
+                    into[at] = new DeviceNoteReading(ud.InstanceGuid, online, into[at].Slots, RaisesDeviceNotes(ud),
+                        OwnDrops.EveryAt, OwnDrops.RowAt(ud.InstanceGuid));
                 }
             }
         }

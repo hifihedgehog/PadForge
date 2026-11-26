@@ -317,8 +317,8 @@ namespace PadForge.Tests
         /// <summary>The crash box (#600 item 29) says, after the error and
         /// above its stack, that the details are in crash.log beside
         /// PadForge.exe and where to send that file. Both boxes that show it
-        /// hand it the report page. The stack goes last because a message box
-        /// cuts off what does not fit the screen.</summary>
+        /// hand it the report page. The stack goes last: it can run to 16 KB,
+        /// more lines than a screen holds.</summary>
         [Fact]
         public void TheCrashBox_NamesCrashLog_AndThePageWhereReportsGo_AboveTheStack()
         {

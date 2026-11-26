@@ -3014,13 +3014,14 @@ namespace PadForge.Common.Input
                 // A new HID device's arrival runs xinputhid's slot pass,
                 // which can drop a physical Xbox pad for a moment (the
                 // debounce in Step 1), and PadForge cannot name that pad:
-                // every row is stamped as PadForge's own work before the
-                // bring-up and again when it ends (#600 item 42). A MIDI
-                // port is no HID device.
+                // every row counts as stamped as PadForge's own work for
+                // the whole bring-up, which can take seconds, and is stamped
+                // again when it ends (#600 item 42). A MIDI port is no HID
+                // device.
                 bool hid = controllerType != VirtualControllerType.Midi;
-                if (hid) PadForge.Engine.OwnDrops.Every();
-                vc.Connect();
-                if (hid) PadForge.Engine.OwnDrops.Every();
+                if (hid) PadForge.Engine.OwnDrops.Begin();
+                try { vc.Connect(); }
+                finally { if (hid) PadForge.Engine.OwnDrops.End(); }
 
                 vc.RegisterFeedbackCallback(padIndex, VibrationStates);
 

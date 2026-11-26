@@ -40,7 +40,7 @@ namespace PadForge.Tests
             public DeviceNoteState State;
             public bool Drops = true, Returns = true, Waiting;
             public long Now;
-            public long Own = DeviceNoteDirector.Never;
+            public long Own = DeviceNoteDirector.Never, OwnRow = DeviceNoteDirector.Never;
             public DeviceNoteScreen Screen;
             public readonly List<string> Said = new List<string>();
 
@@ -53,7 +53,7 @@ namespace PadForge.Tests
                 while (Now < untilMs)
                 {
                     Now += DeviceNoteDirector.WalkMs;
-                    var (next, note, inPlace) = DeviceNoteDirector.Decide(State, online, Now, Drops, Returns, Waiting, Own, Screen);
+                    var (next, note, inPlace) = DeviceNoteDirector.Decide(State, online, Now, Drops, Returns, Waiting, Own, Screen, OwnRow);
                     State = next;
                     if (note != Kind.None) Said.Add(Now + " " + note + (inPlace ? " in place" : ""));
                 }
@@ -291,16 +291,36 @@ namespace PadForge.Tests
             Assert.Equal(6000, device.State.Drop1);
         }
 
-        /// <summary>A stamp more than five seconds old, or one made after the
-        /// drop began, excuses nothing.</summary>
+        /// <summary>A stamp more than five seconds old excuses nothing. One
+        /// read after the walk's clock (made between the clock and the row's
+        /// read) is as recent as can be.</summary>
         [Fact]
         public void AStampOutsideTheWindow_ExcusesNothing()
         {
             var old = new Device(online: true) { Own = 1000 }.Read(true, 6250).Read(false, 6500);
             Assert.Equal(new[] { "6500 Disconnected" }, old.Said);
+            var oldRow = new Device(online: true) { OwnRow = 1000 }.Read(true, 6250).Read(false, 6500);
+            Assert.Equal(new[] { "6500 Disconnected" }, oldRow.Said);
 
-            var later = new Device(online: true) { Own = 2000 }.Read(true, 1000).Read(false, 1250);
-            Assert.Equal(new[] { "1250 Disconnected" }, later.Said);
+            var later = new Device(online: true) { Own = 1260 }.Read(true, 1000).Read(false, 3000);
+            Assert.Empty(later.Said);
+        }
+
+        /// <summary>A row PadForge took offline itself (its feature switched
+        /// off, its MIDI inputs closed) is PadForge's until it returns, a
+        /// minute away included: nothing said, nothing counted.</summary>
+        [Fact]
+        public void ARowPadForgeTookOffline_IsItsUntilItReturns()
+        {
+            var device = new Device(online: true) { OwnRow = 900 }.Read(true, 1000).Read(false, 61_000);
+            Assert.Empty(device.Said);
+            Assert.Equal(DeviceNoteDirector.Never, device.State.Drop1);
+            device.Read(true, 62_000);
+            Assert.Empty(device.Said);
+
+            // Its next drop, with no new stamp, is said.
+            device.Read(false, 62_250);
+            Assert.Equal(new[] { "62250 Disconnected" }, device.Said);
         }
 
         // ── the note on screen ─────────────────────────────────────────
@@ -416,11 +436,12 @@ namespace PadForge.Tests
             }
 
             /// <summary>The device's row as the next walk reads it, with the
-            /// stamp of PadForge's own work that covers it.</summary>
-            public void Set(Guid device, bool online, long own = DeviceNoteDirector.Never)
+            /// stamps of PadForge's own work that cover every row and that
+            /// name it.</summary>
+            public void Set(Guid device, bool online, long own = DeviceNoteDirector.Never, long ownRow = DeviceNoteDirector.Never)
             {
                 int at = Mapped.FindIndex(r => r.Device == device);
-                Mapped[at] = new DeviceNoteReading(device, online, Mapped[at].Slots, Mapped[at].RaisesNotes, own);
+                Mapped[at] = new DeviceNoteReading(device, online, Mapped[at].Slots, Mapped[at].RaisesNotes, own, ownRow);
             }
 
             public void Remove(Guid device) => Mapped.RemoveAll(r => r.Device == device);
@@ -1690,7 +1711,7 @@ namespace PadForge.Tests
             int inPlace = update.IndexOf("SwitchOverlay().UpdateDeviceNote(text, note.Kind == DeviceNoteKind.IsBack, restartTime: !note.Grows);", StringComparison.Ordinal);
             int shows = update.IndexOf("SwitchOverlay().ShowDeviceNote(text, note.Kind == DeviceNoteKind.Connected);", StringComparison.Ordinal);
             Assert.True(inPlace > 0 && shows > inPlace, "a line in place is not handed to the note on screen");
-            Assert.Contains("OwnDrops.At(ud.InstanceGuid)", notes);
+            Assert.Contains("OwnDrops.EveryAt, OwnDrops.RowAt(ud.InstanceGuid));", notes);
 
             // A profile switch, and the one line to the diagnostics log.
             Assert.Contains("_deviceNotes.Reset();", Body(service, "        public void ApplyProfile(ProfileData profile)\n"));
@@ -2010,6 +2031,7 @@ namespace PadForge.Tests
                     // The pad is back: the same note, in place.
                     var clock = System.Diagnostics.Stopwatch.StartNew();
                     flyout.UpdateDeviceNote("DualSense is back", connected: true, restartTime: true);
+                    OffScreen();
                     Assert.Equal(0, slide.Y);
                     Pump(dispatcher, 100);
                     Assert.Equal(0, slide.Y);
@@ -2025,6 +2047,7 @@ namespace PadForge.Tests
                     // Changed while it slides away: it stands again where it
                     // shows, and stays past the end of that slide.
                     flyout.UpdateDeviceNote("DualSense disconnected", connected: false, restartTime: false);
+                    OffScreen();
                     Assert.Equal(0, slide.Y);
                     Pump(dispatcher, 600);
                     Assert.True(flyout.IsVisible, "the old slide hid the note changed while it ran");
@@ -2034,9 +2057,11 @@ namespace PadForge.Tests
 
                     // A count that grows keeps the time the note has left.
                     flyout.UpdateDeviceNote("DualSense dropped 3 times in a minute", connected: false, restartTime: true);
+                    OffScreen();
                     var count = System.Diagnostics.Stopwatch.StartNew();
                     Pump(dispatcher, 2000);
                     flyout.UpdateDeviceNote("DualSense dropped 4 times in a minute", connected: false, restartTime: false);
+                    OffScreen();
                     Assert.True(Until(() => slide.Y > 1, 5000), "the count never left");
                     Assert.True(count.ElapsedMilliseconds < 3500 + 1500, "the count's growth gave it more time: " + count.ElapsedMilliseconds + " ms");
                     Assert.Equal("DualSense dropped 4 times in a minute", flyout.StatusText.Text);

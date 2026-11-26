@@ -22,27 +22,45 @@ namespace PadForge.Tests
         // ── the stamps ─────────────────────────────────────────────────
 
         [Fact]
-        public void AStamp_CoversItsRow_OrEveryRow_AndASettleStandsApart()
+        public void AStamp_NamesItsRow_OrCoversEveryRow_AndASettleStandsApart()
         {
             var mine = Guid.NewGuid();
-            var other = Guid.NewGuid();
             long before = Environment.TickCount64;
             OwnDrops.Row(mine);
-            Assert.True(OwnDrops.At(mine) >= before);
+            Assert.True(OwnDrops.RowAt(mine) >= before);
+            Assert.Equal(OwnDrops.Never, OwnDrops.RowAt(Guid.NewGuid()));
+            // An empty ID is no row.
+            OwnDrops.Row(Guid.Empty);
+            Assert.Equal(OwnDrops.Never, OwnDrops.RowAt(Guid.Empty));
 
-            // Every row's stamp covers a row with none of its own.
             Thread.Sleep(20);
             long every = Environment.TickCount64;
             OwnDrops.Every();
-            Assert.True(OwnDrops.At(other) >= every);
-            Assert.True(OwnDrops.At(mine) >= every);
-
-            // An empty ID is no row.
-            OwnDrops.Row(Guid.Empty);
+            Assert.True(OwnDrops.EveryAt >= every);
 
             long settle = Environment.TickCount64;
             OwnDrops.Settle();
             Assert.True(OwnDrops.SettleAt >= settle);
+        }
+
+        /// <summary>Work that lasts, a virtual controller's bring-up: every
+        /// row counts as stamped now for as long as it runs, however long,
+        /// and is stamped again at its end.</summary>
+        [Fact]
+        public void WorkThatLasts_StampsEveryRowUntilItEnds()
+        {
+            OwnDrops.Begin();
+            try
+            {
+                Thread.Sleep(30);
+                long during = Environment.TickCount64;
+                Assert.True(OwnDrops.EveryAt >= during);
+            }
+            finally { OwnDrops.End(); }
+            long after = Environment.TickCount64;
+            Thread.Sleep(30);
+            // No longer now: the end's own stamp.
+            Assert.True(OwnDrops.EveryAt <= after && OwnDrops.EveryAt >= after - 1000);
         }
 
         /// <summary>The causes no test host reaches, read from the source:
@@ -50,7 +68,7 @@ namespace PadForge.Tests
         /// lasts stamps again when it ends.</summary>
         [Theory]
         [InlineData("PadForge.App/Common/Input/InputManager.Step5.VirtualDevices.cs", "private IVirtualController CreateVirtualController(",
-            "if (hid) PadForge.Engine.OwnDrops.Every();", "vc.Connect();")]
+            "if (hid) PadForge.Engine.OwnDrops.Begin();", "vc.Connect();")]
         [InlineData("PadForge.App/Common/Input/InputManager.cs", "public void RescanWiiControllers()",
             "PadForge.Engine.OwnDrops.Every();", "SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_WII, \"0\");")]
         [InlineData("PadForge.App/Common/Input/InputManager.cs", "private static bool WriteFlydigiHintUnderJoystickLock(string value)",
@@ -95,12 +113,14 @@ namespace PadForge.Tests
             // Work that lasts is stamped again when it ends: an HIDMaestro
             // bring-up takes seconds, and a collection comes back at its
             // enable.
-            string ends = file.EndsWith("VirtualDevices.cs", StringComparison.Ordinal) ? drop
+            bool lasts = file.EndsWith("VirtualDevices.cs", StringComparison.Ordinal);
+            string ends = lasts ? drop
                 : file.EndsWith("TabletNative.cs", StringComparison.Ordinal) ? "CM_Enable_DevNode(node, 0);" : null;
             if (ends != null)
             {
+                string endStamp = lasts ? "finally { if (hid) PadForge.Engine.OwnDrops.End(); }" : stamp;
                 int end = source.IndexOf(ends, at, StringComparison.Ordinal);
-                int again = source.IndexOf(stamp, end, StringComparison.Ordinal);
+                int again = source.IndexOf(endStamp, end, StringComparison.Ordinal);
                 Assert.True(end > 0 && again > end && again - end < 250, "no stamp after " + ends);
             }
             // A fence of the test host is still asked first (TestHostFenceTests).
@@ -113,7 +133,8 @@ namespace PadForge.Tests
 
         // ── the census ─────────────────────────────────────────────────
 
-        /// <summary>Every site that takes a device row offline, by file and
+        /// <summary>Every site that takes a device row offline or sets its
+        /// online flag to anything but true, by file and
         /// method, with how many it holds there and what it is (the census
         /// in the lane report). A site added, moved or removed fails here
         /// until it is classed: a real removal is said, PadForge's own work
@@ -144,8 +165,8 @@ namespace PadForge.Tests
             ["PadForge.App/Common/Input/InputManager.Step1.UpdateDevices.cs UnregisterExternalDevice"] = (1, "raises none"),
             ["PadForge.App/Common/Input/InputManager.Falcon.cs RetireFalconRow"] = (1, "real, or own when switched off, stamped at its caller"),
             ["PadForge.App/Common/Input/InputManager.Tablets.cs UpdateTabletDevices"] = (1, "real"),
-            ["PadForge.App/Common/Input/InputManager.TouchSenseMice.cs RetireTouchSenseMouse"] = (1, "real; a driver change of PadForge's settles"),
-            ["PadForge.App/Common/Input/InputManager.WinUsbKeyboards.cs RetireWinUsbKeyboard"] = (1, "real; a driver change of PadForge's settles"),
+            ["PadForge.App/Common/Input/InputManager.TouchSenseMice.cs RetireTouchSenseMouse"] = (1, "real. A driver change of PadForge's settles"),
+            ["PadForge.App/Common/Input/InputManager.WinUsbKeyboards.cs RetireWinUsbKeyboard"] = (1, "real. A driver change of PadForge's settles"),
             ["PadForge.App/Common/Input/InputManager.Touchpads.cs RetireTouchpadMouse"] = (1, "own, stamped at its caller"),
             ["PadForge.App/Common/Input/InputManager.GameTelemetry.cs RetireGameTelemetryRow"] = (1, "raises none"),
             ["PadForge.App/Common/Input/InputManager.KeyboardScreens.cs RetireKeyboardScreenRow"] = (1, "raises none"),
@@ -158,11 +179,17 @@ namespace PadForge.Tests
             ["PadForge.App/Services/Automation/AutomationSessions.cs Stand"] = (1, "a stand-in, not on the list"),
             ["PadForge.App/Services/InputService.Touchpads.cs AddOfflineRowOf"] = (1, "a new record"),
             ["PadForge.App/Services/InputService.cs Stop"] = (1, "the interface's rows at an engine stop"),
+            ["PadForge.App/Services/InputService.cs PopulateDeviceRow"] = (1, "the Devices list's row copies its device"),
+            ["PadForge.App/Services/InputService.cs RefreshSlotSummaryProperties"] = (1, "a controller card's roster copies its devices"),
+            ["PadForge.App/Services/InputService.cs UpdatePadDeviceInfo"] = (1, "a controller's mapped-device list copies its devices"),
+            ["PadForge.App/Services/InputService.cs SyncMappedDevices"] = (1, "the same list, updated in place"),
+            ["PadForge.App/Services/SettingsService.cs CarryRuntimeState"] = (1, "a reloaded record takes its twin's state, no change"),
+            ["PadForge.App/ViewModels/SettingsViewModel.cs UpdatePeerOnlineStatus"] = (1, "a Remote Link peer's dot, no device row"),
             ["PadForge.App/Services/PeripheralSwitchMigration.cs NewRowRecord"] = (1, "a new record"),
             ["PadForge.Engine/Data/UserDevice.cs ClearRuntimeState"] = (1, "helper"),
         };
 
-        private static readonly Regex Offline = new(@"\bIsOnline\s*=\s*false\b|\bMarkDeviceOffline\(|\bClearRuntimeState\(\)");
+        private static readonly Regex Offline = new(@"\bIsOnline\s*=(?!=)(?!\s*true\b)|\bMarkDeviceOffline\(|\bClearRuntimeState\(\)");
         private static readonly Regex Declaration = new(@"\bvoid\s+(MarkDeviceOffline|ClearRuntimeState)\(");
         private static readonly Regex Method = new(@"^\s*(?:public|private|internal|protected)\b[^=;]*?\b(\w+)\s*(?:<[^>]*>)?\s*\(");
 
@@ -218,7 +245,9 @@ namespace PadForge.Tests
             Assert.Matches(Offline, "                IsOnline = false,");
             Assert.Matches(Offline, "                MarkDeviceOffline(ud);");
             Assert.Matches(Offline, "            ud.ClearRuntimeState();");
-            Assert.DoesNotMatch(Offline, "                ud.IsOnline = online;");
+            Assert.Matches(Offline, "                ud.IsOnline = stillThere;");
+            Assert.DoesNotMatch(Offline, "                ud.IsOnline = true;");
+            Assert.DoesNotMatch(Offline, "                if (ud.IsOnline == false) return;");
             Assert.Matches(Declaration, "        private void MarkDeviceOffline(UserDevice ud)");
             Assert.Equal("RetireFalconRow", Method.Match("        private void RetireFalconRow(FalconDevice dev)").Groups[1].Value);
             Assert.Equal("At", Method.Match("        public static long At(Guid device)").Groups[1].Value);

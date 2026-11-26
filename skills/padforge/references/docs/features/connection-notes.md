@@ -30,7 +30,8 @@ The rows are kept for the app and in each profile, so a profile can turn the not
 | It was a controller's last device | **{device} disconnected. {controller} has no device left.** |
 | A mapped device comes back | **{device} connected**, or **{device} connected, battery 80%** when the level is known, with a green check, for two seconds |
 | Several within half a second | **{n} devices disconnected: {names}** or **{n} devices connected: {names}** |
-| A device that drops three times in a minute | **{device} keeps disconnecting**, once |
+| It comes back while its note shows | The same note turns to **{device} is back**, or **{n} devices are back: {names}** |
+| A device that drops three times in a minute | **{device} dropped 3 times in a minute**, once, the count growing in the same note while it shows |
 
 The **Controllers On or Off** note reads **Virtual Controllers Enabled** or **Virtual Controllers Disabled** for two seconds.
 
@@ -38,10 +39,12 @@ A device is named as the Devices page names it. A note counts each device assign
 
 ### When a note shows
 
-- A drop must last a second and a half. A device that comes back sooner says nothing.
-- One note per device every ten seconds. A change inside that time is said when the time ends, if it still stands.
-- After **keeps disconnecting**, that device's notes rest for five minutes.
-- Nothing is said at startup, at engine start or stop, during a profile switch, across sleep, or when PadForge cycles a USB port itself. After the engine starts, notes wait until the devices have settled.
+- A drop is said at once, a short one too, and every drop counts toward the three in a minute.
+- While a device's note shows, the note follows the device in place: back, away again, and the count. It does not slide in again.
+- Otherwise one note per device every ten seconds. A change inside that time is said when the time ends, if it still stands.
+- After the count, that device's notes rest for five minutes.
+- A drop PadForge causes itself says nothing and counts toward nothing: adding a virtual controller, cycling a USB port or a Bluetooth radio, reopening a controller driver, restarting a touchpad, changing a device's driver, or switching off the feature that reads a device.
+- Nothing is said at startup, at engine start or stop, during a profile switch or across sleep. After the engine starts, notes wait until the devices have settled.
 - While the flyout shows a profile switch or the controllers note, a device note waits for it.
 
 ## The flyouts

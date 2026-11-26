@@ -755,7 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>គ្មានសំណើនេះទេ</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>គ្មានអ្វីត្រូវមិនធ្វើវិញទេ</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>មានតែអ្នកទេដែលអាចប្ដូរវានេះ</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>នៅក្រៅ «Reach» ដែលអ្នកបានកំណត់សម្រាប់វា</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>នៅក្រៅវិសាលភាពដែលអ្នកបានកំណត់សម្រាប់វា</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>មិនអាចបើកឯកសារបានទេ</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>គ្មានម៉ាក្រូនេះទេ</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>មានសំណួរច្រើនពេកកំពុងរង់ចាំអ្នក</value></data>

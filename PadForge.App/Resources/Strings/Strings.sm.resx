@@ -1407,7 +1407,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>E leai se talosaga faʻapea</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>E leai se mea e toe faʻafoʻi</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Naʻo oe e mafai ona sui lenei mea</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>I fafo atu o le Reach na e setiina mo ia</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>I fafo atu o le tuaoi na e setiina mo ia</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Na le mafai ona tatala le faila</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>E leai se macro faʻapea</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Na tele naua fesili o loʻo faʻatali mo oe</value></data>

@@ -1717,7 +1717,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Waray sugad nga hangyo</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Waray bawion</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ikaw la an makakabag-o hini</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Gawas han Reach nga imo gin-set para hini</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Gawas han abot nga imo gin-set para hini</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Diri nabuksan an file</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Waray sugad nga macro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Damo hin duro an pakiana nga naghuhulat ha imo</value></data>

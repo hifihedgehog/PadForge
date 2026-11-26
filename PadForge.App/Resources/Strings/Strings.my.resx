@@ -755,7 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ထိုတောင်းဆိုချက် မရှိပါ</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ပြန်ဖျက်စရာ မရှိပါ</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ဤအရာကို သင်သာ ပြောင်းနိုင်သည်</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>၎င်းအတွက် သင် သတ်မှတ်ထားသော “Reach” ပြင်ပတွင်</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>၎င်းအတွက် သင် သတ်မှတ်ထားသော အကျုံးဝင်မှု ပြင်ပတွင်</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ဖိုင်ကို ဖွင့်၍ မရပါ</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ထိုမက်ခရို မရှိပါ</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>သင့်ကို စောင့်နေသော မေးခွန်းများ များလွန်းသည်</value></data>

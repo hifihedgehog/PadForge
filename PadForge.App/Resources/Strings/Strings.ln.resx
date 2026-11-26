@@ -204,7 +204,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Bosenga ya boye ezali te</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Eloko te ya kozongisa sima</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Kaka yo nde okoki kobongola oyo</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Na libanda ya Reach oyo otiaki mpo na yango</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Na libanda ya ndelo oyo otiaki mpo na yango</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fichier efungwamaki te</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Macro ya boye ezali te</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Mituna mingi mingi ezalaki kozela yo</value></data>

@@ -904,7 +904,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Abisade a ɛte saa nni hɔ</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Biribiara nni hɔ a wobɛsan ayi</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Wo nko ara na wubetumi asesa eyi</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ɛboro Reach a wode maa no no so</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ɛboro baabi a woma no kwan sɛ ɛnkodu no so</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Wɔantumi annue fael no</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Macro a ɛte saa nni hɔ</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Na nsɛmmisa dodow dodo retwɛn wo</value></data>

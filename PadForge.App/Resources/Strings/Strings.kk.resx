@@ -755,7 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Мұндай сұрау жоқ</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Қайтаратын ештеңе жоқ</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Мұны тек сіз өзгерте аласыз</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Сіз оған белгілеген Reach шегінен тыс</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Сіз оған белгілеген қолжетімділіктен тыс</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Файлды ашу мүмкін болмады</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Мұндай макро жоқ</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Сізді тым көп сұрақ күтіп тұрды</value></data>

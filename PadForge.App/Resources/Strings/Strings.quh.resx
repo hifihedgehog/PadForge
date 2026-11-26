@@ -1774,7 +1774,7 @@ PadForge nisqaqa detallekunata PadForge.exe nisqap waqtanpi crash.log nisqaman q
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Chay mañakuy mana kanchu</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Mana imapas kutichinapaq kanchu</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Qanllam kayta t'ikrayta atinki</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Paypaq churasqayki Reach nisqap hawanpi</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Paypaq churasqayki chayananmanta hawapi</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Archivota mana kichayta atikurqanchu</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Chay macro mana kanchu</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Ancha achka tapuykuna qanta suyachkarqan</value></data>

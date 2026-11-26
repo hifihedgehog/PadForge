@@ -1601,7 +1601,7 @@ PadForge yanyora ruzivo rwakazara mu-crash.log padivi pe-PadForge.exe. Kuti uziv
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Hapana chikumbiro chakadaro</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Hapana chekudzosa</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Iwe chete ndiwe unogona kuchinja izvi</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Kunze kwe-Reach yawakaisetera</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Kunze kwemuganhu wawakauisira</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faira haina kuvhurika</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Hapana macro yakadaro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Mibvunzo yakawandisa yanga yakakumirira</value></data>

@@ -755,7 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Méiyǒu cǐ qǐngqiú</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Méiyǒu kě chèxiāo de nèiróng</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Zhǐyǒu nín néng gēnggǎi cǐ xiàng</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Chāochū nín wèi qí shèdìng de Reach fànwéi</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Chāochū nín wèi qí shèdìng de fànwéi</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Wúfǎ dǎkāi wénjiàn</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Méiyǒu cǐ hóng</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Děngdài nín huídá de wèntí guò duō</value></data>

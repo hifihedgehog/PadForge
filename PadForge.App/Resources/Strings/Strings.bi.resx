@@ -282,7 +282,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>I no gat rikwes olsem</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>I no gat samting blong tekemaot</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Yu nomo yu save jenisim samting ia</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>I stap aotsaed long Reach we yu putum blong hem</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>I pas long mak we yu putum blong hem</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>I no save openem fael</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>I no gat makro olsem</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Tumas kwestin oli stap wet long yu</value></data>

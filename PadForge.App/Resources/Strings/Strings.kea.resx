@@ -400,7 +400,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Pididu ka izisti</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nada pa disfaze</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Só bo ki podi muda es</value></data>
-  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Fora di Reach ki bu defini pa el</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Fora di alkansi ki bu defini pa el</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ka konsigi abri fixeru</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Makru ka izisti</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Txeu pergunta staba ta spera pa bo</value></data>

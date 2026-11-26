@@ -636,7 +636,7 @@ class Connection:
     while PadForge is not running, connected is False, why says why, and
     the library tries again every second."""
 
-    def __init__(self, name, pipe=None, level="send-inputs", token=None, lease=0):
+    def __init__(self, name, pipe=None, level="send-inputs", token=None, lease=0, reach=None):
         self.name = name
         self.pipe = pipe or _pipe_name()
         self.level = ""
@@ -645,6 +645,7 @@ class Connection:
         self.why = "Not connected yet."
         self.errors = []
         self._wanted = level
+        self._reach = reach
         self._token = token
         self._lease = lease
         # Held while the model changes: the devices, their holds and
@@ -706,6 +707,8 @@ class Connection:
             hello = "hello name=%s kind=script protocol=%d units=plain" % (quote(self.name), PROTOCOL)
         if self._wanted:
             hello += " level=" + self._wanted
+        if self._reach:
+            hello += " reach=" + self._reach
         if self._lease:
             hello += " lease=%d" % self._lease
         try:
@@ -2378,15 +2381,17 @@ def _connection():
         return _default
 
 
-def connect(name=None, level="send-inputs", pipe=None):
+def connect(name=None, level="send-inputs", pipe=None, reach=None):
     """Makes the script's connection with a name and the level it asks for:
-    "read", "send-inputs" (the default) or "change-settings". Call it before
-    anything else to choose them."""
+    "read", "send-inputs" (the default) or "change-settings". With
+    reach="own" the script asks to drive and change only the devices it
+    adds, and it still reads every device. Call it before anything else to
+    choose them."""
     global _default
     with _default_lock:
         if _default is not None:
             _default.close()
-        _default = Connection(name or _script_name(), pipe or _pipe_name(), level)
+        _default = Connection(name or _script_name(), pipe or _pipe_name(), level, reach=reach)
         return _default
 
 

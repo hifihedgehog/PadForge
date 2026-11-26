@@ -370,6 +370,42 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>Connect with the reach "own" asks PadForge to hold the
+        /// script to its own devices (#600 DESIGN-2 N3): a command is refused
+        /// in PadForge's words, and a read still answers.</summary>
+        [InterpreterFact("autohotkey")]
+        public void AScriptThatAsksForItsOwnDevices_IsRefusedACommand_AndStillReads()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                string script = Script(dir, """
+                    PadForge.Connect("Steer Assist", "send-inputs", , "own")
+                    Log("level " PadForge.Level " " (PadForge.Connected ? 1 : 0))
+                    Log("state " (PadForge.State() != "" ? 1 : 0))
+                    try {
+                        PadForge.SwitchProfile("Racing")
+                        Log("refused nothing")
+                    } catch as e {
+                        Log("refused " e.Message)
+                    }
+                    Log("done")
+                    ExitApp
+                    """);
+                using var run = Start(dir, script, rig.PipeName);
+                Assert.Equal("level send-inputs 1", run.Expect("level "));
+                Assert.Equal("state 1", run.Expect("state "));
+                Assert.Equal("refused PadForge refused activate: " + AutomationSessions.OutsideReachWords + " (outside-reach).", run.Expect("refused "));
+                run.Expect("done");
+                Assert.DoesNotContain("error", run.Seen);
+            }
+            finally
+            {
+                TryDelete(dir);
+            }
+        }
+
         [InterpreterFact("autohotkey")]
         public async Task AScript_StartsBeforePadForge_AndCarriesOnThroughARestart_WithItsHoldsClaimsAndValuesBack()
         {

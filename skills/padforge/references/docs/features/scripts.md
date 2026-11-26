@@ -34,6 +34,28 @@ Documents moved to OneDrive counts. With several Pythons, the row names which on
 
 Turn on Automation at the level the script needs: **Read** to follow devices, **Send Inputs** to hold controls, take them in hotkeys and add controllers. A script that asks for more than Commands asks once, on PadForge's question card, which names its interpreter and its script file. Once it is allowed, its row under **Allowed Programs** can hold it to [its own devices and the ones you pick](automation.md#a-programs-reach). It still reads every device.
 
+A script asks for **Send Inputs** unless it connects first with another level. It can also ask to drive only the devices it adds, and its question card then says **It asks to drive only its own devices.**
+
+=== "AutoHotkey"
+
+    ```autohotkey
+    PadForge.Connect("Steer Assist", "send-inputs", , "own")
+    ```
+
+=== "Python"
+
+    ```python
+    padforge.connect("Steer Assist", level="send-inputs", reach="own")
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    Connect-PadForge 'Steer Assist' -Level send-inputs -Reach own
+    ```
+
+The level is `read`, `send-inputs` or `change-settings`. The reach is `own`, or `all`, the default, which leaves the reach to the script's row. With `own`, the script drives and changes only the devices it adds, none of the ones you picked on its row, and it still reads every device. A script can narrow its reach this way and never widen it.
+
 ---
 
 ## Devices and their controls

@@ -2239,6 +2239,7 @@ namespace PadForgeAutomation
         internal readonly object Sync = new object();
         private readonly object _state = new object();
         private readonly string _wanted;
+        private readonly string _reach;
         private readonly string _token;
         private readonly int _lease;
         private readonly Runspace _runspace;
@@ -2262,15 +2263,23 @@ namespace PadForgeAutomation
         private readonly List<string> _follows = new List<string>();
         private readonly Dictionary<string, List<object>> _callbacks = new Dictionary<string, List<object>>(StringComparer.Ordinal);
 
-        public Client(string name, string pipe, string level) : this(name, pipe, level, null, 0)
+        public Client(string name, string pipe, string level) : this(name, pipe, level, null, 0, null)
         {
         }
 
-        private Client(string name, string pipe, string level, string token, int lease)
+        // reach own asks to drive and change only the devices the script
+        // adds. PowerShell passes an empty string for a reach it was not
+        // given.
+        public Client(string name, string pipe, string level, string reach) : this(name, pipe, level, null, 0, reach)
+        {
+        }
+
+        private Client(string name, string pipe, string level, string token, int lease, string reach)
         {
             Name = name;
             Pipe = pipe;
             _wanted = level;
+            _reach = string.IsNullOrEmpty(reach) ? null : reach;
             _token = token;
             _lease = lease;
             Why = "Not connected yet.";
@@ -2307,7 +2316,7 @@ namespace PadForgeAutomation
             string token = Environment.GetEnvironmentVariable("PADFORGE_PLUGIN_TOKEN");
             if (string.IsNullOrEmpty(token))
                 throw new InvalidOperationException("PadForge did not start this program as a plugin. Add it on the Plugins page.");
-            Client pf = new Client(name, PipeFromEnvironment(), null, token, lease);
+            Client pf = new Client(name, PipeFromEnvironment(), null, token, lease, null);
             if (!pf.Connected) throw new InvalidOperationException(pf.Why);
             return pf;
         }
@@ -2386,6 +2395,7 @@ namespace PadForgeAutomation
             string hello = "hello name=" + Text.Quote(Name) + " " + (_token != null ? "kind=plugin token=" + Text.Quote(_token) : "kind=script")
                 + " protocol=1 units=plain";
             if (_wanted != null) hello += " level=" + _wanted;
+            if (_reach != null) hello += " reach=" + _reach;
             if (_lease > 0) hello += " lease=" + _lease.ToString(Text.Invariant);
             Answer answer;
             try { answer = Ask(hello); }
@@ -2948,17 +2958,20 @@ function Invoke-PadForgeCall([scriptblock]$Do) {
 
 function Connect-PadForge {
     <# Makes the script's connection with a name and the level it asks for:
-       read, send-inputs (the default) or change-settings. Call it before
-       anything else to choose them. It does not wait for PadForge. #>
+       read, send-inputs (the default) or change-settings. With -Reach own
+       the script asks to drive and change only the devices it adds, and it
+       still reads every device. Call it before anything else to choose
+       them. It does not wait for PadForge. #>
     param(
         [Parameter(Position = 0)][string]$Name,
         [ValidateSet('read', 'send-inputs', 'change-settings')][string]$Level = 'send-inputs',
-        [string]$Pipe
+        [string]$Pipe,
+        [ValidateSet('own', 'all')][string]$Reach
     )
     if (-not $Name) { $Name = Get-PadForgeScriptName }
     if (-not $Pipe) { $Pipe = [PadForgeAutomation.Client]::PipeFromEnvironment() }
     if ($null -ne $script:Default) { $script:Default.Close() }
-    $script:Default = [PadForgeAutomation.Client]::new($Name, $Pipe, $Level)
+    $script:Default = [PadForgeAutomation.Client]::new($Name, $Pipe, $Level, $Reach)
     $script:Default
 }
 

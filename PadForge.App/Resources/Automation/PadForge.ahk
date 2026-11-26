@@ -107,12 +107,14 @@ class PadForge {
     }
 
     ; Makes the script's connection with a name and the level it asks for:
-    ; "read", "send-inputs" (the default) or "change-settings". Call it
-    ; before anything else to choose them.
-    static Connect(name := "", level := "send-inputs", pipe := "") {
+    ; "read", "send-inputs" (the default) or "change-settings". With the
+    ; reach "own" the script asks to drive and change only the devices it
+    ; adds, and it still reads every device. Call it before anything else
+    ; to choose them.
+    static Connect(name := "", level := "send-inputs", pipe := "", reach := "") {
         if PadForge.HasOwnProp("_default")
             PadForge._default.Close()
-        PadForge._default := PadForge(name != "" ? name : RegExReplace(A_ScriptName, "\.[^.]*$"), pipe != "" ? pipe : PadForge._Pipe(), level)
+        PadForge._default := PadForge(name != "" ? name : RegExReplace(A_ScriptName, "\.[^.]*$"), pipe != "" ? pipe : PadForge._Pipe(), level, "", 0, reach)
         return PadForge._default
     }
 
@@ -164,10 +166,11 @@ class PadForge {
     ; A connection to the PadForge that runs on this PC. It does not wait:
     ; while PadForge is not running, Connected is false, Why says why, and
     ; the library tries again every second.
-    __New(name, pipe := PadForge.DefaultPipe, level := "send-inputs", token := "", lease := 0) {
+    __New(name, pipe := PadForge.DefaultPipe, level := "send-inputs", token := "", lease := 0, reach := "") {
         this.Name := name
         this.Pipe := pipe
         this.Wanted := level
+        this.WantedReach := reach
         this.Token := token
         this.Lease := lease
         this.Answers := Map()
@@ -225,6 +228,8 @@ class PadForge {
         hello := "hello name=" PadForge.Quote(this.Name) " " kind " protocol=" PadForge.Protocol " units=plain hwnd=" A_ScriptHwnd
         if (this.Wanted != "")
             hello .= " level=" this.Wanted
+        if (this.WantedReach != "")
+            hello .= " reach=" this.WantedReach
         if (this.Lease > 0)
             hello .= " lease=" this.Lease
         try {

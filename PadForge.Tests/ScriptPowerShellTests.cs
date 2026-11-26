@@ -838,6 +838,36 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>Connect-PadForge -Reach own asks PadForge to hold the
+        /// script to its own devices (#600 DESIGN-2 N3): a command is refused
+        /// in PadForge's words, and a read still answers.</summary>
+        [InterpreterFact("powershell")]
+        public void AScriptThatAsksForItsOwnDevices_IsRefusedACommand_AndStillReads()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                string script = Script(dir, """
+                    $pf = Connect-PadForge 'Steer Assist' -Reach own
+                    Log "level $($pf.Level) $([int]$pf.Connected)"
+                    Log "state $([int](-not [string]::IsNullOrEmpty((Get-PadForgeState))))"
+                    try { Switch-PadForgeProfile Racing; Log 'refused nothing' } catch { Log "refused $($_.Exception.Message)" }
+                    Log 'done'
+                    """);
+                using var run = Start(dir, script, rig.PipeName);
+                ExpectModule(run, dir);
+                Assert.Equal("level send-inputs 1", run.Expect("level "));
+                Assert.Equal("state 1", run.Expect("state "));
+                Assert.Equal("refused PadForge refused activate: " + AutomationSessions.OutsideReachWords + " (outside-reach).", run.Expect("refused "));
+                run.Expect("done");
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
         // ── Item 27: every example in the docs runs ──
 
         [InterpreterFact("powershell")]

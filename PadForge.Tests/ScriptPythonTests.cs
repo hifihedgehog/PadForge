@@ -827,6 +827,42 @@ namespace PadForge.Tests
             }
         }
 
+        // ── A reach of its own devices (#600 DESIGN-2 N3) ──
+
+        /// <summary>connect(reach="own") asks PadForge to hold the script to
+        /// its own devices: a command is refused in PadForge's words, and a
+        /// read still answers.</summary>
+        [InterpreterFact("python")]
+        public void AScriptThatAsksForItsOwnDevices_IsRefusedACommand_AndStillReads()
+        {
+            string dir = NewFolder();
+            try
+            {
+                using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+                string script = Script(dir, """
+                    padforge.connect("Steer Assist", reach="own")
+                    log("level", padforge.connected, padforge.level)
+                    log("state", bool(padforge.state()))
+                    try:
+                        padforge.switch_profile("Racing")
+                        log("refused nothing")
+                    except padforge.PadForgeError as e:
+                        log("refused", e.code, e)
+                    padforge.wait()
+                    """);
+                using var run = Start(script, rig.PipeName);
+                Assert.Equal("level True send-inputs", run.Expect("level "));
+                Assert.Equal("state True", run.Expect("state "));
+                Assert.Equal("refused outside-reach PadForge refused activate: " + AutomationSessions.OutsideReachWords + " (outside-reach).",
+                    run.Expect("refused "));
+                Assert.DoesNotContain("error ", run.Seen);
+            }
+            finally
+            {
+                ScriptAutoHotkeyTests.TryDelete(dir);
+            }
+        }
+
         // ── Item 27: every example in the docs runs ──
 
         /// <summary>The examples the scripting docs show, and the library

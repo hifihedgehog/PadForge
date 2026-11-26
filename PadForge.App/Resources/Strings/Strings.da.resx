@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ingen sådan anmodning</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Intet at fortryde</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Kun du kan ændre dette</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Uden for den rækkevidde, du har sat for det</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Filen kunne ikke åbnes</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ingen sådan makro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>For mange spørgsmål ventede på dig</value></data>

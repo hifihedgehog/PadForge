@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ez dago eskaera hori</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ez dago desegiteko ezer</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Zuk bakarrik alda dezakezu hau</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Berarentzat ezarri duzun irismenaren kanpoan</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Fitxategia ezin izan da ireki</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ez dago makro hori</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Galdera gehiegi zeuden zure zain</value></data>

@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ასეთი მოთხოვნა არ არის</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>გასაუქმებელი არაფერია</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ამის შეცვლა მხოლოდ თქვენ შეგიძლიათ</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>თქვენ მიერ „Reach“-ში დაწესებული ფარგლების გარეთ</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ფაილის გახსნა ვერ მოხერხდა</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ასეთი მაკრო არ არის</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>ძალიან ბევრი შეკითხვა გელოდებოდათ</value></data>

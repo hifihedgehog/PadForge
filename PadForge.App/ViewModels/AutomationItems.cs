@@ -361,6 +361,9 @@ namespace PadForge.ViewModels
                 ["unknown-request"] = s => s.Automation_Result_UnknownRequest,
                 ["nothing-to-undo"] = s => s.Automation_Result_NothingToUndo,
                 ["users-own"] = s => s.Automation_Result_UsersOwn,
+                // A program held to its own devices and the picked ones that
+                // drove or changed something else (#600 DESIGN-2 N3).
+                ["outside-reach"] = s => s.Automation_Result_OutsideReach,
                 ["no-file"] = s => s.Automation_Result_NoFile,
                 ["unknown-macro"] = s => s.Automation_Result_UnknownMacro,
                 ["too-many-questions"] = s => s.Automation_Result_TooManyQuestions,

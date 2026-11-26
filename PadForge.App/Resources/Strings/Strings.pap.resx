@@ -434,6 +434,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>E petishon no ta eksistí</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nada pa deshasí</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Solamente bo por kambia esaki</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Pafó di e Reach ku bo a pone p'e</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>No por a habri e archivo</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>E makro no ta eksistí</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Muchu pregunta tabata warda bo</value></data>

@@ -429,6 +429,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>そのようなリクエストはありません</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>元に戻す操作はありません</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>変更できるのはあなただけです</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>設定したアクセス範囲の外です</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ファイルを開けませんでした</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>そのようなマクロはありません</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>確認待ちの質問が多すぎました</value></data>

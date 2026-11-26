@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ingen sådan begäran</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Inget att ångra</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Bara du kan ändra detta</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Utanför den räckvidd du angav för det</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Filen kunde inte öppnas</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Inget sådant makro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>För många frågor väntade på dig</value></data>

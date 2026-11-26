@@ -1252,6 +1252,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>ʻAʻohe noi pēlā</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>ʻAʻohe mea e hoʻihoʻi ai</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>ʻO ʻoe wale nō ke hiki ke hoʻololi i kēia</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ma waho o ka palena āu i hoʻonoho ai nona</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ʻAʻole hiki ke wehe i ka faila</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ʻAʻohe macro pēlā</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Nui loa nā nīnau e kali ana iā ʻoe</value></data>

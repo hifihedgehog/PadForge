@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ebda talba bħal din</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Xejn x'jiġi rrevokat</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Int biss tista' tibdel dan</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Barra mill-firxa li stabbilixxejt għalih</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Il-fajl ma setax jinfetaħ</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ebda makro bħal din</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Wisq mistoqsijiet kienu qed jistennewk</value></data>

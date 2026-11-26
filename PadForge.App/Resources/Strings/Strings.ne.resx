@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>यस्तो अनुरोध छैन</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>पूर्ववत् गर्न केही छैन</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>यो तपाईं मात्र बदल्न सक्नुहुन्छ</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>तपाईंले यसका लागि तोकेको पहुँचभन्दा बाहिर</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>फाइल खोल्न सकिएन</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>यस्तो म्याक्रो छैन</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>तपाईंको प्रतीक्षामा धेरै प्रश्नहरू थिए</value></data>

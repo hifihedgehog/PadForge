@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Walang ganoong request</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Walang ipapawalang-bisa</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ikaw lang ang makakapagbago nito</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Labas sa abot na itinakda mo para rito</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Hindi mabuksan ang file</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Walang ganoong macro</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Masyadong maraming tanong ang naghihintay sa iyo</value></data>

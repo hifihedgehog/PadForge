@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Engin slík beiðni</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ekkert til að afturkalla</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Aðeins þú getur breytt þessu</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Utan þess umfangs sem þú stilltir fyrir það</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Ekki tókst að opna skrána</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Enginn slíkur fjölvi</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Of margar spurningar biðu þín</value></data>

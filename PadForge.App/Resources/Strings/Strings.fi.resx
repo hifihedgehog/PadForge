@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Pyyntöä ei ole</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ei mitään kumottavaa</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Vain sinä voit muuttaa tätä</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Asettamasi ulottuvuuden ulkopuolella</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Tiedostoa ei voitu avata</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Makroa ei ole</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Liian moni kysymys odotti vastaustasi</value></data>

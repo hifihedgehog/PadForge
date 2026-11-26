@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Nincs ilyen kérés</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nincs mit visszavonni</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ezt csak Ön módosíthatja</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Az Ön által megadott elérésen kívül</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>A fájlt nem sikerült megnyitni</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Nincs ilyen makró</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Túl sok kérdés várt az Ön válaszára</value></data>

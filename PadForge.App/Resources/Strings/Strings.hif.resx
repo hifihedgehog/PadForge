@@ -1276,6 +1276,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Aisan koi request nai hai</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Undo kare ke kuch nai hai</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Khali aap ii badle sakta</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Aap iske liye jon Reach set karaa, uske bahar</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>File khule nai sakaa</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Aisan koi macro nai hai</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Aap ke intazaar me bahut sawaal rahaa</value></data>

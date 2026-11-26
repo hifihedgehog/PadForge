@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Không có yêu cầu như vậy</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Không có gì để hoàn tác</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Chỉ bạn mới đổi được mục này</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ngoài phạm vi bạn đã đặt cho nó</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Không mở được tệp</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Không có macro như vậy</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Quá nhiều câu hỏi đang chờ bạn</value></data>

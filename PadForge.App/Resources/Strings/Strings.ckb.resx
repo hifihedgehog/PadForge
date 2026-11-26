@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>داواکاریی وا نییە</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>هیچ شتێک نییە بۆ پاشگەزبوونەوە</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>تەنها تۆ دەتوانیت ئەمە بگۆڕیت</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>لە دەرەوەی ئەو مەودای دەسەڵاتەیە کە بۆت داناوە</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>فایلەکە نەکرایەوە</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>ماکرۆی وا نییە</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>پرسیاری زۆر چاوەڕێی تۆ بوون</value></data>

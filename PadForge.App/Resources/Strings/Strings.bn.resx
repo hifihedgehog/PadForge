@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>এমন কোনো অনুরোধ নেই</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>পূর্বাবস্থায় ফেরানোর কিছু নেই</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>শুধু আপনিই এটি বদলাতে পারেন</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>আপনার ঠিক করা নাগালের বাইরে</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>ফাইলটি খোলা যায়নি</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>এমন কোনো ম্যাক্রো নেই</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>আপনার উত্তরের অপেক্ষায় অনেক বেশি প্রশ্ন জমেছিল</value></data>

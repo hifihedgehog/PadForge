@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Δεν υπάρχει τέτοιο αίτημα</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Δεν υπάρχει τίποτα για αναίρεση</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Μόνο εσείς μπορείτε να το αλλάξετε</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Εκτός της ρύθμισης «Εμβέλεια» που ορίσατε γι αυτό</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Το αρχείο δεν μπόρεσε να ανοιχθεί</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Δεν υπάρχει τέτοια μακροεντολή</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Πάρα πολλές ερωτήσεις περίμεναν την απάντησή σας</value></data>

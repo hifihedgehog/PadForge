@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>अशी विनंती नाही</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>पूर्ववत करण्यासारखे काही नाही</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>हे फक्त तुम्ही बदलू शकता</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>तुम्ही त्यासाठी सेट केलेल्या Reach च्या बाहेर</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>फाइल उघडता आली नाही</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>असा मॅक्रो नाही</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>तुमच्यासाठी खूप प्रश्न प्रतीक्षेत होते</value></data>

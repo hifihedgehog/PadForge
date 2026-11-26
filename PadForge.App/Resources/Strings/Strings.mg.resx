@@ -2403,6 +2403,7 @@ Nosoratan'ny PadForge tao amin'ny crash.log eo akaikin'ny PadForge.exe ny antsip
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tsy misy fangatahana toy izany</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Tsy misy hofoanana</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ianao ihany no afaka manova an'ity</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ivelan'ny fetra nomenao azy</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Tsy azo nosokafana ilay rakitra</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Tsy misy macro toy izany</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Be loatra ny fanontaniana niandry anao</value></data>

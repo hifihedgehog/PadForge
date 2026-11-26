@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Nuk ka kërkesë të tillë</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nuk ka çfarë të zhbëhet</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Vetëm ti mund ta ndryshosh këtë</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Jashtë Reach që i ke caktuar</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Skedari nuk u hap dot</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Nuk ka makro të tillë</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Shumë pyetje po të prisnin</value></data>

@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>沒有這個請求</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>沒有可復原的內容</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>只有您能變更這項</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>超出您為它設定的範圍</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>無法開啟檔案</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>沒有這個巨集</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>等待您回應的問題太多</value></data>

@@ -1454,6 +1454,7 @@ PadForge e ngwadile dintlha go crash.log kgauswi le PadForge.exe. Go bega se, th
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ga go kgopelo ye bjalo</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Ga go selo sa go bušetšwa morago</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ke wena fela o ka fetošago se</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Ka ntle ga Reach ye o e beetšego yona</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Faele ga se ya kgona go bulwa</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ga go macro ye bjalo</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Dipotšišo tše dintši kudu di be di go letile</value></data>

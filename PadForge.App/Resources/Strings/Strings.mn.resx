@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Ийм хүсэлт алга</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Буцаах зүйл алга</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Үүнийг зөвхөн та өөрчилж чадна</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Түүнд таны тогтоосон хүрээнээс гадуур</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Файлыг нээж чадсангүй</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Ийм макро алга</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Таныг хүлээж буй асуулт хэт олон байсан</value></data>

@@ -772,6 +772,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Taká žiadosť neexistuje</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nie je čo vrátiť späť</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Toto môžete zmeniť iba vy</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Mimo dosahu, ktorý ste mu nastavili</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Súbor sa nepodarilo otvoriť</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Takéto makro neexistuje</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Na vašu odpoveď čakalo príliš veľa otázok</value></data>

@@ -947,6 +947,7 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Result_UnknownRequest => Get("Automation_Result_UnknownRequest");
     public string Automation_Result_NothingToUndo => Get("Automation_Result_NothingToUndo");
     public string Automation_Result_UsersOwn => Get("Automation_Result_UsersOwn");
+    public string Automation_Result_OutsideReach => Get("Automation_Result_OutsideReach");
     public string Automation_Result_NoFile => Get("Automation_Result_NoFile");
     public string Automation_Result_UnknownMacro => Get("Automation_Result_UnknownMacro");
     public string Automation_Result_TooManyQuestions => Get("Automation_Result_TooManyQuestions");

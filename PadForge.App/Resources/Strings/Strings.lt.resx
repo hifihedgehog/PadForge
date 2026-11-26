@@ -749,6 +749,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Tokios užklausos nėra</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nėra ko anuliuoti</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Tai gali keisti tik jūs</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Už jam nustatyto Reach ribų</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Failo nepavyko atidaryti</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Tokios makrokomandos nėra</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Per daug klausimų laukė jūsų</value></data>

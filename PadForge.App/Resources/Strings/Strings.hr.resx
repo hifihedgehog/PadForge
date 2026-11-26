@@ -755,6 +755,7 @@
   <data name="Automation_Result_UnknownRequest" xml:space="preserve"><value>Nema takvog zahtjeva</value></data>
   <data name="Automation_Result_NothingToUndo" xml:space="preserve"><value>Nema što poništiti</value></data>
   <data name="Automation_Result_UsersOwn" xml:space="preserve"><value>Ovo možete mijenjati samo vi</value></data>
+  <data name="Automation_Result_OutsideReach" xml:space="preserve"><value>Izvan dosega koji ste mu postavili</value></data>
   <data name="Automation_Result_NoFile" xml:space="preserve"><value>Datoteka se nije mogla otvoriti</value></data>
   <data name="Automation_Result_UnknownMacro" xml:space="preserve"><value>Nema takve makronaredbe</value></data>
   <data name="Automation_Result_TooManyQuestions" xml:space="preserve"><value>Previše pitanja čekalo je vaš odgovor</value></data>

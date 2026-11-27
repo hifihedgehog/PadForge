@@ -381,6 +381,28 @@ namespace PadForge.Tests
             Assert.Same(AuraLights.KeyboardMap, PeripheralLightMaps.For(Path("keyboard")));
         }
 
+        /// <summary>With nothing claimed the worker sleeps until a claim or a
+        /// new link table wakes it, and does not look again every poll.</summary>
+        [Fact]
+        public void NothingClaimed_TheWorkerSleepsUntilAClaimOrALinkWakesIt()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            using var backend = Backend(native);
+            backend.Start();
+            Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Idle));
+            int passes = backend.IdlePasses;
+            Thread.Sleep(200);
+            Assert.InRange(backend.IdlePasses - passes, 0, 1);
+            // A claim on a row with no link yet wants nothing, and the link
+            // table that names its path wakes the worker.
+            PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+            Thread.Sleep(50);
+            Assert.Empty(native.Calls);
+            Link(new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } });
+            Assert.True(WaitFor(() => native.Calls.Length > 0));
+        }
+
         /// <summary>Claimed, but Armoury Crate does not run, or the SDK is
         /// not installed: the worker waits and opens nothing, as Aurora
         /// refuses without LightingService.exe (AsusDevice.cs:17-21).</summary>

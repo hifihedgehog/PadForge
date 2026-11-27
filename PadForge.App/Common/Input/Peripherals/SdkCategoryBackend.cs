@@ -44,6 +44,11 @@ namespace PadForge.Common.Input.Peripherals
         private Run _run;
         private int _disposed;
 
+        /// <summary>Times the worker looked and found no path claimed, for
+        /// the test that it sleeps meanwhile.</summary>
+        private int _idlePasses;
+        internal int IdlePasses => Volatile.Read(ref _idlePasses);
+
         /// <summary>The paths whose every light the SDK refused in this
         /// session (<see cref="NotePathRefused"/>). Worker thread only.</summary>
         private readonly HashSet<string> _refusedPaths = new(StringComparer.Ordinal);
@@ -159,6 +164,7 @@ namespace PadForge.Common.Input.Peripherals
                 var run = new Run();
                 _run = run;
                 PeripheralOutputs.LightingChanged += Wake;
+                PeripheralOutputs.LinksChanged += Wake;
                 foreach (string category in Categories)
                     PeripheralLightMaps.Publish(PathOf(category), StaticMap(category));
                 _thread = new Thread(() => Loop(run))
@@ -179,6 +185,7 @@ namespace PadForge.Common.Input.Peripherals
                 if (thread == null) return;
                 _thread = null;
                 PeripheralOutputs.LightingChanged -= Wake;
+                PeripheralOutputs.LinksChanged -= Wake;
                 _run.Stop = true;
             }
             Wake();
@@ -230,7 +237,7 @@ namespace PadForge.Common.Input.Peripherals
         private void Wait(int ms)
         {
             try { _wake.Wait(ms); }
-            catch (ObjectDisposedException) { Thread.Sleep(ms); }
+            catch (ObjectDisposedException) { Thread.Sleep(Math.Max(ms, 0)); }
         }
 
         /// <summary>What one path should show: a color, and the light
@@ -301,7 +308,10 @@ namespace PadForge.Common.Input.Peripherals
                         failureLogged = null;
                         ReportRefusal(run);
                         Report(run, BackendState.Idle);
-                        Wait(_pollMs);
+                        Interlocked.Increment(ref _idlePasses);
+                        // A path is wanted only after a claim or a link table
+                        // changes, and each of those wakes the worker.
+                        Wait(Timeout.Infinite);
                         continue;
                     }
                     if (!Installed(presence) || !ProgramRuns(presence))

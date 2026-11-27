@@ -61,8 +61,13 @@ namespace PadForge.Common.Input
             if (_gyroTiltStates.TryGetValue(deviceGuid, out var context)) context.Invalidate();
         }
 
-        private void ForgetGyroTiltGravity(Guid deviceGuid)
+        /// <summary>Step 2 calls it for every device without a gyro and an
+        /// accelerometer on every pass. The lock-free look comes first: the
+        /// removal takes its bucket's lock even when nothing is there, and
+        /// only the poll thread adds an entry.</summary>
+        internal void ForgetGyroTiltGravity(Guid deviceGuid)
         {
+            if (!_gyroTiltStates.ContainsKey(deviceGuid)) return;
             if (_gyroTiltStates.TryRemove(deviceGuid, out var context)) context.Disconnect();
         }
 

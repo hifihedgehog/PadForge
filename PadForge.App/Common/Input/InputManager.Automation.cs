@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -703,6 +703,12 @@ namespace PadForge.Common.Input
         // when they are due, without waiting for a pass.
         private static readonly ConcurrentDictionary<Guid, long> _seen = new();
 
+        /// <summary>How old a device's note in <see cref="_seen"/> grows
+        /// before a pass writes it again: a tenth of
+        /// <see cref="ProgramDevice.NotPolledTicks"/>, so a device a pass
+        /// reads counts as read until at most that much sooner.</summary>
+        internal static readonly long SeenRefreshTicks = ProgramDevice.NotPolledTicks / 10;
+
         /// <summary>The most steps that wait. Past it the oldest of them
         /// land at once, so a program that sends without end cannot grow
         /// the list.</summary>
@@ -1087,8 +1093,12 @@ namespace PadForge.Common.Input
         /// claimed.</summary>
         internal static CustomInputState Apply(Guid device, CustomInputState state)
         {
-            // The device is read on this pass.
-            _seen[device] = Volatile.Read(ref _lastPass);
+            // The device is read on this pass. The note is written again
+            // only once it is a tenth of the not-polled span old, so a pass
+            // reads it without the dictionary's write lock.
+            long pass = Volatile.Read(ref _lastPass);
+            if (!_seen.TryGetValue(device, out long seen) || pass - seen >= SeenRefreshTicks)
+                _seen[device] = pass;
             var table = Volatile.Read(ref _current);
             if (table == null || state == null || !table.TryGetValue(device, out var holds)) return state;
             return holds.Apply(state);

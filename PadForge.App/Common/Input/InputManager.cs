@@ -4295,6 +4295,11 @@ namespace PadForge.Common.Input
         /// replace controller submission and key release in tests.</summary>
         internal bool ApplyFocusSuspension(Action submitControllers = null, Action releaseKeys = null)
         {
+            // A pass in the foreground, or with background polling on, with
+            // no suspension to end, has nothing to do under the gate. It
+            // reads two flags and takes no lock: the pass takes the gate
+            // again for its own steps right after.
+            if ((!SuspendWhenBackground || HostIsForeground) && !_focusSuspended) return false;
             using var publication = EnterMenuPublication();
             if (!SuspendWhenBackground || HostIsForeground)
             {

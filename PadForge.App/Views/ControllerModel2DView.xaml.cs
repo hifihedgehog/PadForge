@@ -89,9 +89,16 @@ namespace PadForge.Views
         // Layout data
         private double _stickMaxTravel;
 
+        private readonly PadForge.Common.RenderingSubscription _frames;
+
+
         public ControllerModel2DView()
+
         {
             InitializeComponent();
+            // Frames ride the view's visibility and the window's too: hidden
+            // or in the tray, no Rendering handler is attached (RenderingSubscription).
+            _frames = new PadForge.Common.RenderingSubscription(this, OnRendering);
             // Rendering rides tree presence, matching MousePreviewControl. A
             // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
             // roots the view forever and keeps its per-frame callback
@@ -99,10 +106,9 @@ namespace PadForge.Views
             // See the note in ControllerSchematicView for the measurement.
             Loaded += (s, e) =>
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
             };
-            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            Unloaded += (s, e) => _frames.Wanted = false;
             // Annotation overlay (#175): anchors move only when the Viewbox
             // rescales, so a size change is the one geometry trigger the 2D
             // layer needs (no camera, no timer-driven re-projection). It is
@@ -151,8 +157,7 @@ namespace PadForge.Views
 
             if (_vm != null)
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 EnsureModel();
             }
@@ -161,7 +166,7 @@ namespace PadForge.Views
         public void Unbind()
         {
             StopFlash();
-            CompositionTarget.Rendering -= OnRendering;
+            _frames.Wanted = false;
             if (_vm != null)
                 _vm.PropertyChanged -= OnVmPropertyChanged;
             TeardownAnnotations();

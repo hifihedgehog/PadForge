@@ -135,15 +135,23 @@ namespace PadForge.Tests
             }
         });
 
-        [Fact]
-        public void ControllerModelView_TakesItsFramesThroughTheSubscription()
+        [Theory]
+        [InlineData("ControllerModelView")]
+        [InlineData("ControllerModel2DView")]
+        [InlineData("ControllerSchematicView")]
+        [InlineData("KBMPreviewView")]
+        [InlineData("MidiPreviewView")]
+        [InlineData("MousePreviewControl")]
+        [InlineData("VRPreviewView")]
+        public void EveryPreviewView_TakesItsFramesThroughTheSubscription(string view)
         {
             var dir = new DirectoryInfo(AppContext.BaseDirectory);
             while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PadForge.sln")))
                 dir = dir.Parent;
             Assert.NotNull(dir);
-            string code = File.ReadAllText(Path.Combine(dir.FullName, "PadForge.App", "Views", "ControllerModelView.xaml.cs"));
+            string code = File.ReadAllText(Path.Combine(dir.FullName, "PadForge.App", "Views", view + ".xaml.cs"));
             Assert.DoesNotContain("CompositionTarget.Rendering +=", code);
+            Assert.DoesNotContain("CompositionTarget.Rendering -=", code);
             Assert.Contains("new PadForge.Common.RenderingSubscription(this, OnRendering)", code);
         }
     }

@@ -125,9 +125,16 @@ namespace PadForge.Views
         // brushes, so a look put on while the view shows builds it again.
         private int _builtLook;
 
+        private readonly PadForge.Common.RenderingSubscription _frames;
+
+
         public KBMPreviewView()
+
         {
             InitializeComponent();
+            // Frames ride the view's visibility and the window's too: hidden
+            // or in the tray, no Rendering handler is attached (RenderingSubscription).
+            _frames = new PadForge.Common.RenderingSubscription(this, OnRendering);
             // Rendering rides tree presence, matching MousePreviewControl. A
             // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
             // roots the view forever and keeps its per-frame callback
@@ -135,14 +142,13 @@ namespace PadForge.Views
             // See the note in ControllerSchematicView for the measurement.
             Loaded += (s, e) =>
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
                 InputLanguageManager.Current.InputLanguageChanged -= OnInputLanguageChanged;
                 InputLanguageManager.Current.InputLanguageChanged += OnInputLanguageChanged;
             };
             Unloaded += (s, e) =>
             {
-                CompositionTarget.Rendering -= OnRendering;
+                _frames.Wanted = false;
                 InputLanguageManager.Current.InputLanguageChanged -= OnInputLanguageChanged;
             };
             // The drawings carry their tooltips and the approximate caption as
@@ -169,8 +175,7 @@ namespace PadForge.Views
             _vm = vm;
             if (_vm != null)
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 RebuildLayout();
             }
@@ -178,7 +183,7 @@ namespace PadForge.Views
 
         public void Unbind()
         {
-            CompositionTarget.Rendering -= OnRendering;
+            _frames.Wanted = false;
             // Stop the recording flash FIRST. UpdateFlashTarget(null) is the
             // only path that stops _flashTimer and clears _flashTarget, and
             // it is reached only through the subscription torn down below, so

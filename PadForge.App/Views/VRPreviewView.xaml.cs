@@ -113,16 +113,22 @@ namespace PadForge.Views
         private const double StickTravel = 14;
         private TranslateTransform _lStickT, _rStickT;
 
+        private readonly PadForge.Common.RenderingSubscription _frames;
+
+
         public VRPreviewView()
+
         {
             InitializeComponent();
+            // Frames ride the view's visibility and the window's too: hidden
+            // or in the tray, no Rendering handler is attached (RenderingSubscription).
+            _frames = new PadForge.Common.RenderingSubscription(this, OnRendering);
             Loaded += (s, e) =>
             {
                 Build();
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
             };
-            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            Unloaded += (s, e) => _frames.Wanted = false;
         }
 
         /// <summary>Keeps the room the 3D controller keeps around it clear

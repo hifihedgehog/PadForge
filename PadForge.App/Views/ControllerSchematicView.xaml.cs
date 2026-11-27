@@ -82,9 +82,16 @@ namespace PadForge.Views
         private const double LayoutPadding = 12;
         private const int ButtonsPerRow = 8;
 
+        private readonly PadForge.Common.RenderingSubscription _frames;
+
+
         public ControllerSchematicView()
+
         {
             InitializeComponent();
+            // Frames ride the view's visibility and the window's too: hidden
+            // or in the tray, no Rendering handler is attached (RenderingSubscription).
+            _frames = new PadForge.Common.RenderingSubscription(this, OnRendering);
             // Rendering rides tree presence, matching MousePreviewControl.
             // CompositionTarget.Rendering is a STATIC event, so a ctor-lifetime
             // subscription is a permanent GC root: the view never dies, its
@@ -96,10 +103,9 @@ namespace PadForge.Views
             // intervening Unloaded.
             Loaded += (s, e) =>
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
             };
-            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            Unloaded += (s, e) => _frames.Wanted = false;
         }
 
         // ─────────────────────────────────────────────
@@ -118,8 +124,7 @@ namespace PadForge.Views
 
             if (_vm != null)
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 _vm.ExtendedConfig.PropertyChanged += OnExtendedConfigPropertyChanged;
                 RebuildLayout();
@@ -136,7 +141,7 @@ namespace PadForge.Views
             // unbound.
             UpdateFlashTarget(null);
 
-            CompositionTarget.Rendering -= OnRendering;
+            _frames.Wanted = false;
             if (_vm != null)
             {
                 _vm.PropertyChanged -= OnVmPropertyChanged;

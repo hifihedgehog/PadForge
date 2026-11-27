@@ -123,9 +123,16 @@ namespace PadForge.Views
         private string _flashTarget;
         private bool _flashOn;
 
+        private readonly PadForge.Common.RenderingSubscription _frames;
+
+
         public MidiPreviewView()
+
         {
             InitializeComponent();
+            // Frames ride the view's visibility and the window's too: hidden
+            // or in the tray, no Rendering handler is attached (RenderingSubscription).
+            _frames = new PadForge.Common.RenderingSubscription(this, OnRendering);
             // Rendering rides tree presence, matching MousePreviewControl. A
             // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
             // roots the view forever and keeps its per-frame callback
@@ -133,10 +140,9 @@ namespace PadForge.Views
             // See the note in ControllerSchematicView for the measurement.
             Loaded += (s, e) =>
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
             };
-            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            Unloaded += (s, e) => _frames.Wanted = false;
             // The section titles are copied into the canvas as text, and the
             // page that holds the picture is kept, so a language switch
             // redraws it. Held weakly by Strings.
@@ -160,8 +166,7 @@ namespace PadForge.Views
 
             if (_vm != null)
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 _vm.MidiConfig.PropertyChanged += OnMidiConfigPropertyChanged;
                 RebuildLayout();
@@ -170,7 +175,7 @@ namespace PadForge.Views
 
         public void Unbind()
         {
-            CompositionTarget.Rendering -= OnRendering;
+            _frames.Wanted = false;
             if (_vm != null)
             {
                 _vm.PropertyChanged -= OnVmPropertyChanged;
@@ -194,14 +199,13 @@ namespace PadForge.Views
             _inputMode = true;
             _inputSection = section;
             _inputSource = source;
-            CompositionTarget.Rendering -= OnRendering;
-            CompositionTarget.Rendering += OnRendering;
+            _frames.Wanted = true;
             RebuildLayout();
         }
 
         public void UnbindInput()
         {
-            CompositionTarget.Rendering -= OnRendering;
+            _frames.Wanted = false;
             _inputMode = false;
             _inputSource = null;
             _layoutBuilt = false;

@@ -64,20 +64,26 @@ namespace PadForge.Views
         // look's callout tone, so a look put on while it shows builds it again.
         private int _builtLook;
 
+        private readonly PadForge.Common.RenderingSubscription _frames;
+
+
         public MousePreviewControl()
+
         {
             InitializeComponent();
+            // Frames ride the view's visibility and the window's too: hidden
+            // or in the tray, no Rendering handler is attached (RenderingSubscription).
+            _frames = new PadForge.Common.RenderingSubscription(this, OnRendering);
             // Rendering rides tree presence: a ctor-lifetime subscription
             // kept the per-frame callback running for the whole app even
             // while the hosting page was swapped out. The -= before +=
             // guards repeated Loaded without an intervening Unloaded.
             Loaded += (s, e) =>
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
                 BuildMouse();
             };
-            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            Unloaded += (s, e) => _frames.Wanted = false;
         }
 
         private void BuildMouse()

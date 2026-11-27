@@ -80,6 +80,20 @@ namespace PadForge.Common.Input
         private RawInputListener.DeviceInfo[] _cachedConsumerControls;
         private readonly object _rawInputCacheLock = new object();
 
+        /// <summary>The list opened every keyboard, mouse and Consumer Control
+        /// collection on every 2 s device pass. A device comes and goes as a
+        /// device change the main window counts, so the list is read after
+        /// one, or after 15 s all the same, and on the next pass after a list
+        /// that failed. The passes between reconcile the last lists again, as
+        /// a fresh list of the same devices did.</summary>
+        private readonly DeviceScanGate _rawInputScan = new(15000);
+        private volatile bool _rawInputListAgain;
+
+        /// <summary>Whether this pass reads the Raw Input lists again. The
+        /// gate is asked only when no failed list asks for it, since a yes
+        /// counts as the walk.</summary>
+        internal static bool RawInputListDue(bool again, Func<bool> changed) => again || changed();
+
         // Whether the cached keyboards and mice came from a list Raw Input
         // handed over whole.
         private bool _keyboardsListed, _miceListed;
@@ -95,6 +109,7 @@ namespace PadForge.Common.Input
             var kb = RawInputListener.EnumerateKeyboards(out bool kbListed);
             var ms = RawInputListener.EnumerateMice(out bool msListed);
             var cc = RawInputListener.EnumerateConsumerControls(out bool ccListed);
+            if (!kbListed || !msListed || !ccListed) _rawInputListAgain = true;
             if (!kbListed && !msListed && !ccListed) return;
             lock (_rawInputCacheLock)
             {
@@ -106,8 +121,8 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The keyboards and mice of the engine's last Raw Input
-        /// list, read every two seconds, or null before a list of both was
-        /// read whole.</summary>
+        /// list, read after each device change (<see cref="_rawInputScan"/>),
+        /// or null before a list of both was read whole.</summary>
         internal (RawInputListener.DeviceInfo[] Keyboards, RawInputListener.DeviceInfo[] Mice)? RawInputLists
         {
             get
@@ -383,17 +398,27 @@ namespace PadForge.Common.Input
                 changed |= DetectDisconnectedHandles(_openedConsumerHandles, consumers);
             }
 
-            // Kick off the next async enumeration so results are ready
-            // by the time the next 2-second UpdateDevices cycle runs.
+            // Kick off the next async enumeration, when one is due, so
+            // results are ready by the next 2-second UpdateDevices cycle.
             if (!_rawInputEnumRunning)
             {
-                _rawInputEnumRunning = true;
-                Task.Run(() =>
+                if (RawInputListDue(_rawInputListAgain, () => _rawInputScan.Due(Environment.TickCount64)))
                 {
-                    try { ListRawInput(); }
-                    catch { /* best effort: the next cycle retries */ }
-                    finally { _rawInputEnumRunning = false; }
-                });
+                    _rawInputListAgain = false;
+                    _rawInputEnumRunning = true;
+                    Task.Run(() =>
+                    {
+                        try { ListRawInput(); }
+                        catch { _rawInputListAgain = true; /* best effort: the next cycle retries */ }
+                        finally { _rawInputEnumRunning = false; }
+                    });
+                }
+                else
+                {
+                    // The last lists again: a row removed from the Devices
+                    // page comes back on the next pass, as before.
+                    _rawInputEnumPending = true;
+                }
             }
 
             UpdateTabletDevices(ref changed);

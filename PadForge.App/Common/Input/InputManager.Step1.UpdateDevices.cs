@@ -1801,6 +1801,21 @@ namespace PadForge.Common.Input
         private readonly object _midiInputsLock = new object();
         private volatile List<(string Id, string Name)> _cachedMidiEndpoints;
         private volatile bool _midiEnumRunning;
+
+        /// <summary>The endpoint query asked the MIDI service for every
+        /// endpoint on every device pass (2 s). An endpoint comes and goes as
+        /// a device node, a change the main window counts, so the query runs
+        /// after one, or after 15 s all the same, and on the next pass after
+        /// a new backend, a query that failed or a list dropped by a
+        /// shutdown or resume. The service check still
+        /// runs on every pass.</summary>
+        private readonly DeviceScanGate _midiScan = new(15000);
+        private volatile bool _midiEnumAgain = true;
+
+        /// <summary>Whether this pass's worker runs the endpoint query. The
+        /// gate is asked only when nothing else asks for the query, since a
+        /// yes counts as the walk.</summary>
+        internal static bool MidiQueryDue(bool again, Func<bool> changed) => again || changed();
         // When the worker's endpoint query began, or 0 while it has not yet:
         // the worker first waits for the availability probe. Written by the
         // worker, read by the polling thread.
@@ -2249,6 +2264,7 @@ namespace PadForge.Common.Input
             {
                 _midiInputGeneration = generation;
                 DropMidiInputsForNewBackend();
+                _midiEnumAgain = true;
             }
 
             // The query runs on a worker, one at a time. A result from an
@@ -2274,6 +2290,8 @@ namespace PadForge.Common.Input
             long midiEnumNow = Environment.TickCount64;
             if (!_midiEnumRunning)
             {
+                bool query = MidiQueryDue(_midiEnumAgain || _cachedMidiEndpoints == null, () => _midiScan.Due(midiEnumNow));
+                if (query) _midiEnumAgain = false;
                 _midiEnumRunning = true;
                 Volatile.Write(ref _midiEnumQueryStartedMs, 0);
                 int enumGeneration = generation;
@@ -2288,6 +2306,7 @@ namespace PadForge.Common.Input
                         // slot and input on a dead instance. A new generation
                         // rebuilds them.
                         MidiVirtualController.CheckServiceInstance();
+                        if (!query) return;
                         var found = MidiInputRuntime.EnumerateEndpoints(
                             () => Volatile.Write(ref _midiEnumQueryStartedMs, Math.Max(1, Environment.TickCount64)));
                         if (MidiVirtualController.Generation == enumGeneration)
@@ -2295,6 +2314,7 @@ namespace PadForge.Common.Input
                     }
                     catch (Exception ex)
                     {
+                        _midiEnumAgain = true;
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"MIDIINPUT endpoint query failed: {ex.GetType().Name} 0x{ex.HResult:X8}");
                     }

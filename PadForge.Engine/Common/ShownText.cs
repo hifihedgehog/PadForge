@@ -20,10 +20,7 @@ namespace PadForge.Engine.Common
     /// <para>The one helper every name a program supplies and every file
     /// name shown goes through: hello names, device and control names,
     /// profile names a program sends, what Activity writes and what the
-    /// request card shows. Text the library host sends from the vendor
-    /// libraries it loads goes through it too, before PadForge logs or shows
-    /// it. It sits in the Engine so the Engine's own side of the host
-    /// (OpenXrHost) reads it as well.</para>
+    /// request card shows.</para>
     /// </summary>
     public static class ShownText
     {

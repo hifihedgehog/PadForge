@@ -1682,13 +1682,12 @@ namespace PadForge.Common
                 throw new DriverCheckException(DriverCheckFailure.SteamVrFolderIsDriveRoot,
                     "The recorded SteamVR folder " + dir + " is a drive root, so PadForge will not delete it.", dir);
 
-            // The library host may be holding one of the files about to be
-            // deleted. The consumer opens SteamVR's own openvr_api.dll in the
-            // library host (--native-host), never in this process, and the
-            // host keeps it loaded while it runs. A loaded file is skipped by
+            // This process may be holding one of the files about to be
+            // deleted. The consumer loads SteamVR's own openvr_api.dll here
+            // and keeps it loaded while it runs. A loaded file is skipped by
             // the recursive delete below, the uninstall still reports success,
             // and openvr_api.dll stays on disk under a directory the user
-            // believes is gone. ReleaseRuntime ends that host first, then the
+            // believes is gone. ReleaseRuntime frees it first, then the
             // delete runs.
             Input.OpenVrConsumerService.ReleaseRuntime();
 

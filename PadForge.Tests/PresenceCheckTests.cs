@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using PadForge.Services.Install;
-using PadForge.Services.NativeHost;
 using PadForge.Services.Plugins;
 using Xunit;
 
@@ -148,33 +147,12 @@ namespace PadForge.Tests
 
         /// <summary>Run with rights on this PC, where UAC splits the owner's
         /// token and Explorer runs with its limited half: the shell's user
-        /// has a lower right, so neither the install nor the library host
-        /// runs with PadForge's rights, and a library host with rights
-        /// refuses to serve. It runs only in a host with rights.</summary>
+        /// has a lower right, so the install does not run with PadForge's
+        /// rights. It runs only in a host with rights.</summary>
         [ElevatedFact]
         public void WithRights_AndALimitedShell_TheShellsUserHasALowerRight()
         {
             Assert.False(PluginLauncher.ShellUserHasNoLowerRight());
-            Assert.True(NativeHostRun.RunsWithRights());
-        }
-    }
-
-    /// <summary>The library host starts as PadForge's own helper only when
-    /// the shell's user has no lower right, UAC off or the built-in
-    /// Administrator whose token Windows does not split.</summary>
-    [Collection("NativeHostStatics")]
-    public sealed class NativeHostOwnHelperTests : IDisposable
-    {
-        public void Dispose() => NativeHost.NoLowerRightSeam = null;
-
-        [Fact]
-        public void AShellUserWithNoLowerRight_GetsTheHostAsPadForgesOwnHelper()
-        {
-            NativeHost.NoLowerRightSeam = () => true;
-            Assert.True(NativeHost.StartsAsOwnHelper(PluginRefusal.ShellElevated));
-            Assert.False(NativeHost.StartsAsOwnHelper(PluginRefusal.NoShell));
-            NativeHost.NoLowerRightSeam = () => false;
-            Assert.False(NativeHost.StartsAsOwnHelper(PluginRefusal.ShellElevated));
         }
     }
 }

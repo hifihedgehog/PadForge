@@ -271,8 +271,8 @@ namespace PadForge.Services.Automation
         internal static AutomationClientProcess Of(NamedPipeServerStream server) => Of(IdOf(server));
 
         /// <summary>The process ID of the pipe's client, or 0 when it cannot
-        /// be read. The one reader of it: the Automation pipe, the control
-        /// pipe and the library host's channels (#600).</summary>
+        /// be read. The one reader of it: the Automation pipe and the control
+        /// pipe.</summary>
         internal static int IdOf(NamedPipeServerStream server)
         {
             try

@@ -138,7 +138,7 @@ namespace PadForge.Tests
             // The installers' tools, pnputil, steamcmd and the cleanup script.
             new object[] { "PadForge.App/Common/DriverInstaller.cs", "internal static Process StartProcess(ProcessStartInfo psi)" },
             new object[] { "PadForge.App/Common/HidHideArm64Installer.cs", "int? Run(string arguments)" },
-            // The DSX stand-in, the moved copy and the library host with UAC off.
+            // The DSX stand-in and the moved copy.
             new object[] { "PadForge.App/Common/ShellLaunch.cs", "internal static Process StartOwnHelper(ProcessStartInfo psi)" },
             new object[] { "PadForge.App/Common/StartupHelper.cs", "private static int RunSchtasks(string arguments)" },
             new object[] { "PadForge.App/Common/StartupHelper.cs", "private static string RunSchtasksOutput(string arguments)" },

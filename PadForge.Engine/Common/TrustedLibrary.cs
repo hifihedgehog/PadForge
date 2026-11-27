@@ -19,10 +19,6 @@ namespace PadForge.Engine.Common
     /// file is held open with no write or delete sharing from before the
     /// checks until it is loaded, so the file checked is the file
     /// loaded.
-    ///
-    /// <para>A library found elsewhere, or that loads code from such a
-    /// place, loads in the library host with the user's rights instead
-    /// (PadForge.Services.NativeHost).</para>
     /// </summary>
     public static class TrustedLibrary
     {

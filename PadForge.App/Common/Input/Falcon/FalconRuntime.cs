@@ -45,8 +45,7 @@ namespace PadForge.Common.Input.Falcon
     /// library is loaded on the sweep's worker, and a failed load is tried
     /// again on the next sweep after 30 seconds. A copy the user picks
     /// after one loaded takes its place once the Falcons on the old copy
-    /// have closed (<see cref="StagePick"/>). The library is loaded in the
-    /// library host (#600), which never frees one while it runs.
+    /// have closed (<see cref="StagePick"/>). No module is ever freed.
     /// </summary>
     internal static class FalconRuntime
     {
@@ -94,14 +93,10 @@ namespace PadForge.Common.Input.Falcon
                 reason = scripted == null ? "load" : string.Empty;
                 return scripted;
             }
-            // Force Dimension's library is loaded in the library host, with
-            // the user's rights (#600): the copy the user picks, and the
-            // folders the installed copies come from, can be changed by
-            // programs without rights.
-            var lib = PadForge.Services.NativeHost.RemoteFalconLink.Load(PadForge.Services.NativeHost.NativeHost.Shared, picked, out reason);
+            var lib = ForceDimensionLibrary.TryLoad(picked, out reason);
             if (lib == null) return null;
             reason = string.Empty;
-            return new FalconLibrary(lib, lib.Path, lib.Version);
+            return new FalconLibrary(lib, lib.Path, lib.SdkVersion);
         }
 
         /// <summary>Drive Novint Falcon, mirrored from Settings.</summary>

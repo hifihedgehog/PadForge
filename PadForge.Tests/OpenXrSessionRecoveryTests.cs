@@ -74,12 +74,6 @@ namespace PadForge.Tests
             /// <summary>Every session is lost on its first poll.</summary>
             public bool LoseEverySession;
 
-            /// <summary>A lost instance this link reads is the library host
-            /// ending, the way RemoteOpenXrLink reads a broken channel.</summary>
-            public bool LossIsHostEnd;
-
-            public bool HostEnded { get; private set; }
-
             /// <summary>Runs inside each ask for a session, before the
             /// answer, the way a slow native call holds the loop.</summary>
             public Action OnSessionAsk;
@@ -149,12 +143,6 @@ namespace PadForge.Tests
                 var end = LoseEverySession && HasSession ? OpenXrSessionEnd.SessionLost
                         : _events.Count > 0 ? _events.Dequeue() : OpenXrSessionEnd.None;
                 read = end == OpenXrSessionEnd.None ? null : "scripted " + end;
-                if (end == OpenXrSessionEnd.InstanceLost && LossIsHostEnd)
-                {
-                    HostEnded = true;
-                    HasSession = false;
-                    read = "the library host ended";
-                }
                 return end;
             }
 
@@ -540,42 +528,6 @@ namespace PadForge.Tests
             Assert.Equal(1, bench.Opens);
             Assert.Equal(1, link.SessionAsks);
             Assert.True(link.Disposed);
-        }
-
-        /// <summary>The library host ending under a session, as an uninstall
-        /// of PadForge's SteamVR ends it (OpenVrConsumerService.ReleaseRuntime),
-        /// is no loss of the runtime's: the link is retired and a new one is
-        /// asked of the same manifest after one retry interval, and its
-        /// session runs. A runtime that is an OpenVR client library still
-        /// ends, since its library is the one the uninstall deletes.</summary>
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void AHostThatEnded_IsAskedAgain_ExceptOnAnOpenVrClientRuntime(bool sharesOpenVrClient)
-        {
-            var first = new ScriptedLink { LossIsHostEnd = true, SharesOpenVrClient = sharesOpenVrClient }
-                .Session(1, Quiet, OpenXrSessionEnd.InstanceLost);
-            var second = new ScriptedLink().Session(1, Quiet, OpenXrSessionEnd.Exiting);
-            using var bench = new Bench(Link(first), Link(second));
-
-            bench.Run();
-
-            Assert.True(first.Disposed);
-            if (sharesOpenVrClient)
-            {
-                Assert.Equal(1, bench.Opens);
-                Assert.Equal(OpenXrSourceState.Ended, bench.Source.State);
-                return;
-            }
-            Assert.Equal(2, bench.Opens);
-            Assert.True(bench.Asked[1].Again);
-            Assert.Equal(first.ManifestPath, bench.Asked[1].Manifest);
-            Assert.True(bench.Asked[1].At >= 1);
-            Assert.Equal(1, second.SessionsCreated);
-            int ended = bench.Shown.IndexOf(OpenXrSourceState.Connecting);
-            Assert.True(ended >= 0 && bench.Shown.LastIndexOf(OpenXrSourceState.Running) > ended,
-                "the source reads Running again after the host ended: " + string.Join(", ", bench.Shown));
-            Assert.Single(bench.Lines("the library host ended"));
         }
 
         /// <summary>An instance the runtime retires, as for an update, is

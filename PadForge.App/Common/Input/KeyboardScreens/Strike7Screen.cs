@@ -71,11 +71,7 @@ namespace PadForge.Common.Input.KeyboardScreens
 
         public Strike7Screen(byte[] iconBgra, int iconWidth, int iconHeight)
             : this(iconBgra, iconWidth, iconHeight,
-                // Mad Catz's library loads in the library host, with the
-                // user's rights (#600): the user can pick a copy in any
-                // folder, and the library then loads its own runtime from
-                // beside it.
-                path => PadForge.Services.NativeHost.RemoteStrike7Library.Load(PadForge.Services.NativeHost.NativeHost.Shared, path),
+                path => (Strike7Library.TryLoad(path, out string reason), reason),
                 Strike7Library.IsVc2008RuntimeInstalled, () => Strike7Library.RuntimeFoundCount)
         {
         }

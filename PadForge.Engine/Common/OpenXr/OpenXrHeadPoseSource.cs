@@ -13,7 +13,7 @@ namespace PadForge.Engine.Common.OpenXr
         NoRuntime,          // nothing registered, or the manifest names a missing library
         NoHeadset,          // the runtime reports its headset away. The source asks again, except on SteamVR, where the one answer is final
         NotSupported,       // the runtime cannot do a session without graphics
-        Connecting,         // starting a session, at the start or again after the runtime lost one or retired its instance, or the library host ended
+        Connecting,         // starting a session, at the start or again after the runtime lost one or retired its instance
         Running,
         Failed,             // a call failed or the setup threw, and the diagnostics log says which
         Ended,              // the runtime ended the session or the instance was lost, or the recovery of either stopped, and nothing reopens it
@@ -127,24 +127,6 @@ namespace PadForge.Engine.Common.OpenXr
         /// <see cref="OpenXrSession.TryCreate"/>, and the tests script a
         /// runtime here.</summary>
         internal LinkOpener OpenLink { get; set; } = OpenXrSession.TryCreate;
-
-        /// <summary>The name the library host serves OpenXR under
-        /// (#600).</summary>
-        public const string LibraryHostService = PadForge.Engine.Common.NativeHost.OpenXrHostService.Name;
-
-        /// <summary>The library host's side of OpenXR, for the host's own
-        /// run: the runtime's library loaded there, with the user's
-        /// rights.</summary>
-        public static PadForge.Engine.Common.NativeHost.IHostService NewLibraryHostService()
-            => new PadForge.Engine.Common.NativeHost.OpenXrHostService();
-
-        /// <summary>Opens the runtime in the library host (#600): the
-        /// manifest names a library in the runtime's own folder, which
-        /// accounts other than the administrators' can change, so the app
-        /// with its rights never loads it. Called before
-        /// <see cref="Start"/>.</summary>
-        public void UseLibraryHost(PadForge.Engine.Common.NativeHost.HostOpener open)
-            => OpenLink = PadForge.Engine.Common.NativeHost.RemoteOpenXrLink.Opener(open);
 
         /// <param name="runtimeChoice">Manifest path to use, or null for the
         /// machine's default. Read once, when the source starts.</param>
@@ -394,7 +376,6 @@ namespace PadForge.Engine.Common.OpenXr
                         var made = link.TryCreateSession(out var failure, out string read);
                         if (made == OpenXrSessionCreate.Failed)
                         {
-                            if (RetireForEndedHost(ref link, read, ref instanceDueMs, ref retired)) continue;
                             Settle($"{link.RuntimeName} gave no session at ask {Number(sessionAsks)}", read,
                                    SettledOn(failure, sessions > 0));
                             return;
@@ -416,7 +397,6 @@ namespace PadForge.Engine.Common.OpenXr
                             if (!WaitWithoutSession(link, out var gone, out string goneRead)) break;
                             if (gone != OpenXrSessionEnd.None)
                             {
-                                if (RetireForEndedHost(ref link, goneRead, ref instanceDueMs, ref retired)) continue;
                                 EndWithoutSession(link, goneRead);
                                 return;
                             }
@@ -436,7 +416,7 @@ namespace PadForge.Engine.Common.OpenXr
                                 return;
                             }
                             replacing = true;
-                            if (!AwaitNewSession(ref link, read, ref instanceDueMs, ref retired)) break;
+                            if (!AwaitNewSession(link, read)) break;
                             continue;
                         }
                         // The wait is over. It is said as the wait for the
@@ -459,7 +439,6 @@ namespace PadForge.Engine.Common.OpenXr
                     Show(OpenXrSourceState.Running, link.HasControllers);
                     var end = Sample(link, out string endRead);
                     if (end == OpenXrSessionEnd.None) break;
-                    if (RetireForEndedHost(ref link, endRead, ref instanceDueMs, ref retired)) continue;
                     if (end == OpenXrSessionEnd.BeginRefused)
                     {
                         // The session never ran. An earlier one that did
@@ -482,7 +461,7 @@ namespace PadForge.Engine.Common.OpenXr
                     if (end == OpenXrSessionEnd.SessionLost)
                     {
                         replacing = true;
-                        if (!AwaitNewSession(ref link, endRead, ref instanceDueMs, ref retired)) break;
+                        if (!AwaitNewSession(link, endRead)) break;
                         continue;
                     }
                     if (end == OpenXrSessionEnd.InstanceLossPending)
@@ -639,43 +618,17 @@ namespace PadForge.Engine.Common.OpenXr
         /// interval, the cadence the headset is asked for. False when the
         /// loop is to end: the source was stopped, or the runtime went away
         /// during the wait, which ends the source
-        /// (<see cref="EndWithoutSession"/>). A library host that ended during
-        /// the wait retires the link instead (<see cref="RetireForEndedHost"/>).
+        /// (<see cref="EndWithoutSession"/>).
         /// </summary>
-        private bool AwaitNewSession(ref IOpenXrLink link, string read, ref long instanceDueMs, ref string retired)
+        private bool AwaitNewSession(IOpenXrLink link, string read)
         {
             SayOnce("lost", $"OpenXR: {link.RuntimeName} lost the session ({read}), so a new one is asked for every {Number(RetryIntervalMs)} ms");
             if (link.HasSession) link.DestroySession();
             Show(OpenXrSourceState.Connecting);
             if (!WaitWithoutSession(link, out var gone, out string goneRead)) return false;
             if (gone == OpenXrSessionEnd.None) return true;
-            if (RetireForEndedHost(ref link, goneRead, ref instanceDueMs, ref retired)) return true;
             EndWithoutSession(link, goneRead);
             return false;
-        }
-
-        /// <summary>
-        /// Retires a link whose library host ended (<see cref="IOpenXrLink.HostEnded"/>),
-        /// as an uninstall of PadForge's SteamVR ends it, and sets the ask
-        /// for a new instance of the same manifest one retry interval out.
-        /// The runtime lost nothing, so its lost instance is not read as the
-        /// runtime ending the session. False, and the link kept, when the
-        /// host did not end, or when the runtime is an OpenVR client library
-        /// (<see cref="OpenXrSession.IsOpenVrClientLibrary"/>): its instance
-        /// is never created again on its own, and its library is SteamVR's,
-        /// which that uninstall deletes.
-        /// </summary>
-        private bool RetireForEndedHost(ref IOpenXrLink link, string read, ref long instanceDueMs, ref string retired)
-        {
-            if (link == null || !link.HostEnded || link.SharesOpenVrClient) return false;
-            retired = link.ManifestPath;
-            long wait = Math.Max(0, RetryIntervalMs);
-            SayOnce("host ended", $"OpenXR: the library host under {link.RuntimeName} ended ({read}), asking for a new instance in {Number(wait)} ms");
-            try { link.Dispose(); } catch (Exception) { }
-            link = null;
-            Show(OpenXrSourceState.Connecting);
-            instanceDueMs = wait;
-            return true;
         }
 
         /// <summary>Ends the source for a runtime that went away while no

@@ -23,7 +23,7 @@ namespace PadForge.Services
     /// with a copy of PadForge's variables would load such a library with
     /// PadForge's rights. So none of them is handed on: the logon start, the
     /// protected start's restart, the update helper, PadForge's own helpers
-    /// (the DSX stand-in, the moved copy, the library host with UAC off) and
+    /// (the DSX stand-in and the moved copy) and
     /// the Windows tools PadForge runs (schtasks, netsh, pnputil, msiexec,
     /// the installers) all get the block this class builds. A process
     /// PadForge starts as the user without rights (a plugin, the library

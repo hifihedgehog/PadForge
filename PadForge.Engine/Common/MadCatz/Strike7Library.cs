@@ -22,9 +22,9 @@ namespace PadForge.Engine.Common.MadCatz
     /// <summary>One event, as the library's thread delivered it.</summary>
     public readonly record struct Strike7Event(Strike7EventKind Kind, ushort AppletId, ushort EndpointId, int X, int Y, bool Pressed);
 
-    /// <summary>The applet library as the Strike 7 screen uses it: the
-    /// library itself in the library host (<see cref="Strike7Library"/>),
-    /// and PadForge's side of it over the host's channel (#600).</summary>
+    /// <summary>The applet library as the Strike 7 screen uses it
+    /// (<see cref="Strike7Library"/>). A test hands in a scripted
+    /// one.</summary>
     public interface IStrike7Library
     {
         string Path { get; }

@@ -848,7 +848,7 @@ namespace PadForge.Tests
                 FenceSource.Census(@"\b(SendInputNative|SetCursorPosNative|SetWindowsHookExNative)\("));
         }
 
-        /// <summary>A pipe is served in five places and connected to in six.
+        /// <summary>A pipe is served in four places and connected to in five.
         /// The client run's end, where a second copy of the exe sends a
         /// command to the one that runs, asks the control pipe's fence before
         /// it looks for the pipe or connects (#597). The control service and
@@ -860,30 +860,16 @@ namespace PadForge.Tests
         [Fact]
         public void EveryPipe_IsOnTheList()
         {
-            Assert.Equal(Map((ControlPipe, 1), (AutomationPipeFile, 1), (Services + "GiveBackTask.cs", 1), (Services + "GiveBackRun.cs", 1),
-                    (Services + "NativeHost/NativeHost.cs", 1)),
+            Assert.Equal(Map((ControlPipe, 1), (AutomationPipeFile, 1), (Services + "GiveBackTask.cs", 1), (Services + "GiveBackRun.cs", 1)),
                 FenceSource.Census(@"NamedPipeServerStreamAcl\.Create\(|" + Creates("NamedPipeServerStream")));
-            // The library host's pipes are made only past its fence, and the
-            // host's own run, which no test starts, connects to them (#597).
-            string host = OffLimitsSource.Read(Services + "NativeHost/NativeHost.cs");
-            string open = FenceSource.Body(host, "internal HostConnection Open(string service, out string reason)");
-            // Only a test's own start passes the fence, and the shared host
-            // has none.
-            Assert.True(open.IndexOf("if (OffLimitsForTest && _testStart == null)", StringComparison.Ordinal) is >= 0 and var fence
-                        && fence < open.IndexOf("EnsureRunning(", StringComparison.Ordinal));
-            Assert.Contains("internal static NativeHost Shared { get; } = new(new PluginLauncher());", host, StringComparison.Ordinal);
-            Assert.Contains("if (_testStart != null)", FenceSource.Body(host, "private bool StartProcess(string exe, string pipeName, out string reason)"), StringComparison.Ordinal);
-            Assert.Equal(2, OffLimitsSource.Calls(host, "MakePipe(name)").Count);
             string task = OffLimitsSource.Read(Services + "GiveBackTask.cs");
             Assert.StartsWith("if (RunSeam == null && OffLimitsForTest) return false;",
                 FenceSource.FirstStatement(task, "private static bool Register(string name, string command, Action<string> log, bool holdPipe, bool pipeHeld)"), StringComparison.Ordinal);
             Assert.Single(OffLimitsSource.Calls(task, "HoldPipe(name)"));
             // The plugin kit's example plugin connects too. PadForge only
             // carries it as a file the user saves, and never compiles it
-            // (#597). The library host's own run connects to the pipes
-            // PadForge makes for it.
-            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1), (AutomationPipeFile, 1), (PipeOwnerClientFile, 1), ("PadForge.App/Resources/Plugins/PadForgePlugin.cs", 1),
-                    (Services + "NativeHost/NativeHostRun.cs", 1)),
+            // (#597).
+            Assert.Equal(Map((ClientRunFile, 1), (ControlPipe, 1), (AutomationPipeFile, 1), (PipeOwnerClientFile, 1), ("PadForge.App/Resources/Plugins/PadForgePlugin.cs", 1)),
                 FenceSource.Census(Creates("NamedPipeClientStream")));
             Assert.Contains(@"<Compile Remove=""Resources\Plugins\**"" />", ExtrasPageTests.RepoText("PadForge.App", "PadForge.App.csproj"));
 

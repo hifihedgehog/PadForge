@@ -11,9 +11,7 @@ namespace PadForge.Tests
     /// <summary>
     /// A vendor library loads into PadForge, which runs with rights, only
     /// when only administrators could have put it in place and its vendor
-    /// signed it, held open from the check through the load (#597). The
-    /// libraries from folders others can change load in the library host
-    /// (NativeHostTests).
+    /// signed it, held open from the check through the load (#597).
     /// </summary>
     public class TrustedLibraryTests
     {

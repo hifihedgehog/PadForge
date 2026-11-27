@@ -43,9 +43,7 @@ namespace PadForge.Common.Input.Peripherals
             int predecessorWaitMs = DefaultPredecessorWaitMs)
             : base(pollMs, retryMs, stopWaitMs, predecessorWaitMs)
         {
-            // Armoury Crate's COM class is made in the library host, with
-            // the user's rights (#600).
-            _native = native ?? new PadForge.Services.NativeHost.RemoteAuraSdk(PadForge.Services.NativeHost.NativeHost.Shared);
+            _native = native ?? new AuraSdkNative();
         }
 
         private static readonly WorkerSuccession s_workers = new();

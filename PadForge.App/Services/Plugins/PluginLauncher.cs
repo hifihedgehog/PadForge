@@ -325,6 +325,21 @@ namespace PadForge.Services.Plugins
         internal static bool? ThisProcessHasAdministratorRights()
             => OpenProcessToken(GetCurrentProcess(), TokenQuery, out var token) ? RightsOf(token) : null;
 
+        /// <summary>Whether UAC is off: EnableLUA is 0 in the machine's
+        /// policy (Microsoft, User Account Control settings).</summary>
+        internal static bool UacIsOff()
+        {
+            try
+            {
+                using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System");
+                return key?.GetValue("EnableLUA") is int value && value == 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Whether the desktop shell's user has no lower right than full
         /// administrator rights, so a program started with PadForge's own
@@ -342,7 +357,7 @@ namespace PadForge.Services.Plugins
         /// </summary>
         internal static bool ShellUserHasNoLowerRight()
         {
-            if (NativeHost.NativeHost.UacIsOff()) return true;
+            if (UacIsOff()) return true;
             using var shell = OpenShell();
             if (shell == null || !OpenProcessToken(shell, TokenQuery, out var token)) return false;
             using (token)

@@ -117,7 +117,7 @@ Make a memory dump only when a recording and `crash.log` do not explain the prob
 3. Send only the share link, by a direct message to the maintainer on [PadForge's Discord](https://discord.gg/qawTZHVhNH). Where the host allows it, share the file with the maintainer alone rather than with anyone who has the link.
 4. Delete the upload once the issue is solved.
 
-PadForge runs as administrator, so the tool that dumps it must too. Several copies of PadForge.exe can run at once: the app, helpers for assistants (`--mcp`), the web (`--web`) and vendor libraries (`--native-host`), and short-lived copies for an install's check (`--install … --check`), a recording's save (`--record save`), a command line's call (`--call`, `--tools` and the other switches that run alone) and a start with `--wait`, which waits until the app exits. Dump the app by its process ID, never by its name.
+PadForge runs as administrator, so the tool that dumps it must too. Several copies of PadForge.exe can run at once: the app, helpers for assistants (`--mcp`) and the web (`--web`), and short-lived copies for an install's check (`--install … --check`), a recording's save (`--record save`), a command line's call (`--call`, `--tools` and the other switches that run alone) and a start with `--wait`, which waits until the app exits. Dump the app by its process ID, never by its name.
 
 ### Find PadForge's process ID
 
@@ -125,7 +125,7 @@ Open PowerShell as administrator and run:
 
 ```powershell
 Get-CimInstance Win32_Process -Filter "Name='PadForge.exe'" |
-    Where-Object { $_.CommandLine -notmatch '--(mcp|web|native-host|install|tools|call|skill|describe|plugin-kit|summarize|settings-folder)|--record save' } |
+    Where-Object { $_.CommandLine -notmatch '--(mcp|web|install|tools|call|skill|describe|plugin-kit|summarize|settings-folder)|--record save' } |
     Select-Object ProcessId, CommandLine
 ```
 

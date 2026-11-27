@@ -44,17 +44,8 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheLibraryHost_UsesThePipeRuleAndTheJobEveryOtherStartUses()
+        public void TheLogonStart_HoldsItsPrivilegesAndReadsTheUsersToken()
         {
-            string host = OffLimitsSource.Read("PadForge.App/Services/NativeHost/NativeHost.cs");
-            Assert.Contains("ExternalControlService.BuildSecurity()", FenceSource.Body(host, "private static NamedPipeServerStream MakePipe(string name)"), StringComparison.Ordinal);
-            Assert.DoesNotContain("new PipeSecurity()", host, StringComparison.Ordinal);
-            Assert.Contains("Common.System32Calls.NewKillOnCloseJob()", host, StringComparison.Ordinal);
-            Assert.DoesNotContain("CreateJobObject", host, StringComparison.Ordinal);
-            Assert.Contains("int id = Automation.AutomationClientProcess.IdOf(pipe);", FenceSource.Body(host, "private bool FromTheHost(NamedPipeServerStream pipe)"), StringComparison.Ordinal);
-            string run = OffLimitsSource.Read("PadForge.App/Services/NativeHost/NativeHostRun.cs");
-            Assert.Contains("PipeOwner.Taken(PipeOwner.Of(pipe.SafePipeHandle))", run, StringComparison.Ordinal);
-
             string logon = OffLimitsSource.Read("PadForge.App/Services/LogonStart.cs");
             Assert.Contains("using var held = Privileges.Hold(\"SeTcbPrivilege\", \"SeAssignPrimaryTokenPrivilege\", \"SeIncreaseQuotaPrivilege\");", logon, StringComparison.Ordinal);
             Assert.Contains("AutomationClientIdentity.ReadUser(t)", logon, StringComparison.Ordinal);

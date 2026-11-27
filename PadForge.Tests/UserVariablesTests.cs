@@ -10,7 +10,7 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// A process PadForge starts as the user without rights (a plugin, the
-    /// library host, the failed start's copy) gets the variables Windows
+    /// failed start's copy) gets the variables Windows
     /// builds for that user's token, never PadForge's own, which after a
     /// start with rights are the allow list (#597). The builder drops
     /// <c>__COMPAT_LAYER</c>, lets the given variables win and runs in the

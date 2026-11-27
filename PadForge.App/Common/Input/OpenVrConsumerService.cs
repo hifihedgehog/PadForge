@@ -45,12 +45,10 @@ namespace PadForge.Common.Input
     public sealed class OpenVrConsumerService
     {
         /// <summary>
-        /// The OpenVR client as the consumer's session reads it. SteamVR's
-        /// openvr_api.dll and the vrclient it loads live in folders other
-        /// accounts can change (Steam's folder gives Users full control), so
-        /// they are loaded in the library host with the user's rights, never
-        /// in this process (#600, <see cref="PadForge.Services.NativeHost.RemoteVrClient"/>).
-        /// A tick starts with <see cref="PollQuit"/>, which reads the frame,
+        /// The OpenVR client as the consumer's session reads it: SteamVR's
+        /// openvr_api.dll, loaded in this process by the resolver
+        /// (<see cref="EnsureResolver"/>) and started as a background
+        /// application (<see cref="LocalVrClient"/>). A tick starts with <see cref="PollQuit"/>, which reads the frame,
         /// and the tick's other reads answer from that frame.
         /// <see cref="IDisposable.Dispose"/> shuts the client down.
         /// </summary>
@@ -73,14 +71,98 @@ namespace PadForge.Common.Input
         /// <summary>Starts a client as a background application: the client,
         /// or null with the runtime's error or a <paramref name="failure"/>
         /// ("dll" for a library that did not load, "threw: ..." for an init
-        /// that threw, "host: ..." when the library host could not be
-        /// reached).</summary>
+        /// that threw).</summary>
         internal delegate IVrClient VrClientOpener(out EVRInitError error, out string failure);
 
-        /// <summary>How the session's client is started. The library host's,
-        /// in the app. A test hands in a scripted one.</summary>
-        internal VrClientOpener OpenClient { get; set; } =
-            PadForge.Services.NativeHost.RemoteVrClient.Opener(PadForge.Services.NativeHost.NativeHost.Shared);
+        /// <summary>How the session's client is started. The binding's, in
+        /// the app. A test hands in a scripted one.</summary>
+        internal VrClientOpener OpenClient { get; set; } = LocalVrClient.Open;
+
+        /// <summary>The binding's client: OpenVR started in this process as a
+        /// background application.</summary>
+        private sealed class LocalVrClient : IVrClient
+        {
+            private readonly CVRSystem _system;
+            private bool _shut;
+
+            private LocalVrClient(CVRSystem system) => _system = system;
+
+            internal static IVrClient Open(out EVRInitError error, out string failure)
+            {
+                error = EVRInitError.None;
+                failure = null;
+                // A background application's init only answers
+                // NoServerForBackgroundApp while vrserver is down
+                // (openvr.h:1695), so SteamVR's library is not loaded until
+                // its server runs.
+                if (ProcessPresence.RunningAmong(new[] { "vrserver" }).Count == 0)
+                {
+                    error = EVRInitError.Init_NoServerForBackgroundApp;
+                    return null;
+                }
+                CVRSystem system;
+                try { system = OpenVR.Init(ref error, EVRApplicationType.VRApplication_Background); }
+                catch (DllNotFoundException)
+                {
+                    failure = "dll";
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    // The binding can throw after the native init already
+                    // succeeded (SetSDKVersion dispatch). OpenVR.Init only
+                    // shuts down on error returns, so the session is shut
+                    // here or each retry leaks one.
+                    try { OpenVR.Shutdown(); } catch { }
+                    failure = "threw: " + ex.Message;
+                    return null;
+                }
+                if (system == null || error != EVRInitError.None) return null;
+                return new LocalVrClient(system);
+            }
+
+            public bool PollQuit()
+            {
+                var ev = new VREvent_t();
+                uint size = (uint)System.Runtime.InteropServices.Marshal.SizeOf<VREvent_t>();
+                while (_system.PollNextEvent(ref ev, size))
+                    if ((EVREventType)ev.eventType == EVREventType.VREvent_Quit) return true;
+                return false;
+            }
+
+            public void AcknowledgeQuit() => _system.AcknowledgeQuit_Exiting();
+
+            public void ReadPoses(TrackedDevicePose_t[] poses)
+                => _system.GetDeviceToAbsoluteTrackingPose(ETrackingUniverseOrigin.TrackingUniverseStanding, 0f, poses);
+
+            public ETrackedDeviceClass DeviceClass(uint index) => _system.GetTrackedDeviceClass(index);
+
+            public ETrackedControllerRole Role(uint index) => _system.GetControllerRoleForTrackedDeviceIndex(index);
+
+            public bool ControllerState(uint index, ref VRControllerState_t state)
+                => _system.GetControllerState(index, ref state, (uint)System.Runtime.InteropServices.Marshal.SizeOf<VRControllerState_t>());
+
+            public string Manufacturer(uint index, out ETrackedPropertyError error, int[] axisTypes)
+            {
+                error = ETrackedPropertyError.TrackedProp_Success;
+                var text = new System.Text.StringBuilder(128);
+                _system.GetStringTrackedDeviceProperty(index, ETrackedDeviceProperty.Prop_ManufacturerName_String, text, 128, ref error);
+                for (int a = 0; a < 5 && a < axisTypes.Length; a++)
+                {
+                    var axisError = ETrackedPropertyError.TrackedProp_Success;
+                    axisTypes[a] = _system.GetInt32TrackedDeviceProperty(index,
+                        (ETrackedDeviceProperty)((int)ETrackedDeviceProperty.Prop_Axis0Type_Int32 + a), ref axisError);
+                }
+                return text.ToString();
+            }
+
+            public void Dispose()
+            {
+                if (_shut) return;
+                _shut = true;
+                try { OpenVR.Shutdown(); } catch { }
+            }
+        }
 
         private const ushort VR_VID = 0x1209;        // pid.codes open-source VID, synthetic devices
         private const ushort PID_HMD = 0x2870;
@@ -262,11 +344,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Registers the resolver, in the library host
-        /// (<see cref="PadForge.Services.NativeHost.OpenVrHostService"/>):
-        /// SteamVR's library is never loaded in PadForge's own process
-        /// (#600).</summary>
-        internal static void EnsureResolver()
+        private static void EnsureResolver()
         {
             if (Interlocked.CompareExchange(ref _resolverRegistered, 1, 0) != 0) return;
             System.Runtime.InteropServices.NativeLibrary.SetDllImportResolver(
@@ -425,32 +503,52 @@ namespace PadForge.Common.Input
         private static volatile OpenVrConsumerService _live;
 
         /// <summary>
-        /// Stops polling and ends the client, so the SteamVR directory can be
-        /// deleted: the library host that loaded openvr_api.dll ends with
-        /// it, and with it the one handle PadForge held on SteamVR's files.
-        /// Without this an uninstall reported success and left SteamVR
-        /// bin\win64\openvr_api.dll on disk.
+        /// Stops polling and unloads openvr_api.dll, so the SteamVR directory
+        /// can be deleted.
         ///
-        /// <para>Start refuses for the rest of the process, so no new host
-        /// loads the files again while the uninstall deletes them, and VR
-        /// device consumption resumes on the next PadForge launch. The VR
-        /// virtual controllers are unaffected either way: HIDMaestro's OpenVR
-        /// driver loads in vrserver's process, not this one.</para>
+        /// <para>The resolver loads the runtime's dll into this process and
+        /// caches the handle for the lifetime of the process. Nothing ever
+        /// freed it, so Directory.Delete could not remove the one file
+        /// PadForge itself held open: an uninstall reported success and left
+        /// SteamVR bin\win64\openvr_api.dll on disk, which most people would
+        /// never notice and could only clear by hand after closing PadForge.</para>
+        ///
+        /// <para>A release latch IS needed afterwards, and an earlier version
+        /// of this comment claimed otherwise. P/Invoke stubs bind to the
+        /// resolved address on first use and are never re-resolved, so after
+        /// the Free every OpenVR entry point this process already called
+        /// points into an unloaded module. A reinstall plus an engine restart
+        /// would march a fresh consumer straight into OpenVR.Init through
+        /// that dangling stub: a native access violation, uncatchable. Start
+        /// therefore refuses for the rest of the process, and VR device
+        /// consumption resumes on the next PadForge launch. The VR virtual
+        /// controllers are unaffected either way: HIDMaestro's OpenVR driver
+        /// loads in vrserver's process, not this one.</para>
         /// </summary>
         internal static void ReleaseRuntime()
         {
             _runtimeReleased = true;
             try { _live?.Stop(); } catch { }
-            // The client lives in the library host (#600): ending the host
-            // frees openvr_api.dll and the vrclient it loaded.
-            try { PadForge.Services.NativeHost.NativeHost.Shared.Stop(); } catch { }
+            // Only shut down a session that could exist. Calling OpenVR.Shutdown
+            // with the module never loaded would RESOLVE it: the P/Invoke would
+            // run discovery, load the dll this method exists to free, and bind
+            // a stub to it, manufacturing the exact dangling reference the
+            // latch guards against, on machines where VR was never used.
+            if (_openvrModule != IntPtr.Zero)
+            {
+                try { OpenVR.Shutdown(); } catch { }
+            }
+            IntPtr h = _openvrModule;
+            _openvrModule = IntPtr.Zero;
+            if (h != IntPtr.Zero)
+            {
+                try { System.Runtime.InteropServices.NativeLibrary.Free(h); } catch { }
+            }
         }
 
-        /// <summary>True once ReleaseRuntime has ended the client for an
-        /// uninstall. Never cleared: no host loads SteamVR's files again
-        /// while the uninstall deletes them, and VR device consumption
-        /// resumes on the next PadForge launch. Internal for the
-        /// tests.</summary>
+        /// <summary>True once ReleaseRuntime has freed the OpenVR module.
+        /// Never cleared: the dangling-stub hazard above lasts until the
+        /// process ends. Internal for the tests.</summary>
         internal static bool RuntimeReleased => _runtimeReleased;
         private static volatile bool _runtimeReleased;
 
@@ -459,15 +557,16 @@ namespace PadForge.Common.Input
             if (_running) return;
             if (_runtimeReleased)
             {
-                // See ReleaseRuntime: an uninstall is deleting SteamVR's
-                // files.
+                // See ReleaseRuntime: the module was freed and this
+                // process's OpenVR stubs dangle. Polling again would AV.
                 _log("VRCONSUME runtime was released for an uninstall; VR device consumption resumes on the next PadForge launch.");
                 return;
             }
             // Everything that can throw happens BEFORE the running latch
             // (2026-08-18 audit): the old order set _running first, so a
-            // thread-construction throw left the instance latched
-            // "running" with no thread, permanently unstartable.
+            // resolver or thread-construction throw left the instance
+            // latched "running" with no thread, permanently unstartable.
+            EnsureResolver();
             var t = new Thread(RunLoop) { IsBackground = true, Name = "OpenVrConsumer" };
             _thread = t;
             _running = true;
@@ -499,7 +598,7 @@ namespace PadForge.Common.Input
 
         private void RunLoopCore()
         {
-            bool loggedNoRuntime = false, loggedDllLoadFail = false, loggedHostFail = false;
+            bool loggedNoRuntime = false, loggedDllLoadFail = false;
             EVRInitError lastLoggedErr = EVRInitError.None;
             while (_running)
             {
@@ -533,24 +632,13 @@ namespace PadForge.Common.Input
                 if (failure != null && failure.StartsWith("threw: ", StringComparison.Ordinal))
                 {
                     // The binding can throw after the native init already
-                    // succeeded (SetSDKVersion dispatch). The host shut that
-                    // session down before it answered.
+                    // succeeded (SetSDKVersion dispatch). The client shut
+                    // that session down before it answered.
                     _log("VRCONSUME init " + failure);
                     SleepInterruptibly(15000);
                     continue;
                 }
-                if (failure != null)
-                {
-                    if (!loggedHostFail)
-                    {
-                        loggedHostFail = true;
-                        _log("VRCONSUME " + failure + "; watching.");
-                    }
-                    SleepInterruptibly(5000);
-                    continue;
-                }
                 loggedDllLoadFail = false;
-                loggedHostFail = false;
 
                 if (system == null || err != EVRInitError.None)
                 {
@@ -586,8 +674,7 @@ namespace PadForge.Common.Input
                     }
                     // A failed OpenVR.Init already shut its own session down
                     // (the binding calls ShutdownInternal on error returns),
-                    // and the host closed its channel, so no second
-                    // Shutdown here.
+                    // so no second Shutdown here.
                     SleepInterruptibly(5000);
                     continue;
                 }

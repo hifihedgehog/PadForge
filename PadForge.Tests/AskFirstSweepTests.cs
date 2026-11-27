@@ -59,7 +59,6 @@ namespace PadForge.Tests
             ("PadForge.App/Services/GiveBackTask.cs", 2, "schtasks for a give-back task (routes DriverBind_Click and DriverRestore_Click, and a touchpad's Use Only in PadForge)"),
             ("PadForge.App/Services/Install/UserInstall.cs", 2, "an assistant's own add command, and PadForge.exe --install as the user (route PressCommand on the Automation page, the user's own)"),
             ("PadForge.App/Services/LogonStart.cs", 2, "the app in the user's session, at the Start at Login task's run, which no element reaches"),
-            ("PadForge.App/Services/NativeHost/NativeHost.cs", 2, "PadForge's own library host for OpenVR, OpenXR, the Falcon, the Strike 7 screen and Aura lighting, which no program names"),
             ("PadForge.App/Services/Plugins/PluginLauncher.cs", 1, "CreateProcess under the desktop shell, for every launcher start in this list"),
             ("PadForge.App/Services/Plugins/PluginFile.cs", 1, "Explorer with a plugin's file selected (route ShowInFolderCommand on a plugin's card, the user's own)"),
             ("PadForge.App/Services/Plugins/PluginManager.cs", 1, "a plugin (routes ApprovePlugin_Click and AddPlugin_Click, the user's own)"),

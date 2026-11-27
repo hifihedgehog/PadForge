@@ -27,17 +27,14 @@ namespace PadForge.Common.Input.Peripherals
     /// colored light by light on its own event
     /// (<see cref="GameSenseLights"/>), and its lights are published for
     /// the Key Colors card while the worker runs. The HTTP calls run here,
-    /// never on the poll thread. With GG let go and nothing claimed, the worker waits
-    /// <see cref="IdleTickMs"/> between looks, and a level that starts, a
-    /// color claimed or Identify wakes it at once.</para>
+    /// never on the poll thread. With GG let go and nothing claimed, the worker
+    /// sleeps until its next look at the ruling Rival, or with nothing linked
+    /// to the tactile path until a link table wakes it, and a level that
+    /// starts, a color claimed or Identify wakes it at once.</para>
     /// </summary>
     internal sealed class GameSenseBackend : IDisposable
     {
         internal const int TickMs = 20;
-
-        /// <summary>The wait between looks while GG is let go and nothing is
-        /// claimed, the other peripheral workers' idle cadence.</summary>
-        internal const int IdleTickMs = 100;
 
         /// <summary>How often the ruling Rival is worked out again. Each look
         /// walks the assignments, which change at the speed of a drag. A
@@ -132,6 +129,9 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.HapticsChanged += OnRulerMoved;
             PeripheralOutputs.IdentifyChanged += OnRulerMoved;
             PeripheralOutputs.LightingChanged += Wake;
+            // A claim on a row whose link arrives later becomes wanted on the
+            // link table alone.
+            PeripheralOutputs.LinksChanged += Wake;
             foreach (var pair in GameSenseLights.Maps)
                 PeripheralLightMaps.Publish(new OutputPath(OutputFamily.GameSenseColor, pair.Key), pair.Value);
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralGameSense" };
@@ -144,6 +144,7 @@ namespace PadForge.Common.Input.Peripherals
             PeripheralOutputs.HapticsChanged -= OnRulerMoved;
             PeripheralOutputs.IdentifyChanged -= OnRulerMoved;
             PeripheralOutputs.LightingChanged -= Wake;
+            PeripheralOutputs.LinksChanged -= Wake;
             if (_thread == null) return;
             foreach (var pair in GameSenseLights.Maps)
                 PeripheralLightMaps.Remove(new OutputPath(OutputFamily.GameSenseColor, pair.Key));
@@ -308,7 +309,14 @@ namespace PadForge.Common.Input.Peripherals
                     // tick for the release countdown, the heartbeat and the
                     // crash wait.
                     bool idle = ruler == Guid.Empty && colors.Count == 0 && !client.Connected;
-                    int wait = idle ? IdleTickMs : _tickMs;
+                    // Idle with nothing linked to the tactile path, only a link
+                    // table can give it a ruler, and it wakes the worker. With
+                    // it linked, an assignment that gives it one raises
+                    // nothing, so the worker sleeps until the next look at the
+                    // ruler.
+                    int wait = !idle ? _tickMs
+                        : !PeripheralOutputs.Links.ByPath.ContainsKey(path) ? Timeout.Infinite
+                        : (int)Math.Clamp(nextRuler - _clock(), 1, Math.Max(1, _rulerMs));
                     Volatile.Write(ref _waitMs, wait);
                     try { _wake.WaitOne(wait); }
                     catch (ObjectDisposedException) when (run.Stop) { break; }

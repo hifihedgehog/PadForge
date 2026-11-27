@@ -2240,7 +2240,8 @@ namespace PadForge.Tests
             // Every row ranks 0, the rank of a Rival on no controller.
             using var backend = new GameSenseBackend(() => new GameSenseClient(coreProps, 10000), _ => 0, 2, rulerMs: 60000);
             backend.Start();
-            Assert.True(SpinWait.SpinUntil(() => backend.PassCount > 2, 2000), "the worker made its first looks");
+            Assert.True(SpinWait.SpinUntil(() => backend.PassCount > 0 && backend.WaitMs > 1000, 2000),
+                "the worker made its first look and sleeps until the next");
 
             PeripheralOutputs.SetMotors(rival, 65535, 65535);
             PeripheralOutputs.BeginIdentify(rival, 60000);
@@ -2253,18 +2254,21 @@ namespace PadForge.Tests
                 GameSenseBackend.ReleaseMs + 3000), "the mice went back to GG");
         }
 
-        /// <summary>With nothing claimed and GG let go the worker waits the
-        /// idle tick, and a claimed color brings its fast tick back. The
-        /// test reads the wait the worker asks for and times nothing, so a
-        /// busy bench cannot fail it.</summary>
+        /// <summary>With nothing claimed and GG let go the worker sleeps: with
+        /// nothing linked to the tactile path until a link table or a claim
+        /// wakes it, and with the path linked until its next look at the
+        /// ruling Rival. A claimed color brings its fast tick back. The test
+        /// reads the wait the worker asks for, so a busy bench cannot fail it.</summary>
         [Fact]
-        public void WithNothingClaimed_TheWorkerWaitsTheIdleTick()
+        public void WithNothingClaimed_TheWorkerSleepsUntilALinkOrItsNextLookAtTheRuler()
         {
             const int tickMs = 20;
             using var backend = new GameSenseBackend(() => new GameSenseClient(HidppHapticsTests.MissingCoreProps(), 100), _ => 0, tickMs);
             backend.Start();
-            Assert.Equal(GameSenseBackend.IdleTickMs,
-                WorkerCadence.WaitAfterAFullPass(() => backend.PassCount, () => backend.WaitMs));
+            Assert.True(SpinWait.SpinUntil(() => backend.WaitMs == Timeout.Infinite, 10000), "the worker went to sleep");
+            int passes = backend.PassCount;
+            Thread.Sleep(200);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
 
             // A claimed color with GG absent keeps the fast tick while the
             // worker waits to connect.
@@ -2277,8 +2281,16 @@ namespace PadForge.Tests
             Assert.Equal(tickMs, WorkerCadence.WaitAfterAFullPass(() => backend.PassCount, () => backend.WaitMs));
 
             PeripheralOutputs.ReleaseLighting(device, 0);
-            Assert.Equal(GameSenseBackend.IdleTickMs,
-                WorkerCadence.WaitAfterAFullPass(() => backend.PassCount, () => backend.WaitMs));
+            Assert.True(SpinWait.SpinUntil(() => backend.WaitMs == Timeout.Infinite, 10000), "the worker went back to sleep");
+
+            // A row linked to the tactile path with no player has the worker
+            // wait for its next look at the ruling Rival.
+            PeripheralOutputs.PublishLinks(new LinkTable(new[]
+            {
+                new DeviceLinks { Device = Guid.NewGuid(), Haptics = new[] { PeripheralLinker.GameSenseTactilePath } },
+            }));
+            Assert.True(SpinWait.SpinUntil(() => backend.WaitMs is > 0 and <= GameSenseBackend.RulerMs, 10000),
+                "the worker waits for its next look at the ruler");
         }
 
         /// <summary>A Stop whose join times out leaves the worker inside its

@@ -537,18 +537,8 @@ namespace PadForge.Controls
             {
                 // Double-click: add a new point
                 var (cx, cy) = PixelToCurve(pos.X, pos.Y);
-                cx = Math.Clamp(cx, 0.01, 0.99);
-                cy = Math.Clamp(cy, 0, 1);
-
-                // Find insertion index (sorted by X)
-                int insertAt = 0;
-                for (int i = 0; i < _controlPoints.Count; i++)
-                {
-                    if (_controlPoints[i].X < cx) insertAt = i + 1;
-                }
-
-                _controlPoints.Insert(insertAt, (cx, cy));
-                CommitPoints();
+                if (AddPoint(_controlPoints, cx, cy, IsSigned) >= 0)
+                    CommitPoints();
                 e.Handled = true;
             }
         }
@@ -587,24 +577,7 @@ namespace PadForge.Controls
 
             var pos = e.GetPosition(ChartCanvas);
             var (cx, cy) = PixelToCurve(pos.X, pos.Y);
-            cy = Math.Clamp(cy, 0, 1);
-
-            bool isFirst = _dragIndex == 0;
-            bool isLast = _dragIndex == _controlPoints.Count - 1;
-
-            if (isFirst || isLast)
-            {
-                // Endpoints: X locked, Y draggable
-                _controlPoints[_dragIndex] = (_controlPoints[_dragIndex].X, cy);
-            }
-            else
-            {
-                // Interior points: X constrained between neighbors
-                double minX = _controlPoints[_dragIndex - 1].X + 0.01;
-                double maxX = _controlPoints[_dragIndex + 1].X - 0.01;
-                cx = Math.Clamp(cx, minX, maxX);
-                _controlPoints[_dragIndex] = (cx, cy);
-            }
+            DragPoint(_controlPoints, _dragIndex, cx, cy);
 
             // Update visuals immediately during drag
             DrawCurveLine();
@@ -639,6 +612,55 @@ namespace PadForge.Controls
                 CommitPoints();
                 e.Handled = true;
             }
+        }
+
+        /// <summary>Moves the point at <paramref name="index"/> toward the
+        /// curve-space position under the mouse. The endpoints keep their
+        /// inputs. An interior point's input stays between its neighbors.</summary>
+        internal static void DragPoint(List<(double X, double Y)> points, int index, double cx, double cy)
+        {
+            cy = Math.Clamp(cy, 0, 1);
+            if (index == 0 || index == points.Count - 1)
+            {
+                points[index] = (points[index].X, cy);
+                return;
+            }
+            points[index] = (FitBetween(points[index - 1].X, points[index + 1].X, cx, points[index].X), cy);
+        }
+
+        /// <summary>Fits an input between two neighbors, <see cref="MinGap"/>
+        /// short of each. Neighbors closer than twice the gap leave no room,
+        /// and the input stays at <paramref name="keep"/>.</summary>
+        private static double FitBetween(double prevX, double nextX, double x, double keep)
+        {
+            double lo = prevX + MinGap, hi = nextX - MinGap;
+            return lo > hi ? keep : Math.Clamp(x, lo, hi);
+        }
+
+        /// <summary>Adds a point at the curve-space position of a double-click
+        /// and returns its index, or -1 when nothing was added. A stick chart
+        /// draws its left half as the curve mirrored through the center, so a
+        /// click there adds the mirrored point. The point keeps
+        /// <see cref="MinGap"/> from its neighbors and is not added when they
+        /// leave no room, as Insert does.</summary>
+        internal static int AddPoint(List<(double X, double Y)> points, double cx, double cy, bool isSigned)
+        {
+            if (isSigned && cx < 0)
+            {
+                cx = -cx;
+                cy = -cy;
+            }
+            cy = Math.Clamp(cy, 0, 1);
+            int insertAt = 0;
+            for (int i = 0; i < points.Count; i++)
+                if (points[i].X < cx) insertAt = i + 1;
+            if (insertAt == 0 || insertAt == points.Count)
+                return -1;
+            double x = FitBetween(points[insertAt - 1].X, points[insertAt].X, cx, double.NaN);
+            if (double.IsNaN(x))
+                return -1;
+            points.Insert(insertAt, (x, cy));
+            return insertAt;
         }
 
         private void CommitPoints()
@@ -686,7 +708,7 @@ namespace PadForge.Controls
                 if (!interior)
                     return KeyResult.Selected;
                 double moved = Math.Round(x + (key == Key.Left ? -KeyStep : KeyStep), 2);
-                moved = Math.Clamp(moved, points[index - 1].X + MinGap, points[index + 1].X - MinGap);
+                moved = FitBetween(points[index - 1].X, points[index + 1].X, moved, x);
                 return Move(points, index, moved, y);
             }
             if (modifiers != ModifierKeys.None)

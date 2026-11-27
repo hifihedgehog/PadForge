@@ -35,7 +35,7 @@ The rows are kept for the app and in each profile, so a profile can turn the not
 
 The **Controllers On or Off** note reads **Virtual Controllers Enabled** or **Virtual Controllers Disabled** for two seconds.
 
-A device is named as the Devices page names it. A note counts each device assigned to a virtual controller that exists and is on, and that a person plugs in. Rows PadForge or an extra feeds, such as Twitch Chat, voice phrases, Game Telemetry, the Web Controller and Remote Link, raise no note.
+A device is named as the Devices page names it. A note counts each device assigned to a virtual controller that exists and is on, and that a person plugs in or that a plugin, a script, an assistant, the Test Controller or a replay adds. Other rows PadForge or an extra feeds, such as Twitch Chat, voice phrases, Game Telemetry, the Web Controller and Remote Link, raise no note, and neither do PadForge's own virtual controllers.
 
 ### When a note shows
 

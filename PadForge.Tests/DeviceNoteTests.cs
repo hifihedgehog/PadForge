@@ -1377,6 +1377,156 @@ namespace PadForge.Tests
             Assert.False(InputService.RaisesDeviceNotes(new UserDevice { InstanceGuid = Guid.Empty, DevicePath = HidPath, CapType = InputDeviceType.Gamepad }));
         }
 
+        // ── a device a program adds ───────────────────────────────────
+
+        /// <summary>Walks the director over the mapped rows for
+        /// <paramref name="ms"/>, as the interface's timer does, and gives
+        /// each note it answers with.</summary>
+        private static List<(Kind Kind, Guid Device)> WalkNotes(DeviceNoteDirector director, ref long now, long ms,
+            bool drops, bool returns)
+        {
+            var said = new List<(Kind, Guid)>();
+            var read = new List<DeviceNoteReading>();
+            UserDevice[] rows = null;
+            long until = now + ms;
+            while (now < until)
+            {
+                now += DeviceNoteDirector.WalkMs;
+                InputService.ReadMappedDevices(read, ref rows);
+                var note = director.Tick(now, now, read, drops, returns, waiting: false, free: true, shown: false);
+                if (note.Kind != Kind.None) said.Add((note.Kind, note.Device));
+            }
+            return said;
+        }
+
+        /// <summary>A mapped device a plugin, a script, an assistant, the
+        /// Test Controller or a replay adds raises its notes as hardware
+        /// does, each under its own switch. One on no controller raises
+        /// none, nor does a virtual controller of PadForge's own, and the
+        /// Devices page's count leaves both kinds out as before.</summary>
+        [Fact]
+        public void AMappedProgramDevice_RaisesItsNotes_AsHardwareDoes()
+        {
+            foreach (var (drops, returns) in new[] { (true, true), (true, false), (false, true) })
+            {
+                Arrange();
+                var pad = Device("Pad Tool Pad", "program://script/0f1e", online: true, InputDeviceType.Gamepad, 0);
+                var test = Device("Test Controller 1", "program://builtin/1a2b", online: true, InputDeviceType.Gamepad, 3);
+                var loose = Device("Loose Pad", "program://script/2c3d", online: true, InputDeviceType.Gamepad);
+                var output = Device("ViGEm Virtual Gamepad", HidPath, online: true, InputDeviceType.Gamepad, 0);
+                Assert.True(InputService.RaisesDeviceNotes(pad));
+                Assert.True(InputService.RaisesDeviceNotes(test));
+                Assert.False(InputService.RaisesDeviceNotes(output));
+                Assert.False(DeviceRowViewModel.IsCountedDevice(pad.DevicePath, "Gamepad"));
+
+                var director = new DeviceNoteDirector();
+                long now = Environment.TickCount64;
+                Assert.Empty(WalkNotes(director, ref now, 7000, drops, returns));
+
+                pad.IsOnline = false;
+                loose.IsOnline = false;
+                var away = WalkNotes(director, ref now, 2000, drops, returns);
+                pad.IsOnline = true;
+                loose.IsOnline = true;
+                var back = WalkNotes(director, ref now, 12_000, drops, returns);
+
+                Assert.Equal(drops ? new[] { (Kind.Disconnected, pad.InstanceGuid) } : Array.Empty<(Kind, Guid)>(), away);
+                Assert.Equal(returns ? new[] { (Kind.Connected, pad.InstanceGuid) } : Array.Empty<(Kind, Guid)>(), back);
+            }
+        }
+
+        /// <summary>A program device PadForge takes away itself says
+        /// nothing: a session it ended (a plugin it stopped or restarted,
+        /// Automation turned off, a level lowered), at once or after the
+        /// wait, and a built-in plugin's device turned off. One its own
+        /// program removes, or whose program ended by itself, is said as an
+        /// unplug is.</summary>
+        [Fact]
+        public void AProgramDevicePadForgeTakesAway_SaysNothing_OneItsProgramRemoves_IsSaid()
+        {
+            Arrange();
+            long clock = 0;
+            var registry = new PadForge.Services.Automation.ProgramDevices(() => clock) { IsAssigned = _ => true, ForgetRow = _ => { } };
+            try
+            {
+                PadForge.Services.Automation.AutomationSession Session(int number, string key)
+                    => new PadForge.Services.Automation.AutomationSession(null, new MemoryStream(), null, number,
+                        System.Threading.CancellationToken.None, () => 0)
+                    {
+                        Who = new PadForge.Services.Automation.AllowedProgram(key, "Pad Tool", "script", null, null, null,
+                            PadForge.Services.Automation.AutomationLevel.ChangeSettings),
+                    };
+                var shape = new ProgramDeviceShape();
+                var stopped = Session(1, @"script|C:\TOOLS\A.EXE");
+                var lowered = Session(2, @"script|C:\TOOLS\B.EXE");
+                var quit = Session(3, @"script|C:\TOOLS\C.EXE");
+                var removes = Session(4, @"script|C:\TOOLS\D.EXE");
+                Assert.Null(registry.Declare(stopped, "pad", "Pad", shape, out var a, out _));
+                Assert.Null(registry.Declare(lowered, "pad", "Pad", shape, out var b, out _));
+                Assert.Null(registry.Declare(quit, "pad", "Pad", shape, out var c, out _));
+                Assert.Null(registry.Declare(removes, "pad", "Pad", shape, out var d, out _));
+                var builtIn = registry.DeclareBuiltIn("Test Controller", "pad-1", "Test Controller 1", shape);
+
+                UserDevice Row(PadForge.Services.Automation.ProgramDevices.Entry e, int slot)
+                {
+                    var ud = new UserDevice
+                    {
+                        InstanceGuid = e.Guid, InstanceName = "Pad " + e.Id, ProductName = "Pad " + e.Id,
+                        DevicePath = "program://script/" + e.Id, CapType = InputDeviceType.Gamepad, IsOnline = true,
+                    };
+                    SettingsManager.UserDevices.Items.Add(ud);
+                    SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = e.Guid, MapTo = slot });
+                    return ud;
+                }
+                var rows = new[] { Row(a, 0), Row(b, 0), Row(c, 3), Row(d, 3), Row(builtIn, 3) };
+
+                // The walk's clock starts behind the PC's, so the stamps of
+                // PadForge's own work, made on the PC's clock, are read as
+                // fresh once it is set to that clock below.
+                var director = new DeviceNoteDirector();
+                long now = Environment.TickCount64 - 10_000;
+                Assert.Empty(WalkNotes(director, ref now, 7000, true, true));
+
+                // PadForge's own: a plugin's run it stopped, after the wait,
+                // a level lowered, at once, and a built-in turned off.
+                registry.SessionEnded(stopped, now: false, own: true);
+                clock += registry.OfflineAfterMs;
+                registry.Tick();
+                registry.SessionEnded(lowered, now: true, own: true);
+                registry.RemoveBuiltIn(builtIn);
+                rows[0].IsOnline = rows[1].IsOnline = rows[4].IsOnline = false;
+                now = Environment.TickCount64;
+                Assert.Empty(WalkNotes(director, ref now, 12_000, true, true));
+
+                // The program's own: it ended, and it removed its device.
+                registry.SessionEnded(quit, now: true);
+                rows[2].IsOnline = false;
+                Assert.Equal(new[] { (Kind.Disconnected, c.Guid) }, WalkNotes(director, ref now, 12_000, true, true));
+                Assert.Null(registry.Gone(removes, d.Id));
+                rows[3].IsOnline = false;
+                Assert.Equal(new[] { (Kind.Disconnected, d.Guid) }, WalkNotes(director, ref now, 12_000, true, true));
+            }
+            finally
+            {
+                registry.Dispose();
+            }
+        }
+
+        /// <summary>A plugin's run PadForge stops or restarts marks its
+        /// grant before the process goes, and the session's end reads the
+        /// mark, so its devices go as PadForge's own drop.</summary>
+        [Fact]
+        public void APluginPadForgeStops_EndsItsSessionAsItsOwnDrop()
+        {
+            string manager = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginManager.cs").Replace("\r", "");
+            string stopRun = Body(manager, "        private void StopRun(PluginRun run)\n");
+            int mark = stopRun.IndexOf("if (run.Grant != null) run.Grant.Stopped = true;", StringComparison.Ordinal);
+            int stop = stopRun.IndexOf("run.Process.Stop();", StringComparison.Ordinal);
+            Assert.True(mark > 0 && stop > mark, "the grant is not marked before the run stops");
+            string sessions = ExtrasPageTests.RepoText("PadForge.App", "Services", "Automation", "AutomationSessions.cs");
+            Assert.Contains("Devices.SessionEnded(session, now: false, own: session.Grant?.Stopped == true);", sessions);
+        }
+
         /// <summary>Mapped means assigned to a virtual controller that
         /// exists and is on. Each such device is read once, with every
         /// controller of that kind it is on.</summary>

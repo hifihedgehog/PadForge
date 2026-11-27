@@ -347,6 +347,11 @@ namespace PadForge.Services.Automation
             /// offline at rest (#600 item 24). It is still the script's, and
             /// comes back when the script speaks.</summary>
             public bool Asleep;
+
+            /// <summary>Its session ended because PadForge ended it, so the
+            /// wait that runs out takes it offline as PadForge's own
+            /// drop.</summary>
+            public bool OwnDrop;
         }
 
         /// <summary>Whether a device is one the session's program added (#600
@@ -630,8 +635,11 @@ namespace PadForge.Services.Automation
 
         /// <summary>A session ended. Its devices rest now and go offline
         /// after the wait, or at once when <paramref name="now"/> is set, as
-        /// for a level that no longer allows them.</summary>
-        internal void SessionEnded(AutomationSession session, bool now)
+        /// for a level that no longer allows them. <paramref name="own"/>
+        /// says PadForge ended it (a plugin it stopped or restarted,
+        /// Automation turned off or a level lowered), so the connection notes
+        /// say nothing of the drop.</summary>
+        internal void SessionEnded(AutomationSession session, bool now, bool own = false)
         {
             List<Entry> offline = null;
             lock (_sync)
@@ -641,6 +649,7 @@ namespace PadForge.Services.Automation
                     if (e.Owner != session) continue;
                     e.Device.Rest();
                     e.Owner = null;
+                    e.OwnDrop = own;
                     if (now) (offline ??= new List<Entry>()).Add(e);
                     else e.OfflineAtMs = _nowMs() + OfflineAfterMs;
                 }
@@ -706,7 +715,11 @@ namespace PadForge.Services.Automation
             foreach (var d in register) engine.Register(d);
         }
 
-        private void TakeOffline(List<Entry> entries)
+        /// <summary>Takes devices offline. A device PadForge takes away
+        /// itself (<paramref name="own"/>, or its session ended by PadForge)
+        /// is stamped first, so its connection note says nothing
+        /// (OwnDrops).</summary>
+        private void TakeOffline(List<Entry> entries, bool own = false)
         {
             IAutomationEngine engine;
             var unregister = new List<ProgramDevice>();
@@ -715,6 +728,8 @@ namespace PadForge.Services.Automation
                 engine = _engine;
                 foreach (var e in entries)
                 {
+                    if (own || (e.OwnDrop && e.Owner == null)) PadForge.Engine.OwnDrops.Row(e.Guid);
+                    e.OwnDrop = false;
                     e.Device.Rest();
                     e.Device.SetAttached(false);
                     e.Owner = null;
@@ -864,7 +879,9 @@ namespace PadForge.Services.Automation
                 if (!entry.BuiltIn) return;
                 entry.BuiltIn = false;
             }
-            TakeOffline(new List<Entry> { entry });
+            // Only PadForge turns a built-in plugin's device off: its switch,
+            // its count of controllers, or Plugins turned off.
+            TakeOffline(new List<Entry> { entry }, own: true);
         }
 
         /// <summary>The engine started: every device a program drives, or

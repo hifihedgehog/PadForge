@@ -174,7 +174,7 @@ namespace PadForge.Services.Automation
                         s => lowered.Contains(s) && LevelOf(s) < AutomationLevel.SendInputs, devicesGo);
             }
             foreach (var (key, reach) in reaches) SetReach(key, reach);
-            foreach (var session in devicesGo) Devices.SessionEnded(session, now: true);
+            foreach (var session in devicesGo) Devices.SessionEnded(session, now: true, own: true);
             foreach (var session in lowered)
             {
                 if (_host.IsOn) session.Outbox.Line("e level " + AutomationLevels.Word(LevelOf(session)));
@@ -341,7 +341,7 @@ namespace PadForge.Services.Automation
             session.Close("ended");
             ScriptValues.ReleaseOwner(session.Number);
             PadForge.Common.Input.ProgramInputGate.ForgetSession(session.Number);
-            Devices.SessionEnded(session, now: false);
+            Devices.SessionEnded(session, now: false, own: session.Grant?.Stopped == true);
             if (session.Client != null) _host.Clients.Remove(session.Client.Id);
             FlushRun(session, owned);
             Record(session, new AutomationAsk(AutomationAskKind.Disconnected), "ok", true, owned: null);
@@ -588,7 +588,7 @@ namespace PadForge.Services.Automation
                 // Inputs for the user's level, every value goes at once.
                 if (!on || level < AutomationLevel.SendInputs) ScriptValues.ReleaseAll();
             }
-            foreach (var session in devicesGo) Devices.SessionEnded(session, now: true);
+            foreach (var session in devicesGo) Devices.SessionEnded(session, now: true, own: true);
             foreach (var session in close) session.CloseAfterWritten();
             // The web helper's connection carries no lines of the protocol
             // to write first: it closes at once.
@@ -1042,7 +1042,7 @@ namespace PadForge.Services.Automation
                 }
                 if (lowered.Count > 0) DropBelowLocked(s => lowered.Contains(s), s => lowered.Contains(s), devicesGo);
             }
-            foreach (var session in devicesGo) Devices.SessionEnded(session, now: true);
+            foreach (var session in devicesGo) Devices.SessionEnded(session, now: true, own: true);
             foreach (var session in lowered)
             {
                 if (_host.IsOn) session.Outbox.Line("e level " + AutomationLevels.Word(LevelOf(session)));

@@ -45,11 +45,15 @@ namespace PadForge.Services
         /// feeds, so Twitch Chat, a microphone's voice phrases, Game
         /// Telemetry, a keyboard screen, an overlay, a Web Controller's
         /// phone and a Remote Link peer raise none. A MIDI device, a Falcon
-        /// and an analog keyboard stand for a device and do.</summary>
+        /// and an analog keyboard stand for a device and do. So does a
+        /// device a plugin, a script, an assistant, the Test Controller or a
+        /// replay adds (program://), which the Devices page does not
+        /// count.</summary>
         internal static bool RaisesDeviceNotes(UserDevice ud)
             => ud != null && ud.InstanceGuid != Guid.Empty
                && !IsVirtualOrShadowDevice(ud)
-               && DeviceRowViewModel.IsCountedDevice(ud.DevicePath, DeviceTypeGlyph.KeyFor(ud.CapType));
+               && (DeviceRowViewModel.IsCountedDevice(ud.DevicePath, DeviceTypeGlyph.KeyFor(ud.CapType))
+                   || (ud.DevicePath != null && ud.DevicePath.StartsWith("program://", StringComparison.Ordinal)));
 
         /// <summary>Reads every mapped device into <paramref name="into"/>:
         /// each device assigned to a virtual controller that exists and is

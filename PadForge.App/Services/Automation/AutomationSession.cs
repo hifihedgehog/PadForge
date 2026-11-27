@@ -964,7 +964,12 @@ namespace PadForge.Services.Automation
     /// <param name="Named">Takes the name the plugin's hello gave, when it
     /// gave one, for its row on the Plugins page. Called once, on the
     /// session's worker.</param>
-    internal sealed record AutomationPluginGrant(string Name, Action<string> Log = null, Action<string> Named = null);
+    internal sealed record AutomationPluginGrant(string Name, Action<string> Log = null, Action<string> Named = null)
+    {
+        /// <summary>PadForge stopped or restarted the plugin's run, so the
+        /// devices of its session go as PadForge's own drop.</summary>
+        internal volatile bool Stopped;
+    }
 
     /// <summary>A <c>call</c> line: an assistant tool run from a
     /// script.</summary>

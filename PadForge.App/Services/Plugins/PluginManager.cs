@@ -619,6 +619,7 @@ namespace PadForge.Services.Plugins
                 run.CheckNumber++;
             }
             if (run.Process == null) return;
+            if (run.Grant != null) run.Grant.Stopped = true;
             run.Stopping = true;
             run.Token = null;
             try { run.Process.Stop(); } catch { }

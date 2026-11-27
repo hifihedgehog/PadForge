@@ -157,9 +157,10 @@ namespace PadForge.Common.Input
             long before = Stopwatch.GetTimestamp();
             Engine.SdlDiagLog.WriteLine(
                 $"HEARTBEAT poll hz={CurrentFrequency:F0} idle={(IsIdle ? 1 : 0)} cycle={cycleMs}ms"
-                + _pollLoad.Report(before) + PollPinWord());
+                + _pollLoad.Report(before) + PollPinWord() + PollQosWord());
             _pollLoad.LineWritten(Stopwatch.GetTimestamp() - before);
             NextPollPinWindow();
+            NextPollQosWindow();
         }
         // Injects accumulated macro mouse-move delta with a single SendInput per
         // tick, off the poll thread. See FlushPendingMouseMove: SendInput on the
@@ -2259,6 +2260,8 @@ namespace PadForge.Common.Input
 
             // The PADFORGE_POLL_PIN bench switch. Unset, it touches nothing.
             BeginPollPin();
+            // Out of Windows's power throttling (PADFORGE_POLL_QOS).
+            BeginPollQos();
 
             try
             {

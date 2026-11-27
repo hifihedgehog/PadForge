@@ -254,6 +254,21 @@ namespace PadForge.Tests
         private void LightSized(int rgb, params int[] counts) => PeripheralOutputs.SetLighting(Device, slot: 0, player: 1,
             (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, strips: counts);
 
+        /// <summary>With no unit present the worker sleeps until a walk of the
+        /// collections wakes it, and does not look again every tick.</summary>
+        [Fact]
+        public void NoUnit_TheWorkerSleepsUntilAWalkWakesIt()
+        {
+            _family.With();
+            using var backend = Started();
+            int passes = backend.PassCount;
+            Thread.Sleep(200);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            Assert.Equal(Timeout.Infinite, backend.WaitMs);
+            backend.Rescan(new[] { Collection() });
+            Assert.True(SpinWait.SpinUntil(() => backend.Snapshot.Units.Count == 1, 30000), "the walk woke the worker");
+        }
+
         /// <summary>The ruling claim's counts reach the session before the
         /// picture, once per change, the worker reads the session's map after
         /// them and publishes it, and a picture goes out by that map. A claim

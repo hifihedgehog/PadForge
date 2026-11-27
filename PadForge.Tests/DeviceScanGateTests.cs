@@ -80,6 +80,26 @@ namespace PadForge.Tests
             Assert.Contains("&& _usbScan.Due(now)\n                    && PadForge.Services.Ds3DriverInstaller.IsUsbPadNeedingWinUsb(", ds3);
         }
 
+        /// <summary>The DS3 and Move watches look for a pad twice a second, and
+        /// each look walked the interfaces the pad comes on. They walk only
+        /// when the gate says, and a look between walks takes what the last
+        /// walk found.</summary>
+        [Theory]
+        [InlineData("Ds3DirectService.cs", "string path = LookForWinUsbDs3();", "_winUsbLook.Due(Environment.TickCount64)) _winUsbFound = FindWinUsbDs3();")]
+        [InlineData("Ds3DirectService.cs", "string path = LookForPdoPath();", "_pdoLook.Due(Environment.TickCount64)) _pdoFound = FindPdoPath();")]
+        [InlineData("PsMoveDirectService.cs", "var found = LookForUsbHid();", "_usbLook.Due(Environment.TickCount64)) _usbFound = FindUsbHid();")]
+        [InlineData("PsMoveDirectService.cs", "string path = LookForPdoPath();", "_pdoLook.Due(Environment.TickCount64)) _pdoFound = FindPdoPath();")]
+        public void ThePadWatchesWalkOnlyWhenTheGateSays(string file, string look, string walk)
+        {
+            string source = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", file)).Replace("\r\n", "\n");
+            Assert.Contains(look, source);
+            Assert.Contains(walk, source);
+            int open = source.IndexOf("private bool OpenBluetooth()", StringComparison.Ordinal);
+            int usb = source.IndexOf("private bool OpenUsb()", StringComparison.Ordinal);
+            Assert.True(open > 0 && usb > 0);
+            Assert.DoesNotContain("= FindPdoPath();", source.Substring(open, 600));
+        }
+
         private static string RepoRoot()
         {
             var d = new DirectoryInfo(AppContext.BaseDirectory);

@@ -537,7 +537,7 @@ namespace PadForge.Common.Input
         {
             // The test host opens no device (DirectDeviceAccess).
             if (DirectDeviceAccess.RefusesAll) return false;
-            string path = FindPdoPath();
+            string path = LookForPdoPath();
             if (path == null) return false;
 
             IntPtr rh = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
@@ -559,6 +559,28 @@ namespace PadForge.Common.Input
         /// garbage for the collector (measured 2026-11-16).</summary>
         private readonly DeviceScanGate _usbScan = new(15000);
 
+        /// <summary>The watch looks for this pad every 500 ms, and each look
+        /// walked every WinUSB and every BthPS3 interface. A pad comes as a
+        /// device change the main window hears (<see cref="DeviceChanges"/>),
+        /// so a walk runs after one, or after 15 s all the same, and the looks
+        /// between take what the last walk found.</summary>
+        private readonly DeviceScanGate _winUsbLook = new(15000);
+        private readonly DeviceScanGate _pdoLook = new(15000);
+        private string _winUsbFound;
+        private string _pdoFound;
+
+        private string LookForWinUsbDs3()
+        {
+            if (_winUsbLook.Due(Environment.TickCount64)) _winUsbFound = FindWinUsbDs3();
+            return _winUsbFound;
+        }
+
+        private string LookForPdoPath()
+        {
+            if (_pdoLook.Due(Environment.TickCount64)) _pdoFound = FindPdoPath();
+            return _pdoFound;
+        }
+
         /// <summary>Open this instance's WinUSB-bound pad if it is on USB.
         /// Binds WinUSB first if the pad is present but unbound (throttled),
         /// so a plug-in works without the user having gone through the
@@ -571,7 +593,7 @@ namespace PadForge.Common.Input
             // The test host opens no device and binds no driver to one
             // (DirectDeviceAccess).
             if (DirectDeviceAccess.RefusesAll) return false;
-            string path = FindWinUsbDs3();
+            string path = LookForWinUsbDs3();
             if (path == null)
             {
                 // Not WinUSB-bound. Bind it only if this pad is plugged in AND still on
@@ -592,7 +614,7 @@ namespace PadForge.Common.Input
                             _log, default, PidHwToken, Tag);
                     }
                     catch { }
-                    path = FindWinUsbDs3();
+                    path = _winUsbFound = FindWinUsbDs3();
                 }
                 if (path == null) return false;
             }

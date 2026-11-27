@@ -521,7 +521,7 @@ namespace PadForge.Common.Input
         {
             // The test host opens no device (DirectDeviceAccess).
             if (DirectDeviceAccess.RefusesAll) return false;
-            string path = FindPdoPath();
+            string path = LookForPdoPath();
             if (path == null) return false;
 
             IntPtr rh = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
@@ -585,7 +585,7 @@ namespace PadForge.Common.Input
         {
             // The test host opens no device (DirectDeviceAccess).
             if (DirectDeviceAccess.RefusesAll) return false;
-            var found = FindUsbHid();
+            var found = LookForUsbHid();
             if (found == null) { _lastDockedPath = null; return false; }
 
             if (!found.Value.Zcm2)
@@ -806,6 +806,28 @@ namespace PadForge.Common.Input
         /// and the col02 address path. Bluetooth HID instances are excluded
         /// (this lane's BT transport is the BthPS3 PDO, and the family is
         /// blacklisted from SDL's backends, not from the HID class).</summary>
+        /// <summary>The watch looks for a pad every 500 ms, and each look
+        /// walked every HID interface and every BthPS3 interface. A pad comes
+        /// as a device change the main window hears (<see cref="DeviceChanges"/>),
+        /// so a walk runs after one, or after 15 s all the same, and the looks
+        /// between take what the last walk found.</summary>
+        private readonly DeviceScanGate _usbLook = new(15000);
+        private readonly DeviceScanGate _pdoLook = new(15000);
+        private (string DataPath, string AddrPath, bool Zcm2)? _usbFound;
+        private string _pdoFound;
+
+        private (string DataPath, string AddrPath, bool Zcm2)? LookForUsbHid()
+        {
+            if (_usbLook.Due(Environment.TickCount64)) _usbFound = FindUsbHid();
+            return _usbFound;
+        }
+
+        private string LookForPdoPath()
+        {
+            if (_pdoLook.Due(Environment.TickCount64)) _pdoFound = FindPdoPath();
+            return _pdoFound;
+        }
+
         private (string DataPath, string AddrPath, bool Zcm2)? FindUsbHid()
         {
             HidD_GetHidGuid(out Guid hidGuid);

@@ -125,6 +125,19 @@ namespace PadForge.Tests
             return backend;
         }
 
+        /// <summary>With no device of its kind present the worker sleeps until
+        /// a walk of the collections wakes it.</summary>
+        [Fact]
+        public void NoUnit_TheWorkerSleepsUntilWoken()
+        {
+            using var backend = Started();
+            int passes = backend.PassCount;
+            Thread.Sleep(100);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            backend.Rescan(Array.Empty<HidCollectionInfo>());
+            Assert.True(SpinWait.SpinUntil(() => backend.PassCount > passes, 30000), "the walk woke the worker");
+        }
+
         /// <summary>Waits for passes of the worker to end, by count.</summary>
         private static void Passes(SteelSeriesDirectBackend backend, int count = 2)
         {

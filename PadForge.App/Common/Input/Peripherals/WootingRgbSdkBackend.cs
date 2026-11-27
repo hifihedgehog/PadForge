@@ -233,7 +233,10 @@ namespace PadForge.Common.Input.Peripherals
                         }
                     }
                     PeripheralOutputs.SetBackendState(OutputFamily.WootingRgbSdk, lit ? BackendState.Connected : BackendState.Idle);
-                    int wait = due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
+                    // With no unit, only a link table, a claim or a walk of the
+                    // collections can make one, and each wakes the worker.
+                    int wait = units.Count == 0 ? Timeout.Infinite
+                        : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
                     Interlocked.Increment(ref _passes);
                     try { _wake.WaitOne(wait); }
                     catch (ObjectDisposedException) when (run.Stop) { break; }

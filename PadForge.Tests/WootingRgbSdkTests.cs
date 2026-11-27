@@ -412,6 +412,21 @@ namespace PadForge.Tests
             return backend;
         }
 
+        /// <summary>With no keyboard of its kind the worker sleeps until a link
+        /// table, a claim or a walk wakes it.</summary>
+        [Fact]
+        public void NoUnit_TheWorkerSleepsUntilWoken()
+        {
+            using var backend = Started();
+            backend.Rescan(Array.Empty<HidCollectionInfo>());
+            Passes(backend);
+            int passes = backend.PassCount;
+            Thread.Sleep(100);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            Link(Route);
+            Assert.True(SpinWait.SpinUntil(() => backend.PassCount > passes, 30000), "the link woke the worker");
+        }
+
         /// <summary>A linked path's lights are published, nothing is opened
         /// until a claim resolves on it.</summary>
         [Fact]

@@ -529,7 +529,10 @@ namespace PadForge.Common.Input.Peripherals
                         try { RescanRequested?.Invoke(); } catch { }
                     }
 
-                    int wait = due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
+                    // With no unit, only a walk of the collections can make one,
+                    // and it wakes the worker.
+                    int wait = units.Count == 0 ? Timeout.Infinite
+                        : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
                     Interlocked.Increment(ref _passes);
                     // A Dispose whose Stop gave up its join releases the

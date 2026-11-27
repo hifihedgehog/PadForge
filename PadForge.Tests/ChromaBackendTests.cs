@@ -435,6 +435,26 @@ namespace PadForge.Tests
 
         private static int Lines(string text) => SdlDiagLog.Snapshot().Split('\n').Count(l => l.Contains(text));
 
+        /// <summary>With nothing claimed and no macro live the worker sleeps
+        /// until a claim or a new link table wakes it.</summary>
+        [Fact]
+        public void NothingClaimed_TheWorkerSleepsUntilAClaimOrALinkWakesIt()
+        {
+            using var server = new FakeChromaServer();
+            using var backend = Backend(server, pollMs: 10);
+            backend.Start();
+            Assert.True(SpinWait.SpinUntil(() => backend.PassCount > 0, 10000));
+            Thread.Sleep(50);
+            int passes = backend.PassCount;
+            Thread.Sleep(200);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            PeripheralOutputs.SetLighting(Mouse, slot: 0, player: 1, 1, 2, 3);
+            Thread.Sleep(50);
+            Assert.Equal(0, server.Count("POST", "/razer/chromasdk"));
+            Link(new DeviceLinks { Device = Mouse, Lighting = new[] { Category("mouse") } });
+            Assert.True(SpinWait.SpinUntil(() => server.Count("PUT", "/chromasdk/mouse") >= 1, 30000), "the link woke the worker");
+        }
+
         /// <summary>Two categories refused on every poll log one line each,
         /// not a pair per poll.</summary>
         [Fact]
@@ -631,7 +651,7 @@ namespace PadForge.Tests
             // The worker is in its idle wait before the macro starts, so the
             // macro's wake ends that wait and none is left over to end the
             // wait after the color.
-            Assert.True(SpinWait.SpinUntil(() => backend.WaitMs == 600_000, 30000), "the worker went idle");
+            Assert.True(SpinWait.SpinUntil(() => backend.WaitMs == Timeout.Infinite, 30000), "the worker went idle");
 
             PeripheralOutputs.AssertChromaMacro(0, 0x10, 0x20, 0x30, now);
             Assert.True(SpinWait.SpinUntil(() => server.Count("DELETE", "/chromasdk") >= 1, 30000),

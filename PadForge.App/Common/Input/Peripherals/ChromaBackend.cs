@@ -136,6 +136,7 @@ namespace PadForge.Common.Input.Peripherals
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
             PeripheralOutputs.LightingChanged += Wake;
+            PeripheralOutputs.LinksChanged += Wake;
             PeripheralOutputs.ChromaMacroChanged += Wake;
             foreach (var pair in ChromaLayouts.Maps)
                 PeripheralLightMaps.Publish(new OutputPath(OutputFamily.ChromaCategory, pair.Key), pair.Value);
@@ -146,6 +147,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (_cts == null) return;
             PeripheralOutputs.LightingChanged -= Wake;
+            PeripheralOutputs.LinksChanged -= Wake;
             PeripheralOutputs.ChromaMacroChanged -= Wake;
             foreach (var pair in ChromaLayouts.Maps)
                 PeripheralLightMaps.Remove(new OutputPath(OutputFamily.ChromaCategory, pair.Key));
@@ -317,7 +319,10 @@ namespace PadForge.Common.Input.Peripherals
                         waitingLogged = false;
                         PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory, null);
                         PeripheralOutputs.SetBackendState(OutputFamily.ChromaCategory, BackendState.Idle);
-                        await WaitAsync(_pollMs, ct).ConfigureAwait(false);
+                        // A claim, a link table and a macro's color each wake
+                        // the worker. A live macro whose slot has no device
+                        // here keeps the poll, since an assignment wakes nothing.
+                        await WaitAsync(PeripheralOutputs.AnyChromaMacro(now) ? _pollMs : Timeout.Infinite, ct).ConfigureAwait(false);
                         continue;
                     }
 

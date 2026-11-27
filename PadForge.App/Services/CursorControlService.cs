@@ -143,14 +143,20 @@ namespace PadForge.Services
             _timer = new Timer(_ => Tick(), null, 0, SampleIntervalMs);
         }
 
-        /// <summary>True while the sampler timer runs at the slow idle
-        /// period instead of the 5 ms sample period. dotnet-counters showed
-        /// the 200 Hz timer WAKES themselves (~200 threadpool work items/s)
-        /// were the residual cost after the syscall demand-gate landed, so
-        /// idling lengthens the period itself. Any provider read or a
-        /// pin/clamp engage restores the fast period immediately.</summary>
+        /// <summary>True while the sampler timer is stopped instead of
+        /// running at the 5 ms sample period. dotnet-counters showed the
+        /// 200 Hz timer WAKES themselves (~200 threadpool work items/s) were
+        /// the residual cost after the syscall demand-gate landed, and a
+        /// 250 ms idle period still woke the pool four times a second with
+        /// nobody reading. Any provider read or a pin/clamp engage restarts
+        /// the 5 ms period immediately, and those are the only demands.</summary>
         private volatile bool _samplerIdle;
-        private const int IdleIntervalMs = 250;
+
+        /// <summary>Ticks so far and whether the sampler idles, for the
+        /// test of its idle wait.</summary>
+        private int _tickCount;
+        internal int TickCount => System.Threading.Volatile.Read(ref _tickCount);
+        internal bool SamplerIdle => _samplerIdle;
 
         private void WakeSampler()
         {
@@ -162,6 +168,7 @@ namespace PadForge.Services
         private void Tick()
         {
             if (_disposed) return;
+            System.Threading.Interlocked.Increment(ref _tickCount);
             // Demand gate: the monitor+cursor syscalls (and the 200 Hz wake
             // itself) run only while something consumes Mouse Position or a
             // pin/clamp is engaged.
@@ -171,7 +178,7 @@ namespace PadForge.Services
                 if (!_samplerIdle)
                 {
                     _samplerIdle = true;
-                    try { _timer?.Change(IdleIntervalMs, IdleIntervalMs); } catch (ObjectDisposedException) { }
+                    try { _timer?.Change(Timeout.Infinite, Timeout.Infinite); } catch (ObjectDisposedException) { }
                 }
                 return;
             }

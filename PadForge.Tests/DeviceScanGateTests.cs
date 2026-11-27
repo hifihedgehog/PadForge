@@ -100,6 +100,18 @@ namespace PadForge.Tests
             Assert.DoesNotContain("= FindPdoPath();", source.Substring(open, 600));
         }
 
+        /// <summary>The vendor USB binder walked every present USB node every
+        /// 3 s. It walks only when the gate says or while a bind waits for its
+        /// retry, and its wait ends on Stop with no 100 ms slices.</summary>
+        [Fact]
+        public void TheVendorUsbBinderWalksOnlyWhenTheGateSaysOrABindWaits()
+        {
+            string source = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "VendorUsbBindingService.cs")).Replace("\r\n", "\n");
+            Assert.Contains("if (_retryWaits || _scan.Due(Environment.TickCount64))", source);
+            Assert.Contains("if (stop.WaitOne(SweepMs)) break;", source);
+            Assert.DoesNotContain("Thread.Sleep(100);", source);
+        }
+
         private static string RepoRoot()
         {
             var d = new DirectoryInfo(AppContext.BaseDirectory);

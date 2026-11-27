@@ -36,6 +36,13 @@ namespace PadForge.Common.Input
         private readonly Dictionary<string, (long At, int Failures)> _attempts = new(StringComparer.OrdinalIgnoreCase);
         private string _lastVerdict;
 
+        /// <summary>A sweep walks every present USB node. A controller comes
+        /// as a device change the main window counts, so the walk runs after
+        /// one, or after 15 s all the same, and every interval while a bind
+        /// waits for its retry.</summary>
+        private readonly DeviceScanGate _scan = new(15000);
+        private bool _retryWaits;
+
         public VendorUsbBindingService(Action<string> log = null) => _log = log ?? (_ => { });
 
         public void Start()
@@ -57,19 +64,22 @@ namespace PadForge.Common.Input
 
         private void MonitorLoop()
         {
+            var stop = _cts.Token.WaitHandle;
             while (_running)
             {
-                try { Sweep(); }
-                catch (Exception ex) { _log("sweep failed: " + ex.Message); }
+                if (_retryWaits || _scan.Due(Environment.TickCount64))
+                {
+                    try { _retryWaits = Sweep(); }
+                    catch (Exception ex) { _log("sweep failed: " + ex.Message); }
+                }
 
-                // Sleep in slices so Stop() is never stranded behind a full
-                // sweep interval.
-                for (int waited = 0; _running && waited < SweepMs; waited += 100)
-                    Thread.Sleep(100);
+                // Stop cancels the token, which ends the wait at once.
+                if (stop.WaitOne(SweepMs)) break;
             }
         }
 
-        private void Sweep()
+        /// <summary>True when a node is left to bind on a later sweep.</summary>
+        private bool Sweep()
         {
             var nodes = VendorUsbDriverInstaller.ListPresentUsbNodes();
             var wanted = new List<(VendorUsbDriverInstaller.UsbNode Node, VendorUsbDriverInstaller.BindPlan Plan)>();
@@ -91,22 +101,25 @@ namespace PadForge.Common.Input
 
             // One bind covers every node its ID names.
             var bound = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            bool left = false;
             foreach (var (node, plan) in wanted)
             {
-                if (!_running) return;
+                if (!_running) return left;
                 if (!bound.Add(plan.BindId)) continue;
 
                 long now = Environment.TickCount64;
                 _attempts.TryGetValue(plan.BindId, out var last);
-                if (last.At != 0 && now - last.At < RetryMs) continue;
                 if (last.Failures >= MaxFailures) continue;
+                if (last.At != 0 && now - last.At < RetryMs) { left = true; continue; }
 
                 bool ok = VendorUsbDriverInstaller.Bind(plan, node.InstanceId, nodes, _log, _cts.Token);
                 int failures = ok ? 0 : last.Failures + 1;
                 _attempts[plan.BindId] = (now, failures);
                 if (failures == MaxFailures)
                     _log($"{plan.Name}: {MaxFailures} binds of {plan.BindId} failed, so this session stops trying.");
+                else if (!ok) left = true;
             }
+            return left;
         }
     }
 }

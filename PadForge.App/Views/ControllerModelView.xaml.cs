@@ -134,6 +134,8 @@ namespace PadForge.Views
         private ControllerModelFraming.Outline _modelOutline;
         private bool _cameraIsDefault = true;
 
+        private readonly PadForge.Common.RenderingSubscription _frames;
+
         public ControllerModelView()
         {
             InitializeComponent();
@@ -142,12 +144,11 @@ namespace PadForge.Views
             // roots the view forever and keeps its per-frame callback
             // invalidating layout even when the hosting page is swapped out.
             // See the note in ControllerSchematicView for the measurement.
-            Loaded += (s, e) =>
-            {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
-            };
-            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
+            // It also rides the view's visibility and the window's: hidden or
+            // in the tray, no handler is attached, so WPF draws no frames.
+            _frames = new PadForge.Common.RenderingSubscription(this, OnRendering);
+            Loaded += (s, e) => _frames.Wanted = true;
+            Unloaded += (s, e) => _frames.Wanted = false;
             // The glow is a material made from the accent, so a look put on
             // while the model shows makes it again in the new accent (#591).
             PadForge.Common.Themes.ThemeTokens.Follow(this, () => _currentModel?.RetintAccentHighlights());
@@ -230,8 +231,7 @@ namespace PadForge.Views
 
             if (_vm != null)
             {
-                CompositionTarget.Rendering -= OnRendering;
-                CompositionTarget.Rendering += OnRendering;
+                _frames.Wanted = true;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 EnsureModel();
                 RebuildAnnotations();
@@ -2130,7 +2130,7 @@ namespace PadForge.Views
         {
             StopFlash();
             RemoveArrow();
-            CompositionTarget.Rendering -= OnRendering;
+            _frames.Wanted = false;
             if (_vm != null)
                 _vm.PropertyChanged -= OnVmPropertyChanged;
             TeardownAnnotations();

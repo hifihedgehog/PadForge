@@ -42,7 +42,7 @@ namespace PadForge.Common
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>True while the main window cannot render anything. Not
-        /// bindable (no change event raised): consumed only by code-side rate
+        /// bindable (no property change raised): consumed only by code-side rate
         /// gates that distinguish "nothing can render" from "deactivated but
         /// possibly visible beside the foreground app", where display lanes
         /// throttle less aggressively.
@@ -56,7 +56,24 @@ namespace PadForge.Common
         /// minimized, which disappeared on switching away from a pad page,
         /// because the pad page's 30 Hz mapping refresh is gated on this and
         /// on the page being current.</para></summary>
-        public bool IsWindowMinimized { get; set; }
+        public bool IsWindowMinimized
+        {
+            get => _isWindowMinimized;
+            set
+            {
+                if (_isWindowMinimized == value) return;
+                _isWindowMinimized = value;
+                RenderabilityChanged?.Invoke(this, System.EventArgs.Empty);
+            }
+        }
+
+        private bool _isWindowMinimized;
+
+        /// <summary>Raised on the UI thread when <see cref="IsWindowMinimized"/>
+        /// changes, for code that must drop a per-frame subscription while
+        /// the window draws nothing (<see cref="RenderingSubscription"/>).
+        /// Bindings never see it.</summary>
+        public event System.EventHandler RenderabilityChanged;
 
         /// <summary>The rule for <see cref="IsWindowMinimized"/>, kept pure so
         /// it can be tested without a Window. A window that is minimized OR

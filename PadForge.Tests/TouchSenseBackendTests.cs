@@ -1085,6 +1085,23 @@ namespace PadForge.Tests
             Assert.Equal((10, 100, 5000), (TouchSenseBackend.ActiveTickMs, TouchSenseBackend.IdleTickMs, TouchSenseBackend.ReopenMs));
         }
 
+        /// <summary>With no mouse listed and no look owed the worker sleeps until
+        /// a walk asks for a look, and does not look again every tick.</summary>
+        [Fact]
+        public void NoMouse_TheWorkerSleepsUntilAWalkAsksForALook()
+        {
+            using var bench = new Bench();
+            bench.Backend.Start();
+            bench.Rescan();
+            int passes = bench.Backend.PassCount;
+            Thread.Sleep(200);
+            Assert.InRange(bench.Backend.PassCount - passes, 0, 1);
+            Assert.Equal(Timeout.Infinite, bench.Backend.WaitMs);
+            bench.Bind(IFeel);
+            bench.Backend.Rescan(null);
+            Assert.True(SpinWait.SpinUntil(() => bench.Units.Count == 1, 30000), "the walk woke the worker");
+        }
+
         // ── Calls after the stop ──
 
         /// <summary>The host's link pass can outlive the wait Stop makes

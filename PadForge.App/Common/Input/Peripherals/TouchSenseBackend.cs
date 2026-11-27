@@ -333,7 +333,10 @@ namespace PadForge.Common.Input.Peripherals
                         try { RescanRequested?.Invoke(); } catch { }
                     }
 
-                    int wait = active ? _activeTickMs : _idleTickMs;
+                    // With no mouse listed and no look owed, only a look can
+                    // list one, and the walk that asks for it wakes the worker.
+                    int wait = mice.Count == 0 && lookAgainAt == long.MaxValue ? Timeout.Infinite
+                        : active ? _activeTickMs : _idleTickMs;
                     Volatile.Write(ref _waitMs, wait);
                     // A Dispose whose Stop gave up its join releases the
                     // wake under a worker still in a transfer, which ends here.

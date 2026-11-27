@@ -390,6 +390,22 @@ namespace PadForge.Tests
             return backend;
         }
 
+        /// <summary>While OpenRGB does not run the worker sleeps until a new
+        /// presence wakes it, and does not look again every tick.</summary>
+        [Fact]
+        public void WhileOpenRgbDoesNotRun_TheWorkerSleepsUntilAPresenceWakesIt()
+        {
+            _runs = false;
+            using var backend = Started();
+            int passes = backend.PassCount;
+            Thread.Sleep(200);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            Assert.Equal(Timeout.Infinite, backend.WaitMs);
+            _runs = true;
+            PeripheralOutputs.Presence = new PeripheralPresence(false, false, false, true, false);
+            Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref _connects) > 0, 30000), "the presence woke the worker");
+        }
+
         [Fact]
         public void WhileOpenRgbDoesNotRun_NothingIsConnected_AndTheFirstPassSaysScanned()
         {

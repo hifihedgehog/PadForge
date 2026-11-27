@@ -230,12 +230,16 @@ namespace PadForge.Common.Input.Peripherals
             _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
+            // A new presence raises it, which is how the worker hears that
+            // OpenRGB started (OpenRgbRuns).
+            PeripheralOutputs.StatusChanged += Wake;
         }
 
         public void Stop()
         {
             PeripheralOutputs.LightingChanged -= Wake;
             PeripheralOutputs.LinksChanged -= Wake;
+            PeripheralOutputs.StatusChanged -= Wake;
             if (_thread == null) return;
             _run.Stop = true;
             Wake();
@@ -392,7 +396,11 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     PeripheralOutputs.SetBackendState(OutputFamily.OpenRgbDevice, lit ? BackendState.Connected : BackendState.Idle);
 
-                    int wait = due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
+                    // OpenRGB does not run, so the pass let go of every unit and
+                    // the session, and a presence that says it runs wakes the
+                    // worker.
+                    int wait = !runs ? Timeout.Infinite
+                        : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
                     Interlocked.Increment(ref _passes);
                     try { _wake.WaitOne(wait); }

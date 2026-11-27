@@ -64,9 +64,13 @@ namespace PadForge.Common.Input
         /// <summary>Starts a poll pass for the travel readers: their frame and
         /// its length. Step 2 calls it before any reader of the pass, on the
         /// polling thread.</summary>
-        internal static void BeginTravelReadPass()
+        internal static void BeginTravelReadPass() => BeginTravelReadPass(System.Diagnostics.Stopwatch.GetTimestamp());
+
+        /// <summary>The same, on the pass's own clock reading
+        /// <paramref name="now"/> (Stopwatch ticks), which Step 2 takes once
+        /// for every reader of the pass.</summary>
+        internal static void BeginTravelReadPass(long now)
         {
-            long now = System.Diagnostics.Stopwatch.GetTimestamp();
             s_travelReadDt = s_travelReadTicks == 0 ? 0 : (now - s_travelReadTicks) / (double)System.Diagnostics.Stopwatch.Frequency;
             s_travelReadTicks = now;
             s_travelReadPass++;

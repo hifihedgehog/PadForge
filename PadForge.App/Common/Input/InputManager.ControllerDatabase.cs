@@ -611,7 +611,9 @@ namespace PadForge.Common.Input
         /// <summary>Runs every posted piece of work. Poll thread only.</summary>
         internal static void Drain(InputManager engine)
         {
-            System.Threading.Interlocked.Exchange(ref _lastLook, Environment.TickCount64);
+            // A plain write: Running reads it whole (Interlocked.Read), so
+            // the pass needs no locked exchange for it.
+            System.Threading.Volatile.Write(ref _lastLook, Environment.TickCount64);
             while (Queue.TryDequeue(out var work)) work(engine);
         }
 

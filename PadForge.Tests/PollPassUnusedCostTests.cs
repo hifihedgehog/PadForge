@@ -122,6 +122,48 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The holds and the travel readers start their pass on the
+        /// clock reading Step 2 takes once, and take none of their
+        /// own.</summary>
+        [Fact]
+        public void TheHoldsAndTravelReaders_TakeThePassClock()
+        {
+            var flags = BindingFlags.NonPublic | BindingFlags.Static;
+            ControlHolds.Publish(null);
+            try
+            {
+                long passNow = 123_456_789;
+                ControlHolds.BeginPass(passNow);
+                Assert.Equal(passNow, (long)typeof(ControlHolds).GetField("_lastPass", flags).GetValue(null));
+                InputManager.BeginTravelReadPass(passNow);
+                Assert.Equal(passNow, (long)typeof(InputManager).GetField("s_travelReadTicks", flags).GetValue(null));
+                // A test's clock still stands in for the pass's.
+                ControlHolds.ClockForTest = () => 42;
+                ControlHolds.BeginPass(passNow);
+                Assert.Equal(42L, (long)typeof(ControlHolds).GetField("_lastPass", flags).GetValue(null));
+            }
+            finally
+            {
+                ControlHolds.ClockForTest = null;
+                ControlHolds.Publish(null);
+            }
+        }
+
+        private void Time(string name, Action call)
+        {
+            for (int i = 0; i < 20_000; i++) call();
+            const int Calls = 200_000;
+            double best = double.MaxValue;
+            for (int round = 0; round < 3; round++)
+            {
+                var watch = Stopwatch.StartNew();
+                for (int i = 0; i < Calls; i++) call();
+                watch.Stop();
+                best = Math.Min(best, watch.Elapsed.TotalMilliseconds * 1_000_000.0 / Calls);
+            }
+            _output.WriteLine($"HOOK {name} ns={best:F1}");
+        }
+
         private static UserDevice Pad(ushort vid, ushort pid)
         {
             var wrapper = new WebControllerDevice(Guid.NewGuid().ToString(), "Pass probe");
@@ -172,6 +214,26 @@ namespace PadForge.Tests
                     best = Math.Min(best, watch.Elapsed.TotalMilliseconds * 1_000_000.0 / Passes);
                 }
                 _output.WriteLine($"PASS ns={best:F0} (focus check + Read step, 3 pads, best of 3 x {Passes})");
+
+                // Each hook the pass gained, alone, with nothing using it.
+                var flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+                var beginMarks = (Action)Delegate.CreateDelegate(typeof(Action), im, typeof(InputManager).GetMethod("BeginProgramMarks", flags));
+                var recordInput = (Action<UserDevice, CustomInputState>)Delegate.CreateDelegate(typeof(Action<UserDevice, CustomInputState>),
+                    typeof(InputManager).GetMethod("RecordInput", flags));
+                var drain = typeof(InputManager).Assembly.GetType("PadForge.Common.Input.ControllerDatabaseEngine")
+                    .GetMethod("Drain", flags);
+                var drainCall = (Action<InputManager>)Delegate.CreateDelegate(typeof(Action<InputManager>), drain);
+                var state = new CustomInputState();
+                Time("ApplyFocusSuspension", () => im.ApplyFocusSuspension());
+                Time("EnterMenuPublication scope", () => { using (InputManager.EnterMenuPublication()) { } });
+                Time("ControlHolds.BeginPass", ControlHolds.BeginPass);
+                Time("ControlHolds.Apply", () => ControlHolds.Apply(assigned.InstanceGuid, state));
+                Time("BeginProgramMarks", beginMarks);
+                Time("NoteProgramMarks", () => im.NoteProgramMarks(assigned, state));
+                Time("WorkOutOutputCauses", im.WorkOutOutputCauses);
+                Time("ControllerDatabaseEngine.Drain", () => drainCall(im));
+                Time("BeginTravelReadPass", InputManager.BeginTravelReadPass);
+                Time("RecordInput", () => recordInput(assigned, state));
             }
             finally
             {

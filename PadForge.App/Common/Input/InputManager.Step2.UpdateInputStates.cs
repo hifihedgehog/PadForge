@@ -27,8 +27,10 @@ namespace PadForge.Common.Input
         private void UpdateInputStates()
         {
             // One frame for the travel inputs every reader without a wheel
-            // of its own reads in this pass (TravelPosition).
-            BeginTravelReadPass();
+            // of its own reads in this pass (TravelPosition). One clock
+            // reading serves it, the programs' holds and the gyro tilt.
+            long passNow = System.Diagnostics.Stopwatch.GetTimestamp();
+            BeginTravelReadPass(passNow);
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 
@@ -83,10 +85,10 @@ namespace PadForge.Common.Input
 
             // Programs' holds and claims (#600 item 22): the steps due land
             // before any device is read, one change per control per pass.
-            ControlHolds.BeginPass();
+            ControlHolds.BeginPass(passNow);
             BeginProgramMarks();
 
-            long gyroTiltTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+            long gyroTiltTimestamp = passNow;
             for (int si = 0; si < snapshotCount; si++)
             {
                 var ud = _deviceSnapshotBuffer[si];

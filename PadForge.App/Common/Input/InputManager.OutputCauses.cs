@@ -81,6 +81,7 @@ namespace PadForge.Common.Input
         /// <summary>Step 2, before the devices are read.</summary>
         private void BeginProgramMarks()
         {
+            if (_programMarks.Count == 0 && _wholeMarksLastPass.Count == 0) return;
             _wholeMarksLastPass.Clear();
             foreach (var pair in _programMarks)
                 if (pair.Value.Whole) _wholeMarksLastPass[pair.Key] = pair.Value.Session;
@@ -109,7 +110,9 @@ namespace PadForge.Common.Input
                 heldSession = holds.Owner;
             }
 
-            if (_heldLastPass.TryGetValue(g, out var last))
+            // Counts first: with nothing held now or on the last pass, and
+            // no residue, a device costs no lookup.
+            if (_heldLastPass.Count > 0 && _heldLastPass.TryGetValue(g, out var last))
             {
                 foreach (var c in last.Controls)
                 {
@@ -127,7 +130,7 @@ namespace PadForge.Common.Input
                 mark.Controls.UnionWith(heldNow);
             }
 
-            if (_holdResidue.TryGetValue(g, out var kept))
+            if (_holdResidue.Count > 0 && _holdResidue.TryGetValue(g, out var kept))
             {
                 List<(char, int)> moved = null;
                 foreach (var (c, value) in kept.Own)

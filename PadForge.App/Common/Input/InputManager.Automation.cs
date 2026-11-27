@@ -804,9 +804,15 @@ namespace PadForge.Common.Input
         /// Those tables and the tables of devices are kept, the new holds in
         /// place (<see cref="Rebuild"/>). A set that is not among them makes
         /// a new table, which takes the oldest one's place.</summary>
-        internal static void BeginPass()
+        internal static void BeginPass() => BeginPass(Stopwatch.GetTimestamp());
+
+        /// <summary>The same, on the pass's own clock reading
+        /// <paramref name="passNow"/> (Stopwatch ticks), unless a test's
+        /// clock stands in.</summary>
+        internal static void BeginPass(long passNow)
         {
-            long now = Now();
+            var clock = ClockForTest;
+            long now = clock != null ? clock() : passNow;
             Volatile.Write(ref _lastPass, now);
             if (!Pending && !LeaseTurns(now)) return;
             lock (_passLock) Advance(now, inPass: true);

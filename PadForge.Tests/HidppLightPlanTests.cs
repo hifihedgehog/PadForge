@@ -1668,7 +1668,12 @@ namespace PadForge.Tests
             public void Passes()
             {
                 int seen = Backend.PassCount;
-                Assert.True(SpinWait.SpinUntil(() => Backend.PassCount >= seen + 2, 30000), "the worker made a pass");
+                for (int i = 1; i <= 2; i++)
+                {
+                    Backend.Wake();
+                    int passes = seen + i;
+                    Assert.True(SpinWait.SpinUntil(() => Backend.PassCount >= passes, 30000), "the worker made a pass");
+                }
             }
 
             /// <summary>Moves the clock and lets a pass see it.</summary>

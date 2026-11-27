@@ -1665,6 +1665,21 @@ namespace PadForge.Tests
             InputReportLength = 20,
         };
 
+        /// <summary>With no unit found and nothing owed the worker sleeps until
+        /// its next scan, and does not look again every tick.</summary>
+        [Fact]
+        public void NoUnit_TheWorkerSleepsUntilItsNextScan()
+        {
+            using var backend = new HidppBackend(() => Array.Empty<VendorHidCollection>(), (c, s) => null, _ => Guid.Empty, 1, 5);
+            backend.Start();
+            Assert.True(SpinWait.SpinUntil(() => backend.ScanCount > 0, 30000), "the first scan ran");
+            Thread.Sleep(50);
+            int passes = backend.PassCount;
+            Thread.Sleep(200);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            Assert.InRange(backend.WaitMs, HidppBackend.RescanMs - 1000, HidppBackend.RescanMs);
+        }
+
         [Fact]
         public void TheWorkerPlaysOnlyTheUnitALinkedRowAsksFor()
         {

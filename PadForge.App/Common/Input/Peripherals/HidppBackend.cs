@@ -435,7 +435,8 @@ namespace PadForge.Common.Input.Peripherals
             _run = null;
         }
 
-        private void Wake()
+        /// <summary>Brings the worker's next pass forward. Any thread.</summary>
+        internal void Wake()
         {
             try { _wake.Set(); } catch (ObjectDisposedException) { }
         }
@@ -529,6 +530,14 @@ namespace PadForge.Common.Input.Peripherals
 
                     int wait = active ? _activeTickMs : _idleTickMs;
                     if (queued) wait = Math.Min(wait, FrameTickMs);
+                    // With no unit found and none owed a hand-back, a pass has
+                    // nothing to do before the next scan, which is what finds a
+                    // device, or the next check, which also waits for quiet.
+                    if (channels.Count == 0 && _owed.Count == 0)
+                    {
+                        long checkAt = Math.Max(nextCheck, quietSince + QuietMs);
+                        wait = (int)Math.Clamp(Math.Min(nextScan, checkAt) - _ticks(), 1, int.MaxValue);
+                    }
                     Volatile.Write(ref _waitMs, wait);
                     // A Dispose whose Stop gave up its join releases the wake
                     // under a worker still finishing a probe, which ends here.

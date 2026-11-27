@@ -1981,6 +1981,37 @@ namespace PadForge.Common.Input
         // handles across the HID tree, so it runs well below the ~2 s
         // device-sweep rate.
         private const int _headsetSweepIntervalMs = 3000;
+
+        /// <summary>The sweep walks every HID interface and every present
+        /// device node of every class. A tracker comes, goes or fails to
+        /// start as a device change the main window counts, so with nothing
+        /// in flight the sweep runs after one, or after 15 s all the same.
+        /// It keeps the 3 s interval while a known tracker is absent (its
+        /// reconnect is caught by asking for its HID service), a failed node
+        /// waits for its rebind, an open waits for its retry, the last
+        /// enumeration failed, or a tracker waits to be registered.</summary>
+        private readonly DeviceScanGate _headsetScan = new(15000);
+        private volatile bool _headsetKeepSweeping = true;
+        private volatile int _headsetRepairMatches;
+        private volatile bool _headsetEnumFailed;
+
+        /// <summary>Whether to start a headset sweep now. The gate is asked
+        /// only when nothing keeps the interval, since a yes counts as the
+        /// walk.</summary>
+        internal static bool HeadsetSweepDue(bool running, long now, long nextAt, bool keepSweeping, Func<bool> changed)
+            => !running && now >= nextAt && (keepSweeping || changed());
+
+        /// <summary>Whether the sweep just ended left work for the next
+        /// interval.</summary>
+        private bool HeadsetSweepMustRepeat()
+        {
+            if (_headsetEnumFailed || _headsetRepairMatches > 0) return true;
+            if (SonyHeadsetMotionRuntime.GetPersistedAddresses().Length > 0) return true;
+            lock (_headsetLock)
+                return _headsetKnownAddresses.Count > 0
+                    || _headsetOpenFailedAt.Count > 0
+                    || _headsetPendingRegister.Count > 0;
+        }
         private const int _headsetOpenRetryMs = 60000;
         // Unattended rebind of a failed-start head-tracker node (worker
         // thread). Detection runs EVERY sweep (one cheap SetupDi pass), so
@@ -2818,15 +2849,25 @@ namespace PadForge.Common.Input
                 return false;
 
             long now = Environment.TickCount64;
-            if (!_headsetSweepRunning && now >= _headsetNextSweepTicks)
+            if (HeadsetSweepDue(_headsetSweepRunning, now, _headsetNextSweepTicks, _headsetKeepSweeping,
+                    () => _headsetScan.Due(now)))
             {
                 _headsetSweepRunning = true;
                 _headsetNextSweepTicks = now + _headsetSweepIntervalMs;
                 Task.Run(() =>
                 {
-                    try { HeadsetMotionSweep(); }
+                    bool repeat = true;
+                    try
+                    {
+                        HeadsetMotionSweep();
+                        repeat = HeadsetSweepMustRepeat();
+                    }
                     catch { }
-                    finally { _headsetSweepRunning = false; }
+                    finally
+                    {
+                        _headsetKeepSweeping = repeat;
+                        _headsetSweepRunning = false;
+                    }
                 });
             }
 
@@ -2922,6 +2963,7 @@ namespace PadForge.Common.Input
             {
                 int matches = PadForge.Services.HeadsetTrackerRepair.FindFailedStartNode(
                     out string failedInstance, out string failedHardwareId);
+                _headsetRepairMatches = matches;
                 if (matches == 1
                     && (!string.Equals(failedInstance, _headsetLastRebindInstance, StringComparison.OrdinalIgnoreCase)
                         || repairTick - _headsetLastRebindTicks > _headsetRebindRetryMs))
@@ -2943,6 +2985,7 @@ namespace PadForge.Common.Input
             catch { }
 
             var candidates = SonyHeadsetMotionRuntime.Enumerate();
+            _headsetEnumFailed = candidates == null;
             if (candidates == null)
                 return; // enumeration failed, so keep the previous snapshot
             var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);

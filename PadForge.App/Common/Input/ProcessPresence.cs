@@ -20,6 +20,8 @@ namespace PadForge.Common.Input
     internal static class ProcessImage
     {
         private const uint PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
+        private const uint SYNCHRONIZE = 0x00100000;
+        private const uint WAIT_TIMEOUT = 0x102;
         private const int ERROR_INSUFFICIENT_BUFFER = 122;
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -30,6 +32,9 @@ namespace PadForge.Common.Input
 
         [DllImport("kernel32.dll")]
         private static extern bool CloseHandle(IntPtr handle);
+
+        [DllImport("kernel32.dll")]
+        private static extern uint WaitForSingleObject(IntPtr handle, uint milliseconds);
 
         /// <summary>The full path of the process's image, or null when the
         /// process is gone or answers no limited query.</summary>
@@ -47,20 +52,45 @@ namespace PadForge.Common.Input
             if (processId == 0) return null;
             IntPtr handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, processId);
             if (handle == IntPtr.Zero) return null;
-            try
-            {
-                if (buffer == null || buffer.Length < 512) buffer = new char[512];
-                while (true)
-                {
-                    uint size = (uint)buffer.Length;
-                    if (QueryFullProcessImageNameW(handle, 0, buffer, ref size))
-                        return new string(buffer, 0, (int)size);
-                    if (Marshal.GetLastWin32Error() != ERROR_INSUFFICIENT_BUFFER || buffer.Length >= 32768) return null;
-                    buffer = new char[buffer.Length * 4];
-                }
-            }
+            try { return PathOf(handle, ref buffer); }
             finally { CloseHandle(handle); }
         }
+
+        private static string PathOf(IntPtr handle, ref char[] buffer)
+        {
+            if (buffer == null || buffer.Length < 512) buffer = new char[512];
+            while (true)
+            {
+                uint size = (uint)buffer.Length;
+                if (QueryFullProcessImageNameW(handle, 0, buffer, ref size))
+                    return new string(buffer, 0, (int)size);
+                if (Marshal.GetLastWin32Error() != ERROR_INSUFFICIENT_BUFFER || buffer.Length >= 32768) return null;
+                buffer = new char[buffer.Length * 4];
+            }
+        }
+
+        /// <summary>A handle that can say whether the process has exited, and
+        /// the process's image path, or a zero handle when the process is gone
+        /// or answers neither. An open handle keeps the process's id from going
+        /// to another process, so the path stays the process's own while the
+        /// handle is held.</summary>
+        internal static IntPtr OpenWatched(uint processId, ref char[] buffer, out string path)
+        {
+            path = null;
+            if (processId == 0) return IntPtr.Zero;
+            IntPtr handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | SYNCHRONIZE, false, processId);
+            if (handle == IntPtr.Zero) return IntPtr.Zero;
+            path = PathOf(handle, ref buffer);
+            if (!string.IsNullOrEmpty(path)) return handle;
+            CloseHandle(handle);
+            return IntPtr.Zero;
+        }
+
+        /// <summary>Whether a handle from <see cref="OpenWatched"/> names a
+        /// process that still runs.</summary>
+        internal static bool StillRuns(IntPtr handle) => WaitForSingleObject(handle, 0) == WAIT_TIMEOUT;
+
+        internal static void Close(IntPtr handle) => CloseHandle(handle);
 
         /// <summary>The image name without its extension, as
         /// <c>Process.ProcessName</c> gives it, or null.</summary>
@@ -144,16 +174,60 @@ namespace PadForge.Common.Input
 
         /// <summary>Every running process that answers a limited query, or
         /// null when the list of ids could not be read.</summary>
+        /// <summary>Processes named by a read so far, for the test that a
+        /// running one is named once.</summary>
+        private static int s_named;
+        internal static int NamedCount => Volatile.Read(ref s_named);
+
+        /// <summary>The processes named by an earlier read, each with the
+        /// handle that keeps its id its own. A read names only the ids it has
+        /// not seen running, so a check every few seconds costs the id list
+        /// and one wait per process, where naming every process cost 7 to
+        /// 22 ms each time.</summary>
+        private static Dictionary<uint, (IntPtr Handle, string Path)> s_known = new();
+        private static readonly object s_knownLock = new();
+        private static char[] s_buffer;
+
         internal static List<Entry> Read()
         {
             uint[] ids = Ids();
             if (ids == null) return null;
             var entries = new List<Entry>(ids.Length);
-            char[] buffer = null;
-            foreach (uint id in ids)
+            lock (s_knownLock)
             {
-                string path = ProcessImage.PathOf(id, ref buffer);
-                if (!string.IsNullOrEmpty(path)) entries.Add(new Entry(id, path));
+                var known = s_known;
+                var next = new Dictionary<uint, (IntPtr Handle, string Path)>(ids.Length);
+                foreach (uint id in ids)
+                {
+                    if (known.Remove(id, out var seen))
+                    {
+                        if (ProcessImage.StillRuns(seen.Handle))
+                        {
+                            next[id] = seen;
+                            entries.Add(new Entry(id, seen.Path));
+                            continue;
+                        }
+                        ProcessImage.Close(seen.Handle);
+                    }
+                    IntPtr handle = ProcessImage.OpenWatched(id, ref s_buffer, out string path);
+                    if (handle != IntPtr.Zero)
+                    {
+                        Interlocked.Increment(ref s_named);
+                        next[id] = (handle, path);
+                        entries.Add(new Entry(id, path));
+                        continue;
+                    }
+                    // A process that grants no wait is named on every read.
+                    path = ProcessImage.PathOf(id, ref s_buffer);
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        Interlocked.Increment(ref s_named);
+                        entries.Add(new Entry(id, path));
+                    }
+                }
+                // What is left has exited.
+                foreach (var gone in known.Values) ProcessImage.Close(gone.Handle);
+                s_known = next;
             }
             return entries;
         }

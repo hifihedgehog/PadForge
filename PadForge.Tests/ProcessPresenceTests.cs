@@ -73,6 +73,34 @@ namespace PadForge.Tests
             Assert.Equal(self.ProcessName, me.Name, ignoreCase: true);
         }
 
+        /// <summary>A process named once is not named again while it runs:
+        /// the list holds a handle to it, which keeps its id from going to
+        /// another process, and asks the handle whether it has exited. One
+        /// that exits leaves the list on the next read.</summary>
+        [Fact]
+        public void TheProcessList_NamesEachProcessOnce_AndDropsOneThatExits()
+        {
+            var start = new ProcessStartInfo(Path.Combine(Environment.SystemDirectory, "cmd.exe"), "/c ping -n 3 127.0.0.1 >nul")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+            using var child = Process.Start(start);
+            Assert.NotNull(child);
+            uint id = (uint)child.Id;
+
+            Assert.Contains(RunningProcessList.Read(), p => p.Id == id);
+            int named = RunningProcessList.NamedCount;
+            var again = RunningProcessList.Read();
+            Assert.Contains(again, p => p.Id == id);
+            Assert.Contains(again, p => p.Id == (uint)Environment.ProcessId);
+            // Only a process started between the two reads is named.
+            Assert.InRange(RunningProcessList.NamedCount - named, 0, again.Count / 10);
+
+            Assert.True(child.WaitForExit((int)Bound.TotalMilliseconds));
+            Assert.DoesNotContain(RunningProcessList.Read(), p => p.Id == id);
+        }
+
         [Theory]
         [InlineData("lghub_agent.exe", "lghub_agent")]
         [InlineData("LGHUB.EXE", "LGHUB")]

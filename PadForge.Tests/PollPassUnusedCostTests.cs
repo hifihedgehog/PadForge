@@ -149,6 +149,21 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>Times the mouse steer checks a stick row's source pays
+        /// on every read, for a gamepad's Axis 0 with nothing of mouse steer
+        /// set.</summary>
+        [Fact]
+        public void TimeTheMouseSteerChecksOnAGamepadAxis()
+        {
+            var axis = new PadForge.Engine.Data.MappingSource { Kind = "Direct", DeviceGuid = Guid.NewGuid().ToString(), Descriptor = "Axis 0" };
+            var button = new PadForge.Engine.Data.MappingSource { Kind = "Direct", DeviceGuid = axis.DeviceGuid, Descriptor = "Button 0" };
+            string guid = axis.DeviceGuid;
+            Time("IsMouseTravel Axis 0", () => PadForge.Engine.Common.Mapping.SourceEvaluator.IsMouseTravel(axis));
+            Time("MouseSteerOf Axis 0", () => PadForge.Engine.Common.Mapping.SourceEvaluator.MouseSteerOf(axis, guid, out _));
+            Time("ReadsOwnGate Axis 0", () => PadForge.Engine.Common.Mapping.SourceEvaluator.ReadsOwnGate(axis, guid));
+            Time("ReadsOwnGate Button 0", () => PadForge.Engine.Common.Mapping.SourceEvaluator.ReadsOwnGate(button, guid));
+        }
+
         private void Time(string name, Action call)
         {
             for (int i = 0; i < 20_000; i++) call();

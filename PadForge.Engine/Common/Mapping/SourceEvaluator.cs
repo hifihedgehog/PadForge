@@ -74,9 +74,18 @@ namespace PadForge.Engine.Common.Mapping
         /// in the slot's runtime and reads its gate as its Steer
         /// input.</summary>
         public static bool IsMouseTravel(MappingSource source)
-            => source != null && IsDescriptorKind(source.Kind)
+        {
+            if (source == null) return false;
+            // Every travel descriptor starts with M or W, so any other
+            // source not marked relative answers at once, before the kind's
+            // string tests.
+            if (!source.ParamAxisRelative
+                && (source.Descriptor is not { Length: > 0 } d || (d[0] != 'M' && d[0] != 'W')))
+                return false;
+            return IsDescriptorKind(source.Kind)
                && (SourceCoercion.IsMouseTravelDescriptor(source.Descriptor)
                    || (source.ParamAxisRelative && SourceCoercion.TryParseRelativeAxis(source.Descriptor, out _, out _)));
+        }
 
         /// <summary>The mouse families that steer by their own settings
         /// (#600), apart from travel.</summary>
@@ -95,7 +104,10 @@ namespace PadForge.Engine.Common.Mapping
         public static MouseSteerFamily MouseSteerOf(MappingSource src, string evaluatedDeviceGuid, out bool y)
         {
             y = false;
-            if (src == null || !IsDescriptorKind(src.Kind) || src.ParamAxisRelative) return MouseSteerFamily.None;
+            // The four descriptors are 6 or 16 characters long: any other
+            // answers None before the kind's string tests.
+            if (src?.Descriptor is not { Length: 6 or 16 }) return MouseSteerFamily.None;
+            if (!IsDescriptorKind(src.Kind) || src.ParamAxisRelative) return MouseSteerFamily.None;
             string d = src.Descriptor;
             MouseSteerFamily family;
             if (d == "Mouse Position X" || d == "Mouse Position Y")

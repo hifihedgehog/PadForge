@@ -68,7 +68,7 @@ namespace PadForge.Services
         internal static readonly string[] PadForgeVariables =
         {
             "PADFORGE_DIAG", "PADFORGE_DS5_WRITE_TRACE", "PADFORGE_MICNOGUARD", "PADFORGE_MICTONE", "PADFORGE_NO_RAWDEDUP",
-            "PADFORGE_NO_SWITCH_NFC", "PADFORGE_POLL_AWAKE", "PADFORGE_POLL_HZ", "PADFORGE_VR_CONSUME_SELF",
+            "PADFORGE_NO_SWITCH_NFC", "PADFORGE_POLL_AWAKE", "PADFORGE_POLL_HZ", "PADFORGE_POLL_PIN", "PADFORGE_VR_CONSUME_SELF",
         };
 
         /// <summary>

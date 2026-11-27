@@ -1127,6 +1127,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Ekyuma tekiyungiddwa. SDL ekisoma nga kimaze okuyungibwa.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL teyawadde PadForge kusoma kwonna okw'ekyuma kino.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kkopi y'ekibiina eri munda, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Yawanulwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fayiro ya PadForge yennyini</value></data>
@@ -1320,7 +1321,6 @@
   <data name="Web_ChatGpt_Footnote" xml:space="preserve"><value>PadForge ekuuma ekisumuluzo nga kikuumiddwa mu nkukutu ku lulwo wekka. Ekisanduuko ekitaliimu kikyerabira. ChatGPT ekola ku ddaala eriri waggulu.</value></data>
   <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>PadForge teyasobodde kutereka Ekisanduuko kya Plugin.</value></data>
   <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Ebikoleddwa {0}.txt</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>library yaayo yazuuliddwa naye tetikkiddwa, kubanga PadForge teyasobodde kukakasa nti abaddukanya bokka be basobola okugikyusa era nti Logitech ye yagiteekako omukono</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>library yaayo yazuuliddwa naye teyasobodde kukozesebwa, era diagnostics log eraga ensonga</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Ennyiriri za sisitemu endala ezibuusiddwa: {0:N0}.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows tekyatandise n'eddembe lyo.</value></data>

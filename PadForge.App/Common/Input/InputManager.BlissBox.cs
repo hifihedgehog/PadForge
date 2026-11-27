@@ -242,7 +242,7 @@ namespace PadForge.Common.Input
         /// (<see cref="BlissBoxRuntime.TakeMotors"/>). SDL's rumble is its
         /// only effect on a port: SDL opens no haptic device for one, since
         /// the fork's community database maps all four port IDs as a gamepad
-        /// (SDL_gamepad_db_community.h:286-289) and SDL_IsJoystickHaptic
+        /// (SDL_gamepad_db_community.h:306-309) and SDL_IsJoystickHaptic
         /// refuses a gamepad (SDL_haptic.c:347-348). The row keeps its
         /// motor state through the switch's reopen, which is the same SDL
         /// connection (<see cref="UserDevice.SameConnection"/>), so a level a
@@ -261,7 +261,7 @@ namespace PadForge.Common.Input
             // writes, so none of its pulses lands after the stop. SDL's gate
             // would refuse the train's own stop for it, and SDL would run it
             // until the switch went off, the engine stopped or its 65.5 s
-            // expiration (SDL_joystick.c:3211-3212). A stop SDL refused
+            // expiration (SDL_joystick.c:3225-3226). A stop SDL refused
             // leaves its effect running beside the adapter's commands, so the
             // hand-off waits for a later pass. The port's resend follows it in
             // its first step with report 17 read.
@@ -290,7 +290,7 @@ namespace PadForge.Common.Input
         /// pending, another writer holds the output gate, or SDL refused the
         /// stop or the level, so the row is tried again until SDL takes both.
         /// Nothing short of that shows the motors run the level: SDL skips a
-        /// write that repeats its record (SDL_joystick.c:3189-3192), and a
+        /// write that repeats its record (SDL_joystick.c:3203-3206), and a
         /// refused stop leaves that record at a level the final stop ended, so
         /// a later frame's write of the same level reports success with
         /// nothing sent.</summary>

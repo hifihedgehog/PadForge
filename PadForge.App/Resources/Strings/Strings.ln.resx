@@ -1846,7 +1846,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Ezwaka copie oyo ya bibliothèque ya Force Dimension na esika ya mosusu nyonso. Falcon oyo efungwami na copie mosusu ekokangama mpe ekofungwama lisusu na oyo. Ba copie oyo SDK ekotisaka ezwamaka kozanga yango.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Ba bibliothèque (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Lokasa ya kokitisa SDK ya Falcon efungwamaki te: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Lokasa ya kokitisa SDK ya Falcon efungwami naino te: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installer pilote ya Falcon</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Zwa SDK ya Force Dimension</value></data>
   <data name="Falcon_Calibrate_Done_Format" xml:space="preserve"><value>Calibrage esili. {0}</value></data>
@@ -2299,9 +2298,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>mpe {0} mosusu</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} na {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Soki eyano te na {0}, ezali te.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ezali kotambola na ba droit ya administrateur uta na {0}, dossier oyo ba programme mosusu bakoki kobongola. Bakoki kobongola ba paramètre ya PadForge kuna, mpe PadForge esalaka na yango na ba droit na yango.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ezali kotambola na ba droit ya administrateur uta na {0}, dossier oyo ezali na ba fichier mosusu. PadForge ekoki kopekisa ba programme mosusu te kobongola ba paramètre na yango kuna, mpe PadForge esalaka na yango na ba droit na yango.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ezali kotambola na ba droit ya administrateur uta na {0}, dossier oyo ekokaki kotanga te. PadForge ekoki kopekisa ba programme mosusu te kobongola ba paramètre na yango kuna, mpe PadForge esalaka na yango na ba droit na yango.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kosala mise à jour sikoyo ekitisaka base ya ba manette ya communauté (SDL_GameControllerDB) uta na GitHub, to uta na adresse oyo etiami na nse ya More, mpe ebombaka, na fichier ya ba paramètre, ba assignation oyo version oyo ya PadForge ezangi. Esalelamaka kaka sika. Uta na adresse mosusu, ebombaka kaka ba assignation ya sika. Assignation ya sika esalelamaka liboso kaka mpo na manette oyo SDL eyebisi lokola gamepad to lokola type moko te ya sikisiki, oyo eloko mosusu te etangaka lokola gamepad, oyo ezali na assignation te mpe oyo ezali na Force Raw Joystick Mode (Bypass Gamepad Remapping) te. Soki ebandi kosalelama, etikalaka kosalelama ata sima manette ezwi assignation. Kozongisa elongolaka ba assignation oyo ekitisami mpe ezongisaka Download From na fichier ya communauté, oyo Kosala mise à jour sikoyo oyo ekolanda ekokitisa. Ba ligne na yo moko, na nse ya More, etikalaka.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Kosala mise à jour sikoyo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Mise à jour…</value></data>
@@ -2432,6 +2428,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMapping_Away" xml:space="preserve"><value>Appareil ekangami te. SDL ekotanga yango soki ekangami.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL epesaki PadForge botangi moko te ya appareil oyo.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Copie ya communauté oyo ezali kati, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ekitisami {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fichier ya PadForge yango moko</value></data>
@@ -2633,7 +2630,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ekokaki kosala serrure oyo endimaka kaka kopi moko ezala kotambola te, yango wana ebandaki te.</value></data>
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge eboyaki eyano ya GitHub. Eloko moko ebongwani te.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge eboyaki eyano uta na {0}. Eloko moko ebongwani te.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>emoni bibliothèque na yango mpe etiaki yango te, mpo PadForge ekokaki kondimisa te ete kaka ba administrateur bakoki kobongola yango mpe ete Logitech asinyaki yango</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>emoni bibliothèque na yango mpe ekokaki kosalela yango te, mpe journal ya diagnostic elobi mpo na nini</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Ba ligne mpo na ba système mosusu oyo etikami: {0:N0}.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ebandisaki yango te na ba droit na yo moko.</value></data>

@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ei käivitunud: ükski programm ei ava teie jaoks Python-faile ja PadForge ei leia py käivitit</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ei käivitunud: PadForge ei saa lugeda, milline programm avab selle failitüübi teie jaoks</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ei käivitunud: programmi, mis avab selle failitüübi teie jaoks, pole selles arvutis</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ei käivitunud: töölauakest, mille all käivitada, ei tööta</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ei käivitunud: töölauakestal on administraatoriõigused, seega oleksid need ka pistikprogrammil</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ei käivitunud: PadForge ei saa lugeda, kas sellel oleksid administraatoriõigused</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ei käivitunud: Windows andis sellele administraatoriõigused, seega lõpetas PadForge selle enne töölehakkamist</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ei käivitunud: see nõuab administraatoriõigusi</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ei käivitunud: Windows keeldus veaga {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ei käivitunud</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Selles arvutis pole Logitechi G-key SDK-d. See installitakse koos Logitech Gaming Software'i versiooniga 8.55 või uuemaga.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK on registreeritud, kuid selle fail puudub. Installige Logitech Gaming Software uuesti.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK leiti, kuid seda ei õnnestunud laadida.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK leiti, kuid seda ei laaditud, sest PadForge ei saanud kinnitada, et seda saavad muuta ainult administraatorid ja et Logitech on selle allkirjastanud.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>See teek pole oodatud G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK keeldus käivitumast. Tavaliselt tähendab see, et Logitech Gaming Software ei tööta.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Ühendatud, ühtegi klahvi pole veel tuvastatud. Lohistage Logitech Gaming Software'is käsk „G-key“ PadForge'i profiilis igale klahvile ja muutke see profiil püsivaks. G600- või G300-hiir peab olema ka sisemälu režiimist väljas.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge'i käivitumisel jääb aken peidetuks. Programm töötab ja vastendab tavapäraselt.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Käivita PadForge automaatselt, kui logite Windowsi sisse. Kui see on sees, käivitub PadForge ka ilma Windowsi viipata otsetee, skripti või muu programmi kaudu.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge töötab asukohast {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>See nõuab, et PadForge asuks omaette kaustas. Selle kaustas on teisi faile, seega ei saa PadForge takistada teistel programmidel seda muutmast.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>See nõuab, et PadForge asuks kaustas, mida teised programmid ei saa muuta. PadForge ei suutnud takistada neil oma kausta muutmast.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Teisalda PadForge omaette kausta</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopeerib programmi PadForge ja selle sätted kausta Program Files, suunab selle ülesanded sinna ja käivitab selle sealt. Siinne koopia jääb samaks.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ei teisaldunud: kaustas {0} on faile, mis pole programmi PadForge omad.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ei teisaldunud: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest see käivitas programmi PadForge kaustast, kus on teisi faile.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ei teisaldunud: Windows ei nimeta kausta Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud lugeda praegu töötavat programmi PadForge.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud luua kausta {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud lugeda, mis kaustas {0} on.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ei teisaldunud: ta ei saanud takistada teisi programme kausta {0} muutmast.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ei teisaldunud: selle koopia kaustas {0} ei vastanud töötavale programmile PadForge.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ei teisaldunud: pärast kopeerimist oli kaustas {0} faile, mis pole programmi PadForge omad, või said teised programmid seda muuta.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge, mida see käivitas, pole enam seal.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge ei suutnud takistada teisi programme muutmast kausta, kust see programmi PadForge käivitas.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge ei saanud lugeda, millist programmi PadForge see käivitas.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Käivita sisselogimisel lülitati välja, sest PadForge ei saanud lugeda selle programmi PadForge kausta, mida see käivitas.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ei saanud luua oma kaitstud kausta {0}. PadForge hoiab seal teeke, mida ta administraatoriõigustega kasutab, ning ilma selleta ei saa see turvaliselt käivituda.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ei saanud end uuesti käivitada oma kaitstud kaustast {0}. PadForge töötab administraatoriõigustega ainult sealt, seega see ei käivitunud.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ei saanud luua lukku, mis lubab töötada ainult ühel koopial, seega ta ei käivitunud.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge töötab administraatoriõigustega asukohast {0}, kaustast, mida teised programmid saavad muuta. Nad saavad seal muuta programmi PadForge sätteid ja PadForge tegutseb nende järgi oma õigustega.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge töötab administraatoriõigustega asukohast {0}, kaustast, kus on teisi faile. PadForge ei saa takistada teistel programmidel seal oma sätteid muutmast ja tegutseb nende järgi oma õigustega.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge töötab administraatoriõigustega asukohast {0}, kaustast, mida PadForge ei saanud lugeda. PadForge ei saa takistada teistel programmidel seal oma sätteid muutmast ja tegutseb nende järgi oma õigustega.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Kuva alati teavitusalal</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Teavitusala ikoon jääb nähtavaks ka siis, kui aken on avatud, nii et menüükäsk Välju on alati ühe klõpsu kaugusel.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Värskendused</value></data>
@@ -1294,13 +1266,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Puhastuskontroll: alles hoitavate osade kontrollimine…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Puhastuskontroll: PadForge ei saanud lugeda osi, mille te alles hoiate, seega jääb Salvesta välja lülitatuks.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Salvestamine teie õigustega ei käivitunud.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Salvestamine teie õigustega ei käivitunud: puudub töötav töölauakest, mille all seda käivitada.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Salvestamine teie õigustega ei käivitunud: Windows keeldus veaga {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Salvestamine ei lõppenud {0} jooksul.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ei lubanud faili sinna kirjutada.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ei võtnud seda faili oma salvestisena vastu.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Salvestamine lõppes koodiga {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Salvestatakse teie nime all, esimest korda kausta Allalaadimised, seejärel sinna, kuhu viimati salvestasite, ning näidatakse Failiuurijas. Salvestis, mis peatub, kui keegi pole lehe juures (selle piir, makro, programm, assistendi tööriist või --record stop), ootab seda ülevaatust lehel Avaleht ja kustutatakse 7 päeva pärast, kui seda ei salvestata. Programmile öeldakse, et see ootab, kuid mitte kus.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Probleemisalvestis ajast {0} ootab, et selle läbi loeksite.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Vaata läbi</value></data>
@@ -5581,7 +5548,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Sidumine peatus: kontrolleri või Bluetoothi raadio lugemine või kirjutamine nurjus. Üksikasjad on diagnostikalogis.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Sidumine peatus veal, mida programm PadForge ei oodanud. Üksikasjad on diagnostikalogis.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>vajab Logitech Gaming Software'i versiooni 8.52 või uuemat</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>leidis oma teegi, kuid ei laadinud seda, sest PadForge ei saanud kinnitada, et seda saavad muuta ainult administraatorid ja et Logitech on selle allkirjastanud</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>leidis oma teegi, kuid ei saanud seda kasutada, ja diagnostikalogi ütleb, miks</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>käivita Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ootab telefoni rakendusega Arx Control</value></data>
@@ -5679,7 +5645,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Laadib selle Force Dimensioni teegi koopia mis tahes teise asemel. Teisel koopial avatud Falcon suletakse ja avatakse uuesti sellel. SDK installitud koopiad leitakse ka ilma selleta.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Teegid (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK allalaadimisleht ei avanenud: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK allalaadimisleht pole veel avanenud: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installi Falcon-draiver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Installib Force Dimensioni draiveri SDK kaustast Falconile, millel seda pole. Windows võib enne küsida, kas Force Dimensionit usaldada.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Hangi Force Dimensioni SDK</value></data>
@@ -6034,6 +5999,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMapping_Away" xml:space="preserve"><value>Seade pole ühendatud. SDL loeb seda, kui see on ühendatud.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ei andnud programmile PadForge selle seadme lugemit.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Sisseehitatud kogukonna koopia, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Allalaaditud {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge oma fail</value></data>

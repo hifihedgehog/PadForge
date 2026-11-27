@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Wèi qǐdòng: méiyǒu chéngxù wèi nín dǎkāi Python wénjiàn, qiě PadForge zhǎo bú dào py qǐdòngqì</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Wèi qǐdòng: PadForge wúfǎ dúqǔ wèi nín dǎkāi cǐ lèi wénjiàn de shì nǎge chéngxù</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Wèi qǐdòng: wèi nín dǎkāi cǐ lèi wénjiàn de chéngxù bù zài cǐ diànnǎo shàng</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Wèi qǐdòng: méiyǒu kě yòng yú qǐdòng tā de zhuōmiàn wàiké zài yùnxíng</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Wèi qǐdòng: zhuōmiàn wàiké jùyǒu guǎnlǐyuán quánxiàn, chājiàn yě huì huòdé zhèxiē quánxiàn</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Wèi qǐdòng: PadForge wúfǎ quèdìng tā shìfǒu huì jùyǒu guǎnlǐyuán quánxiàn</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Wèi qǐdòng: Windows fùyǔ le tā guǎnlǐyuán quánxiàn, yīncǐ PadForge zài qí yùnxíng qián jiāng qí zhōngzhǐ</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Wèi qǐdòng: tā yāoqiú guǎnlǐyuán quánxiàn</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Wèi qǐdòng: Windows jùjué, cuòwù {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Wèi qǐdòng</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Cǐ diànnǎo shàng méiyǒu Logitech G-key SDK. Tā suí Logitech Gaming Software 8.55 huò gèng gāo bǎnběn yìqǐ ānzhuāng.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK yǐ zhùcè, dàn wénjiàn yǐ diūshī. Qǐng chóngxīn ānzhuāng Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Zhǎodào le G-key SDK, dàn wúfǎ jiāzài.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Zhǎodào le G-key SDK, dàn wèi jiāzài, yīnwèi PadForge wúfǎ quèrèn zhǐyǒu guǎnlǐyuán néng gēnggǎi tā, yǐjí tā yóu Logitech qiānmíng.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Gāi kù bú shì suǒ xū de G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK wèi néng qǐdòng. Tōngcháng shì Logitech Gaming Software wèi yùnxíng.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Yǐ liánjiē, shàng wèi jiǎncè dào ànjiàn. Qǐng zài Logitech Gaming Software zhōng, jiāng G-key mìnglìng tuō dào PadForge pèizhì wénjiàn de měi gè jiàn shàng, bìng jiāng gāi pèizhì wénjiàn shèwéi chángzhù. Cǐwài, G600 huò G300 shǔbiāo bù néng chǔyú bǎnzài nèicún móshì.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge qǐdòng shí bǎochí chuāngkǒu yǐncáng. Tā zhàocháng yùnxíng bìng jìnxíng yìngshè.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Dēnglù Windows shí zìdòng qǐdòng PadForge. Cǐ xiàng kāiqǐ shí, cóng kuàijié fāngshì, jiǎoběn huò qítā chéngxù qǐdòng PadForge yě bú huì xiǎnshì Windows de tíshì.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge cóng {0} yùnxíng.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Cǐ gōngnéng xūyào jiāng PadForge fàng zài dúlì de wénjiànjiā zhōng. Qí wénjiànjiā zhōng hái yǒu qítā wénjiàn, yīncǐ PadForge wúfǎ fángzhǐ qítā chéngxù gēnggǎi tā.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Cǐ gōngnéng xūyào jiāng PadForge fàng zài qítā chéngxù wúfǎ gēnggǎi de wénjiànjiā zhōng. PadForge wúfǎ fángzhǐ qítā chéngxù gēnggǎi qí wénjiànjiā.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Jiāng PadForge yídòng dào dúlì wénjiànjiā</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Jiāng PadForge jí qí shèzhì fùzhì dào Program Files, jiāng qí rènwù zhǐxiàng nàlǐ, bìng cóng nàlǐ qǐdòng. Cǐchù de fùběn bǎochí bùbiàn.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge wèi yídòng: {0} zhōng yǒu bù shǔyú PadForge de wénjiàn.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge wèi yídòng: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng yǐ guānbì, yīnwèi tā cóng hán yǒu qítā wénjiàn de wénjiànjiā yùnxíng PadForge.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge wèi yídòng: Windows wèi zhǐdìng Program Files wénjiànjiā.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge wèi yídòng: wúfǎ dúqǔ zhèngzài yùnxíng de PadForge.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge wèi yídòng: wúfǎ chuàngjiàn {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge wèi yídòng: wúfǎ dúqǔ {0} zhōng de nèiróng.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge wèi yídòng: wúfǎ fángzhǐ qítā chéngxù gēnggǎi {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge wèi yídòng: {0} zhōng de fùběn yǔ zhèngzài yùnxíng de PadForge bù yízhì.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge wèi yídòng: fùzhì hòu, {0} zhōng yǒu bù shǔyú PadForge de wénjiàn, huò qítā chéngxù kěyǐ gēnggǎi tā.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng yǐ guānbì, yīnwèi tā yùnxíng de PadForge yǐ bù cúnzài.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng yǐ guānbì, yīnwèi PadForge wúfǎ fángzhǐ qítā chéngxù gēnggǎi tā yùnxíng PadForge suǒ zài de wénjiànjiā.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng yǐ guānbì, yīnwèi PadForge wúfǎ dúqǔ tā yùnxíng de shì nǎge PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Dēnglù shí zìdòng qǐdòng yǐ guānbì, yīnwèi PadForge wúfǎ dúqǔ tā yùnxíng de PadForge suǒ zài de wénjiànjiā.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge wúfǎ chuàngjiàn qí shòu bǎohù de wénjiànjiā {0}. PadForge zài cǐ cúnfàng yǐ guǎnlǐyuán quánxiàn yùnxíng de kù, méiyǒu tā jiù wúfǎ ānquán qǐdòng.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge wúfǎ cóng qí shòu bǎohù de wénjiànjiā {0} chóngxīn qǐdòng zìshēn. PadForge zhǐ cóng nàlǐ yǐ guǎnlǐyuán quánxiàn yùnxíng, yīncǐ wèi qǐdòng.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge wúfǎ chuàngjiàn quèbǎo zhǐ yùnxíng yí gè fùběn de suǒ, yīncǐ wèi qǐdòng.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge zhèng yǐ guǎnlǐyuán quánxiàn cóng {0} yùnxíng, qítā chéngxù kěyǐ gēnggǎi gāi wénjiànjiā. Tāmen kěyǐ gēnggǎi nàlǐ de PadForge shèzhì, ér PadForge huì yǐ qí quánxiàn zhíxíng zhèxiē shèzhì.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge zhèng yǐ guǎnlǐyuán quánxiàn cóng {0} yùnxíng, gāi wénjiànjiā zhōng hái yǒu qítā wénjiàn. PadForge wúfǎ fángzhǐ qítā chéngxù gēnggǎi nàlǐ de PadForge shèzhì, ér PadForge huì yǐ qí quánxiàn zhíxíng zhèxiē shèzhì.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge zhèng yǐ guǎnlǐyuán quánxiàn cóng {0} yùnxíng, PadForge wúfǎ dúqǔ gāi wénjiànjiā. PadForge wúfǎ fángzhǐ qítā chéngxù gēnggǎi nàlǐ de PadForge shèzhì, ér PadForge huì yǐ qí quánxiàn zhíxíng zhèxiē shèzhì.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shǐzhōng xiǎnshì zài xìtǒng tuōpán</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Chuāngkǒu dǎkāi shí yě bǎochí xiǎnshì xìtǒng tuōpán túbiāo, suíshí kěyǐ zài qí càidān zhōng xuǎnzé “Tuìchū”.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Gēngxīn</value></data>
@@ -1294,13 +1266,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Qīnglǐ jiǎnchá: zhèngzài jiǎnchá nín bǎoliú de bùfen…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Qīnglǐ jiǎnchá: PadForge wúfǎ dúqǔ nín bǎoliú de bùfen, yīncǐ Bǎocún jiāng bǎochí jìnyòng.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Yǐ nín quánxiàn jìnxíng de bǎocún wèi qǐdòng.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Yǐ nín quánxiàn jìnxíng de bǎocún wèi qǐdòng: méiyǒu kě yòngyú qǐdòng tā de zhuōmiàn wàiké zài yùnxíng.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Yǐ nín quánxiàn jìnxíng de bǎocún wèi qǐdòng: Windows jùjué, cuòwù {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Bǎocún wèi zài {0} nèi jiéshù.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows bù yǔnxǔ zài cǐ chù xiěrù gāi wénjiàn.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge wèi jiāng cǐ wénjiàn shìwéi zìjǐ de lùzhì.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Bǎocún yǐ tuìchū, dàimǎ {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Yǐ nín de shēnfèn bǎocún, shǒucì bǎocún dào nín de Xiàzài wénjiànjiā, zhīhòu bǎocún dào nín shàngcì bǎocún de wèizhì, bìng zài Wénjiàn zīyuán guǎnlǐqì zhōng xiǎnshì. Wú rén zài cǐ yèmiàn shí tíngzhǐ de lùzhì (dádào xiànzhì, huò yóu hóng, chéngxù, zhùshǒu gōngjù huò --record stop tíngzhǐ) huì zài Zhǔyè děngdài cǐ shěnchá, chúfēi bǎocún, fǒuzé 7 tiān hòu shānchú. Chéngxù zhǐ huì dézhī tā zài děngdài, cóng bù dézhī qí wèizhì.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Lùzhì yú {0} de wèntí lùzhì zhèngzài děngdài nín yuèdú.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Chákàn</value></data>
@@ -5478,7 +5445,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Pèiduì yǐ tíngzhǐ: dúxiě kòngzhìqì huò lányá shèpín shībài. Zhěnduàn rìzhì zhōng yǒu xiángxì xìnxī.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Pèiduì yīn PadForge wèi yùliào de cuòwù ér tíngzhǐ. Zhěnduàn rìzhì zhōng yǒu xiángxì xìnxī.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>xūyào Logitech Gaming Software 8.52 huò gèng gāo bǎnběn</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>zhǎodào le qí kù, dàn wèi jiāzài, yīnwèi PadForge wúfǎ quèrèn zhǐyǒu guǎnlǐyuán néng gēnggǎi tā, yǐjí tā yóu Logitech qiānmíng</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>zhǎodào le qí kù, dàn wúfǎ shǐyòng, zhěnduàn rìzhì zhōng jìlù le yuányīn</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>qǐdòng Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>děngdài ānzhuāngle Arx Control de shǒujī</value></data>
@@ -5576,7 +5542,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Yòng Force Dimension kù de zhège fùběn tìdài qítā fùběn jiāzài. Zài qítā fùběn shàng dǎkāi de Falcon huì guānbì, bìng zài zhège fùběn shàng chóngxīn dǎkāi. SDK ānzhuāng de fùběn wúxū cǐ xiàng yě néng bèi zhǎodào.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Kùwénjiàn (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK xiàzài yèmiàn wèi dǎkāi: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK xiàzài yèmiàn shàngwèi dǎkāi: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Ānzhuāng Falcon qūdòng chéngxù</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Cóng SDK wénjiànjiā wèi méiyǒu qūdòng chéngxù de Falcon ānzhuāng Force Dimension de qūdòng chéngxù. Windows kěnéng xiān xúnwèn shìfǒu xìnrèn Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Huòqǔ Force Dimension SDK</value></data>
@@ -5931,6 +5896,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="SdlMapping_Away" xml:space="preserve"><value>Gāi shèbèi wèi liánjiē. Liánjiē hòu SDL huì dúqǔ tā.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL wèi xiàng PadForge tígōng cǐ shèbèi de rènhé dúqǔ jiéguǒ.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Nèizhì de shèqū fùběn, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Xiàzài yú {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge zìyǒu wénjiàn</value></data>

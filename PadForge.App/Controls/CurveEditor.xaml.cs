@@ -640,9 +640,10 @@ namespace PadForge.Controls
         /// <summary>Adds a point at the curve-space position of a double-click
         /// and returns its index, or -1 when nothing was added. A stick chart
         /// draws its left half as the curve mirrored through the center, so a
-        /// click there adds the mirrored point. The point keeps
-        /// <see cref="MinGap"/> from its neighbors and is not added when they
-        /// leave no room, as Insert does.</summary>
+        /// click there adds the mirrored point. A click at or past an
+        /// endpoint's input adds the point next to that endpoint. The point
+        /// keeps <see cref="MinGap"/> from its neighbors and is not added when
+        /// they leave no room, as Insert does.</summary>
         internal static int AddPoint(List<(double X, double Y)> points, double cx, double cy, bool isSigned)
         {
             if (isSigned && cx < 0)
@@ -654,8 +655,7 @@ namespace PadForge.Controls
             int insertAt = 0;
             for (int i = 0; i < points.Count; i++)
                 if (points[i].X < cx) insertAt = i + 1;
-            if (insertAt == 0 || insertAt == points.Count)
-                return -1;
+            insertAt = Math.Clamp(insertAt, 1, points.Count - 1);
             double x = FitBetween(points[insertAt - 1].X, points[insertAt].X, cx, double.NaN);
             if (double.IsNaN(x))
                 return -1;

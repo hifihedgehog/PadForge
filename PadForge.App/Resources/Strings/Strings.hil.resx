@@ -1577,7 +1577,6 @@
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Naundang ang pagpares: napaslaw ang pagbasa ukon pagsulat sa controller ukon sa Bluetooth radio. Ara sa diagnostics log ang mga detalye.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Naundang ang pagpares sa isa ka error nga wala ginapaabot sang PadForge. Ara sa diagnostics log ang mga detalye.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>kinahanglan ang Logitech Gaming Software 8.52 ukon mas bag-o</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nakita ang library sini pero wala ini ginkarga, kay indi mapamatud-an sang PadForge nga ang mga administrator lang ang makabaylo sini kag nga ginpirmahan ini sang Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nakita ang library sini pero indi ini magamit, kag ginasiling sang diagnostics log kon ngaa</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>buksi ang Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>nagahulat sang telepono nga may Arx Control</value></data>
@@ -1625,7 +1624,6 @@
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Gina-load ini nga kopya sang library sang Force Dimension imbes sang bisan ano nga iban. Ang Falcon nga bukas sa iban nga kopya magasira kag magabukas liwat sa sini. Ang mga kopya nga gin-install sang SDK makita bisan wala ini.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Mga library (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Wala nabuksan ang download page sang Falcon SDK: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Wala pa nabuksan ang download page sang Falcon SDK: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>I-install ang Falcon driver</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Kuhaa ang SDK sang Force Dimension</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
@@ -2041,9 +2039,6 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>kag {0} pa</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Kon wala sing sabat sa sulod sang {0}, maisip ini nga indi.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Nagadalagan ang PadForge nga may administrator rights halin sa {0}, isa ka folder nga mabaylo sang iban nga programa. Mabaylo nila didto ang mga setting sang PadForge, kag ginasunod ini sang PadForge gamit ang iya rights.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Nagadalagan ang PadForge nga may administrator rights halin sa {0}, isa ka folder nga may iban nga file. Indi mapunggan sang PadForge ang iban nga programa sa pagbaylo sang mga setting sini didto, kag ginasunod ini sang PadForge gamit ang iya rights.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Nagadalagan ang PadForge nga may administrator rights halin sa {0}, isa ka folder nga indi niya mabasa. Indi mapunggan sang PadForge ang iban nga programa sa pagbaylo sang mga setting sini didto, kag ginasunod ini sang PadForge gamit ang iya rights.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ang Update Now nagadownload sang community controller database (SDL_GameControllerDB) halin sa GitHub, ukon halin sa address nga ginbutang sa idalom sang More, kag ginatipigan sa settings file ang mga mapping nga wala sa sini nga bersyon sang PadForge. Ginagamit dayon ang mga ini. Halin sa iban nga address, bag-o nga mga mapping lang ang ginatipigan sini. Ang bag-o nga mapping una nga ginagamit lang para sa controller nga ginareport sang SDL subong gamepad ukon wala sing partikular nga klase, nga wala ginabasa sang iban subong gamepad, wala naka-assign kag wala sa Force Raw Joystick Mode. Kon ginagamit na, nagapabilin ini nga ginagamit bisan pagkatapos ma-assign ang controller. Ang reset nagakuha sang mga na-download nga mapping kag ginabalik ang Download From sa file sang community, nga ginadownload sang masunod nga Update Now. Nagapabilin ang imo kaugalingon nga mga row, sa idalom sang More.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} ka mapping, community copy sang {1}. Na-download {2}: {3} ka bag-o nga row, ginbaylo {4}.</value></data>
@@ -2177,6 +2172,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Wala nakakonekta ang device. Basahon ini sang SDL kon nakakonekta na.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Wala sing ginhatag nga pagbasa sang SDL sa PadForge para sini nga device.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ang community copy nga kaupod, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Kaugalingon nga file sang PadForge</value></data>

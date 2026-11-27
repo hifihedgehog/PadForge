@@ -319,9 +319,10 @@ namespace PadForge.Common.Input.Peripherals
                         waitingLogged = false;
                         PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory, null);
                         PeripheralOutputs.SetBackendState(OutputFamily.ChromaCategory, BackendState.Idle);
-                        // A claim, a link table and a macro's color each wake
-                        // the worker. A live macro whose slot has no device
-                        // here keeps the poll, since an assignment wakes nothing.
+                        // A claim, a Map Key Lights probe, a link table and a
+                        // macro's color each wake the worker. A live macro
+                        // whose slot has no device here keeps the poll, since
+                        // an assignment wakes nothing.
                         await WaitAsync(PeripheralOutputs.AnyChromaMacro(now) ? _pollMs : Timeout.Infinite, ct).ConfigureAwait(false);
                         continue;
                     }
@@ -429,7 +430,8 @@ namespace PadForge.Common.Input.Peripherals
             => PeripheralOutputs.SetProgramRefusal(OutputFamily.ChromaCategory,
                 PeripheralOutputs.Presence.RazerSoftwareRunning ? ProgramRefusal.Everything : null);
 
-        /// <summary>Waits a poll interval, or less when a claim changes.</summary>
+        /// <summary>Waits the given time, with no limit for
+        /// Timeout.Infinite, or less when a wake comes.</summary>
         private async Task WaitAsync(int ms, CancellationToken ct)
         {
             Volatile.Write(ref _waitMs, ms);

@@ -1473,8 +1473,7 @@ namespace PadForge.Tests
             At(page, "<TextBlock x:Name=\"HomeOfferLine\" common:LiveText.Polite=\"True\"");
             // The sentence wraps, and the two buttons go under it together.
             int offerAt = At(page, "<Border x:Name=\"HomeOffer\" Margin=\"0,12,0,0\" Padding=\"18,12,14,12\" CornerRadius=\"12\"");
-            // The shared folder's card under it is the same band (#597).
-            string offerBand = page.Substring(offerAt, At(page, "<Border x:Name=\"HomeSharedFolder\"") - offerAt);
+            string offerBand = page.Substring(offerAt, page.IndexOf("</Border>", offerAt, StringComparison.Ordinal) - offerAt);
             At(offerBand, "controls:FlexLinePanel.Basis=\"320\" controls:FlexLinePanel.Grow=\"1\"");
             int use = At(page, "<ui:Button x:Name=\"HomeOfferUse\"");
             int dismiss = At(page, "<ui:Button x:Name=\"HomeOfferDismiss\"");

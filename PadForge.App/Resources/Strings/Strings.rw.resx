@@ -390,30 +390,7 @@
   <data name="Settings_Window" xml:space="preserve"><value>Idirishya</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tangiza PadForge mu buryo bwikora iyo winjiye muri Windows. Iyo ibi bifunguye, PadForge inatangira idasabye uruhushya rwa Windows iyo itangijwe n'inzira ngufi, skripiti cyangwa indi porogaramu.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ikora iturutse muri {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ibi bisaba ko PadForge iba mu bubiko bwayo bwonyine. Ububiko bwayo burimo izindi dosiye, bityo PadForge ntishobora kubuza izindi porogaramu kubuhindura.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Ibi bisaba ko PadForge iba mu bubiko izindi porogaramu zidashobora guhindura. PadForge ntiyashoboye kuzibuza guhindura ububiko bwayo.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Imurira PadForge mu bubiko bwayo</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Yigana PadForge n'igenamiterere ryayo muri Program Files, yerekeza imirimo yayo aho, kandi iyitangiriza aho. Kopi iri hano ntihinduka.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ntiyimutse: {0} irimo dosiye zitari iza PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ntiyimutse: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Gutangira iyo winjiye byazimijwe, kuko byatangizaga PadForge iturutse mu bubiko burimo izindi dosiye.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ntiyimutse: Windows ntigaragaza ububiko bwa Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ntiyimutse: ntiyashoboye gusoma PadForge irimo gukora.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ntiyimutse: ntiyashoboye gukora {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ntiyimutse: ntiyashoboye gusoma ibiri muri {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ntiyimutse: ntiyashoboye kubuza izindi porogaramu guhindura {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ntiyimutse: kopi yayo muri {0} ntiyahuye na PadForge irimo gukora.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ntiyimutse: nyuma yo gukoporora, {0} yari irimo dosiye zitari iza PadForge, cyangwa izindi porogaramu zashoboraga kuyihindura.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Start at Login yazimijwe, kuko PadForge yatangizaga itakiriho.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Start at Login yazimijwe, kuko PadForge itashoboye kubuza izindi porogaramu guhindura ububiko yatangizagamo PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Start at Login yazimijwe, kuko PadForge itashoboye gusoma PadForge yatangizaga iyo ari yo.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Start at Login yazimijwe, kuko PadForge itashoboye gusoma ububiko bwa PadForge yatangizaga.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ntiyashoboye gukora ububiko bwayo burinzwe, {0}. PadForge ibika aho amasomero ikoresha ifite uburenganzira bw'umuyobozi, kandi ntishobora gutangira mu mutekano itabufite.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ntiyashoboye kongera kwitangiza iturutse mu bubiko bwayo burinzwe, {0}. PadForge ikoresha uburenganzira bw'umuyobozi iturutse aho gusa, bityo ntiyatangiye.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ntiyashoboye gukora ifunga riyigumisha kuri kopi imwe ikora, bityo ntiyatangiye.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ikora ifite uburenganzira bw'umuyobozi iturutse muri {0}, ububiko izindi porogaramu zishobora guhindura. Zishobora guhindura igenamiterere rya PadForge aho, kandi PadForge irikurikiza ifite ubwo burenganzira.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ikora ifite uburenganzira bw'umuyobozi iturutse muri {0}, ububiko burimo izindi dosiye. PadForge ntishobora kubuza izindi porogaramu guhindura igenamiterere ryayo aho, kandi irikurikiza ifite ubwo burenganzira.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ikora ifite uburenganzira bw'umuyobozi iturutse muri {0}, ububiko itashoboye gusoma. PadForge ntishobora kubuza izindi porogaramu guhindura igenamiterere ryayo aho, kandi irikurikiza ifite ubwo burenganzira.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ivugurura</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Shakisha ivugurura mu buryo bwikora</value></data>
   <data name="Settings_InstallUpdatesAutomatically" xml:space="preserve"><value>Shyiramo ivugurura mu buryo bwikora</value></data>
@@ -1901,7 +1878,6 @@ PadForge ntiyashoboye kwandika ibisobanuro muri crash.log iruhande rwa PadForge.
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Guhuza byahagaze: gusoma cyangwa kwandika kuri kontorola cyangwa kuri radiyo ya Bluetooth byanze. Raporo y'isuzuma irimo ibisobanuro.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Guhuza byahagaze kubera ikosa PadForge itari yiteze. Raporo y'isuzuma irimo ibisobanuro.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>bisaba Logitech Gaming Software 8.52 cyangwa iyisumbuye</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>yabonye isomero ryayo ariko ntiyaripakira, kuko PadForge itashoboye kwemeza ko abayobozi bonyine ari bo bashobora kurihindura kandi ko Logitech yarisinye</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>yabonye isomero ryayo ariko ntiyashoboye kurikoresha, kandi raporo y'isuzuma ivuga impamvu</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>tangiza Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>birategereza telefoni ifite Arx Control</value></data>
@@ -2402,6 +2378,7 @@ PadForge ntiyashoboye kwandika ibisobanuro muri crash.log iruhande rwa PadForge.
   <data name="SdlMapping_Away" xml:space="preserve"><value>Igikoresho ntigihujwe. SDL izagisoma nikimara guhuzwa.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ntiyahaye PadForge amakuru yasomye kuri iki gikoresho.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi y'umuryango yubatswemo, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Wamanuwe ku wa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Dosiye bwite ya PadForge</value></data>
@@ -2519,7 +2496,6 @@ PadForge ntiyashoboye kwandika ibisobanuro muri crash.log iruhande rwa PadForge.
   <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Ibikorwa {0}.txt</value></data>
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Urupapuro rwo kuramo Falcon SDK ntirwafunguye: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Urupapuro rwo kuramo Falcon SDK ntirurafunguka: {0}.</value></data>
   <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Icyanditswe na skill bya PadForge bigumaho, kuko {0} isoma dosiye y'igenamiterere imwe n'ububiko bwa skill bumwe.</value></data>
   <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Icyanditswe cya PadForge kigumaho, kuko {0} isoma dosiye y'igenamiterere imwe.</value></data>
   <data name="Extras_Automation_State_KeptSkill_Format" xml:space="preserve"><value>PadForge yakuwe muri iyi porogaramu. Skill yayo igumaho, kuko {0} isoma skills mu bubiko bumwe.</value></data>

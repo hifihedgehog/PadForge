@@ -143,11 +143,6 @@ namespace PadForge.Views
             EngineToggleRequested?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>The shared folder card's move, the one Settings and
-        /// Devices offer.</summary>
-        private void SharedFolderMove_Click(object sender, RoutedEventArgs e)
-            => PadForge.Services.ExeFolderState.Instance.RequestMove();
-
         private void HomeOfferUse_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.DashboardViewModel vm && vm.HasHomeOffer && sender is FrameworkElement anchor)

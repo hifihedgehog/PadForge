@@ -323,6 +323,58 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "62250 Disconnected" }, device.Said);
         }
 
+        /// <summary>A row's stamp covers the absence it was made for and no
+        /// later one: a row that came back and drops again inside the five
+        /// seconds (a restarted plugin's device its new run removes) is
+        /// said. A stamp made after the return covers the new
+        /// absence.</summary>
+        [Fact]
+        public void ARowStamp_CoversOnlyTheAbsenceItWasMadeFor()
+        {
+            var device = new Device(online: true) { OwnRow = 900 }.Read(true, 1000).Read(false, 2000);
+            // The row's return ends the stamp (UserDevice.IsOnline).
+            device.OwnRow = DeviceNoteDirector.Never;
+            device.Read(true, 3000).Read(false, 3250);
+            Assert.Equal(new[] { "3250 Disconnected" }, device.Said);
+            Assert.Equal(3250, device.State.Drop1);
+
+            device.Read(true, 14_000);
+            device.Said.Clear();
+            device.OwnRow = 14_100;
+            device.Read(false, 15_000);
+            Assert.Empty(device.Said);
+        }
+
+        /// <summary>A stamp made after the row came back and before a walk
+        /// read the return covers the absence it was made for: PadForge
+        /// took the row away again right after it returned.</summary>
+        [Fact]
+        public void AStampMadeBeforeTheWalkReadsTheReturn_CoversTheNextAbsence()
+        {
+            var device = new Device(online: true) { OwnRow = 900 }.Read(true, 1000).Read(false, 2000);
+            device.OwnRow = 2100;
+            device.Read(true, 2250).Read(false, 2500);
+            Assert.Empty(device.Said);
+            Assert.Equal(DeviceNoteDirector.Never, device.State.Drop1);
+        }
+
+        /// <summary>A row that comes back ends its own-drop stamp even when
+        /// no walk read it away (an own drop shorter than a quarter second),
+        /// so a real drop inside the next five seconds is said. A set that
+        /// is no return keeps the stamp.</summary>
+        [Fact]
+        public void ARowThatComesBack_EndsItsStamp_SeenAwayOrNot()
+        {
+            var row = new UserDevice { InstanceGuid = Guid.NewGuid(), IsOnline = true };
+            PadForge.Engine.OwnDrops.Row(row.InstanceGuid);
+            row.IsOnline = true;
+            Assert.NotEqual(PadForge.Engine.OwnDrops.Never, PadForge.Engine.OwnDrops.RowAt(row.InstanceGuid));
+            row.IsOnline = false;
+            Assert.NotEqual(PadForge.Engine.OwnDrops.Never, PadForge.Engine.OwnDrops.RowAt(row.InstanceGuid));
+            row.IsOnline = true;
+            Assert.Equal(PadForge.Engine.OwnDrops.Never, PadForge.Engine.OwnDrops.RowAt(row.InstanceGuid));
+        }
+
         // ── the note on screen ─────────────────────────────────────────
 
         /// <summary>While the note on screen names the device alone, the
@@ -1524,7 +1576,36 @@ namespace PadForge.Tests
             int stop = stopRun.IndexOf("run.Process.Stop();", StringComparison.Ordinal);
             Assert.True(mark > 0 && stop > mark, "the grant is not marked before the run stops");
             string sessions = ExtrasPageTests.RepoText("PadForge.App", "Services", "Automation", "AutomationSessions.cs");
-            Assert.Contains("Devices.SessionEnded(session, now: false, own: session.Grant?.Stopped == true);", sessions);
+            Assert.Contains("Devices.SessionEnded(session, now: false, own: session.Grant?.Stopped == true", sessions);
+        }
+
+        /// <summary>Every drop of a program's devices PadForge makes itself
+        /// is its own: consent changed or Automation turned off
+        /// (Reconcile), a level lowered (OnLevel), consent revoked (Revoke),
+        /// a device the level refused while it was made (Declare), and the
+        /// session of a web assistant or network client PadForge closed
+        /// (CloseWeb, read at End).</summary>
+        [Fact]
+        public void EveryDropPadForgeMakes_TakesTheDevicesAsItsOwn()
+        {
+            string sessions = ExtrasPageTests.RepoText("PadForge.App", "Services", "Automation", "AutomationSessions.cs").Replace("\r", "");
+            foreach (string head in new[]
+            {
+                "        internal void Reconcile(AutomationConsent store)\n",
+                "        internal void OnLevel(bool on, AutomationLevel level, bool pluginsServed)\n",
+                "        internal void Revoke(string key)\n",
+            })
+                Assert.Contains("foreach (var session in devicesGo) Devices.SessionEnded(session, now: true, own: true);", Body(sessions, head));
+            Assert.Contains("Devices.Gone(session, entry.Id, own: true);", Body(sessions, "        private void Declare(AutomationSession session, AutomationRequest r)\n"));
+            string devices = ExtrasPageTests.RepoText("PadForge.App", "Services", "Automation", "ProgramDevices.cs").Replace("\r", "");
+            Assert.Contains("TakeOffline(new List<Entry> { e }, own);", Body(devices, "        internal string Gone(AutomationSession session, string id, bool own = false)\n"));
+
+            string closeWeb = Body(sessions, "        internal void CloseWeb(string key)\n");
+            int mark = closeWeb.IndexOf("session.ClosedByPadForge = true;", StringComparison.Ordinal);
+            int close = closeWeb.IndexOf("session.CloseAfterWritten();", StringComparison.Ordinal);
+            Assert.True(mark > 0 && close > mark, "the web session is not marked before it closes");
+            Assert.Contains("Devices.SessionEnded(session, now: false, own: session.Grant?.Stopped == true || session.ClosedByPadForge);",
+                Body(sessions, "        internal void End(AutomationSession session)\n"));
         }
 
         /// <summary>Mapped means assigned to a virtual controller that

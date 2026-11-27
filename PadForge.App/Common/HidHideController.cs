@@ -1397,7 +1397,7 @@ namespace PadForge.Common
         /// (<see cref="PadForge.Engine.HidMaestroAncestry.ReadersDrop"/>).
         ///
         /// <para>SDL's GameInput backend makes no such test
-        /// (SDL_gameinputjoystick.cpp:256-412), so PadForge reads what it
+        /// (SDL_gameinputjoystick.cpp:265-421), so PadForge reads what it
         /// lists wherever it sits. With the hints PadForge sets it lists
         /// only the instruments of its raw report table (lines 292-302 and
         /// 533-569, SDL_gameinput_rawtype.h:43-99). Those are Xbox One

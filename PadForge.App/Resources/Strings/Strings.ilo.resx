@@ -1253,7 +1253,6 @@
   <data name="KeyboardScreens_Status_Direct_Format" xml:space="preserve"><value>direkta iti {0}</value></data>
   <data name="KeyboardScreens_Status_G19ForeignDriver_Format" xml:space="preserve"><value>ti screen ti G19 ket adda iti driver ti sabali a programa ({0}), a saan a sagiden ti PadForge</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>kasapulan ti Logitech Gaming Software 8.52 wenno nabarbaro</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nasarakan ti libraryna ngem saan nga inkarga, ta saan a napasingkedan ti PadForge a dagiti administrator laeng ti makabaliw iti dayta ken ti Logitech ti nangpirma iti dayta</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nasarakan ti libraryna ngem saan a nausar, ket ibaga ti diagnostics log no apay</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>lukatam ti Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>agur-uray iti telepono nga addaan Arx Control</value></data>
@@ -1731,6 +1730,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Saan a nakakonekta ti device. Basaen ti SDL daytoy no nakakonektan.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Awan ti inted ti SDL iti PadForge a pannakabasa daytoy a device.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ti naikabil a kopia ti komunidad, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Bukod a file ti PadForge</value></data>
@@ -1941,7 +1941,6 @@
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>Linaksid ti PadForge ti sungbat ti GitHub. Awan ti nagbaliw.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>Linaksid ti PadForge ti sungbat manipud iti {0}. Awan ti nagbaliw.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Saan a nalukatan ti panid ti download ti Falcon SDK: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Saan pay a nalukatan ti panid ti download ti Falcon SDK: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Nalabsan ti {0:N0} a linia para kadagiti sabali a sistema.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Saan a rinugian ti Windows daytoy babaen kadagiti bukodmo a karbengan.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Saan a nalpas iti {0} a segundo.</value></data>

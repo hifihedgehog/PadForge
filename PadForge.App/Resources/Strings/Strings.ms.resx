@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Tidak bermula: tiada program yang membuka fail Python untuk anda, dan PadForge tidak menemui pelancar py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Tidak bermula: PadForge tidak dapat membaca program mana yang membuka jenis fail ini untuk anda</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Tidak bermula: program yang membuka jenis fail ini untuk anda tiada pada PC ini</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Tidak bermula: tiada shell desktop berjalan untuk memulakannya</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Tidak bermula: shell desktop mempunyai hak pentadbir, jadi pemalam itu akan mempunyainya juga</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Tidak bermula: PadForge tidak dapat membaca sama ada ia akan mempunyai hak pentadbir</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Tidak bermula: Windows memberinya hak pentadbir, jadi PadForge menamatkannya sebelum ia berjalan</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Tidak bermula: ia meminta hak pentadbir</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Tidak bermula: Windows menolak dengan ralat {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Tidak bermula</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Tiada Logitech G-key SDK pada mesin ini. Ia dipasang bersama Logitech Gaming Software 8.55 atau lebih baharu.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK didaftarkan tetapi failnya sudah tiada. Pasang semula Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK ditemui tetapi tidak dapat dimuatkan.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK ditemui tetapi tidak dimuatkan, kerana PadForge tidak dapat mengesahkan bahawa hanya pentadbir boleh mengubahnya dan bahawa Logitech menandatanganinya.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Pustaka itu bukan G-key SDK yang dijangka.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK enggan dimulakan. Logitech Gaming Software biasanya tidak berjalan.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Bersambung, belum ada kekunci dilihat. Dalam Logitech Gaming Software, seret arahan G-key ke atas setiap kekunci dalam profil PadForge, dan jadikan profil itu berterusan. Tetikus G600 atau G300 juga mesti keluar daripada mod memori terbina dalam.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Pastikan tetingkap tersembunyi apabila PadForge bermula. Ia berjalan dan memetakan seperti biasa.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Mulakan PadForge secara automatik apabila anda log masuk ke Windows. Semasa ini dihidupkan, PadForge juga bermula tanpa gesaan Windows daripada pintasan, skrip atau program lain.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge berjalan dari {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ini memerlukan PadForge dalam folder sendiri. Foldernya mengandungi fail lain, jadi PadForge tidak dapat menghalang program lain daripada mengubahnya.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Ini memerlukan PadForge dalam folder yang tidak boleh diubah oleh program lain. PadForge tidak dapat menghalang program lain daripada mengubah foldernya.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Pindahkan PadForge ke Folder Sendiri</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Menyalin PadForge dan tetapannya ke Program Files, mengarahkan tugasnya ke sana, dan memulakannya dari sana. Salinan di sini kekal seperti sedia ada.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge tidak berpindah: {0} mengandungi fail yang bukan milik PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge tidak berpindah: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Mulakan semasa Log Masuk telah dimatikan, kerana ia menjalankan PadForge dari folder yang mengandungi fail lain.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge tidak berpindah: Windows tidak menamakan folder Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge tidak berpindah: ia tidak dapat membaca PadForge yang sedang berjalan.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge tidak berpindah: ia tidak dapat membuat {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge tidak berpindah: ia tidak dapat membaca isi {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge tidak berpindah: ia tidak dapat menghalang program lain daripada mengubah {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge tidak berpindah: salinannya dalam {0} tidak sepadan dengan PadForge yang sedang berjalan.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge tidak berpindah: selepas penyalinan, {0} mengandungi fail yang bukan milik PadForge, atau program lain boleh mengubahnya.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Mulakan semasa Log Masuk telah dimatikan, kerana PadForge yang dijalankannya sudah tiada.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Mulakan semasa Log Masuk telah dimatikan, kerana PadForge tidak dapat menghalang program lain daripada mengubah folder tempat PadForge dijalankan.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Mulakan semasa Log Masuk telah dimatikan, kerana PadForge tidak dapat membaca PadForge yang mana yang dijalankannya.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Mulakan semasa Log Masuk telah dimatikan, kerana PadForge tidak dapat membaca folder PadForge yang dijalankannya.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge tidak dapat membuat folder terlindungnya, {0}. PadForge menyimpan pustaka yang dijalankannya dengan hak pentadbir di sana, dan ia tidak dapat bermula dengan selamat tanpanya.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge tidak dapat memulakan dirinya semula dari folder terlindungnya, {0}. PadForge berjalan dengan hak pentadbir hanya dari sana, jadi ia tidak bermula.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge tidak dapat membuat kunci yang mengehadkannya kepada satu salinan yang berjalan, jadi ia tidak dimulakan.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge berjalan dengan hak pentadbir dari {0}, folder yang boleh diubah oleh program lain. Program itu boleh mengubah tetapan PadForge di sana, dan PadForge bertindak ke atasnya dengan haknya.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge berjalan dengan hak pentadbir dari {0}, folder yang mengandungi fail lain. PadForge tidak dapat menghalang program lain daripada mengubah tetapannya di sana, dan ia bertindak ke atasnya dengan haknya.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge berjalan dengan hak pentadbir dari {0}, folder yang tidak dapat dibacanya. PadForge tidak dapat menghalang program lain daripada mengubah tetapannya di sana, dan ia bertindak ke atasnya dengan haknya.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sentiasa Tunjuk dalam Dulang Sistem</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pastikan ikon dulang kelihatan semasa tetingkap dibuka, supaya Keluar dalam menunya sentiasa satu klik sahaja.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Kemas Kini</value></data>
@@ -1294,13 +1266,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Semakan pembersihan: memeriksa bahagian yang anda simpan…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Semakan pembersihan: PadForge tidak dapat membaca bahagian yang anda simpan, jadi Simpan kekal dimatikan.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Penyimpanan dengan hak anda tidak bermula.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Penyimpanan dengan hak anda tidak bermula: tiada shell desktop berjalan untuk memulakannya.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Penyimpanan dengan hak anda tidak bermula: Windows menolak dengan ralat {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Penyimpanan tidak tamat dalam {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows tidak membenarkan fail ditulis di sana.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge tidak menerima fail ini sebagai rakamannya sendiri.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Penyimpanan tamat dengan kod {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Disimpan sebagai anda, ke folder Downloads kali pertama, kemudian ke tempat anda menyimpan terakhir, dan ditunjukkan dalam Explorer. Rakaman yang berhenti ketika tiada sesiapa di halaman (hadnya, makro, program, alat pembantu atau --record stop) menunggu semakan ini di Laman Utama, dan dipadam selepas 7 hari melainkan disimpan. Program diberitahu bahawa ia menunggu, tidak pernah di mana.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Rakaman masalah dari {0} menunggu anda membacanya.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Semak</value></data>
@@ -5579,7 +5546,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Penggandingan terhenti: membaca atau menulis pengawal atau radio Bluetooth gagal. Log diagnostik mempunyai butirannya.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Penggandingan terhenti pada ralat yang tidak dijangka PadForge. Log diagnostik mempunyai butirannya.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>memerlukan Logitech Gaming Software 8.52 atau lebih baharu</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>menjumpai pustakanya tetapi tidak memuatkannya, kerana PadForge tidak dapat mengesahkan bahawa hanya pentadbir boleh mengubahnya dan bahawa Logitech menandatanganinya</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>menjumpai pustakanya tetapi tidak dapat menggunakannya, dan log diagnostik menyatakan sebabnya</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>mulakan Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>menunggu telefon dengan Arx Control</value></data>
@@ -5677,7 +5643,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Memuatkan salinan pustaka Force Dimension ini menggantikan yang lain. Falcon yang dibuka pada salinan lain ditutup dan dibuka semula pada salinan ini. Salinan yang dipasang oleh SDK ditemui tanpanya.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Pustaka (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Halaman muat turun SDK Falcon tidak dibuka: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Halaman muat turun SDK Falcon belum dibuka: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Pasang Pemacu Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Memasang pemacu Force Dimension, dari folder SDK, pada Falcon yang tidak mempunyainya. Windows mungkin bertanya dahulu sama ada mahu mempercayai Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Dapatkan SDK Force Dimension</value></data>
@@ -6032,6 +5997,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="SdlMapping_Away" xml:space="preserve"><value>Peranti tidak bersambung. SDL membacanya sebaik sahaja ia bersambung.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL tidak memberi PadForge sebarang bacaan peranti ini.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Salinan komuniti terbina dalam, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Dimuat turun {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fail PadForge sendiri</value></data>

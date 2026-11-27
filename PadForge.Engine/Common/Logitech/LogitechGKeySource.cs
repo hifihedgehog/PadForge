@@ -15,7 +15,6 @@ namespace PadForge.Engine.Common.Logitech
         MissingExports, // loaded, but not the library we expect
         InitRefused,    // the Logitech software is not running
         Running,
-        Refused,        // the file is there and PadForge's checks refused it (TrustedLibrary)
     }
 
     /// <summary>
@@ -68,14 +67,6 @@ namespace PadForge.Engine.Common.Logitech
             _log = log ?? (_ => { });
         }
 
-        /// <summary>The state when no candidate gave a library, by
-        /// <see cref="TrustedLibrary.Outcome"/>: <see cref="LogitechGKeyState.Refused"/>
-        /// when PadForge's checks refused each one, and
-        /// <see cref="LogitechGKeyState.LoadFailed"/> when one would not
-        /// load.</summary>
-        internal static LogitechGKeyState StateWhenNoneLoaded(string outcome)
-            => outcome == "refused" ? LogitechGKeyState.Refused : LogitechGKeyState.LoadFailed;
-
         /// <summary>Loads the library and starts the session. False leaves
         /// <see cref="State"/> saying why.</summary>
         public bool Start()
@@ -103,27 +94,16 @@ namespace PadForge.Engine.Common.Logitech
             }
 
             string path = null;
-            string outcome = "missing";
             foreach (string candidate in candidates)
             {
-                // Loaded into PadForge only when only administrators could have put it
-                // in place and Logitech signed it, held open from the check
-                // through the load (#600, TrustedLibrary).
-                _module = TrustedLibrary.Load(candidate, TrustedLibrary.Logitech,
-                    p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
-                if (_module == IntPtr.Zero)
-                {
-                    SdlDiagLog.WriteLine(TrustedLibrary.NotLoadedLine("LOGITECH G-KEY", candidate, why));
-                    outcome = TrustedLibrary.Outcome(outcome, why);
-                    continue;
-                }
+                if (!NativeLibrary.TryLoad(candidate, out _module)) continue;
                 path = candidate;
                 break;
             }
             if (path == null)
             {
-                State = StateWhenNoneLoaded(outcome);
-                _log("G-Keys: " + candidates.Count + " candidate path(s) and none loaded (" + outcome + ")");
+                State = LogitechGKeyState.LoadFailed;
+                _log("G-Keys: " + candidates.Count + " candidate path(s) and none loaded");
                 return false;
             }
             LibraryPath = path;

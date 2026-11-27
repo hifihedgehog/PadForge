@@ -1031,6 +1031,7 @@ PadForge ese tongeni makkei porousen ei lón crash.log arun PadForge.exe. Ren om
   <data name="SdlMapping_Away" xml:space="preserve"><value>Ewe device ese riri. SDL epwe álleani lupwen a riri.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ese ngeni PadForge eú porousen ei device.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ewe kapi an community mi nóm non, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>A download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Pwisin file an PadForge</value></data>
@@ -1222,7 +1223,6 @@ PadForge ese tongeni makkei porousen ei lón crash.log arun PadForge.exe. Ren om
   <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Icon{0}</value></data>
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ese tongeni féri ewe lock mi efisi pwe eú chök kopi epwe angang, ina minne ese poputá.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>a kúna an library nge ese load-ei, pun PadForge ese tongeni pennúku pwe chök administrator ra tongeni siwili me pwe Logitech a sain won</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>a kúna an library nge ese tongeni aea, me ewe diagnostics log a apasa popun</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} row ren pwal ekkoch system ra likitiniló.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ese poputá fiti pwisin om pwúng.</value></data>

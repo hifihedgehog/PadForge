@@ -622,7 +622,9 @@ namespace PadForge.Tests
 
         /// <summary>The drop of the inputs on a new backend is PadForge's
         /// own (#600 item 42): each row is stamped before it goes offline,
-        /// so its connection note says nothing of it.</summary>
+        /// so its connection note says nothing of it. The stamp lasts while
+        /// the row is away, here on a backend whose inputs do not open, and
+        /// the row's return ends it.</summary>
         [Fact]
         public void TheInputSweep_StampsTheRowsItDropsForANewBackend()
         {
@@ -643,10 +645,25 @@ namespace PadForge.Tests
 
                 long before = Environment.TickCount64;
                 Thread.Sleep(20);
+                var refusing = Use(new FakeBackend(MidiApiKind.InBox) { InputOpens = false });
+                refusing.NormalEndpoints.Add((KeysId, "Test Keys"));
                 MidiVirtualController.ResetAvailability();
                 Assert.True(MidiVirtualController.IsAvailable());
-                Assert.True(SpinWait.SpinUntil(Sweep, 5_000));
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    Sweep();
+                    return !row.IsOnline && refusing.InputSession?.Connections.Count > 0;
+                }, 5_000));
                 Assert.True(OwnDrops.RowAt(row.InstanceGuid) > before);
+
+                var working = Use(new FakeBackend(MidiApiKind.InBox));
+                working.NormalEndpoints.Add((KeysId, "Test Keys"));
+                Assert.True(SpinWait.SpinUntil(() =>
+                {
+                    Sweep();
+                    return row.IsOnline;
+                }, 5_000));
+                Assert.Equal(OwnDrops.Never, OwnDrops.RowAt(row.InstanceGuid));
             }
             finally
             {

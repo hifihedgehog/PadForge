@@ -82,11 +82,15 @@ namespace PadForge.Common.Input
 
         /// <summary>The list opened every keyboard, mouse and Consumer Control
         /// collection on every 2 s device pass. A device comes and goes as a
-        /// device change the main window counts, so the list is read after
-        /// one, or after 15 s all the same, and on the next pass after a list
+        /// device change the main window counts, so the list is read on every
+        /// pass for the gate's settle window after one, after 15 s all the
+        /// same, and on the next pass after a list
         /// that failed. The passes between reconcile the last lists again, as
         /// a fresh list of the same devices did.</summary>
         private readonly DeviceScanGate _rawInputScan = new(15000);
+        /// <summary>The gate's ask, made once, so a device pass allocates
+        /// nothing for it.</summary>
+        private Func<bool> _rawInputGateAsk;
         private volatile bool _rawInputListAgain;
 
         /// <summary>Whether this pass reads the Raw Input lists again. The
@@ -402,7 +406,7 @@ namespace PadForge.Common.Input
             // results are ready by the next 2-second UpdateDevices cycle.
             if (!_rawInputEnumRunning)
             {
-                if (RawInputListDue(_rawInputListAgain, () => _rawInputScan.Due(Environment.TickCount64)))
+                if (RawInputListDue(_rawInputListAgain, _rawInputGateAsk ??= () => _rawInputScan.Due(Environment.TickCount64)))
                 {
                     _rawInputListAgain = false;
                     _rawInputEnumRunning = true;
@@ -1830,17 +1834,27 @@ namespace PadForge.Common.Input
         /// <summary>The endpoint query asked the MIDI service for every
         /// endpoint on every device pass (2 s). An endpoint comes and goes as
         /// a device node, a change the main window counts, so the query runs
-        /// after one, or after 15 s all the same, and on the next pass after
+        /// on every pass for the gate's settle window after one, after 15 s
+        /// all the same, and on the next pass after
         /// a new backend, a query that failed or a list dropped by a
-        /// shutdown or resume. The service check still
+        /// shutdown or resume. While any endpoint is listed it runs on every
+        /// pass, since a renamed endpoint or one the service adds with no
+        /// device node raises no device change and PadForge watches no MIDI
+        /// endpoint events. The service check still
         /// runs on every pass.</summary>
         private readonly DeviceScanGate _midiScan = new(15000);
+        /// <summary>The gate's ask, made once, so a device pass allocates
+        /// nothing for it.</summary>
+        private Func<bool> _midiGateAsk;
         private volatile bool _midiEnumAgain = true;
 
-        /// <summary>Whether this pass's worker runs the endpoint query. The
-        /// gate is asked only when nothing else asks for the query, since a
-        /// yes counts as the walk.</summary>
-        internal static bool MidiQueryDue(bool again, Func<bool> changed) => again || changed();
+        /// <summary>Whether this pass's worker runs the endpoint query: when
+        /// it is asked for again, when no list was read, while the last list
+        /// holds an endpoint, or when the gate says. The gate is asked only
+        /// when nothing else asks for the query, since a yes counts as the
+        /// walk.</summary>
+        internal static bool MidiQueryDue(bool again, List<(string Id, string Name)> listed, Func<bool> changed)
+            => again || listed == null || listed.Count > 0 || changed();
         // When the worker's endpoint query began, or 0 while it has not yet:
         // the worker first waits for the availability probe. Written by the
         // worker, read by the polling thread.
@@ -2023,14 +2037,19 @@ namespace PadForge.Common.Input
         private const int _headsetSweepIntervalMs = 3000;
 
         /// <summary>The sweep walks every HID interface and every present
-        /// device node of every class. A tracker comes, goes or fails to
-        /// start as a device change the main window counts, so with nothing
-        /// in flight the sweep runs after one, or after 15 s all the same.
+        /// device node of every class. A tracker comes or goes as a device
+        /// change the main window counts, and its node can fail its start a
+        /// moment later with no change of its own, so with nothing in flight
+        /// the sweep runs every 3 s for the gate's settle window after a
+        /// change, or after 15 s all the same.
         /// It keeps the 3 s interval while a known tracker is absent (its
         /// reconnect is caught by asking for its HID service), a failed node
         /// waits for its rebind, an open waits for its retry, the last
         /// enumeration failed, or a tracker waits to be registered.</summary>
         private readonly DeviceScanGate _headsetScan = new(15000);
+        /// <summary>The gate's ask, made once, so a device pass allocates
+        /// nothing for it.</summary>
+        private Func<bool> _headsetGateAsk;
         private volatile bool _headsetKeepSweeping = true;
         private volatile int _headsetRepairMatches;
         private volatile bool _headsetEnumFailed;
@@ -2315,7 +2334,7 @@ namespace PadForge.Common.Input
             long midiEnumNow = Environment.TickCount64;
             if (!_midiEnumRunning)
             {
-                bool query = MidiQueryDue(_midiEnumAgain || _cachedMidiEndpoints == null, () => _midiScan.Due(midiEnumNow));
+                bool query = MidiQueryDue(_midiEnumAgain, _cachedMidiEndpoints, _midiGateAsk ??= () => _midiScan.Due(Environment.TickCount64));
                 if (query) _midiEnumAgain = false;
                 _midiEnumRunning = true;
                 Volatile.Write(ref _midiEnumQueryStartedMs, 0);
@@ -2526,11 +2545,23 @@ namespace PadForge.Common.Input
         /// <see cref="_micSweepIntervalMs"/>.</summary>
         private volatile MicEndpointWatch _micWatch;
 
+        /// <summary>A watched list is walked after a device change too, at
+        /// the 4 s interval through the gate's settle window, and once a
+        /// minute all the same: a registration that stops reporting (an
+        /// audio service restart) would otherwise freeze the rows. Asked on
+        /// the polling thread only.</summary>
+        private readonly DeviceScanGate _micScan = new(60000);
+        /// <summary>The gate's ask, made once, so a device pass allocates
+        /// nothing for it.</summary>
+        private Func<bool> _micGateAsk;
+
         /// <summary>Whether to walk the capture endpoints now. A watched list
-        /// is walked after a report, an unwatched one on the interval, one
-        /// walk at a time.</summary>
-        internal static bool MicSweepDue(bool running, bool watched, bool stale, long now, long nextAt)
-            => !running && (stale || !watched) && now >= nextAt;
+        /// is walked after a report or when <paramref name="changed"/> says a
+        /// device changed or the fallback time passed, an unwatched one on
+        /// the interval, one walk at a time. The gate is asked last, since a
+        /// yes counts as the walk.</summary>
+        internal static bool MicSweepDue(bool running, bool watched, bool stale, long now, long nextAt, Func<bool> changed = null)
+            => !running && now >= nextAt && (stale || !watched || (changed?.Invoke() ?? false));
 
         /// <summary>
         /// Every report that can change the microphone rows marks the list
@@ -2607,15 +2638,17 @@ namespace PadForge.Common.Input
             // phase only consumes it, the same split the headset sweep uses
             // for its Bluetooth I/O. The walk took about 100 ms of the audio
             // service's time, so it runs after Windows reports an endpoint
-            // change (MicEndpointWatch), and every 4 s only while no report
+            // change (MicEndpointWatch), after a device change (_micScan),
+            // once a minute all the same, and every 4 s only while no report
             // could be registered.
             var micWatch = _micWatch;
+            bool reported = micWatch != null && micWatch.Stale;
             if (MicSweepDue(_micSweepRunning, micWatch != null, micWatch?.Stale ?? true, now,
-                    System.Threading.Interlocked.Read(ref _micNextSweepTicks)))
+                    System.Threading.Interlocked.Read(ref _micNextSweepTicks), _micGateAsk ??= () => _micScan.Due(Environment.TickCount64)))
             {
                 _micSweepRunning = true;
                 System.Threading.Interlocked.Exchange(ref _micNextSweepTicks,
-                    now + (micWatch != null ? _micSweepAfterReportMs : _micSweepIntervalMs));
+                    now + (reported ? _micSweepAfterReportMs : _micSweepIntervalMs));
                 System.Threading.Tasks.Task.Run(() =>
                 {
                     MicEndpointWatch watch = _micWatch;
@@ -2671,6 +2704,11 @@ namespace PadForge.Common.Input
             if (ver == _micConsumedVersion && now < _micReconcileAt) return false;
             _micConsumedVersion = ver;
             _micReconcileAt = now + _micSweepIntervalMs;
+            // The walk that starts the recognizer service runs only after a
+            // report now, so a Start that failed is tried again on this 4 s
+            // pass, on a worker, while no service runs.
+            if (PadForge.Services.VoiceMacroService.Active == null && !PadForge.Services.VoiceMacroService.SuppressStart && !_micSweepRunning)
+                System.Threading.Tasks.Task.Run(() => PadForge.Services.VoiceMacroService.Start());
             var current = _micEndpointSnapshot;
             if (current == null)
                 return false; // no snapshot yet
@@ -2895,7 +2933,7 @@ namespace PadForge.Common.Input
 
             long now = Environment.TickCount64;
             if (HeadsetSweepDue(_headsetSweepRunning, now, _headsetNextSweepTicks, _headsetKeepSweeping,
-                    () => _headsetScan.Due(now)))
+                    _headsetGateAsk ??= () => _headsetScan.Due(Environment.TickCount64)))
             {
                 _headsetSweepRunning = true;
                 _headsetNextSweepTicks = now + _headsetSweepIntervalMs;

@@ -613,10 +613,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nepaleista: jokia programa neatidaro Python failų už jus, o „PadForge“ nerado py paleidiklio</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nepaleista: „PadForge“ negali perskaityti, kuri programa už jus atidaro šios rūšies failus</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nepaleista: programos, kuri už jus atidaro šios rūšies failus, šiame kompiuteryje nėra</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nepaleista: neveikia darbalaukio apvalkalas, kuriame jį būtų galima paleisti</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nepaleista: darbalaukio apvalkalas turi administratoriaus teises, todėl jų turėtų ir įskiepis</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nepaleista: „PadForge“ negali perskaityti, ar jis turėtų administratoriaus teises</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nepaleista: „Windows“ suteikė jam administratoriaus teises, todėl „PadForge“ jį nutraukė prieš pradedant veikti</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nepaleista: prašo administratoriaus teisių</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nepaleista: „Windows“ atsisakė su klaida {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nepaleista</value></data>
@@ -919,7 +915,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Šiame kompiuteryje nėra „Logitech“ G-key SDK. Jis įdiegiamas kartu su „Logitech Gaming Software“ 8.55 ar naujesne versija.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK užregistruotas, bet jo failo nebėra. Iš naujo įdiekite „Logitech Gaming Software“.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK rastas, bet jo nepavyko įkelti.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK rastas, bet neįkeltas, nes „PadForge“ negalėjo patvirtinti, kad jį gali keisti tik administratoriai ir kad jį pasirašė „Logitech“.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Ta biblioteka nėra laukiamas G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK atsisakė pasileisti. Dažniausiai taip būna, kai neveikia „Logitech Gaming Software“.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Prisijungta, bet dar negautas nė vienas klavišas. „Logitech Gaming Software“ programoje nuvilkite komandą „G-key“ ant kiekvieno klavišo „PadForge“ profilyje ir nustatykite tą profilį kaip nuolatinį. Pelė G600 arba G300 taip pat turi būti išjungta iš vidinės atminties režimo.</value></data>
@@ -1023,30 +1018,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Paleidus „PadForge“, langas lieka paslėptas. Programa veikia ir priskiria įvestis kaip įprastai.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automatiškai paleisti „PadForge“, kai prisijungiate prie „Windows“. Kol tai įjungta, „PadForge“ taip pat paleidžiamas be „Windows“ raginimo iš nuorodos, scenarijaus ar kitos programos.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>„PadForge“ veikia iš {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tam reikia, kad „PadForge“ būtų savo aplanke. Jos aplanke yra kitų failų, todėl „PadForge“ negali neleisti kitoms programoms jo keisti.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Tam reikia, kad „PadForge“ būtų aplanke, kurio kitos programos negali keisti. „PadForge“ nepavyko neleisti jiems keisti savo aplanko.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Perkelti „PadForge“ į savo aplanką</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Nukopijuoja „PadForge“ ir jos nustatymus į Program Files, nukreipia jos užduotis ten ir paleidžia ją iš ten. Čia esanti kopija lieka nepakeista.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>„PadForge“ neperkelta: {0} yra failų, kurie nėra „PadForge“.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>„PadForge“ neperkelta: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Paleidimas prisijungus išjungtas, nes jis paleido „PadForge“ iš aplanko, kuriame yra kitų failų.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>„PadForge“ neperkelta: „Windows“ nenurodo aplanko „Program Files“.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko perskaityti veikiančios „PadForge“.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko sukurti {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko perskaityti, kas yra {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>„PadForge“ neperkelta: nepavyko neleisti kitoms programoms keisti {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>„PadForge“ neperkelta: jos kopija aplanke {0} neatitiko veikiančios „PadForge“.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>„PadForge“ neperkelta: po kopijavimo {0} turėjo failų, kurie nėra „PadForge“, arba kitos programos galėjo jį keisti.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“, kuri veikė, nebėra.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“ nepavyko neleisti kitoms programoms keisti aplanko, iš kurio ji paleido „PadForge“.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“ nepavyko perskaityti, kuri „PadForge“ veikė.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>„Paleisti prisijungus“ išjungta, nes „PadForge“ nepavyko perskaityti aplanko, iš kurio veikė „PadForge“.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>„PadForge“ nepavyko sukurti savo apsaugoto aplanko {0}. „PadForge“ ten laiko bibliotekas, kurias vykdo administratoriaus teisėmis, ir be jo negali saugiai prasidėti.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>„PadForge“ nepavyko iš naujo paleisti savęs iš apsaugoto aplanko {0}. „PadForge“ administratoriaus teisėmis veikia tik iš ten, todėl nebuvo paleista.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>„PadForge“ nepavyko sukurti užrakto, kuris leidžia veikti tik vienai kopijai, todėl ji nepasileido.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>„PadForge“ veikia administratoriaus teisėmis iš {0}, aplanko, kurį gali keisti kitos programos. Jos gali pakeisti čia esančius „PadForge“ nustatymus, o „PadForge“ veikia pagal juos savo teisėmis.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>„PadForge“ veikia administratoriaus teisėmis iš {0}, aplanko, kuriame yra kitų failų. „PadForge“ negali neleisti kitoms programoms keisti čia esančių jos nustatymų, o ji veikia pagal juos savo teisėmis.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>„PadForge“ veikia administratoriaus teisėmis iš {0}, aplanko, kurio nepavyko perskaityti. „PadForge“ negali neleisti kitoms programoms keisti čia esančių jos nustatymų, o ji veikia pagal juos savo teisėmis.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Visada rodyti pranešimų srityje</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pranešimų srities piktograma rodoma ir tada, kai langas atidarytas, todėl jos meniu komanda „Išeiti“ visada pasiekiama vienu spustelėjimu.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Naujinimai</value></data>
@@ -1288,13 +1260,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Valymo patikra: tikrinamos dalys, kurias paliekate…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Valymo patikra: „PadForge“ nepavyko perskaityti dalių, kurias paliekate, todėl Išsaugoti lieka išjungta.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Įrašymas jūsų teisėmis nepaleistas.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Įrašymas jūsų teisėmis nepaleistas: neveikia darbalaukio apvalkalas, kuriame jį būtų galima paleisti.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Įrašymas jūsų teisėmis nepaleistas: „Windows“ atsisakė su klaida {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Įrašymas nesibaigė per {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>„Windows“ neleido ten įrašyti failo.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>„PadForge“ šio failo nepriėmė kaip savo įrašo.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Įrašymas baigėsi kodu {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Išsaugoma jūsų vardu, pirmą kartą į aplanką Downloads, vėliau ten, kur išsaugojote paskutinį kartą, ir parodoma programoje Explorer. Įrašas, kuris sustoja, kai niekas nėra prie puslapio (pasiekus ribą, dėl makrokomandos, programos, asistento įrankio ar --record stop), laukia šios peržiūros puslapyje Pradžia ir po 7 dienų ištrinamas, jei neišsaugotas. Programai pasakoma, kad jis laukia, bet ne kur.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Problemos įrašas, padarytas {0}, laukia, kol jį perskaitysite.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Peržiūrėti</value></data>
@@ -5574,7 +5541,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Susiejimas sustojo: nepavyko perskaityti valdiklio ar Bluetooth radijo arba į juos įrašyti. Išsami informacija yra diagnostikos žurnale.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Susiejimas sustojo dėl klaidos, kurios „PadForge“ nesitikėjo. Išsami informacija yra diagnostikos žurnale.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>reikia „Logitech Gaming Software“ 8.52 ar naujesnės versijos</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>rado savo biblioteką, bet jos neįkėlė, nes „PadForge“ negalėjo patvirtinti, kad ją gali keisti tik administratoriai ir kad ją pasirašė „Logitech“</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>rado savo biblioteką, bet negalėjo jos naudoti, o diagnostikos žurnale nurodyta kodėl</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>paleiskite „Logitech Gaming Software“</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>laukiama telefono su Arx Control</value></data>
@@ -5672,7 +5638,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Įkelia šią Force Dimension bibliotekos kopiją vietoj bet kurios kitos. Falcon, atidarytas per kitą kopiją, užsidaro ir vėl atsidaro per šią. SDK įdiegtos kopijos randamos ir be to.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliotekos (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK atsisiuntimo puslapis neatsidarė: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK atsisiuntimo puslapis dar neatsidarė: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Įdiegti Falcon tvarkyklę</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Iš SDK aplanko įdiegia Force Dimension tvarkyklę Falcon, kuris jos neturi. Windows pirmiausia gali paklausti, ar pasitikite Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Gauti Force Dimension SDK</value></data>
@@ -6031,6 +5996,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMapping_Away" xml:space="preserve"><value>Įrenginys neprijungtas. SDL jį perskaitys, kai jis bus prijungtas.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nepateikė „PadForge“ šio įrenginio rodmenų.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Bendruomenės kopija, įtraukta, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Atsisiųsta {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>„PadForge“ savasis failas</value></data>

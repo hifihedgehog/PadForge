@@ -119,7 +119,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly bool _keepAlive;
         private readonly int _predecessorJoinMs;
         private readonly int _stopJoinMs;
-        private readonly AutoResetEvent _wake = new(false);
 
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
         private Thread _thread;
@@ -277,7 +276,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            _run?.Wake.Set();
         }
 
         private void Worker(WorkerRun run)
@@ -338,10 +337,9 @@ namespace PadForge.Common.Input.Peripherals
                     int wait = mice.Count == 0 && lookAgainAt == long.MaxValue ? Timeout.Infinite
                         : active ? _activeTickMs : _idleTickMs;
                     Volatile.Write(ref _waitMs, wait);
-                    // A Dispose whose Stop gave up its join releases the
-                    // wake under a worker still in a transfer, which ends here.
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    // Stop sets this run's own wake, so a worker a Stop gave
+                    // up on, still in a transfer, ends here.
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)
@@ -602,7 +600,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
     }
 }

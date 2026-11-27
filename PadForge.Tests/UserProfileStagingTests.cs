@@ -10,9 +10,8 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The user's profiles are staged under the protected folder's
-    /// Work\HIDMaestroProfiles for HIDMaestro to read (#597), and in the app
-    /// a folder that cannot be made throws (ProtectedWork.FolderInTheApp). A
+    /// The user's profiles are staged in a folder of their own for
+    /// HIDMaestro to read, and a folder that cannot be made throws. A
     /// throw there took the built-in catalog down with it, and the import's
     /// check answered it as a profile with no problem, so the import was
     /// stored unchecked.

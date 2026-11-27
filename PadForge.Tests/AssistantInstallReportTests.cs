@@ -173,7 +173,7 @@ namespace PadForge.Tests
         {
             var launcher = new ReportingLauncher { Code = UserInstall.Failed, Writes = "Claude Code's own command did not add PadForge (exit code 3): no auth\r\n" };
             UserInstall.Launcher = launcher;
-            var run = await UserInstall.RunAsUserAsync(new InstallRequest(InstallWhat.Assistant, "claude-code"));
+            var run = await UserInstall.RunInCopyAsync(new InstallRequest(InstallWhat.Assistant, "claude-code"));
             Assert.Equal(UserInstall.Failed, run.Code);
             Assert.Equal("Claude Code's own command did not add PadForge (exit code 3): no auth", run.Error);
             Assert.Contains("--report ", launcher.Line);
@@ -181,7 +181,7 @@ namespace PadForge.Tests
 
             launcher.Code = UserInstall.Done;
             launcher.Writes = "[{\"key\":\"codex\",\"program\":\"C:\\\\codex.exe\",\"entry\":\"current\",\"skill\":\"older\",\"settings\":null}]";
-            run = await UserInstall.RunAsUserAsync(new InstallRequest(InstallWhat.Assistant, null, Check: true));
+            run = await UserInstall.RunInCopyAsync(new InstallRequest(InstallWhat.Assistant, null, Check: true));
             Assert.Null(run.Error);
             var check = Assert.Single(UserInstall.ReadChecks(run.Said));
             Assert.Equal(new UserInstall.AssistantCheck("codex", @"C:\codex.exe", "current", "older", null), check);
@@ -189,7 +189,7 @@ namespace PadForge.Tests
             // A run that wrote nothing still names its code.
             launcher.Code = UserInstall.Failed;
             launcher.Writes = null;
-            run = await UserInstall.RunAsUserAsync(new InstallRequest(InstallWhat.Assistant, "codex"));
+            run = await UserInstall.RunInCopyAsync(new InstallRequest(InstallWhat.Assistant, "codex"));
             Assert.Equal("The install ended with code 1.", run.Error);
         }
 
@@ -381,7 +381,7 @@ namespace PadForge.Tests
         public async Task TheTestHost_StartsNoInstall_WithoutALaunchersOwn()
         {
             UserInstall.Launcher = null;
-            var run = await UserInstall.RunAsUserAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
+            var run = await UserInstall.RunInCopyAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
             Assert.Equal(UserInstall.Failed, run.Code);
             Assert.Equal("The test host starts no install.", run.Error);
             Assert.Empty(Directory.EnumerateFiles(_root, "PadForge-install-*"));

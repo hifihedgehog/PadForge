@@ -668,65 +668,6 @@ namespace PadForge.Tests
             Assert.Equal(PluginRefusal.Missing, run.Refusal);
         }
 
-        [Fact]
-        public void NoShell_IsTriedAgainAfterThePause_ButAnElevatedShellIsNot()
-        {
-            string path = NewFile();
-            var run = _manager.Add(path, PluginFile.Sha256(path));
-            _launcher.Refuse = PluginRefusal.NoShell;
-            _manager.SetPluginsOn(true);
-            _manager.SetEngine(true);
-            Assert.Equal(PluginStatus.Restarting, run.Status);
-            Assert.Equal(PluginRefusal.NoShell, run.Refusal);
-            Assert.Equal(0, run.Failures);
-
-            _launcher.Refuse = PluginRefusal.ShellElevated;
-            _now += run.PauseMs;
-            _manager.Tick();
-            Assert.Equal(PluginStatus.Refused, run.Status);
-            Assert.Equal(PluginRefusal.ShellElevated, run.Refusal);
-            Assert.Empty(_launcher.Starts);
-
-            // It never runs with PadForge's rights in its place: the start
-            // waits for the user.
-            _launcher.Refuse = PluginRefusal.None;
-            _now += 60_000;
-            _manager.Tick();
-            Assert.Empty(_launcher.Starts);
-            _manager.StartAgain(run);
-            Assert.Single(_launcher.Starts);
-        }
-
-        /// <summary>A start before the desktop shell exists, as at sign-in,
-        /// is tried again each second for as long as the shell takes, and
-        /// counts no failure: only the plugin's exits and Windows' refusals
-        /// count toward the five.</summary>
-        [Fact]
-        public void NoShellYet_IsTriedAgainEachSecond_AndCountsNoFailure()
-        {
-            string path = NewFile();
-            var run = _manager.Add(path, PluginFile.Sha256(path));
-            _launcher.Refuse = PluginRefusal.NoShell;
-            _manager.SetPluginsOn(true);
-            _manager.SetEngine(true);
-            for (int i = 0; i < 6; i++)
-            {
-                Assert.Equal(PluginStatus.Restarting, run.Status);
-                Assert.Equal(0, run.Failures);
-                Assert.Equal(PluginManager.FirstPauseMs, run.PauseMs);
-                _now += run.PauseMs;
-                _manager.Tick();
-            }
-            // One log line for the wait, not one a second.
-            Assert.Single(_manager.LogOf(run), l => l.Kind == PluginLogKind.NotStarted);
-            _launcher.Refuse = PluginRefusal.None;
-            _now += run.PauseMs;
-            _manager.Tick();
-            Assert.Equal(PluginStatus.Running, run.Status);
-            Assert.Equal(0, run.Failures);
-            Assert.Single(_launcher.Starts);
-        }
-
         /// <summary>Approve and Restart with the engine running keeps the
         /// plugin's state until the old run's exit starts the new one: the
         /// card never says it waits for the engine.</summary>

@@ -190,13 +190,9 @@ namespace PadForge.Services
         internal const int PictureRetryMs = 5000;
 
         /// <summary>The S.T.R.I.K.E. 7 library PadForge downloads: Mad Catz's
-        /// SDK, kept in the protected folder's Work folder (#600). PadForge
-        /// loads it with its rights, and in the temp folder, where it was, any
-        /// program of the user could replace it between its hash check and the
-        /// load.</summary>
+        /// SDK, kept in the user's temp folder.</summary>
         internal static string DownloadedStrike7Library
-            => Path.Combine(PadForge.Services.ProtectedWork.FolderInTheApp("Strike7", Path.Combine(Path.GetTempPath(), "PadForge", "strike7")),
-                PadForge.Engine.Common.MadCatz.Strike7Library.LibraryName);
+            => Path.Combine(Path.GetTempPath(), "PadForge", "strike7", PadForge.Engine.Common.MadCatz.Strike7Library.LibraryName);
 
         /// <summary>The SHA-256 of API/x64/Strike7API.dll in strike7_api 1.1.</summary>
         internal const string Strike7LibrarySha256 = "86808D4FCE73E05D06CE01A1269D8FD711F45B8A31A6BE0AF648DCF8F1E9194C";
@@ -586,10 +582,7 @@ namespace PadForge.Services
         /// A test's own.</summary>
         internal Func<string> DownloadedLibraryLookup { get; init; } = () => DownloadedStrike7Library;
 
-        /// <summary>The download's path, kept once the protected folder gave
-        /// one. Each look judges two folders' access lists, and the first one
-        /// makes Work\Strike7 (ProtectedWork.Folder), on the interface's thread
-        /// four times a second while the switch is on. A look that throws
+        /// <summary>The download's path, kept once read. A look that throws
         /// keeps nothing, and the next pass looks again.</summary>
         private string _downloadedLibrary;
 
@@ -937,8 +930,9 @@ namespace PadForge.Services
         /// the Devices list shows, in the order they are assigned, or a line
         /// that says none is (#600 item 43). "Mapped" is the device notes'
         /// own reading (<see cref="InputService.ReadMappedDevices"/>): a
-        /// device a person plugs in, assigned to a controller that exists
-        /// and is on.</summary>
+        /// device a person plugs in or a program adds, as the device notes
+        /// count them, assigned to a controller that exists and is
+        /// on.</summary>
         internal string OfflineDevicesText()
         {
             InputService.ReadMappedDevices(_offlineReadings, ref _offlineRows);
@@ -1127,7 +1121,6 @@ namespace PadForge.Services
                 KeyboardScreenRoute.G19OtherDriver => string.Format(culture, s.KeyboardScreens_Status_G19OtherDriver_Format, status.Detail),
                 KeyboardScreenRoute.G19ForeignDriver => string.Format(culture, s.KeyboardScreens_Status_G19ForeignDriver_Format, status.Detail),
                 KeyboardScreenRoute.ArxNoLibrary => s.KeyboardScreens_Status_ArxNoLibrary,
-                KeyboardScreenRoute.ArxRefused => s.KeyboardScreens_Status_ArxRefused,
                 KeyboardScreenRoute.ArxLoadFailed => s.KeyboardScreens_Status_ArxLoadFailed,
                 KeyboardScreenRoute.ArxNotRunning => s.KeyboardScreens_Status_ArxNotRunning,
                 KeyboardScreenRoute.ArxWaiting => s.KeyboardScreens_Status_ArxWaiting,

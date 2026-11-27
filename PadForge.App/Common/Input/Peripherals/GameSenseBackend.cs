@@ -59,7 +59,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Func<long> _clock;
         private readonly int _tickMs;
         private readonly int _rulerMs;
-        private readonly AutoResetEvent _wake = new(false);
         private Thread _thread;
         private WorkerRun _run;
         private int _disposed;
@@ -167,7 +166,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            Volatile.Read(ref _run)?.Wake.Set();
         }
 
         /// <summary>What one color type should show: a color, and the light
@@ -318,8 +317,7 @@ namespace PadForge.Common.Input.Peripherals
                         : !PeripheralOutputs.Links.ByPath.ContainsKey(path) ? Timeout.Infinite
                         : (int)Math.Clamp(nextRuler - _clock(), 1, Math.Max(1, _rulerMs));
                     Volatile.Write(ref _waitMs, wait);
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)
@@ -364,7 +362,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
     }
 }

@@ -450,40 +450,17 @@ namespace PadForge.Tests
                 Assert.DoesNotContain("ex.Message", file);
         }
 
-        /// <summary>The Automation and Plugins pages' saves open no file the
-        /// user picked in this process, which may run with rights: Export
-        /// Activity…, Save the Skill as a ZIP… and Save the Plugin Kit… go
-        /// through UserSave, a copy started as the user.</summary>
+        /// <summary>The Automation and Plugins pages' saves, Export
+        /// Activity…, Save the Skill as a ZIP… and Save the Plugin Kit…,
+        /// go through UserSave.</summary>
         [Fact]
-        public void ThePagesSaves_OpenNoPickedFileInThisProcess()
+        public void ThePagesSaves_GoThroughUserSave()
         {
             string page = Source("Views", "ExtrasPage.xaml.cs");
             Assert.DoesNotContain("File.WriteAllText(file", page);
             string automation = Source("ViewModels", "DashboardViewModel.AutomationPage.cs");
             Assert.DoesNotContain("new FileStream(file, FileMode.Create", automation);
             Assert.DoesNotContain("=> PluginKit.Save(parent)", Source("Services", "Plugins", "PluginsController.cs"));
-        }
-    
-
-        /// <summary>A launcher that stands for the copy started as the user:
-        /// it notes the line, runs what the copy would run in this process,
-        /// and ends the copy with its exit code.</summary>
-        private sealed class UserCopyLauncher : PadForge.Services.Plugins.IPluginLauncher
-        {
-            public readonly List<string> Lines = new();
-            public Func<IReadOnlyList<string>, int> Run;
-            public PadForge.Services.Plugins.PluginRefusal Refuse;
-
-            public PadForge.Services.Plugins.PluginLaunch Start(PadForge.Services.Plugins.PluginCommand command, IReadOnlyDictionary<string, string> variables)
-            {
-                Lines.Add(command.CommandLine);
-                if (Refuse != PadForge.Services.Plugins.PluginRefusal.None) return PadForge.Services.Plugins.PluginLaunch.Refused(Refuse);
-                var quoted = System.Text.RegularExpressions.Regex.Matches(command.CommandLine, "\"([^\"]*)\"").Select(m => m.Groups[1].Value).Skip(1).ToList();
-                var process = new WebTestProcess(4321);
-                int code = Run?.Invoke(quoted) ?? 0;
-                _ = System.Threading.Tasks.Task.Run(async () => { await System.Threading.Tasks.Task.Delay(50); process.Exit(code); });
-                return new PadForge.Services.Plugins.PluginLaunch { Process = process };
-            }
         }
 
         private static string NewFolder()
@@ -493,86 +470,40 @@ namespace PadForge.Tests
             return folder;
         }
 
-        /// <summary>Export Activity… with rights the shell lacks stages the
-        /// text in the recordings' folder and has a copy started as the user
-        /// write the file picked: this process opens no file there. The
-        /// staged file is gone after, and a copy Windows did not start saves
-        /// nothing.</summary>
+        /// <summary>Export Activity… writes the file picked in this process,
+        /// with a byte-order mark.</summary>
         [Fact]
-        public async System.Threading.Tasks.Task ExportActivity_IsWrittenByACopyStartedAsTheUser()
+        public async System.Threading.Tasks.Task ExportActivity_IsWrittenHere()
         {
             string root = NewFolder();
-            string recordings = System.IO.Path.Combine(root, "PadForge Recordings");
-            System.IO.Directory.CreateDirectory(recordings);
             string target = System.IO.Path.Combine(root, "activity.txt");
-            var launcher = new UserCopyLauncher();
-            launcher.Run = words =>
-            {
-                Assert.False(System.IO.File.Exists(target), "the file was written before the copy started");
-                return PadForge.Common.Recording.RecordingSave.Run(words[0], words[1], out _);
-            };
             try
             {
-                PadForge.Common.Recording.RecordingFolder.Seam = () => recordings;
-                PadForge.Common.Recording.RecordingSave.Launcher = launcher;
-                PadForge.Common.Recording.RecordingSave.RightsSeam = () => true;
-                PadForge.Common.Recording.RecordingSave.Exe = () => @"C:\PadForge\PadForge.exe";
-                PadForge.Services.UserSave.HasRightsSeam = () => true;
-                PadForge.Services.UserSave.NoLowerRightSeam ??= () => false;
                 Assert.True(await PadForge.Views.ExtrasPage.ExportActivityAsync("12:00 Steer Assist read the state", target));
-                Assert.Contains(" --record save ", Assert.Single(launcher.Lines));
                 Assert.Equal("12:00 Steer Assist read the state", System.IO.File.ReadAllText(target));
                 Assert.Equal(0xEF, System.IO.File.ReadAllBytes(target)[0]);
-                Assert.Empty(System.IO.Directory.GetFiles(recordings));
-
-                System.IO.File.Delete(target);
-                launcher.Refuse = PadForge.Services.Plugins.PluginRefusal.NoShell;
-                Assert.False(await PadForge.Views.ExtrasPage.ExportActivityAsync("text", target));
-                Assert.False(System.IO.File.Exists(target));
-                Assert.Empty(System.IO.Directory.GetFiles(recordings));
             }
             finally
             {
-                PadForge.Common.Recording.RecordingFolder.Seam = null;
-                PadForge.Common.Recording.RecordingSave.Launcher = null;
-                PadForge.Common.Recording.RecordingSave.RightsSeam = null;
-                PadForge.Common.Recording.RecordingSave.Exe = () => Environment.ProcessPath;
-                PadForge.Services.UserSave.HasRightsSeam = null;
-                PadForge.Services.UserSave.NoLowerRightSeam = null;
                 try { System.IO.Directory.Delete(root, recursive: true); } catch (System.IO.IOException) { }
             }
         }
 
-        /// <summary>Save the Plugin Kit… with rights the shell lacks starts
-        /// --plugin-kit as the user with a new folder's name, a number on it
-        /// when the name is taken, and writes nothing in this process.</summary>
+        /// <summary>Save the Plugin Kit… writes the kit here in a new folder,
+        /// a number on it when the name is taken.</summary>
         [Fact]
-        public async System.Threading.Tasks.Task ThePluginKit_IsWrittenByACopyStartedAsTheUser()
+        public async System.Threading.Tasks.Task ThePluginKit_IsWrittenHere()
         {
             string parent = NewFolder();
-            var launcher = new UserCopyLauncher();
-            launcher.Run = _ => 0;
             try
             {
-                PadForge.Services.UserSave.Launcher = launcher;
-                PadForge.Services.UserSave.HasRightsSeam = () => true;
-                PadForge.Services.UserSave.NoLowerRightSeam ??= () => false;
-                PadForge.Services.UserSave.Exe = () => @"C:\PadForge\PadForge.exe";
                 System.IO.Directory.CreateDirectory(System.IO.Path.Combine(parent, PadForge.Services.Plugins.PluginKit.FolderName));
                 string folder = await PadForge.Services.UserSave.KitAsync(parent);
-                string expected = System.IO.Path.Combine(parent, PadForge.Services.Plugins.PluginKit.FolderName + " 2");
-                Assert.Equal(expected, folder);
-                Assert.Equal("\"C:\\PadForge\\PadForge.exe\" --plugin-kit \"" + expected + "\"", Assert.Single(launcher.Lines));
-                Assert.False(System.IO.Directory.Exists(expected));
-                launcher.Run = _ => 1;
-                Assert.Null(await PadForge.Services.UserSave.KitAsync(parent));
+                Assert.Equal(System.IO.Path.Combine(parent, PadForge.Services.Plugins.PluginKit.FolderName + " 2"), folder);
+                Assert.True(System.IO.Directory.Exists(folder));
             }
             finally
             {
-                PadForge.Services.UserSave.Launcher = null;
-                PadForge.Services.UserSave.HasRightsSeam = null;
-                PadForge.Services.UserSave.NoLowerRightSeam = null;
-                PadForge.Services.UserSave.Exe = () => Environment.ProcessPath;
                 try { System.IO.Directory.Delete(parent, recursive: true); } catch (System.IO.IOException) { }
             }
         }
@@ -759,48 +690,10 @@ namespace PadForge.Tests
             Assert.Null(PadForge.Services.Install.AssistantPrograms.FindAs(user, "claude-code"));
         }
 
-        /// <summary>With administrator rights, as PadForge runs, the pages'
-        /// saves take the route as the user: the desktop shell has none of
-        /// those rights on this bench.</summary>
-        [ElevatedFact]
-        public void InAHostWithRights_TheSavesTakeTheRouteAsTheUser()
-        {
-            Assert.True(PadForge.Services.UserSave.RunsWithRightsTheShellLacks());
-        }
-
-        /// <summary>With administrator rights, Export Activity… stages the
-        /// text and starts the copy as the user, through the real rights
-        /// reads, and writes nothing at the target in this process.</summary>
-        [ElevatedFact]
-        public async System.Threading.Tasks.Task InAHostWithRights_ExportActivity_StartsTheCopyAsTheUser()
-        {
-            string root = NewFolder();
-            string recordings = System.IO.Path.Combine(root, "PadForge Recordings");
-            System.IO.Directory.CreateDirectory(recordings);
-            string target = System.IO.Path.Combine(root, "activity.txt");
-            var launcher = new UserCopyLauncher { Run = _ => { Assert.False(System.IO.File.Exists(target)); return 1; } };
-            try
-            {
-                PadForge.Common.Recording.RecordingFolder.Seam = () => recordings;
-                PadForge.Common.Recording.RecordingSave.Launcher = launcher;
-                PadForge.Common.Recording.RecordingSave.Exe = () => @"C:\PadForge\PadForge.exe";
-                Assert.False(await PadForge.Views.ExtrasPage.ExportActivityAsync("text", target));
-                Assert.Contains(" --record save ", Assert.Single(launcher.Lines));
-                Assert.False(System.IO.File.Exists(target));
-            }
-            finally
-            {
-                PadForge.Common.Recording.RecordingFolder.Seam = null;
-                PadForge.Common.Recording.RecordingSave.Launcher = null;
-                PadForge.Common.Recording.RecordingSave.Exe = () => Environment.ProcessPath;
-                try { System.IO.Directory.Delete(root, recursive: true); } catch (System.IO.IOException) { }
-            }
-        }
-
-        /// <summary>With administrator rights, an assistant's program is
-        /// found with the shell user's variables, not this process's.</summary>
-        [ElevatedFact]
-        public void InAHostWithRights_TheAssistantIsFoundWithTheShellUsersVariables()
+        /// <summary>An assistant's program is found with the user's
+        /// variables as they stand now.</summary>
+        [Fact]
+        public void TheAssistantIsFoundWithTheUsersVariables()
         {
             string root = NewFolder();
             try
@@ -808,73 +701,16 @@ namespace PadForge.Tests
                 string npm = System.IO.Path.Combine(root, "npm");
                 System.IO.Directory.CreateDirectory(npm);
                 System.IO.File.WriteAllText(System.IO.Path.Combine(npm, "codex.cmd"), "@echo off");
-                PadForge.Services.Install.AssistantPrograms.ShellVariablesSeam = () => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["PATH"] = npm };
-                Assert.Equal(System.IO.Path.Combine(npm, "codex.cmd"), PadForge.Services.Install.AssistantPrograms.FindForShellUser("codex"));
+                PadForge.Services.Install.AssistantPrograms.UserVariablesSeam = () => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["PATH"] = npm };
+                Assert.Equal(System.IO.Path.Combine(npm, "codex.cmd"), PadForge.Services.Install.AssistantPrograms.FindForUser("codex"));
             }
             finally
             {
-                PadForge.Services.Install.AssistantPrograms.ShellVariablesSeam = null;
+                PadForge.Services.Install.AssistantPrograms.UserVariablesSeam = null;
                 try { System.IO.Directory.Delete(root, recursive: true); } catch (System.IO.IOException) { }
             }
         }
     
-
-        /// <summary>A recordings folder that cannot be made (a file holds its
-        /// name) makes a staged save say false, as every other failure does,
-        /// and throws nothing out of FileAsync.</summary>
-        [Fact]
-        public async System.Threading.Tasks.Task AStagedSave_ThatCannotMakeItsFolder_SaysFalse()
-        {
-            try
-            {
-                PadForge.Services.UserSave.HasRightsSeam = () => true;
-                PadForge.Services.UserSave.NoLowerRightSeam ??= () => false;
-                foreach (var thrown in new Exception[] { new System.IO.IOException("held"), new UnauthorizedAccessException("denied"), new ArgumentException("bad"), new NotSupportedException("no") })
-                {
-                    PadForge.Common.Recording.RecordingFolder.Seam = () => throw thrown;
-                    Assert.False(await PadForge.Services.UserSave.FileAsync(_ => { }, System.IO.Path.Combine(System.IO.Path.GetTempPath(), "never.txt")));
-                }
-            }
-            finally
-            {
-                PadForge.Common.Recording.RecordingFolder.Seam = null;
-                PadForge.Services.UserSave.HasRightsSeam = null;
-                PadForge.Services.UserSave.NoLowerRightSeam = null;
-            }
-        }
-
-        /// <summary>A ShellElevated refusal writes the kit in this process,
-        /// which has rights, only when the shell's user has no lower right,
-        /// as every other copy started as the user does.</summary>
-        [Fact]
-        public async System.Threading.Tasks.Task ThePluginKit_OnAShellElevatedRefusal_IsWrittenHereOnlyWhenTheUserHasNoLowerRight()
-        {
-            string parent = NewFolder();
-            var launcher = new UserCopyLauncher { Refuse = PadForge.Services.Plugins.PluginRefusal.ShellElevated };
-            try
-            {
-                PadForge.Services.UserSave.Launcher = launcher;
-                PadForge.Services.UserSave.HasRightsSeam = () => true;
-                PadForge.Services.UserSave.NoLowerRightSeam ??= () => false;
-                PadForge.Services.UserSave.Exe = () => @"C:\PadForge\PadForge.exe";
-                PadForge.Services.UserSave.NoLowerRightSeam = () => false;
-                Assert.Null(await PadForge.Services.UserSave.KitAsync(parent));
-                Assert.Empty(System.IO.Directory.GetFileSystemEntries(parent));
-                PadForge.Services.UserSave.NoLowerRightSeam = () => true;
-                string folder = await PadForge.Services.UserSave.KitAsync(parent);
-                Assert.Equal(System.IO.Path.Combine(parent, PadForge.Services.Plugins.PluginKit.FolderName), folder);
-                Assert.True(System.IO.File.Exists(System.IO.Path.Combine(folder, "README.md")));
-            }
-            finally
-            {
-                PadForge.Services.UserSave.Launcher = null;
-                PadForge.Services.UserSave.HasRightsSeam = null;
-                PadForge.Services.UserSave.NoLowerRightSeam = null;
-                PadForge.Services.UserSave.NoLowerRightSeam = null;
-                PadForge.Services.UserSave.Exe = () => Environment.ProcessPath;
-                try { System.IO.Directory.Delete(parent, recursive: true); } catch (System.IO.IOException) { }
-            }
-        }
 
         /// <summary>A PATH searched for another process's user looks only in
         /// folders on a drive of this PC: a device path to a folder that holds
@@ -910,59 +746,6 @@ namespace PadForge.Tests
         }
     
 
-        /// <summary>A copy with rights whose shell's user also has a lower
-        /// right (UAC on, an Explorer started elevated among them) saves no
-        /// file and writes no kit in this process: the save goes to the copy
-        /// as the user, and a ShellElevated refusal saves nothing. The
-        /// shell's rights read is left to the code (RightsSeam null), and
-        /// only the shell user's answer is faked.</summary>
-        [Fact]
-        public async System.Threading.Tasks.Task WithRights_AndAShellUserWithALowerRight_NothingIsWrittenHere()
-        {
-            string root = NewFolder();
-            string recordings = System.IO.Path.Combine(root, "PadForge Recordings");
-            System.IO.Directory.CreateDirectory(recordings);
-            string target = System.IO.Path.Combine(root, "activity.txt");
-            var refusing = new UserCopyLauncher { Refuse = PadForge.Services.Plugins.PluginRefusal.ShellElevated };
-            try
-            {
-                PadForge.Services.UserSave.HasRightsSeam = () => true;
-                PadForge.Services.UserSave.NoLowerRightSeam = () => false;
-                PadForge.Services.UserSave.Launcher = refusing;
-                PadForge.Services.UserSave.Exe = () => @"C:\PadForge\PadForge.exe";
-                PadForge.Common.Recording.RecordingFolder.Seam = () => recordings;
-                PadForge.Common.Recording.RecordingSave.Launcher = refusing;
-                PadForge.Common.Recording.RecordingSave.RightsSeam = () => true;
-                PadForge.Common.Recording.RecordingSave.NoLowerRightSeam = () => false;
-                PadForge.Common.Recording.RecordingSave.Exe = () => @"C:\PadForge\PadForge.exe";
-
-                Assert.False(await PadForge.Services.UserSave.FileAsync(s => s.WriteByte(1), target));
-                Assert.False(System.IO.File.Exists(target));
-                Assert.Null(await PadForge.Services.UserSave.KitAsync(root));
-                Assert.False(System.IO.Directory.Exists(System.IO.Path.Combine(root, PadForge.Services.Plugins.PluginKit.FolderName)));
-
-                // Without rights, both are made here, as the user.
-                PadForge.Services.UserSave.HasRightsSeam = () => false;
-                refusing.Lines.Clear();
-                Assert.True(await PadForge.Services.UserSave.FileAsync(s => s.WriteByte(1), target));
-                Assert.True(System.IO.File.Exists(target));
-                Assert.NotNull(await PadForge.Services.UserSave.KitAsync(root));
-                Assert.Empty(refusing.Lines);
-            }
-            finally
-            {
-                PadForge.Services.UserSave.HasRightsSeam = null;
-                PadForge.Services.UserSave.NoLowerRightSeam = null;
-                PadForge.Services.UserSave.Launcher = null;
-                PadForge.Services.UserSave.Exe = () => Environment.ProcessPath;
-                PadForge.Common.Recording.RecordingFolder.Seam = null;
-                PadForge.Common.Recording.RecordingSave.Launcher = null;
-                PadForge.Common.Recording.RecordingSave.RightsSeam = null;
-                PadForge.Common.Recording.RecordingSave.NoLowerRightSeam = null;
-                PadForge.Common.Recording.RecordingSave.Exe = () => Environment.ProcessPath;
-                try { System.IO.Directory.Delete(root, recursive: true); } catch (System.IO.IOException) { }
-            }
-        }
     }
 
     /// <summary>

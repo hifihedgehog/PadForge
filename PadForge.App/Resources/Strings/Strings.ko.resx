@@ -591,7 +591,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>이 PC에 Logitech G-key SDK가 없습니다. Logitech Gaming Software 8.55 이상과 함께 설치됩니다.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK가 등록되어 있지만 파일이 없습니다. Logitech Gaming Software를 다시 설치하세요.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK를 찾았지만 불러오지 못했습니다.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK를 찾았지만 불러오지 않았습니다. 관리자만 변경할 수 있는지, Logitech이 서명했는지 PadForge가 확인하지 못했기 때문입니다.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>그 라이브러리는 예상한 G-key SDK가 아닙니다.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK가 시작되지 않았습니다. 보통 Logitech Gaming Software가 실행 중이 아닙니다.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>연결됨, 아직 감지된 키가 없습니다. Logitech Gaming Software에서 PadForge 프로필의 각 키에 G-key 명령을 끌어다 놓고, 그 프로필을 상시 프로필로 지정하세요. 또한 G600 또는 G300 마우스는 온보드 모드가 아니어야 합니다.</value></data>
@@ -701,30 +700,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge가 시작할 때 창을 숨긴 채로 두세요. 평소처럼 실행되고 매핑합니다.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows에 로그인할 때 PadForge를 자동으로 시작합니다. 이 설정이 켜져 있는 동안에는 바로 가기, 스크립트 또는 다른 프로그램에서 시작해도 PadForge가 Windows의 확인 창 없이 시작됩니다.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge는 {0}에서 실행됩니다.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>이 기능에는 PadForge 전용 폴더가 필요합니다. 현재 폴더에 다른 파일이 있어 PadForge가 다른 프로그램의 변경을 막을 수 없습니다.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>이 기능에는 다른 프로그램이 변경할 수 없는 폴더에 있는 PadForge가 필요합니다. PadForge가 다른 프로그램의 폴더 변경을 막지 못했습니다.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge를 전용 폴더로 이동</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge와 설정을 Program Files로 복사하고, PadForge의 작업이 그곳을 가리키게 한 뒤, 그곳에서 시작합니다. 여기 있는 사본은 그대로 남습니다.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}에 PadForge의 것이 아닌 파일이 있습니다.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>PadForge를 다른 파일이 있는 폴더에서 실행했기 때문에 로그인 시 자동 시작이 꺼졌습니다.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: Windows에 Program Files 폴더가 지정되어 있지 않습니다.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: 실행 중인 PadForge를 읽지 못했습니다.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}을(를) 만들지 못했습니다.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}에 무엇이 있는지 읽지 못했습니다.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: 다른 프로그램이 {0}을(를) 변경하지 못하게 막지 못했습니다.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: {0}에 복사한 PadForge가 실행 중인 PadForge와 일치하지 않았습니다.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge를 이동하지 못했습니다: 복사한 뒤 {0}에 PadForge의 것이 아닌 파일이 있거나 다른 프로그램이 변경할 수 있었습니다.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>로그인 시 자동 시작을 껐습니다. 실행했던 PadForge가 더 이상 없기 때문입니다.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>로그인 시 자동 시작을 껐습니다. PadForge를 실행한 폴더를 다른 프로그램이 변경하지 못하게 PadForge가 막지 못했기 때문입니다.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>로그인 시 자동 시작을 껐습니다. 어떤 PadForge를 실행했는지 PadForge가 읽지 못했기 때문입니다.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>로그인 시 자동 시작을 껐습니다. 실행했던 PadForge의 폴더를 PadForge가 읽지 못했기 때문입니다.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge가 보호 폴더 {0}을(를) 만들 수 없습니다. PadForge는 관리자 권한으로 실행하는 라이브러리를 그곳에 보관하며, 그 폴더가 없으면 안전하게 시작할 수 없습니다.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge가 보호 폴더 {0}에서 자신을 다시 시작하지 못했습니다. PadForge는 관리자 권한으로 그곳에서만 실행되므로 시작하지 않았습니다.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge가 한 번에 하나만 실행되게 하는 잠금을 만들지 못해 시작하지 않았습니다.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge가 다른 프로그램이 바꿀 수 있는 폴더 {0}에서 관리자 권한으로 실행 중입니다. 그 프로그램이 그곳의 PadForge 설정을 바꿀 수 있고, PadForge는 자신의 권한으로 그 변경에 따라 동작합니다.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge가 다른 파일이 들어 있는 폴더 {0}에서 관리자 권한으로 실행 중입니다. PadForge는 다른 프로그램이 그곳의 설정을 변경하지 못하게 막을 수 없고, 자신의 권한으로 그 변경에 따라 동작합니다.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge가 읽지 못한 폴더 {0}에서 관리자 권한으로 실행 중입니다. PadForge는 다른 프로그램이 그곳의 설정을 변경하지 못하게 막을 수 없고, 자신의 권한으로 그 변경에 따라 동작합니다.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>항상 시스템 트레이에 표시</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>창이 열려 있는 동안에도 시스템 트레이 아이콘을 표시하여 언제든지 해당 메뉴에서 종료를 선택할 수 있습니다.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>업데이트</value></data>
@@ -966,13 +942,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>정리 점검: 보관하는 항목을 확인하는 중…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>정리 점검: PadForge가 보관하는 항목을 읽지 못해 저장할 수 없습니다.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>사용자 권한으로 하는 저장이 시작되지 않았습니다.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>사용자 권한으로 하는 저장이 시작되지 않았습니다: 저장을 시작할 데스크톱 셸이 실행 중이 아닙니다.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>사용자 권한으로 하는 저장이 시작되지 않았습니다: Windows가 오류 {0}(으)로 거부했습니다.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>저장이 {0} 안에 끝나지 않았습니다.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows가 그 위치에 파일을 쓰지 못하게 했습니다.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge가 이 파일을 자체 녹화로 인정하지 않았습니다.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>저장이 코드 {0}(으)로 끝났습니다.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>사용자 계정으로 저장되며, 처음에는 다운로드 폴더에, 그다음부터는 마지막으로 저장한 위치에 저장되고 파일 탐색기에 표시됩니다. 아무도 이 페이지에 없는 동안 중지된 녹화(제한 도달, 매크로, 프로그램, 어시스턴트 도구, --record stop)는 홈에서 이 검토를 기다리며, 저장하지 않으면 7일 뒤 삭제됩니다. 프로그램에는 녹화가 대기 중이라는 사실만 알리고 위치는 알리지 않습니다.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0}의 문제 녹화가 읽어 주기를 기다리고 있습니다.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>검토</value></data>
@@ -4340,10 +4311,6 @@ PadForge가 PadForge.exe 옆의 crash.log에 자세한 내용을 기록하지 �
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>시작되지 않음: Python 파일을 열어 주는 프로그램이 없고 PadForge가 py 런처도 찾지 못했습니다</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>시작되지 않음: PadForge가 이 종류의 파일을 여는 프로그램이 무엇인지 확인하지 못했습니다</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>시작되지 않음: 이 종류의 파일을 여는 프로그램이 이 PC에 없습니다</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>시작되지 않음: 플러그인을 시작할 데스크톱 셸이 실행 중이 아닙니다</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>시작되지 않음: 데스크톱 셸이 관리자 권한을 가지고 있어 플러그인도 같은 권한을 갖게 됩니다</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>시작되지 않음: PadForge가 관리자 권한을 갖게 되는지 확인하지 못했습니다</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>시작되지 않음: Windows가 관리자 권한을 부여해 PadForge가 실행 전에 종료했습니다</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>시작되지 않음: 관리자 권한을 요구합니다</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>시작되지 않음: Windows가 오류 {0}(으)로 거부했습니다</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>시작되지 않음</value></data>
@@ -5875,7 +5842,6 @@ PadForge가 PadForge.exe 옆의 crash.log에 자세한 내용을 기록하지 �
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>페어링 중지됨: 컨트롤러나 블루투스 라디오를 읽거나 쓰지 못했습니다. 자세한 내용은 진단 로그에 있습니다.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>PadForge가 예상하지 못한 오류로 페어링이 중지되었습니다. 자세한 내용은 진단 로그에 있습니다.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 이상 필요</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>라이브러리를 찾았지만, 관리자만 변경할 수 있는지와 Logitech이 서명했는지 PadForge가 확인하지 못해 불러오지 않음</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>라이브러리를 찾았지만 사용하지 못했고, 이유는 진단 로그에 있음</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software를 시작하세요</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control이 있는 휴대폰을 기다리는 중</value></data>
@@ -5980,7 +5946,6 @@ PadForge가 PadForge.exe 옆의 crash.log에 자세한 내용을 기록하지 �
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>이 Force Dimension 라이브러리 사본을 다른 사본 대신 불러옵니다. 다른 사본에서 열려 있던 Falcon은 닫혔다가 이 사본에서 다시 열립니다. SDK가 설치한 사본은 이 설정이 없어도 찾아집니다.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|라이브러리 (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK 다운로드 페이지를 열지 못했습니다: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK 다운로드 페이지가 아직 열리지 않았습니다: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon 드라이버 설치</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>드라이버가 없는 Falcon에 SDK 폴더의 Force Dimension 드라이버를 설치합니다. 먼저 Windows가 Force Dimension을 신뢰할지 물을 수 있습니다.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension SDK 받기</value></data>
@@ -6681,6 +6646,7 @@ PadForge가 PadForge.exe 옆의 crash.log에 자세한 내용을 기록하지 �
   <data name="SdlMapping_Away" xml:space="preserve"><value>장치가 연결되어 있지 않습니다. 연결되면 SDL이 읽습니다.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL이 이 장치에 대한 읽기 결과를 PadForge에 주지 않았습니다.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>기본 제공 커뮤니티 사본, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} 다운로드</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge의 자체 파일</value></data>

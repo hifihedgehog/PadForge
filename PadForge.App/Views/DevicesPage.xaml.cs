@@ -901,9 +901,6 @@ namespace PadForge.Views
 
         // ── Opt-in driver switch (hifihedgehog/SDL#33 Part 15) ──
 
-        private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
-            => PadForge.Services.ExeFolderState.Instance.RequestMove();
-
         // Two pairs of buttons ask for the same switch. The Input Hiding
         // pair is a keyboard's or a mouse's Use Only in PadForge, and a
         // touchpad's, with the give-back task. The device tools' pair moves

@@ -83,10 +83,9 @@ namespace PadForge.Views
 
         private void GitHub_Click(object sender, RoutedEventArgs e) => Open("https://github.com/" + UpdateService.Repo);
 
-        /// <summary>Opens a web page in the browser, through the desktop
-        /// shell, which throws nothing. With no program registered for web
-        /// pages the click does nothing.</summary>
-        private static void Open(string url) => ShellLaunch.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+        /// <summary>Opens a web page in the browser. With no program
+        /// registered for web pages the click does nothing.</summary>
+        private static void Open(string url) => ShellLaunch.TryStart(new ProcessStartInfo(url) { UseShellExecute = true }, out _);
 
         private void ShowAllCredits_Click(object sender, RoutedEventArgs e)
         {

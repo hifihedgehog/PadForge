@@ -221,8 +221,7 @@ namespace PadForge.Tests
             // driver pair and the Devices Settings card's Reset All ask as a
             // driver change, Hide from Games' twin. The ask-first sweep
             // (AskFirstSweepTests) adds what runs a program or opens a place:
-            // a Workshop item's page, the device mapping issue, Move PadForge
-            // to Its Own Folder on three pages, Restore the Windows Driver
+            // a Workshop item's page, the device mapping issue, Restore the Windows Driver
             // twice, the Run Program step, a controller's Paste twice, Release
             // Notes, Install and Restart, both automatic update switches and
             // the Updates card's Reset All, Start at Login and the Window
@@ -238,11 +237,11 @@ namespace PadForge.Tests
             Assert.Equal(new[]
             {
                 "AboutPage.xaml OpensPlace x1", "CommunityConfigsPanel.xaml OpensPlace x1", "ConfirmDialog.xaml - x1",
-                "DevicesPage.xaml Drivers x4", "DevicesPage.xaml OpensPlace x2", "DevicesPage.xaml RunsProgram x1", "DevicesPage.xaml UseOnly x2",
-                "ExtrasPage.xaml Network x7", "GetProfilesDialog.xaml ImportsProfile x1", "HomePage.xaml RunsProgram x1", "ImportConfigDialog.xaml ImportsProfile x1",
+                "DevicesPage.xaml Drivers x4", "DevicesPage.xaml OpensPlace x2", "DevicesPage.xaml UseOnly x2",
+                "ExtrasPage.xaml Network x7", "GetProfilesDialog.xaml ImportsProfile x1", "ImportConfigDialog.xaml ImportsProfile x1",
                 "KeepDriverDialog.xaml Drivers x1", "PadPage.xaml - x29", "PadPage.xaml ImportsProfile x2", "PadPage.xaml RunsProgram x1", "PadPage.xaml SendsInput x31",
                 "ProfileDialog.xaml Network x1", "ProfilesPage.xaml ImportsProfile x1", "ProfilesPage.xaml Network x1",
-                "SettingsPage.xaml - x1", "SettingsPage.xaml Drivers x3", "SettingsPage.xaml OpensPlace x4", "SettingsPage.xaml RunsProgram x9",
+                "SettingsPage.xaml - x1", "SettingsPage.xaml Drivers x3", "SettingsPage.xaml OpensPlace x4", "SettingsPage.xaml RunsProgram x8",
                 "UninstallBthPS3Dialog.xaml Drivers x1", "UninstallHIDMaestroDialog.xaml Drivers x1",
             }, found.GroupBy(x => x).Select(g => g.Key + " x" + g.Count()).OrderBy(x => x, StringComparer.Ordinal));
         }

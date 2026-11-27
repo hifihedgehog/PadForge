@@ -35,11 +35,20 @@ namespace PadForge.Engine
         private static int s_running;
 
         /// <summary>PadForge's own work takes this row offline now, and
-        /// its absence from here on is that work's until the row
-        /// returns.</summary>
+        /// its absence from here on is that work's until the row returns.
+        /// A later absence is not: the row's return ends the stamp
+        /// (<see cref="Back"/>).</summary>
         public static void Row(Guid device)
         {
             if (device != Guid.Empty) s_rows[device] = Environment.TickCount64;
+        }
+
+        /// <summary>The row is online again: its own stamp, if it has one,
+        /// ends here, even when the notes never read the row away. Called
+        /// when a row turns online (UserDevice.IsOnline).</summary>
+        public static void Back(Guid device)
+        {
+            if (s_rows.ContainsKey(device)) s_rows.TryRemove(device, out _);
         }
 
         /// <summary>PadForge's own work can take any row offline now.</summary>
@@ -62,7 +71,8 @@ namespace PadForge.Engine
         /// believed until they have settled.</summary>
         public static void Settle() => Volatile.Write(ref s_settle, Environment.TickCount64);
 
-        /// <summary>The row's own latest stamp, or <see cref="Never"/>.</summary>
+        /// <summary>The row's own latest stamp until the row comes back, or
+        /// <see cref="Never"/>.</summary>
         public static long RowAt(Guid device) => s_rows.TryGetValue(device, out long at) ? at : Never;
 
         /// <summary>The latest stamp that covers every row: now while work

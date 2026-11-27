@@ -724,7 +724,7 @@ namespace PadForge.Services
         /// <summary>How long a device may send reports that name none of its
         /// compared controls before the file says Raw Input's reports of it
         /// name none of them now: a Bluetooth PlayStation pad once SDL turns
-        /// on its full reports (SDL_hints.h:1518-1528).</summary>
+        /// on its full reports (SDL_hints.h:1568-1578).</summary>
         internal static readonly TimeSpan UnnamedAfter = TimeSpan.FromSeconds(1);
 
         /// <summary>How many reports naming none of a device's compared

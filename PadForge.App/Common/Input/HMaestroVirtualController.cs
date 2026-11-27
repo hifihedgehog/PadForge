@@ -429,22 +429,22 @@ namespace PadForge.Common.Input
         /// program's controllers alone, this one's included
         /// (HMContext.RemoveAllVirtualControllers). The one way the app runs
         /// it. The test host runs none: it made none of them, and the sweep
-        /// changes the PC.</summary>
+        /// changes the PC. HMaestroContexts refuses it there too.</summary>
         internal static void SweepVirtualControllers()
         {
             if (OffLimitsForTest) return;
-            HMContext.RemoveAllVirtualControllers(preserveInstall: true);
+            HMaestroContexts.SweepEndedPrograms();
         }
 
         /// <summary>HIDMaestro's removal of itself from the PC
         /// (HMUninstall.Run, 2.0.1): every virtual controller, the driver,
         /// its certificate, its registry keys and its files. The one way the
         /// app runs it (Services.HIDMaestroRemoval). The test host runs none
-        /// and gets null.</summary>
+        /// and gets null, here and in HMaestroContexts.</summary>
         internal static HMUninstallReport RemoveHIDMaestro(HMUninstallOptions options)
         {
             if (OffLimitsForTest) return null;
-            return HMUninstall.Run(options);
+            return HMaestroContexts.Uninstall(options);
         }
 
         /// <summary>Test seam for the HIDMaestro call that makes the

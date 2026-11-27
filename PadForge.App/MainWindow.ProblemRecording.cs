@@ -318,9 +318,9 @@ namespace PadForge
             {
                 SaveFolder = _viewModel.Settings.ProblemRecordingSaveFolder ?? RecordingFolder.Downloads(),
                 PickTarget = PickRecordingTarget,
-                // Through the desktop shell, which throws nothing. The message
-                // line names the file.
-                ShowInExplorer = target => PadForge.Common.ShellLaunch.Start(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{target}\""),
+                // The message line names the file.
+                ShowInExplorer = target => PadForge.Common.ShellLaunch.TryStart(
+                    new System.Diagnostics.ProcessStartInfo(PadForge.Common.ShellLaunch.Explorer, $"/select,\"{target}\""), out _),
                 CopyText = text =>
                 {
                     try { PadForge.Common.ShellLaunch.SetClipboardText(text); }
@@ -328,7 +328,7 @@ namespace PadForge
                 },
                 // Save and Post's page, in the browser, as About's GitHub
                 // button opens the repository.
-                OpenPage = url => PadForge.Common.ShellLaunch.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }),
+                OpenPage = url => PadForge.Common.ShellLaunch.TryStart(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }, out _),
             };
             model.Saved = target =>
             {

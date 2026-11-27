@@ -96,7 +96,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly Func<long> _ticks;
         private readonly int _idleTickMs;
         private readonly int _stopJoinMs;
-        private readonly AutoResetEvent _wake = new(false);
 
         private Thread _thread;
         private volatile WorkerRun _run;
@@ -147,10 +146,10 @@ namespace PadForge.Common.Input.Peripherals
             var run = new WorkerRun();
             _run = run;
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralIcue" };
-            _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
             LearnedKeyMaps.Changed += OnLearned;
+            _thread.Start();
         }
 
         public void Stop()
@@ -191,7 +190,7 @@ namespace PadForge.Common.Input.Peripherals
 
         internal void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            _run?.Wake.Set();
         }
 
         /// <summary>A name learned with Map Key Lights wakes the worker, which
@@ -248,8 +247,7 @@ namespace PadForge.Common.Input.Peripherals
                         : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
                     Interlocked.Increment(ref _passes);
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)
@@ -634,7 +632,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
     }
 }

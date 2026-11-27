@@ -2579,50 +2579,6 @@
                                         <TextBlock Text="{Binding SelectedDevice.TouchpadInputStatus}" Style="{StaticResource DeviceSmall}" TextWrapping="Wrap" Margin="0,0,0,8"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Visibility="{Binding SelectedDevice.ShowTouchpadCaptureStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                        <!-- A touchpad's give-back runs PadForge as SYSTEM
-                                             at boot, which it may only do from a folder
-                                             of PadForge's own (#600). While the folder
-                                             holds other files, or PadForge could not keep
-                                             other programs from changing it, the row says
-                                             which and offers the move: the touchpad's row,
-                                             and its mouse collection's row, which shows
-                                             the same switch. -->
-                                        <StackPanel x:Name="TouchpadFolderNote" Margin="0,0,0,8">
-                                            <StackPanel.Style>
-                                                <Style TargetType="StackPanel">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding SelectedDevice.IsTouchpadRow}" Value="True"/>
-                                                                <Condition Binding="{Binding IsShared, Source={x:Static services:ExeFolderState.Instance}}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding SelectedDevice.IsTouchpadMouse}" Value="True"/>
-                                                                <Condition Binding="{Binding IsShared, Source={x:Static services:ExeFolderState.Instance}}" Value="True"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </MultiDataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </StackPanel.Style>
-                                            <TextBlock Text="{Binding ExeFolder_NeedsOwnFolder, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceSmall}"
-                                                       TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       Visibility="{Binding HoldsOtherFiles, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                            <TextBlock Text="{Binding ExeFolder_CouldNotProtect, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceSmall}"
-                                                       TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       Visibility="{Binding CouldNotProtect, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                            <Button common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Content="{Binding ExeFolder_Move, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
-                                                    ToolTip="{Binding ExeFolder_MoveTip, Source={x:Static strings:Strings.Instance}}"
-                                                    IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
-                                                    Click="MoveToOwnFolder_Click" HorizontalAlignment="Left" Margin="0,8,0,0"/>
-                                            <TextBlock Text="{Binding MoveError, Source={x:Static services:ExeFolderState.Instance}}" Style="{StaticResource DeviceSmall}"
-                                                       TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       Visibility="{Binding HasMoveError, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                        </StackPanel>
                                     </StackPanel>
 
                                     <!-- A mouse's DPI (#600), as its maker's software

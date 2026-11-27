@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ikke startet: intet program åbner Python-filer for dig, og PadForge finder ingen py-starter</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ikke startet: PadForge kan ikke læse, hvilket program der åbner denne slags fil for dig</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ikke startet: programmet, der åbner denne slags fil for dig, findes ikke på denne pc</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ikke startet: ingen skrivebordsskal kører at starte det under</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ikke startet: skrivebordsskallen har administratorrettigheder, så pluginet ville få dem også</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ikke startet: PadForge kan ikke læse, om det ville få administratorrettigheder</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ikke startet: Windows gav det administratorrettigheder, så PadForge afsluttede det, før det kørte</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ikke startet: det beder om administratorrettigheder</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ikke startet: Windows afviste med fejl {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ikke startet</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Der er ikke noget Logitech G-key SDK på denne maskine. Det installeres sammen med Logitech Gaming Software 8.55 eller nyere.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK er registreret, men filen er væk. Geninstaller Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK blev fundet, men kunne ikke indlæses.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK blev fundet, men ikke indlæst, da PadForge ikke kunne bekræfte, at kun administratorer kan ændre det, og at Logitech har signeret det.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Det bibliotek er ikke det G-key SDK, som PadForge forventer.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK nægtede at starte. Som regel kører Logitech Gaming Software ikke.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Forbundet, ingen tast registreret endnu. I Logitech Gaming Software skal du trække G-key-kommandoen hen på hver tast i PadForge-profilen og gøre profilen vedvarende. En G600- eller G300-mus skal også være ude af tilstanden med indbygget hukommelse.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Hold vinduet skjult, når PadForge starter. Programmet kører og tildeler som normalt.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatisk, når du logger på Windows. Mens dette er slået til, starter PadForge også uden Windows' spørgsmål fra en genvej, et script eller et andet program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge kører fra {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dette kræver, at PadForge ligger i en mappe for sig selv. Dens mappe indeholder andre filer, så PadForge kan ikke holde andre programmer fra at ændre den.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Dette kræver, at PadForge ligger i en mappe, som andre programmer ikke kan ændre. PadForge kunne ikke holde dem fra at ændre sin mappe.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Flyt PadForge til sin egen mappe</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopierer PadForge og dets indstillinger til Program Files, peger dets opgaver dertil og starter det derfra. Kopien her bliver, som den er.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: {0} indeholder filer, der ikke hører til PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Start ved logon blev slået fra, fordi det kørte PadForge fra en mappe med andre filer.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge blev ikke flyttet: Windows har ingen mappe med navnet Programmer.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke læse den PadForge, der kører.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke oprette {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke læse, hvad {0} indeholder.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: den kunne ikke holde andre programmer fra at ændre {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: dens kopi i {0} passede ikke med den PadForge, der kører.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge blev ikke flyttet: efter kopieringen indeholdt {0} filer, der ikke hører til PadForge, eller andre programmer kunne ændre den.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Start ved logon blev slået fra, da den PadForge, der kørte, ikke længere findes.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Start ved logon blev slået fra, da PadForge ikke kunne holde andre programmer fra at ændre den mappe, PadForge kørte fra.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Start ved logon blev slået fra, da PadForge ikke kunne læse, hvilken PadForge den kørte.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Start ved logon blev slået fra, da PadForge ikke kunne læse mappen til den PadForge, den kørte.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge kunne ikke oprette sin beskyttede mappe, {0}. PadForge opbevarer de biblioteker, det kører med administratorrettigheder, dér, og det kan ikke starte sikkert uden den.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge kunne ikke starte sig selv igen fra sin beskyttede mappe, {0}. PadForge kører kun med administratorrettigheder derfra, så det startede ikke.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge kunne ikke oprette den lås, der begrænser det til én kørende kopi, så det startede ikke.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge kører med administratorrettigheder fra {0}, en mappe, som andre programmer kan ændre. De kan ændre PadForges indstillinger dér, og PadForge handler på dem med sine rettigheder.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge kører med administratorrettigheder fra {0}, en mappe, der indeholder andre filer. PadForge kan ikke holde andre programmer fra at ændre dets indstillinger dér, og det handler på dem med sine rettigheder.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge kører med administratorrettigheder fra {0}, en mappe, som det ikke kunne læse. PadForge kan ikke holde andre programmer fra at ændre dets indstillinger dér, og det handler på dem med sine rettigheder.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vis altid i meddelelsesområdet</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hold ikonet i meddelelsesområdet synligt, mens vinduet er åbent, så Afslut i dets menu altid kun er ét klik væk.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Opdateringer</value></data>
@@ -1354,13 +1326,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Rensekontrol: Kontrollerer de dele, du beholder…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Rensekontrol: PadForge kunne ikke læse de dele, du beholder, så Gem forbliver slået fra.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Lagringen med dine rettigheder blev ikke startet.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Lagringen med dine rettigheder blev ikke startet: der kører intet skrivebordsskal at starte den under.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Lagringen med dine rettigheder blev ikke startet: Windows afviste med fejl {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Lagringen sluttede ikke inden for {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows lod ikke filen blive skrevet dér.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge tog ikke denne fil for en optagelse, den selv har lavet.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Lagringen sluttede med kode {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Gemt som dig, første gang i din mappe Overførsler, derefter dér, hvor du sidst gemte, og vist i Stifinder. En optagelse, der stopper, mens ingen er på siden (dens grænse, en makro, et program, assistentværktøjet eller --record stop), venter på denne gennemgang på Hjem og slettes efter 7 dage, medmindre den gemmes. Et program får at vide, at den venter, men aldrig hvor.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>En problemoptagelse fra {0} venter på, at du læser den.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Gennemgå</value></data>
@@ -5920,7 +5887,6 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Parringen stoppede: det mislykkedes at læse fra eller skrive til controlleren eller Bluetooth-radioen. Diagnoselogfilen har detaljerne.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Parringen stoppede på en fejl, som PadForge ikke havde ventet. Diagnoselogfilen har detaljerne.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>kræver Logitech Gaming Software 8.52 eller nyere</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>fandt sit bibliotek og indlæste det ikke, da PadForge ikke kunne bekræfte, at kun administratorer kan ændre det, og at Logitech har signeret det</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>fandt sit bibliotek og kunne ikke bruge det, og diagnoselogfilen siger hvorfor</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>start Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>venter på en telefon med Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Indlæser denne kopi af Force Dimensions bibliotek i stedet for alle andre. En Falcon, der er åben på en anden kopi, lukkes og åbnes igen på denne. De kopier, SDK'et installerer, findes uden den.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Biblioteker (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Downloadsiden til Falcon SDK blev ikke åbnet: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Downloadsiden til Falcon SDK er ikke åbnet endnu: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installer Falcon Driver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Installerer Force Dimensions driver fra SDK-mappen på en Falcon, der ingen har. Windows spørger muligvis først, om du vil stole på Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Hent Force Dimensions SDK</value></data>
@@ -6726,6 +6691,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="SdlMapping_Away" xml:space="preserve"><value>Enheden er ikke tilsluttet. SDL læser den, så snart den er det.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL gav PadForge ingen aflæsning af denne enhed.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Den fælles kopi, der er bygget ind, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Downloadet {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Egen fil i PadForge</value></data>

@@ -16,6 +16,51 @@ namespace PadForge.Tests
     [Collection("SettingsManagerStatics")]
     public class OpenVrConsumerTests
     {
+        // ── the vrserver check ──────────────────────────────────────────────────
+
+        [Fact]
+        public void WithVrserverClosed_TheSessionAnswersNoServer_WithoutOpeningAClient()
+        {
+            // SteamVR's openvr_api.dll loads at the first OpenVR.Init, so no
+            // init may run while vrserver is down.
+            bool opened = false;
+            var svc = new OpenVrConsumerService
+            {
+                ServerRuns = () => false,
+                OpenClient = (out EVRInitError error, out string failure) =>
+                {
+                    opened = true;
+                    error = EVRInitError.None;
+                    failure = null;
+                    return null;
+                },
+            };
+            Assert.Null(svc.OpenSession(out EVRInitError err, out string why));
+            Assert.Equal(EVRInitError.Init_NoServerForBackgroundApp, err);
+            Assert.Null(why);
+            Assert.False(opened);
+        }
+
+        [Fact]
+        public void WithVrserverRunning_TheSessionOpensTheClient()
+        {
+            bool opened = false;
+            var svc = new OpenVrConsumerService
+            {
+                ServerRuns = () => true,
+                OpenClient = (out EVRInitError error, out string failure) =>
+                {
+                    opened = true;
+                    error = EVRInitError.Init_HmdNotFound;
+                    failure = null;
+                    return null;
+                },
+            };
+            Assert.Null(svc.OpenSession(out EVRInitError err, out _));
+            Assert.Equal(EVRInitError.Init_HmdNotFound, err);
+            Assert.True(opened);
+        }
+
         // ── runtime discovery ───────────────────────────────────────────────────
 
         [Fact]

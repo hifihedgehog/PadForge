@@ -613,10 +613,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>No s'ha iniciat: cap programa obre els fitxers Python per tu, i PadForge no troba cap llançador py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>No s'ha iniciat: PadForge no pot llegir quin programa obre aquest tipus de fitxer per tu</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>No s'ha iniciat: el programa que obre aquest tipus de fitxer per tu no és en aquest PC</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>No s'ha iniciat: no hi ha cap shell d'escriptori per iniciar-lo</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>No s'ha iniciat: el shell d'escriptori té drets d'administrador, així que el complement també els tindria</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>No s'ha iniciat: PadForge no pot llegir si tindria drets d'administrador</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>No s'ha iniciat: Windows li ha donat drets d'administrador, així que PadForge l'ha acabat abans que s'executés</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>No s'ha iniciat: demana drets d'administrador</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>No s'ha iniciat: Windows l'ha refusat amb l'error {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>No s'ha iniciat</value></data>
@@ -919,7 +915,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>No hi ha cap SDK G-key de Logitech en aquest equip. S'instal·la amb Logitech Gaming Software 8.55 o posterior.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>L'SDK G-key està registrat, però el seu fitxer ja no hi és. Torna a instal·lar Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>S'ha trobat l'SDK G-key, però no s'ha pogut carregar.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>S'ha trobat l'SDK G-key, però no s'ha carregat, perquè PadForge no ha pogut confirmar que només els administradors el poden canviar i que Logitech l'ha signat.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Aquesta biblioteca no és l'SDK G-key que s'esperava.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>L'SDK G-key no s'ha volgut iniciar. Normalment és perquè Logitech Gaming Software no s'està executant.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connectat, encara no s'ha detectat cap tecla. A Logitech Gaming Software, arrossega l'ordre G-key a cada tecla del perfil de PadForge i fes que aquest perfil sigui persistent. A més, un ratolí G600 o G300 no ha d'estar en mode de memòria integrada.</value></data>
@@ -1023,30 +1018,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Manté la finestra amagada quan s'inicia PadForge. S'executa i assigna com sempre.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicia PadForge automàticament quan inicies la sessió a Windows. Mentre això estigui activat, PadForge també s'inicia sense l'avís de Windows des d'una drecera, un script o un altre programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge s'executa des de {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Això requereix PadForge en una carpeta pròpia. La seva carpeta conté altres fitxers, així que PadForge no pot evitar que altres programes la canviïn.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Això requereix PadForge en una carpeta que altres programes no puguin canviar. PadForge no ha pogut evitar que la canviïn.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Mou PadForge a la seva pròpia carpeta</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copia PadForge i la seva configuració a Program Files, hi dirigeix les seves tasques i l'inicia des d'allà. La còpia d'aquí es queda tal com és.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no s'ha mogut: {0} conté fitxers que no són de PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no s'ha mogut: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>S'ha desactivat Executa en iniciar la sessió, perquè executava PadForge des d'una carpeta que conté altres fitxers.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge no s'ha mogut: Windows no indica cap carpeta Fitxers de programa.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge no s'ha mogut: no ha pogut llegir el PadForge que s'executa.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge no s'ha mogut: no ha pogut crear {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge no s'ha mogut: no ha pogut llegir què conté {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge no s'ha mogut: no ha pogut evitar que altres programes canviïn {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge no s'ha mogut: la seva còpia a {0} no coincidia amb el PadForge que s'executa.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge no s'ha mogut: després de la còpia, {0} contenia fitxers que no són de PadForge, o altres programes la podien canviar.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Executa en iniciar la sessió s'ha desactivat, perquè el PadForge que s'executava ja no hi és.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Executa en iniciar la sessió s'ha desactivat, perquè PadForge no ha pogut evitar que altres programes canviïn la carpeta des d'on va executar PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Executa en iniciar la sessió s'ha desactivat, perquè PadForge no ha pogut llegir quin PadForge va executar.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Executa en iniciar la sessió s'ha desactivat, perquè PadForge no ha pogut llegir la carpeta del PadForge que va executar.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge no ha pogut crear la seva carpeta protegida, {0}. PadForge hi guarda les biblioteques que executa amb drets d'administrador, i sense aquesta carpeta no pot iniciar-se de manera segura.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge no s'ha pogut tornar a iniciar des de la seva carpeta protegida, {0}. PadForge només s'executa amb drets d'administrador des d'allà, així que no s'ha iniciat.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge no ha pogut crear el bloqueig que n'impedeix executar-ne més d'una còpia, així que no s'ha iniciat.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge s'executa amb drets d'administrador des de {0}, una carpeta que altres programes poden canviar. Hi poden canviar la configuració de PadForge, i PadForge actua segons aquesta configuració amb els seus drets.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge s'executa amb drets d'administrador des de {0}, una carpeta que conté altres fitxers. PadForge no pot evitar que altres programes hi canviïn la seva configuració, i hi actua amb els seus drets.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge s'executa amb drets d'administrador des de {0}, una carpeta que no ha pogut llegir. PadForge no pot evitar que altres programes hi canviïn la seva configuració, i hi actua amb els seus drets.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostra sempre a la safata del sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Manté la icona de la safata visible mentre la finestra està oberta, de manera que l'opció Surt del seu menú sempre és a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualitzacions</value></data>
@@ -1288,13 +1260,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Comprovació de neteja: s'estan comprovant les parts que conserves…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Comprovació de neteja: PadForge no ha pogut llegir les parts que conserves, així que Desa queda desactivat.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>El desament amb els teus drets no s'ha iniciat.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>El desament amb els teus drets no s'ha iniciat: no s'executa cap shell d'escriptori per iniciar-lo.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>El desament amb els teus drets no s'ha iniciat: Windows l'ha rebutjat amb l'error {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>El desament no ha acabat en {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows no ha deixat escriure el fitxer allà.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge no ha acceptat aquest fitxer com una gravació pròpia.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>El desament ha acabat amb el codi {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Es desa com a tu, a la carpeta Baixades la primera vegada, després on l'hagis desat per última vegada, i es mostra a l'Explorador de fitxers. Una gravació que s'atura mentre no hi ha ningú a la pàgina (el seu límit, una macro, un programa, l'eina de l'assistent o --record stop) espera aquesta revisió a Inici, i s'elimina als 7 dies si no es desa. A un programa se li diu que espera, mai on.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Una gravació de problema de {0} t'espera perquè la llegeixis.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Revisa</value></data>
@@ -5588,7 +5555,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>L'aparellament s'ha aturat: ha fallat la lectura o l'escriptura del comandament o de la ràdio Bluetooth. El registre de diagnòstic té els detalls.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>L'aparellament s'ha aturat per un error que PadForge no esperava. El registre de diagnòstic té els detalls.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>requereix Logitech Gaming Software 8.52 o posterior</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ha trobat la seva biblioteca i no l'ha carregat, perquè PadForge no ha pogut confirmar que només els administradors la poden canviar i que Logitech l'ha signat</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ha trobat la seva biblioteca i no l'ha pogut fer servir, i el registre de diagnòstic diu per què</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>inicia Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>esperant un telèfon amb Arx Control</value></data>
@@ -5686,7 +5652,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Carrega aquesta còpia de la biblioteca de Force Dimension en lloc de qualsevol altra. Un Falcon obert en una altra còpia es tanca i s'obre de nou en aquesta. Les còpies que instal·la l'SDK es troben sense això.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Biblioteques (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>La pàgina de descàrrega de l'SDK de Falcon no s'ha obert: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>La pàgina de descàrrega de l'SDK de Falcon encara no s'ha obert: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instal·la el controlador del Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Instal·la el controlador de Force Dimension, des de la carpeta de l'SDK, en un Falcon que no en té. Pot ser que Windows primer pregunti si confies en Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Obtén l'SDK de Force Dimension</value></data>
@@ -6043,6 +6008,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="SdlMapping_Away" xml:space="preserve"><value>El dispositiu no està connectat. SDL el llegeix quan ho estigui.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL no ha donat a PadForge cap lectura d'aquest dispositiu.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>La còpia de la comunitat inclosa, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Baixada el {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>El fitxer propi de PadForge</value></data>

@@ -227,7 +227,7 @@ namespace PadForge.Tests
             Assert.Contains(new GamepadBinding(BindKind.Hat, 0, 0, 0, 4, BindKind.Button, RecorderReaderMatch.DpadDown, 0, 0), b);
             Assert.Contains(new GamepadBinding(BindKind.Button, 1, 0, 0, 0, BindKind.Button, RecorderReaderMatch.South, 0, 0), b);
 
-            // Half axes and an inverted axis (SDL_gamepad.c:1873-1941).
+            // Half axes and an inverted axis (SDL_gamepad.c:1916-1984).
             var half = RecorderReaderMatch.ParseMapping("guid,name,+leftx:b0,-leftx:b1,lefty:a1~,righttrigger:-a2,");
             Assert.Contains(new GamepadBinding(BindKind.Button, 0, 0, 0, 0, BindKind.Axis, 0, 0, 32767), half);
             Assert.Contains(new GamepadBinding(BindKind.Button, 1, 0, 0, 0, BindKind.Axis, 0, 0, -32768), half);
@@ -243,7 +243,7 @@ namespace PadForge.Tests
             Assert.Contains(new GamepadBinding(BindKind.Button, 0, 0, 0, 0, BindKind.Button, RecorderReaderMatch.South, 0, 0), positional);
 
             // A colon writes the input from its start again over what the
-            // buffer held (SDL_gamepad.c:1991-1993): "b1:b2" reads b2.
+            // buffer held (SDL_gamepad.c:2034-2036): "b1:b2" reads b2.
             var twice = RecorderReaderMatch.ParseMapping("guid,name,a:b1:b2,");
             Assert.Equal(new[] { new GamepadBinding(BindKind.Button, 2, 0, 0, 0, BindKind.Button, RecorderReaderMatch.South, 0, 0) }, twice);
             // A shorter input after the colon keeps the longer one's tail:
@@ -561,7 +561,7 @@ namespace PadForge.Tests
             }
 
             // Left out, each for its fact: on the DualSense, SDL's driver calls
-            // the mute button Misc1 (SDL_gamepad.c:1520-1522, b12 being
+            // the mute button Misc1 (SDL_gamepad.c:1526-1528, b12 being
             // SDL_hidapi_ps5.c:48-49's microphone, bit 82 = Button 15), and the
             // DirectInput row calls the touchpad click Misc1 (b13 = Button 14).
             if (ps5)

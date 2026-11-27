@@ -1691,6 +1691,7 @@ PadForge ga se ya kgona go ngwala dintlha go crash.log kgauswi le PadForge.exe. 
   <data name="SdlMapping_Away" xml:space="preserve"><value>Sedirišwa ga se sa kgokagangwa. SDL e tla se bala ge se kgokagantšwe.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ga se ya fa PadForge pego ya sedirišwa se.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi ya setšhaba ye e agetšwego ka gare, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E laolotšwe {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faele ya PadForge ka boyona</value></data>
@@ -1904,10 +1905,8 @@ PadForge ga se ya kgona go ngwala dintlha go crash.log kgauswi le PadForge.exe. 
   <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Mošomo {0}.txt</value></data>
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ga se ya kgona go dira loko yeo e e swarago go khopi e tee fela yeo e šomago, ka gona ga se ya thoma.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>e hweditše laeborari ya yona gomme ga se ya e laiša, ka gobane PadForge ga se ya kgona go netefatša gore ke balaodi fela bao ba ka e fetolago le gore Logitech e e saennile</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>e hweditše laeborari ya yona gomme ga se ya kgona go e šomiša, gomme rekoto ya tlhahlobo e bolela lebaka</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Letlakala la go laolla la Falcon SDK ga se la bulega: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Letlakala la go laolla la Falcon SDK ga le eso le bulege: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Methaladi ye {0:N0} ya ditshepedišo tše dingwe e a tlogelwa.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ga se ya e thoma ka ditokelo tša gago.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ga se ya fela mo metsotswaneng ye {0}.</value></data>

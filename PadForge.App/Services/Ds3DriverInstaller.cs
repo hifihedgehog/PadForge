@@ -508,7 +508,7 @@ namespace PadForge.Services
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
             };
-            using var p = RightsVariables.Start(psi);
+            using var p = System.Diagnostics.Process.Start(psi);
             var sb = new System.Text.StringBuilder();
             p.OutputDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
             p.ErrorDataReceived += (_, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
@@ -2275,11 +2275,7 @@ namespace PadForge.Services
         internal static string ExtractDrivers()
         {
             if (_extractedDir != null && Directory.Exists(_extractedDir)) return _extractedDir;
-            // The protected folder's Work folder (#600): these packages are
-            // stocked and signed with PadForge's rights, and in the temp folder
-            // any program of the user could change one between its write and
-            // its use. The test host keeps the temp folder.
-            string root = PadForge.Services.ProtectedWork.FolderInTheApp("BthPS3Drivers", Path.Combine(Path.GetTempPath(), "PadForge", "BthPS3Drivers"));
+            string root = Path.Combine(Path.GetTempPath(), "PadForge", "BthPS3Drivers");
             var asm = Assembly.GetExecutingAssembly();
             foreach (string res in asm.GetManifestResourceNames().Where(n => n.StartsWith("BthPS3.", StringComparison.Ordinal)))
             {

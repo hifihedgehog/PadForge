@@ -164,17 +164,6 @@ namespace PadForge.Common
             /// whose summary is printed, or null. A client run of its own.</summary>
             public string Summarize { get; set; }
 
-            /// <summary><c>--record save &lt;recording&gt; &lt;file&gt;</c>
-            /// (#600): the copy the review's Save… makes as the user, or null.
-            /// A client run of its own, never a line for the running copy.</summary>
-            public (string Source, string Target)? RecordSave { get; set; }
-
-            /// <summary><c>--port-files &lt;port&gt;</c>: the DSX port files
-            /// written as the user, for the copy with rights that started
-            /// this one (GameModPortFiles.Write), or null. A client run of
-            /// its own.</summary>
-            public int? PortFiles { get; set; }
-
             /// <summary><c>--plugin-kit &lt;folder&gt;</c> (#600 item 20): the
             /// folder to write the plugin kit into, or null. A client run of
             /// its own, which never starts the app.</summary>
@@ -194,7 +183,7 @@ namespace PadForge.Common
             /// shapes answers, so alone it starts PadForge or shows the running
             /// copy, as no switch does.</summary>
             public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Web && !Wait && Install == null && !AssistantRun
-                && Summarize == null && RecordSave == null && PortFiles == null && PluginKit == null && !SettingsFolder;
+                && Summarize == null && PluginKit == null && !SettingsFolder;
 
             /// <summary>Whether a copy that finds none running can start
             /// PadForge with this command line. A switch that only makes sense
@@ -360,19 +349,6 @@ namespace PadForge.Common
                         break;
                     }
 
-                    case PadForge.Services.GameModPortFiles.Switch:
-                    {
-                        // The DSX port files, written by the copy PadForge
-                        // starts as the user (GameModPortFiles.Write).
-                        string value = inline ?? Next(args, ref i);
-                        if (!int.TryParse(value, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out int port)
-                            || port < 1 || port > 65535)
-                            return Fail(r, name + " needs a port from 1 to 65535.");
-                        r.PortFiles = port;
-                        r.Alone.Add(name);
-                        break;
-                    }
-
                     case "--plugin-kit":
                     {
                         // (#600 item 20) The kit goes where the user says.
@@ -513,17 +489,6 @@ namespace PadForge.Common
                         string what = (inline ?? Next(args, ref i) ?? string.Empty).Trim().ToLowerInvariant();
                         switch (what)
                         {
-                            case Recording.RecordingSave.Verb:
-                            {
-                                // The review's Save… as the user (#600): the
-                                // recording, then the file to write.
-                                string source = Next(args, ref i), target = Next(args, ref i);
-                                if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(target))
-                                    return Fail(r, "--record save needs the recording, then the file to write.");
-                                r.RecordSave = (source, target);
-                                r.Alone.Add("--record save");
-                                break;
-                            }
                             case "start":
                                 r.Steps.Add(new Step("record start", true, StartPhase.AfterEngine));
                                 break;
@@ -658,53 +623,6 @@ namespace PadForge.Common
                 for (int i = part.Start; i < part.Start + part.Count; i++) kept.Add(args[i]);
             }
             return kept;
-        }
-
-        /// <summary>
-        /// The start set's words alone, in the order given (#600 item 44):
-        /// each switch whose step can start PadForge, which a start applies
-        /// with Automation off (<c>--minimized</c>, <c>--tray</c>,
-        /// <c>--maximized</c>, <c>--show</c>, <c>--engine</c>,
-        /// <c>--controllers</c>, <c>--slot</c>, <c>--profile</c>,
-        /// <c>--default-profile</c> and <c>--record start</c>). A copy started
-        /// through the logon task reads only these from the copy that ran
-        /// it. A line that cannot be read, or the update helper's, gives
-        /// none.
-        /// </summary>
-        internal static List<string> StartSwitchesOnly(IReadOnlyList<string> args)
-        {
-            var kept = new List<string>();
-            if (args == null) return kept;
-            var request = Parse(args);
-            if (request.Error != null || request.Internal) return kept;
-            foreach (var part in request.Parts)
-            {
-                if (!IsStartSwitch(args, part)) continue;
-                for (int i = part.Start; i < part.Start + part.Count; i++) kept.Add(args[i]);
-            }
-            return kept;
-        }
-
-        /// <summary>Whether a start without rights may run the logon task
-        /// for this command line in place of Windows' prompt (#600 item 44):
-        /// every switch on it is of the start set, or <c>--wait</c>. Any
-        /// other line keeps the prompt, which hands the whole line on.</summary>
-        internal static bool CrossesToTheTask(IReadOnlyList<string> args)
-        {
-            args ??= Array.Empty<string>();
-            var request = Parse(args);
-            if (request.Error != null || request.Internal || request.ReadTo != args.Count) return false;
-            foreach (var part in request.Parts)
-                if (part.Keep != Keep.Wait && !IsStartSwitch(args, part)) return false;
-            return true;
-        }
-
-        /// <summary>Whether one switch read is a step that can start
-        /// PadForge.</summary>
-        private static bool IsStartSwitch(IReadOnlyList<string> args, (int Start, int Count, Keep Keep) part)
-        {
-            var one = Parse(Slice(args, part.Start, part.Count));
-            return one.Error == null && one.Steps.Count > 0 && one.CanStart;
         }
 
         /// <summary>The words <c>--help</c> prints. English and fixed: a

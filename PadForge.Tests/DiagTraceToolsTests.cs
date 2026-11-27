@@ -36,8 +36,6 @@ namespace PadForge.Tests
 
             string mirror = Path.Combine(Path.GetDirectoryName(exe.Groups[1].Value), made.Groups[2].Value);
             Assert.Equal(mirror, PadForge.Engine.SdlDiagLog.MirrorPathWithRights(mirror, exe.Groups[1].Value));
-            Assert.True(ExeFolder.IsPadForgeFile(Path.GetFileName(mirror), "PadForge.exe"), mirror);
-            Assert.True(ExeFolder.IsPadForgeFile(Path.GetFileName(mirror) + ".old", "PadForge.exe"), mirror + ".old");
         }
 
         /// <summary>PersonaVerify reads the mirror the trace tools arm by

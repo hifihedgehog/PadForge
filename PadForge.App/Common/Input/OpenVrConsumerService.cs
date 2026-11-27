@@ -78,6 +78,26 @@ namespace PadForge.Common.Input
         /// the app. A test hands in a scripted one.</summary>
         internal VrClientOpener OpenClient { get; set; } = LocalVrClient.Open;
 
+        /// <summary>Whether vrserver runs: one read of the process list in the
+        /// app. A test hands in its own answer.</summary>
+        internal Func<bool> ServerRuns { get; set; } = () => ProcessPresence.RunningAmong(new[] { "vrserver" }).Count > 0;
+
+        /// <summary>Starts the session's client through <see cref="OpenClient"/>
+        /// while <see cref="ServerRuns"/> says vrserver runs. With the server
+        /// down it answers NoServerForBackgroundApp, the answer a background
+        /// application's init gives then (openvr.h:1695), and opens nothing,
+        /// so SteamVR's library is not loaded until its server runs.</summary>
+        internal IVrClient OpenSession(out EVRInitError error, out string failure)
+        {
+            if (!ServerRuns())
+            {
+                error = EVRInitError.Init_NoServerForBackgroundApp;
+                failure = null;
+                return null;
+            }
+            return OpenClient(out error, out failure);
+        }
+
         /// <summary>The binding's client: OpenVR started in this process as a
         /// background application.</summary>
         private sealed class LocalVrClient : IVrClient
@@ -91,15 +111,6 @@ namespace PadForge.Common.Input
             {
                 error = EVRInitError.None;
                 failure = null;
-                // A background application's init only answers
-                // NoServerForBackgroundApp while vrserver is down
-                // (openvr.h:1695), so SteamVR's library is not loaded until
-                // its server runs.
-                if (ProcessPresence.RunningAmong(new[] { "vrserver" }).Count == 0)
-                {
-                    error = EVRInitError.Init_NoServerForBackgroundApp;
-                    return null;
-                }
                 CVRSystem system;
                 try { system = OpenVR.Init(ref error, EVRApplicationType.VRApplication_Background); }
                 catch (DllNotFoundException)
@@ -239,10 +250,8 @@ namespace PadForge.Common.Input
         /// <c>openvr\openvrpaths.vrpath</c> under
         /// <paramref name="localAppData"/>. The registry is per account
         /// (vrpathregistry_public.cpp:133-150), and SteamVR reads the one of
-        /// the user it runs as, so PadForge's own copy, which can run as an
-        /// administrator whose credentials were typed at a standard user's
-        /// prompt, is handed the desktop user's LocalAppData
-        /// (<see cref="PadForge.Common.ShellUser"/>). Null with neither.
+        /// the user it runs as, and PadForge hands it its own LocalAppData.
+        /// Null with neither.
         /// </summary>
         internal static string PathRegistryFile(string localAppData)
         {
@@ -264,7 +273,7 @@ namespace PadForge.Common.Input
         /// at a removed install (observed on this bench) must read as
         /// absent, not as a load failure.</summary>
         private static string DiscoverRuntimeDll()
-            => DiscoverRuntimeDll(() => PadForge.Common.ShellUser.Folder(PadForge.Services.Install.UserFolder.LocalData));
+            => DiscoverRuntimeDll(() => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
 
         internal static string DiscoverRuntimeDll(Func<string> localData)
         {
@@ -292,7 +301,7 @@ namespace PadForge.Common.Input
         {
             try
             {
-                string reg = PathRegistryFile(PadForge.Common.ShellUser.Folder(PadForge.Services.Install.UserFolder.LocalData));
+                string reg = PathRegistryFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
                 if (reg == null || !System.IO.File.Exists(reg)) return null;
                 string root = ParseRuntimePathFromVrPathJson(System.IO.File.ReadAllText(reg));
                 return string.IsNullOrWhiteSpace(root) ? null : root;
@@ -614,7 +623,7 @@ namespace PadForge.Common.Input
                 }
                 loggedNoRuntime = false;
 
-                IVrClient system = OpenClient(out EVRInitError err, out string failure);
+                IVrClient system = OpenSession(out EVRInitError err, out string failure);
                 if (failure == "dll")
                 {
                     // The registry named a dll that exists but would not

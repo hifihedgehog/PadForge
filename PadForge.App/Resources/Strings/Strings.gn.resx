@@ -1084,7 +1084,6 @@
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>ogue</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software rupi</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>oikotevẽ Logitech Gaming Software 8.52 térã ipyahuvéva</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ojuhu ibiblioteca ha nohupíri, PadForge ndaikatúigui ohechakuaa administrador añoite ikatuha omoambue ha Logitech ofirmaha</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ojuhu ibiblioteca ha ndaikatúi oiporu, ha diagnóstico registro he'i mba'érepa</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>oha'arõ peteĩ pumbyry Arx Control reheve</value></data>
   <data name="KeyboardScreens_Status_ArxOnPhone" xml:space="preserve"><value>pumbyrýpe</value></data>
@@ -1625,6 +1624,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Mba'e'oka noñembojoajúi. SDL olee oñembojoaju vove.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nome'ẽi PadForge-pe ko mba'e'oka jelee.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Tekoha kopia ijapytepeguáva, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ojeboguejy {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge archivo voi</value></data>

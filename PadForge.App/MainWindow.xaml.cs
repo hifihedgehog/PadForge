@@ -56,37 +56,6 @@ namespace PadForge
         /// Application.Current.MainWindow cast.</summary>
         public SettingsService SettingsService => _settingsService;
 
-        /// <summary>
-        /// Move PadForge to Its Own Folder (#600): the settings are saved and
-        /// copied with the exe into %ProgramFiles%\PadForge, the logon task and
-        /// the give-back tasks are pointed at the copy, and this copy closes as
-        /// Exit does, after which the copy starts (App.StartMovedCopy). The exe
-        /// here stays as it was.
-        /// </summary>
-        private void OnMoveToOwnFolder(object sender, EventArgs e)
-        {
-            var state = Services.ExeFolderState.Instance;
-            state.Moving(true);
-            try
-            {
-                _settingsService.Save();
-                var result = Services.ExeFolder.CopyTo(Services.ExeFolder.OwnFolderPath(), Environment.ProcessPath,
-                    _settingsService.SettingsFilePath);
-                if (result.NewExe == null)
-                {
-                    state.MoveFailed(result);
-                    return;
-                }
-                Common.StartupHelper.RepointTask(result.NewExe);
-                Services.GiveBackTask.Repoint(result.NewExe, line => PadForge.Engine.SdlDiagLog.WriteLine("GIVEBACK " + line));
-                App.StartWhenClosed = result.NewExe;
-                ExitFromTray();
-            }
-            finally
-            {
-                state.Moving(false);
-            }
-        }
         private RecorderService _recorderService;
         private DeviceService _deviceService;
         private Popup _typeBar;
@@ -574,15 +543,6 @@ namespace PadForge
             PadForge.Common.Themes.ThemeManager.ListEdited += (_, _) => _settingsService.MarkDirty();
             // A Steam profile's game look follows the active profile (#591).
             PadForge.Common.Themes.GameLooks.Start(Dispatcher);
-            Services.ExeFolderState.Instance.MoveRequested += OnMoveToOwnFolder;
-            // A logon task this start removed, for running PadForge from a
-            // shared folder, turns the switch off (#600).
-            Services.ExeFolderState.Instance.PropertyChanged += (_, e) =>
-            {
-                if (e.PropertyName == nameof(Services.ExeFolderState.StartAtLoginTurnedOff)
-                    && Services.ExeFolderState.Instance.StartAtLoginTurnedOff)
-                    _viewModel.Settings.StartAtLogin = false;
-            };
             _viewModel.Settings.NewProfileRequested += OnNewProfile;
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
@@ -598,12 +558,8 @@ namespace PadForge
             // Persist Settings VM changes (theme, polling, checkboxes) and handle login toggle.
             _viewModel.Settings.PropertyChanged += (s, e) =>
             {
-                // A logon task may only run PadForge from a folder of its own
-                // (#600): from a shared one the switch goes back off, and the
-                // row says why.
-                if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin)
-                    && !Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin))
-                    _viewModel.Settings.StartAtLogin = false;
+                if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin))
+                    Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin);
 
                 if (e.PropertyName == nameof(SettingsViewModel.DiagnosticsLoggingEnabled))
                     Common.DiagnosticsLogControl.Apply(_viewModel.Settings.DiagnosticsLoggingEnabled);
@@ -868,7 +824,8 @@ namespace PadForge
             // explicit confirm naming the exact directory.
             _viewModel.Settings.UninstallSteamVrRequested += async (s, e) =>
             {
-                // One limited query per process, about 7 ms. A walk of the
+                // The id list and one wait per process, with a limited query
+                // only for ids not seen before. A walk of the
                 // kernel's process records cost 240 to 360 ms on a PC with
                 // 9,000 threads, on this, the UI thread.
                 if (PadForge.Common.Input.ProcessPresence.RunningAmong(new[] { "vrserver" }).Count > 0)
@@ -6523,7 +6480,10 @@ namespace PadForge
                 System.Runtime.InteropServices.Marshal.FreeHGlobal(buffer);
             }
 
-            if (_hidNotify != IntPtr.Zero) source.AddHook(OnDeviceChangeMessage);
+            // The hook goes in whether or not the class registrations took:
+            // Windows sends DBT_DEVNODES_CHANGED to every top-level window, so
+            // DeviceChanges still counts a node that came or went without them.
+            source.AddHook(OnDeviceChangeMessage);
             source.AddHook(OnQueryEndSession);
         }
 

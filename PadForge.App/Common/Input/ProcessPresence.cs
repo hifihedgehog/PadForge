@@ -172,8 +172,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Every running process that answers a limited query, or
-        /// null when the list of ids could not be read.</summary>
         /// <summary>Processes named by a read so far, for the test that a
         /// running one is named once.</summary>
         private static int s_named;
@@ -188,6 +186,36 @@ namespace PadForge.Common.Input
         private static readonly object s_knownLock = new();
         private static char[] s_buffer;
 
+        /// <summary>A process that exits after a read stays a zombie object
+        /// while its handle is held. A timer armed by a read that leaves
+        /// handles held looks once a minute, and when no read came in the last
+        /// minute it closes every held handle and stops, so the next read
+        /// names every process again.</summary>
+        internal const int IdleCloseMs = 60000;
+        private static long s_readAt;
+        private static System.Threading.Timer s_idleClose;
+
+        /// <summary>The handles held, for the test of the idle close.</summary>
+        internal static int HeldCount { get { lock (s_knownLock) return s_known.Count; } }
+
+        /// <summary>Closes every held handle when no read came for
+        /// <see cref="IdleCloseMs"/>, and stops the timer. True when it
+        /// closed them.</summary>
+        internal static bool CloseIfIdle(long nowMs)
+        {
+            lock (s_knownLock)
+            {
+                if (nowMs - s_readAt < IdleCloseMs) return false;
+                foreach (var held in s_known.Values) ProcessImage.Close(held.Handle);
+                s_known = new();
+                s_idleClose?.Dispose();
+                s_idleClose = null;
+                return true;
+            }
+        }
+
+        /// <summary>Every running process that answers a limited query, or
+        /// null when the list of ids could not be read.</summary>
         internal static List<Entry> Read()
         {
             uint[] ids = Ids();
@@ -228,6 +256,9 @@ namespace PadForge.Common.Input
                 // What is left has exited.
                 foreach (var gone in known.Values) ProcessImage.Close(gone.Handle);
                 s_known = next;
+                s_readAt = Environment.TickCount64;
+                if (next.Count > 0 && s_idleClose == null)
+                    s_idleClose = new System.Threading.Timer(_ => CloseIfIdle(Environment.TickCount64), null, IdleCloseMs, IdleCloseMs);
             }
             return entries;
         }
@@ -240,7 +271,8 @@ namespace PadForge.Common.Input
 
     /// <summary>
     /// Which of a few named programs run, from one read of
-    /// <see cref="RunningProcessList"/>, about 7 ms where a walk of the
+    /// <see cref="RunningProcessList"/>, the id list and one wait per
+    /// process after its first read, where a walk of the
     /// kernel's process records cost 240 to 360 ms.
     /// <c>Process.GetProcessesByName</c> takes that walk once per name. Worker
     /// threads only. A thread that holds a rate asks a

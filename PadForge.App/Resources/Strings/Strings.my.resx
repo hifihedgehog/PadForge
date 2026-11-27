@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>မစတင်ခဲ့ပါ: Python ဖိုင်များကို သင့်အတွက် ဖွင့်ပေးသော ပရိုဂရမ် မရှိဘဲ PadForge သည် py launcher ကိုလည်း မတွေ့ပါ</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ဤဖိုင်အမျိုးအစားကို သင့်အတွက် မည်သည့်ပရိုဂရမ်က ဖွင့်သည်ကို PadForge ဖတ်၍ မရပါ</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ဤဖိုင်အမျိုးအစားကို သင့်အတွက် ဖွင့်ပေးသော ပရိုဂရမ်သည် ဤ PC တွင် မရှိပါ</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ၎င်းကို စတင်ပေးမည့် ဒက်စ်တော့ ရှဲလ် မလည်ပတ်ပါ</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ဒက်စ်တော့ ရှဲလ်တွင် စီမံခန့်ခွဲသူ အခွင့်အရေး ရှိသဖြင့် ပလပ်အင်တွင်လည်း ရှိသွားမည်</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ၎င်းတွင် စီမံခန့်ခွဲသူ အခွင့်အရေး ရှိမည် မရှိမည်ကို PadForge ဖတ်၍ မရပါ</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>မစတင်ခဲ့ပါ: Windows က ၎င်းကို စီမံခန့်ခွဲသူ အခွင့်အရေး ပေးခဲ့သဖြင့် PadForge က ၎င်း မလည်ပတ်မီ ပိတ်လိုက်သည်</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>မစတင်ခဲ့ပါ: ၎င်းက စီမံခန့်ခွဲသူ အခွင့်အရေး တောင်းသည်</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>မစတင်ခဲ့ပါ: Windows က အမှား {0} ဖြင့် ငြင်းပယ်သည်</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>မစတင်ခဲ့ပါ</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>ဤစက်တွင် Logitech G-key SDK မရှိပါ။ ၎င်းကို Logitech Gaming Software 8.55 သို့မဟုတ် နောက်ပိုင်းဗားရှင်းနှင့်အတူ ထည့်သွင်းပေးသည်။</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK ကို မှတ်ပုံတင်ထားသော်လည်း ၎င်း၏ဖိုင် မရှိတော့ပါ။ Logitech Gaming Software ကို ပြန်ထည့်သွင်းပါ။</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK ကို တွေ့ရှိသော်လည်း ဖွင့်၍ မရပါ။</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>စီမံခန့်ခွဲသူများသာ ၎င်းကို ပြောင်းနိုင်ကြောင်းနှင့် Logitech က လက်မှတ်ထိုးထားကြောင်း PadForge က အတည်မပြုနိုင်သဖြင့် G-key SDK ကို တွေ့ရှိသော်လည်း မဖွင့်ခဲ့ပါ။</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>ထိုလိုက်ဘရရီသည် မျှော်လင့်ထားသော G-key SDK မဟုတ်ပါ။</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK က စတင်ရန် ငြင်းဆိုသည်။ အများအားဖြင့် Logitech Gaming Software လည်ပတ်မနေခြင်းကြောင့် ဖြစ်သည်။</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>ချိတ်ဆက်ပြီး၊ ကီးတစ်ခုမျှ မတွေ့ရသေးပါ။ Logitech Gaming Software တွင် G-key ကွန်မန်းကို PadForge ပရိုဖိုင်ရှိ ကီးတစ်ခုစီပေါ်သို့ ဆွဲထည့်ပြီး ထိုပရိုဖိုင်ကို အမြဲတမ်း (persistent) ဖြစ်အောင် သတ်မှတ်ပါ။ G600 သို့မဟုတ် G300 မောက်စ်ကိုလည်း on-board memory မုဒ်မှ ထွက်ထားရမည်။</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge စတင်သည့်အခါ ဝင်းဒိုးကို ဝှက်ထားပါ။ ၎င်းသည် ပုံမှန်အတိုင်း လည်ပတ်ပြီး မက်ပ်လုပ်သည်။</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows သို့ ဝင်ရောက်သည့်အခါ PadForge ကို အလိုအလျောက် စတင်ပါ။ ဤအရာ ဖွင့်ထားစဉ် PadForge သည် shortcut၊ script သို့မဟုတ် အခြား ပရိုဂရမ်တစ်ခုမှလည်း Windows ၏ မေးမြန်းချက် မပါဘဲ စတင်သည်။</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge သည် {0} မှ လည်ပတ်သည်။</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ဤအရာအတွက် PadForge ကို ၎င်း၏ ကိုယ်ပိုင် ဖိုင်တွဲတွင် ထားရန် လိုသည်။ ၎င်း၏ ဖိုင်တွဲတွင် အခြားဖိုင်များ ရှိသဖြင့် PadForge သည် အခြားပရိုဂရမ်များက ၎င်းကို ပြောင်းလဲခြင်းမှ မတားနိုင်ပါ။</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>ဤအရာအတွက် PadForge ကို အခြားပရိုဂရမ်များ မပြောင်းနိုင်သော ဖိုင်တွဲတွင် ထားရန် လိုသည်။ PadForge သည် ၎င်း၏ ဖိုင်တွဲကို ၎င်းတို့ ပြောင်းလဲခြင်းမှ မတားနိုင်ခဲ့ပါ။</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ကို ၎င်း၏ ကိုယ်ပိုင် ဖိုင်တွဲသို့ ရွှေ့ရန်</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge နှင့် ၎င်း၏ ဆက်တင်များကို Program Files သို့ ကူးယူပြီး ၎င်း၏ လုပ်ငန်းများကို ထိုနေရာသို့ ညွှန်ကာ ထိုနေရာမှ စတင်သည်။ ဤနေရာရှိ မိတ္တူသည် ယခင်အတိုင်း ကျန်သည်။</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0} တွင် PadForge ၏ မဟုတ်သော ဖိုင်များ ရှိသည်။</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>“ဝင်ရောက်ချိန်တွင် စတင်ရန်” ကို ပိတ်လိုက်သည်၊ အဘယ်ကြောင့်ဆိုသော် ၎င်းသည် အခြားဖိုင်များ ရှိသော ဖိုင်တွဲမှ PadForge ကို လည်ပတ်ခဲ့သောကြောင့် ဖြစ်သည်။</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: Windows တွင် Program Files ဖိုင်တွဲ သတ်မှတ်ထားခြင်း မရှိပါ။</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: လည်ပတ်နေသော PadForge ကို ဖတ်၍ မရပါ။</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0} ကို ပြုလုပ်၍ မရပါ။</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0} တွင် ဘာများ ရှိသည်ကို ဖတ်၍ မရပါ။</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: အခြားပရိုဂရမ်များက {0} ကို ပြောင်းလဲခြင်းမှ မတားနိုင်ပါ။</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: {0} ရှိ ၎င်း၏ မိတ္တူသည် လည်ပတ်နေသော PadForge နှင့် မကိုက်ညီပါ။</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge မရွှေ့ခဲ့ပါ: ကူးယူပြီးနောက် {0} တွင် PadForge ၏ မဟုတ်သော ဖိုင်များ ရှိနေသည် သို့မဟုတ် အခြားပရိုဂရမ်များက ၎င်းကို ပြောင်းနိုင်သည်။</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>၎င်း လည်ပတ်ခဲ့သော PadForge မရှိတော့သဖြင့် “ဝင်ရောက်ချိန်တွင် စတင်ရန်” ကို ပိတ်လိုက်သည်။</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>PadForge ကို လည်ပတ်ခဲ့သော ဖိုင်တွဲကို အခြားပရိုဂရမ်များ ပြောင်းလဲခြင်းမှ PadForge မတားနိုင်သဖြင့် “ဝင်ရောက်ချိန်တွင် စတင်ရန်” ကို ပိတ်လိုက်သည်။</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>၎င်း လည်ပတ်ခဲ့သော PadForge မှာ မည်သည့်တစ်ခု ဖြစ်သည်ကို PadForge ဖတ်၍ မရသဖြင့် “ဝင်ရောက်ချိန်တွင် စတင်ရန်” ကို ပိတ်လိုက်သည်။</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>၎င်း လည်ပတ်ခဲ့သော PadForge ၏ ဖိုင်တွဲကို PadForge ဖတ်၍ မရသဖြင့် “ဝင်ရောက်ချိန်တွင် စတင်ရန်” ကို ပိတ်လိုက်သည်။</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge သည် ၎င်း၏ ကာကွယ်ထားသော ဖိုင်တွဲ {0} ကို ပြုလုပ်၍ မရပါ။ PadForge သည် စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် လည်ပတ်သော စာကြည့်တိုက်များကို ထိုနေရာတွင် ထားပြီး ၎င်းမရှိဘဲ ဘေးကင်းစွာ မစတင်နိုင်ပါ။</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge သည် ၎င်း၏ ကာကွယ်ထားသော ဖိုင်တွဲ {0} မှ ၎င်းကိုယ်ကို ပြန်မစတင်နိုင်ပါ။ PadForge သည် စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် ထိုနေရာမှသာ လည်ပတ်သဖြင့် မစတင်ခဲ့ပါ။</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge သည် ၎င်းကို တစ်ခုတည်းသာ လည်ပတ်စေသော သော့ခတ်မှုကို ပြုလုပ်၍ မရသဖြင့် မစတင်ခဲ့ပါ။</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge သည် အခြားပရိုဂရမ်များ ပြောင်းလဲနိုင်သော ဖိုင်တွဲ {0} မှ စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် လည်ပတ်နေသည်။ ၎င်းတို့သည် ထိုနေရာရှိ PadForge ၏ ဆက်တင်များကို ပြောင်းနိုင်ပြီး PadForge က ၎င်း၏ အခွင့်အရေးဖြင့် ၎င်းတို့အတိုင်း လုပ်ဆောင်သည်။</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge သည် အခြားဖိုင်များ ရှိသော ဖိုင်တွဲ {0} မှ စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် လည်ပတ်နေသည်။ PadForge သည် ထိုနေရာရှိ ၎င်း၏ ဆက်တင်များကို အခြားပရိုဂရမ်များ ပြောင်းလဲခြင်းမှ မတားနိုင်ဘဲ ၎င်း၏ အခွင့်အရေးဖြင့် ၎င်းတို့အတိုင်း လုပ်ဆောင်သည်။</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge သည် ၎င်း ဖတ်၍ မရသော ဖိုင်တွဲ {0} မှ စီမံခန့်ခွဲသူ အခွင့်အရေးဖြင့် လည်ပတ်နေသည်။ PadForge သည် ထိုနေရာရှိ ၎င်း၏ ဆက်တင်များကို အခြားပရိုဂရမ်များ ပြောင်းလဲခြင်းမှ မတားနိုင်ဘဲ ၎င်း၏ အခွင့်အရေးဖြင့် ၎င်းတို့အတိုင်း လုပ်ဆောင်သည်။</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>စနစ်ထရေးတွင် အမြဲပြရန်</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ဝင်းဒိုး ဖွင့်ထားစဉ် ထရေးအိုင်ကွန်ကို မြင်ရအောင် ထားပါ။ သို့မှသာ ၎င်း၏မီနူးရှိ ထွက်ရန် ကို တစ်ချက်နှိပ်ရုံဖြင့် အမြဲ ရောက်နိုင်မည်။</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>အပ်ဒိတ်များ</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>ဖျက်ကွက် စစ်ဆေးချက်: သင် ထားမည့် အပိုင်းများကို စစ်ဆေးနေသည်…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>ဖျက်ကွက် စစ်ဆေးချက်: PadForge သည် သင် ထားမည့် အပိုင်းများကို ဖတ်၍ မရသဖြင့် “သိမ်းရန်” ကို ပိတ်ထားသည်။</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>သင့် အခွင့်အရေးဖြင့် သိမ်းခြင်း မစတင်ခဲ့ပါ။</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>သင့် အခွင့်အရေးဖြင့် သိမ်းခြင်း မစတင်ခဲ့ပါ: ၎င်းကို စတင်ရန် ဒက်စ်တော့ ရှဲလ် မလည်ပတ်ပါ။</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>သင့် အခွင့်အရေးဖြင့် သိမ်းခြင်း မစတင်ခဲ့ပါ: Windows က အမှား {0} ဖြင့် ငြင်းပယ်ခဲ့သည်။</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>သိမ်းခြင်းသည် {0} အတွင်း မပြီးဆုံးခဲ့ပါ။</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows က ဖိုင်ကို ထိုနေရာတွင် ရေးခွင့် မပေးခဲ့ပါ။</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge က ဤဖိုင်ကို ၎င်း၏ ကိုယ်ပိုင် မှတ်တမ်းတင်ချက်အဖြစ် လက်မခံခဲ့ပါ။</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>သိမ်းခြင်းသည် ကုဒ် {0} ဖြင့် အဆုံးသတ်သွားသည်။</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>သင့်အမည်ဖြင့် ပထမအကြိမ်တွင် သင့် Downloads ဖိုင်တွဲသို့၊ ထို့နောက် သင် နောက်ဆုံး သိမ်းခဲ့သည့်နေရာသို့ သိမ်းပြီး File Explorer တွင် ပြသည်။ စာမျက်နှာတွင် မည်သူမျှ မရှိစဉ် ရပ်သွားသော မှတ်တမ်းတင်ချက် (၎င်း၏ ကန့်သတ်ချက်၊ မက်ခရို၊ ပရိုဂရမ်၊ အကူအညီပေး ကိရိယာ သို့မဟုတ် --record stop ကြောင့်) သည် “ပင်မ” တွင် ဤပြန်စစ်ခြင်းကို စောင့်ပြီး မသိမ်းလျှင် 7 ရက်အကြာတွင် ဖျက်သည်။ ပရိုဂရမ်ကို ၎င်း စောင့်နေကြောင်းသာ ပြောပြီး နေရာကို ဘယ်တော့မှ မပြောပါ။</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} မှ ပြဿနာ မှတ်တမ်းတင်ချက်သည် သင် ဖတ်ရန် စောင့်နေသည်။</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>ပြန်စစ်ရန်</value></data>
@@ -5574,7 +5541,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>တွဲချိတ်ခြင်း ရပ်သွားသည်: ကွန်ထရိုလာ သို့မဟုတ် Bluetooth ရေဒီယိုကို ဖတ်ခြင်း သို့မဟုတ် ရေးခြင်း မအောင်မြင်ပါ။ ချို့ယွင်းချက်ရှာဖွေရေး မှတ်တမ်းတွင် အသေးစိတ် ရှိသည်။</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>PadForge မမျှော်လင့်ထားသော အမှားဖြင့် တွဲချိတ်ခြင်း ရပ်သွားသည်။ ချို့ယွင်းချက်ရှာဖွေရေး မှတ်တမ်းတွင် အသေးစိတ် ရှိသည်။</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 သို့မဟုတ် နောက်ပိုင်းဗားရှင်း လိုအပ်သည်</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>စီမံခန့်ခွဲသူများသာ ၎င်းကို ပြောင်းနိုင်ကြောင်းနှင့် Logitech က လက်မှတ်ထိုးထားကြောင်း PadForge က အတည်မပြုနိုင်သဖြင့် ၎င်း၏ library ကို တွေ့သော်လည်း မဖွင့်ခဲ့ပါ</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>၎င်း၏ library ကို တွေ့သော်လည်း အသုံးပြု၍ မရပါ၊ အကြောင်းရင်းကို ချို့ယွင်းချက်ရှာဖွေရေး မှတ်တမ်းတွင် ဖော်ပြထားသည်</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software ကို စတင်ပါ</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control ပါသော ဖုန်းကို စောင့်နေသည်</value></data>
@@ -5672,7 +5638,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension ၏ လိုက်ဘရရီ၏ ဤမိတ္တူကို အခြားမိတ္တူများအစား ဖွင့်သည်။ အခြားမိတ္တူဖြင့် ဖွင့်ထားသော Falcon ကို ပိတ်ပြီး ဤမိတ္တူဖြင့် ပြန်ဖွင့်သည်။ SDK ထည့်သွင်းပေးသော မိတ္တူများကို ဤရွေးချယ်မှုမပါဘဲ ရှာတွေ့သည်။</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|လိုက်ဘရရီများ (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK ဒေါင်းလုဒ်စာမျက်နှာ မပွင့်ခဲ့ပါ: {0}။</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK ဒေါင်းလုဒ်စာမျက်နှာ မပွင့်သေးပါ: {0}။</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon ဒရိုက်ဗာ ထည့်သွင်းရန်</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>ဒရိုက်ဗာမရှိသော Falcon တွင် SDK ဖိုင်တွဲမှ Force Dimension ၏ ဒရိုက်ဗာကို ထည့်သွင်းသည်။ Windows က Force Dimension ကို ယုံကြည်မလားဟု ဦးစွာ မေးနိုင်သည်။</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension ၏ SDK ကို ရယူရန်</value></data>
@@ -6025,6 +5990,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="SdlMapping_Away" xml:space="preserve"><value>စက်ပစ္စည်းကို ချိတ်ဆက်မထားပါ။ ချိတ်ဆက်ပြီးသည်နှင့် SDL က ၎င်းကို ဖတ်သည်။</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL က PadForge ကို ဤစက်ပစ္စည်း၏ ဖတ်ရှုချက် မပေးခဲ့ပါ။</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>ပါဝင်ပြီးသား အသိုင်းအဝိုင်း မိတ္တူ၊ {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} တွင် ဒေါင်းလုဒ်လုပ်ခဲ့သည်</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ၏ ကိုယ်ပိုင်ဖိုင်</value></data>

@@ -345,17 +345,27 @@ namespace PadForge.Engine.Common.OpenXr
         /// Loads the manifest's library and negotiates with it: the runtime's
         /// xrGetInstanceProcAddr, or null with what was read.
         ///
-        /// <para>The library is deliberately left loaded. A runtime that has
-        /// had an instance created and destroyed does not always survive
-        /// being unloaded and reloaded in the same process, and the handle
-        /// costs nothing.</para>
+        /// <para>The library is deliberately left loaded, one handle per path
+        /// (<see cref="LoadLibraryOnce"/>). A runtime that has had an instance
+        /// created and destroyed does not always survive being unloaded and
+        /// reloaded in the same process, and the handle costs nothing. Only
+        /// the SteamVR uninstall frees one (<see cref="ReleaseLibrariesUnder"/>),
+        /// and that library is refused for the rest of the process.</para>
         /// </summary>
         private static PFN_xrGetInstanceProcAddr LoadRuntime(OpenXrRuntimeEntry entry, out string read)
         {
             read = null;
             // The last step before a runtime's library is in the process.
             VrRuntimeGate.Enter($"the library of {entry.Name}, {entry.LibraryPath}");
-            if (!NativeLibrary.TryLoad(entry.LibraryPath, out IntPtr module))
+            IntPtr module = LoadLibraryOnce(entry.LibraryPath,
+                path => NativeLibrary.TryLoad(path, out IntPtr loaded) ? loaded : IntPtr.Zero,
+                out LibraryRefusal refusal);
+            if (refusal != LibraryRefusal.None)
+            {
+                read = RefusedRead(entry.Name, entry.LibraryPath, refusal);
+                return null;
+            }
+            if (module == IntPtr.Zero)
             {
                 read = $"the library of {entry.Name}, {entry.LibraryPath}, did not load";
                 return null;
@@ -395,6 +405,123 @@ namespace PadForge.Engine.Common.OpenXr
 
             return Marshal.GetDelegateForFunctionPointer<PFN_xrGetInstanceProcAddr>(
                 request.getInstanceProcAddr);
+        }
+
+        /// <summary>The runtime libraries this process loaded, one handle per
+        /// full path. A second load of a path returns its handle, so each
+        /// library holds one reference and one free unloads it.</summary>
+        private static readonly Dictionary<string, IntPtr> s_libraries = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Why a library is refused: the SteamVR uninstall unloaded
+        /// it, or still finds it held because a session that calls into it did
+        /// not stop.</summary>
+        internal enum LibraryRefusal { None, Unloaded, StillHeld }
+
+        /// <summary>The paths the SteamVR uninstall unloaded (true) or could
+        /// not unload (false). A load of one is refused for the rest of the
+        /// process.</summary>
+        private static readonly Dictionary<string, bool> s_released = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Each thread that took a library's handle, with that
+        /// library's path, until the thread is done with it
+        /// (<see cref="ForgetHolder"/>).</summary>
+        private static readonly Dictionary<System.Threading.Thread, string> s_holders = new();
+
+        private static string FullPath(string path)
+        {
+            try { return System.IO.Path.GetFullPath(path); }
+            catch (Exception) { return path; }
+        }
+
+        /// <summary>The handle of the library at <paramref name="path"/>,
+        /// loaded through <paramref name="load"/> the first time, or zero. The
+        /// calling thread holds the library from here on. A library the
+        /// SteamVR uninstall released is not loaded, and
+        /// <paramref name="refusal"/> says why.</summary>
+        internal static IntPtr LoadLibraryOnce(string path, Func<string, IntPtr> load, out LibraryRefusal refusal)
+        {
+            string key = FullPath(path);
+            lock (s_libraries)
+            {
+                refusal = LibraryRefusal.None;
+                if (s_released.TryGetValue(key, out bool unloaded))
+                {
+                    refusal = unloaded ? LibraryRefusal.Unloaded : LibraryRefusal.StillHeld;
+                    return IntPtr.Zero;
+                }
+                if (!s_libraries.TryGetValue(key, out IntPtr module))
+                {
+                    module = load(path);
+                    if (module == IntPtr.Zero) return module;
+                    s_libraries[key] = module;
+                }
+                s_holders[System.Threading.Thread.CurrentThread] = key;
+                return module;
+            }
+        }
+
+        /// <summary>The calling thread no longer calls into the library it
+        /// took (<see cref="LoadLibraryOnce"/>).</summary>
+        internal static void ForgetHolder()
+        {
+            lock (s_libraries) s_holders.Remove(System.Threading.Thread.CurrentThread);
+        }
+
+        /// <summary>Whether <paramref name="thread"/> took a library and has
+        /// not let go of it (<see cref="ForgetHolder"/>).</summary>
+        internal static bool StillHolds(System.Threading.Thread thread)
+        {
+            lock (s_libraries) return s_holders.ContainsKey(thread);
+        }
+
+        /// <summary>What a refused load reads.</summary>
+        internal static string RefusedRead(string runtime, string library, LibraryRefusal refusal) => refusal == LibraryRefusal.Unloaded
+            ? $"the library of {runtime}, {library}, was unloaded when SteamVR was uninstalled, and loads again after PadForge restarts"
+            : $"the library of {runtime}, {library}, is still held by an OpenXR session that did not stop when SteamVR was uninstalled, " +
+              "and loads again after PadForge restarts";
+
+        /// <summary>
+        /// Frees the runtime libraries loaded from under
+        /// <paramref name="folder"/>, for the SteamVR uninstall, which deletes
+        /// that folder next. Their paths are refused first, so no new session
+        /// can take a handle. Then <paramref name="stopHolders"/> stops the
+        /// threads that took one of them, and only when it says each of those
+        /// threads ended does <paramref name="free"/> unload them. A thread
+        /// that holds another library is not handed over. A thread that
+        /// outlived its stop leaves them loaded and refused as still held.
+        /// </summary>
+        internal static void ReleaseLibrariesUnder(string folder, Func<IReadOnlyCollection<System.Threading.Thread>, bool> stopHolders,
+                                                   Action<IntPtr> free)
+        {
+            string root = FullPath(folder).TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar)
+                          + System.IO.Path.DirectorySeparatorChar;
+            var under = new List<string>();
+            var holders = new List<System.Threading.Thread>();
+            lock (s_libraries)
+            {
+                foreach (string key in s_libraries.Keys)
+                {
+                    if (!key.StartsWith(root, StringComparison.OrdinalIgnoreCase)) continue;
+                    s_released[key] = false;
+                    under.Add(key);
+                }
+                foreach (var hold in s_holders)
+                {
+                    if (!hold.Value.StartsWith(root, StringComparison.OrdinalIgnoreCase)) continue;
+                    holders.Add(hold.Key);
+                }
+            }
+            if (under.Count == 0) return;
+            if (!stopHolders(holders)) return;
+            lock (s_libraries)
+            {
+                foreach (string key in under)
+                {
+                    if (!s_libraries.Remove(key, out IntPtr module)) continue;
+                    try { free(module); } catch (Exception) { }
+                    s_released[key] = true;
+                }
+            }
         }
 
         /// <summary>What a negotiation that gave no xrGetInstanceProcAddr

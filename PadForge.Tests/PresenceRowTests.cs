@@ -260,7 +260,7 @@ namespace PadForge.Tests
             UserInstall.Launcher = new InProcessLauncher();
             UserInstall.ReportFolderSeam = () => _root;
             string mine = Plant("Mine", "padforge.py");
-            var run = await UserInstall.RunAsUserAsync(new InstallRequest(InstallWhat.Python, mine, Remove: true));
+            var run = await UserInstall.RunInCopyAsync(new InstallRequest(InstallWhat.Python, mine, Remove: true));
             Assert.Equal(UserInstall.Failed, run.Code);
             Assert.Equal(InstallReason.NotOurs, run.Reason);
             Assert.Equal(mine, run.Detail);

@@ -130,6 +130,62 @@ namespace PadForge.Tests
                 ids.OrderBy(i => i));
         }
 
+        /// <summary>A controller the user mapped while PadForge read it raw
+        /// keeps that read once SDL maps it through a community row this
+        /// release carries (SDL#53), here the 2DC8:3100 the fork took in at
+        /// 68f6b71aef. Opened as a gamepad, its saved mapping would read
+        /// renumbered inputs. Read raw, it stays a joystick, so neither the
+        /// gamepad auto-map nor the trigger rest rule reads it.</summary>
+        [Fact]
+        public void AControllerMappedRaw_KeepsItsRawRead_WhenSdlStartsMappingIt()
+        {
+            const SDL_JoystickType Pad = SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD;
+            const ushort vendor = 0x2DC8, product = 0x3100;
+            var raw = new UserDevice { VendorId = vendor, ProdId = product, CapType = InputDeviceType.Joystick };
+            Assert.True(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, Pad, vendor, product, new[] { raw }, (_, _) => true));
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, Pad, vendor, product, new[] { raw }, (_, _) => false));
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Yours, Pad, vendor, product, new[] { raw }, (_, _) => true));
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, Pad, vendor, product, Array.Empty<UserDevice>(), (_, _) => true));
+            var pad = new UserDevice { VendorId = vendor, ProdId = product, CapType = InputDeviceType.Gamepad };
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, Pad, vendor, product, new[] { raw, pad }, (_, _) => true));
+            var forced = new UserDevice { VendorId = vendor, ProdId = product, CapType = InputDeviceType.Joystick, ForceRawJoystickMode = true };
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, Pad, vendor, product, new[] { forced }, (_, _) => true));
+            // A Bliss-Box port read raw is saved as a joystick by PadForge's
+            // own switch, which decides how it opens (#469).
+            var port = new UserDevice { VendorId = 0x16D0, ProdId = 0x0D04, CapType = InputDeviceType.Joystick };
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, Pad, 0x16D0, 0x0D04, new[] { port }, (_, _) => true));
+
+            Assert.Equal(InputDeviceType.Joystick, SdlDeviceWrapper.InputDeviceTypeFor(SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD, false, vendor, product, true));
+            Assert.Equal(InputDeviceType.Gamepad, SdlDeviceWrapper.InputDeviceTypeFor(SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD, false, vendor, product));
+        }
+
+        /// <summary>The raw read is kept whatever made SDL start mapping the
+        /// controller: a HIDAPI driver that now claims it (the Xbox Nano
+        /// Controller, upstream 74815f4fd7) or a new row of SDL's own table, as
+        /// a community row does. A row of the user's, or a downloaded row the
+        /// user took, is the user's choice. An arcade stick SDL types as one is
+        /// a joystick by class while SDL reads it as a gamepad, so its saved
+        /// class says nothing of a raw read.</summary>
+        [Fact]
+        public void AControllerMappedRaw_KeepsItsRawRead_WhateverMakesSdlMapIt()
+        {
+            const ushort vendor = 0x045E, product = 0x0B4E;
+            var raw = new[] { new UserDevice { VendorId = vendor, ProdId = product, CapType = InputDeviceType.Joystick } };
+            const SDL_JoystickType pad = SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD;
+            Assert.True(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Sdl, pad, vendor, product, raw, (_, _) => true));
+            Assert.True(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, pad, vendor, product, raw, (_, _) => true));
+            Assert.True(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.PadForge, pad, vendor, product, raw, (_, _) => true));
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Yours, pad, vendor, product, raw, (_, _) => true));
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Downloaded, pad, vendor, product, raw, (_, _) => true));
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Sdl, SDL_JoystickType.SDL_JOYSTICK_TYPE_ARCADE_STICK,
+                vendor, product, raw, (_, _) => true));
+            // Force Raw Joystick Mode leaves the saved class at SDL's
+            // (UserDevice.LoadCapabilities takes GetInputDeviceType), so a
+            // pad with the switch turned off again opens as a gamepad.
+            var offAgain = new[] { new UserDevice { VendorId = vendor, ProdId = product, CapType = InputDeviceType.Gamepad } };
+            Assert.False(ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, pad, vendor, product, offAgain, (_, _) => true));
+        }
+
         // ── As a joystick connects ──
 
         private static readonly HashSet<string> NoOwnIds = new();
@@ -158,7 +214,8 @@ namespace PadForge.Tests
 
         /// <summary>SDL reaches a row from a joystick's GUID with its name
         /// hash cleared, then its version too, so the row is found for a
-        /// joystick that reports either.</summary>
+        /// joystick that reports either. A joystick on the Bluetooth bus with
+        /// no driver mark reaches it on the USB bus (SDL_gamepad.c:1652-1667).</summary>
         [Theory]
         [InlineData("03000000002000000100000000000000", true)]
         [InlineData("0300a1b2002000000100000000000000", true)]
@@ -166,7 +223,7 @@ namespace PadForge.Tests
         // The XInput backend's GUID for the same vendor and product.
         [InlineData("03000000002000000100000000007801", false)]
         // The Bluetooth bus.
-        [InlineData("05000000002000000100000000000000", false)]
+        [InlineData("05000000002000000100000000000000", true)]
         // Another product.
         [InlineData("03000000002000000200000000000000", false)]
         [InlineData("", false)]

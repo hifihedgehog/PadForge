@@ -17,7 +17,6 @@ Home is the top entry of the sidebar. Top to bottom it shows:
 | **Engine card** | The engine's switch and state, and three numbers: the polling rate, the controllers live and the devices connected. |
 | **Offer** | A band for a controller PadForge has just met that no virtual controller uses. Shown only while there is one. |
 | **Waiting recording** | A band for a [problem recording](problem-recorder.md) that stopped while nobody was at its review: **A problem recording from 21:14 is waiting for you to read it.**, with **Review** and **Delete**. Shown only while one waits. |
-| **Shared folder** | A band shown while PadForge runs with administrator rights from a folder other programs can change, a folder that holds other files, or one PadForge could not read, with **Move PadForge to Its Own Folder**. |
 | **Controllers** | One card per [virtual controller](controller-slots.md), then the **Add Controller** tile. |
 | **Extras in Use** | A tile for each [extra](#extras) that is on, or a line that introduces the Extras page while none is. |
 

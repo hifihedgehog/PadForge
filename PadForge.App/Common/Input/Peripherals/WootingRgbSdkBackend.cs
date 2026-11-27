@@ -67,7 +67,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _idleTickMs;
         private readonly int _stopJoinMs;
         private readonly int _responseTimeoutMs;
-        private readonly AutoResetEvent _wake = new(false);
 
         private IReadOnlyList<HidCollectionInfo> _present;
         private string[] _recorded = Array.Empty<string>();
@@ -75,6 +74,7 @@ namespace PadForge.Common.Input.Peripherals
         private volatile WorkerRun _run;
         private int _disposed;
         private int _passes;
+        private int _waitMs;
 
         /// <summary>The route's workers over the engine's restarts.</summary>
         private static readonly WorkerSuccession s_workers = new();
@@ -107,6 +107,7 @@ namespace PadForge.Common.Input.Peripherals
         public event Action RescanRequested { add { } remove { } }
 
         internal int PassCount => Volatile.Read(ref _passes);
+        internal int WaitMs => Volatile.Read(ref _waitMs);
         internal bool WorkerAlive => _thread?.IsAlive == true;
 
         /// <summary>The keys of the keyboards the crash path would reset.</summary>
@@ -118,9 +119,9 @@ namespace PadForge.Common.Input.Peripherals
             var run = new WorkerRun();
             _run = run;
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralWootingSdk" };
-            _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
+            _thread.Start();
         }
 
         public void Stop()
@@ -178,7 +179,7 @@ namespace PadForge.Common.Input.Peripherals
 
         internal void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            _run?.Wake.Set();
         }
 
         /// <summary>The protocol and type of a path's collection, from the
@@ -233,13 +234,13 @@ namespace PadForge.Common.Input.Peripherals
                         }
                     }
                     PeripheralOutputs.SetBackendState(OutputFamily.WootingRgbSdk, lit ? BackendState.Connected : BackendState.Idle);
-                    // With no unit, only a link table, a claim or a walk of the
+                    // With no unit, only a link table or a walk of the
                     // collections can make one, and each wakes the worker.
                     int wait = units.Count == 0 ? Timeout.Infinite
                         : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
+                    Volatile.Write(ref _waitMs, wait);
                     Interlocked.Increment(ref _passes);
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)
@@ -483,7 +484,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
     }
 }

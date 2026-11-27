@@ -123,8 +123,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>What PadForge reads out of the box, as the issue counts
-        /// it: SDL's 313 Windows rows, the 286 community rows the fork kept
-        /// at this pin, and PadForge's own 3. The numbers move with an SDL
+        /// it: SDL's 316 Windows rows, the 311 community rows the fork kept
+        /// at this pin, and PadForge's own 2. The numbers move with an SDL
         /// take or a row of PadForge's own, and this is where they are
         /// read.</summary>
         [Fact]
@@ -133,9 +133,9 @@ namespace PadForge.Tests
             var baseline = ControllerDatabaseBaseline.Embedded;
             var own = ControllerDatabaseUse.OwnRows;
             int count = ControllerDatabaseStatus.BuiltInCount(baseline, own);
-            Assert.True(count == 602, "PadForge reads " + count + " mappings out of the box: " + baseline.SdlWindowsRows + " of SDL's, "
-                + baseline.KeptRows + " community rows the fork kept and " + own.Count + " of its own. Issue #597 counts 602, and the README names the kept share.");
-            Assert.Equal(869, baseline.WindowsRows);
+            Assert.True(count == 629, "PadForge reads " + count + " mappings out of the box: " + baseline.SdlWindowsRows + " of SDL's, "
+                + baseline.KeptRows + " community rows the fork kept and " + own.Count + " of its own. The README names the kept share.");
+            Assert.Equal(873, baseline.WindowsRows);
         }
 
         [Fact]

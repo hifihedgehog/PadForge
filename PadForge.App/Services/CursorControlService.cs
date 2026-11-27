@@ -158,6 +158,12 @@ namespace PadForge.Services
         internal int TickCount => System.Threading.Volatile.Read(ref _tickCount);
         internal bool SamplerIdle => _samplerIdle;
 
+        /// <summary>Whether something consumes Mouse Position or a pin or
+        /// clamp is engaged.</summary>
+        private bool SamplerWanted()
+            => _isPinned || _isClamped
+                || Environment.TickCount64 - System.Threading.Volatile.Read(ref _lastProviderReadMs) <= ProviderIdleMs;
+
         private void WakeSampler()
         {
             if (!_samplerIdle || _disposed) return;
@@ -172,13 +178,21 @@ namespace PadForge.Services
             // Demand gate: the monitor+cursor syscalls (and the 200 Hz wake
             // itself) run only while something consumes Mouse Position or a
             // pin/clamp is engaged.
-            if (!_isPinned && !_isClamped
-                && Environment.TickCount64 - System.Threading.Volatile.Read(ref _lastProviderReadMs) > ProviderIdleMs)
+            if (!SamplerWanted())
             {
                 if (!_samplerIdle)
                 {
                     _samplerIdle = true;
                     try { _timer?.Change(Timeout.Infinite, Timeout.Infinite); } catch (ObjectDisposedException) { }
+                    // A pin, clamp or read that landed while this tick
+                    // decided saw the sampler awake and woke nothing, so the
+                    // demand is read again after the stop.
+                    System.Threading.Interlocked.MemoryBarrier();
+                    if (SamplerWanted())
+                    {
+                        _samplerIdle = false;
+                        try { _timer?.Change(0, SampleIntervalMs); } catch (ObjectDisposedException) { }
+                    }
                 }
                 return;
             }
@@ -282,7 +296,10 @@ namespace PadForge.Services
             _pinY = y;
             _isPinned = true;
             // Restore the 5 ms period at once so the first pin write does
-            // not wait out an idle interval.
+            // not wait out an idle interval. The barrier pairs with the one
+            // in Tick: either Tick sees the pin or this call sees the
+            // sampler idle.
+            System.Threading.Interlocked.MemoryBarrier();
             WakeSampler();
         }
 
@@ -311,6 +328,7 @@ namespace PadForge.Services
             _clampOffsetX = offsetX;
             _clampOffsetY = offsetY;
             _isClamped = true;
+            System.Threading.Interlocked.MemoryBarrier();
             WakeSampler();
         }
 

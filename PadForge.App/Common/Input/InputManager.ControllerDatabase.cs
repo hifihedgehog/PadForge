@@ -55,7 +55,7 @@ namespace PadForge.Common.Input
             {
                 string guid = GetJoystickGUIDStringForID(instanceId);
                 // Nearly every joystick has no row, and costs no more than this.
-                if (!section.TryFindNew(ControllerDatabaseRow.LookupId(guid), out _)) return null;
+                if (!section.TryFindNew(ControllerDatabaseRow.LookupId(guid, id => section.TryFindNew(id, out _)), out _)) return null;
                 // A row of the user's for the device stands (#600), and a
                 // downloaded row under the same ID would replace it in SDL.
                 if (ControllerDatabaseMine.Current.ForSdlDevice(guid) != null) return null;
@@ -140,6 +140,33 @@ namespace PadForge.Common.Input
                 SettingsManager.GlobalMacros);
         }
 
+        /// <summary>Whether a joystick SDL maps keeps the raw read its saved
+        /// assignment was made with
+        /// (<see cref="ControllerDatabaseUse.KeepsRawRead"/>). Asked as the
+        /// joystick opens, never per pass, and the cheap check of the saved
+        /// entries comes before SDL is asked for the mapping.</summary>
+        internal static bool KeepsSavedRawRead(uint instanceId)
+        {
+            try
+            {
+                ushort vendor = SDL_GetJoystickVendorForID(instanceId), product = SDL_GetJoystickProductForID(instanceId);
+                var devices = SavedDevices();
+                if (!ControllerDatabaseUse.KeepsRawRead(SdlMappingSource.Community, SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
+                        vendor, product, devices, (_, _) => true))
+                    return false;
+                string guid = GetJoystickGUIDStringForID(instanceId);
+                var source = ControllerDatabaseSource.Of(guid, ControllerDatabaseEngine.MappingForId(instanceId),
+                    ControllerDatabaseMine.Current, SettingsManager.ControllerDatabase, ControllerDatabaseUse.OwnRows,
+                    ControllerDatabaseBaseline.Embedded, PadForge.Services.ControllerDatabaseProfileRows.Applied?.Invoke());
+                return ControllerDatabaseUse.KeepsRawRead(source, SDL_GetJoystickTypeForID(instanceId), vendor, product, devices,
+                    ModelHasSavedAssignment);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         private static bool ModelIsForcedRaw(ushort vendorId, ushort productId) =>
             ControllerDatabaseUse.IsForcedRaw(vendorId, productId, SavedDevices());
 
@@ -214,8 +241,8 @@ namespace PadForge.Common.Input
             foreach (var (ud, old, mappingBefore) in listed)
             {
                 uint id = old.SdlInstanceId;
-                bool wants = SdlDeviceWrapper.OpensAsGamepad(SDL_IsGamepad(id) && !ControllerDatabaseEngine.ReadsRaw(GetJoystickGUIDStringForID(id)),
-                    old.VendorId, old.ProductId);
+                bool wants = SdlDeviceWrapper.OpensAsGamepad(SDL_IsGamepad(id) && !ControllerDatabaseEngine.ReadsRaw(GetJoystickGUIDStringForID(id))
+                    && !InputManager.KeepsSavedRawRead(id), old.VendorId, old.ProductId);
                 bool isGamepad = old.GameController != IntPtr.Zero;
                 bool sameMapping = !isGamepad
                     || string.Equals(mappingBefore, ControllerDatabaseEngine.MappingForId(id), StringComparison.Ordinal);
@@ -548,6 +575,7 @@ namespace PadForge.Common.Input
         static ControllerDatabaseEngine()
         {
             SdlDeviceWrapper.ReadsRawThisSession = id => !RawIds.IsEmpty && ReadsRaw(GetJoystickGUIDStringForID(id));
+            SdlDeviceWrapper.KeepsSavedRawRead = InputManager.KeepsSavedRawRead;
         }
 
         /// <summary>Whether the engine runs, so posted work is done.</summary>

@@ -228,7 +228,7 @@ namespace PadForge.Services
             try
             {
                 source = ControllerDatabaseSource.Of(facts.Guid, facts.Mapping, mine, SettingsManager.ControllerDatabase, OwnRows,
-                    Baseline());
+                    Baseline(), ControllerDatabaseProfileRows.Applied?.Invoke());
             }
             catch (Exception)
             {
@@ -904,9 +904,12 @@ namespace PadForge.Services
         }
 
         /// <summary>The rows of the user's own SDL_GAMECONTROLLERCONFIG
-        /// variable that PadForge does not keep (#600 item 49).</summary>
+        /// variable that PadForge does not keep and SDL in PadForge does not
+        /// already apply from the variable PadForge started with (#600 item
+        /// 49).</summary>
         private List<SdlMappingRow> ProfileRows() =>
-            ControllerDatabaseProfileRows.NotKept(ProfileVariable?.Invoke(), ControllerDatabaseMine.Current);
+            ControllerDatabaseProfileRows.NotApplied(ProfileVariable?.Invoke(), ControllerDatabaseMine.Current,
+                ControllerDatabaseProfileRows.Applied?.Invoke());
 
         /// <summary>The Your Rows line on the variable's rows, empty while it
         /// holds none PadForge does not keep.</summary>
@@ -1194,6 +1197,7 @@ namespace PadForge.Services
             return source switch
             {
                 SdlMappingSource.Sdl => s.SdlMapping_From_Sdl,
+                SdlMappingSource.Variable => s.SdlMapping_From_Variable,
                 SdlMappingSource.Community => string.Format(CultureInfo.CurrentCulture, s.SdlMapping_From_Community_Format, date ?? string.Empty),
                 SdlMappingSource.Downloaded => string.Format(CultureInfo.CurrentCulture, s.SdlMapping_From_Downloaded_Format, date ?? string.Empty),
                 SdlMappingSource.PadForge => s.SdlMapping_From_PadForge,

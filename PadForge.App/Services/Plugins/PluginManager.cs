@@ -822,12 +822,10 @@ namespace PadForge.Services.Plugins
             {
                 held.Dispose();
                 var why = launch?.Refusal ?? PluginRefusal.Failed;
-                // No shell yet, as at sign-in: tried again each second
-                // (Refuse). A start Windows refused this once: tried again
-                // after the pause. The rest stays as it is until the user
-                // acts.
+                // A start Windows refused this once is tried again after
+                // the pause. The rest stays as it is until the user acts.
                 Refuse(run, why == PluginRefusal.None ? PluginRefusal.Failed : why, launch?.Error ?? 0,
-                    retry: why is PluginRefusal.NoShell or PluginRefusal.Failed or PluginRefusal.None);
+                    retry: why is PluginRefusal.Failed or PluginRefusal.None);
                 return adopted;
             }
 
@@ -847,26 +845,14 @@ namespace PadForge.Services.Plugins
             return adopted;
         }
 
-        /// <summary>Under the lock. A start before the desktop shell exists,
-        /// as at sign-in, is no failure of the plugin's: it is tried again
-        /// each second for as long as the shell takes, with one log line
-        /// for the wait. Only the plugin's exits and Windows' refusals count
-        /// toward the five.</summary>
+        /// <summary>Under the lock: a start that did not happen. Windows'
+        /// refusals count toward the five.</summary>
         private void Refuse(PluginRun run, PluginRefusal why, int error, bool retry)
         {
-            bool waitForShell = retry && why == PluginRefusal.NoShell;
-            bool stillWaiting = waitForShell && run.Refusal == PluginRefusal.NoShell;
             run.Refusal = why;
             run.Error = error;
-            if (!stillWaiting) AddLog(run, new PluginLogLine(_clock(), PluginLogKind.NotStarted, Code: error, Refusal: why));
-            if (waitForShell)
-            {
-                run.PauseMs = FirstPauseMs;
-                run.DueAtMs = _nowMs() + FirstPauseMs;
-                run.Status = PluginStatus.Restarting;
-                EnsureTimer();
-            }
-            else if (retry) Failed(run);
+            AddLog(run, new PluginLogLine(_clock(), PluginLogKind.NotStarted, Code: error, Refusal: why));
+            if (retry) Failed(run);
             else run.Status = PluginStatus.Refused;
         }
 

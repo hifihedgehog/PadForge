@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nu a pornit: niciun program nu deschide pentru dumneavoastră fișierele Python, iar PadForge nu găsește niciun launcher py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nu a pornit: PadForge nu poate citi ce program deschide pentru dumneavoastră acest tip de fișier</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nu a pornit: programul care deschide pentru dumneavoastră acest tip de fișier nu se află pe acest PC</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nu a pornit: nu rulează niciun shell de desktop sub care să fie pornit</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nu a pornit: shellul de desktop are drepturi de administrator, deci pluginul le-ar avea și el</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nu a pornit: PadForge nu poate citi dacă ar avea drepturi de administrator</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nu a pornit: Windows i-a dat drepturi de administrator, deci PadForge l-a oprit înainte să ruleze</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nu a pornit: cere drepturi de administrator</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nu a pornit: Windows a refuzat cu eroarea {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nu a pornit</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Logitech G-key SDK nu este instalat pe acest computer. Se instalează odată cu Logitech Gaming Software 8.55 sau o versiune ulterioară.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK este înregistrat, dar fișierul său lipsește. Reinstalați Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK a fost găsit, dar nu a putut fi încărcat.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK a fost găsit, dar nu a fost încărcat, deoarece PadForge nu a putut confirma că doar administratorii îl pot modifica și că Logitech l-a semnat.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Biblioteca respectivă nu este G-key SDK-ul așteptat.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK a refuzat să pornească. De obicei, cauza este că Logitech Gaming Software nu rulează.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Conectat, nicio tastă detectată încă. În Logitech Gaming Software, trageți comanda G-key pe fiecare tastă din profilul PadForge și setați acel profil ca persistent. Un mouse G600 sau G300 trebuie, de asemenea, scos din modul de memorie integrată.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Păstrează fereastra ascunsă când pornește PadForge. Programul rulează și mapează ca de obicei.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Pornește PadForge automat când vă conectați la Windows. Cât timp este activat, PadForge pornește și fără solicitarea Windows dintr-o scurtătură, un script sau alt program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge rulează din {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Acest lucru cere ca PadForge să fie într-un folder propriu. Folderul lui conține alte fișiere, deci PadForge nu poate împiedica alte programe să îl modifice.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Acest lucru cere ca PadForge să fie într-un folder pe care alte programe nu îl pot modifica. PadForge nu a putut împiedica alte programe să îi modifice folderul.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Mutare PadForge în folderul propriu</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copiază PadForge și setările lui în Program Files, îi îndreaptă sarcinile acolo și îl pornește de acolo. Copia de aici rămâne neschimbată.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge nu s-a mutat: {0} conține fișiere care nu sunt ale PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge nu s-a mutat: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Pornirea la conectare a fost dezactivată, deoarece rula PadForge dintr-un folder care conține alte fișiere.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge nu s-a mutat: Windows nu indică niciun folder Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut citi PadForge care rulează.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut crea {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut citi ce conține {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge nu s-a mutat: nu a putut împiedica alte programe să modifice {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge nu s-a mutat: copia sa din {0} nu s-a potrivit cu PadForge care rulează.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge nu s-a mutat: după copiere, {0} conținea fișiere care nu sunt ale PadForge sau alte programe îl puteau modifica.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge din care rula nu mai există.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge nu a putut împiedica alte programe să modifice folderul din care a rulat PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge nu a putut citi din ce PadForge a rulat.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Pornire la conectare a fost dezactivată, deoarece PadForge nu a putut citi folderul PadForge-ului din care a rulat.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nu a putut crea folderul său protejat, {0}. PadForge își păstrează acolo bibliotecile pe care le rulează cu drepturi de administrator și nu poate porni în siguranță fără el.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge nu s-a putut porni din nou din folderul său protejat, {0}. PadForge rulează cu drepturi de administrator doar de acolo, deci nu a pornit.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge nu a putut crea blocajul care îl limitează la o singură copie în execuție, deci nu a pornit.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge rulează cu drepturi de administrator din {0}, un folder pe care alte programe îl pot modifica. Ele pot schimba acolo setările PadForge, iar PadForge acționează pe baza lor cu drepturile sale.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge rulează cu drepturi de administrator din {0}, un folder care conține alte fișiere. PadForge nu poate împiedica alte programe să îi modifice acolo setările, iar el acționează pe baza lor cu drepturile sale.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge rulează cu drepturi de administrator din {0}, un folder pe care nu l-a putut citi. PadForge nu poate împiedica alte programe să îi modifice acolo setările, iar el acționează pe baza lor cu drepturile sale.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Afișare permanentă în zona de notificare</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Păstrează pictograma vizibilă în zona de notificare cât timp fereastra este deschisă, astfel încât Ieșire din meniul ei să fie mereu la un clic distanță.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualizări</value></data>
@@ -1354,13 +1326,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Verificare de curățare: se verifică părțile păstrate…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Verificare de curățare: PadForge nu a putut citi părțile păstrate, deci Salvarea rămâne dezactivată.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Salvarea cu drepturile dumneavoastră nu a pornit.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Salvarea cu drepturile dumneavoastră nu a pornit: nu rulează niciun shell de desktop în care să pornească.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Salvarea cu drepturile dumneavoastră nu a pornit: Windows a refuzat cu eroarea {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Salvarea nu s-a încheiat în {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows nu a permis scrierea fișierului acolo.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge nu a recunoscut acest fișier ca înregistrare proprie.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Salvarea s-a încheiat cu codul {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Salvat ca dumneavoastră, prima dată în folderul Descărcări, apoi acolo unde ați salvat ultima dată, și afișat în File Explorer. O înregistrare care se oprește cât timp nimeni nu e la pagină (limita ei, o macrocomandă, un program, instrumentul asistentului sau --record stop) așteaptă această citire în Acasă și se șterge după 7 zile dacă nu este salvată. Unui program i se spune că așteaptă, niciodată unde.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>O înregistrare de problemă din {0} așteaptă să o citiți.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Citire</value></data>
@@ -5920,7 +5887,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Asocierea s-a oprit: citirea sau scrierea în controler sau în radioul Bluetooth a eșuat. Jurnalul de diagnosticare conține detaliile.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Asocierea s-a oprit la o eroare pe care PadForge nu a așteptat-o. Jurnalul de diagnosticare conține detaliile.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>necesită Logitech Gaming Software 8.52 sau o versiune ulterioară</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>a găsit biblioteca sa, dar nu a încărcat-o, deoarece PadForge nu a putut confirma că doar administratorii o pot modifica și că Logitech a semnat-o</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>a găsit biblioteca sa, dar nu a putut-o folosi, iar jurnalul de diagnosticare spune de ce</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>porniți Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>se așteaptă un telefon cu Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Încarcă această copie a bibliotecii Force Dimension în locul oricărei alte copii. Un Falcon deschis pe altă copie se închide și se deschide din nou pe aceasta. Copiile instalate de SDK sunt găsite și fără ea.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Biblioteci (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Pagina de descărcare Falcon SDK nu s-a deschis: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Pagina de descărcare Falcon SDK nu s-a deschis încă: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalare driver Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Instalează driverul Force Dimension, din folderul SDK, pe un Falcon care nu are driver. Windows poate întreba mai întâi dacă aveți încredere în Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Descărcare Force Dimension SDK</value></data>
@@ -6726,6 +6691,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMapping_Away" xml:space="preserve"><value>Dispozitivul nu este conectat. SDL îl citește după ce se conectează.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nu a dat PadForge nicio citire a acestui dispozitiv.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Copia comunității încorporată, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Descărcat {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fișierul propriu al PadForge</value></data>

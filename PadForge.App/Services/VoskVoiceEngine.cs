@@ -27,20 +27,15 @@ namespace PadForge.Services
         internal const string ModelName = "vosk-model-small-en-us-0.15";
         private const string ModelResource = "PadForge.VoiceModels.vosk-model-small-en-us-0.15.zipbr";
 
-        /// <summary>Where the embedded model is unpacked: VoiceModels in the
-        /// protected folder's Work folder (#600).
+        /// <summary>Where the embedded model is unpacked.
         ///
         /// <para>Vosk loads a model from a directory, so the bytes have to
         /// reach the disk somewhere, and not beside the exe, where only
-        /// PadForge.xml and crash.log belong. The model is parsed by native
-        /// code in the process with rights. In the user's temp folder any
-        /// program of the user could replace it with one built to break that
-        /// parser, so it is unpacked where only Administrators and SYSTEM can
-        /// write. The folder can be deleted: the next use unpacks the model
-        /// again from the copy inside the exe. Only the test host, which has
-        /// no protected folder, unpacks it in the temp folder.</para></summary>
-        private static string DefaultRoot => PadForge.Services.ProtectedWork.Folder("VoiceModels")
-            ?? (PadForge.Common.ProtectedFolder.OffLimitsForTest ? Path.Combine(Path.GetTempPath(), "PadForge", "voice-models") : null);
+        /// PadForge.xml and crash.log belong. A cache under TEMP is the same
+        /// place the driver installers stage their payloads, and it is
+        /// re-creatable: delete it and the next use unpacks it again from the
+        /// copy inside the exe.</para></summary>
+        private static string DefaultRoot => Path.Combine(Path.GetTempPath(), "PadForge", "voice-models");
         private static string _root;
         private static string Root
         {

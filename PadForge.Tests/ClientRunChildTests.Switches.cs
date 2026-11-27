@@ -61,11 +61,9 @@ namespace PadForge.Tests
             ["--install skill <folder>"] = new(new[] { "--install", "skill", "{folder}" }),
             ["--install assistant claude-code --check"] = new(new[] { "--install", "assistant", "claude-code", "--check" }),
             ["--summarize"] = new(new[] { "--summarize", "{recording}" }),
-            ["--record save"] = new(new[] { "--record", "save", "{recording}", "{folder}\\copy.zip" }),
             ["--plugin-kit"] = new(new[] { "--plugin-kit", "{folder}\\kit" },
                 After: run => Assert.True(File.Exists(Path.Combine(run.Folder, "kit", "README.md")), "the child wrote no kit")),
             ["--settings-folder"] = new(new[] { "--settings-folder" }),
-            ["--port-files"] = new(new[] { "--port-files", "7000" }),
             ["--web, no copy"] = new(new[] { "--web" }, CompareWords: false, Code: WebHelper.Refused,
                 Error: "PadForge starts its web helper itself"),
             ["--web, a copy, no key"] = new(new[] { "--web" }, CopyRuns: true, CompareWords: false, Code: WebHelper.Refused,
@@ -286,8 +284,8 @@ namespace PadForge.Tests
             int end = source.IndexOf("--record needs start, stop or mark.", start, StringComparison.Ordinal);
             Assert.True(start >= 0 && end > start, "the --record row is not where this test reads it");
             var verbs = new SortedSet<string>(StringComparer.Ordinal);
-            foreach (Match m in Regex.Matches(source.Substring(start, end - start), "case (?:\"([a-z]+)\"|Recording\\.RecordingSave\\.Verb):"))
-                verbs.Add(m.Groups[1].Success ? m.Groups[1].Value : PadForge.Common.Recording.RecordingSave.Verb);
+            foreach (Match m in Regex.Matches(source.Substring(start, end - start), "case \"([a-z]+)\":"))
+                verbs.Add(m.Groups[1].Value);
             var rowedVerbs = new SortedSet<string>(SwitchRows.Values.Where(r => r.Words.Length > 1 && r.Words[0] == "--record").Select(r => r.Words[1]), StringComparer.Ordinal);
             Assert.Equal(verbs, rowedVerbs);
         }

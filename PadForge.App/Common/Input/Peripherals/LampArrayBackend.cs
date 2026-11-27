@@ -651,8 +651,9 @@ namespace PadForge.Common.Input.Peripherals
         internal const int FirstRetryMs = 5000;
         internal const int MaxRetryMs = 15000;
 
-        /// <summary>The worker's wait with nothing due sooner. A color
-        /// change wakes it at once
+        /// <summary>The worker's wait with nothing due sooner while a
+        /// collection is listed. With none listed it waits for a walk. A
+        /// color change wakes it at once
         /// (<see cref="PeripheralOutputs.LightingChanged"/>).</summary>
         internal const int IdleTickMs = 100;
 
@@ -840,7 +841,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _idleTickMs;
         private readonly int _predecessorJoinMs;
         private readonly int _stopJoinMs;
-        private readonly AutoResetEvent _wake = new(false);
 
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
 
@@ -933,9 +933,9 @@ namespace PadForge.Common.Input.Peripherals
             Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
             _run = run;
             _thread = new Thread(() => Worker(run, walks)) { IsBackground = true, Name = "PeripheralLampArray" };
-            _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             LearnedKeyMaps.Changed += OnLearned;
+            _thread.Start();
         }
 
         public void Stop()
@@ -1003,13 +1003,12 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
 
         /// <summary>Brings the worker's next pass forward. Any thread.</summary>
         internal void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            _run?.Wake.Set();
         }
 
         private void OnLearned(object sender, EventArgs e) => Wake();
@@ -1106,11 +1105,9 @@ namespace PadForge.Common.Input.Peripherals
                     // it wakes the worker.
                     int wait = lamps.Count == 0 ? Timeout.Infinite : (int)Math.Clamp(pass.Due - pass.Now, 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
-                    // A Dispose whose Stop gave up its join releases the
-                    // wake under a worker still inside a report, which ends
-                    // here.
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    // Stop sets this run's own wake, so a worker a Stop gave
+                    // up on, still inside a report, ends here.
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)

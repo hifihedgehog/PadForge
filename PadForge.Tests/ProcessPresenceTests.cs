@@ -270,5 +270,22 @@ namespace PadForge.Tests
             Assert.Contains("=> FirstRunning(PadForge.Common.Input.ProcessPresence.RunningAmong(HostProcesses));", logi);
             Assert.DoesNotContain("GetProcessesByName", logi);
         }
+
+        /// <summary>A process that exits after a read stays a zombie object
+        /// while its handle is held. With no read for a minute, the held
+        /// handles are closed.</summary>
+        [Fact]
+        public void HeldHandlesCloseWhenNoReadCameForAMinute()
+        {
+            Assert.NotNull(RunningProcessList.Read());
+            Assert.True(RunningProcessList.HeldCount > 0, "a read holds handles");
+            long now = Environment.TickCount64;
+            Assert.False(RunningProcessList.CloseIfIdle(now));
+            Assert.True(RunningProcessList.HeldCount > 0);
+            Assert.True(RunningProcessList.CloseIfIdle(now + RunningProcessList.IdleCloseMs));
+            Assert.Equal(0, RunningProcessList.HeldCount);
+            Assert.NotNull(RunningProcessList.Read());
+            Assert.True(RunningProcessList.HeldCount > 0, "the next read fills the cache again");
+        }
     }
 }

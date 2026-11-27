@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>አልጀመረም፦ Python ፋይሎችን የሚከፍትልዎ ፕሮግራም የለም፣ PadForge ደግሞ py ማስጀመሪያ አላገኘም</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>አልጀመረም፦ PadForge ይህን ዓይነት ፋይል የሚከፍትልዎ የትኛው ፕሮግራም እንደሆነ ማንበብ አይችልም</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>አልጀመረም፦ ይህን ዓይነት ፋይል የሚከፍትልዎ ፕሮግራም በዚህ ኮምፒውተር ላይ የለም</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>አልጀመረም፦ ከሥሩ የሚጀምርበት የዴስክቶፕ ሼል እየሄደ አይደለም</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>አልጀመረም፦ የዴስክቶፕ ሼሉ የአስተዳዳሪ መብቶች ስላሉት ተሰኪውም ይኖሩታል</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>አልጀመረም፦ PadForge ተሰኪው የአስተዳዳሪ መብቶች ይኖሩት እንደሆነ ማንበብ አይችልም</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>አልጀመረም፦ Windows የአስተዳዳሪ መብቶችን ሰጥቶታል፣ ስለዚህ PadForge ከመሄዱ በፊት አቋረጠው</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>አልጀመረም፦ የአስተዳዳሪ መብቶችን ይጠይቃል</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>አልጀመረም፦ Windows በስህተት {0} አልፈቀደም</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>አልጀመረም</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>በዚህ ኮምፒውተር ላይ Logitech G-key SDK የለም። ከLogitech Gaming Software 8.55 ወይም ከዚያ በኋላ ካለው ጋር አብሮ ይጫናል።</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK ተመዝግቧል ነገር ግን ፋይሉ የለም። Logitech Gaming Softwareን እንደገና ይጫኑ።</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK ተገኝቷል ነገር ግን ሊጫን አልቻለም።</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK ተገኝቷል ነገር ግን አልተጫነም፣ ምክንያቱም PadForge አስተዳዳሪዎች ብቻ ሊቀይሩት እንደሚችሉ እና Logitech እንደፈረመው ማረጋገጥ አልቻለም።</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>ያ ቤተ-መጽሐፍት ይህ የሚጠብቀው G-key SDK አይደለም።</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ለመጀመር እምቢ አለ። ብዙውን ጊዜ Logitech Gaming Software እየሄደ አይደለም።</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>ተገናኝቷል፣ እስካሁን ምንም ቁልፍ አልታየም። በLogitech Gaming Software ውስጥ የG-key ትዕዛዙን በPadForge መገለጫ ውስጥ ባለው በእያንዳንዱ ቁልፍ ላይ ይጎትቱ፣ እና ያንን መገለጫ ቋሚ ያድርጉት። G600 ወይም G300 መዳፊት ደግሞ ከውስጠ-መሣሪያ ማህደረ ትውስታ ሁነታ መውጣት አለበት።</value></data>
@@ -1028,30 +1023,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge ሲጀምር መስኮቱ ተደብቆ ይቆያል። እንደተለመደው ይሠራል እና ያዛምዳል።</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ወደ Windows ሲገቡ PadForge በራስ-ሰር ይጀምራል። ይህ በርቶ ሳለ PadForge ከአቋራጭ፣ ከስክሪፕት ወይም ከሌላ ፕሮግራም ሲጀመርም ያለ Windows ጥያቄ ይጀምራል።</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge የሚሄደው ከ{0} ነው።</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ይህ PadForge በራሱ አቃፊ ውስጥ እንዲሆን ይፈልጋል። አቃፊው ሌሎች ፋይሎችን ስለያዘ PadForge ሌሎች ፕሮግራሞች እንዳይቀይሩት መከላከል አይችልም።</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>ይህ PadForge ሌሎች ፕሮግራሞች ሊቀይሩት በማይችሉት አቃፊ ውስጥ እንዲሆን ይፈልጋል። PadForge ሌሎች ፕሮግራሞች አቃፊውን እንዳይቀይሩ መከላከል አልቻለም።</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ወደ ራሱ አቃፊ አዛውር</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge እና ቅንብሮቹን ወደ Program Files ይቀዳል፣ ተግባሮቹን ወደዚያ ይጠቁማል እና ከዚያ ያስጀምረዋል። እዚህ ያለው ቅጂ እንዳለ ይቆያል።</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0} የPadForge ያልሆኑ ፋይሎችን ይዟል።</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ሌሎች ፋይሎችን ከያዘ አቃፊ ያስጀምር ነበር።</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge አልተዛወረም፦ Windows ምንም የProgram Files አቃፊ አላሳወቀም።</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge አልተዛወረም፦ እየሄደ ያለውን PadForge ማንበብ አልቻለም።</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ አቃፊውን {0} መፍጠር አልቻለም።</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ {0} ምን እንደያዘ ማንበብ አልቻለም።</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ ሌሎች ፕሮግራሞች {0} እንዳይቀይሩ መከላከል አልቻለም።</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ በ{0} ውስጥ ያለው ቅጂው እየሄደ ካለው PadForge ጋር አልተዛመደም።</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge አልተዛወረም፦ ከቅጂው በኋላ {0} የPadForge ያልሆኑ ፋይሎችን ይዞ ነበር፣ ወይም ሌሎች ፕሮግራሞች ሊቀይሩት ይችሉ ነበር።</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም ያስጀምረው የነበረው PadForge ከአሁን በኋላ እዚያ የለም።</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ሌሎች ፕሮግራሞች PadForge ይጀመርበት የነበረውን አቃፊ እንዳይቀይሩ መከላከል አልቻለም።</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge የትኛውን PadForge ያስጀምር እንደነበረ ማንበብ አልቻለም።</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>«ሲገቡ ጀምር» ጠፍቷል፣ ምክንያቱም PadForge ያስጀምረው የነበረውን PadForge አቃፊ ማንበብ አልቻለም።</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge የተጠበቀ አቃፊውን {0} መፍጠር አልቻለም። PadForge በአስተዳዳሪ መብቶች የሚያሄዳቸውን ቤተ መጻሕፍት እዚያ ያስቀምጣል፣ ያለ እሱም በደህንነት መጀመር አይችልም።</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ከተጠበቀ አቃፊው {0} ራሱን እንደገና ማስጀመር አልቻለም። PadForge በአስተዳዳሪ መብቶች የሚሄደው ከዚያ ብቻ ስለሆነ አልጀመረም።</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge አንድ ቅጂ ብቻ እንዲሄድ የሚያደርገውን መቆለፊያ መፍጠር ስላልቻለ አልጀመረም።</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge በአስተዳዳሪ መብቶች ሌሎች ፕሮግራሞች ሊቀይሩት ከሚችሉት አቃፊ {0} ይሄዳል። እዚያ የPadForge ቅንብሮችን ሊቀይሩ ይችላሉ፣ PadForge ደግሞ በመብቶቹ በእነሱ ላይ ይሠራል።</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge በአስተዳዳሪ መብቶች ሌሎች ፋይሎችን ከያዘው አቃፊ {0} ይሄዳል። PadForge ሌሎች ፕሮግራሞች እዚያ ያሉትን ቅንብሮቹን እንዳይቀይሩ መከላከል አይችልም፣ በመብቶቹም በእነሱ ላይ ይሠራል።</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge በአስተዳዳሪ መብቶች ሊያነበው ካልቻለው አቃፊ {0} ይሄዳል። PadForge ሌሎች ፕሮግራሞች እዚያ ያሉትን ቅንብሮቹን እንዳይቀይሩ መከላከል አይችልም፣ በመብቶቹም በእነሱ ላይ ይሠራል።</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ሁልጊዜ በስርዓት መሣቢያ ውስጥ አሳይ</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>መስኮቱ ክፍት ሆኖ ሳለ የመሣቢያው አዶ እንዲታይ ያደርጋል፣ ስለዚህ በምናሌው ውስጥ ያለው «ውጣ» ሁልጊዜ አንድ ጠቅታ ብቻ ይርቃል።</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>ዝማኔዎች</value></data>
@@ -1293,13 +1265,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>የማጽዳት ፍተሻ፦ የሚያስቀምጧቸውን ክፍሎች በመፈተሽ ላይ…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>የማጽዳት ፍተሻ፦ PadForge የሚያስቀምጧቸውን ክፍሎች ማንበብ አልቻለም፣ ስለዚህ «አስቀምጥ» እንደጠፋ ይቆያል።</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>በእርስዎ መብቶች የሚደረገው ማስቀመጥ አልጀመረም።</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>በእርስዎ መብቶች የሚደረገው ማስቀመጥ አልጀመረም፦ ሊያስጀምረው የሚችል የዴስክቶፕ ሼል እየሄደ አይደለም።</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>በእርስዎ መብቶች የሚደረገው ማስቀመጥ አልጀመረም፦ Windows በስህተት {0} እምቢ አለ።</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>ማስቀመጡ በ{0} ውስጥ አላበቃም።</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ፋይሉ እዚያ እንዲጻፍ አልፈቀደም።</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ይህን ፋይል የራሱ ቀረጻ አድርጎ አልተቀበለውም።</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>ማስቀመጡ በኮድ {0} አብቅቷል።</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>በእርስዎ መለያ ይቀመጣል፣ የመጀመሪያው ጊዜ ወደ Downloads አቃፊዎ፣ ከዚያ ለመጨረሻ ጊዜ ወዳስቀመጡበት ቦታ፣ እና በExplorer ውስጥ ይታያል። ማንም በገጹ ላይ በሌለበት ጊዜ የሚቆም ቀረጻ (በገደቡ፣ በማክሮ፣ በፕሮግራም፣ በረዳቱ መሣሪያ ወይም በ--record stop) ይህንን ግምገማ በ«መነሻ» ገጽ ላይ ይጠብቃል፣ ካልተቀመጠም ከ7 ቀናት በኋላ ይሰረዛል። ፕሮግራም ቀረጻው እየጠበቀ መሆኑ ይነገረዋል፣ የት እንዳለ ግን በጭራሽ አይነገረውም።</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>የ{0} የችግር ቀረጻ እንዲያነቡት እየጠበቀዎት ነው።</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>ገምግም</value></data>
@@ -5556,7 +5523,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>ማጣመሩ ቆሟል፦ መቆጣጠሪያውን ወይም የBluetooth ሬዲዮውን ማንበብ ወይም መጻፍ አልተሳካም። የምርመራ ምዝግብ ማስታወሻው ዝርዝሮቹን ይዟል።</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>ማጣመሩ PadForge ባልጠበቀው ስህተት ቆሟል። የምርመራ ምዝግብ ማስታወሻው ዝርዝሮቹን ይዟል።</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 ወይም ከዚያ በኋላ ያለው ያስፈልጋል</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ቤተ መጻሕፍቱን አግኝቷል ነገር ግን አልጫነውም፣ ምክንያቱም PadForge አስተዳዳሪዎች ብቻ ሊቀይሩት እንደሚችሉ እና Logitech እንደፈረመው ማረጋገጥ አልቻለም</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ቤተ መጻሕፍቱን አግኝቷል ነገር ግን ሊጠቀምበት አልቻለም፣ ምክንያቱንም የምርመራ ምዝግብ ማስታወሻው ይገልጻል</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software አስጀምር</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control ያለው ስልክ በመጠበቅ ላይ</value></data>
@@ -5654,7 +5620,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>ይህንን የForce Dimension ቤተ-መጻሕፍት ቅጂ በሌሎች ሁሉ ምትክ ይጭናል። በሌላ ቅጂ ላይ ክፍት የሆነ Falcon ይዘጋና በዚህኛው ላይ እንደገና ይከፈታል። SDK የሚጭናቸው ቅጂዎች ያለዚህ ይገኛሉ።</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|ቤተ-መጻሕፍት (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>የFalcon SDK ማውረጃ ገጽ አልተከፈተም፦ {0}።</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>የFalcon SDK ማውረጃ ገጽ እስካሁን አልተከፈተም፦ {0}።</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>የFalcon አሽከርካሪ ጫን</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>አሽከርካሪ በሌለው Falcon ላይ የForce Dimension አሽከርካሪን ከSDK አቃፊ ይጭናል። Windows መጀመሪያ Force Dimensionን ማመን እንዳለበት ሊጠይቅ ይችላል።</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>የForce Dimension SDK አግኝ</value></data>
@@ -6006,6 +5971,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMapping_Away" xml:space="preserve"><value>መሣሪያው አልተገናኘም። ሲገናኝ SDL ያነበዋል።</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ለPadForge የዚህን መሣሪያ ምንም ንባብ አልሰጠም።</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>አብሮ የተሰራው የማኅበረሰብ ቅጂ፣ {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>የወረደ፦ {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>የPadForge የራሱ ፋይል</value></data>

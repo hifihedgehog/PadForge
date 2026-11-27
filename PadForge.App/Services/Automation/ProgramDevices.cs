@@ -623,22 +623,24 @@ namespace PadForge.Services.Automation
             return e;
         }
 
-        /// <summary>Removes a device at its program's word: at rest and
-        /// offline at once.</summary>
-        internal string Gone(AutomationSession session, string id)
+        /// <summary>Removes a device at its program's word, or for PadForge's
+        /// own work (<paramref name="own"/>, a level that refused the device
+        /// as it was made): at rest and offline at once.</summary>
+        internal string Gone(AutomationSession session, string id, bool own = false)
         {
             var e = Owned(session, id, out string error);
             if (e == null) return error;
-            TakeOffline(new List<Entry> { e });
+            TakeOffline(new List<Entry> { e }, own);
             return null;
         }
 
         /// <summary>A session ended. Its devices rest now and go offline
         /// after the wait, or at once when <paramref name="now"/> is set, as
         /// for a level that no longer allows them. <paramref name="own"/>
-        /// says PadForge ended it (a plugin it stopped or restarted,
-        /// Automation turned off or a level lowered), so the connection notes
-        /// say nothing of the drop.</summary>
+        /// says PadForge ended it (a plugin it stopped or restarted, a web
+        /// assistant or network client whose access was revoked, Automation
+        /// turned off, a level lowered or consent revoked), so the connection
+        /// notes say nothing of the drop.</summary>
         internal void SessionEnded(AutomationSession session, bool now, bool own = false)
         {
             List<Entry> offline = null;

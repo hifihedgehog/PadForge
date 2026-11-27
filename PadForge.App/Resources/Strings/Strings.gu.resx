@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>શરૂ થયું નથી: તમારા માટે કોઈ પ્રોગ્રામ Python ફાઇલો ખોલતો નથી, અને PadForge ને py લૉન્ચર મળતું નથી</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>શરૂ થયું નથી: આ પ્રકારની ફાઇલ તમારા માટે કયો પ્રોગ્રામ ખોલે છે તે PadForge વાંચી શકતું નથી</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>શરૂ થયું નથી: આ પ્રકારની ફાઇલ તમારા માટે ખોલતો પ્રોગ્રામ આ PC પર નથી</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>શરૂ થયું નથી: તેને શરૂ કરવા માટે કોઈ ડેસ્કટૉપ શેલ ચાલતું નથી</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>શરૂ થયું નથી: ડેસ્કટૉપ શેલ પાસે એડમિનિસ્ટ્રેટર અધિકારો છે, તેથી પ્લગઇન પાસે પણ હોત</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>શરૂ થયું નથી: PadForge પાસે એડમિનિસ્ટ્રેટર અધિકારો હોત કે નહીં તે વાંચી શકતું નથી</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>શરૂ થયું નથી: Windows એ તેને એડમિનિસ્ટ્રેટર અધિકારો આપ્યા, તેથી PadForge એ તેને ચાલતા પહેલાં બંધ કર્યું</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>શરૂ થયું નથી: તે એડમિનિસ્ટ્રેટર અધિકારો માગે છે</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>શરૂ થયું નથી: Windows એ ભૂલ {0} સાથે નકાર્યું</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>શરૂ થયું નથી</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>આ મશીન પર Logitech G-key SDK નથી. તે Logitech Gaming Software 8.55 કે પછીના સાથે ઇન્સ્ટોલ થાય છે.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK નોંધાયેલ છે પણ તેની ફાઇલ ગાયબ છે. Logitech Gaming Software ફરી ઇન્સ્ટોલ કરો.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK મળ્યું પણ લોડ થઈ શક્યું નહીં.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK મળ્યું પણ લોડ કર્યું નહીં, કારણ કે PadForge ખાતરી કરી શક્યું નહીં કે તેમાં ફેરફાર ફક્ત એડમિનિસ્ટ્રેટર કરી શકે છે અને તેના પર Logitech એ સહી કરી છે.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>તે લાઇબ્રેરી અપેક્ષિત G-key SDK નથી.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK એ શરૂ થવાનો ઇનકાર કર્યો. સામાન્ય રીતે Logitech Gaming Software ચાલુ નથી હોતું.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>જોડાયેલ, હજુ કોઈ કી દેખાઈ નથી. Logitech Gaming Software માં, PadForge પ્રોફાઇલમાં દરેક કી પર G-key કમાન્ડ ખેંચો, અને તે પ્રોફાઇલને સ્થાયી બનાવો. G600 કે G300 માઉસને ઓન-બોર્ડ મેમરી મોડમાંથી પણ બહાર રાખવો પડે છે.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge શરૂ થાય ત્યારે વિન્ડો છુપાયેલી રાખો. તે હંમેશની જેમ ચાલે છે અને મેપ કરે છે.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows માં સાઇન ઇન કરો ત્યારે PadForge આપોઆપ શરૂ કરો. આ ચાલુ હોય ત્યારે PadForge શૉર્ટકટ, સ્ક્રિપ્ટ કે બીજા પ્રોગ્રામથી Windows ના પ્રૉમ્પ્ટ વિના પણ શરૂ થાય છે.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge {0} માંથી ચાલે છે.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>આ માટે PadForge ને પોતાના ફોલ્ડરમાં રાખવું જરૂરી છે. તેના ફોલ્ડરમાં બીજી ફાઇલો છે, તેથી PadForge બીજા પ્રોગ્રામને તેમાં ફેરફાર કરતા રોકી શકતું નથી.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>આ માટે PadForge ને એવા ફોલ્ડરમાં રાખવું જરૂરી છે જેમાં બીજા પ્રોગ્રામ ફેરફાર કરી શકતા નથી. PadForge બીજા પ્રોગ્રામને તેના ફોલ્ડરમાં ફેરફાર કરતા રોકી શક્યું નહીં.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge ને તેના પોતાના ફોલ્ડરમાં ખસેડો</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge અને તેના સેટિંગ્સને Program Files માં કૉપિ કરે છે, તેના ટાસ્ક ત્યાં બતાવે છે અને ત્યાંથી શરૂ કરે છે. અહીંની નકલ જેમ છે તેમ રહે છે.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0} માં PadForge ની ન હોય તેવી ફાઇલો છે.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>લૉગિન પર શરૂ કરો બંધ કરાયું, કારણ કે તે PadForge ને બીજી ફાઇલો ધરાવતા ફોલ્ડરમાંથી ચલાવતું હતું.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ખસ્યું નહીં: Windows કોઈ Program Files ફોલ્ડર જણાવતું નથી.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ખસ્યું નહીં: તે ચાલી રહેલું PadForge વાંચી શક્યું નહીં.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: તે {0} બનાવી શક્યું નહીં.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0} માં શું છે તે તે વાંચી શક્યું નહીં.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: તે બીજા પ્રોગ્રામને {0} માં ફેરફાર કરતા રોકી શક્યું નહીં.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: {0} માંની તેની નકલ ચાલી રહેલા PadForge સાથે મેળ ખાતી ન હતી.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ખસ્યું નહીં: નકલ પછી {0} માં PadForge ની ન હોય તેવી ફાઇલો હતી, અથવા બીજા પ્રોગ્રામ તેમાં ફેરફાર કરી શકતા હતા.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>લૉગિન પર શરૂ કરો બંધ કર્યું, કારણ કે તે જે PadForge ચલાવતું હતું તે હવે ત્યાં નથી.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>લૉગિન પર શરૂ કરો બંધ કર્યું, કારણ કે PadForge જે ફોલ્ડરમાંથી PadForge ચલાવતું હતું તેમાં બીજા પ્રોગ્રામને ફેરફાર કરતા રોકી શક્યું નહીં.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>લૉગિન પર શરૂ કરો બંધ કર્યું, કારણ કે PadForge એ કયું PadForge ચલાવ્યું હતું તે વાંચી શક્યું નહીં.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>લૉગિન પર શરૂ કરો બંધ કર્યું, કારણ કે PadForge એ જે PadForge ચલાવ્યું હતું તેનું ફોલ્ડર વાંચી શક્યું નહીં.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge તેનું સુરક્ષિત ફોલ્ડર {0} બનાવી શક્યું નહીં. PadForge એડમિનિસ્ટ્રેટર અધિકારોથી ચાલતી લાઇબ્રેરીઓ ત્યાં રાખે છે, અને તેના વિના તે સુરક્ષિત રીતે શરૂ થઈ શકતું નથી.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge તેના સુરક્ષિત ફોલ્ડર {0} માંથી પોતાને ફરી શરૂ કરી શક્યું નહીં. PadForge એડમિનિસ્ટ્રેટર અધિકારો સાથે ફક્ત ત્યાંથી જ ચાલે છે, તેથી તે શરૂ થયું નહીં.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge એ એક જ નકલ ચાલે તે માટેનું લૉક બનાવી શક્યું નહીં, તેથી તે શરૂ થયું નહીં.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge એડમિનિસ્ટ્રેટર અધિકારો સાથે {0} માંથી ચાલે છે, જે એવું ફોલ્ડર છે જેમાં બીજા પ્રોગ્રામ ફેરફાર કરી શકે. તેઓ ત્યાં PadForge ના સેટિંગ્સ બદલી શકે, અને PadForge તેના પર પોતાના અધિકારોથી કામ કરે છે.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge એડમિનિસ્ટ્રેટર અધિકારો સાથે {0} માંથી ચાલે છે, જે એવું ફોલ્ડર છે જેમાં બીજી ફાઇલો છે. PadForge બીજા પ્રોગ્રામને ત્યાં તેના સેટિંગ્સ બદલતા રોકી શકતું નથી, અને તે તેના પર પોતાના અધિકારોથી કામ કરે છે.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge એડમિનિસ્ટ્રેટર અધિકારો સાથે {0} માંથી ચાલે છે, જે ફોલ્ડર તે વાંચી શક્યું નહીં. PadForge બીજા પ્રોગ્રામને ત્યાં તેના સેટિંગ્સ બદલતા રોકી શકતું નથી, અને તે તેના પર પોતાના અધિકારોથી કામ કરે છે.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>હંમેશા સિસ્ટમ ટ્રેમાં બતાવો</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>વિન્ડો ખુલ્લી હોય ત્યારે પણ ટ્રે આઇકન દેખાતું રાખો, જેથી તેના મેનૂમાં Exit હંમેશા એક ક્લિક દૂર હોય.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>અપડેટ</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>સ્ક્રબ તપાસ: તમે રાખેલા ભાગો તપાસાઈ રહ્યા છે…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>સ્ક્રબ તપાસ: PadForge તમે રાખેલા ભાગો વાંચી શક્યું નહીં, તેથી સાચવો બંધ રહે છે.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>તમારા અધિકારો સાથેનું સાચવવું શરૂ થયું નહીં.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>તમારા અધિકારો સાથેનું સાચવવું શરૂ થયું નહીં: તેને શરૂ કરવા માટે કોઈ ડેસ્કટૉપ શેલ ચાલતો નથી.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>તમારા અધિકારો સાથેનું સાચવવું શરૂ થયું નહીં: Windows એ ભૂલ {0} સાથે નકાર્યું.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>સાચવવાનું {0} માં પૂરું થયું નહીં.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows એ ફાઇલ ત્યાં લખવા દીધી નહીં.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge એ આ ફાઇલને પોતાના રેકોર્ડિંગ તરીકે સ્વીકારી નહીં.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>સાચવવાનું કોડ {0} સાથે પૂરું થયું.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>તમારા તરીકે સાચવાય છે, પહેલી વાર તમારા Downloads ફોલ્ડરમાં, પછી જ્યાં છેલ્લે સાચવ્યું ત્યાં, અને Explorer માં બતાવાય છે. પૃષ્ઠ પર કોઈ ન હોય ત્યારે અટકતું રેકોર્ડિંગ (તેની મર્યાદા, મેક્રો, પ્રોગ્રામ, સહાયક ટૂલ કે --record stop) હોમ પર આ સમીક્ષા માટે રાહ જુએ છે, અને સાચવ્યું ન હોય તો 7 દિવસ પછી કાઢી નખાય છે. પ્રોગ્રામને જણાવાય છે કે તે રાહ જુએ છે, ક્યાં છે તે ક્યારેય નહીં.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} ની સમસ્યાની રેકોર્ડિંગ તમારા વાંચવાની રાહ જુએ છે.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>સમીક્ષા</value></data>
@@ -5573,7 +5540,6 @@ PadForge વિગતો PadForge.exe ની બાજુમાં crash.log મ
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>પેરિંગ અટક્યું: કંટ્રોલર કે બ્લૂટૂથ રેડિયો વાંચવામાં કે લખવામાં નિષ્ફળતા મળી. વિગતો ડાયગ્નોસ્ટિક્સ લોગમાં છે.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>પેરિંગ એવી ભૂલ પર અટક્યું જેની PadForge ને અપેક્ષા ન હતી. વિગતો ડાયગ્નોસ્ટિક્સ લોગમાં છે.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 કે તેથી નવું જોઈએ</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>તેની લાઇબ્રેરી મળી પણ લોડ કરી નહીં, કારણ કે PadForge ખાતરી કરી શક્યું નહીં કે તેમાં ફેરફાર ફક્ત એડમિનિસ્ટ્રેટર કરી શકે છે અને તેના પર Logitech એ સહી કરી છે</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>તેની લાઇબ્રેરી મળી પણ વાપરી શક્યું નહીં, અને કારણ ડાયગ્નોસ્ટિક્સ લોગમાં છે</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software શરૂ કરો</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control ધરાવતા ફોનની રાહ જોઈ રહ્યું છે</value></data>
@@ -5671,7 +5637,6 @@ PadForge વિગતો PadForge.exe ની બાજુમાં crash.log મ
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension ની લાઇબ્રેરીની આ નકલને બીજી કોઈપણ નકલની જગ્યાએ લોડ કરે છે. બીજી નકલ પર ખુલ્લું Falcon બંધ થઈને આ નકલ પર ફરી ખુલે છે. SDK જે નકલો ઇન્સ્ટોલ કરે છે તે આના વિના પણ મળી જાય છે.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|લાઇબ્રેરીઓ (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK ડાઉનલોડ પેજ ખૂલ્યું નહીં: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK ડાઉનલોડ પેજ હજી ખૂલ્યું નથી: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon ડ્રાઇવર ઇન્સ્ટોલ કરો</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>SDK ફોલ્ડરમાંથી Force Dimension નો ડ્રાઇવર એવા Falcon પર ઇન્સ્ટોલ કરે છે જેમાં ડ્રાઇવર નથી. Windows પહેલા પૂછી શકે છે કે Force Dimension પર વિશ્વાસ કરવો કે નહીં.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension નું SDK મેળવો</value></data>
@@ -6026,6 +5991,7 @@ PadForge વિગતો PadForge.exe ની બાજુમાં crash.log મ
   <data name="SdlMapping_Away" xml:space="preserve"><value>ઉપકરણ જોડાયેલું નથી. જોડાય ત્યારે SDL તેને વાંચે છે.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL એ PadForge ને આ ઉપકરણનું કોઈ વાંચન આપ્યું નહીં.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>સમુદાયની અંદર બનેલી નકલ, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ડાઉનલોડ કર્યું {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ની પોતાની ફાઇલ</value></data>

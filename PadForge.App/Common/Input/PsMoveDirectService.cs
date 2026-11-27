@@ -802,15 +802,12 @@ namespace PadForge.Common.Input
             catch (Exception ex) { log?.Invoke("Move identity mint failed: " + ex.Message); }
         }
 
-        /// <summary>Finds a docked Move's HID collections: the col01 data path
-        /// and the col02 address path. Bluetooth HID instances are excluded
-        /// (this lane's BT transport is the BthPS3 PDO, and the family is
-        /// blacklisted from SDL's backends, not from the HID class).</summary>
         /// <summary>The watch looks for a pad every 500 ms, and each look
         /// walked every HID interface and every BthPS3 interface. A pad comes
         /// as a device change the main window hears (<see cref="DeviceChanges"/>),
-        /// so a walk runs after one, or after 15 s all the same, and the looks
-        /// between take what the last walk found.</summary>
+        /// so every look walks for the gate's settle window after one, a walk
+        /// runs after 15 s all the same, and the looks between take what the
+        /// last walk found.</summary>
         private readonly DeviceScanGate _usbLook = new(15000);
         private readonly DeviceScanGate _pdoLook = new(15000);
         private (string DataPath, string AddrPath, bool Zcm2)? _usbFound;
@@ -828,6 +825,10 @@ namespace PadForge.Common.Input
             return _pdoFound;
         }
 
+        /// <summary>Finds a docked Move's HID collections: the col01 data path
+        /// and the col02 address path. Bluetooth HID instances are excluded
+        /// (this lane's BT transport is the BthPS3 PDO, and the family is
+        /// blacklisted from SDL's backends, not from the HID class).</summary>
         private (string DataPath, string AddrPath, bool Zcm2)? FindUsbHid()
         {
             HidD_GetHidGuid(out Guid hidGuid);

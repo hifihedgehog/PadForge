@@ -529,30 +529,7 @@
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Isira ngadto sa system tray</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Sugdi ang PadForge awtomatiko inig sign in nimo sa Windows. Samtang naka-on kini, magsugod usab ang PadForge nga walay pangutana sa Windows gikan sa shortcut, script o laing programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Nagdagan ang PadForge gikan sa {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Kinahanglan niini ang PadForge sa kaugalingon niini nga folder. Adunay laing mga file ang folder niini, busa dili mapugngan sa PadForge ang ubang mga programa sa pag-usab niini.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Kinahanglan niini ang PadForge sa usa ka folder nga dili mausab sa ubang mga programa. Dili sila mapugngan sa PadForge sa pag-usab sa folder niini.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Ibalhin ang PadForge sa kaugalingon niini nga folder</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopyahon ang PadForge ug ang mga setting niini ngadto sa Program Files, itudlo didto ang mga task niini, ug sugdan kini gikan didto. Ang kopya dinhi magpabilin sama sa kaniadto.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: ang {0} adunay mga file nga dili iya sa PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Gi-off ang Sugdi inig login, kay gipadagan niini ang PadForge gikan sa folder nga adunay laing mga file.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>Wala nabalhin ang PadForge: walay Program Files folder nga gingalanan sa Windows.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>Wala nabalhin ang PadForge: dili niini mabasa ang PadForge nga nagdagan.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: dili niini mahimo ang {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: dili niini mabasa kung unsay sulod sa {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: dili niini mapugngan ang ubang mga programa sa pag-usab sa {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: ang kopya niini sa {0} wala motakdo sa PadForge nga nagdagan.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>Wala nabalhin ang PadForge: human sa pagkopya, ang {0} adunay mga file nga dili iya sa PadForge, o mausab kini sa ubang mga programa.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Gi-off ang Start at Login, kay wala na didto ang PadForge nga gipadagan niini.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Gi-off ang Start at Login, kay dili mapugngan sa PadForge ang ubang mga programa sa pag-usab sa folder diin gipadagan niini ang PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Gi-off ang Start at Login, kay dili mabasa sa PadForge kung unsang PadForge ang gipadagan niini.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Gi-off ang Start at Login, kay dili mabasa sa PadForge ang folder sa PadForge nga gipadagan niini.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Dili mahimo sa PadForge ang protektado niini nga folder, {0}. Didto gitipigan sa PadForge ang mga library nga gipadagan niini gamit ang mga katungod sa administrator, ug dili kini makasugod nga luwas kung wala kini.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Dili masugdan pag-usab sa PadForge ang kaugalingon gikan sa protektado niini nga folder, {0}. Didto lang modagan ang PadForge gamit ang mga katungod sa administrator, busa wala kini nagsugod.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>Dili mahimo sa PadForge ang lock nga magpabilin niini sa usa ra ka nagdagan nga kopya, busa wala kini nagsugod.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Nagdagan ang PadForge gamit ang mga katungod sa administrator gikan sa {0}, usa ka folder nga mausab sa ubang mga programa. Mausab nila didto ang mga setting sa PadForge, ug molihok ang PadForge sumala niini gamit ang mga katungod niini.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Nagdagan ang PadForge gamit ang mga katungod sa administrator gikan sa {0}, usa ka folder nga adunay laing mga file. Dili mapugngan sa PadForge ang ubang mga programa sa pag-usab sa mga setting niini didto, ug molihok kini sumala niini gamit ang mga katungod niini.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Nagdagan ang PadForge gamit ang mga katungod sa administrator gikan sa {0}, usa ka folder nga dili niini mabasa. Dili mapugngan sa PadForge ang ubang mga programa sa pag-usab sa mga setting niini didto, ug molihok kini sumala niini gamit ang mga katungod niini.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Awtomatikong susiha ang mga update</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Mosusi inig sugod sa PadForge ug matag 12 ka oras pagkahuman niana.</value></data>
@@ -3958,7 +3935,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Mihunong ang pairing: napakyas ang pagbasa o pagsulat sa controller o sa Bluetooth radio. Anaa sa diagnostics log ang mga detalye.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Mihunong ang pairing tungod sa sayop nga wala gidahom sa PadForge. Anaa sa diagnostics log ang mga detalye.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>nagkinahanglan og Logitech Gaming Software 8.52 o mas bag-o</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nakit-an ang library niini ug wala kini gi-load, kay dili makumpirma sa PadForge nga ang mga administrator lamang ang makausab niini ug nga gipirmahan kini sa Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nakit-an ang library niini ug dili kini magamit, ug ang diagnostics log nagsulti kung ngano</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>sugdi ang Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>naghulat og phone nga may Arx Control</value></data>
@@ -4056,7 +4032,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Kini nga kopya sa library sa Force Dimension ang i-load puli sa bisan unsang uban. Ang Falcon nga bukas sa laing kopya masira ug maablihan pag-usab niining kopya. Ang mga kopya nga gi-install sa SDK makit-an bisan kung wala kini.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Mga library (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Wala maabli ang download page sa Falcon SDK: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Wala pa maabli ang download page sa Falcon SDK: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>I-install ang Falcon driver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Mag-install sa driver sa Force Dimension, gikan sa SDK folder, sa Falcon nga walay driver. Mahimong mangutana una ang Windows kung saligan ba ang Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Kuhaa ang SDK sa Force Dimension</value></data>
@@ -4531,10 +4506,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Wala nagsugod: walay programa nga moabli sa mga Python file para nimo, ug walay py launcher nga nakit-an ang PadForge</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Wala nagsugod: dili mabasa sa PadForge kung unsang programa ang moabli niini nga klase sa file para nimo</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Wala nagsugod: wala niini nga PC ang programa nga moabli niini nga klase sa file para nimo</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Wala nagsugod: walay desktop shell nga nagdagan nga ikasugdan niini</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Wala nagsugod: adunay mga katungod sa administrator ang desktop shell, busa makabaton usab niini ang plugin</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Wala nagsugod: dili mabasa sa PadForge kung makabaton ba kini og mga katungod sa administrator</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Wala nagsugod: gihatagan kini sa Windows og mga katungod sa administrator, busa gitapos kini sa PadForge sa wala pa kini nagdagan</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Wala nagsugod: nangayo kini og mga katungod sa administrator</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Wala nagsugod: gibalibaran sa Windows uban sa error {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Wala nagsugod</value></data>
@@ -4819,6 +4790,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="SdlMapping_Away" xml:space="preserve"><value>Dili konektado ang device. Basahon kini sa SDL kung konektado na.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Walay gihatag nga pagbasa ang SDL sa PadForge bahin niini nga device.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ang kopya sa komunidad nga naa sulod, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Kaugalingong file sa PadForge</value></data>

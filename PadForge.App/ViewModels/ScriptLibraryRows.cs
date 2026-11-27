@@ -187,7 +187,7 @@ namespace PadForge.ViewModels
         /// through the desktop shell, with the user's own rights.</summary>
         internal Func<string, bool> OpenSeam;
 
-        private Task<InstallRun> Run(InstallRequest request) => (RunSeam ?? UserInstall.RunAsUserAsync)(request);
+        private Task<InstallRun> Run(InstallRequest request) => (RunSeam ?? UserInstall.RunInCopyAsync)(request);
 
         private static InstallWhat WhatOf(AutomationLibraryKind kind) => AutomationLibraries.WhatOf(kind);
 
@@ -346,7 +346,7 @@ namespace PadForge.ViewModels
                 if (folder != null && Directory.Exists(folder))
                 {
                     if (OpenSeam != null) OpenSeam(folder);
-                    else PadForge.Common.ShellLaunch.AsTheUser(new System.Diagnostics.ProcessStartInfo(
+                    else PadForge.Common.ShellLaunch.TryStart(new System.Diagnostics.ProcessStartInfo(
                         PadForge.Common.ShellLaunch.Explorer, "\"" + folder + "\""), out _);
                 }
                 return;

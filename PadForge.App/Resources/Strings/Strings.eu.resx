@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ez da abiarazi: ez dago programarik Python fitxategiak zuretzat irekitzen dituenik, eta PadForge-k ez du py abiarazlerik aurkitzen</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ez da abiarazi: PadForge-k ezin du irakurri zein programak irekitzen dituen mota honetako fitxategiak zuretzat</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ez da abiarazi: mota honetako fitxategiak zuretzat irekitzen dituen programa ez dago PC honetan</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ez da abiarazi: ez dago mahaigaineko shell-ik hura haren pean abiarazteko</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ez da abiarazi: mahaigaineko shell-ak administratzaile-eskubideak ditu, beraz pluginak ere izango lituzke</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ez da abiarazi: PadForge-k ezin du irakurri administratzaile-eskubideak izango lituzkeen</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ez da abiarazi: Windows-ek administratzaile-eskubideak eman dizkio, beraz PadForge-k exekutatu aurretik amaitu du</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ez da abiarazi: administratzaile-eskubideak eskatzen ditu</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ez da abiarazi: Windows-ek {0} errorearekin ukatu du</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ez da abiarazi</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Ordenagailu honetan ez dago Logitech G-key SDK-rik. Logitech Gaming Software 8.55 edo berriagoarekin instalatzen da.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK erregistratuta dago, baina haren fitxategia falta da. Instalatu berriro Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK aurkitu da, baina ezin izan da kargatu.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK aurkitu da eta ez da kargatu, PadForge-k ezin izan baitu baieztatu administratzaileek soilik alda dezaketela eta Logitech-ek sinatu duela.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Liburutegi hori ez da espero zen G-key SDK-a.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK-ak ez du abiarazi nahi izan. Normalean, Logitech Gaming Software exekutatzen ez dagoelako gertatzen da.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Konektatuta, oraindik ez da teklarik ikusi. Logitech Gaming Software-n, arrastatu G-key komandoa PadForge profileko tekla bakoitzera, eta ezarri profil hori iraunkor gisa. Gainera, G600 edo G300 sagu batek barneko memoriaren modutik kanpo egon behar du.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantendu leihoa ezkutatuta PadForge abiaraztean. Ohi bezala exekutatzen eta esleitzen du.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Abiarazi PadForge automatikoki Windows-en saioa hastean. Hau aktibatuta dagoen bitartean, PadForge Windows-en gonbitorik gabe ere abiarazten da lasterbide batetik, script batetik edo beste programa batetik.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge hemendik exekutatzen da: {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Honek PadForge bere karpeta propio batean egotea behar du. Bere karpetak beste fitxategi batzuk ditu, beraz PadForge-k ezin die beste programei hura aldatzea eragotzi.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Honek PadForge beste programek alda ezin dezaketen karpeta batean egotea behar du. PadForge-k ezin izan die eragotzi bere karpeta aldatzea.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Eraman PadForge bere karpetara</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge eta bere ezarpenak Program Files karpetara kopiatzen ditu, bere zereginak hara bideratzen ditu eta handik abiarazten du. Hemengo kopiak berdin jarraitzen du.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ez da mugitu: {0} karpetak PadForge-renak ez diren fitxategiak ditu.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ez da mugitu: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Saioa hastean abiarazteko aukera desaktibatu da, PadForge beste fitxategi batzuk dituen karpeta batetik exekutatzen zuelako.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ez da mugitu: Windows-ek ez du Program Files karpetarik izendatzen.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ez da mugitu: ezin izan du exekutatzen ari den PadForge irakurri.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ez da mugitu: ezin izan du {0} sortu.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ez da mugitu: ezin izan du {0} karpetak zer duen irakurri.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ez da mugitu: ezin izan die beste programei {0} aldatzea eragotzi.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ez da mugitu: {0} karpetako kopia ez zetorren bat exekutatzen ari den PadForge-rekin.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ez da mugitu: kopiatu ondoren, {0} karpetak PadForge-renak ez diren fitxategiak zituen, edo beste programek alda zezaketen.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Abiarazi saioa hastean desaktibatu da, abiarazten zuen PadForge ez dagoelako jada.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Abiarazi saioa hastean desaktibatu da, PadForge-k ezin izan diolako beste programei PadForge abiarazten zuen karpeta aldatzea eragotzi.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Abiarazi saioa hastean desaktibatu da, PadForge-k ezin izan duelako irakurri zein PadForge abiarazi zuen.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Abiarazi saioa hastean desaktibatu da, PadForge-k ezin izan duelako irakurri abiarazi zuen PadForge-ren karpeta.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-k ezin izan du bere karpeta babestua sortu: {0}. PadForge-k administratzaile-eskubideekin exekutatzen dituen liburutegiak bertan gordetzen ditu, eta hori gabe ezin da modu seguruan abiarazi.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-k ezin izan du bere burua berriro abiarazi bere karpeta babestutik: {0}. PadForge administratzaile-eskubideekin hortik soilik exekutatzen da, beraz ez da abiarazi.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge-k ezin izan du kopia bakar bat exekutatzen uzten duen blokeoa sortu, beraz ez da abiatu.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge administratzaile-eskubideekin exekutatzen da hemendik: {0}, beste programek alda dezaketen karpeta batetik. Hantxe PadForge-ren ezarpenak alda ditzakete, eta PadForge-k bere eskubideekin jarduten du horien arabera.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge administratzaile-eskubideekin exekutatzen da hemendik: {0}, beste fitxategi batzuk dituen karpeta batetik. PadForge-k ezin die beste programei hango ezarpenak aldatzea eragotzi, eta bere eskubideekin jarduten du horien arabera.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge administratzaile-eskubideekin exekutatzen da hemendik: {0}, irakurri ezin izan duen karpeta batetik. PadForge-k ezin die beste programei hango ezarpenak aldatzea eragotzi, eta bere eskubideekin jarduten du horien arabera.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Erakutsi beti jakinarazpen-arean</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantendu jakinarazpen-areako ikonoa ikusgai leihoa irekita dagoen bitartean, haren menuko Irten aukera beti klik batera egon dadin.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Eguneratzeak</value></data>
@@ -1294,13 +1266,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Garbiketa-egiaztapena: gordetzen dituzun zatiak egiaztatzen…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Garbiketa-egiaztapena: PadForge-k ezin izan ditu irakurri gordetzen dituzun zatiak, beraz Gorde desaktibatuta dago.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Zure eskubideekin egin beharreko gordetzea ez da hasi.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Zure eskubideekin egin beharreko gordetzea ez da hasi: ez dago hura abiarazteko mahaigaineko shell-ik.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Zure eskubideekin egin beharreko gordetzea ez da hasi: Windows-ek {0} errorearekin baztertu du.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Gordetzea ez da {0} barruan amaitu.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows-ek ez du fitxategia hor idazten utzi.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge-k ez du fitxategi hau berak egindako grabaketatzat hartu.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Gordetzea {0} kodearekin amaitu da.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Zure izenean gordetzen da, lehen aldian Deskargak karpetan, gero azken aldiz gorde zenuen lekuan, eta Fitxategi-arakatzailean erakusten da. Orrian inor ez dagoenean gelditzen den grabaketa batek (bere mugak, makro batek, programa batek, laguntzaileen tresnak edo --record stop komandoak) berrikuspen honetarako itxaroten du Hasiera orrian, eta 7 egunera ezabatzen da gorde ezean. Programa bati esaten zaio itxaroten duela, inoiz ez non.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0}(e)ko arazo-grabaketa bat zain dago zuk irakur dezazun.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Berrikusi</value></data>
@@ -5575,7 +5542,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Parekatzea gelditu da: kontrolagailua edo Bluetooth irratia irakurtzeak edo idazteak huts egin du. Diagnostiko-erregistroak xehetasunak ditu.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Parekatzea gelditu da PadForge-k espero ez zuen errore batengatik. Diagnostiko-erregistroak xehetasunak ditu.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 edo berriagoa behar du</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>bere liburutegia aurkitu du eta ez du kargatu, PadForge-k ezin izan baitu baieztatu administratzaileek soilik alda dezaketela eta Logitech-ek sinatu duela</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>bere liburutegia aurkitu du eta ezin izan du erabili, eta diagnostiko-erregistroak zergatia dio</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>abiarazi Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control duen telefono baten zain</value></data>
@@ -5673,7 +5639,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension-en liburutegiaren kopia hau erabiltzen du beste edozeinen ordez. Beste kopia batean irekita dagoen Falcon bat itxi egiten da, eta kopia honekin berriro irekitzen da. SDK-k instalatzen dituen kopiak hura gabe ere aurkitzen dira.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Liburutegiak (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK deskarga-orria ez da ireki: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK deskarga-orria oraindik ez da ireki: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalatu Falcon kontrolatzailea</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Force Dimension-en kontrolatzailea instalatzen du, SDK karpetatik, kontrolatzailerik ez duen Falcon batean. Windows-ek Force Dimension-en fidatzen zaren galdetu dezake lehenik.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Lortu Force Dimension-en SDK</value></data>
@@ -6028,6 +5993,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="SdlMapping_Away" xml:space="preserve"><value>Gailua ez dago konektatuta. SDL-k irakurriko du konektatzen denean.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL-k ez dio PadForge-ri gailu honen irakurketarik eman.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Komunitatearen kopia integratua, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Deskargatuta: {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ren berezko fitxategia</value></data>

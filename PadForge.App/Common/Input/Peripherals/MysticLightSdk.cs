@@ -190,15 +190,9 @@ namespace PadForge.Common.Input.Peripherals
             {
                 path = FindLibrary();
                 if (path == null) { detail = "MysticLight_SDK not found"; return false; }
-                // MSI's own copy loads into PadForge only when only
-                // administrators could have put it in place and Micro-Star
-                // signed it, held open from the check through the load
-                // (#600, TrustedLibrary).
-                module = PadForge.Engine.Common.TrustedLibrary.Load(path, PadForge.Engine.Common.TrustedLibrary.MicroStar,
-                    p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
-                if (module == IntPtr.Zero)
+                if (!NativeLibrary.TryLoad(path, out module))
                 {
-                    detail = why == "load" ? "LoadLibrary failed for " + path : "MysticLight_SDK not loaded (" + why + "): " + path;
+                    detail = "LoadLibrary failed for " + path;
                     return false;
                 }
             }

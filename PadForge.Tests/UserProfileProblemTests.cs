@@ -29,7 +29,7 @@ namespace PadForge.Tests
         internal static string ProfileJson(string id, bool deployable = true, Action<JsonObject> edit = null)
         {
             string json;
-            using (var ctx = new HMContext())
+            using (var ctx = HMaestroContexts.ForProfiles())
             {
                 ctx.LoadDefaultProfiles();
                 var source = ctx.AllProfiles
@@ -95,7 +95,7 @@ namespace PadForge.Tests
             string good = ProfileJson("padforge-test-good-user");
             string refused = ProfileJson("padforge-test-refused-user", edit: r => r["padforgeBogusKey"] = 1);
             string bare = ProfileJson("padforge-test-bare-user", deployable: false);
-            using var ctx = new HMContext();
+            using var ctx = HMaestroContexts.ForProfiles();
             ctx.LoadDefaultProfiles();
             var problems = HMaestroProfileCatalog.LoadUserProfiles(ctx, new[] { good, refused, "  ", bare });
             Assert.Equal(2, problems.Count);

@@ -1,0 +1,14 @@
+{
+  "new": [
+    {
+      "key": "SdlMapping_From_Variable",
+      "english": "The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add",
+      "where": "Settings, the SDL Mapping card: the From line for a device the SDL_GAMECONTROLLERCONFIG variable maps",
+      "keep": [
+        "SDL_GAMECONTROLLERCONFIG",
+        "SDL"
+      ]
+    }
+  ],
+  "changed": []
+}

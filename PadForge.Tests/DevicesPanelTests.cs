@@ -26,9 +26,6 @@ namespace PadForge.Tests
 
         public void Dispose()
         {
-            ExeFolderState.CheckSeam = _ => ExeFolder.Standing.Own;
-            ExeFolderState.Instance.Recheck();
-            ExeFolderState.CheckSeam = null;
         }
 
         private static string PageText()
@@ -68,57 +65,6 @@ namespace PadForge.Tests
             // Each pair has handlers of its own, so the ask-first sweep pins
             // each by what it reaches.
             Assert.Empty(tools.Select(r => ReachMarkup.Attr(r.Element, "Click")).Intersect(hiding.Select(r => ReachMarkup.Attr(r.Element, "Click"))));
-        }
-
-        /// <summary>A precision touchpad's mouse collection shows the
-        /// touchpad's Use Only in PadForge (DevicesViewModel.RefreshDriverOffer
-        /// sets IsTouchpadMouse for it), and with the switch the note that
-        /// its give-back needs a folder of PadForge's own.</summary>
-        [Fact]
-        public void ATouchpadsMouseRow_ShowsTheFolderNote_WhileTheFolderIsShared()
-        {
-            ExeFolderState.CheckSeam = _ => ExeFolder.Standing.Shared;
-            ExeFolderState.Instance.Start(Exe);
-            Assert.True(ExeFolderState.Instance.IsShared);
-            PageRenderDumpPages.WithApp((app, dispatcher) =>
-            {
-                // The touchpad beside the mouse collection, through the
-                // view model's seam in place of the device tree.
-                var vm = new DevicesViewModel { TouchpadOfCollection = _ => @"HID\VID_06CB&PID_CE26&COL02\5&1A2B3C4D&0&0001" };
-                var row = new DeviceRowViewModel
-                {
-                    InstanceGuid = Guid.NewGuid(), DeviceName = "HID-compliant mouse", ProductName = "HID-compliant mouse",
-                    DeviceTypeKey = "Mouse", IsOnline = true,
-                    DevicePath = @"\\?\HID#VID_06CB&PID_CE26&Col01#5&1a2b3c4d&0&0000#{378de44c-56ef-11d1-bc8c-00a0c91405dd}",
-                };
-                var other = new DeviceRowViewModel
-                {
-                    InstanceGuid = Guid.NewGuid(), DeviceName = "Xbox Controller", ProductName = "Xbox Controller",
-                    DeviceTypeKey = "Gamepad", DevicePath = "XInput#0", IsOnline = true,
-                };
-                vm.Devices.Add(row);
-                vm.Devices.Add(other);
-                vm.RefreshCounts();
-                var page = new DevicesPage { DataContext = vm };
-                var window = new Window { Width = 1280, Height = 900, ShowActivated = false, ShowInTaskbar = false, Left = -10000, Top = -10000, Content = page };
-                try
-                {
-                    window.Show();
-                    var note = (FrameworkElement)page.FindName("TouchpadFolderNote");
-                    Assert.NotNull(note);
-                    vm.SelectedDevice = other;
-                    PageRenderDump.Settle(dispatcher);
-                    Assert.Equal(Visibility.Collapsed, note.Visibility);
-                    vm.SelectedDevice = row;
-                    PageRenderDump.Settle(dispatcher);
-                    Assert.True(row.IsTouchpadMouse, "control: the row is read as a touchpad's mouse collection");
-                    Assert.Equal(Visibility.Visible, note.Visibility);
-                }
-                finally
-                {
-                    window.Close();
-                }
-            }, TimeSpan.FromMinutes(3), "The touchpad folder note test timed out.");
         }
 
         /// <summary>A device that is not connected has no readout, so its

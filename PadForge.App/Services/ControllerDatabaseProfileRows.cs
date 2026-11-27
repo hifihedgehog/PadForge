@@ -12,12 +12,10 @@ namespace PadForge.Services
     /// (HKEY_CURRENT_USER\Environment), and other SDL programs take rows
     /// from it.
     ///
-    /// <para>The engine never reads it: PadForge runs with rights, and a
-    /// start with rights keeps the allow list's variables alone
-    /// (RightsVariables, ProtectedStart), so SDL in PadForge's process never
-    /// sees it. Nor is it read from PadForge's own process here. The text is
-    /// the value Windows builds for the desktop shell's token from the
-    /// signed-in user's profile (<see cref="PluginLauncher.ShellVariables"/>,
+    /// <para>SDL in PadForge's process reads the variable PadForge started
+    /// with. The text here is the value Windows builds for the desktop
+    /// shell's token from the
+    /// signed-in user's profile (<see cref="UserVariables.OfTheUser"/>,
     /// CreateEnvironmentBlock): the person at the desktop, even when PadForge
     /// was started with another account's password. With no shell, nothing
     /// is read. Each row passes the paste's own check
@@ -34,9 +32,7 @@ namespace PadForge.Services
         {
             try
             {
-                using var shell = PluginLauncher.OpenShell();
-                if (shell == null) return null;
-                return ValueOf(PluginLauncher.ShellVariables(shell, out _), Variable);
+                return ValueOf(UserVariables.OfTheUser(), Variable);
             }
             catch (Exception)
             {
@@ -63,6 +59,27 @@ namespace PadForge.Services
         /// <summary>The rows of <paramref name="text"/> that pass the paste's
         /// check and that the user does not keep as written. Of rows that
         /// share an ID the last is the one, as Add Rows keeps it.</summary>
+        /// <summary>The variable's value in PadForge's own process, which SDL
+        /// read at start (SDL_LoadGamepadHints). A test gives its own.</summary>
+        internal static Func<string> Applied = () => Environment.GetEnvironmentVariable(Variable);
+
+        /// <summary>The rows of <paramref name="text"/> that PadForge does not
+        /// keep (<see cref="NotKept"/>), less each row for a controller that
+        /// <paramref name="applied"/> maps. SDL loaded those rows at start at
+        /// USER priority, and a row PadForge adds is API priority, which never
+        /// replaces a USER row (SDL_gamepad.c, SDL_LoadGamepadHints and
+        /// SDL_PrivateAddMappingForGUID).</summary>
+        internal static List<SdlMappingRow> NotApplied(string text, ControllerDatabaseMine mine, string applied)
+        {
+            var covered = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (!string.IsNullOrWhiteSpace(applied))
+                foreach (var row in SdlMappingRow.ReadAll(applied, out _, out _, out _)) covered.Add(row.Guid);
+            var found = new List<SdlMappingRow>();
+            foreach (var row in NotKept(text, mine))
+                if (!covered.Contains(row.Guid)) found.Add(row);
+            return found;
+        }
+
         internal static List<SdlMappingRow> NotKept(string text, ControllerDatabaseMine mine)
         {
             var found = new List<SdlMappingRow>();

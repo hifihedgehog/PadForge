@@ -606,29 +606,6 @@
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Sera na área di notifikashon</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Kuminsá PadForge outomátikamente ora bo drenta Windows. Miéntras esaki ta sendé, PadForge ta kuminsá tambe sin e pregunta di Windows for di un ataho, un script òf otro programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ta kore for di {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Esaki ta nesesitá PadForge den su mes mapa. Su mapa tin otro archivo, p'esei PadForge no por stroba otro programa di kambi'é.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Esaki ta nesesitá PadForge den un mapa ku otro programa no por kambia. PadForge no por a stroba nan di kambia su mapa.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Move PadForge na su mes mapa</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Ta kopia PadForge i su konfigurashon na Program Files, ta pone su tareanan apunta einan, i ta kuminsá e for di einan. E kopia aki ta keda manera e ta.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no a move: {0} tin archivo ku no ta di PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no a move: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>A paga Start at Login, pasobra e tabata kore PadForge for di un mapa ku tin otro archivo.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge no a move: Windows no ta nombra ningun mapa Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge no a move: e no por a lesa e PadForge ku ta kore.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge no a move: e no por a traha {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge no a move: e no por a lesa loke {0} tin.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge no a move: e no por a stroba otro programa di kambia {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge no a move: su kopia den {0} no a kuadra ku e PadForge ku ta kore.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge no a move: despues di e kopia, {0} tabatin archivo ku no ta di PadForge, òf otro programa por a kambi'é.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra e PadForge ku e tabata kore no ta einan mas.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra PadForge no por a stroba otro programa di kambia e mapa for di kaminda e tabata kore PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra PadForge no por a lesa kua PadForge e tabata kore.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Start at Login a wòrdu pagá, pasobra PadForge no por a lesa e mapa di e PadForge ku e tabata kore.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge no por a krea su mapa protehá, {0}. PadForge ta warda einan e bibliotekanan ku e ta kore ku derechi di atministradó, i e no por kuminsá sigur sin e mapa ei.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge no por a kuminsá su mes di nobo for di su mapa protehá, {0}. PadForge ta kore ku derechi di atministradó solamente for di einan, p'esei e no a kuminsá.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ta kore ku derechi di atministradó for di {0}, un mapa ku otro programa por kambia. Nan por kambia e konfigurashon di PadForge einan, i PadForge ta aktua riba nan ku su derechinan.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ta kore ku derechi di atministradó for di {0}, un mapa ku tin otro archivo. PadForge no por stroba otro programa di kambia su konfigurashon einan, i e ta aktua riba nan ku su derechinan.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ta kore ku derechi di atministradó for di {0}, un mapa ku e no por a lesa. PadForge no por stroba otro programa di kambia su konfigurashon einan, i e ta aktua riba nan ku su derechinan.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mustra semper den área di notifikashon</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualisashon</value></data>
   <data name="Settings_CheckForUpdates" xml:space="preserve"><value>Buska aktualisashon outomátikamente</value></data>
@@ -2668,7 +2645,6 @@
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Pareamentu a para: lesa òf skirbi e kontrol òf e radio di Bluetooth a faya. E log di diagnóstiko tin e detayenan.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Pareamentu a para riba un eror ku PadForge no tabata spera. E log di diagnóstiko tin e detayenan.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>mester Logitech Gaming Software 8.52 òf mas nobo</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>a haña su biblioteka i no a kark'é, pasobra PadForge no por a konfirmá ku solamente atministradó por kambi'é i ku Logitech a firm'é</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>a haña su biblioteka i no por a us'é, i e log di diagnóstiko ta bisa dikon</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>habri Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ta warda un telefòn ku Arx Control</value></data>
@@ -2743,7 +2719,6 @@
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Ta karga e kopia aki di e biblioteka di Force Dimension na lugá di kualke otro. Un Falcon habrí riba otro kopia ta sera i ta habri di nobo riba esaki. E kopianan ku e SDK ta instalá ta wòrdu hañá sin esaki.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliotekanan (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>E página di deskarga di e SDK di Falcon no a habri: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>E página di deskarga di e SDK di Falcon no a habri ainda: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalá driver di Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Ta instalá e driver di Force Dimension, for di e mapa di SDK, riba un Falcon ku no tin ningun. Windows por puntra promé si e mester konfia den Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Haña e SDK di Force Dimension</value></data>
@@ -3367,6 +3342,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>E aparato no ta konektá. SDL ta les'é ora e ta konektá.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL no a duna PadForge ningun lektura di e aparato aki.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>E kopia di komunidat integrá, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Deskargá {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>E archivo propio di PadForge</value></data>
@@ -3580,7 +3556,6 @@
   <data name="Pad_Audio_Packages_DefaultFileName_Format" xml:space="preserve"><value>Zonidonan{0}</value></data>
   <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Ikononan{0}</value></data>
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>A haña e SDK di teklanan G i no a kark'é, pasobra PadForge no por a konfirmá ku solamente atministradó por kambi'é i ku Logitech a firm'é.</value></data>
   <data name="Settings_RecordProblem_NoTempFolder" xml:space="preserve"><value>PadForge no a haña ningun mapa temporal di e usuario ku a drenta, aden di e perfil di e usuario i alkansá sin ningun link, pa skirbi e grabashon aden.</value></data>
   <data name="Settings_RecordProblem_FolderIsLink" xml:space="preserve"><value>E mapa di grabashon ta un link na otro lugá, ku PadForge no ta sigui.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>{0:N0} fila pa otro sistema ta wòrdu pasá por haltu.</value></data>

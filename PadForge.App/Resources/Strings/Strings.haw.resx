@@ -1517,6 +1517,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>ʻAʻole i hoʻopili ʻia ka hāmeʻa. Heluhelu ʻo SDL iā ia ke hoʻopili ʻia.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>ʻAʻole i hāʻawi ʻo SDL iā PadForge i kekahi heluhelu ʻana o kēia hāmeʻa.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ke kope kaiāulu i loko, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ua hoʻoiho ʻia {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ka faila ponoʻī o PadForge</value></data>
@@ -1723,10 +1724,8 @@
   <data name="Plugins_Kit_NotSaved" xml:space="preserve"><value>ʻAʻole hiki iā PadForge ke mālama i ka pūʻolo plugin.</value></data>
   <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Nā hana {0}.txt</value></data>
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ua loaʻa kona waihona a ʻaʻole i hoʻouka iā ia, no ka mea ʻaʻole hiki iā PadForge ke hōʻoia ʻo nā luna hoʻomalu wale nō ka poʻe hiki ke hoʻololi iā ia a ua kau inoa ʻo Logitech iā ia</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ua loaʻa kona waihona a ʻaʻole hiki ke hoʻohana iā ia, a haʻi ka moʻolelo diagnostics i ke kumu</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>ʻAʻole i wehe ka ʻaoʻao hoʻoiho Falcon SDK: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>ʻAʻole i wehe ka ʻaoʻao hoʻoiho Falcon SDK i kēia manawa: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Ua haʻalele ʻia {0:N0} lālani no nā ʻōnaehana ʻē aʻe.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>ʻAʻole i hoʻomaka ʻo Windows iā ia me kou mau kuleana ponoʻī.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>ʻAʻole i pau ia i loko o {0} kekona.</value></data>

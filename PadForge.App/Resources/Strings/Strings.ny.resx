@@ -1273,7 +1273,6 @@ PadForge sinathe kulemba zambiri mu crash.log pafupi ndi PadForge.exe. Kuti mune
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Kulumikiza kwaima: kuwerenga kapena kulemba kontrola kapena wailesi ya Bluetooth kwalephera. Lolemba la zowunikira lili ndi zambiri.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Kulumikiza kwaima pa vuto lomwe PadForge sinayembekezere. Lolemba la zowunikira lili ndi zambiri.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>ikufuna Logitech Gaming Software 8.52 kapena yatsopano</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>yapeza laibulale yake ndipo sinaikweze, chifukwa PadForge sinathe kutsimikiza kuti oyang'anira okha ndi omwe angaisinthe ndi kuti Logitech inaisayina</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>yapeza laibulale yake ndipo sinathe kuigwiritsa ntchito, ndipo lolemba la zowunikira likunena chifukwa chake</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>yambitsani Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ikudikira foni yokhala ndi Arx Control</value></data>
@@ -1902,6 +1901,7 @@ PadForge sinathe kulemba zambiri mu crash.log pafupi ndi PadForge.exe. Kuti mune
   <data name="SdlMapping_Away" xml:space="preserve"><value>Chipangizochi sichinalumikizidwe. SDL imachiwerenga chikangolumikizidwa.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL sinapatse PadForge kuwerenga kulikonse kwa chipangizo ichi.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kope la anthu onse lomangidwa mkati, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Zotsitsidwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fayilo ya PadForge yokha</value></data>
@@ -2112,7 +2112,6 @@ PadForge sinathe kulemba zambiri mu crash.log pafupi ndi PadForge.exe. Kuti mune
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge yakana yankho la GitHub. Palibe chomwe chasintha.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge yakana yankho lochokera ku {0}. Palibe chomwe chasintha.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Tsamba lotsitsira la Falcon SDK silinatseguke: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Tsamba lotsitsira la Falcon SDK silinatsegukebe: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Mizere {0:N0} ya makina ena yadumphidwa.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows sinaiyambitse ndi ufulu wanu.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Sinathe mkati mwa masekondi {0}.</value></data>

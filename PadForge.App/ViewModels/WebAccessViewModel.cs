@@ -393,7 +393,7 @@ namespace PadForge.ViewModels
         private void Open(string link)
         {
             if (OpenLinkSeam != null) { OpenLinkSeam(link); return; }
-            ShellLaunch.AsTheUser(new ProcessStartInfo(link) { UseShellExecute = true }, out _);
+            ShellLaunch.TryStart(new ProcessStartInfo(link) { UseShellExecute = true }, out _);
         }
         public RelayCommand ChangePortCommand { get; }
         public RelayCommand AddKeyCommand { get; }
@@ -839,7 +839,7 @@ namespace PadForge.ViewModels
             string link = ClaudeLink;
             if (link == null) return;
             if (OpenLinkSeam != null) { OpenLinkSeam(link); return; }
-            ShellLaunch.AsTheUser(new ProcessStartInfo(link) { UseShellExecute = true }, out _);
+            ShellLaunch.TryStart(new ProcessStartInfo(link) { UseShellExecute = true }, out _);
         }
     }
 }

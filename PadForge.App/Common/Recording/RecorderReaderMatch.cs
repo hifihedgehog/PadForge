@@ -8,7 +8,7 @@ using PadForge.Engine.Recording;
 namespace PadForge.Common.Recording
 {
     /// <summary>A DirectInput object of a device as EnumObjects lists it with
-    /// SDL's flags (SDL_dinputjoystick.c:1170-1172), and whether the two
+    /// SDL's flags (SDL_dinputjoystick.c:1185-1187), and whether the two
     /// properties SDL sets on an axis took (552-577).</summary>
     internal readonly record struct DiObject(Guid Type, uint Kind, ushort UsagePage, ushort Usage, ushort ReportId,
         ushort Collection, bool AxisPropertiesTaken);
@@ -41,7 +41,7 @@ namespace PadForge.Common.Recording
     internal enum BindKind : byte { None, Axis, Button, Hat }
 
     /// <summary>One binding of SDL's gamepad mapping, as
-    /// SDL_PrivateParseGamepadElement makes it (SDL_gamepad.c:1856-1974).</summary>
+    /// SDL_PrivateParseGamepadElement makes it (SDL_gamepad.c:1899-2017).</summary>
     internal readonly record struct GamepadBinding(BindKind InputKind, int Input, int InputMin, int InputMax, int HatMask,
         BindKind OutputKind, int Output, int OutputMin, int OutputMax);
 
@@ -88,7 +88,7 @@ namespace PadForge.Common.Recording
     internal static class RecorderReaderMatch
     {
         /// <summary>The fork commit of SDL the rules here were read from.</summary>
-        internal const string SdlRevision = "51470ad786";
+        internal const string SdlRevision = "68f6b71aef";
 
         // ─────────────────────────────────────────────
         //  DirectInput, as dinput.h lays it out
@@ -394,7 +394,7 @@ namespace PadForge.Common.Recording
         internal const int South = 0, East = 1, West = 2, North = 3, Back = 4, Guide = 5, Start = 6, LeftStick = 7,
             RightStick = 8, LeftShoulder = 9, RightShoulder = 10, DpadUp = 11, DpadDown = 12, DpadLeft = 13, DpadRight = 14;
 
-        /// <summary>SDL_GetGamepadAxisFromString (SDL_gamepad.c:1733-1753).</summary>
+        /// <summary>SDL_GetGamepadAxisFromString (SDL_gamepad.c:1776-1796).</summary>
         private static int AxisFromName(string name)
         {
             if (string.IsNullOrEmpty(name)) return -1;
@@ -405,7 +405,7 @@ namespace PadForge.Common.Recording
         }
 
         /// <summary>SDL_PrivateGetGamepadButtonFromString with its face swaps
-        /// (SDL_gamepad.c:1797-1836).</summary>
+        /// (SDL_gamepad.c:1840-1879).</summary>
         private static int ButtonFromName(string name, bool axby, bool baxy)
         {
             if (string.IsNullOrEmpty(name)) return -1;
@@ -434,7 +434,7 @@ namespace PadForge.Common.Recording
 
         /// <summary>
         /// The bindings of a mapping SDL handed back. Its text is
-        /// "GUID,name,body" (CreateMappingString, SDL_gamepad.c:3035-3070), and
+        /// "GUID,name,body" (CreateMappingString, SDL_gamepad.c:3086-3121), and
         /// the body is read as SDL_PrivateParseGamepadConfigString reads it,
         /// into its two fixed buffers of 20 and 128 characters: fields split on
         /// commas, spaces dropped, each colon writing the input from its start
@@ -592,7 +592,7 @@ namespace PadForge.Common.Recording
         };
 
         /// <summary>
-        /// SDL_GetGamepadAxis over the bindings (SDL_gamepad.c:3788-3852), or
+        /// SDL_GetGamepadAxis over the bindings (SDL_gamepad.c:3839-3903), or
         /// null when a binding of the axis reads an input that is not known or
         /// no binding sets it.
         /// </summary>
@@ -649,7 +649,7 @@ namespace PadForge.Common.Recording
         }
 
         /// <summary>
-        /// SDL_GetGamepadButton over the bindings (SDL_gamepad.c:3883-3924), or
+        /// SDL_GetGamepadButton over the bindings (SDL_gamepad.c:3934-3975), or
         /// null when a binding of the button reads an input that is not known or
         /// no binding sets it.
         /// </summary>

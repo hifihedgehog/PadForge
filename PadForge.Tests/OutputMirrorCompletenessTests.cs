@@ -197,33 +197,43 @@ namespace PadForge.Tests
                 "PadForge.App/App.xaml.cs",
                 "PadForge.App/Common/Input/InputManager.Step5.VirtualDevices.cs",
                 "PadForge.App/Common/Input/HMaestroVirtualController.cs",
+                "PadForge.App/Common/Input/HMaestroContexts.cs",
             };
 
-            // Every site runs the sweep through one member, which passes
-            // preserveInstall and which the test host refuses
-            // (VirtualControllerOffLimits).
-            int callSites = 0, sweeps = 0;
+            // Every site runs the sweep through one member,
+            // HMaestroVirtualController.SweepVirtualControllers, which hands it
+            // to HMaestroContexts.SweepEndedPrograms, the one call of the
+            // SDK's sweep, which passes preserveInstall. The test host refuses
+            // both (VirtualControllerOffLimits, HIDMaestroOffLimits).
+            int callSites = 0, handOffs = 0, sweeps = 0;
             foreach (string f in files)
                 foreach (string line in Live(Read(f)).Split('\n'))
                 {
                     if (line.Contains("HMaestroVirtualController.SweepVirtualControllers();", StringComparison.Ordinal))
                         sweeps++;
+                    if (line.Contains("HMaestroContexts.SweepEndedPrograms();", StringComparison.Ordinal))
+                    {
+                        handOffs++;
+                        Assert.EndsWith("HMaestroVirtualController.cs", f, StringComparison.Ordinal);
+                    }
                     int at = line.IndexOf("RemoveAllVirtualControllers(", StringComparison.Ordinal);
                     if (at < 0) continue;
                     callSites++;
-                    Assert.EndsWith("HMaestroVirtualController.cs", f, StringComparison.Ordinal);
+                    Assert.EndsWith("HMaestroContexts.cs", f, StringComparison.Ordinal);
                     string args = line.Substring(at + "RemoveAllVirtualControllers(".Length);
                     Assert.True(args.StartsWith("preserveInstall", StringComparison.Ordinal),
                         $"{f}: sweep call site must pass preserveInstall, got: {line.Trim()}");
                 }
 
             // A guard that finds nothing to guard is not a guard. The one
-            // member, and its two callers: the launch sweep and the context
+            // SDK call, the one member that hands the sweep to it, and that
+            // member's two callers: the launch sweep and the context
             // preflight. The process-exit hook went with HIDMaestro 2.0.0,
             // whose sweep leaves a running program's controllers alone and
             // whose own exit handler removes the ones a program did not
             // dispose.
             Assert.Equal(1, callSites);
+            Assert.Equal(1, handOffs);
             Assert.Equal(2, sweeps);
         }
 

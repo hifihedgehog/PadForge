@@ -591,7 +591,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>No hay SDK G-key de Logitech en este equipo. Se instala con Logitech Gaming Software 8.55 o posterior.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>El SDK G-key está registrado pero falta su archivo. Reinstala Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Se encontró el SDK G-key y no se pudo cargar.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Se encontró el SDK G-key y no se cargó, porque PadForge no pudo confirmar que solo los administradores puedan modificarlo y que Logitech lo firmó.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Esa biblioteca no es el SDK G-key esperado.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>El SDK G-key no arrancó. Normalmente Logitech Gaming Software no está en ejecución.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Conectado, aún sin teclas detectadas. En Logitech Gaming Software, arrastra el comando G-key a cada tecla del perfil de PadForge y haz que ese perfil sea persistente. Además, un ratón G600 o G300 no debe estar en el modo de memoria integrada.</value></data>
@@ -701,30 +700,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mantén la ventana oculta al iniciar PadForge. Sigue funcionando y asignando como siempre.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Inicia PadForge automáticamente al iniciar sesión en Windows. Mientras esté activado, PadForge también se inicia sin el aviso de Windows desde un acceso directo, un script u otro programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge se ejecuta desde {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Esto necesita PadForge en una carpeta propia. Su carpeta contiene otros archivos, así que PadForge no puede impedir que otros programas la modifiquen.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Esto necesita PadForge en una carpeta que otros programas no puedan modificar. PadForge no pudo impedir que modifiquen su carpeta.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Mover PadForge a su propia carpeta</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Copia PadForge y su configuración a Program Files, apunta sus tareas allí y lo inicia desde allí. La copia de aquí queda como está.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge no se movió: {0} contiene archivos que no son de PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge no se movió: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Ejecutar al iniciar sesión se desactivó, porque ejecutaba PadForge desde una carpeta que contiene otros archivos.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge no se movió: Windows no nombra ninguna carpeta Archivos de programa.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge no se movió: no pudo leer el PadForge que se está ejecutando.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge no se movió: no pudo crear {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge no se movió: no pudo leer lo que contiene {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge no se movió: no pudo impedir que otros programas modifiquen {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge no se movió: su copia en {0} no coincidía con el PadForge que se está ejecutando.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge no se movió: tras la copia, {0} contenía archivos que no son de PadForge, o bien otros programas podían modificarla.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Ejecutar al iniciar sesión se desactivó, porque el PadForge que se ejecutaba ya no está.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Ejecutar al iniciar sesión se desactivó, porque PadForge no pudo impedir que otros programas modifiquen la carpeta desde la que ejecutó PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Ejecutar al iniciar sesión se desactivó, porque PadForge no pudo leer qué PadForge ejecutó.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Ejecutar al iniciar sesión se desactivó, porque PadForge no pudo leer la carpeta del PadForge que ejecutó.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge no pudo crear su carpeta protegida, {0}. PadForge guarda allí las bibliotecas que ejecuta con derechos de administrador y no puede iniciarse de forma segura sin ella.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge no pudo iniciarse de nuevo desde su carpeta protegida, {0}. PadForge se ejecuta con derechos de administrador solo desde allí, así que no se inició.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge no pudo crear el bloqueo que limita a una sola copia en ejecución, así que no se inició.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge se ejecuta con derechos de administrador desde {0}, una carpeta que otros programas pueden modificar. Pueden cambiar allí la configuración de PadForge, y PadForge actúa según ella con sus derechos.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge se ejecuta con derechos de administrador desde {0}, una carpeta que contiene otros archivos. PadForge no puede impedir que otros programas modifiquen allí su configuración, y actúa según ella con sus derechos.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge se ejecuta con derechos de administrador desde {0}, una carpeta que no pudo leer. PadForge no puede impedir que otros programas modifiquen allí su configuración, y actúa según ella con sus derechos.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Mostrar siempre en la bandeja del sistema</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mantiene visible el icono de la bandeja del sistema mientras la ventana está abierta, así que Salir en su menú siempre está a un clic.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Actualizaciones</value></data>
@@ -966,13 +942,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Comprobación de limpieza: comprobando las partes que conservas…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Comprobación de limpieza: PadForge no pudo leer las partes que conservas, así que Guardar sigue desactivado.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>No se inició el guardado con tus derechos.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>No se inició el guardado con tus derechos: no hay ningún shell de escritorio en ejecución con el que iniciarlo.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>No se inició el guardado con tus derechos: Windows lo rechazó con el error {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>El guardado no terminó en {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows no permitió escribir el archivo allí.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge no aceptó este archivo como una grabación propia.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>El guardado terminó con el código {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Se guarda como tú, en tu carpeta Descargas la primera vez y después donde guardaste por última vez, y se muestra en el Explorador de archivos. Una grabación que se detiene mientras nadie está en la página (su límite, una macro, un programa, la herramienta del asistente o --record stop) espera esta revisión en Inicio y se elimina a los 7 días si no se guarda. A un programa se le dice que espera, nunca dónde.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Una grabación de problema de {0} espera a que la leas.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Revisar</value></data>
@@ -4340,10 +4311,6 @@ PadForge no pudo escribir los detalles en crash.log junto a PadForge.exe. Para i
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>No se inició: ningún programa abre por ti los archivos de Python, y PadForge no encuentra el lanzador py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>No se inició: PadForge no puede leer qué programa abre por ti este tipo de archivo</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>No se inició: el programa que abre por ti este tipo de archivo no está en este PC</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>No se inició: no hay un shell de escritorio en ejecución para iniciarlo</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>No se inició: el shell de escritorio tiene derechos de administrador, así que el complemento también los tendría</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>No se inició: PadForge no puede leer si tendría derechos de administrador</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>No se inició: Windows le dio derechos de administrador, así que PadForge lo terminó antes de que se ejecutara</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>No se inició: pide derechos de administrador</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>No se inició: Windows lo rechazó con el error {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>No se inició</value></data>
@@ -5875,7 +5842,6 @@ PadForge no pudo escribir los detalles en crash.log junto a PadForge.exe. Para i
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>El emparejamiento se detuvo: falló la lectura o la escritura del mando o de la radio Bluetooth. El registro de diagnóstico tiene los detalles.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>El emparejamiento se detuvo por un error que PadForge no esperaba. El registro de diagnóstico tiene los detalles.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>requiere Logitech Gaming Software 8.52 o posterior</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>encontró su biblioteca y no la cargó, porque PadForge no pudo confirmar que solo los administradores puedan modificarla y que Logitech la firmó</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>encontró su biblioteca y no pudo usarla, y el registro de diagnóstico dice por qué</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>inicie Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>esperando un teléfono con Arx Control</value></data>
@@ -5980,7 +5946,6 @@ PadForge no pudo escribir los detalles en crash.log junto a PadForge.exe. Para i
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Carga esta copia de la biblioteca de Force Dimension en lugar de cualquier otra. Un Falcon abierto con otra copia se cierra y se vuelve a abrir con esta. Las copias que instala el SDK se encuentran sin esto.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliotecas (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>La página de descarga del SDK de Falcon no se abrió: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>La página de descarga del SDK de Falcon todavía no se ha abierto: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalar controlador del Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Instala el controlador de Force Dimension, desde la carpeta del SDK, en un Falcon que no tiene ninguno. Es posible que Windows pregunte antes si confía en Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Obtener el SDK de Force Dimension</value></data>
@@ -6681,6 +6646,7 @@ PadForge no pudo escribir los detalles en crash.log junto a PadForge.exe. Para i
   <data name="SdlMapping_Away" xml:space="preserve"><value>El dispositivo no está conectado. SDL lo lee en cuanto lo esté.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL no dio a PadForge ninguna lectura de este dispositivo.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>La copia de la comunidad incluida, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Descargado {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Archivo propio de PadForge</value></data>

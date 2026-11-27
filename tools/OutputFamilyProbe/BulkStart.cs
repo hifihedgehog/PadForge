@@ -9,7 +9,7 @@ namespace PadForge.Tools.OutputFamilyProbe
     /// until a host sends command 03/0D on interface 1's bulk pair
     /// (switch2-pro-composite.json notes and its protocol rule
     /// "03 .. .. 0D", which sets reportsOn). SDL sends it last in its
-    /// Switch 2 start (SDL_hidapi_switch2.c:535-538, "Start output"), and
+    /// Switch 2 start (SDL_hidapi_switch2.c:547-550, "Start output"), and
     /// HIDMaestro's own live check sends the same 16 bytes through WinUSB
     /// (test/probes/switch2_composite_check/Live.cs:480) and reads one reply
     /// as SDL's RecvBulkData does. The interface is found from the HID
@@ -22,7 +22,7 @@ namespace PadForge.Tools.OutputFamilyProbe
         internal static bool Needs(Family f)
             => string.Equals(f.ProfileId, "switch2-pro-controller-composite", StringComparison.OrdinalIgnoreCase);
 
-        /// <summary>SDL_hidapi_switch2.c:535-538: command 03, subcommand 0D,
+        /// <summary>SDL_hidapi_switch2.c:547-550: command 03, subcommand 0D,
         /// eight data bytes.</summary>
         internal static readonly byte[] StartCommand =
             { 0x03, 0x91, 0x00, 0x0D, 0x00, 0x08, 0x00, 0x00, 0x01, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };

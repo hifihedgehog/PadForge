@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nem indult el: egyetlen program sem nyitja meg Önnek a Python-fájlokat, és a PadForge nem talál py indítót</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nem indult el: a PadForge nem tudja kiolvasni, melyik program nyitja meg Önnek ezt a fájltípust</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nem indult el: az a program, amely megnyitja Önnek ezt a fájltípust, nincs ezen a számítógépen</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nem indult el: nem fut asztali shell, amely alatt elindíthatná</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nem indult el: az asztali shell rendszergazdai jogokkal fut, így a bővítmény is megkapná azokat</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nem indult el: a PadForge nem tudja kiolvasni, hogy lenne-e rendszergazdai joga</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nem indult el: a Windows rendszergazdai jogot adott neki, ezért a PadForge leállította, mielőtt futott volna</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nem indult el: rendszergazdai jogokat kér</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nem indult el: a Windows hibával utasította el, hibakód: {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nem indult el</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Ezen a gépen nincs Logitech G-key SDK. A Logitech Gaming Software 8.55-ös vagy újabb verziójával települ.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>A G-key SDK regisztrálva van, de a fájlja hiányzik. Telepítse újra a Logitech Gaming Software programot.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>A G-key SDK megvan, de nem sikerült betölteni.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>A G-key SDK megvan, de nem lett betöltve, mert a PadForge nem tudta megerősíteni, hogy csak rendszergazdák módosíthatják, és hogy a Logitech írta alá.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Ez a könyvtár nem az a G-key SDK, amelyre a program számít.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>A G-key SDK nem volt hajlandó elindulni. Ilyenkor általában nem fut a Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Csatlakoztatva, de még nem érkezett billentyű. A Logitech Gaming Software programban húzza a „G-key” parancsot a PadForge-profil minden billentyűjére, és állítsa a profilt állandóra. A G600 és a G300 egeret emellett ki kell venni a beépített memóriás módból.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>A PadForge indulásakor az ablak rejtve marad. A program a szokott módon fut és végzi a hozzárendeléseket.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>A PadForge automatikus indítása a Windowsba való bejelentkezéskor. Amíg ez be van kapcsolva, a PadForge a Windows kérdése nélkül is elindul parancsikonból, szkriptből vagy másik programból.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>A PadForge innen fut: {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ehhez a PadForge-nak saját mappára van szüksége. A mappája más fájlokat is tartalmaz, ezért a PadForge nem tudja megakadályozni, hogy más programok módosítsák.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Ehhez a PadForge-nak olyan mappára van szüksége, amelyet más programok nem módosíthatnak. A PadForge nem tudta megakadályozni, hogy más programok módosítsák a mappáját.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>A PadForge áthelyezése saját mappába</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Átmásolja a PadForge-ot és a beállításait a Program Files mappába, ide irányítja a feladatait, és onnan indítja el. Az itteni másolat változatlan marad.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>A PadForge nem költözött át: a(z) {0} olyan fájlokat tartalmaz, amelyek nem a PadForge-hoz tartoznak.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>A PadForge nem költözött át: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge-ot egy más fájlokat tartalmazó mappából indította.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>A PadForge nem költözött át: a Windows nem nevez meg Program Files mappát.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta beolvasni a futó PadForge-ot.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta létrehozni ezt: {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta beolvasni, mit tartalmaz a(z) {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>A PadForge nem költözött át: nem tudta megakadályozni, hogy más programok módosítsák ezt: {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>A PadForge nem költözött át: a(z) {0} mappában lévő másolata nem egyezett a futó PadForge-gal.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>A PadForge nem költözött át: a másolás után a(z) {0} olyan fájlokat tartalmazott, amelyek nem a PadForge-hoz tartoznak, vagy más programok módosíthatták.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a futtatott PadForge már nincs ott.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge nem tudta megakadályozni, hogy más programok módosítsák azt a mappát, amelyből a PadForge-ot futtatta.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge nem tudta kiolvasni, melyik PadForge-ot futtatta.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Az Indítás bejelentkezéskor ki lett kapcsolva, mert a PadForge nem tudta kiolvasni, melyik mappában van az a PadForge, amelyet futtatott.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>A PadForge nem tudta létrehozni a védett mappáját: {0}. A PadForge itt tartja a rendszergazdai jogokkal használt könyvtárait, és enélkül nem indulhat el biztonságosan.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>A PadForge nem tudta újraindítani magát a védett mappájából: {0}. A PadForge rendszergazdai jogokkal csak onnan fut, ezért nem indult el.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>A PadForge nem tudta létrehozni azt a zárat, amely egyetlen futó példányra korlátozza, ezért nem indult el.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>A PadForge rendszergazdai jogokkal fut innen: {0}, ez olyan mappa, amelyet más programok módosíthatnak. Ott módosíthatják a PadForge beállításait, és a PadForge a saját jogaival végrehajtja azokat.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>A PadForge rendszergazdai jogokkal fut innen: {0}, ez olyan mappa, amely más fájlokat is tartalmaz. A PadForge nem tudja megakadályozni, hogy más programok módosítsák ott a beállításait, és a saját jogaival végrehajtja azokat.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>A PadForge rendszergazdai jogokkal fut innen: {0}, ezt a mappát nem tudta beolvasni. A PadForge nem tudja megakadályozni, hogy más programok módosítsák ott a beállításait, és a saját jogaival végrehajtja azokat.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Megjelenítés mindig a rendszertálcán</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>A tálcaikon akkor is látható marad, amikor az ablak nyitva van, így a menüjében a Kilépés mindig egy kattintásnyira van.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Frissítések</value></data>
@@ -1354,13 +1326,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Megtisztítás ellenőrzése: a megtartott részek ellenőrzése…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Megtisztítás ellenőrzése: a PadForge nem tudta beolvasni a megtartott részeket, ezért a Mentés le van tiltva.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>A mentés az Ön jogaival nem indult el.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>A mentés az Ön jogaival nem indult el: nem fut asztali shell, amelyben elindulhatna.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>A mentés az Ön jogaival nem indult el: a Windows a(z) {0} hibakóddal elutasította.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>A mentés nem fejeződött be ennyi idő alatt: {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>A Windows nem engedte, hogy a fájl oda legyen írva.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>A PadForge nem fogadta el ezt a fájlt saját felvételként.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>A mentés a(z) {0} kóddal fejeződött be.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Az Ön nevében mentve, először a Letöltések mappába, utána oda, ahová legutóbb mentett, és megjelenítve a Fájlkezelőben. Az a felvétel, amely akkor áll le, amikor senki sincs az oldalon (a korlátja, egy makró, egy program, az asszisztenseszköz vagy a --record stop miatt), a Kezdőlap oldalon vár erre az átnézésre, és 7 nap után törlődik, ha nincs mentve. A program azt megtudja, hogy vár, azt nem, hogy hol.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Egy problémafelvétel ebből az időből ({0}) arra vár, hogy elolvassa.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Átnézés</value></data>
@@ -5920,7 +5887,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>A párosítás leállt: a kontroller vagy a Bluetooth-rádió olvasása vagy írása sikertelen volt. A részleteket a diagnosztikai napló tartalmazza.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>A párosítás leállt egy olyan hiba miatt, amelyre a PadForge nem számított. A részleteket a diagnosztikai napló tartalmazza.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 vagy újabb szükséges</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>megtalálta a könyvtárát, de nem töltötte be, mert a PadForge nem tudta megerősíteni, hogy csak rendszergazdák módosíthatják, és hogy a Logitech írta alá</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>megtalálta a könyvtárát, de nem tudta használni, és a diagnosztikai napló megmondja, miért</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>indítsa el a Logitech Gaming Software-t</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>várakozás egy Arx Control alkalmazást futtató telefonra</value></data>
@@ -6025,7 +5991,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>A Force Dimension könyvtárának ezt a másolatát tölti be bármelyik másik helyett. Ha egy Falcon másik másolaton van megnyitva, bezárul, és ezen nyílik meg újra. Az SDK által telepített másolatok enélkül is megtalálhatók.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Könyvtárak (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>A Falcon SDK letöltőoldala nem nyílt meg: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>A Falcon SDK letöltőoldala még nem nyílt meg: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon-illesztőprogram telepítése</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Telepíti a Force Dimension illesztőprogramját az SDK mappájából egy olyan Falcon-eszközre, amelyhez még nincs illesztőprogram. A Windows előbb megkérdezheti, megbízik-e a Force Dimension-ben.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>A Force Dimension SDK letöltése</value></data>
@@ -6726,6 +6691,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="SdlMapping_Away" xml:space="preserve"><value>Az eszköz nincs csatlakoztatva. Az SDL beolvassa, amint csatlakoztatva lesz.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Az SDL nem adott a PadForge-nak leolvasást erről az eszközről.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>A beépített közösségi másolat, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Letöltve: {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>A PadForge saját fájlja</value></data>

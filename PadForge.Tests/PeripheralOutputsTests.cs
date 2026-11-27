@@ -1533,6 +1533,33 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AHandlerThatThrows_KeepsNoLaterHandlerOfALinkOrLightingChangeFromRunning()
+        {
+            int links = 0, lighting = 0;
+            void Throw() => throw new InvalidOperationException("a handler that throws");
+            void OnLinks() => links++;
+            void OnLighting() => lighting++;
+            PeripheralOutputs.LinksChanged += Throw;
+            PeripheralOutputs.LinksChanged += OnLinks;
+            PeripheralOutputs.LightingChanged += Throw;
+            PeripheralOutputs.LightingChanged += OnLighting;
+            try
+            {
+                Link(new DeviceLinks { Device = A, Haptics = new[] { PeripheralLinker.SensaPath } });
+                Assert.Equal(1, links);
+                PeripheralOutputs.SetLighting(A, 0, 1, 1, 2, 3);
+                Assert.Equal(1, lighting);
+            }
+            finally
+            {
+                PeripheralOutputs.LinksChanged -= Throw;
+                PeripheralOutputs.LinksChanged -= OnLinks;
+                PeripheralOutputs.LightingChanged -= Throw;
+                PeripheralOutputs.LightingChanged -= OnLighting;
+            }
+        }
+
+        [Fact]
         public void ABackendStateRaisesStatusOnlyWhenItChanges()
         {
             int raised = 0;

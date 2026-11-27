@@ -1370,7 +1370,6 @@ PadForge enweghị ike ide nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Njikọ kwụsịrị: ịgụ ma ọ bụ ide na controller ahụ ma ọ bụ redio Bluetooth dara. Ndekọ nchọpụta nwere nkọwa ya.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Njikọ kwụsịrị n'ihi njehie PadForge na-atụghị anya ya. Ndekọ nchọpụta nwere nkọwa ya.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>chọrọ Logitech Gaming Software 8.52 ma ọ bụ nke ọhụrụ karịa</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>chọtara ọbá akwụkwọ ya ma ebughị ya, n'ihi na PadForge enweghị ike ikwenye na ọ bụ naanị ndị nchịkwa nwere ike ịgbanwe ya nakwa na Logitech bịanyere aka na ya</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>chọtara ọbá akwụkwọ ya ma enweghị ike iji ya, ndekọ nchọpụta na-ekwukwa ihe kpatara ya</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>malite Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>na-eche ekwentị nwere Arx Control</value></data>
@@ -1768,9 +1767,6 @@ PadForge enweghị ike ide nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>na {0} ọzọ</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} n'ime {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Ọ bụrụ na azaghị n'ime {0}, ọ bụ mba.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda mmemme ndị ọzọ nwere ike ịgbanwe. Ha nwere ike ịgbanwe ntọala PadForge n'ebe ahụ, PadForge ga-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda nwere faịlụ ndị ọzọ. PadForge enweghị ike igbochi mmemme ndị ọzọ ịgbanwe ntọala ya n'ebe ahụ, ọ na-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge na-agba site na {0} nwere ikike onye nchịkwa, folda ọ na-enweghị ike ịgụ. PadForge enweghị ike igbochi mmemme ndị ọzọ ịgbanwe ntọala ya n'ebe ahụ, ọ na-emekwa ihe ha tọrọ site n'ikike ya.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Ọdụ data controller</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Melite ugbu a na-ebudata ọdụ data controller nke obodo (SDL_GameControllerDB) site na GitHub, ma ọ bụ site na adreesị e setịrị n'okpuru More, ma na-edebe, na faịlụ ntọala, mapping ndị ụdị PadForge a na-enweghị. Ha nọ n'ọrụ ozugbo. Site na adreesị ọzọ, ọ na-edebe naanị mapping ọhụrụ. A na-ebu ụzọ jiri mapping ọhụrụ naanị maka controller nke SDL kọrọ dịka gamepad ma ọ bụ dịka nke na-enweghị ụdị a kapịrị ọnụ, nke ọ dịghị ihe ọzọ na-agụ dịka gamepad, nke a na-ekenyeghị, nke na-anọghị na Force Raw Joystick Mode. Ozugbo ọ nọ n'ọrụ, ọ na-anọgide n'ọrụ mgbe e kenyechara controller ahụ. Ntọgharị ahụ na-ewepụ mapping e budatara ma tọghachi Budata site na ka ọ bụrụ faịlụ obodo, nke Melite ugbu a na-esote ga-ebudata. Ahịrị nke gị, n'okpuru More, na-anọgide.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Melite ugbu a</value></data>
@@ -1866,6 +1862,7 @@ PadForge enweghị ike ide nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji
   <data name="SdlMapping_Away" xml:space="preserve"><value>Ejikọghị ngwaọrụ ahụ. SDL ga-agụ ya ozugbo e jikọrọ ya.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL enyeghị PadForge ọgụgụ ọ bụla nke ngwaọrụ a.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Oyiri obodo dị n'ime, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E budatara {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faịlụ nke PadForge n'onwe ya</value></data>
@@ -2080,7 +2077,6 @@ PadForge enweghị ike ide nkọwa ya na crash.log n'akụkụ PadForge.exe. Iji
   <data name="Pad_Menus_IconPackages_DefaultFileName_Format" xml:space="preserve"><value>Akarangosi{0}</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge enweghị ike ịmepụta mkpọchi na-eme ka naanị otu oyiri ya na-agba, ya mere o maliteghị.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Ibe nbudata Falcon SDK emegheghị: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Ibe nbudata Falcon SDK emeghebeghị: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>A gafere ahịrị {0:N0} maka sistemụ ndị ọzọ.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows amaliteghị ya site n'ikike nke gị.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ọ kwụsịghị n'ime sekọnd {0}.</value></data>

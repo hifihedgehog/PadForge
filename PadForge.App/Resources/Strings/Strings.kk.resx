@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Іске қосылмады: Python файлдарын ашатын бағдарлама жоқ, ал PadForge py іске қосқышын таппайды</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Іске қосылмады: PadForge мұндай файлды қай бағдарлама ашатынын оқи алмайды</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Іске қосылмады: мұндай файлды ашатын бағдарлама бұл компьютерде жоқ</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Іске қосылмады: оны іске қосатын жұмыс үстелі қабығы жоқ</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Іске қосылмады: жұмыс үстелі қабығында әкімші құқықтары бар, сондықтан плагинде де болар еді</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Іске қосылмады: PadForge оның әкімші құқықтары болатынын оқи алмайды</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Іске қосылмады: Windows оған әкімші құқықтарын берді, сондықтан PadForge оны іске қосылмай тұрып тоқтатты</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Іске қосылмады: ол әкімші құқықтарын сұрайды</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Іске қосылмады: Windows {0} қатесімен қабылдамады</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Іске қосылмады</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Бұл компьютерде Logitech G-key SDK жоқ. Ол Logitech Gaming Software 8.55 немесе одан кейінгі нұсқасымен бірге орнатылады.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK тіркелген, бірақ оның файлы жоқ. Logitech Gaming Software бағдарламасын қайта орнатыңыз.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK табылды, бірақ оны жүктеу мүмкін болмады.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK табылды, бірақ жүктелмеді, өйткені PadForge оны тек әкімшілер өзгерте алатынын және Logitech қол қойғанын растай алмады.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Бұл кітапхана күтілген G-key SDK емес.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK іске қосылудан бас тартты. Әдетте бұл Logitech Gaming Software жұмыс істемей тұрғанда болады.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Қосылды, әзірге ешбір перне байқалмады. Logitech Gaming Software бағдарламасында G-key командасын PadForge профиліндегі әр пернеге сүйреп апарыңыз және ол профильді тұрақты етіңіз. G600 не G300 тінтуірін де кірістірілген жад режимінен шығару керек.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge іске қосылғанда терезе жасырын тұрады. Бағдарлама әдеттегідей жұмыс істеп, тағайындауларды орындайды.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows жүйесіне кіргенде PadForge автоматты түрде іске қосылады. Бұл қосулы тұрғанда PadForge Windows сұрауынсыз таңбашадан, скриптен немесе басқа бағдарламадан да іске қосылады.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge мына жерден жұмыс істейді: {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Бұл үшін PadForge өз қалтасында тұруы керек. Оның қалтасында басқа файлдар бар, сондықтан PadForge басқа бағдарламалардың оны өзгертуіне жол бермей алмайды.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Бұл үшін PadForge басқа бағдарламалар өзгерте алмайтын қалтада тұруы керек. PadForge басқа бағдарламалардың өз қалтасын өзгертуіне жол бермей алмады.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ты өз қалтасына жылжыту</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge-ты және оның параметрлерін Program Files қалтасына көшіреді, оның тапсырмаларын сол жерге бағыттайды және оны сол жерден іске қосады. Мұндағы көшірме өзгеріссіз қалады.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge жылжымады: {0} қалтасында PadForge-қа жатпайтын файлдар бар.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge жылжымады: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Жүйеге кіргенде іске қосу өшірілді, себебі ол PadForge-ты басқа файлдар бар қалтадан іске қосатын.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge жылжымады: Windows Program Files қалтасын көрсетпейді.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge жылжымады: ол іске қосылған PadForge-ты оқи алмады.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge жылжымады: ол {0} қалтасын жасай алмады.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge жылжымады: ол {0} қалтасында не бар екенін оқи алмады.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge жылжымады: ол басқа бағдарламалардың {0} қалтасын өзгертуіне жол бермей алмады.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge жылжымады: оның {0} қалтасындағы көшірмесі іске қосылған PadForge-қа сәйкес келмеді.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge жылжымады: көшіруден кейін {0} қалтасында PadForge-қа жатпайтын файлдар болды немесе оны басқа бағдарламалар өзгерте алатын еді.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Жүйеге кіргенде іске қосу өшірілді, өйткені ол іске қосқан PadForge енді жоқ.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Жүйеге кіргенде іске қосу өшірілді, өйткені PadForge өзі іске қосылған қалтаны басқа бағдарламалардың өзгертуіне жол бермей алмады.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Жүйеге кіргенде іске қосу өшірілді, өйткені PadForge қай PadForge іске қосылғанын оқи алмады.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Жүйеге кіргенде іске қосу өшірілді, өйткені PadForge өзі іске қосқан PadForge қалтасын оқи алмады.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge өзінің қорғалған қалтасын жасай алмады: {0}. PadForge әкімші құқықтарымен жұмыс істейтін кітапханаларын сонда сақтайды, онсыз қауіпсіз іске қосыла алмайды.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge өзін қорғалған қалтасынан қайта іске қоса алмады: {0}. PadForge әкімші құқықтарымен тек сол жерден жұмыс істейді, сондықтан іске қосылмады.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge өзінің тек бір данасы жұмыс істеуін қамтамасыз ететін құлыпты жасай алмады, сондықтан іске қосылмады.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge әкімші құқықтарымен {0} қалтасынан жұмыс істейді, оны басқа бағдарламалар өзгерте алады. Олар сондағы PadForge параметрлерін өзгерте алады, ал PadForge олар бойынша өз құқықтарымен әрекет етеді.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge әкімші құқықтарымен {0} қалтасынан жұмыс істейді, онда басқа файлдар бар. PadForge сондағы параметрлерін басқа бағдарламалардың өзгертуіне жол бермей алмайды, ал PadForge олар бойынша өз құқықтарымен әрекет етеді.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge әкімші құқықтарымен {0} қалтасынан жұмыс істейді, оны PadForge оқи алмады. PadForge сондағы параметрлерін басқа бағдарламалардың өзгертуіне жол бермей алмайды, ал PadForge олар бойынша өз құқықтарымен әрекет етеді.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Хабарландыру аймағында әрқашан көрсету</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Терезе ашық тұрғанда да хабарландыру аймағындағы белгіше көрінеді, сондықтан оның мәзіріндегі «Шығу» әрқашан бір басу қашықтықта болады.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Жаңартулар</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} МБ</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Тазалау тексерісі: сақталатын бөліктер тексерілуде…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Тазалау тексерісі: PadForge сақталатын бөліктерді оқи алмады, сондықтан Сақтау түймесі өшірулі қалады.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Сіздің құқықтарыңызбен сақтау басталмады.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Сіздің құқықтарыңызбен сақтау басталмады: оны іске қосатын жұмыс үстелі қабығы жұмыс істемейді.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Сіздің құқықтарыңызбен сақтау басталмады: Windows {0} қатесімен бас тартты.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Сақтау {0} ішінде аяқталмады.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows файлды сол жерге жазуға рұқсат бермеді.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge бұл файлды өзінің жазбасы деп қабылдамады.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Сақтау {0} кодымен аяқталды.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Сіздің атыңыздан сақталады, бірінші рет Downloads қалтасына, одан кейін соңғы сақтаған жеріңізге, және Explorer ішінде көрсетіледі. Бетте ешкім болмағанда тоқтайтын жазба (шегі, макро, бағдарлама, көмекші құралы немесе --record stop) осы қарап шығуды Басты бетте күтеді және сақталмаса, 7 күннен кейін жойылады. Бағдарламаға оның күтіп тұрғаны айтылады, қайда екені айтылмайды.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} кезіндегі ақау жазбасы сіздің оқуыңызды күтуде.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Қарап шығу</value></data>
@@ -5578,7 +5545,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Жұптастыру тоқтады: контроллерді немесе Bluetooth радиосын оқу не жазу сәтсіз болды. Мәліметтер диагностика журналында.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Жұптастыру PadForge күтпеген қатеден тоқтады. Мәліметтер диагностика журналында.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 немесе одан кейінгі нұсқасы қажет</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>кітапханасын тапты, бірақ жүктемеді, өйткені PadForge оны тек әкімшілер өзгерте алатынын және Logitech қол қойғанын растай алмады</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>кітапханасын тапты, бірақ оны пайдалана алмады, себебін диагностика журналы айтады</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software бағдарламасын іске қосыңыз</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control бар телефон күтілуде</value></data>
@@ -5676,7 +5642,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension кітапханасының осы көшірмесін басқаларының орнына жүктейді. Басқа көшірмеде ашық тұрған Falcon жабылып, осы көшірмеде қайта ашылады. SDK орнататын көшірмелер онсыз да табылады.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Кітапханалар (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK жүктеу беті ашылмады: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK жүктеу беті әлі ашылған жоқ: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon драйверін орнату</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Force Dimension драйверін SDK қалтасынан, драйвері жоқ Falcon-ға орнатады. Windows алдымен Force Dimension жариялаушысына сенесіз бе деп сұрауы мүмкін.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension SDK алу</value></data>
@@ -6031,6 +5996,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="SdlMapping_Away" xml:space="preserve"><value>Құрылғы қосылмаған. Қосылғанда SDL оны оқиды.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL PadForge-қа бұл құрылғы туралы ешқандай көрсеткіш бермеді.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Кірістірілген қауымдастық көшірмесі, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Жүктелген: {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge өз файлы</value></data>

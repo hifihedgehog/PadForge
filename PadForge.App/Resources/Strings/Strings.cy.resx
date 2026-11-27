@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Heb gychwyn: nid oes rhaglen yn agor ffeiliau Python i chi, ac nid yw PadForge yn dod o hyd i lansiwr py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Heb gychwyn: ni all PadForge ddarllen pa raglen sy'n agor y math hwn o ffeil i chi</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Heb gychwyn: nid yw'r rhaglen sy'n agor y math hwn o ffeil i chi ar y cyfrifiadur hwn</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Heb gychwyn: nid oes cragen bwrdd gwaith yn rhedeg i'w gychwyn oddi tani</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Heb gychwyn: mae gan gragen y bwrdd gwaith hawliau gweinyddwr, felly byddent gan yr ategyn hefyd</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Heb gychwyn: ni all PadForge ddarllen a fyddai hawliau gweinyddwr ganddo</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Heb gychwyn: rhoddodd Windows hawliau gweinyddwr iddo, felly daeth PadForge ag ef i ben cyn iddo redeg</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Heb gychwyn: mae'n gofyn am hawliau gweinyddwr</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Heb gychwyn: gwrthododd Windows gyda gwall {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Heb gychwyn</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Dim Logitech G-key SDK ar y peiriant hwn. Mae'n gosod gyda Logitech Gaming Software 8.55 neu ddiweddarach.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>Mae'r G-key SDK wedi'i gofrestru ond mae ei ffeil wedi mynd. Ailosodwch Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Canfuwyd y G-key SDK ond nid oedd modd ei lwytho.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Canfuwyd y G-key SDK ond ni chafodd ei lwytho, gan nad oedd PadForge yn gallu cadarnhau mai dim ond gweinyddwyr all ei newid a bod Logitech wedi'i lofnodi.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Nid y G-key SDK y mae hwn yn ei ddisgwyl yw'r llyfrgell honno.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Gwrthododd y G-key SDK gychwyn. Fel arfer nid yw Logitech Gaming Software yn rhedeg.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Wedi'i gysylltu, heb weld bysell eto. Yn Logitech Gaming Software, llusgwch y gorchymyn G-key ar bob bysell ym mhroffil PadForge, a gwnewch y proffil hwnnw'n barhaus. Rhaid i lygoden G600 neu G300 hefyd fod allan o'r modd cof mewnol.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Cadwch y ffenestr yn guddiedig pan fydd PadForge yn cychwyn. Mae'n rhedeg ac yn mapio fel arfer.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Cychwyn PadForge yn awtomatig pan fyddwch yn mewngofnodi i Windows. Tra bo hwn ymlaen, mae PadForge hefyd yn cychwyn heb anogwr Windows o lwybr byr, sgript neu raglen arall.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Mae PadForge yn rhedeg o {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Mae angen PadForge mewn ffolder ei hun ar gyfer hyn. Mae ei ffolder yn cynnwys ffeiliau eraill, felly ni all PadForge atal rhaglenni eraill rhag ei newid.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Mae angen PadForge mewn ffolder na all rhaglenni eraill ei newid ar gyfer hyn. Nid oedd PadForge yn gallu atal rhaglenni eraill rhag newid ei ffolder.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Symud PadForge i'w Ffolder ei Hun</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Yn copïo PadForge a'i osodiadau i Program Files, yn pwyntio ei dasgau yno, ac yn ei gychwyn oddi yno. Mae'r copi yma'n aros fel y mae.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Ni symudodd PadForge: mae {0} yn cynnwys ffeiliau nad ydynt yn eiddo PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Ni symudodd PadForge: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Diffoddwyd Cychwyn wrth Fewngofnodi, gan ei fod yn rhedeg PadForge o ffolder sy'n cynnwys ffeiliau eraill.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>Ni symudodd PadForge: nid yw Windows yn enwi ffolder Ffeiliau Rhaglenni.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>Ni symudodd PadForge: nid oedd yn gallu darllen y PadForge sy'n rhedeg.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>Ni symudodd PadForge: nid oedd yn gallu creu {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>Ni symudodd PadForge: nid oedd yn gallu darllen beth sydd yn {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>Ni symudodd PadForge: nid oedd yn gallu atal rhaglenni eraill rhag newid {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>Ni symudodd PadForge: nid oedd ei gopi yn {0} yn cyfateb i'r PadForge sy'n rhedeg.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>Ni symudodd PadForge: ar ôl y copïo, roedd {0} yn cynnwys ffeiliau nad ydynt yn eiddo PadForge, neu gallai rhaglenni eraill ei newid.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Diffoddwyd Cychwyn wrth Fewngofnodi, gan nad yw'r PadForge a redodd yno mwyach.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Diffoddwyd Cychwyn wrth Fewngofnodi, gan nad oedd PadForge yn gallu atal rhaglenni eraill rhag newid y ffolder y rhedodd PadForge ohono.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Diffoddwyd Cychwyn wrth Fewngofnodi, gan nad oedd PadForge yn gallu darllen pa PadForge a redodd.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Diffoddwyd Cychwyn wrth Fewngofnodi, gan nad oedd PadForge yn gallu darllen ffolder y PadForge a redodd.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Nid oedd PadForge yn gallu gwneud ei ffolder warchodedig, {0}. Mae PadForge yn cadw'r llyfrgelloedd y mae'n eu rhedeg gyda hawliau gweinyddwr yno, ac ni all gychwyn yn ddiogel hebddi.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Nid oedd PadForge yn gallu cychwyn ei hun eto o'i ffolder warchodedig, {0}. Dim ond oddi yno y mae PadForge yn rhedeg gyda hawliau gweinyddwr, felly ni chychwynnodd.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>Nid oedd PadForge yn gallu creu'r clo sy'n ei gyfyngu i un copi sy'n rhedeg, felly ni chychwynnodd.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Mae PadForge yn rhedeg gyda hawliau gweinyddwr o {0}, ffolder y gall rhaglenni eraill ei newid. Gallant newid gosodiadau PadForge yno, ac mae PadForge yn gweithredu arnynt gyda'i hawliau.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Mae PadForge yn rhedeg gyda hawliau gweinyddwr o {0}, ffolder sy'n cynnwys ffeiliau eraill. Ni all PadForge atal rhaglenni eraill rhag newid gosodiadau PadForge yno, ac mae PadForge yn gweithredu arnynt gyda'i hawliau.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Mae PadForge yn rhedeg gyda hawliau gweinyddwr o {0}, ffolder nad oedd PadForge yn gallu ei darllen. Ni all PadForge atal rhaglenni eraill rhag newid gosodiadau PadForge yno, ac mae PadForge yn gweithredu arnynt gyda'i hawliau.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dangos yn yr Hambwrdd System Bob Amser</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Cadwch eicon yr hambwrdd yn weladwy tra bydd y ffenestr ar agor, fel bod Gadael yn ei ddewislen bob amser un clic i ffwrdd.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Diweddariadau</value></data>
@@ -1294,13 +1266,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Gwiriad sgwrio: yn gwirio'r rhannau a gadwch…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Gwiriad sgwrio: nid oedd PadForge yn gallu darllen y rhannau a gadwch, felly mae Cadw yn aros i ffwrdd.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Ni chychwynnodd y cadw gyda'ch hawliau.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Ni chychwynnodd y cadw gyda'ch hawliau: nid oes cragen y bwrdd gwaith yn rhedeg i'w gychwyn oddi tani.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Ni chychwynnodd y cadw gyda'ch hawliau: gwrthododd Windows gyda gwall {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Ni ddaeth y cadw i ben mewn {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Ni adawodd Windows i'r ffeil gael ei hysgrifennu yno.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>Ni dderbyniodd PadForge y ffeil hon fel recordiad ei hun.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Daeth y cadw i ben gyda chod {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Wedi'i gadw fel chi, i'ch ffolder Downloads y tro cyntaf, yna lle y cadwoch ddiwethaf, a'i ddangos yn Explorer. Mae recordiad sy'n stopio tra nad oes neb ar y dudalen (ei derfyn, macro, rhaglen, offeryn y cynorthwyydd neu --record stop) yn aros am yr adolygiad hwn ar Hafan, ac yn cael ei ddileu ar ôl 7 diwrnod oni chaiff ei gadw. Dywedir wrth raglen ei fod yn aros, byth ymhle.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Mae recordiad problem o {0} yn aros i chi ei ddarllen.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Adolygu</value></data>
@@ -5549,7 +5516,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Stopiodd y paru: methodd darllen neu ysgrifennu'r rheolydd neu'r radio Bluetooth. Mae'r manylion yn y log diagnosteg.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Stopiodd y paru ar wall nad oedd PadForge yn ei ddisgwyl. Mae'r manylion yn y log diagnosteg.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>mae angen Logitech Gaming Software 8.52 neu ddiweddarach</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>wedi dod o hyd i'w llyfrgell ond heb ei llwytho, gan nad oedd PadForge yn gallu cadarnhau mai dim ond gweinyddwyr all ei newid a bod Logitech wedi'i llofnodi</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>wedi dod o hyd i'w llyfrgell ac nid oedd yn gallu ei defnyddio, ac mae'r log diagnosteg yn dweud pam</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>dechreuwch Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>yn aros am ffôn gydag Arx Control</value></data>
@@ -5647,7 +5613,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Yn llwytho'r copi hwn o lyfrgell Force Dimension yn lle unrhyw un arall. Mae Falcon sydd ar agor ar gopi arall yn cau ac yn agor eto ar yr un hwn. Mae'r copïau y mae'r SDK yn eu gosod i'w cael hebddo.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Llyfrgelloedd (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Ni agorodd tudalen lawrlwytho SDK Falcon: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Nid yw tudalen lawrlwytho SDK Falcon wedi agor eto: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Gosod Gyrrwr Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Yn gosod gyrrwr Force Dimension, o ffolder yr SDK, ar Falcon sydd heb un. Efallai y bydd Windows yn gofyn yn gyntaf a ydych yn ymddiried yn Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Cael SDK Force Dimension</value></data>
@@ -5999,6 +5964,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="SdlMapping_Away" xml:space="preserve"><value>Nid yw'r ddyfais wedi'i chysylltu. Mae SDL yn ei darllen unwaith y bydd.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Ni roddodd SDL unrhyw ddarlleniad o'r ddyfais hon i PadForge.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Copi'r gymuned wedi'i adeiladu i mewn, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lawrlwythwyd {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ffeil PadForge ei hun</value></data>

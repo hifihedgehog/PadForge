@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Није покренут: ниједан програм не отвара Python датотеке уместо вас, а PadForge не налази py покретач</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Није покренут: PadForge не може да прочита који програм отвара ову врсту датотеке уместо вас</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Није покренут: програма који отвара ову врсту датотеке уместо вас нема на овом рачунару</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Није покренут: не ради ниједна шкољка радне површине под којом би се покренуо</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Није покренут: шкољка радне површине има администраторска права, па би их имао и плагин</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Није покренут: PadForge не може да прочита да ли би имао администраторска права</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Није покренут: Windows му је дао администраторска права, па га је PadForge окончао пре покретања</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Није покренут: тражи администраторска права</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Није покренут: Windows је одбио са грешком {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Није покренут</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>На овом рачунару нема пакета Logitech G-key SDK. Инсталира се уз Logitech Gaming Software 8.55 или новији.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK је регистрован, али његова датотека више не постоји. Поново инсталирајте Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK је пронађен, али није могао да се учита.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK је пронађен, али није учитан, јер PadForge није могао да потврди да га само администратори могу мењати и да га је потписао Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Та библиотека није G-key SDK који се очекује.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK је одбио да се покрене. Обично то значи да Logitech Gaming Software није покренут.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Повезано, још није уочен ниједан тастер. У програму Logitech Gaming Software превуците команду G-key на сваки тастер у профилу PadForge и подесите тај профил као трајни. Миш G600 или G300 такође мора бити изван режима уграђене меморије.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Прозор остаје сакривен када се PadForge покрене. Програм ради и мапира као и обично.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge се аутоматски покреће када се пријавите у Windows. Док је ово укључено, PadForge се покреће и без Windows упита из пречице, скрипте или другог програма.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ради из {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Ово захтева да PadForge буде у сопственој фасцикли. Његова фасцикла садржи друге датотеке, па PadForge не може да спречи друге програме да је мењају.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Ово захтева да PadForge буде у фасцикли коју други програми не могу да мењају. PadForge није могао да спречи друге програме да мењају његову фасциклу.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Премести PadForge у сопствену фасциклу</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копира PadForge и његова подешавања у Program Files, усмерава његове задатке тамо и покреће га одатле. Копија овде остаје као што је.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge се није преместио: {0} садржи датотеке које нису од програма PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge се није преместио: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Покретање при пријављивању је искључено, јер је покретало PadForge из фасцикле која садржи друге датотеке.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge се није преместио: Windows не именује фасциклу Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge се није преместио: није могао да прочита PadForge који ради.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge се није преместио: није могао да направи {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge се није преместио: није могао да прочита шта садржи {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge се није преместио: није могао да спречи друге програме да мењају {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge се није преместио: његова копија у {0} није се поклапала са PadForge који ради.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge се није преместио: након копирања {0} је садржао датотеке које нису од програма PadForge, или су га други програми могли мењати.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge који је радио више не постоји.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge није могао да спречи друге програме да мењају фасциклу из које је покренуо PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge није могао да прочита који PadForge је покренуо.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Покрени при пријављивању је искључено, јер PadForge није могао да прочита фасциклу из које је радио PadForge који је покренут.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge није могао да направи своју заштићену фасциклу {0}. PadForge у њој чува библиотеке које покреће са администраторским правима и без ње не може безбедно да се покрене.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge није могао поново да се покрене из своје заштићене фасцикле {0}. PadForge ради са администраторским правима само одатле, па се није покренуо.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge није могао да направи браву која га држи на једној покренутој копији, па се није покренуо.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ради са администраторским правима из {0}, фасцикле коју други програми могу да мењају. Они тамо могу да мењају подешавања програма PadForge, а PadForge поступа по њима са својим правима.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ради са администраторским правима из {0}, фасцикле која садржи друге датотеке. PadForge не може да спречи друге програме да тамо мењају његова подешавања, а он поступа по њима са својим правима.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ради са администраторским правима из {0}, фасцикле коју није могао да прочита. PadForge не може да спречи друге програме да тамо мењају његова подешавања, а он поступа по њима са својим правима.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Увек прикажи у системској палети</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Икона у системској палети остаје видљива док је прозор отворен, па је „Изађи“ у њеном менију увек на један клик.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ажурирања</value></data>
@@ -1354,13 +1326,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} МБ</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Провера чишћења: проверавају се делови које задржавате…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Провера чишћења: PadForge није могао да прочита делове које задржавате, па Сачувај остаје искључено.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Чување са вашим правима није започето.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Чување са вашим правима није започето: не ради шкољка радне површине под којом би се покренуло.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Чување са вашим правима није започето: Windows је одбио са грешком {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Чување није завршено за {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows није дозволио да се датотека тамо упише.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge није прихватио ову датотеку као свој снимак.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Чување је завршено кодом {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Чува се под вашим именом, први пут у фасцикли Преузимања, а затим тамо где сте последњи пут сачували, и приказује се у Истраживачу датотека. Снимак који се заустави док нико није на страници (због ограничења, макроа, програма, алата асистента или --record stop) чека овај преглед на страници Почетна и брише се после 7 дана ако није сачуван. Програм сазнаје да чека, али никада где.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Снимак проблема из {0} чека да га прочитате.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Преглед</value></data>
@@ -5920,7 +5887,6 @@ PadForge није могао да упише детаље у crash.log поре�
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Упаривање је заустављено: читање или писање контролера или Bluetooth радија није успело. Детаљи су у дневнику дијагностике.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Упаривање је заустављено због грешке коју PadForge није очекивао. Детаљи су у дневнику дијагностике.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>потребан је Logitech Gaming Software 8.52 или новији</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>библиотека је пронађена, али није учитана, јер PadForge није могао да потврди да је само администратори могу мењати и да ју је потписао Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>библиотека је пронађена, али не може да се користи, а дневник дијагностике каже зашто</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>покрените Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>чека се телефон са Arx Control</value></data>
@@ -6025,7 +5991,6 @@ PadForge није могао да упише детаље у crash.log поре�
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Учитава ову копију библиотеке компаније Force Dimension уместо свих осталих. Falcon отворен на другој копији затвара се и поново отвара на овој. Копије које инсталира SDK проналазе се и без овога.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Библиотеке (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Страница за преузимање за Falcon SDK није отворена: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Страница за преузимање за Falcon SDK још није отворена: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Инсталирај Falcon драјвер</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Инсталира драјвер компаније Force Dimension, из фолдера SDK, на Falcon који га нема. Windows може прво да упита да ли верујете компанији Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Преузми Force Dimension SDK</value></data>
@@ -6726,6 +6691,7 @@ PadForge није могао да упише детаље у crash.log поре�
   <data name="SdlMapping_Away" xml:space="preserve"><value>Уређај није повезан. SDL га чита чим се повеже.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL није дао PadForge очитавање овог уређаја.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Уграђена копија заједнице, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Преузето {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Сопствена датотека програма PadForge</value></data>

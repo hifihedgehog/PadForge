@@ -331,9 +331,6 @@ namespace PadForge.Views
             if (dialog.ShowDialog() == true) vm.ChooseControllerDatabaseAddress(dialog.Address);
         }
 
-        private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
-            => PadForge.Services.ExeFolderState.Instance.RequestMove();
-
         private void OpenDiagFolder_Click(object sender, RoutedEventArgs e)
         {
             try

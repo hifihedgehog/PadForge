@@ -8317,8 +8317,9 @@ namespace PadForge.ViewModels
             => Services.InputService.LocalizedDeviceName(SettingsManager.FindDeviceByInstanceGuid(device)) ?? device.ToString();
 
         /// <summary>The devices a Device Connection variable can read (#600
-        /// item 43): every device a person plugs in that PadForge knows,
-        /// connected or not, as the device notes count them, and the chosen
+        /// item 43): every device a person plugs in or a program adds that
+        /// PadForge knows, connected or not, as the device notes count them,
+        /// and the chosen
         /// one when it is no longer among them. Computed on read, so the
         /// list is fresh each time the editor shows it.</summary>
         [System.Xml.Serialization.XmlIgnore]

@@ -3,7 +3,7 @@
 
 *Every switch PadForge.exe takes, what each does with and without a running copy, the exit codes, and a PowerShell function that talks to the `PadForge.Control` pipe.*
 
-PadForge runs as one copy. Starting PadForge.exe again with switches hands them to the running copy through the `PadForge.Control` pipe, prints the answer and exits, with no window. That hand-over runs with your ordinary rights, so a launcher gets no UAC prompt while PadForge runs. With no copy running, a switch that can start PadForge starts it, and Windows asks for its rights. While **Start at Login** is on, PadForge starts through its logon task instead, with no prompt, and the start switches are handed to the copy it starts. Started again with no switch, PadForge shows its window.
+PadForge runs as one copy. Starting PadForge.exe again with switches hands them to the running copy through the `PadForge.Control` pipe, prints the answer and exits, with no window. That hand-over runs with your ordinary rights, so a launcher gets no UAC prompt while PadForge runs. With no copy running, a switch that can start PadForge starts it, and Windows asks for its rights. Started again with no switch, PadForge shows its window.
 
 A switch that reaches the running copy goes through [Automation](../features/automation.md): it needs **Allow Outside Programs** on, at **Commands** or higher. `--show` and `--exit` work with Automation off: they reach the running copy over the signal pipe a second start uses to show it, or over its window message from a start with administrator rights. The switches PadForge is started with apply to the copy they start, with no Automation needed.
 

@@ -613,10 +613,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Net gestart: kee Programm mécht Python-Dateie fir Iech op, a PadForge fënnt kee py-Launcher</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Net gestart: PadForge kann net liesen, wéi ee Programm dës Zort Datei fir Iech opmécht</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Net gestart: de Programm, deen dës Zort Datei fir Iech opmécht, ass net op dësem PC</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Net gestart: et leeft keen Desktop, ënner deem e gestart ka ginn</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Net gestart: den Desktop huet Administrateurrechter, dofir hätt de Plugin se och</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Net gestart: PadForge kann net liesen, ob de Plugin Administrateurrechter hätt</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Net gestart: Windows huet him Administrateurrechter ginn, dofir huet PadForge en ofgebrach, ier e gelaf ass</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Net gestart: en freet no Administrateurrechter</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Net gestart: Windows huet mam Feeler {0} refuséiert</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Net gestart</value></data>
@@ -919,7 +915,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Kee Logitech G-key SDK op dësem Computer. Et gëtt mat Logitech Gaming Software 8.55 oder méi nei installéiert.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>D'G-key SDK ass registréiert, mä seng Datei ass fort. Installéiert Logitech Gaming Software nei.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>D'G-key SDK gouf fonnt, mä et konnt net geluede ginn.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>D'G-key SDK gouf fonnt, mä net gelueden, well PadForge net bestätege konnt, datt nëmmen Administrateuren et ännere kënnen an datt Logitech et signéiert huet.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Dës Bibliothéik ass net d'G-key SDK, dat hei erwaart gëtt.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>D'G-key SDK huet refuséiert ze starten. Meeschtens leeft Logitech Gaming Software net.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbonnen, nach keng Tast gesinn. Zitt an der Logitech Gaming Software de Befeel „G-key“ op all Tast am PadForge-Profil, a maacht dëse Profil persistent. Eng G600- oder G300-Maus däerf ausserdeem net am Onboard-Späichermodus sinn.</value></data>
@@ -1023,30 +1018,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>D'Fënster bleift verstoppt, wann PadForge start. Et leeft a schafft wéi gewinnt.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge automatesch starten, wann Dir Iech bei Windows umellt. Soulaang dëst un ass, start PadForge och ouni d'Fro vu Windows, wann et vun enger Verknüpfung, engem Skript oder engem anere Programm gestart gëtt.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge leeft vun {0} aus.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dat brauch PadForge an engem eegenen Dossier. Säin Dossier enthält aner Dateien, dofir kann PadForge aner Programmer net dovun ofhalen, en z'änneren.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Dat brauch PadForge an engem Dossier, deen aner Programmer net ännere kënnen. PadForge konnt se net dovun ofhalen, säin Dossier z'änneren.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge an en eegenen Dossier réckelen</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopéiert PadForge a seng Astellungen an den Dossier Program Files, riicht seng Aufgaben dohinner a start et vun do aus. D'Kopie hei bleift, wéi se ass.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: {0} enthält Dateien, déi net zu PadForge gehéieren.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>„Beim Umellen starten“ gouf ausgeschalt, well et PadForge aus engem Dossier gestart huet, deen aner Dateien enthält.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge gouf net geréckelt: Windows gëtt keen Dossier „Program Files“ un.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge gouf net geréckelt: et konnt de PadForge, deen elo leeft, net liesen.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: et konnt {0} net uleeën.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: et konnt net liesen, wat {0} enthält.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: et konnt aner Programmer net dovun ofhalen, {0} z'änneren.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: seng Kopie an {0} huet net mam PadForge, deen elo leeft, iwwereneegestëmmt.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge gouf net geréckelt: no der Kopie huet {0} Dateien enthalen, déi net zu PadForge gehéieren, oder aner Programmer konnten en änneren.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>„Beim Umellen starten“ gouf ausgeschalt, well de PadForge, deen et gestart huet, net méi do ass.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>„Beim Umellen starten“ gouf ausgeschalt, well PadForge aner Programmer net dovun ofhale konnt, den Dossier z'änneren, aus deem et PadForge gestart huet.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>„Beim Umellen starten“ gouf ausgeschalt, well PadForge net liese konnt, wéi ee PadForge et gestart huet.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>„Beim Umellen starten“ gouf ausgeschalt, well PadForge den Dossier vum PadForge, deen et gestart huet, net liese konnt.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge konnt säi geschützten Dossier {0} net erstellen. PadForge hält do d'Bibliothéiken, déi et mat Administrateurrechter ausféiert, an et kann ouni dësen Dossier net sécher starten.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge konnt sech net nei aus sengem geschützten Dossier {0} starten. PadForge leeft nëmmen do mat Administrateurrechter, dofir ass et net gestart.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge konnt d'Spär net uleeën, déi et op eng eenzeg lafend Kopie begrenzt, dofir ass et net gestart.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge leeft mat Administrateurrechter aus {0}, engem Dossier, deen aner Programmer ännere kënnen. Si kënnen do d'Astellunge vu PadForge änneren, a PadForge handelt dono mat senge Rechter.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge leeft mat Administrateurrechter aus {0}, engem Dossier, deen aner Dateien enthält. PadForge kann aner Programmer net dovun ofhalen, seng Astellungen do z'änneren, an et handelt dono mat senge Rechter.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge leeft mat Administrateurrechter aus {0}, engem Dossier, deen et net liese konnt. PadForge kann aner Programmer net dovun ofhalen, seng Astellungen do z'änneren, an et handelt dono mat senge Rechter.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Ëmmer am Infoberäich weisen</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>D'Symbol am Infoberäich bleift siichtbar, och wann d'Fënster op ass, sou datt säi Menü ëmmer just ee Klick ewech ass.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualiséierungen</value></data>
@@ -1288,13 +1260,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Bereinegungskontroll: d'Deeler, déi Dir haalt, gi gepréift…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Bereinegungskontroll: PadForge konnt d'Deeler, déi Dir haalt, net liesen, dofir bleift „Späicheren“ aus.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>D'Späichere mat Äre Rechter ass net gestart.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>D'Späichere mat Äre Rechter ass net gestart: et leeft keen Desktop, ënner deem et starte kéint.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>D'Späichere mat Äre Rechter ass net gestart: Windows huet mam Feeler {0} refuséiert.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>D'Späicheren ass net bannent {0} fäerdeg ginn.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows huet net zougelooss, datt d'Datei do geschriwwe gëtt.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge huet dës Datei net als eng vu sengen eegenen Opnamen ugeholl.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>D'Späicheren huet mam Code {0} opgehalen.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Mat Ärem Benotzerkonto gespäichert, déi éischte Kéier an Ären Downloads-Dossier, duerno do, wou Dir fir d'lescht gespäichert hutt, an am Explorer gewisen. Eng Opnam, déi stoppt, wärend keen op der Säit ass (hir Limit, e Macro, e Programm, d'Assistent-Tool oder --record stop), waart op der Startsäit op dës Iwwerpréiwung a gëtt no 7 Deeg geläscht, ausser se gouf gespäichert. E Programm kritt gesot, datt se waart, ni wou.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Eng Problemopnam vun {0} waart drop, datt Dir se liest.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Iwwerpréiwen</value></data>
@@ -5546,7 +5513,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Kopplung gestoppt: d'Liesen oder d'Schreiwe vum Controller oder vum Bluetooth-Funk huet net geklappt. D'Detailer stinn am Diagnoseprotokoll.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>D'Kopplung ass op engem Feeler gestoppt, deen PadForge net erwaart huet. D'Detailer stinn am Diagnoseprotokoll.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>brauch Logitech Gaming Software 8.52 oder méi nei</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>huet seng Bibliothéik fonnt, mä se net gelueden, well PadForge net bestätege konnt, datt nëmmen Administrateuren se ännere kënnen an datt Logitech se signéiert huet</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>huet seng Bibliothéik fonnt, mä konnt se net benotzen, an den Diagnoseprotokoll seet firwat</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software starten</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>waart op en Handy mat Arx Control</value></data>
@@ -5643,7 +5609,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Luet dës Kopie vun der Bibliothéik vu Force Dimension amplaz vun all anerer. E Falcon, deen op enger anerer Kopie op ass, gëtt zougemaach an op dëser nei opgemaach. D'Kopien, déi d'SDK installéiert, ginn och ouni dat fonnt.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliothéiken (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>D'Download-Säit vum Falcon SDK ass net opgaangen: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>D'Download-Säit vum Falcon SDK ass nach net opgaangen: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon-Treiber installéieren</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Installéiert den Treiber vu Force Dimension aus dem SDK-Dossier op engem Falcon, deen nach keen huet. Windows freet eventuell virdrun, ob et Force Dimension vertraue soll.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>SDK vu Force Dimension eroflueden</value></data>
@@ -5992,6 +5957,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="SdlMapping_Away" xml:space="preserve"><value>Den Apparat ass net verbonnen. SDL liest en, soubal en et ass.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL huet PadForge näischt iwwer dësen Apparat zréckgemellt.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Déi agebaut Community-Kopie, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Erofgelueden den {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Déi eege Datei vu PadForge</value></data>

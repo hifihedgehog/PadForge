@@ -1104,7 +1104,6 @@
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>e ala i le Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_Direct_Format" xml:space="preserve"><value>tuʻusaʻo i le {0}</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>e manaʻomia le Logitech Gaming Software 8.52 pe sili atu</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>na maua lona faletusi ae e leʻi utaina, ona e le mafai e PadForge ona faʻamaonia e naʻo pule e mafai ona suia ma na sainia e Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>na maua lona faletusi ae le mafai ona faʻaaogā, ma o loʻo taʻua e le log o suʻesuʻega le mafuaʻaga</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>amata le Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>o loʻo faʻatali mo se telefoni e iai le Arx Control</value></data>
@@ -1464,9 +1463,6 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>ma isi e {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} o le {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Afai e leai se tali i le {0}, o le a faitaulia o le leai.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>O loʻo galue PadForge ma aia tatau a le pule mai {0}, o se pusa faila e mafai e isi polokalame ona sui. E mafai ona latou suia faʻatulagaga o PadForge iina, ma e gaoioi PadForge i ai ma ona aia tatau.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>O loʻo galue PadForge ma aia tatau a le pule mai {0}, o se pusa faila o loʻo i ai isi faila. E le mafai e PadForge ona taofi isi polokalame mai le suia o ona faʻatulagaga iina, ma e gaoioi PadForge i ai ma ona aia tatau.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>O loʻo galue PadForge ma aia tatau a le pule mai {0}, o se pusa faila na le mafai ona faitau. E le mafai e PadForge ona taofi isi polokalame mai le suia o ona faʻatulagaga iina, ma e gaoioi PadForge i ai ma ona aia tatau.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>E sii mai e le Update Now le faʻamaumauga o masini taʻalo a le nuʻu (SDL_GameControllerDB) mai GitHub, po o le tuatusi ua seti i lalo o le More, ma teu ai i le faila o faʻatulagaga faʻafanua e le o i ai i lenei lomiga o PadForge. E faʻaaogā loa i le taimi lava lena. Mai se isi tuatusi e teu ai naʻo faʻafanua fou. E faʻaaogā muamua se faʻafanua fou naʻo mo se masini e taʻua e SDL o se gamepad pe leai se ituaiga patino, e leai se isi mea e faitau o se gamepad, e le o tofia ma e le o i le Force Raw Joystick Mode. A faʻaaogā loa, e tumau pea ona faʻaaogā pe a uma ona tofia le masini. E aveese e le toe setiina faʻafanua na sii mai ma toe seti le Download From i le faila a le nuʻu, lea e sii mai e le isi Update Now. E tumau au lava laina, i lalo o le More.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Faʻapipiʻi i totonu: faʻafanua e {0}, kopi a le nuʻu o le {1}. Na sii mai {2}: laina fou e {3}, suia {4}.</value></data>
@@ -1556,6 +1552,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>E le o fesoʻotaʻi le masini. E faitau e SDL pe a fesoʻotaʻi.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>E leʻi tuʻuina atu e SDL ia PadForge se faitauga o lenei masini.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Le kopi a le nuʻu ua faʻapipiʻi, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na sii mai {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Le faila lava a PadForge</value></data>

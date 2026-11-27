@@ -408,7 +408,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _predecessorJoinMs;
         private readonly int _stopJoinMs;
         private readonly bool _powerEvents;
-        private readonly AutoResetEvent _wake = new(false);
 
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
 
@@ -513,11 +512,11 @@ namespace PadForge.Common.Input.Peripherals
             Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
             Interlocked.Exchange(ref _resumed, 0);
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralRazer" };
-            _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
             PeripheralOutputs.ChromaMacroChanged += Wake;
             if (_powerEvents) SystemEvents.PowerModeChanged += OnPowerMode;
+            _thread.Start();
         }
 
         public void Stop()
@@ -566,7 +565,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            _run?.Wake.Set();
         }
 
         // ─────────────────────────────────────────────
@@ -589,10 +588,9 @@ namespace PadForge.Common.Input.Peripherals
                     Pass(work);
                     int wait = (int)Math.Clamp(work.Next - work.Now, 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
-                    // A Dispose whose Stop gave up its join releases the
-                    // wake under a worker still inside a device call.
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    // Stop sets this run's own wake, so a worker a Stop gave
+                    // up on, still inside a device call, ends here.
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)
@@ -2413,7 +2411,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
             if (_ownsGuard) (_guard as IDisposable)?.Dispose();
         }
     }

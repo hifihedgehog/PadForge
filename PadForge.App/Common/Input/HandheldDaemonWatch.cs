@@ -36,8 +36,9 @@ namespace PadForge.Common.Input
         /// The notice it feeds says "this vendor tool is still taking your
         /// buttons", which is exactly what a user re-reads in the seconds
         /// after closing that tool, so a stale window costs more than the
-        /// scan does. The scan reads <see cref="RunningProcessList"/>, about
-        /// 7 ms. <c>Process.GetProcesses</c> measured 3 ms across 335
+        /// scan does. The scan reads <see cref="RunningProcessList"/>, which
+        /// after its first read costs the id list and one wait per process
+        /// and names only new ids. <c>Process.GetProcesses</c> measured 3 ms across 335
         /// processes on one PC and 240 to 360 ms on another with 9,000
         /// threads, every 4 s.</para></summary>
         public static void Refresh()

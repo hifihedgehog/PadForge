@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ គ្មានកម្មវិធីណាបើកឯកសារ Python សម្រាប់អ្នកទេ ហើយ PadForge រកមិនឃើញកម្មវិធីចាប់ផ្ដើម py ទេ</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ PadForge មិនអាចអានថាកម្មវិធីណាបើកប្រភេទឯកសារនេះសម្រាប់អ្នកបានទេ</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ កម្មវិធីដែលបើកប្រភេទឯកសារនេះសម្រាប់អ្នក មិននៅលើកុំព្យូទ័រនេះទេ</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ គ្មានសែលផ្ទៃតុណាកំពុងដំណើរការ ដើម្បីចាប់ផ្ដើមវានៅក្រោមនោះទេ</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ សែលផ្ទៃតុមានសិទ្ធិអ្នកគ្រប់គ្រង ដូច្នេះកម្មវិធីបន្ថែមក៏នឹងមានសិទ្ធិនោះដែរ</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ PadForge មិនអាចអានថាវានឹងមានសិទ្ធិអ្នកគ្រប់គ្រងឬអត់ទេ</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ Windows បានផ្ដល់សិទ្ធិអ្នកគ្រប់គ្រងដល់វា ដូច្នេះ PadForge បានបញ្ចប់វា មុនពេលវាដំណើរការ</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ វាស្នើសុំសិទ្ធិអ្នកគ្រប់គ្រង</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម៖ Windows បានបដិសេធដោយកំហុស {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>មិនបានចាប់ផ្ដើម</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>គ្មាន Logitech G-key SDK នៅលើម៉ាស៊ីននេះទេ។ វាដំឡើងជាមួយ Logitech Gaming Software 8.55 ឬថ្មីជាងនេះ។</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK ត្រូវបានចុះឈ្មោះ ប៉ុន្តែឯកសាររបស់វាបាត់។ សូមដំឡើង Logitech Gaming Software ឡើងវិញ។</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>បានរកឃើញ G-key SDK ប៉ុន្តែមិនអាចផ្ទុកវាបានទេ។</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>បានរកឃើញ G-key SDK ប៉ុន្តែមិនបានផ្ទុកវាទេ ព្រោះ PadForge មិនអាចបញ្ជាក់ថាមានតែអ្នកគ្រប់គ្រងប៉ុណ្ណោះដែលអាចផ្លាស់ប្ដូរវាបាន ហើយថា Logitech បានចុះហត្ថលេខាលើវា។</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>បណ្ណាល័យនោះមិនមែនជា G-key SDK ដែលកម្មវិធីនេះរំពឹងទុកទេ។</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK បានបដិសេធមិនចាប់ផ្ដើម។ ជាធម្មតា Logitech Gaming Software មិនកំពុងដំណើរការ។</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>បានភ្ជាប់ ប៉ុន្តែមិនទាន់ឃើញគ្រាប់ចុចណាមួយនៅឡើយ។ នៅក្នុង Logitech Gaming Software សូមអូសពាក្យបញ្ជា G-key ទៅលើគ្រាប់ចុចនីមួយៗក្នុងប្រូហ្វាល់ PadForge ហើយកំណត់ប្រូហ្វាល់នោះឲ្យជាប់លាប់។ កណ្ដុរ G600 ឬ G300 ក៏ត្រូវតែចេញពីរបៀបអង្គចងចាំក្នុងឧបករណ៍ដែរ។</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>រក្សាបង្អួចឲ្យលាក់ពេល PadForge ចាប់ផ្ដើម។ វាដំណើរការ និងម៉ាបដូចធម្មតា។</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>ចាប់ផ្ដើម PadForge ដោយស្វ័យប្រវត្តិ ពេលអ្នកចូល Windows។ ខណៈនេះបើក PadForge ក៏ចាប់ផ្ដើមដោយគ្មានការសួររបស់ Windows ពីផ្លូវកាត់ ស្គ្រីប ឬកម្មវិធីផ្សេងទៀតដែរ។</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ដំណើរការពី {0}។</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>មុខងារនេះត្រូវការ PadForge នៅក្នុងថតផ្ទាល់ខ្លួនរបស់វា។ ថតរបស់វាមានឯកសារផ្សេងទៀត ដូច្នេះ PadForge មិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរវាបានទេ។</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>មុខងារនេះត្រូវការ PadForge នៅក្នុងថតដែលកម្មវិធីផ្សេងមិនអាចផ្លាស់ប្ដូរបាន។ PadForge មិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរថតរបស់វាបានទេ។</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>ផ្លាស់ PadForge ទៅថតផ្ទាល់ខ្លួនរបស់វា</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>ចម្លង PadForge និងការកំណត់របស់វាទៅ Program Files ចង្អុលកិច្ចការរបស់វាទៅទីនោះ ហើយចាប់ផ្ដើមវាពីទីនោះ។ ច្បាប់ចម្លងនៅទីនេះនៅដដែល។</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ {0} មានឯកសារដែលមិនមែនជារបស់ PadForge។</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«ចាប់ផ្ដើមពេលចូលគណនី» ត្រូវបានបិទ ព្រោះវាបានដំណើរការ PadForge ពីថតដែលមានឯកសារផ្សេងទៀត។</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ Windows មិនបានកំណត់ថត Program Files ណាមួយទេ។</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ វាមិនអាចអាន PadForge ដែលកំពុងដំណើរការបានទេ។</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ វាមិនអាចបង្កើត {0} បានទេ។</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ វាមិនអាចអានអ្វីដែល {0} មានបានទេ។</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ វាមិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរ {0} បានទេ។</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ ច្បាប់ចម្លងរបស់វានៅក្នុង {0} មិនត្រូវគ្នានឹង PadForge ដែលកំពុងដំណើរការទេ។</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge មិនបានផ្លាស់ទីទេ៖ បន្ទាប់ពីការចម្លង {0} មានឯកសារដែលមិនមែនជារបស់ PadForge ឬកម្មវិធីផ្សេងអាចផ្លាស់ប្ដូរវាបាន។</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>«ចាប់ផ្ដើមពេលចូលគណនី» ត្រូវបានបិទ ព្រោះ PadForge ដែលវាបានដំណើរការ លែងនៅទីនោះទៀតហើយ។</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>«ចាប់ផ្ដើមពេលចូលគណនី» ត្រូវបានបិទ ព្រោះ PadForge មិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរថតដែលវាបានដំណើរការ PadForge ពីនោះបានទេ។</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>«ចាប់ផ្ដើមពេលចូលគណនី» ត្រូវបានបិទ ព្រោះ PadForge មិនអាចអានថាវាបានដំណើរការ PadForge មួយណាទេ។</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>«ចាប់ផ្ដើមពេលចូលគណនី» ត្រូវបានបិទ ព្រោះ PadForge មិនអាចអានថតរបស់ PadForge ដែលវាបានដំណើរការបានទេ។</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge មិនអាចបង្កើតថតការពាររបស់វា {0} បានទេ។ PadForge រក្សាទុកបណ្ណាល័យដែលវាដំណើរការដោយសិទ្ធិអ្នកគ្រប់គ្រងនៅទីនោះ ហើយវាមិនអាចចាប់ផ្ដើមដោយសុវត្ថិភាពបានទេ បើគ្មានថតនោះ។</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge មិនអាចចាប់ផ្ដើមខ្លួនវាម្ដងទៀតពីថតការពាររបស់វា {0} បានទេ។ PadForge ដំណើរការដោយសិទ្ធិអ្នកគ្រប់គ្រងតែពីទីនោះប៉ុណ្ណោះ ដូច្នេះវាមិនបានចាប់ផ្ដើមទេ។</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge មិនអាចបង្កើតសោដែលរក្សាឱ្យវាដំណើរការតែមួយច្បាប់បានទេ ដូច្នេះវាមិនបានចាប់ផ្ដើមទេ។</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ដំណើរការដោយសិទ្ធិអ្នកគ្រប់គ្រងពី {0} ដែលជាថតដែលកម្មវិធីផ្សេងអាចផ្លាស់ប្ដូរបាន។ ពួកវាអាចប្ដូរការកំណត់របស់ PadForge នៅទីនោះ ហើយ PadForge ធ្វើតាមការកំណត់ទាំងនោះដោយសិទ្ធិរបស់វា។</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ដំណើរការដោយសិទ្ធិអ្នកគ្រប់គ្រងពី {0} ដែលជាថតដែលមានឯកសារផ្សេងទៀត។ PadForge មិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរការកំណត់របស់វានៅទីនោះបានទេ ហើយវាធ្វើតាមការកំណត់ទាំងនោះដោយសិទ្ធិរបស់វា។</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ដំណើរការដោយសិទ្ធិអ្នកគ្រប់គ្រងពី {0} ដែលជាថតដែលវាមិនអាចអានបាន។ PadForge មិនអាចការពារកម្មវិធីផ្សេងពីការផ្លាស់ប្ដូរការកំណត់របស់វានៅទីនោះបានទេ ហើយវាធ្វើតាមការកំណត់ទាំងនោះដោយសិទ្ធិរបស់វា។</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>បង្ហាញក្នុងថាសប្រព័ន្ធជានិច្ច</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>រក្សារូបតំណាងថាសឲ្យមើលឃើញ ពេលបង្អួចបើក ដូច្នេះ «ចាកចេញ» ក្នុងម៉ឺនុយរបស់វាតែងតែនៅចម្ងាយមួយចុច។</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>បច្ចុប្បន្នភាព</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>ការពិនិត្យការសម្អាត៖ កំពុងពិនិត្យផ្នែកដែលអ្នករក្សាទុក…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>ការពិនិត្យការសម្អាត៖ PadForge មិនអាចអានផ្នែកដែលអ្នករក្សាទុកបានទេ ដូច្នេះ «រក្សាទុក» នៅតែបិទ។</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>ការរក្សាទុកដោយសិទ្ធិរបស់អ្នក មិនបានចាប់ផ្ដើមទេ។</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>ការរក្សាទុកដោយសិទ្ធិរបស់អ្នក មិនបានចាប់ផ្ដើមទេ៖ គ្មានសែលផ្ទៃតុណាដំណើរការ ដើម្បីចាប់ផ្ដើមវានៅក្រោមនោះទេ។</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>ការរក្សាទុកដោយសិទ្ធិរបស់អ្នក មិនបានចាប់ផ្ដើមទេ៖ Windows បានបដិសេធដោយកំហុស {0}។</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>ការរក្សាទុកមិនបានបញ្ចប់ក្នុងរយៈពេល {0} ទេ។</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows មិនបានអនុញ្ញាតឱ្យសរសេរឯកសារនៅទីនោះទេ។</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge មិនបានទទួលយកឯកសារនេះជាការថតផ្ទាល់របស់វាទេ។</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>ការរក្សាទុកបានបញ្ចប់ដោយកូដ {0}។</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>រក្សាទុកជាអ្នក ទៅថត Downloads របស់អ្នកនៅលើកដំបូង បន្ទាប់មកទៅកន្លែងដែលអ្នកបានរក្សាទុកចុងក្រោយ ហើយបង្ហាញក្នុង Explorer។ ការថតដែលឈប់ ខណៈគ្មាននរណានៅទំព័រ (ដែនកំណត់របស់វា ម៉ាក្រូ កម្មវិធី ឧបករណ៍របស់ជំនួយការ ឬ --record stop) រង់ចាំការពិនិត្យនេះនៅលើ «ទំព័រដើម» ហើយត្រូវបានលុបបន្ទាប់ពី 7 ថ្ងៃ លុះត្រាតែបានរក្សាទុក។ កម្មវិធីត្រូវបានប្រាប់ថាវារង់ចាំ ប៉ុន្តែមិនដែលប្រាប់ថានៅឯណាទេ។</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>ការថតបញ្ហាពី {0} កំពុងរង់ចាំឱ្យអ្នកអានវា។</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>ពិនិត្យ</value></data>
@@ -5579,7 +5546,6 @@ PadForge មិនអាចសរសេរព័ត៌មានលម្អិ�
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>ការផ្គូផ្គងបានឈប់៖ ការអាន ឬការសរសេរឧបករណ៍បញ្ជា ឬវិទ្យុ Bluetooth បានបរាជ័យ។ កំណត់ហេតុរោគវិនិច្ឆ័យមានព័ត៌មានលម្អិត។</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>ការផ្គូផ្គងបានឈប់ ដោយសារកំហុសដែល PadForge មិនបានរំពឹងទុក។ កំណត់ហេតុរោគវិនិច្ឆ័យមានព័ត៌មានលម្អិត។</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>ត្រូវការ Logitech Gaming Software 8.52 ឬថ្មីជាងនេះ</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>បានរកឃើញបណ្ណាល័យរបស់វា ប៉ុន្តែមិនបានផ្ទុកវាទេ ព្រោះ PadForge មិនអាចបញ្ជាក់ថាមានតែអ្នកគ្រប់គ្រងប៉ុណ្ណោះដែលអាចផ្លាស់ប្ដូរវាបាន ហើយថា Logitech បានចុះហត្ថលេខាលើវា</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>បានរកឃើញបណ្ណាល័យរបស់វា ប៉ុន្តែមិនអាចប្រើវាបានទេ ហើយកំណត់ហេតុរោគវិនិច្ឆ័យប្រាប់ពីមូលហេតុ</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>សូមបើក Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>កំពុងរង់ចាំទូរស័ព្ទដែលមាន Arx Control</value></data>
@@ -5677,7 +5643,6 @@ PadForge មិនអាចសរសេរព័ត៌មានលម្អិ�
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>ផ្ទុកច្បាប់ចម្លងនេះនៃបណ្ណាល័យរបស់ Force Dimension ជំនួសច្បាប់ចម្លងផ្សេងទៀតទាំងអស់។ Falcon ដែលកំពុងបើកលើច្បាប់ចម្លងផ្សេង នឹងបិទ ហើយបើកម្ដងទៀតលើច្បាប់ចម្លងនេះ។ ច្បាប់ចម្លងដែល SDK ដំឡើង ត្រូវបានរកឃើញដោយមិនចាំបាច់ប្រើវា។</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|បណ្ណាល័យ (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>ទំព័រទាញយក Falcon SDK មិនបានបើកទេ៖ {0}។</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>ទំព័រទាញយក Falcon SDK មិនទាន់បានបើកនៅឡើយ៖ {0}។</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>ដំឡើងដ្រាយវ័រ Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>ដំឡើងដ្រាយវ័ររបស់ Force Dimension ពីថត SDK លើ Falcon ដែលគ្មានដ្រាយវ័រ។ Windows អាចសួរជាមុនថាតើត្រូវទុកចិត្ត Force Dimension ឬទេ។</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>ទាញយក SDK របស់ Force Dimension</value></data>
@@ -6031,6 +5996,7 @@ PadForge មិនអាចសរសេរព័ត៌មានលម្អិ�
   <data name="SdlMapping_Away" xml:space="preserve"><value>ឧបករណ៍មិនបានភ្ជាប់ទេ។ SDL អានវា នៅពេលវាបានភ្ជាប់។</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL មិនបានផ្ដល់ការអានឧបករណ៍នេះដល់ PadForge ទេ។</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>ច្បាប់ចម្លងរបស់សហគមន៍ដែលភ្ជាប់មកជាមួយ {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>បានទាញយក {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>ឯកសារផ្ទាល់របស់ PadForge</value></data>

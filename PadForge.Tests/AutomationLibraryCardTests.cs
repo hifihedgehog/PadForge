@@ -136,7 +136,7 @@ namespace PadForge.Tests
     public class ScriptLibraryCheckTests
     {
         /// <summary>The run as the user, in this process: the test host
-        /// starts no install of its own (UserInstall.RunAsUserAsync's
+        /// starts no install of its own (UserInstall.RunInCopyAsync's
         /// fence), so the page's Save runs the words it would hand
         /// PadForge.exe here.</summary>
         private sealed class InProcessLauncher : IPluginLauncher

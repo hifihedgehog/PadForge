@@ -1096,7 +1096,7 @@ namespace PadForge.Common.Input
                     // share the table's Valve roles: Quick Access at misc 1,
                     // the rear buttons in SDL's RP1 LP1 RP2 LP2 order at 12 to
                     // 15 (R4 L4 R5 L5 on the Deck and 2026 wires, the two grips
-                    // on the 2015 wire: SDL_gamepad.c 1455 / 1458 / 1461).
+                    // on the 2015 wire: SDL_gamepad.c 1458 / 1461 / 1464).
                     // SInput's wire (#584) takes the same roles, with Share
                     // where the Valve pads have Quick Access.
                     void MapValve(string role, string source)
@@ -1119,8 +1119,8 @@ namespace PadForge.Common.Input
                     // one "Touchpad 0 Click", and a second pad's click
                     // surfaces as MISC2): SDL's Deck and 2026 mappings bind
                     // touchpad:b17 = left click at position 16 and
-                    // misc2:b16 = right click at 17 (SDL_gamepad.c 1458 /
-                    // 1461 against _steamdeck.c 42-43, _steam_triton.c
+                    // misc2:b16 = right click at 17 (SDL_gamepad.c 1461 /
+                    // 1464 against _steamdeck.c 42-43, _steam_triton.c
                     // 54-55). A pad that advertises neither (the 2015
                     // controller, mapping paddle1/paddle2 only) clicks
                     // through the wrapper's pressure descriptors instead.

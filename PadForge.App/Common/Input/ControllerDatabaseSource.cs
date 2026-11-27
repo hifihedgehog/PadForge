@@ -23,6 +23,10 @@ namespace PadForge.Common.Input
         /// <summary>A device SDL does not read, which PadForge maps through
         /// the user's row.</summary>
         YoursPadForge,
+        /// <summary>A row of the SDL_GAMECONTROLLERCONFIG variable PadForge
+        /// started with, which SDL holds above every row a program
+        /// adds.</summary>
+        Variable,
     }
 
     /// <summary>
@@ -69,6 +73,15 @@ namespace PadForge.Common.Input
             return SdlMappingRow.TryParse(string.Join(",", kept), out var row, out _) ? row.Layout : null;
         }
 
+        /// <summary>Whether the section stores a row under this ID.</summary>
+        private static bool HasStoredRow(ControllerDatabaseSection section, string id)
+        {
+            if (section != null)
+                foreach (var stored in section.Rows)
+                    if (string.Equals(stored.Row.Guid, id, StringComparison.Ordinal)) return true;
+            return false;
+        }
+
         /// <summary>
         /// The source of the mapping SDL reads a device through.
         /// </summary>
@@ -76,12 +89,25 @@ namespace PadForge.Common.Input
         /// <param name="mapping">The mapping SDL holds for the device
         /// (SDL_GetGamepadMappingForID), or null when it reads the device as
         /// a joystick.</param>
+        /// <param name="variable">The SDL_GAMECONTROLLERCONFIG variable
+        /// PadForge started with, whose rows SDL read at USER priority, or
+        /// null.</param>
         internal static SdlMappingSource Of(string deviceGuid, string mapping, ControllerDatabaseMine mine,
-            ControllerDatabaseSection section, IReadOnlyList<string> ownRows, ControllerDatabaseBaseline baseline)
+            ControllerDatabaseSection section, IReadOnlyList<string> ownRows, ControllerDatabaseBaseline baseline,
+            string variable = null)
         {
             if (string.IsNullOrEmpty(mapping)) return SdlMappingSource.None;
             string layout = LayoutOf(mapping);
-            string id = ControllerDatabaseRow.LookupId(deviceGuid);
+
+            if (!string.IsNullOrEmpty(variable))
+                foreach (string line in variable.Split('\n'))
+                {
+                    string row = line.TrimEnd('\r');
+                    if (row.IndexOf(',') == 32 && SdlMappingRow.Maps(row.Substring(0, 32), deviceGuid) && Same(StoredLayoutOf(row), layout))
+                        return SdlMappingSource.Variable;
+                }
+            string id = ControllerDatabaseRow.LookupId(deviceGuid,
+                i => HasStoredRow(section, i) || (baseline != null && baseline.TryFind(i, out _)));
 
             var yours = mine?.ForSdlDevice(deviceGuid);
             if (yours != null && ReadsThrough(mapping, yours)) return SdlMappingSource.Yours;

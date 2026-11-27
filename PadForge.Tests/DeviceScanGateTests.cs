@@ -34,14 +34,45 @@ namespace PadForge.Tests
             Assert.False(gate.Due(16001, 3));
         }
 
+        /// <summary>A device can bring its interface, a failed start or its
+        /// Raw Input entry after the last notice Windows sends for it. Every
+        /// ask walks for the settle window after a change, so each thread
+        /// looks at its own interval as its timer did, and the gate closes
+        /// again once the window ends.</summary>
         [Fact]
-        public void AChangeWalksAtOnceAndOnlyOnce()
+        public void AChangeWalksAtEveryAskThroughTheSettleWindow()
+        {
+            var gate = new DeviceScanGate(15000);
+            Assert.True(gate.Due(1000, 3));
+            Assert.False(gate.Due(1400, 3));
+            Assert.True(gate.Due(1500, 4));
+            Assert.True(gate.Due(2000, 4));
+            Assert.True(gate.Due(1500 + DeviceScanGate.SettleMs - 1, 4));
+            Assert.False(gate.Due(1500 + DeviceScanGate.SettleMs, 4));
+            Assert.False(gate.Due(1500 + DeviceScanGate.SettleMs + 500, 4));
+        }
+
+        /// <summary>Several changes in a row hold the window open from the
+        /// last one.</summary>
+        [Fact]
+        public void TheSettleWindowRunsFromTheLastChange()
         {
             var gate = new DeviceScanGate(15000);
             Assert.True(gate.Due(1000, 3));
             Assert.True(gate.Due(1500, 4));
-            Assert.False(gate.Due(1600, 4));
-            Assert.True(gate.Due(1700, 9));
+            Assert.True(gate.Due(6000, 7));
+            Assert.True(gate.Due(1500 + DeviceScanGate.SettleMs + 100, 7));
+            Assert.True(gate.Due(6000 + DeviceScanGate.SettleMs - 1, 7));
+            Assert.False(gate.Due(6000 + DeviceScanGate.SettleMs, 7));
+        }
+
+        /// <summary>The window covers three looks of a thread that sweeps
+        /// every 3 s, the vendor binder and the headset sweep.</summary>
+        [Fact]
+        public void TheSettleWindowHoldsThreeThreeSecondSweeps()
+        {
+            Assert.True(DeviceScanGate.SettleMs > 3 * 3000);
+            Assert.True(DeviceScanGate.SettleMs < 15000);
         }
 
         [Fact]
@@ -68,6 +99,22 @@ namespace PadForge.Tests
             Assert.True(arrival > hook);
             Assert.Contains("if (msg == WM_DEVICECHANGE) PadForge.Common.Input.DeviceChanges.Changed();",
                 window.Substring(hook, arrival - hook));
+        }
+
+        /// <summary>The count moves on the broadcasts every top-level window
+        /// hears, so the hook goes in even when the HID class registration
+        /// failed.</summary>
+        [Fact]
+        public void TheDeviceChangeHookGoesInWithoutTheHidRegistration()
+        {
+            string window = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "MainWindow.xaml.cs")).Replace("\r\n", "\n");
+            int setup = window.IndexOf("private void SetupHidArrivalHook()", StringComparison.Ordinal);
+            Assert.True(setup > 0, "the hook setup moved");
+            int end = window.IndexOf("source.AddHook(OnQueryEndSession);", setup, StringComparison.Ordinal);
+            Assert.True(end > setup);
+            string body = window.Substring(setup, end - setup);
+            Assert.Contains("\n            source.AddHook(OnDeviceChangeMessage);", body);
+            Assert.DoesNotContain("if (_hidNotify != IntPtr.Zero) source.AddHook(OnDeviceChangeMessage);", body);
         }
 
         /// <summary>The DS3 threads ask the gate before the walk that looks for
@@ -110,6 +157,38 @@ namespace PadForge.Tests
             Assert.Contains("if (_retryWaits || _scan.Due(Environment.TickCount64))", source);
             Assert.Contains("if (stop.WaitOne(SweepMs)) break;", source);
             Assert.DoesNotContain("Thread.Sleep(100);", source);
+        }
+
+        /// <summary>A walk that throws is tried again at the next interval,
+        /// as the timed sweep retried it, not at the next device change.</summary>
+        [Fact]
+        public void TheVendorUsbBinderRetriesAWalkThatThrew()
+        {
+            string source = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "VendorUsbBindingService.cs")).Replace("\r\n", "\n");
+            int walk = source.IndexOf("try { _retryWaits = Sweep(); }", StringComparison.Ordinal);
+            Assert.True(walk > 0, "the sweep call moved");
+            int log = source.IndexOf("_log(\"sweep failed: \"", walk, StringComparison.Ordinal);
+            Assert.True(log > walk);
+            Assert.Contains("_retryWaits = true;", source.Substring(walk + 10, log - walk - 10));
+        }
+
+        /// <summary>A renamed MIDI endpoint, or one the MIDI service adds with
+        /// no device node, raises no device change, and PadForge watches no
+        /// MIDI endpoint events. While any endpoint is listed, every 2 s pass
+        /// queries.</summary>
+        [Fact]
+        public void TheMidiQueryRunsEveryPassWhileAnEndpointIsListed()
+        {
+            int asks = 0;
+            bool No() { asks++; return false; }
+            var none = new System.Collections.Generic.List<(string Id, string Name)>();
+            var one = new System.Collections.Generic.List<(string Id, string Name)> { ("id", "Port") };
+            Assert.True(InputManager.MidiQueryDue(false, one, No));
+            Assert.True(InputManager.MidiQueryDue(false, null, No));
+            Assert.True(InputManager.MidiQueryDue(true, none, No));
+            Assert.Equal(0, asks);
+            Assert.False(InputManager.MidiQueryDue(false, none, No));
+            Assert.Equal(1, asks);
         }
 
         private static string RepoRoot()

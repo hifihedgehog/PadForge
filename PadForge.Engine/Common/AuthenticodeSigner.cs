@@ -36,11 +36,6 @@ namespace PadForge.Engine.Common
     /// <para>An answer is kept for the file's path, size and time of last
     /// write, so a program that connects again costs no second check, and a
     /// file put in its place is checked anew.</para>
-    ///
-    /// <para>A vendor library PadForge loads into its own process is checked
-    /// the same way, on the handle <see cref="TrustedLibrary"/> holds from
-    /// the check through the load (<see cref="OfHeld"/>), with nothing
-    /// kept. There the signer decides whether the library loads.</para>
     /// </summary>
     public static class AuthenticodeSigner
     {

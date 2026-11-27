@@ -329,7 +329,7 @@ namespace PadForge.Common.Input
         public static bool IsJoyConPair(ushort vendorId, ushort productId)
             => vendorId == 0x057E && productId == 0x2008;
 
-        /// <summary>The Switch 2 family, mirroring SDL usb_ids.h:195-199 in
+        /// <summary>The Switch 2 family, mirroring SDL usb_ids.h:197-201 in
         /// full (Joy-Con 2 L/R/pair, Pro 2, NSO GameCube), never a hand-picked
         /// subset.</summary>
         public static bool IsSwitch2(ushort vendorId, ushort productId)
@@ -389,7 +389,7 @@ namespace PadForge.Common.Input
         /// payload...]. The fork's BLE_JoystickSendEffect wraps it in the
         /// 0x91 command header with BLE_BuildCommand and writes it without
         /// waiting for a reply, since the pad powers off instead of
-        /// answering (SDL_ble_switch2joystick.c:2777-2807, BLE_BuildCommand
+        /// answering (SDL_ble_switch2joystick.c:2797-2827, BLE_BuildCommand
         /// at 796-813). Returns false when no gamepad is open, or when SDL
         /// refuses or fails the write. SDL refuses it while the driver
         /// waits for a lost link to come back (:2784-2786). The driver

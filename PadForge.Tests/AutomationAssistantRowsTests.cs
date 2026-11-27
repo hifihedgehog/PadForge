@@ -332,11 +332,7 @@ namespace PadForge.Tests
             string file = Path.Combine(_root, "padforge-skill.zip");
             vm.AssistantZipDialogSeam = _ => file;
             var row = vm.AssistantRows.Single();
-            // As a copy without rights the shell lacks writes it, whatever
-            // rights the test host has.
-            PadForge.Services.UserSave.HasRightsSeam = () => false;
-            try { await vm.SaveAssistantZipAsync(row); }
-            finally { PadForge.Services.UserSave.HasRightsSeam = null; }
+            await vm.SaveAssistantZipAsync(row);
             using (var zip = ZipFile.OpenRead(file))
             {
                 Assert.All(zip.Entries, e => Assert.StartsWith(AssistantSkill.Name + "/", e.FullName));

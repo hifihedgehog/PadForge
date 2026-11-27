@@ -365,6 +365,8 @@ namespace PadForge.Tests
             Assert.Equal(1, bench.Looks);
             Assert.Same(DirectBackendSnapshot.NotScanned, bench.Backend.Snapshot);
             Assert.Equal(0, bench.SnapshotChanges);
+            // The look owed keeps the tick, so it is made again with no walk.
+            Assert.NotEqual(Timeout.Infinite, bench.Backend.WaitMs);
 
             bench.LookFails = false;
             bench.Advance(TouchSenseBackend.ReopenMs);
@@ -1083,6 +1085,41 @@ namespace PadForge.Tests
             Assert.Equal(idle, bench.Cadence());
 
             Assert.Equal((10, 100, 5000), (TouchSenseBackend.ActiveTickMs, TouchSenseBackend.IdleTickMs, TouchSenseBackend.ReopenMs));
+        }
+
+        /// <summary>A worker a Stop gave up on waits on its own run's wake, so
+        /// a wake for the next run always reaches the next run's worker, also
+        /// while both sleep with no timeout.</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_TakesNoWakeMeantForTheNextRun()
+        {
+            using var held = new ManualResetEventSlim(false);
+            using var entered = new ManualResetEventSlim(false);
+            using var bench = new Bench(predecessorJoinMs: 50, stopJoinMs: 50);
+            int holds = 0;
+            bench.Backend.SnapshotChanged += () =>
+            {
+                if (Interlocked.Exchange(ref holds, 1) != 0) return;
+                entered.Set();
+                held.Wait(30000);
+            };
+            bench.Backend.Start();
+            bench.Backend.Rescan(null);
+            Assert.True(entered.Wait(30000), "the first run listed its look");
+            bench.Backend.Stop();
+            bench.Backend.Start();
+            // The live worker has made its first pass and sleeps before the
+            // first run's worker comes out of its pass and sleeps too.
+            Thread.Sleep(300);
+            held.Set();
+            Thread.Sleep(200);
+            for (int i = 0; i < 3; i++)
+            {
+                int passes = bench.Backend.PassCount;
+                bench.Backend.Nudge();
+                Assert.True(SpinWait.SpinUntil(() => bench.Backend.PassCount > passes, 30000),
+                    "the wake reached the live worker");
+            }
         }
 
         /// <summary>With no mouse listed and no look owed the worker sleeps until

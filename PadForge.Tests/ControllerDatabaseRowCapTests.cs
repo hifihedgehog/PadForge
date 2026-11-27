@@ -232,6 +232,18 @@ namespace PadForge.Tests
             Assert.Empty(ControllerDatabaseProfileRows.NotKept(null, mine));
         }
 
+        /// <summary>A row for a controller the variable PadForge started with
+        /// maps is not offered: SDL already holds that controller's row from
+        /// it at USER priority, which an added row never replaces.</summary>
+        [Fact]
+        public void ARowForAControllerSdlAlreadyMapsFromTheVariable_IsNotOffered()
+        {
+            string text = VarRowOne + "\n" + VarRowTwo;
+            var offered = ControllerDatabaseProfileRows.NotApplied(text, ControllerDatabaseMine.Empty, VarRowOne);
+            Assert.Equal(new[] { Id(0x5000, 0x0002) }, offered.Select(r => r.Guid));
+            Assert.Equal(2, ControllerDatabaseProfileRows.NotApplied(text, ControllerDatabaseMine.Empty, null).Count);
+        }
+
         /// <summary>The Your Rows line says how many of the variable's rows
         /// PadForge does not keep, Add Rows opens with them when the
         /// clipboard holds no row, and the line goes quiet once they are
@@ -268,15 +280,14 @@ namespace PadForge.Tests
         /// process, and the controller reads it that way unless a test gives
         /// another reader.</summary>
         [Fact]
-        public void TheVariable_IsReadFromTheUsersProfile_NeverThisProcess()
+        public void TheVariable_IsReadFromTheUsersProfile_AndWhatSdlAppliesFromThisProcess()
         {
             string reader = OffLimitsSource.Read("PadForge.App/Services/ControllerDatabaseProfileRows.cs");
             string read = FenceSource.Body(reader, "internal static string Read()");
-            Assert.Contains("PluginLauncher.OpenShell()", read, StringComparison.Ordinal);
-            Assert.Contains("PluginLauncher.ShellVariables(shell, out _)", read, StringComparison.Ordinal);
-            Assert.DoesNotContain("GetEnvironmentVariable", reader, StringComparison.Ordinal);
-            Assert.DoesNotContain("Environment.", reader, StringComparison.Ordinal);
+            Assert.Contains("UserVariables.OfTheUser()", read, StringComparison.Ordinal);
+            Assert.DoesNotContain("Environment.", read, StringComparison.Ordinal);
             Assert.DoesNotContain("CurrentProcess", reader, StringComparison.Ordinal);
+            Assert.Contains("internal static Func<string> Applied = () => Environment.GetEnvironmentVariable(Variable);", reader, StringComparison.Ordinal);
             string devices = OffLimitsSource.Read("PadForge.App/Services/ControllerDatabaseController.Devices.cs");
             Assert.Contains("internal Func<string> ProfileVariable = ControllerDatabaseProfileRows.Read;", devices, StringComparison.Ordinal);
         }

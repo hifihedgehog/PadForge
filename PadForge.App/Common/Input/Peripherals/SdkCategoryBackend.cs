@@ -38,7 +38,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _retryMs;
         private readonly int _stopWaitMs;
         private readonly int _predecessorWaitMs;
-        private readonly SemaphoreSlim _wake = new(0, 1);
         private readonly object _gate = new();
         private Thread _thread;
         private Run _run;
@@ -227,18 +226,11 @@ namespace PadForge.Common.Input.Peripherals
 
         internal OutputPath PathOf(string category) => new(Family, category);
 
-        private void Wake()
-        {
-            try { if (_wake.CurrentCount == 0) _wake.Release(); }
-            catch (SemaphoreFullException) { }
-            catch (ObjectDisposedException) { }
-        }
+        private void Wake() => Volatile.Read(ref _run)?.Wake.Set();
 
-        private void Wait(int ms)
-        {
-            try { _wake.Wait(ms); }
-            catch (ObjectDisposedException) { Thread.Sleep(Math.Max(ms, 0)); }
-        }
+        /// <summary>Waits on the run's own wake, so a worker a timed-out
+        /// Stop left inside the SDK takes only its own run's wakes.</summary>
+        private static void Wait(Run run, int ms) => run.Wake.WaitOne(ms);
 
         /// <summary>What one path should show: a color, and the light
         /// colors on top of it, null for none.</summary>
@@ -309,9 +301,9 @@ namespace PadForge.Common.Input.Peripherals
                         ReportRefusal(run);
                         Report(run, BackendState.Idle);
                         Interlocked.Increment(ref _idlePasses);
-                        // A path is wanted only after a claim or a link table
-                        // changes, and each of those wakes the worker.
-                        Wait(Timeout.Infinite);
+                        // A path is wanted only after a claim, a Map Key Lights
+                        // probe or a new link table, and each wakes the worker.
+                        Wait(run, Timeout.Infinite);
                         continue;
                     }
                     if (!Installed(presence) || !ProgramRuns(presence))
@@ -322,7 +314,7 @@ namespace PadForge.Common.Input.Peripherals
                         failureLogged = null;
                         ReportRefusal(run);
                         Report(run, BackendState.Waiting);
-                        Wait(_pollMs);
+                        Wait(run, _pollMs);
                         continue;
                     }
                     if (!open)
@@ -330,7 +322,7 @@ namespace PadForge.Common.Input.Peripherals
                         if (Environment.TickCount64 < retryAt)
                         {
                             Report(run, BackendState.Waiting);
-                            Wait(_pollMs);
+                            Wait(run, _pollMs);
                             continue;
                         }
                         if (!Open(out string detail))
@@ -343,7 +335,7 @@ namespace PadForge.Common.Input.Peripherals
                             retryAt = Environment.TickCount64 + _retryMs;
                             ReportRefusal(run, everything: true);
                             Report(run, BackendState.Waiting);
-                            Wait(_pollMs);
+                            Wait(run, _pollMs);
                             continue;
                         }
                         Workers.Claim(SdkKey, run);
@@ -422,7 +414,7 @@ namespace PadForge.Common.Input.Peripherals
                     {
                         ReportRefusal(run);
                     }
-                    Wait(_pollMs);
+                    Wait(run, _pollMs);
                 }
             }
             catch (Exception ex)
@@ -463,7 +455,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
     }
 

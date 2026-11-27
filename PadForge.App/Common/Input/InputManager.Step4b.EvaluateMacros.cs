@@ -4530,13 +4530,7 @@ namespace PadForge.Common.Input
         /// thread pool, NOT the ~1000 Hz macro/poll thread: ShellExecute can block for
         /// milliseconds and would collapse the poll rate. Fire and forget. The macro
         /// does not wait for exit. A bad path is swallowed so a mistyped command never
-        /// tears down the input engine.
-        ///
-        /// <para>The program starts with the signed-in user's rights, through the
-        /// desktop shell, never with PadForge's (#600, ShellLaunch): a program at
-        /// Send Inputs can fire a Run Program macro by holding its button. With no
-        /// desktop shell it does not start, and the diagnostics log says
-        /// why.</para></summary>
+        /// tears down the input engine.</summary>
         private static void ExecuteRunProgramAction(MacroAction action)
         {
             string path = action.ProgramPath?.Trim();
@@ -4555,10 +4549,7 @@ namespace PadForge.Common.Input
                     };
                     if (!string.IsNullOrEmpty(workDir))
                         psi.WorkingDirectory = workDir;
-                    if (!PadForge.Common.ShellLaunch.AsTheUser(psi, out string why))
-                        PadForge.Engine.SdlDiagLog.WriteLine(why == PadForge.Common.ShellLaunch.NotAnswered
-                            ? "MACRO Run Program has not started " + path + " yet: " + why
-                            : "MACRO Run Program did not start " + path + ": " + why);
+                    PadForge.Common.ShellLaunch.Start(psi);
                 }
                 catch { /* bad path or blocked launch: the user owns this; never crash the engine */ }
             });

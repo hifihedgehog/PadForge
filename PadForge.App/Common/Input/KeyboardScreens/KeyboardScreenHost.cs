@@ -26,10 +26,6 @@ namespace PadForge.Common.Input.KeyboardScreens
         G19ForeignDriver,
         /// <summary>LGS's Arx Control library is not registered.</summary>
         ArxNoLibrary,
-        /// <summary>The library is registered and PadForge's checks refused
-        /// it (TrustedLibrary): others may change it or where it sits, or
-        /// Logitech did not sign it.</summary>
-        ArxRefused,
         /// <summary>The library is registered and would not load, or is not
         /// the Arx Control library.</summary>
         ArxLoadFailed,
@@ -496,7 +492,6 @@ namespace PadForge.Common.Input.KeyboardScreens
         /// their own, every other reason as no library.</summary>
         internal static KeyboardScreenRoute ArxRouteFor(string reason) => reason switch
         {
-            "refused" => KeyboardScreenRoute.ArxRefused,
             "load" or "exports" => KeyboardScreenRoute.ArxLoadFailed,
             _ => KeyboardScreenRoute.ArxNoLibrary,
         };

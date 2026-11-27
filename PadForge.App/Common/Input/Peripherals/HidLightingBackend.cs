@@ -336,7 +336,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _stopJoinMs;
         private readonly bool _powerEvents;
         private readonly Action<int> _sessionWait;
-        private readonly AutoResetEvent _wake = new(false);
 
         /// <summary>The worker's units while it serves them, and the unit whose
         /// session has the worker now, for the wait a session is handed. Each
@@ -473,11 +472,11 @@ namespace PadForge.Common.Input.Peripherals
             Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralHidLighting" };
             Volatile.Write(ref _worker, _thread);
-            _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
             LearnedKeyMaps.Changed += OnLearned;
             if (_powerEvents) Microsoft.Win32.SystemEvents.PowerModeChanged += OnPowerMode;
+            _thread.Start();
         }
 
         public void Stop()
@@ -570,7 +569,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Brings the worker's next pass forward. Any thread.</summary>
         internal void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            _run?.Wake.Set();
         }
 
         private void Worker(WorkerRun run)
@@ -648,8 +647,7 @@ namespace PadForge.Common.Input.Peripherals
                         : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
                     Interlocked.Increment(ref _passes);
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)
@@ -1867,7 +1865,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
     }
 }

@@ -199,9 +199,9 @@ namespace PadForge.Services.Automation.Web
             return exe;
         }
 
-        /// <summary>The protected folder tunnel-client is kept in, null in
-        /// the test host, which has none.</summary>
-        internal static string Folder() => ProtectedWork.Folder("TunnelClient");
+        /// <summary>The folder tunnel-client is kept in, in the user's temp
+        /// folder.</summary>
+        internal static string Folder() => Path.Combine(Path.GetTempPath(), "PadForge", "TunnelClient");
 
         /// <summary>A copy downloaded before, the newest, or null.</summary>
         internal static string Kept()
@@ -218,14 +218,13 @@ namespace PadForge.Services.Automation.Web
 
         /// <summary>
         /// Fetches the latest release for this PC, checks it and keeps it in
-        /// the protected folder: the exe's path, or null with why. Every
+        /// <see cref="Folder"/>: the exe's path, or null with why. Every
         /// request goes through the outbound gate, so the test host fetches
-        /// nothing, and it has no protected folder to keep a file in.
+        /// nothing.
         /// </summary>
         internal static async Task<(string Exe, string Why)> DownloadAsync(CancellationToken cancel)
         {
             string folder = Folder();
-            if (folder == null) return (null, "PadForge's protected folder could not be made");
             using var http = PadForge.Engine.Common.OutboundNetworkGate.NewHttpClient();
             http.Timeout = TimeSpan.FromSeconds(60);
             http.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("PadForge", BuildIdentity.VersionText(BuildIdentity.Version)));

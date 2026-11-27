@@ -95,7 +95,7 @@ PadForge runs whether or not the optional drivers are installed. Missing drivers
 
 ## Admin rights
 
-PadForge always runs as administrator. The UAC prompt fires once per launch, when PadForge itself starts, and not at all while Start at Login is on. Everything after that (HIDMaestro auto-install, HidHide install and uninstall, the Windows MIDI Services runtime's install and uninstall, the SteamVR install and uninstall, and HidHide whitelist edits) runs inside that same session, so no second prompt appears.
+PadForge always runs as administrator. The UAC prompt fires once per launch, when PadForge itself starts. Everything after that (HIDMaestro auto-install, HidHide install and uninstall, the Windows MIDI Services runtime's install and uninstall, the SteamVR install and uninstall, and HidHide whitelist edits) runs inside that same session, so no second prompt appears.
 
 ---
 
@@ -394,7 +394,7 @@ The slot guards read your saved slots, not what the engine is running, so they h
 | A MIDI slot does not start under the legacy MIDI API | The message line names the reason. Pick an **Output Port** on the slot's page. If the port's device is off or unplugged, turn it on: the slot starts by itself about a second later. When two MIDI slots are set to the same port, pick another port for one of them, and the slot that failed starts by itself. A port another program holds cannot be opened: close that program, then turn the slot off and on. |
 | A MIDI keyboard does nothing under the legacy MIDI API | Assign it to a slot on the [Devices](devices.md) page. The legacy API opens a MIDI input port only while a slot has it. |
 | PadForge disappears when I uninstall the Windows MIDI Services runtime | Fixed in 4.3.0. Older builds were closed by Windows Restart Manager, which asks running programs to quit so an installer can reach files they hold open. PadForge now declines that request and stays up through the uninstall. |
-| UAC prompt on every launch | Expected while Start at Login is off. PadForge needs administrator rights to drive its drivers, so Windows asks at startup. Everything after that runs without a second prompt. |
+| UAC prompt on every launch | Expected. PadForge needs administrator rights to drive its drivers, so Windows asks at startup. Everything after that runs without a second prompt. |
 | Double input (every press counts twice) | Install HidHide. Turn on **Hide from Games (HidHide)** for the physical controller on the [Devices](devices.md) page. |
 | Double input still there after HidHide | PadForge reconnects a hidden USB controller in Windows, so a game that opened it first loses it, and a controller connected before HidHide was installed picks HidHide up as it comes back. A Bluetooth controller, or a USB device that carries more than one controller, waits for its next connection: turn it off and on. Some games only detect controllers at launch, so restart the game if it still shows two. |
 | Virtual controller shows up but games do not see it | Restart the game once after PadForge is running. Some games and Steam only detect controllers at launch. |

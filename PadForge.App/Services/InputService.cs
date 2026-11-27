@@ -2256,7 +2256,7 @@ namespace PadForge.Services
             // no allocation; the pair sink's stream thread calls this once
             // per 10 ms tick. Body motors only: SDL routes exactly the low
             // (left) / high (right) body values to the pair's children
-            // (SDL_hidapi_switch.c:3278-3286), and the Switch has no trigger
+            // (SDL_hidapi_switch.c:3289-3297), and the Switch has no trigger
             // motors, so trigger rumble never vibrates a Joy-Con side.
             PadForge.Common.Input.HapticToneService.SlotRumbleActiveProvider = slotIndex =>
             {
@@ -6206,7 +6206,6 @@ namespace PadForge.Services
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.NoSdk => s.Settings_GKeysStatus_NoSdk,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.SdkPathStale => s.Settings_GKeysStatus_PathStale,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.LoadFailed => s.Settings_GKeysStatus_LoadFailed,
-                    PadForge.Engine.Common.Logitech.LogitechGKeyState.Refused => s.Settings_GKeysStatus_Refused,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.MissingExports => s.Settings_GKeysStatus_WrongLibrary,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.InitRefused => s.Settings_GKeysStatus_InitRefused,
                     // Connected and silent: no G-key command on the key, a
@@ -11647,7 +11646,7 @@ namespace PadForge.Services
                         // player-index DEFAULT color to the lightbar at
                         // multiple points after a fresh open:
                         //   - When the joystick opens, with the player index
-                        //     SDL gave it at connect (SDL_joystick.c:2417-2420),
+                        //     SDL gave it at connect (SDL_joystick.c:2431-2434),
                         //     and on any later index change while it is open
                         //     (:1473-1475). USB hits the firmware right away.
                         //   - On the first SDL_SendGamepadEffect call when

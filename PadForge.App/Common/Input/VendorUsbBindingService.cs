@@ -37,9 +37,10 @@ namespace PadForge.Common.Input
         private string _lastVerdict;
 
         /// <summary>A sweep walks every present USB node. A controller comes
-        /// as a device change the main window counts, so the walk runs after
-        /// one, or after 15 s all the same, and every interval while a bind
-        /// waits for its retry.</summary>
+        /// as a device change the main window counts, so the walk runs at
+        /// every interval for the gate's settle window after one, or after
+        /// 15 s all the same, and every interval while a bind waits for its
+        /// retry or the last walk failed.</summary>
         private readonly DeviceScanGate _scan = new(15000);
         private bool _retryWaits;
 
@@ -70,7 +71,12 @@ namespace PadForge.Common.Input
                 if (_retryWaits || _scan.Due(Environment.TickCount64))
                 {
                     try { _retryWaits = Sweep(); }
-                    catch (Exception ex) { _log("sweep failed: " + ex.Message); }
+                    catch (Exception ex)
+                    {
+                        // A failed walk is tried again at the next interval.
+                        _retryWaits = true;
+                        _log("sweep failed: " + ex.Message);
+                    }
                 }
 
                 // Stop cancels the token, which ends the wait at once.
@@ -89,7 +95,8 @@ namespace PadForge.Common.Input
                     wanted.Add((node, plan));
             }
 
-            // Said when it changes, so a 3 s sweep cannot flood the ring.
+            // Said when it changes, so sweeps that run every interval, after
+            // a device change or while a bind waits, cannot flood the ring.
             string verdict = wanted.Count == 0 ? null : string.Join(", ", wanted.Select(w =>
                 $"{w.Plan.Name} {w.Node.InstanceId} on {(string.IsNullOrEmpty(w.Node.Service) ? "(no driver)" : w.Node.Service)}"
                 + $" for {(w.Plan.Driver == VendorUsbDriverInstaller.BindDriver.Xusb22 ? "xusb22" : "WinUSB")}"));

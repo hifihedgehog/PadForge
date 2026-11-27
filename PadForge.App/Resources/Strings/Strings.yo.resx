@@ -1983,7 +1983,6 @@ PadForge kò lè kọ àwọn àlàyé sínú crash.log lẹ́gbẹ̀ẹ́ PadFo
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Síso pọ̀ dúró: kíkà tàbí kíkọ sí ẹ̀rọ ìdarí náà tàbí rédíò Bluetooth kùnà. Àkọsílẹ̀ àyẹ̀wò ní àwọn àlàyé.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Síso pọ̀ dúró lórí àṣìṣe kan tí PadForge kò retí. Àkọsílẹ̀ àyẹ̀wò ní àwọn àlàyé.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>ó nílò Logitech Gaming Software 8.52 tàbí èyí tó tuntun jù</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ó rí ibi ìkàwé rẹ̀ kò sì gbé e wọlé, nítorí PadForge kò lè fìdí rẹ̀ múlẹ̀ pé àwọn alábòójútó nìkan ló lè yí i padà àti pé Logitech ló fọwọ́ sí i</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ó rí ibi ìkàwé rẹ̀ kò sì lè lò ó, àkọsílẹ̀ àyẹ̀wò sì sọ ìdí rẹ̀</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>ṣí Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ń dúró de fóònù tí ó ní Arx Control</value></data>
@@ -2384,9 +2383,6 @@ PadForge kò lè kọ àwọn àlàyé sínú crash.log lẹ́gbẹ̀ẹ́ PadFo
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>àti {0} míràn</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} nínú {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Àìdáhùn láàárín {0} túmọ̀ sí bẹ́ẹ̀ kọ́.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ń ṣiṣẹ́ pẹ̀lú ẹ̀tọ́ alábòójútó láti {0}, fódà tí àwọn ìṣàfilọ́lẹ̀ míràn lè yí padà. Wọ́n lè yí àwọn ètò PadForge padà níbẹ̀, PadForge yóò sì ṣiṣẹ́ lé wọn lórí pẹ̀lú ẹ̀tọ́ rẹ̀.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ń ṣiṣẹ́ pẹ̀lú ẹ̀tọ́ alábòójútó láti {0}, fódà tí ó ní àwọn fáìlì míràn nínú. PadForge kò lè dá àwọn ìṣàfilọ́lẹ̀ míràn dúró láti yí àwọn ètò rẹ̀ padà níbẹ̀, ó sì ń ṣiṣẹ́ lé wọn lórí pẹ̀lú ẹ̀tọ́ rẹ̀.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ń ṣiṣẹ́ pẹ̀lú ẹ̀tọ́ alábòójútó láti {0}, fódà tí kò lè kà. PadForge kò lè dá àwọn ìṣàfilọ́lẹ̀ míràn dúró láti yí àwọn ètò rẹ̀ padà níbẹ̀, ó sì ń ṣiṣẹ́ lé wọn lórí pẹ̀lú ẹ̀tọ́ rẹ̀.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now ń gba ibi ìpamọ́ ẹ̀rọ ìdarí ti àwùjọ (SDL_GameControllerDB) wálẹ̀ láti GitHub, tàbí láti àdírẹ́sì tí a ṣètò lábẹ́ Síi, ó sì ń pa àwọn ìsopọ̀ tí ẹ̀yà PadForge yìí kò ní mọ́ sínú fáìlì ètò. Wọ́n ń ṣiṣẹ́ lẹ́sẹ̀kẹsẹ̀. Láti àdírẹ́sì míràn, ó ń pa àwọn ìsopọ̀ tuntun nìkan mọ́. A máa ń kọ́kọ́ lo ìsopọ̀ tuntun kìkì fún ẹ̀rọ ìdarí tí SDL ròyìn bí gamepad tàbí bí èyí tí kò ní irú pàtó kan, tí kò sí ohun míràn tí ó kà á bí gamepad, tí a kò yàn, tí kò sì sí ní Force Raw Joystick Mode. Nígbà tí ó bá ti wà ní lílò, ó máa wà ní lílò lẹ́yìn tí a bá yan ẹ̀rọ ìdarí náà. Títún tò ń yọ àwọn ìsopọ̀ tí a gbà wálẹ̀ kúrò, ó sì ń dá Download From padà sí fáìlì ti àwùjọ, èyí tí Update Now tó kàn yóò gbà wálẹ̀. Àwọn ìlà tìrẹ, lábẹ́ Síi, máa wà.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}. A gbà á wálẹ̀ ní {2}: ìlà tuntun {3}, àyípadà {4}.</value></data>
@@ -2520,6 +2516,7 @@ PadForge kò lè kọ àwọn àlàyé sínú crash.log lẹ́gbẹ̀ẹ́ PadFo
   <data name="SdlMapping_Away" xml:space="preserve"><value>Ẹ̀rọ náà kò sopọ̀. SDL máa kà á nígbà tí ó bá sopọ̀.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL kò fún PadForge ní kíkà kankan ti ẹ̀rọ yìí.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ẹ̀dà àwùjọ tí a kọ́ sínú rẹ̀, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>A gbà á wálẹ̀ ní {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fáìlì PadForge fúnra rẹ̀</value></data>
@@ -2724,7 +2721,6 @@ PadForge kò lè kọ àwọn àlàyé sínú crash.log lẹ́gbẹ̀ẹ́ PadFo
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge kọ ìdáhùn GitHub. Kò sí ohun tó yípadà.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge kọ ìdáhùn láti {0}. Kò sí ohun tó yípadà.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Ojú ìwé ìgbàsílẹ̀ Falcon SDK kò ṣí: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Ojú ìwé ìgbàsílẹ̀ Falcon SDK kò tíì ṣí: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>A fo ìlà {0:N0} fún àwọn sístẹ́mù míràn dá.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows kò bẹ̀rẹ̀ rẹ̀ pẹ̀lú ẹ̀tọ́ tìrẹ.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Kò dópin láàrín àáyá {0}.</value></data>

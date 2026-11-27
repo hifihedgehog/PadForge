@@ -78,7 +78,7 @@ namespace PadForge.Common.Recording
         // ─────────────────────────────────────────────
 
         /// <summary>The driver signature in byte 14 of SDL's joystick GUID
-        /// (SDL_joystick.c:4088), from PadForge's GUID string, or -1.</summary>
+        /// (SDL_joystick.c:4107), from PadForge's GUID string, or -1.</summary>
         internal static int Signature(string sdlGuid)
         {
             if (string.IsNullOrEmpty(sdlGuid) || sdlGuid.Length != 32) return -1;
@@ -86,7 +86,7 @@ namespace PadForge.Common.Recording
         }
 
         /// <summary>The bus in bytes 0 and 1 of SDL's joystick GUID, little
-        /// endian (SDL_joystick.c:4079), or -1.</summary>
+        /// endian (SDL_joystick.c:4098), or -1.</summary>
         internal static int Bus(string sdlGuid)
         {
             if (string.IsNullOrEmpty(sdlGuid) || sdlGuid.Length != 32) return -1;
@@ -100,11 +100,11 @@ namespace PadForge.Common.Recording
         /// <summary>
         /// Which second reader an SDL device has, from its GUID's driver
         /// signature and its path, or none and why, in the line's words. The
-        /// signatures are SDL's: 0 DirectInput (SDL_dinputjoystick.c:1086-1090),
+        /// signatures are SDL's: 0 DirectInput (SDL_dinputjoystick.c:1095-1105),
         /// h HIDAPI (SDL_hidapijoystick.c:852, 1159) and the Bluetooth LE Switch 2
-        /// driver (SDL_ble_switch2joystick.c:1582), x XInput (SDL_xinputjoystick.c:
-        /// 186), g GameInput (SDL_gameinputjoystick.cpp:441), v virtual
-        /// (SDL_virtualjoystick.c:314), l BLE GATT (SDL_blegattjoystick.c:1296),
+        /// driver (SDL_ble_switch2joystick.c:1598), x XInput (SDL_xinputjoystick.c:
+        /// 186), g GameInput (SDL_gameinputjoystick.cpp:450), v virtual
+        /// (SDL_virtualjoystick.c:314), l BLE GATT (SDL_blegattjoystick.c:1327),
         /// s serial (SDL_serialjoystick.c:1447-1450), d DJI TCP
         /// (SDL_djitcpjoystick.c:733), b RFCOMM (SDL_rfcommjoystick.c:931), i iCade
         /// (SDL_icadejoystick.c:1011).
@@ -161,12 +161,12 @@ namespace PadForge.Common.Recording
         /// SDL_hidapi_ps5.c:83-102, 1282-1373) holds the usage the descriptor
         /// gives that place (ControllersInfo, dualshock4 and dualsense report
         /// descriptors), and that usage is the one SDL's DirectInput row names
-        /// for the control (SDL_gamepad_db.h:238-240) through SDL's numbering.
+        /// for the control (SDL_gamepad_db.h:239-241) through SDL's numbering.
         /// Both drivers read a digital trigger with no analog value as a full
         /// trigger (SDL_hidapi_ps4.c:1124-1128, SDL_hidapi_ps5.c:1351-1361), so
         /// the comparison reads it so too. The touchpad click and the
         /// DualSense's mute are left out: the DualSense driver calls mute Misc1
-        /// (SDL_gamepad.c:1520-1522) where the row calls the touchpad click
+        /// (SDL_gamepad.c:1526-1528) where the row calls the touchpad click
         /// Misc1, and PadForge's touchpad block decides the touchpad position
         /// (SdlDeviceWrapper.cs:2232-2260).
         /// </summary>
@@ -334,7 +334,7 @@ namespace PadForge.Common.Recording
                         long full = Linear(values[c], control);
                         if (SignedValue(values[c], control) == control.LogicalMin && f >= 0 && values[f] != 0) full = 65535;
                         // SDL_GetGamepadAxis takes the joystick axis's whole
-                        // range to 0..32767 (SDL_gamepad.c:3817-3821), and
+                        // range to 0..32767 (SDL_gamepad.c:3868-3872), and
                         // PadForge spreads that to 0..65535 (SdlDeviceWrapper.cs:2063).
                         short sdl = (short)(full - 32768);
                         int trigger = (int)((float)(sdl - RecorderReaderMatch.AxisMin) / (RecorderReaderMatch.AxisMax - RecorderReaderMatch.AxisMin) * RecorderReaderMatch.AxisMax);

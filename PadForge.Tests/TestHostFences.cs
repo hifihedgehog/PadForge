@@ -273,32 +273,6 @@ namespace PadForge.Tests
         internal static void Set() => StartWithRights.OffLimitsForTest = true;
     }
 
-    /// <summary>The Start at Login task is never run, and no start waits on
-    /// a copy it would start (#600 item 44).</summary>
-    internal static class StartByTaskOffLimits
-    {
-        [ModuleInitializer]
-        internal static void Set() => StartByTask.OffLimitsForTest = true;
-    }
-
-    /// <summary>No folder is made, judged or moved in %ProgramData%, so the
-    /// folder a PadForge with rights unpacks into on this PC stays as it was
-    /// (#597).</summary>
-    internal static class ProtectedFolderOffLimits
-    {
-        [ModuleInitializer]
-        internal static void Set() => ProtectedFolder.OffLimitsForTest = true;
-    }
-
-    /// <summary>No folder's access list is changed, no PadForge is copied
-    /// into Program Files, and the folder the tests run from is never
-    /// protected (#597).</summary>
-    internal static class ExeFolderOffLimits
-    {
-        [ModuleInitializer]
-        internal static void Set() => ExeFolder.OffLimitsForTest = true;
-    }
-
     /// <summary>No DSU server is started on the port every DSU client on
     /// the PC polls.</summary>
     internal static class DsuPortOffLimits

@@ -888,6 +888,9 @@ namespace PadForge.Tests
             Light(0x102030);
             Passes(backend, 3);
             Assert.Equal(new[] { "load", "connect", "unload" }, _sdk.Calls());
+            // A wanted type with a retry due keeps the tick, so the retry
+            // comes with no other wake.
+            Assert.InRange(backend.WaitMs, 1, 5);
             Advance(IcueBackend.RetryMs);
             Passes(backend, 2);
             Assert.Equal(2, _sdk.Calls().Count(c => c == "connect"));

@@ -29,24 +29,21 @@ namespace PadForge.Tests
     public class AskFirstSweepTests
     {
         /// <summary>A call that starts a process or opens a place: Process.Start,
-        /// the desktop shell's start (ShellLaunch), the allow-listed start with
-        /// rights (RightsVariables), CreateProcess and the plugin launcher's
+        /// ShellLaunch's starts,
+        /// CreateProcess and the plugin launcher's
         /// start.</summary>
         internal const string Starts =
-            @"(?<![\w.])(?:System\.Diagnostics\.)?Process\.Start\(|\bShellLaunch\.(?:Start|AsTheUser|StartOwnHelper)\(|\bRightsVariables\.Start\(|\bCreateProcess(?:AsUser)?W?\(|\b_?launcher\.Start\(";
+            @"(?<![\w.])(?:System\.Diagnostics\.)?Process\.Start\(|\bShellLaunch\.(?:Start|TryStart|StartOwnHelper)\(|\bRightsVariables\.Start\(|\bCreateProcess(?:AsUser)?W?\(|\b_?launcher\.Start\(";
 
         /// <summary>Each file's calls, and what reaches them. A file with a
         /// call nobody walked is not here, and the census fails.</summary>
         internal static readonly (string File, int Calls, string Reached)[] Census =
         {
-            ("PadForge.App/App.xaml.cs", 1, "App.StartMovedCopy: the copy Move PadForge to Its Own Folder made (route MoveToOwnFolder_Click, SharedFolderMove_Click)"),
             ("PadForge.App/Common/DriverInstaller.cs", 1, "StartProcess, every installer's start: HidHide, the MIDI runtime, steamcmd, the Visual C++ 2008 runtime (routes Install*Command, Uninstall*Command)"),
             ("PadForge.App/Common/HidHideArm64Installer.cs", 1, "HidHide on ARM64, from InstallHidHide and UninstallHidHide"),
             ("PadForge.App/Common/Input/InputManager.Step4b.EvaluateMacros.cs", 1, "a macro's Run Program step (routes ProgramPath, PasteSettingsCommand, PasteMacroCommand, the save_macro tool)"),
-            ("PadForge.App/Common/Recording/RecordingSave.cs", 1, "a recording's Save… as the user (route Save_Click in the review, the user's own)"),
-            ("PadForge.App/Common/ShellLaunch.cs", 1, "StartOwnHelper's own start"),
-            ("PadForge.App/Common/StartupHelper.cs", 2, "schtasks for Start at Login (routes StartAtLogin, its reset, the Window card's Reset All)"),
-            ("PadForge.App/Common/System32Calls.cs", 1, "CreateProcess, for ProtectedStart's restart at a start with rights, which no element reaches"),
+            ("PadForge.App/Common/ShellLaunch.cs", 4, "Start, TryStart and StartOwnHelper, each a Process.Start"),
+            ("PadForge.App/Common/StartupHelper.cs", 1, "schtasks for Start at Login (routes StartAtLogin, its reset, the Window card's Reset All)"),
             ("PadForge.App/MainWindow.Falcon.cs", 1, "Force Dimension's SDK page (route OpenFalconDownloadCommand)"),
             ("PadForge.App/MainWindow.ProblemRecording.cs", 2, "Explorer with a saved recording selected, and the page where reports go after Save and Post (routes Save_Click and SaveAndPost_Click in the review, the user's own)"),
             ("PadForge.App/MainWindow.xaml.cs", 1, "Explorer on the settings folder (route OpenSettingsFolderCommand)"),
@@ -58,17 +55,13 @@ namespace PadForge.Tests
             ("PadForge.App/Services/DsxStandIn.cs", 1, "PadForge's own DSX stand-in while Game Mods is on (Asks, Network)"),
             ("PadForge.App/Services/GiveBackTask.cs", 2, "schtasks for a give-back task (routes DriverBind_Click and DriverRestore_Click, and a touchpad's Use Only in PadForge)"),
             ("PadForge.App/Services/Install/UserInstall.cs", 2, "an assistant's own add command, and PadForge.exe --install as the user (route PressCommand on the Automation page, the user's own)"),
-            ("PadForge.App/Services/LogonStart.cs", 2, "the app in the user's session, at the Start at Login task's run, which no element reaches"),
             ("PadForge.App/Services/Plugins/PluginLauncher.cs", 1, "CreateProcess under the desktop shell, for every launcher start in this list"),
             ("PadForge.App/Services/Plugins/PluginFile.cs", 1, "Explorer with a plugin's file selected (route ShowInFolderCommand on a plugin's card, the user's own)"),
             ("PadForge.App/Services/Plugins/PluginManager.cs", 1, "a plugin (routes ApprovePlugin_Click and AddPlugin_Click, the user's own)"),
-            ("PadForge.App/Services/ProtectedStart.cs", 1, "the restart from the protected folder at a start with rights, which no element reaches"),
-            ("PadForge.App/Services/RightsVariables.Start.cs", 1, "the allow-listed start every RightsVariables.Start in this list goes through"),
             ("PadForge.App/Services/SettingsFolderRun.cs", 1, "Explorer for --settings-folder, the caller's own run, which no element reaches"),
             ("PadForge.App/Services/StartWithRights.cs", 1, "the app with rights, at a start without them, which no element reaches"),
             ("PadForge.App/Services/UpdateController.cs", 1, "a release's page (route OpenReleaseNotesCommand)"),
             ("PadForge.App/Services/UpdateService.cs", 1, "StartProcess: the staged update's helper and the relaunch after it (routes InstallUpdateCommand, InstallUpdatesAutomatically)"),
-            ("PadForge.App/Services/UserSave.cs", 1, "the plugin kit's --plugin-kit copy as the user (route SavePluginKit_Click, the Plugins page's own)"),
             ("PadForge.App/Services/WebControllerServer.cs", 1, "netsh for the Web Controller's address and firewall rule (Asks, Network, on its page)"),
             ("PadForge.App/Services/WebControllerTls.cs", 1, "netsh for the Web Controller's certificate binding (Asks, Network, on its page)"),
             ("PadForge.App/ViewModels/DashboardViewModel.AutomationPage.cs", 1, "an assistant's settings file or its folder (route OpenSettingsCommand, the user's own)"),
@@ -150,7 +143,6 @@ namespace PadForge.Tests
             new("Views/SettingsPage.xaml", RouteKind.Command, "ResetCommand", ReachClass.Asks, ReachReason.Drivers, "HidHide's cloaks purged, and schtasks when Start at Login was on (MainWindow.xaml.cs, ResetRequested)", Local: true),
             new("Views/SettingsPage.xaml", RouteKind.Command, "OpenSettingsFolderCommand", ReachClass.Asks, ReachReason.OpensPlace, "Explorer (MainWindow.OnOpenSettingsFolder)"),
             new("Views/SettingsPage.xaml", RouteKind.Click, "OpenDiagFolder_Click", ReachClass.Asks, ReachReason.OpensPlace, "Explorer on the diagnostics folder"),
-            new("Views/SettingsPage.xaml", RouteKind.Click, "MoveToOwnFolder_Click", ReachClass.Asks, ReachReason.RunsProgram, "the moved copy (ExeFolderState.RequestMove, MainWindow.OnMoveToOwnFolder, App.StartMovedCopy)"),
             new("Views/SettingsPage.xaml", RouteKind.Command, "InstallVc2008RuntimeCommand", ReachClass.Asks, ReachReason.RunsProgram, "Microsoft's redistributable (DriverInstaller.InstallVc2008Runtime)"),
             new("Views/SettingsPage.xaml", RouteKind.Command, "OpenFalconDownloadCommand", ReachClass.Asks, ReachReason.OpensPlace, "Force Dimension's SDK page (MainWindow.Falcon.cs)"),
             new("Views/SettingsPage.xaml", RouteKind.Command, "InstallHidHideCommand", ReachClass.Asks, ReachReason.Drivers, "HidHide's setup (DriverInstaller.InstallHidHide)"),
@@ -163,7 +155,6 @@ namespace PadForge.Tests
             // Devices.
             new("Views/DevicesPage.xaml", RouteKind.Click, "SdlCommunity_Click", ReachClass.Asks, ReachReason.OpensPlace, "the community database's page"),
             new("Views/DevicesPage.xaml", RouteKind.Click, "SubmitMapping_Click", ReachClass.Asks, ReachReason.OpensPlace, "a new device mapping issue on GitHub"),
-            new("Views/DevicesPage.xaml", RouteKind.Click, "MoveToOwnFolder_Click", ReachClass.Asks, ReachReason.RunsProgram, "the moved copy (App.StartMovedCopy)"),
             new("Views/DevicesPage.xaml", RouteKind.Click, "DriverBind_Click", ReachClass.Asks, ReachReason.UseOnly, "schtasks for the give-back task (GiveBackTask.RegisterKeyboard)"),
             new("Views/DevicesPage.xaml", RouteKind.Click, "DriverRestore_Click", ReachClass.Asks, ReachReason.UseOnly, "schtasks, the give-back task taken out (GiveBackTask.Delete)"),
             // The device tools' pair starts no process: it moves a device
@@ -173,7 +164,6 @@ namespace PadForge.Tests
             new("Views/DevicesPage.xaml", RouteKind.Click, "DeviceToolsDriverBind_Click", ReachClass.Asks, ReachReason.Drivers, "the device moved to PadForge's WinUSB driver (VendorUsbDriverInstaller.Bind)"),
             new("Views/DevicesPage.xaml", RouteKind.Click, "DeviceToolsDriverRestore_Click", ReachClass.Asks, ReachReason.Drivers, "Windows' driver given back (VendorUsbDriverInstaller.Restore)"),
             // Home.
-            new("Views/HomePage.xaml", RouteKind.Click, "SharedFolderMove_Click", ReachClass.Asks, ReachReason.RunsProgram, "the moved copy (App.StartMovedCopy)"),
             // Get Profiles, the Workshop's panel.
             new("Views/CommunityConfigsPanel.xaml", RouteKind.Click, "OpenInSteam_Click", ReachClass.Asks, ReachReason.OpensPlace, "the Workshop item's page"),
             // A controller's page: a macro whose step runs a program, made in
@@ -196,7 +186,7 @@ namespace PadForge.Tests
                 "the layer's rows emptied, as Clear All's confirm empties the controller's"),
             // The user's own: the Automation and Plugins pages, the web
             // door and a recording's review.
-            new("Views/ExtrasPage.xaml", RouteKind.Command, "PressCommand", ReachClass.UsersOwn, ReachReason.None, "an assistant row's Add, Update and Remove, and a Scripts row's Install, Update and Open Folder (UserInstall.RunAsUserAsync, ScriptLibraryRows.PressAsync)", Local: true),
+            new("Views/ExtrasPage.xaml", RouteKind.Command, "PressCommand", ReachClass.UsersOwn, ReachReason.None, "an assistant row's Add, Update and Remove, and a Scripts row's Install, Update and Open Folder (UserInstall.RunInCopyAsync, ScriptLibraryRows.PressAsync)", Local: true),
             new("Views/ExtrasPage.xaml", RouteKind.Command, "OpenSettingsCommand", ReachClass.UsersOwn, ReachReason.None, "an assistant's settings file or its folder (DashboardViewModel.OpenAssistantSettings)", Local: true),
             new("Views/ExtrasPage.xaml", RouteKind.Click, "ApprovePlugin_Click", ReachClass.UsersOwn, ReachReason.None, "a plugin (PluginManager, PluginLauncher)"),
             new("Views/ExtrasPage.xaml", RouteKind.Click, "AddPlugin_Click", ReachClass.UsersOwn, ReachReason.None, "a plugin (PluginManager, PluginLauncher)"),
@@ -207,8 +197,8 @@ namespace PadForge.Tests
             new("Views/AssistantsWebCard.xaml", RouteKind.Command, "MakeTunnelCommand", ReachClass.UsersOwn, ReachReason.None, "OpenAI's tunnel management (WebAccessViewModel.Open)"),
             new("Views/AssistantsWebCard.xaml", RouteKind.Command, "OpenChatGptCommand", ReachClass.UsersOwn, ReachReason.None, "ChatGPT's plugins page (WebAccessViewModel.Open)"),
             new("Views/AssistantsWebSwitch.xaml", RouteKind.Binding, "IsNetworkOn", ReachClass.UsersOwn, ReachReason.None, "the web helper and netsh (WebDoor.TurnNetworkOn, NetworkDoor)"),
-            new("Views/RecordingReviewView.xaml", RouteKind.Click, "Save_Click", ReachClass.UsersOwn, ReachReason.None, "the save as the user and Explorer (RecordingSave.AsUserAsync, MainWindow.ProblemRecording.cs)"),
-            new("Views/RecordingReviewView.xaml", RouteKind.Click, "SaveAndPost_Click", ReachClass.UsersOwn, ReachReason.None, "the save as the user, Explorer and the page where reports go (RecordingSave.AsUserAsync, MainWindow.ProblemRecording.cs)"),
+            new("Views/RecordingReviewView.xaml", RouteKind.Click, "Save_Click", ReachClass.UsersOwn, ReachReason.None, "the save and Explorer (RecordingSave.SaveAsync, MainWindow.ProblemRecording.cs)"),
+            new("Views/RecordingReviewView.xaml", RouteKind.Click, "SaveAndPost_Click", ReachClass.UsersOwn, ReachReason.None, "the save, Explorer and the page where reports go (RecordingSave.SaveAsync, MainWindow.ProblemRecording.cs)"),
             // The extras that listen on the network, whose pages ask.
             new("Views/ExtrasPage.xaml", RouteKind.Binding, "EnableWebController", ReachClass.Asks, ReachReason.Network, "netsh (WebControllerServer, WebControllerTls)"),
             new("Views/ExtrasPage.xaml", RouteKind.Binding, "EnableGameModServer", ReachClass.Asks, ReachReason.Network, "PadForge's own DSX stand-in (DsxStandIn)"),
@@ -472,7 +462,6 @@ namespace PadForge.Tests
             }
             var wired = entries.Where(e => Routes.Any(r => r.Kind is RouteKind.Click or RouteKind.Command && Wires(e, r))).ToList();
             Assert.Contains(wired, e => LastPart(e.Handler) == "OpenReleaseNotesCommand");
-            Assert.Contains(wired, e => LastPart(e.Handler) == "MoveToOwnFolder_Click");
             Assert.Contains(wired, e => LastPart(e.Handler) == "InstallUpdateCommand");
             var free = wired.Where(e => AssistantCatalog.ReachOf(e) == ReachClass.Free)
                 .Select(e => e.Page + " " + LastPart(e.Handler) + " " + (e.AutomationId ?? SearchLocator.EnglishText(e.Label))).ToList();

@@ -1242,7 +1242,6 @@ PadForge haina kukwanisa kunyora ruzivo rwakazara mu-crash.log padivi pe-PadForg
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Kubatanidza kwamira: kuverenga kana kunyora kukontiroura kana kuredhiyo yeBluetooth kwakundikana. Rogi yekuongorora ine ruzivo rwakazara.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Kubatanidza kwamira nekukanganisa kusina kutarisirwa ne-PadForge. Rogi yekuongorora ine ruzivo rwakazara.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>inoda Logitech Gaming Software 8.52 kana pamusoro</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>yawana raibhurari yayo asi haina kuitakura, nekuti PadForge haina kukwanisa kusimbisa kuti vatungamiriri chete ndivo vanogona kuichinja uye kuti Logitech yakaisaina</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>yawana raibhurari yayo asi haina kukwanisa kuishandisa, uye rogi yekuongorora inotaura chikonzero</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>vhura Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>kumirira foni ine Arx Control</value></data>
@@ -1309,7 +1308,6 @@ PadForge haina kukwanisa kunyora ruzivo rwakazara mu-crash.log padivi pe-PadForg
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Inovhura kopi iyi yeraibhurari yeForce Dimension panzvimbo peimwe ipi neipi. Falcon yakavhurwa pane imwe kopi inovharwa yobva yavhurwazve pane iyi. Makopi anoiswa ne-SDK anowanikwa pasina iyi.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Raibhurari (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Peji yekudhaunirodha ye-Falcon SDK haina kuvhurika: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Peji yekudhaunirodha ye-Falcon SDK haisati yavhurika: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Isa dhiraivha yeFalcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Inoisa dhiraivha yeForce Dimension, kubva mufolda ye-SDK, paFalcon isina dhiraivha. Windows ingatanga yakubvunza kana uchivimba neForce Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Tora SDK yeForce Dimension</value></data>
@@ -1896,6 +1894,7 @@ PadForge haina kukwanisa kunyora ruzivo rwakazara mu-crash.log padivi pe-PadForg
   <data name="SdlMapping_Away" xml:space="preserve"><value>Mudziyo hauna kubatana. SDL inouverenga kana wabatana.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL haina kupa PadForge kuverenga kwemudziyo uyu.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi yenharaunda yakavakirwa mukati, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Yakadhawunirodhwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faira ye-PadForge pachayo</value></data>

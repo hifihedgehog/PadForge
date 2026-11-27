@@ -234,16 +234,16 @@ namespace PadForge.Tests
             Assert.Empty(rig.Vm.PluginRecords);
         }
 
-        /// <summary>Show in Folder starts Explorer through the desktop
-        /// shell, as the user, with the plugin's file selected, as
-        /// --settings-folder and the recording review's Show in Explorer do.
+        /// <summary>Show in Folder starts Explorer with the plugin's file
+        /// selected, as --settings-folder and the recording review's Show in
+        /// Explorer do.
         /// It stands in the open card's bottom row before Remove and Reset
         /// All, the user's own.</summary>
         [Fact]
-        public void ShowInFolder_StartsExplorerAsTheUser_WithThePluginsFileSelected()
+        public void ShowInFolder_StartsExplorer_WithThePluginsFileSelected()
         {
-            var starts = new List<PadForge.Common.ShellLaunch.UserStart>();
-            PadForge.Common.ShellLaunch.UserShellSeam = start => { starts.Add(start); return null; };
+            var starts = new List<System.Diagnostics.ProcessStartInfo>();
+            PadForge.Common.ShellLaunch.StartSeam = psi => { starts.Add(psi); return null; };
             try
             {
                 using var rig = new Rig();
@@ -253,12 +253,12 @@ namespace PadForge.Tests
                 var row = rig.Vm.PluginRows.Single();
                 row.ShowInFolderCommand.Execute(null);
                 var started = Assert.Single(starts);
-                Assert.Equal(PadForge.Common.ShellLaunch.Explorer, started.File);
+                Assert.Equal(PadForge.Common.ShellLaunch.Explorer, started.FileName);
                 Assert.Equal("/select,\"" + path + "\"", started.Arguments);
             }
             finally
             {
-                PadForge.Common.ShellLaunch.UserShellSeam = null;
+                PadForge.Common.ShellLaunch.StartSeam = null;
             }
 
             string body = Body();
@@ -428,10 +428,6 @@ namespace PadForge.Tests
         public void TheStatesInWords_NameEveryReason()
         {
             var s = Strings.Instance;
-            Assert.Equal(s.Plugins_Refused_NoShell, PluginsController.RefusalText(PluginRefusal.NoShell, 0));
-            Assert.Equal(s.Plugins_Refused_ShellElevated, PluginsController.RefusalText(PluginRefusal.ShellElevated, 0));
-            Assert.Equal(s.Plugins_Refused_RightsUnknown, PluginsController.RefusalText(PluginRefusal.RightsUnknown, 0));
-            Assert.Equal(s.Plugins_Refused_StartedElevated, PluginsController.RefusalText(PluginRefusal.StartedElevated, 0));
             Assert.Equal(s.Plugins_Refused_NeedsAdministrator, PluginsController.RefusalText(PluginRefusal.NeedsAdministrator, 740));
             Assert.Equal(s.Plugins_Refused_Missing, PluginsController.RefusalText(PluginRefusal.Missing, 0));
             Assert.Equal(s.Plugins_Refused_NoProgram, PluginsController.RefusalText(PluginRefusal.NoProgram, 0));

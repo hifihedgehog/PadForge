@@ -200,7 +200,7 @@ namespace PadForge.Tests
             string explorer = null;
             bool closed = false;
             model.PickTarget = (folder, name) => target;
-            model.SaveAsUser = (from, to) =>
+            model.SaveFile = (from, to) =>
             {
                 copied = (from, to);
                 File.Copy(from, to, overwrite: true);
@@ -264,7 +264,7 @@ namespace PadForge.Tests
             var steps = new List<string>();
             string copied = null, page = null;
             model.PickTarget = (folder, name) => target;
-            model.SaveAsUser = (from, to) =>
+            model.SaveFile = (from, to) =>
             {
                 steps.Add("save");
                 File.Copy(from, to, overwrite: true);
@@ -307,7 +307,7 @@ namespace PadForge.Tests
 
             // The save as the user failed.
             model.PickTarget = (folder, name) => Path.Combine(host.Dir, "failed.zip");
-            model.SaveAsUser = (from, to) => Task.FromResult("refused");
+            model.SaveFile = (from, to) => Task.FromResult("refused");
             await model.SaveAndPostAsync();
             Assert.Empty(steps);
             Assert.Contains("refused", model.Status, StringComparison.Ordinal);
@@ -319,7 +319,7 @@ namespace PadForge.Tests
             Assert.False(model.CanSave);
             await model.Checked;
             Assert.False(model.CanSave);
-            model.SaveAsUser = (from, to) => { steps.Add("save"); return Task.FromResult<string>(null); };
+            model.SaveFile = (from, to) => { steps.Add("save"); return Task.FromResult<string>(null); };
             await model.SaveAndPostAsync();
             Assert.Empty(steps);
             model.Close();
@@ -414,7 +414,7 @@ namespace PadForge.Tests
             var held = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
             bool closed = false;
             model.PickTarget = (folder, name) => target;
-            model.SaveAsUser = (from, to) =>
+            model.SaveFile = (from, to) =>
             {
                 File.Copy(from, to, overwrite: true);
                 return held.Task;
@@ -470,72 +470,32 @@ namespace PadForge.Tests
             model.Close();
         }
 
-        private sealed class EndedLauncher : IPluginLauncher
-        {
-            public PluginLaunch Launch;
-            public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables) => Launch;
-        }
-
-        private sealed class EndedProcess : IPluginProcess
-        {
-            private readonly int _code;
-            public EndedProcess(int code) => _code = code;
-            public int Id => 4243;
-            public bool Owns(int processId) => processId == Id;
-            public event Action<int> Exited
-            {
-                add => Task.Run(() => value(_code));
-                remove { }
-            }
-            public void Stop() { }
-            public void Dispose() { }
-        }
-
-        /// <summary>A save as the user that did not happen says why in the
-        /// user's language, from Strings: a copy that ended on an unhandled
-        /// exception is named by its code, never as a file Windows did not
-        /// let be written, which is code 1 alone, and a start Windows refused
-        /// says its error. Run under French, each line is the Strings text
-        /// formatted in that culture (the French words come with the
-        /// translation round).</summary>
+        /// <summary>The save is made in this process, and a refused one says
+        /// why in the user's language, from Strings. Run under French, each
+        /// line is the Strings text formatted in that culture (the French
+        /// words come with the translation round).</summary>
         [Fact]
-        public async Task TheSavesLines_ComeFromStrings_AndACrashOfTheCopyIsNamedByItsCode()
+        public async Task TheSavesLines_ComeFromStrings_AndTheSaveIsMadeInThisProcess()
         {
             var (host, zip) = Recorded();
             using var owned = host;
             var folder = RecordingFolder.Seam;
-            var rights = RecordingSave.RightsSeam;
-            var launcher = RecordingSave.Launcher;
             var culture = CultureInfo.CurrentCulture;
             var uiCulture = CultureInfo.CurrentUICulture;
-            var ended = new EndedLauncher();
             RecordingFolder.Seam = () => host.Dir;
-            RecordingSave.RightsSeam = () => true;
-            RecordingSave.Launcher = ended;
             try
             {
                 CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo("fr-FR");
                 var s = Strings.Instance;
                 string target = Path.Combine(host.Dir, "out.zip");
 
-                ended.Launch = new PluginLaunch { Process = new EndedProcess(unchecked((int)0xE0434352)) };
-                string crashed = await RecordingSave.AsUserAsync(zip, target);
-                Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SaveEnded_Format, "0xE0434352"), crashed);
-                Assert.NotEqual(s.Review_SaveNotWritten, crashed);
+                Assert.Null(await RecordingSave.SaveAsync(zip, target));
+                Assert.True(File.Exists(target));
 
-                ended.Launch = new PluginLaunch { Process = new EndedProcess(1) };
-                Assert.Equal(s.Review_SaveNotWritten, await RecordingSave.AsUserAsync(zip, target));
-
-                ended.Launch = PluginLaunch.Refused(PluginRefusal.Failed, 5);
-                Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SaveStartRefused_Format, 5), await RecordingSave.AsUserAsync(zip, target));
-                ended.Launch = PluginLaunch.Refused(PluginRefusal.NoShell);
-                Assert.Equal(s.Review_SaveNoShell, await RecordingSave.AsUserAsync(zip, target));
-
-                // A file that is no recording of the folder is refused here,
-                // before any copy starts.
+                // A file that is no recording of the folder is refused.
                 string other = Path.Combine(host.Dir, "notes.zip");
                 File.WriteAllText(other, "x");
-                Assert.Equal(s.Review_SaveNotOwn, await RecordingSave.AsUserAsync(other, target));
+                Assert.Equal(s.Review_SaveNotOwn, await RecordingSave.SaveAsync(other, target));
 
                 Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SizeKB_Format, "2"), RecordingReviewModel.Size(2048));
                 Assert.Equal(string.Format(CultureInfo.CurrentCulture, s.Review_SizeMB_Format, "1,5"), RecordingReviewModel.Size(1536 * 1024));
@@ -547,8 +507,6 @@ namespace PadForge.Tests
                 CultureInfo.CurrentCulture = culture;
                 CultureInfo.CurrentUICulture = uiCulture;
                 RecordingFolder.Seam = folder;
-                RecordingSave.RightsSeam = rights;
-                RecordingSave.Launcher = launcher;
             }
         }
 
@@ -601,12 +559,6 @@ namespace PadForge.Tests
 
         // ── Save as the user ──
 
-        private sealed class ShellElevatedLauncher : PadForge.Services.Plugins.IPluginLauncher
-        {
-            public PadForge.Services.Plugins.PluginLaunch Start(PadForge.Services.Plugins.PluginCommand command, IReadOnlyDictionary<string, string> variables)
-                => PadForge.Services.Plugins.PluginLaunch.Refused(PadForge.Services.Plugins.PluginRefusal.ShellElevated);
-        }
-
         private sealed class CountingLauncher : PadForge.Services.Plugins.IPluginLauncher
         {
             public int Starts;
@@ -614,78 +566,6 @@ namespace PadForge.Tests
             {
                 Starts++;
                 return PadForge.Services.Plugins.PluginLaunch.Refused(PadForge.Services.Plugins.PluginRefusal.Failed);
-            }
-        }
-
-        /// <summary>The save's own first test is the same rule: with rights,
-        /// it saves in this process only when the shell's user has no lower
-        /// right, and otherwise asks the launcher, whatever the shell's own
-        /// token reads. RightsSeam stays null, so the rule
-        /// itself runs.</summary>
-        [Fact]
-        public async Task WithRights_TheSaveRunsHereOnlyWhenTheShellsUserHasNoLowerRight()
-        {
-            var (host, zip) = Recorded();
-            using var owned = host;
-            var before = RecordingFolder.Seam;
-            RecordingFolder.Seam = () => host.Dir;
-            var launcher = new CountingLauncher();
-            RecordingSave.RightsSeam = null;
-            RecordingSave.OwnRightsSeam = () => true;
-            RecordingSave.Launcher = launcher;
-            RecordingSave.Exe = () => @"C:\Apps\PadForge\PadForge.exe";
-            try
-            {
-                string target = Path.Combine(host.Dir, "out.zip");
-                RecordingSave.NoLowerRightSeam = () => false;
-                Assert.NotNull(await RecordingSave.AsUserAsync(zip, target));
-                Assert.Equal(1, launcher.Starts);
-                Assert.False(File.Exists(target));
-                RecordingSave.NoLowerRightSeam = () => true;
-                Assert.Null(await RecordingSave.AsUserAsync(zip, target));
-                Assert.Equal(1, launcher.Starts);
-                Assert.True(File.Exists(target));
-            }
-            finally
-            {
-                RecordingFolder.Seam = before;
-                RecordingSave.OwnRightsSeam = null;
-                RecordingSave.Launcher = null;
-                RecordingSave.NoLowerRightSeam = null;
-                RecordingSave.Exe = () => Environment.ProcessPath;
-            }
-        }
-
-        /// <summary>A save refused for a shell with rights runs in place only
-        /// when the shell's user has no lower right (UAC off, or the built-in
-        /// Administrator), as the install does.</summary>
-        [Fact]
-        public async Task ASaveRefusedForAShellWithRights_RunsInPlaceOnlyWhenItsUserHasNoLowerRight()
-        {
-            var (host, zip) = Recorded();
-            using var owned = host;
-            var before = RecordingFolder.Seam;
-            RecordingFolder.Seam = () => host.Dir;
-            RecordingSave.RightsSeam = () => true;
-            RecordingSave.Launcher = new ShellElevatedLauncher();
-            RecordingSave.Exe = () => @"C:\Apps\PadForge\PadForge.exe";
-            try
-            {
-                string target = Path.Combine(host.Dir, "out.zip");
-                RecordingSave.NoLowerRightSeam = () => false;
-                Assert.NotNull(await RecordingSave.AsUserAsync(zip, target));
-                Assert.False(File.Exists(target));
-                RecordingSave.NoLowerRightSeam = () => true;
-                Assert.Null(await RecordingSave.AsUserAsync(zip, target));
-                Assert.True(File.Exists(target));
-            }
-            finally
-            {
-                RecordingFolder.Seam = before;
-                RecordingSave.RightsSeam = null;
-                RecordingSave.Launcher = null;
-                RecordingSave.NoLowerRightSeam = null;
-                RecordingSave.Exe = () => Environment.ProcessPath;
             }
         }
 
@@ -720,17 +600,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheCommandLine_TakesSummarizeAndRecordSave_AsRunsOfTheirOwn()
+        public void TheCommandLine_TakesSummarize_AsARunOfItsOwn()
         {
             var summarize = CommandLineSwitches.Parse(new[] { "--summarize", @"C:\r.zip" });
             Assert.Null(summarize.Error);
             Assert.Equal(@"C:\r.zip", summarize.Summarize);
             Assert.Empty(summarize.Steps);
-            var save = CommandLineSwitches.Parse(new[] { "--record", "save", "a.zip", "b.zip" });
-            Assert.Null(save.Error);
-            Assert.Equal(("a.zip", "b.zip"), save.RecordSave);
-            Assert.Empty(save.Steps);
-            Assert.NotNull(CommandLineSwitches.Parse(new[] { "--record", "save", "a.zip" }).Error);
+            Assert.NotNull(CommandLineSwitches.Parse(new[] { "--record", "save", "a.zip", "b.zip" }).Error);
             Assert.NotNull(CommandLineSwitches.Parse(new[] { "--summarize" }).Error);
         }
 

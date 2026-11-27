@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ú-iestannen: alnad curu edra parlas Python an le, a PadForge ú-hir curu iestad py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ú-iestannen: PadForge ú-pol henna i curu i edra parlas sui hen an le</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ú-iestannen: i curu i edra parlas sui hen an le ú-vi PC hen</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ú-iestannen: i curu henneth ú-cuia, i iesta hon nu ha</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ú-iestannen: i curu henneth gar polodh herdir, a i goiannas gar hon eithro</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ú-iestannen: PadForge ú-pol henna pi garo polodh herdir</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ú-iestannen: Windows annant polodh herdir na hon, a PadForge postant hon nui cuiad</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ú-iestannen: mabed polodh herdir</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ú-iestannen: Windows boda adh dŷl {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ú-iestannen</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Pen Logitech G-key SDK vi garf nediad hen. Panna im gu Logitech Gaming Software 8.55 egor cŷr.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>I G-key SDK teithannen, a i parlas în lítha. Panno Logitech Gaming Software nui.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK hirnen, a ú pol col hon.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK hirnen, a PadForge ú-col hon, an ú-pol tolcha i herdir ero pol gwista hon a Logitech teithant ennais dîn na hon.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>I parlas hen ú i G-key SDK i baur PadForge.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>I G-key SDK boda iestad. Laew Logitech Gaming Software ú nor.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Iannen, ledil alnad eno. Vi Logitech Gaming Software, logo i hesta G-key na pân ledil vi panu PadForge, a caro i panu hen thand. Nigol G600 egor G300 boe eithro haena i men haudhad în.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Heb i henneth toblannen ir PadForge iesta. Nor a sesta sui senu.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Iesto PadForge ir minnal Windows. Lo hen cui, PadForge iesta eithro pen ceth Windows o râd thent, teithas egor curu egel.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge cuia o {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Hen baura PadForge vi colch în er. Colch în gar parlas egel, a PadForge ú-pol boda curu egel gwista hon.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Hen baura PadForge vi colch i curu egel ú-pol gwista. PadForge ú-pol boda hain gwista colch în.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Menno PadForge na colch în er</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Lamma PadForge a cilith în na Program Files, menna carthas în na ha, a iesta hon o ha. I lammad sí dartha sui ha.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ú-glennant: {0} gar parlas ú-garnen o PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ú-glennant: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Iesto ir minnad lorthannen, an iestant PadForge o colch i gar parlas egel.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ú-glennant: Windows ú-esta colch Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ú-glennant: ú-pol henna i PadForge i cuia.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ú-glennant: ú-adabant {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ú-glennant: ú-pol henna i parlas vi {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ú-glennant: ú-pol boda curu egel gwista {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ú-glennant: i lammad dîn vi {0} ú-ain sui i PadForge i cuia.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ú-glennant: ab i lammad, {0} garant parlas ú-garnen o PadForge, egor curu egel pol gwista hon.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Iesto ir minnad lorthannen, an i PadForge i iestant ú-vi ha eno.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Iesto ir minnad lorthannen, an PadForge ú-pol boda curu egel gwista i colch i iestant PadForge o hon.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Iesto ir minnad lorthannen, an PadForge ú-pol henna i PadForge i iestant.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Iesto ir minnad lorthannen, an PadForge ú-pol henna i golch o PadForge i iestant.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ú-adabant colch barn în, {0}. PadForge heb vi ha i barthaim i iesta adh polodh herdir, a ú-pol iesta barn pen hon.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ú-iestant im ad o colch barn în, {0}. PadForge cuia adh polodh herdir o ha ero, a ú-iestant.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ú-pol adab i sarth i boda PadForge tad cuia, sui ú-iestant.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge cuia adh polodh herdir o {0}, colch i curu egel pol gwista. Pol gwista cilith PadForge vi ha, a PadForge car hain adh polodh în.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge cuia adh polodh herdir o {0}, colch i gar parlas egel. PadForge ú-pol boda curu egel gwista cilith dîn vi ha, a car hain adh polodh în.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge cuia adh polodh herdir o {0}, colch i ú-pol henna. PadForge ú-pol boda curu egel gwista cilith dîn vi ha, a car hain adh polodh în.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Tano anuir vi dast</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Heb aerem i dast athgen lo i henneth edrannen, sí Uthwen vi narth în ferui anuir.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cŷl</value></data>
@@ -1354,13 +1326,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Tastaith glannad: tastad i saith hebannen…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Tastaith glannad: PadForge ú-pol henna i saith hebannen, a Haudho bâr lorn.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>I haudhad adh polodh lín ú-iestant.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>I haudhad adh polodh lín ú-iestant: alnad curu henneth cuia an iesta hon.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>I haudhad adh polodh lín ú-iestant: Windows ú-davant, adh dŷl {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>I haudhad ú-telant mi {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ú-davant teitha i parlas vi ha.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ú-gedant i parlas hen sui teithad în.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>I haudhad telant adh noth {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Haudhannen sui le, na i cholch Downloads lín i lû minui, ab hen mi sad i haudhant medui, a tanannen mi Explorer. Teithad i posta lo alnad mi palt (i daeg dîn, carthas, curu, i garf sadron egor --record stop) dartha an i cenad hen bo Bar, a feithar ab 7 aur ir ú-haudhannen. Ped an curu i dartha, ú i sad.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Teithad press o {0} dartha an le henna hon.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Ceno</value></data>
@@ -5967,7 +5934,6 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Ialthad postant: hennad egor teithad bo maethas egor bo garf Bluetooth dewant. I narn tastaith gar i sarth.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Ialthad postant ben dŷl i PadForge ú-horant. I narn tastaith gar i sarth.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>baura Logitech Gaming Software 8.52 egor cîw</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>hirant i bartham dîn a ú-col hon, an PadForge ú-pol tolcha i herdir ero pol gwista hon a Logitech teithant ennais na hon</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>hirant i bartham dîn a ú-pol maetha hon, a i narn tastaith ped i gaeth</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>iesto Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>dartha an carf paethad gu Arx Control</value></data>
@@ -6072,7 +6038,6 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Henna i partham Force Dimension hen ned i sad pân egel. Falcon edrannen na partham egel hol a edra dan na hen. Parthaim i banna i SDK hirannen pen hen.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Parthaim (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Palt gedad Falcon SDK ú-edrant: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Palt gedad Falcon SDK ú-edrant sí: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Panno maeth Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Panna i maeth Force Dimension, o i colch SDK, na Falcon pen maeth. Windows mabed ned ab estelia Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Gedo Force Dimension SDK</value></data>
@@ -6802,6 +6767,7 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="SdlMapping_Away" xml:space="preserve"><value>I garf ú-iannannen. SDL henna hon ir iannannen.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ú-annant hennad o garf hen na PadForge.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>I lammad govod adabannen, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Gedannen {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Parlas PadForge în</value></data>

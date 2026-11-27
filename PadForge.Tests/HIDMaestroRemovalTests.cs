@@ -214,9 +214,9 @@ namespace PadForge.Tests
             string main = OffLimitsSource.Read("PadForge.App/MainWindow.xaml.cs");
             Assert.Contains("bool installed = HIDMaestroRemoval.IsDriverInstalled(out string version);", main, StringComparison.Ordinal);
 
-            // Whatever this PC holds, the read answers and never throws.
-            bool installed = HIDMaestroRemoval.IsDriverInstalled();
-            Assert.Equal(installed, HIDMaestroRemoval.IsDriverInstalled());
+            // In the test host the backend read refuses, so with no seam the
+            // read answers false and never throws, whatever this PC holds.
+            Assert.False(HIDMaestroRemoval.IsDriverInstalled());
         }
 
         /// <summary>On a machine whose HIDMaestro backend is USB/IP, as on

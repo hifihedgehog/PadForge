@@ -207,6 +207,43 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A pad SDL read through DirectInput, saved with no serial
+        /// in its identity, comes back under HIDAPI with a serial (the 8BitDo
+        /// Ultimate 2C Wired, 2DC8:301D, upstream 921d2164c6). BuildInstanceGuid
+        /// tries the serial first, so the identity is new, and the saved
+        /// device and its setting move to it: through the path the saved one
+        /// was keyed by when HIDAPI opens the same interface, and through the
+        /// model when it opens another.</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ASerialLessPad_KeepsItsDeviceAndSetting_WhenHidapiGivesItASerial(bool samePath)
+        {
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.UserSettings = new SettingsCollection();
+            const ushort vid = 0x2DC8, pid = 0x301D;
+            const string dinputPath = @"\\?\HID#VID_2DC8&PID_301D#7&1a2b3c4d&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+            string hidapiPath = samePath ? dinputPath : dinputPath.Replace("&0&0000", "&0&0001");
+            const string serial = "E417D8010203";
+            Guid product = SdlDeviceWrapper.BuildProductGuid(vid, pid);
+            Guid saved = SdlDeviceWrapper.BuildInstanceGuid(dinputPath, vid, pid, 0);
+            var ud = new UserDevice { InstanceGuid = saved, ProductGuid = product, VendorId = vid, ProdId = pid, ProductName = "Pad" };
+            lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(ud);
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = saved, MapTo = 1 });
+
+            Guid back = SdlDeviceWrapper.BuildInstanceGuid(hidapiPath, vid, pid, 7, serial);
+            Assert.NotEqual(saved, back);
+            var got = new InputManager().FindOrCreateUserDevice(back, product, new HashSet<uint> { 7 }, serial,
+                SdlDeviceWrapper.BuildPathInstanceGuid(hidapiPath, vid, pid, serial));
+
+            Assert.Same(ud, got);
+            Assert.Equal(back, ud.InstanceGuid);
+            lock (SettingsManager.UserDevices.SyncRoot) Assert.Single(SettingsManager.UserDevices.Items);
+            lock (SettingsManager.UserSettings.SyncRoot)
+                Assert.Equal(back, Assert.Single(SettingsManager.UserSettings.Items).InstanceGuid);
+        }
+
         // ── R13: adoption re-keys reach the pinned references ──
 
         /// <summary>The poll thread records every adoption re-key for the

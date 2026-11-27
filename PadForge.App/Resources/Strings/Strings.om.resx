@@ -1895,7 +1895,6 @@ PadForge bal'ina isaa crash.log kan PadForge.exe cinaa jiru keessatti barreessuu
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Walqabsiisni dhaabbate: kontirolaa ykn raadiyoo Bluetooth dubbisuun ykn itti barreessuun hin milkoofne. Galmeen qorannoo rakkoo bal'ina isaa qaba.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Walqabsiisni dogoggora PadForge hin eegneen dhaabbate. Galmeen qorannoo rakkoo bal'ina isaa qaba.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 yookiin isa booda barbaachisa</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>mana kitaabaa isaa argate garuu hin feene, sababni isaas PadForge bulchitoonni qofti akka isa jijjiiruu danda'anii fi Logitech akka mallatteesse mirkaneessuu hin dandeenye</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>mana kitaabaa isaa argate garuu itti fayyadamuu hin dandeenye, galmeen qorannoo rakkoo sababa isaa ibsa</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software jalqabsiisi</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>bilbila Arx Control qabu eeggachaa jira</value></data>
@@ -2423,9 +2422,6 @@ PadForge bal'ina isaa crash.log kan PadForge.exe cinaa jiru keessatti barreessuu
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>fi {0} dabalataa</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} kan {1} keessaa</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Deebiin {0} keessatti hin kennamne akka lakkii lakkaa'ama.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge mirga bulchaatiin {0} irraa hojjeta, kunis kuusaa sagantaaleen biroo jijjiiruu danda'anidha. Isaan achitti qindaa'ina PadForge jijjiiruu danda'u, PadForge immoo mirga isaatiin irratti hojjeta.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge mirga bulchaatiin {0} irraa hojjeta, kunis kuusaa faayiloota biroo qabudha. PadForge sagantaaleen biroo achitti qindaa'ina isaa akka hin jijjiirre dhorkuu hin danda'u, mirga isaatiin immoo irratti hojjeta.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge mirga bulchaatiin {0} irraa hojjeta, kunis kuusaa inni dubbisuu hin dandeenyedha. PadForge sagantaaleen biroo achitti qindaa'ina isaa akka hin jijjiirre dhorkuu hin danda'u, mirga isaatiin immoo irratti hojjeta.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kuusa odeeffannoo kontirolaa</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now kuusa odeeffannoo kontirolaa hawaasaa (SDL_GameControllerDB) GitHub irraa, ykn teessoo Dabalata jalatti qindaa'e irraa buufata, walqabsiisa veershiniin PadForge kun hin qabne immoo faayilii qindaa'inaa keessatti kuusa. Isaan achumaan hojii irra oolu. Teessoo biraa irraa walqabsiisa haaraa qofa kuusa. Walqabsiisni haaraan jalqaba kan fayyadamu kontirolaa SDL akka gamepad ykn akka gosa addaa hin qabneetti gabaasu, wanti biraa akka gamepad hin dubbisne, hin ramadamne fi Force Raw Joystick Mode keessa hin jirreef qofa. Erga hojii irra oolee booda, kontirolaan erga ramadamee illee hojii irra tura. Deebisuun walqabsiisa buufataman haqa, Iddoo irraa buufatu immoo gara faayilii hawaasaatti deebisa, kan Update Now itti aanu buufatu. Tarreewwan kee, Dabalata jala jiran, ni turu.</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Haaromsaa jira…</value></data>
@@ -2560,6 +2556,7 @@ PadForge bal'ina isaa crash.log kan PadForge.exe cinaa jiru keessatti barreessuu
   <data name="SdlMapping_Away" xml:space="preserve"><value>Meeshaan hin walqabatne. Yeroo walqabatu SDL isa dubbisa.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL meeshaa kanaaf PadForge'f dubbisa tokkollee hin kennine.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Garagalcha hawaasaa keessa jiru, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Buufatame {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faayilii PadForge mataa isaa</value></data>
@@ -2771,7 +2768,6 @@ PadForge bal'ina isaa crash.log kan PadForge.exe cinaa jiru keessatti barreessuu
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge cufaa garagalcha isaa tokko qofa akka hojjetu godhu uumuu hin dandeenye, kanaaf hin jalqabne.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Fuulli buufannaa Falcon SDK hin banamne: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Fuulli buufannaa Falcon SDK ammallee hin banamne: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Tarree {0:N0} sirnoota biroof ta'e ni darbama.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows mirga kee mataa keetiin isa hin jalqabne.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Sekondii {0} keessatti hin xumuramne.</value></data>

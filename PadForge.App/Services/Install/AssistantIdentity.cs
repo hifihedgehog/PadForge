@@ -170,9 +170,8 @@ namespace PadForge.Services.Install
         /// <summary>The first program named that is a file here, else the
         /// first bare name found as its .exe on the PATH of the desktop
         /// shell's user, who starts the assistant, as cmd.exe would run it
-        /// for that user. PadForge with rights has the machine's Path alone
-        /// (RightsVariables), which holds no Node or Python installed for the
-        /// user. This process's own PATH is searched when the shell gives no
+        /// for that user, which also holds a Node or Python installed after
+        /// PadForge started. This process's own PATH is searched when the shell gives no
         /// variables. Null when none is there.</summary>
         private static string InterpreterOf(List<string> programs)
         {
@@ -205,8 +204,7 @@ namespace PadForge.Services.Install
             if (ShellVariablesSeam == null && UserInstall.OffLimitsForTest) return null;
             var seam = ShellVariablesSeam;
             if (seam != null) return seam();
-            using var shell = PadForge.Services.Plugins.PluginLauncher.OpenShell();
-            return shell == null ? null : PadForge.Services.Plugins.PluginLauncher.ShellVariables(shell, out _);
+            return UserVariables.OfTheUser();
         }
 
         /// <summary>A variable's value in NAME=value lines, its name in any

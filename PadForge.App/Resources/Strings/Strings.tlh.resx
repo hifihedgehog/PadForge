@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>taghbe': SoHvaD Python 'a'baqa'mey poSmoHbogh nIqHom tu'lu'be', 'ej py taghmoHwI' tu'be' PadForge</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>taghbe': SoHvaD 'a'baqa' Seghvam poSmoHbogh nIqHom laDlaHbe' PadForge</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>taghbe': SoHvaD 'a'baqa' Seghvam poSmoHbogh nIqHom De'wI'vamDaq tu'lu'be'</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>taghbe': 'oH taghmeH jIH SeHwI' nIqHom QaptaHbe'</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>taghbe': loHwI' DIb ghaj jIH SeHwI' nIqHom, vaj DIbvetlh ghajchoH jan chelwI' je</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>taghbe': loHwI' DIb ghajchoHchugh, Sovbe' PadForge</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>taghbe': 'oHvaD loHwI' DIb nob Windows, vaj QaptaHpa' 'oH mevmoH PadForge</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>taghbe': loHwI' DIb tlhob</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>taghbe': lajQo' Windows, Qagh {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>taghbe'</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>De'wI'vamDaq Logitech G-key SDK tu'lu'be'. Logitech Gaming Software 8.55 ghap chu'qu'bogh DajomDI', jomlu' je.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK ghItlhlu'pu', 'ach loj 'a'baqa'Daj. Logitech Gaming Software yIjomqa'.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK tu'lu'pu', 'ach QapmoHlaHlu'pu'be'.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK tu'lu'pu', 'ach loHwI'pu' neH 'oH luchoHlaH 'ej 'oH tlhI'pu' Logitech 'e' 'ollaHbe'pu' PadForge, vaj QapmoHbe'pu'.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>pIHbogh PadForge G-key SDK 'oHbe' nIqHomvetlh.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>tagh 'e' lajQo' G-key SDK. motlh, QaptaHbe' Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>rarlu'pu', 'ach wej nItlh leQ leghlu'. Logitech Gaming Software lo'taHvIS, PadForge tu'qomDaq Hoch nItlh leQDaq G-key ra' yIHoq, 'ej tu'qomvetlh reH yItaHmoH. G600 'eQway' ghap G300 'eQway' ghap lo'lu'chugh, qawHaq lo'Daj chu'Ha'nISlu' je.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>taghDI' PadForge, Qorwagh yISo'taH. motlh Qap 'ej nel.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows DangaQHa'moHDI', PadForge yItagh. Dochvam chu'taHvIS, qIghvo', ghItlhvo' latlh nIqHomvo' ghap PadForge taghlu'DI', Windows yu'meH Qorwagh 'anglu'be'.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>{0} Daq Qap PadForge.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>PadForge neH ngaSbogh 'a'baqa' ngaSwI' poQ Dochvam. latlh 'a'baqa'mey ngaS 'a'baqa' ngaSwI'Daj, vaj latlh nIqHommey 'oH choH 'e' botlaHbe' PadForge.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>latlh nIqHommey choHlaHbe'bogh 'a'baqa' ngaSwI'Daq PadForge poQ Dochvam. 'a'baqa' ngaSwI'Daj luchoH latlh nIqHommey 'e' botlaHbe'pu' PadForge.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>'a'baqa' ngaSwI' tlhInDaq PadForge yIngeH</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Program Files Daq PadForge DuHmeyDaj je velqa' chenmoH, Qu'meyDaj Daqvetlh ghaS, ghIq Daqvetlhvo' 'oH tagh. naDev velqa' choHbe'.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>vIHbe' PadForge: PadForge Doch 'oHbe'bogh 'a'baqa'mey ngaS {0}.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>vIHbe' PadForge: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>ngaQHa'moHlu'DI' yItagh chu'Ha'lu'pu', latlh 'a'baqa'mey ngaSbogh 'a'baqa' ngaSwI'vo' PadForge taghmo'.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>vIHbe' PadForge: Program Files 'a'baqa' ngaSwI' pongbe' Windows.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>vIHbe' PadForge: QaptaHbogh PadForge laDlaHbe'pu'.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>vIHbe' PadForge: {0} chenmoHlaHbe'pu'.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>vIHbe' PadForge: {0} ngaSbogh Dochmey laDlaHbe'pu'.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>vIHbe' PadForge: {0} luchoH latlh nIqHommey 'e' botlaHbe'pu'.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>vIHbe' PadForge: {0} Daq velqa'Daj rurbe'pu' QaptaHbogh PadForge.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>vIHbe' PadForge: velqa' chenmoHlu'pu'DI', PadForge Doch 'oHbe'bogh 'a'baqa'mey ngaSpu' {0}, pagh 'oH luchoHlaH latlh nIqHommey.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>ngaQHa'moHlu'DI' yItagh chu'Ha'lu'pu', taghbogh PadForge DaH tu'lu'be'mo'.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>ngaQHa'moHlu'DI' yItagh chu'Ha'lu'pu', PadForge taghbogh 'a'baqa' ngaSwI' luchoH latlh nIqHommey 'e' botlaHbe'mo' PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>ngaQHa'moHlu'DI' yItagh chu'Ha'lu'pu', taghbogh PadForge laDlaHbe'mo' PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>ngaQHa'moHlu'DI' yItagh chu'Ha'lu'pu', taghbogh PadForge 'a'baqa' ngaSwI' laDlaHbe'mo' PadForge.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>'a'baqa' ngaSwI' QaD chenmoHlaHbe' PadForge, {0}. Daqvetlh loHwI' DIb lo'bogh paqmey pol PadForge, 'ej 'oH Hutlhchugh QaD taghlaHbe'.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>'a'baqa' ngaSwI' QaDvo' taghqa'laHbe' PadForge, {0}. Daqvetlhvo' neH loHwI' DIb lo' PadForge, vaj taghbe'.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>wa' QaptaHbogh velqa' neH chaw'bogh Durghang chenmoHlaHbe'pu' PadForge, vaj taghbe'.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>{0} Daqvo' loHwI' DIb lo'taHvIS Qap PadForge. 'a'baqa' ngaSwI'vetlh choHlaH latlh nIqHommey. Daqvetlh PadForge DuHmey luchoHlaH, 'ej DIbDaj lo'taHvIS DuHmeyvetlh pab PadForge.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>{0} Daqvo' loHwI' DIb lo'taHvIS Qap PadForge. latlh 'a'baqa'mey ngaS 'a'baqa' ngaSwI'vetlh. Daqvetlh PadForge DuHmey luchoH latlh nIqHommey 'e' botlaHbe' PadForge, 'ej DIbDaj lo'taHvIS DuHmeyvetlh pab.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>{0} Daqvo' loHwI' DIb lo'taHvIS Qap PadForge. 'a'baqa' ngaSwI'vetlh laDlaHbe'pu'. Daqvetlh PadForge DuHmey luchoH latlh nIqHommey 'e' botlaHbe' PadForge, 'ej DIbDaj lo'taHvIS DuHmeyvetlh pab.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>reH vep yoSDaq yI'ang</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>poStaHvIS Qorwagh, vep yoSDaq PadForge mIllogh yI'angtaH. vaj reH wa' rISDaq HIDjolevDaj 'elHa' tu'lu'.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>De' chu'mey</value></data>
@@ -1354,13 +1326,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Say'moHghach: Da'uchbogh 'ay'mey 'oltaH…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Say'moHghach: Da'uchbogh 'ay'mey laDlaHbe' PadForge, vaj chu'Ha'taH yIpol leQ.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>DIblIj lo'bogh polmeH mIw taghbe'.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>DIblIj lo'bogh polmeH mIw taghbe': 'oH taghmeH jIH SeHwI' nIqHom QaptaHbe'.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>DIblIj lo'bogh polmeH mIw taghbe': lajQo' Windows, Qagh {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>{0} poHDaq rInbe' polmeH mIw.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>pa' 'a'baqa' ghItlhlu' 'e' chaw'be' Windows.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>taDaj rur 'a'baqa'vam lajbe' PadForge.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>'elHa'pu' polmeH mIw, ngoq {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>DIblIj lo'lu'taHvIS pollu'. wa'DIch Downloads 'a'baqa' ngaSwI'Daq, ghIq Qav Dapolpu'bogh Daq pollu', 'ej Explorer Daq 'anglu'. pagh tenwal leghtaHvIS, ta mevchugh (veHDaj, mIw, nIqHom, QaHwI' jan ghap --record stop), juH Daq nuDmeH loS, 'ej 7 jaj pIq pollu'be'chugh, Qaw'lu'. nIqHomvaD loS ta 'e' ja'lu', 'ach Daq not ja'lu'.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} qonlu'pu'bogh Qagh ta, DalaDmeH loS.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>yInuD</value></data>
@@ -5967,7 +5934,6 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>mevpu' nelmeH mIw: SeHjan ghap Bluetooth Se' HablI' laDmeH pagh ghItlhmeH mIw lujpu'. De' ngaS Qagh nejmeH QonoS.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>PadForge pIHbe'bogh Qagh qaSmo', mevpu' nelmeH mIw. De' ngaS Qagh nejmeH QonoS.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 ghap chu'qu'bogh poQ</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ngoq veyDaj tu'lu'pu', 'ach loHwI'pu' neH 'oH luchoHlaH 'ej 'oH tlhI'pu' Logitech 'e' 'ollaHbe'pu' PadForge, vaj QapmoHbe'pu'</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ngoq veyDaj tu'lu'pu', 'ach QapmoHlaHbe'pu', 'ej meq ja' Qagh nejmeH QonoS</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software yItagh</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control ghajbogh QumwI' loStaH</value></data>
@@ -6072,7 +6038,6 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>latlh velqa' lo'be'taHvIS Force Dimension ngoq vey velqa'vam QapmoH. latlh velqa' lo'bogh Falcon SoQ 'ej velqa'vam lo'taHvIS poSqa'. DuHvam lo'be'lu'chugh je, SDK jombogh velqa'mey tu'lu'.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|ngoq veymey (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK SuqmeH tenwal poSbe'pu': {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK SuqmeH tenwal wej poS: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon SeHwI' nIqHom yIjom</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>SeHwI' nIqHom ghajbe'bogh Falcon, Force Dimension SeHwI' nIqHom nob, SDK 'a'baqa' ngaSwI'vo'. wa'DIch Force Dimension Davoq'a' 'e' yu'laH Windows.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension SDK yISuq</value></data>
@@ -6802,6 +6767,7 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="SdlMapping_Away" xml:space="preserve"><value>rarbe' jan. rarDI', 'oH laD SDL.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>janvam laDmeH De' Suqbe'pu' PadForge, De' nobbe'pu'mo' SDL.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>PadForge ngaSbogh yuvwan velqa', {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Suqlu'pu': {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge 'a'baqa'</value></data>

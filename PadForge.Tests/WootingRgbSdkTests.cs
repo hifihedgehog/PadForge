@@ -530,6 +530,9 @@ namespace PadForge.Tests
             Passes(backend, 2);
             lock (_channels) Assert.True(_channels.Single().Disposed);
             Assert.Equal(new[] { Key }, backend.Recorded);
+            // A unit that owes its reset keeps the tick, so the retry comes
+            // with no other wake.
+            Assert.InRange(backend.WaitMs, 1, 5);
             Unlight();
             Advance(WootingRgbSdkBackend.RetryMs);
             Passes(backend, 3);

@@ -217,5 +217,34 @@ namespace PadForge.Common.Input
             }
             return new string(id);
         }
+
+        /// <summary>
+        /// The row ID SDL reads a joystick through, given which IDs have a row:
+        /// the ID <see cref="LookupId(string)"/> gives, and when that one has
+        /// no row, the ID of <see cref="UsbBusFallback"/>'s GUID if it has one.
+        /// SDL tries the second only once no step of its lookup found a row for
+        /// the first (SDL_gamepad.c:1652-1667). With no row either way, the
+        /// first ID.
+        /// </summary>
+        internal static string LookupId(string joystickGuid, Func<string, bool> hasRow)
+        {
+            string id = LookupId(joystickGuid);
+            if (id == null || hasRow == null || hasRow(id)) return id;
+            string usb = LookupId(UsbBusFallback(joystickGuid));
+            return usb != null && hasRow(usb) ? usb : id;
+        }
+
+        /// <summary>The GUID SDL's lookup tries after a joystick's own finds no
+        /// row: the same GUID on the USB bus, for one on the Bluetooth bus whose
+        /// byte 14, the driver mark, is zero (SDL_gamepad.c:1658-1667).
+        /// DirectInput put Bluetooth pads on the USB bus until upstream
+        /// c37e0e81ca, so their rows carry that bus. Null for any other GUID.</summary>
+        internal static string UsbBusFallback(string joystickGuid)
+        {
+            if (joystickGuid == null || joystickGuid.Length != GuidLength) return null;
+            if (string.CompareOrdinal(joystickGuid, 0, "0500", 0, 4) != 0) return null;
+            if (joystickGuid[28] != '0' || joystickGuid[29] != '0') return null;
+            return "0300" + joystickGuid.Substring(4);
+        }
     }
 }

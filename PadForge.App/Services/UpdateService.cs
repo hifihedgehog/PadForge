@@ -342,22 +342,9 @@ namespace PadForge.Services
         internal static string HistoryEndpoint(string sha) =>
             $"https://api.github.com/repos/{Repo}/commits?sha={sha}&per_page={HistoryDepth.ToString(CultureInfo.InvariantCulture)}";
 
-        /// <summary>
-        /// The protected folder's Update folder (#600). The copy with rights
-        /// downloads there and later starts the downloaded exe from there,
-        /// and a pending install can wait there between sessions. Only
-        /// Administrators and SYSTEM can change what is in it
-        /// (<see cref="ProtectedFolder"/>), so no program without rights can
-        /// replace the staged exe or put a library beside it. The test host
-        /// has no protected folder and keeps the old place, where it writes
-        /// nothing.
-        /// </summary>
-        internal static string StagingRoot => ProtectedFolder.Updates is { Length: > 0 } updates ? updates : LegacyStagingRoot;
-
-        /// <summary>Where updates were staged before #600: the user's temp
-        /// folder, which every program of the user can write. Whatever is
-        /// left there is removed and never started.</summary>
-        internal static string LegacyStagingRoot => Path.Combine(Path.GetTempPath(), "PadForge_Update");
+        /// <summary>Where updates are downloaded and wait to be installed:
+        /// the user's temp folder.</summary>
+        internal static string StagingRoot => Path.Combine(Path.GetTempPath(), "PadForge_Update");
 
         /// <summary>
         /// One folder per installed copy, named after the exe it replaces. It
@@ -1442,36 +1429,8 @@ namespace PadForge.Services
         /// go.</summary>
         internal static string LeaseName(string targetExe) => @"Global\PadForge_UpdateLease_" + InstallKey(targetExe);
 
-        /// <summary>
-        /// The lease's access list (#600): Administrators and SYSTEM may do
-        /// anything with it, and every signed-in account may read who owns it,
-        /// so a start without rights can still tell a real lease from
-        /// another's. Nobody else may wait on it, change it or take it. The
-        /// helper runs with rights, so the lease's owner is Administrators or
-        /// SYSTEM, which no account without rights can make.
-        /// </summary>
-        internal static MutexSecurity LeaseSecurity()
-        {
-            var security = new MutexSecurity();
-            security.AddAccessRule(new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null),
-                MutexRights.FullControl, AccessControlType.Allow));
-            security.AddAccessRule(new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null),
-                MutexRights.FullControl, AccessControlType.Allow));
-            security.AddAccessRule(new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null),
-                MutexRights.ReadPermissions, AccessControlType.Allow));
-            security.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
-            // Named outright, whatever this account's default owner is. Only
-            // a token with rights may name Administrators as an owner, and the
-            // helper has them.
-            if (Environment.IsPrivilegedProcess)
-                security.SetOwner(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
-            return security;
-        }
-
         /// <summary>Takes the lease when no other helper holds it. Creating
-        /// the name is the whole test, and Windows makes it atomic. A name
-        /// another account made first, to keep PadForge from updating, is
-        /// refused the same way: the update then does not go ahead.</summary>
+        /// the name is the whole test, and Windows makes it atomic.</summary>
         internal static bool TryAcquireUpdateLease(string targetExe, out Mutex lease)
         {
             lease = null;
@@ -1483,15 +1442,11 @@ namespace PadForge.Services
             bool createdNew;
             try
             {
-                mutex = MutexAcl.Create(false, LeaseName(targetExe), out createdNew, LeaseSecurity());
+                mutex = new Mutex(false, LeaseName(targetExe), out createdNew);
             }
             catch (UnauthorizedAccessException)
             {
                 return false; // it exists, and belongs to someone else
-            }
-            catch (WaitHandleCannotBeOpenedException)
-            {
-                return false;
             }
             if (!createdNew)
             {
@@ -1506,38 +1461,23 @@ namespace PadForge.Services
         /// An ordinary launch then leaves at once: the helper starts PadForge
         /// itself when it is done, and a copy running meanwhile would hold the
         /// very file being replaced.</summary>
-        internal static bool IsUpdateInProgress(string exe) => IsUpdateInProgress(exe, IsTrustedLeaseOwner);
-
-        /// <summary>
-        /// The same, counting a name as a lease only when its owner passes
-        /// <paramref name="trustedOwner"/> (#600). Any account can make a
-        /// mutex of that name, and before this a name made by any account
-        /// kept every start of PadForge away. One whose owner cannot be read
-        /// is not a lease either: the real lease lets every signed-in account
-        /// read its owner.
-        /// </summary>
-        internal static bool IsUpdateInProgress(string exe, Func<string, bool> trustedOwner)
+        internal static bool IsUpdateInProgress(string exe)
         {
             try
             {
-                if (string.IsNullOrEmpty(exe)
-                    || !MutexAcl.TryOpenExisting(LeaseName(exe), MutexRights.ReadPermissions, out var lease)) return false;
-                using (lease)
-                {
-                    var owner = lease.GetAccessControl().GetOwner(typeof(SecurityIdentifier)) as SecurityIdentifier;
-                    return owner != null && trustedOwner(owner.Value);
-                }
+                if (string.IsNullOrEmpty(exe) || !Mutex.TryOpenExisting(LeaseName(exe), out var lease)) return false;
+                lease.Dispose();
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return true; // it exists, and belongs to someone else
             }
             catch
             {
                 return false;
             }
         }
-
-        /// <summary>Administrators or SYSTEM: the owner a helper with rights
-        /// gives its lease.</summary>
-        internal static bool IsTrustedLeaseOwner(string sid)
-            => sid == ProtectedFolder.AdministratorsSid || sid == ProtectedFolder.SystemSid;
 
         private static void ReleaseLease(ref Mutex lease)
         {
@@ -2020,7 +1960,7 @@ namespace PadForge.Services
                         return;
                     for (int attempt = 0; attempt < 10; attempt++)
                     {
-                        if (IsUpdateInProgress(self) || (CleanStaging(StagingRoot, self) & CleanLegacyStaging(self))) return;
+                        if (IsUpdateInProgress(self) || CleanStaging(StagingRoot, self)) return;
                         await Task.Delay(TimeSpan.FromSeconds(3)).ConfigureAwait(false);
                     }
                 }
@@ -2056,31 +1996,6 @@ namespace PadForge.Services
             return clean;
         }
 
-        /// <summary>Removes the staging folder in the user's temp folder that
-        /// came before the protected one (#600): a program without rights
-        /// could have changed anything in it, so nothing there is started or
-        /// kept, and it is deleted by handles, so a link in it is deleted as
-        /// the link and never followed (HandleTree). A copy that runs from
-        /// inside it, the helper an older version started, leaves it alone.
-        /// True when it is gone.</summary>
-        internal static bool CleanLegacyStaging(string self) => CleanLegacyStaging(self, StagingRoot, LegacyStagingRoot);
-
-        internal static bool CleanLegacyStaging(string self, string staging, string legacy)
-        {
-            if (SamePath(staging, legacy) || !Directory.Exists(legacy)) return true;
-            if (!string.IsNullOrEmpty(self) && NormalizePath(self).StartsWith(NormalizePath(legacy), StringComparison.Ordinal))
-                return true;
-            try
-            {
-                ThrowIfWriteOffLimits(legacy);
-                return PadForge.Common.HandleTree.Delete(legacy);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private static bool CleanInstallDir(string dir)
         {
             bool clean = true;
@@ -2111,10 +2026,6 @@ namespace PadForge.Services
         /// owner.</summary>
         private static string EnsureInstallDir(string targetExe)
         {
-            // The Update folder is made with the protected folder's list, or
-            // replaced when one that is there lets another account change it.
-            if (!SamePath(StagingRoot, LegacyStagingRoot) && !ProtectedFolder.MakeSound(StagingRoot))
-                throw new IOException("The protected update folder could not be made: " + StagingRoot);
             string dir = InstallDir(targetExe);
             CreateFolder(dir);
             string owner = Path.Combine(dir, "target.txt");
@@ -2192,7 +2103,7 @@ namespace PadForge.Services
             if (OffLimitsForTest)
                 throw new System.ComponentModel.Win32Exception(ERROR_ACCESS_DENIED,
                     "The test host starts no process: " + psi.FileName);
-            return RightsVariables.Start(psi);
+            return Process.Start(psi);
         }
 
         /// <summary>Fails a request to GitHub, a check's question or the

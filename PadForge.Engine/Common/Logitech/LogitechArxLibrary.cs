@@ -99,10 +99,8 @@ namespace PadForge.Engine.Common.Logitech
 
         /// <summary>The library, or null with <paramref name="reason"/>
         /// saying why: "gate" in the test host, "missing" with no
-        /// registration, "refused" when PadForge's checks refused each path
-        /// (TrustedLibrary), "load" when a path would not load, "exports"
-        /// when a DLL loaded but is not this library
-        /// (<see cref="TrustedLibrary.Outcome"/>).</summary>
+        /// registration, "load" when none of its paths loaded, "exports" when
+        /// a DLL loaded but is not this library.</summary>
         public static LogitechArxLibrary TryLoad(out string reason)
         {
             reason = "missing";
@@ -113,24 +111,11 @@ namespace PadForge.Engine.Common.Logitech
             }
             foreach (string candidate in LogitechServerCatalog.ArxCandidates())
             {
-                // Loaded into PadForge only when only administrators could have put it
-                // in place and Logitech signed it, held open from the check
-                // through the load (#600, TrustedLibrary).
-                IntPtr module = TrustedLibrary.Load(candidate, TrustedLibrary.Logitech,
-                    p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
-                if (module == IntPtr.Zero)
-                {
-                    // Every refusal and failure is written, one that could
-                    // not be opened among them, so the card's line that
-                    // sends the user here is true for each.
-                    SdlDiagLog.WriteLine(TrustedLibrary.NotLoadedLine("LOGITECH ARX", candidate, why));
-                    reason = TrustedLibrary.Outcome(reason, why);
-                    continue;
-                }
+                reason = "load";
+                if (!NativeLibrary.TryLoad(candidate, out IntPtr module)) continue;
                 var lib = new LogitechArxLibrary { Path = candidate };
                 if (lib.Resolve(module)) return lib;
-                SdlDiagLog.WriteLine("LOGITECH ARX " + candidate + " loaded, and it lacks the Arx functions");
-                reason = TrustedLibrary.Outcome(reason, "exports");
+                reason = "exports";
             }
             return null;
         }

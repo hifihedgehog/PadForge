@@ -116,6 +116,12 @@ namespace PadForge.Services.Automation
         /// other kind.</summary>
         public AutomationPluginGrant Grant { get; private set; }
 
+        /// <summary>PadForge closed the session itself, a web assistant's or
+        /// network client's access the user revoked, so its devices go as
+        /// PadForge's own drop. Set before the close, read at its
+        /// end.</summary>
+        public volatile bool ClosedByPadForge;
+
         /// <summary>Whether hello was answered yes.</summary>
         public bool Opened { get; private set; }
 

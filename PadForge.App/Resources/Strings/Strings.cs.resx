@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nespuštěno: žádný program vám neotevírá soubory Python a PadForge nenachází spouštěč py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nespuštěno: PadForge nemůže zjistit, který program otevírá tento druh souboru</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nespuštěno: program, který tento druh souboru otevírá, na tomto PC není</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nespuštěno: neběží žádný shell plochy, pod kterým by se dal spustit</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nespuštěno: shell plochy má práva správce, takže by je měl i plugin</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nespuštěno: PadForge nemůže zjistit, zda by měl práva správce</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nespuštěno: Windows mu dal práva správce, takže ho PadForge ukončil, než se spustil</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nespuštěno: žádá o práva správce</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nespuštěno: Windows odmítl s chybou {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nespuštěno</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Na tomto počítači není Logitech G-key SDK. Instaluje se s Logitech Gaming Software 8.55 nebo novějším.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK je zaregistrované, ale jeho soubor chybí. Přeinstalujte Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK bylo nalezeno, ale nepodařilo se ho načíst.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK bylo nalezeno a nenačetlo se, protože PadForge nemohl potvrdit, že ho mohou měnit jen správci a že ho podepsal Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Tato knihovna není G-key SDK, které se tu očekává.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK se odmítlo spustit. Obvykle to znamená, že neběží Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Připojeno, zatím nebyla zachycena žádná klávesa. V Logitech Gaming Software přetáhněte v profilu PadForge příkaz G-key na každou klávesu a nastavte tento profil jako trvalý. Myš G600 nebo G300 navíc nesmí být v režimu vestavěné paměti.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Při spuštění programu PadForge zůstane okno skryté. Program běží a mapuje jako obvykle.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Spustí PadForge automaticky po přihlášení do Windows. Dokud je to zapnuté, PadForge se spustí i bez výzvy Windows ze zástupce, skriptu nebo jiného programu.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge běží z {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>K tomu musí být PadForge ve vlastní složce. Jeho složka obsahuje jiné soubory, takže PadForge nemůže zabránit jiným programům, aby ji měnily.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>K tomu musí být PadForge ve složce, kterou jiné programy nemohou měnit. PadForge nemohl zabránit jiným programům, aby jeho složku měnily.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Přesunout PadForge do vlastní složky</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Zkopíruje PadForge a jeho nastavení do složky Program Files, nasměruje tam jeho úlohy a spustí ho odtud. Kopie zde zůstane beze změny.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se nepřesunul: {0} obsahuje soubory, které nepatří programu PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se nepřesunul: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Spouštění při přihlášení bylo vypnuto, protože spouštělo PadForge ze složky, která obsahuje jiné soubory.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge se nepřesunul: Windows neuvádí žádnou složku Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge se nepřesunul: nemohl přečíst spuštěný PadForge.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge se nepřesunul: nemohl vytvořit {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge se nepřesunul: nemohl přečíst, co {0} obsahuje.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge se nepřesunul: nemohl zabránit jiným programům, aby měnily {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge se nepřesunul: jeho kopie v {0} neodpovídala spuštěnému programu PadForge.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge se nepřesunul: po zkopírování složka {0} obsahovala soubory, které nepatří programu PadForge, nebo ji mohly měnit jiné programy.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Spouštět při přihlášení bylo vypnuto, protože spuštěný PadForge už neexistuje.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Spouštět při přihlášení bylo vypnuto, protože PadForge nemohl zabránit jiným programům, aby měnily složku, ze které PadForge spustil.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Spouštět při přihlášení bylo vypnuto, protože PadForge nemohl přečíst, který PadForge spustil.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Spouštět při přihlášení bylo vypnuto, protože PadForge nemohl přečíst složku PadForge, který spustil.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nemohl vytvořit svou chráněnou složku {0}. PadForge v ní uchovává knihovny, které spouští s právy správce, a bez ní se nemůže bezpečně spustit.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge se nemohl znovu spustit ze své chráněné složky {0}. PadForge běží s právy správce jen odtud, a proto se nespustil.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge nemohl vytvořit zámek, který brání spuštění více kopií, proto se nespustil.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge běží s právy správce z {0}, složky, kterou mohou měnit jiné programy. Mohou tam měnit nastavení programu PadForge a PadForge podle něj jedná se svými právy.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge běží s právy správce z {0}, složky, která obsahuje jiné soubory. PadForge nemůže zabránit jiným programům, aby tam měnily jeho nastavení, a podle něj jedná se svými právy.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge běží s právy správce z {0}, složky, kterou PadForge nemohl přečíst. PadForge nemůže zabránit jiným programům, aby tam měnily jeho nastavení, a podle něj jedná se svými právy.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vždy zobrazovat v oznamovací oblasti</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v oznamovací oblasti zůstane viditelná, i když je okno otevřené, takže příkaz Ukončit v její nabídce je vždy na jedno kliknutí.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aktualizace</value></data>
@@ -1354,13 +1326,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Kontrola: kontrolují se části, které ponecháte…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Kontrola: PadForge nemohl přečíst části, které ponecháte, proto je Uložit vypnuto.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Ukládání s vašimi právy se nespustilo.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Ukládání s vašimi právy se nespustilo: neběží žádný shell plochy, pod kterým by se spustilo.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Ukládání s vašimi právy se nespustilo: Windows odmítl s chybou {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Ukládání neskončilo do {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows nedovolil soubor tam zapsat.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge tento soubor nepřijal jako vlastní nahrávku.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Ukládání skončilo kódem {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Uloženo s vašimi právy, napoprvé do složky Stažené soubory, pak tam, kam jste uložili naposledy, a zobrazeno v Průzkumníku souborů. Nahrávka, která se zastaví, když u stránky nikdo není (limit, makro, program, nástroj asistenta nebo --record stop), čeká na toto přečtení na stránce Domů a po 7 dnech se smaže, pokud ji neuložíte. Program se dozví, že čeká, nikdy ne kde.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Nahrávka problému z {0} čeká, až si ji přečtete.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Zkontrolovat</value></data>
@@ -5920,7 +5887,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Párování se zastavilo: čtení nebo zápis ovladače či rádia Bluetooth selhal. Podrobnosti jsou v diagnostickém protokolu.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Párování se zastavilo na chybě, kterou PadForge nečekal. Podrobnosti jsou v diagnostickém protokolu.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>vyžaduje Logitech Gaming Software 8.52 nebo novější</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>knihovna byla nalezena a nenačetla se, protože PadForge nemohl potvrdit, že ji mohou měnit jen správci a že ji podepsal Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>knihovna byla nalezena, ale nepodařilo se ji použít, důvod uvádí diagnostický protokol</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>spusťte Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>čeká se na telefon s Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Načte tuto kopii knihovny Force Dimension místo všech ostatních. Falcon otevřený v jiné kopii se zavře a znovu otevře v této. Kopie, které SDK nainstaluje, se najdou i bez toho.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Knihovny (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Stránka ke stažení Falcon SDK se neotevřela: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Stránka ke stažení Falcon SDK se zatím neotevřela: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Nainstalovat ovladač Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Nainstaluje ovladač Force Dimension ze složky SDK do Falconu, který žádný nemá. Windows se může nejdřív zeptat, zda Force Dimension důvěřujete.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Získat Force Dimension SDK</value></data>
@@ -6726,6 +6691,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="SdlMapping_Away" xml:space="preserve"><value>Zařízení není připojeno. SDL ho přečte, jakmile bude.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nepředalo programu PadForge žádný údaj o tomto zařízení.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Komunitní kopie, která je součástí programu, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Staženo {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Vlastní soubor programu PadForge</value></data>

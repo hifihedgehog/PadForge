@@ -686,10 +686,9 @@ namespace PadForge.Services
         {
             string url = ReleaseNotesUrl(_offer);
             if (url == null) return;
-            // Through the desktop shell, so the browser runs with the user's
-            // rights and never PadForge's (#600). The test host opens nothing,
-            // and the shell's start throws nothing.
-            PadForge.Common.ShellLaunch.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            // The test host opens nothing. With no browser the click does
+            // nothing.
+            PadForge.Common.ShellLaunch.TryStart(new ProcessStartInfo(url) { UseShellExecute = true }, out _);
         }
 
         private void SetBusy(bool busy) => Settings.IsUpdateBusy = busy;

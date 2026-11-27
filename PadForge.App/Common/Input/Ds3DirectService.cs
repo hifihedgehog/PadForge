@@ -562,8 +562,9 @@ namespace PadForge.Common.Input
         /// <summary>The watch looks for this pad every 500 ms, and each look
         /// walked every WinUSB and every BthPS3 interface. A pad comes as a
         /// device change the main window hears (<see cref="DeviceChanges"/>),
-        /// so a walk runs after one, or after 15 s all the same, and the looks
-        /// between take what the last walk found.</summary>
+        /// so every look walks for the gate's settle window after one, a walk
+        /// runs after 15 s all the same, and the looks between take what the
+        /// last walk found.</summary>
         private readonly DeviceScanGate _winUsbLook = new(15000);
         private readonly DeviceScanGate _pdoLook = new(15000);
         private string _winUsbFound;

@@ -251,7 +251,7 @@ namespace PadForge.Common.Input
             if (string.IsNullOrWhiteSpace(json)) return null;
             try
             {
-                using var ctx = new HMContext();
+                using var ctx = HMaestroContexts.ForProfiles();
                 ctx.LoadDefaultProfiles();
                 return LoadUserProfiles(ctx, new[] { json }).TryGetValue(json, out var problem) ? problem : null;
             }
@@ -296,16 +296,12 @@ namespace PadForge.Common.Input
             string dir = null;
             try
             {
-                // A folder of its own under the protected folder's Work
-                // folder (#600): HIDMaestro reads every profile in it, and in
-                // the temp folder any program of the user could add one. The
-                // test host keeps the temp folder. In the app a Work folder
-                // that cannot be made throws, inside this try, so it costs the
-                // user's profiles their check and never the built-in catalog.
+                // A folder of its own in the user's temp folder: HIDMaestro
+                // reads every profile in it.
                 var stagingSeam = StagingFolderSeam;
                 dir = System.IO.Path.Combine(
                     stagingSeam != null ? stagingSeam()
-                        : PadForge.Services.ProtectedWork.FolderInTheApp("HIDMaestroProfiles", System.IO.Path.GetTempPath()),
+                        : System.IO.Path.GetTempPath(),
                     $"padforge-userprofiles-{Guid.NewGuid():N}");
                 System.IO.Directory.CreateDirectory(dir);
                 // The load names each file under the full path of the
@@ -452,7 +448,7 @@ namespace PadForge.Common.Input
             var c = new Loaded();
             try
             {
-                using var ctx = new HMContext();
+                using var ctx = HMaestroContexts.ForProfiles();
                 ctx.LoadDefaultProfiles();
                 // A refused catalog file would drop a built-in profile
                 // without a word, so whatever the catalog's own load

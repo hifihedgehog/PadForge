@@ -154,8 +154,57 @@ namespace PadForge.Engine.Common.OpenXr
                 Name = "PadForge.OpenXrHeadPose",
                 IsBackground = true,
             };
+            lock (s_live) s_live[_thread] = this;
             _thread.Start();
         }
+
+        /// <summary>Each running loop thread and its source. The SteamVR
+        /// uninstall stops the ones whose threads took a library under the
+        /// SteamVR folder before it frees that library
+        /// (<see cref="StopHolders"/>). A thread leaves when it ends, so one
+        /// that outlived its join stays.</summary>
+        private static readonly Dictionary<Thread, OpenXrHeadPoseSource> s_live = new();
+
+        /// <summary>Whether the loop is meant to run: set by Start and cleared
+        /// by Stop. A test's scripted opener reads it to return when the
+        /// source is stopped.</summary>
+        internal bool Running => _running;
+
+        /// <summary>Stops the sources whose loop threads are among
+        /// <paramref name="holders"/>, and no other source. True when each
+        /// of those threads let go of the library it took, which a source's
+        /// thread does as it ends, after its session is destroyed
+        /// (<see cref="OpenXrSession.ForgetHolder"/>). A holder thread that is
+        /// no source's, or that outlived its join, answers false.</summary>
+        internal static bool StopHolders(IReadOnlyCollection<Thread> holders)
+        {
+            var stopping = new List<OpenXrHeadPoseSource>();
+            lock (s_live)
+                foreach (var thread in holders)
+                    if (s_live.TryGetValue(thread, out var source)) stopping.Add(source);
+            foreach (var source in stopping) source.Stop();
+            foreach (var thread in holders)
+                if (OpenXrSession.StillHolds(thread)) return false;
+            return true;
+        }
+
+        /// <summary>How the uninstall frees a library: NativeLibrary.Free in
+        /// the app. A test hands in a fake, so a handle it made up is never
+        /// freed.</summary>
+        internal static Action<IntPtr> FreeLibrary { get; set; } = module => NativeLibrary.Free(module);
+
+        /// <summary>
+        /// Frees the OpenXR runtime libraries this process loaded from under
+        /// <paramref name="folder"/>, for the SteamVR uninstall, which deletes
+        /// that folder next. The sources whose threads took one of them are
+        /// stopped first, so their sessions are destroyed and their threads no
+        /// longer call into the library, and the library is refused for the
+        /// rest of the process. A source on another runtime keeps running. A
+        /// source whose thread outlives its join leaves the library loaded
+        /// (<see cref="OpenXrSession.ReleaseLibrariesUnder"/>).
+        /// </summary>
+        public static void ReleaseLibrariesUnder(string folder)
+            => OpenXrSession.ReleaseLibrariesUnder(folder, StopHolders, FreeLibrary);
 
         /// <summary>Runs the loop on the calling thread, until it ends by
         /// itself or is stopped from inside it. The tests play a scripted
@@ -495,6 +544,8 @@ namespace PadForge.Engine.Common.OpenXr
                 // used to stay true on every self-exit, and Start's guard then
                 // returned without doing anything for the life of the object.
                 _running = false;
+                OpenXrSession.ForgetHolder();
+                lock (s_live) s_live.Remove(Thread.CurrentThread);
             }
         }
 

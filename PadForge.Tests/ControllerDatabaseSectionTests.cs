@@ -105,13 +105,16 @@ namespace PadForge.Tests
             Assert.Equal(Pin, baseline.PinCommit);
             Assert.False(Pinned().HasOwnRow(Id(0x1000, 0x0003)));
 
-            // The list this build carries knows PadForge's own file: the
-            // GameSir G7 Pro, which SDL maps elsewhere only, takes no row.
-            const string g7 = "03000000373500002210000000000000";
+            // The list this build carries knows PadForge's own file: the PS
+            // VR Aim Controller takes no row. The GameSir G7 Pro, which SDL
+            // maps elsewhere only, is a row the fork carries since SDL#53, and
+            // PadForge's file has none for it any more.
+            const string aim = "030000004c050000b20b000000000000", g7 = "03000000373500002210000000000000";
             var embedded = ControllerDatabaseBaseline.Embedded;
-            Assert.True(embedded.TryFind(g7, out var entry) && entry.Verdict == ControllerDatabaseVerdict.SdlElsewhere);
-            Assert.True(embedded.HasOwnRow(g7));
-            Assert.Null(ControllerDatabaseSection.Classify(embedded, Parsed(g7 + ",GameSir G7 Pro,a:b0,b:b1,platform:Windows,")));
+            Assert.True(embedded.HasOwnRow(aim));
+            Assert.Null(ControllerDatabaseSection.Classify(embedded, Parsed(aim + ",Sony PS VR Aim Controller,a:b1,b:b2,platform:Windows,")));
+            Assert.True(embedded.TryFind(g7, out var entry) && entry.Verdict == ControllerDatabaseVerdict.Kept);
+            Assert.False(embedded.HasOwnRow(g7));
         }
 
         /// <summary>The second: a changed row the fork kept is Changed.</summary>

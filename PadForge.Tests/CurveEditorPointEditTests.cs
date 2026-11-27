@@ -86,6 +86,29 @@ namespace PadForge.Tests
             Assert.Equal(3, points.Count);
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void ADoubleClick_AtInputZero_AddsAPointAHundredthIn(bool isSigned)
+        {
+            // The first pixel column of an unsigned chart, and a stick
+            // chart's center column, are input 0 exactly.
+            var points = Points((0, 0), (1, 1));
+            Assert.Equal(1, CurveEditor.AddPoint(points, 0, 0.3, isSigned));
+            Assert.Equal(0.01, points[1].X, 9);
+            Assert.Equal(0.3, points[1].Y, 9);
+        }
+
+        [Fact]
+        public void ADoubleClick_PastTheLastInput_AddsAPointAHundredthShortOfIt()
+        {
+            // A saved curve can end at input 0.999, left of the chart's last column.
+            var points = CurveLut.Parse("0,0;0.5,0.5;0.999,1");
+            Assert.Equal(2, CurveEditor.AddPoint(points, 1, 0.8, isSigned: false));
+            Assert.Equal(0.989, points[2].X, 9);
+            Assert.Equal(4, points.Count);
+        }
+
         [Fact]
         public void TheRecordedReplay_TwoLeftHalfDoubleClicks_GiveTwoPointsThatDrag()
         {

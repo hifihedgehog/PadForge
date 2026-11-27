@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Başlamadı: Python dosyalarını açan bir program yok ve PadForge py başlatıcısını bulamıyor</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Başlamadı: PadForge bu tür dosyayı hangi programın açtığını okuyamıyor</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Başlamadı: bu tür dosyayı açan program bu bilgisayarda yok</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Başlamadı: altında başlatılacak bir masaüstü kabuğu çalışmıyor</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Başlamadı: masaüstü kabuğunun yönetici hakları var, bu yüzden eklentinin de olurdu</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Başlamadı: PadForge yönetici haklarının olup olmayacağını okuyamıyor</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Başlamadı: Windows ona yönetici hakları verdi, bu yüzden PadForge çalışmadan önce onu sonlandırdı</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Başlamadı: yönetici hakları istiyor</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Başlamadı: Windows {0} hatasıyla reddetti</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Başlamadı</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Bu makinede Logitech G-key SDK yok. Logitech Gaming Software 8.55 veya sonraki sürümlerle birlikte kurulur.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK kayıtlı ama dosyası yok. Logitech Gaming Software'i yeniden kurun.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK bulundu ama yüklenemedi.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK bulundu ama yüklenmedi, çünkü PadForge onu yalnızca yöneticilerin değiştirebildiğini ve Logitech'in imzaladığını doğrulayamadı.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Bu kitaplık, beklenen G-key SDK değil.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK başlamayı reddetti. Bunun nedeni çoğunlukla Logitech Gaming Software'in çalışmamasıdır.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Bağlandı, henüz tuş görülmedi. Logitech Gaming Software'de, PadForge profilindeki her tuşa G-key komutunu sürükleyin ve bu profili kalıcı yapın. Ayrıca G600 veya G300 farenin dahili bellek modundan çıkarılmış olması gerekir.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge başladığında pencere gizli kalır. Program her zamanki gibi çalışır ve eşleme yapar.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows'ta oturum açtığınızda PadForge'u otomatik olarak başlatır. Bu açıkken PadForge, bir kısayoldan, bir betikten ya da başka bir programdan da Windows'un istemi olmadan başlar.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge şuradan çalışıyor: {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Bunun için PadForge'un kendi klasöründe olması gerekir. Klasörü başka dosyalar içeriyor, bu yüzden PadForge diğer programların onu değiştirmesini engelleyemez.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Bunun için PadForge'un diğer programların değiştiremeyeceği bir klasörde olması gerekir. PadForge, diğer programların klasörünü değiştirmesini engelleyemedi.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge'u kendi klasörüne taşı</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge'u ve ayarlarını Program Files'a kopyalar, görevlerini oraya yönlendirir ve oradan başlatır. Buradaki kopya olduğu gibi kalır.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} klasöründe PadForge'a ait olmayan dosyalar var.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge taşınmadı: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge'u başka dosyalar içeren bir klasörden çalıştırıyordu.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge taşınmadı: Windows'ta Program Files klasörü tanımlı değil.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge taşınmadı: çalışan PadForge'u okuyamadı.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} oluşturulamadı.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} içindekileri okuyamadı.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge taşınmadı: diğer programların {0} klasörünü değiştirmesini engelleyemedi.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge taşınmadı: {0} içindeki kopyası çalışan PadForge ile eşleşmedi.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge taşınmadı: kopyalamadan sonra {0} klasöründe PadForge'a ait olmayan dosyalar vardı ya da diğer programlar onu değiştirebiliyordu.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü çalıştırdığı PadForge artık yerinde değil.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge, diğer programların PadForge'u çalıştırdığı klasörü değiştirmesini engelleyemedi.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge hangi PadForge'u çalıştırdığını okuyamadı.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Oturum açılışında başlat kapatıldı, çünkü PadForge çalıştırdığı PadForge'un klasörünü okuyamadı.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge korumalı klasörünü oluşturamadı: {0}. PadForge, yönetici haklarıyla çalıştırdığı kitaplıkları orada tutar ve onsuz güvenli biçimde başlayamaz.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge korumalı klasöründen kendini yeniden başlatamadı: {0}. PadForge yönetici haklarıyla yalnızca oradan çalışır, bu yüzden başlamadı.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge'un yalnızca tek kopyanın çalışmasını sağlayan kilidi oluşturamadı, bu yüzden başlamadı.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge yönetici haklarıyla, diğer programların değiştirebildiği bir klasörden çalışıyor: {0}. Onlar PadForge'un oradaki ayarlarını değiştirebilir ve PadForge bu ayarlara kendi haklarıyla uyar.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge yönetici haklarıyla, başka dosyalar içeren bir klasörden çalışıyor: {0}. PadForge diğer programların oradaki ayarlarını değiştirmesini engelleyemez ve bu ayarlara kendi haklarıyla uyar.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge yönetici haklarıyla, okuyamadığı bir klasörden çalışıyor: {0}. PadForge diğer programların oradaki ayarlarını değiştirmesini engelleyemez ve bu ayarlara kendi haklarıyla uyar.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sistem tepsisinde her zaman göster</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pencere açıkken de tepsi simgesi görünür kalır. Böylece menüsündeki Çıkış her zaman bir tık uzakta olur.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Güncellemeler</value></data>
@@ -1354,13 +1326,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Temizleme denetimi: sakladığınız parçalar denetleniyor…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Temizleme denetimi: PadForge sakladığınız parçaları okuyamadı, bu yüzden Kaydet kapalı kalır.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Kendi haklarınızla kaydetme başlamadı.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Kendi haklarınızla kaydetme başlamadı: onu altında başlatacak bir masaüstü kabuğu çalışmıyor.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Kendi haklarınızla kaydetme başlamadı: Windows {0} hatasıyla reddetti.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Kaydetme {0} içinde bitmedi.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows dosyanın oraya yazılmasına izin vermedi.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge bu dosyayı kendi kaydı olarak kabul etmedi.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Kaydetme {0} koduyla sona erdi.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Siz olarak, ilk seferde Downloads klasörüne, sonra en son kaydettiğiniz yere kaydedilir ve Explorer'da gösterilir. Sayfada kimse yokken duran bir kayıt (sınırı, bir makro, bir program, asistan aracı veya --record stop) bu inceleme için Ana sayfada bekler ve kaydedilmezse 7 gün sonra silinir. Bir programa kaydın beklediği söylenir, nerede olduğu söylenmez.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} tarihli bir sorun kaydı, sizin okumanızı bekliyor.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>İncele</value></data>
@@ -5920,7 +5887,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Eşleştirme durdu: kontrolcü ya da Bluetooth radyosu okunamadı veya yazılamadı. Ayrıntılar tanılama günlüğünde.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Eşleştirme, PadForge'un beklemediği bir hatayla durdu. Ayrıntılar tanılama günlüğünde.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 veya üstünü gerektirir</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>kitaplığını buldu ama yüklemedi, çünkü PadForge onu yalnızca yöneticilerin değiştirebildiğini ve Logitech'in imzaladığını doğrulayamadı</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>kitaplığını buldu ama kullanamadı, nedeni tanılama günlüğünde yazıyor</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software'i başlatın</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control'lü bir telefon bekleniyor</value></data>
@@ -6025,7 +5991,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension kitaplığının bu kopyasını diğerlerinin yerine yükler. Başka bir kopyada açık olan Falcon kapanır ve bu kopyada yeniden açılır. SDK'nın kurduğu kopyalar bu olmadan da bulunur.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Kitaplıklar (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK indirme sayfası açılmadı: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK indirme sayfası henüz açılmadı: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon sürücüsünü kur</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Force Dimension'ın sürücüsünü SDK klasöründen, sürücüsü olmayan bir Falcon'a kurar. Windows önce Force Dimension'a güvenip güvenmediğinizi sorabilir.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension SDK'yı al</value></data>
@@ -6726,6 +6691,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="SdlMapping_Away" xml:space="preserve"><value>Cihaz bağlı değil. Bağlanınca SDL onu okur.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL, PadForge'a bu cihazın bir okumasını vermedi.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Yerleşik topluluk kopyası, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} tarihinde indirildi</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge'un kendi dosyası</value></data>

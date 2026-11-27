@@ -262,23 +262,15 @@ namespace PadForge.Common
         private const string HidHideResourceName = "HidHide_1.5.230_x64.exe";
 
         /// <summary>
-        /// A staging folder of one install's own, under the protected
-        /// folder's Work folder (#600), for an installer, the package it
-        /// unpacks or downloads, and a script PadForge writes and runs with
-        /// rights. Before #600 these were in the user's temp folder, where
-        /// any program of the user could swap a file between PadForge's check
-        /// and the installer's read, or put a library beside an installer,
-        /// which Windows loads from the installer's own folder first. The
-        /// test host has no protected folder and keeps the temp folder, where
-        /// it starts and installs nothing. Anywhere else a folder that cannot
-        /// be made is an error, never the temp folder.
+        /// A staging folder of this attempt's own in the user's temp folder,
+        /// <c>PadForge_&lt;purpose&gt;\&lt;id&gt;</c>. The test host gets the
+        /// path alone, where it starts and installs nothing.
         /// </summary>
         internal static string StagingFolder(string purpose)
         {
-            string folder = PadForge.Services.ProtectedWork.NewFolder(purpose);
-            if (folder != null) return folder;
-            if (OffLimitsForTest) return Path.Combine(Path.GetTempPath(), "PadForge_" + purpose, Guid.NewGuid().ToString("N"));
-            throw new IOException("The protected folder for " + purpose + " could not be made.");
+            string folder = Path.Combine(Path.GetTempPath(), "PadForge_" + purpose, Guid.NewGuid().ToString("N"));
+            if (!OffLimitsForTest) Directory.CreateDirectory(folder);
+            return folder;
         }
 
         /// <summary>A tool of Windows' own by its full path in System32.
@@ -296,9 +288,7 @@ namespace PadForge.Common
         /// deleted the package from under it. Each attempt now gets its own
         /// folder and deletes that folder alone when it ends. A folder left
         /// by an attempt that timed out is never cleared from here, because
-        /// nothing here can know that its installer has finished. A start of
-        /// the app removes such folders once they are a day old
-        /// (ProtectedWork.RemoveOld).</para>
+        /// nothing here can know that its installer has finished.</para>
         /// </summary>
         private static string NewHidHideStagingDir() => StagingFolder("HidHide");
 
@@ -1420,14 +1410,9 @@ namespace PadForge.Common
             "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip";
 
         /// <summary>steamcmd's folder, kept between runs since steamcmd updates
-        /// itself there. It runs with PadForge's rights, so it lives under the
-        /// protected folder (#600): from the temp folder, a library put beside
-        /// it by any program of the user would run with those rights. The test
-        /// host keeps the temp folder, where it starts nothing.</summary>
+        /// itself there.</summary>
         private static string GetSteamVrTempDir()
-            => PadForge.Services.ProtectedWork.Folder("SteamCmd")
-               ?? (OffLimitsForTest ? Path.Combine(Path.GetTempPath(), "PadForge_SteamCmd")
-                   : throw new IOException("The protected folder for steamcmd could not be made."));
+            => Path.Combine(Path.GetTempPath(), "PadForge_SteamCmd");
 
         /// <summary>Test seam for <see cref="InstallSteamVRAsync"/>: throw
         /// after the argument guards, before any network or process work.
@@ -1570,20 +1555,20 @@ namespace PadForge.Common
                 if (string.IsNullOrWhiteSpace(dir)) return false;
 
                 string reg = Input.OpenVrConsumerService.PathRegistryFile(
-                    ShellUser.Folder(PadForge.Services.Install.UserFolder.LocalData));
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
                 // Reads end here. The test host makes no folder in a SteamVR
                 // install and rewrites no path registry.
                 if (OffLimitsForTest) return false;
-                return ContainSteamVrDataPaths(dir, reg, ShellUser.AsTheUser);
+                return ContainSteamVrDataPaths(dir, reg, work => { work(); return true; });
             }
             catch { return false; }
         }
 
         /// <summary>
         /// The containment of <paramref name="ownedDir"/>'s data paths in the
-        /// path registry <paramref name="reg"/>, run as the user through
-        /// <paramref name="asUser"/> (<see cref="ShellUser.AsTheUser"/> in the
-        /// app): the read of the file, the two folders and the rewrite. The
+        /// path registry <paramref name="reg"/>, run through
+        /// <paramref name="asUser"/>, which runs it in this process in the
+        /// app: the read of the file, the two folders and the rewrite. The
         /// file sits in the user's own LocalAppData, where any program of
         /// the user may put a link in place of a folder, and PadForge runs
         /// with rights. A runner that cannot run touches nothing. True when
@@ -1682,16 +1667,17 @@ namespace PadForge.Common
                 throw new DriverCheckException(DriverCheckFailure.SteamVrFolderIsDriveRoot,
                     "The recorded SteamVR folder " + dir + " is a drive root, so PadForge will not delete it.", dir);
 
-            // This process may be holding one of the files about to be
-            // deleted. The consumer loads SteamVR's own openvr_api.dll here
-            // and keeps it loaded while it runs. A loaded file is skipped by
-            // the recursive delete below, the uninstall still reports success,
-            // and openvr_api.dll stays on disk under a directory the user
-            // believes is gone. ReleaseRuntime frees it first, then the
-            // delete runs.
+            // This process may be holding files about to be deleted. The
+            // consumer loads SteamVR's own openvr_api.dll here and keeps it
+            // loaded while it runs, and OpenXR head tracking on SteamVR loads
+            // its vrclient_x64.dll. The recursive delete below fails on a
+            // loaded file, and the uninstall then reports that SteamVR was not
+            // fully removed. ReleaseRuntime frees openvr_api.dll, and
+            // RemoveSteamVrFolder frees the OpenXR library before the delete.
             Input.OpenVrConsumerService.ReleaseRuntime();
 
-            DeleteSteamVrFolder(dir,
+            RemoveSteamVrFolder(dir,
+                PadForge.Engine.Common.OpenXr.OpenXrHeadPoseSource.ReleaseLibrariesUnder,
                 DeleteFolder,
                 Directory.Exists,
                 () => System.Threading.Thread.Sleep(300));
@@ -1699,6 +1685,17 @@ namespace PadForge.Common
             ClearSteamVrPathHint();
 
             HMaestroVRController.ResetAvailability();
+        }
+
+        /// <summary>Frees the OpenXR runtime libraries PadForge loaded from
+        /// the SteamVR folder through <paramref name="releaseOpenXr"/>, which
+        /// stops the head tracker's OpenXR source first, then deletes the
+        /// folder (<see cref="DeleteSteamVrFolder"/>).</summary>
+        internal static void RemoveSteamVrFolder(string dir, Action<string> releaseOpenXr,
+            Action<string> delete, Func<string, bool> exists, Action pause)
+        {
+            releaseOpenXr(dir);
+            DeleteSteamVrFolder(dir, delete, exists, pause);
         }
 
         /// <summary>How many times the SteamVR folder's delete is
@@ -2146,11 +2143,8 @@ namespace PadForge.Common
 
         /// <summary>
         /// How <see cref="RunElevated"/> starts a tool (#600). A process with
-        /// rights starts it itself, hidden, with the variables every start
-        /// with rights gets (<see cref="PadForge.Services.RightsVariables"/>):
-        /// the shell's runas verb would hand the tool a copy of PadForge's
-        /// own, and the cleanup script runs Windows PowerShell, which loads
-        /// the library COR_PROFILER_PATH names. A process without rights asks
+        /// rights starts it itself, hidden, with a copy of PadForge's
+        /// variables. A process without rights asks
         /// Windows through the shell's runas verb, and Windows builds the
         /// tool's variables after its prompt.
         /// </summary>
@@ -2488,7 +2482,7 @@ namespace PadForge.Common
             if (OffLimitsForTest)
                 throw new System.ComponentModel.Win32Exception(ERROR_ACCESS_DENIED,
                     "The test host starts no process: " + psi.FileName);
-            return PadForge.Services.RightsVariables.Start(psi);
+            return Process.Start(psi);
         }
 
         /// <summary>Fails a download before it begins in the test

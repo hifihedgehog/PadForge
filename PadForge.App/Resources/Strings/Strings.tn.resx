@@ -1517,6 +1517,7 @@ PadForge ga e a kgona go kwala dintlha mo crash.log fa thoko ga PadForge.exe. Go
   <data name="SdlMapping_Away" xml:space="preserve"><value>Sedirisiwa ga se a golagangwa. SDL e se bala fa se golagane.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ga e a naya PadForge pego epe ya sedirisiwa se.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Khopi ya setšhaba e e agetsweng mo teng, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E tsentswe {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faele ya PadForge ka boyone</value></data>
@@ -1728,10 +1729,8 @@ PadForge ga e a kgona go kwala dintlha mo crash.log fa thoko ga PadForge.exe. Go
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ga e a kgona go dira loko e e dirang gore go nne le khopi e le nngwe fela e e dirang, ka jalo ga e a simolola.</value></data>
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge e ganne karabo ya GitHub. Ga go sepe se se fetogileng.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge e ganne karabo go tswa kwa {0}. Ga go sepe se se fetogileng.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>e bone laeborari ya yone mme ga e a e tsenya, ka gonne PadForge e sa kgona go netefatsa gore ke batsamaisi fela ba ba ka e fetolang le gore Logitech e e saenile</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>e bone laeborari ya yone mme ga e a kgona go e dirisa, mme log ya ditlhatlhobo e bolela lebaka</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Tsebe ya go tsenya Falcon SDK ga e a buloga: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Tsebe ya go tsenya Falcon SDK ga e ise e buloge: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Mela ya ditsamaiso tse dingwe e e tlolwang: {0:N0}.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ga e a e simolola ka ditshwanelo tsa gago.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ga e a fela mo nakong e e beilweng (metsotswana: {0}).</value></data>

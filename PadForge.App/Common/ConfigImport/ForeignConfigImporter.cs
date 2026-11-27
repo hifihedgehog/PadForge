@@ -123,11 +123,22 @@ namespace PadForge.Common.ConfigImport
         /// <summary>The file picker's places, when they exist on this PC:
         /// reWASD's shared profile folder, DS4Windows' per-user one and DSX's
         /// in each Steam library. The per-user folder and Steam's own path
-        /// are the desktop user's (<see cref="PadForge.Common.ShellUser"/>),
-        /// never the account PadForge runs as when an administrator's
-        /// credentials were typed at its rights prompt.</summary>
+        /// are read from PadForge's own process.</summary>
         public static IEnumerable<string> ProfileFolders()
-            => ProfileFolders(PadForge.Common.ShellUser.Folder);
+            => ProfileFolders(OwnFolder);
+
+        /// <summary>This process's own folder of that kind, or null.</summary>
+        private static string OwnFolder(PadForge.Services.Install.UserFolder folder)
+        {
+            string path = Environment.GetFolderPath(folder switch
+            {
+                PadForge.Services.Install.UserFolder.Documents => Environment.SpecialFolder.MyDocuments,
+                PadForge.Services.Install.UserFolder.RoamingData => Environment.SpecialFolder.ApplicationData,
+                PadForge.Services.Install.UserFolder.LocalData => Environment.SpecialFolder.LocalApplicationData,
+                _ => Environment.SpecialFolder.UserProfile,
+            });
+            return string.IsNullOrEmpty(path) ? null : path;
+        }
 
         internal static IEnumerable<string> ProfileFolders(Func<PadForge.Services.Install.UserFolder, string> userFolder)
         {
@@ -181,7 +192,7 @@ namespace PadForge.Common.ConfigImport
             var steam = new List<string>();
             try
             {
-                using var key = PadForge.Common.ShellUser.OpenKey(@"Software\Valve\Steam");
+                using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
                 if (key?.GetValue("SteamPath") is string path && path.Length > 0)
                     steam.Add(path.Replace('/', '\\'));
             }

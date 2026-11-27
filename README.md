@@ -805,7 +805,7 @@ A Bluetooth Switch 2 controller whose link drops keeps its place, with its contr
 
 ### 2,687 devices by name, and the ones Windows can't read.
 
-PadForge's SDL3 build adds 286 pads from the community SDL_GameControllerDB to the pads SDL knows on its own, and it reads controllers Windows gives no usable input: Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes, clone Xbox 360 receivers, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO arcade boards and more. The [Supported Devices](https://padforge.org/docs/devices/supported/) page names every one.
+PadForge's SDL3 build adds 311 pads from the community SDL_GameControllerDB to the pads SDL knows on its own, and it reads controllers Windows gives no usable input: Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes, clone Xbox 360 receivers, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO arcade boards and more. The [Supported Devices](https://padforge.org/docs/devices/supported/) page names every one.
 
 Each device's panel shows how SDL reads it, under what name and ID, and where its mapping came from. Copy SDL Mapping writes the device's row in the community database's form, Paste SDL Mapping keeps a row as yours in PadForge.xml and applies it, Find a Mapping lends a known pad's row to a clone, and Guess a Layout starts one for a pad no database knows. Update Now in Settings downloads newer community rows into the same file. See [Controller Database](https://padforge.org/docs/features/controller-database/).
 

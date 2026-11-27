@@ -29,14 +29,8 @@ namespace PadForge.Services
     {
         internal const string ResourceName = "PadForge.DsxStandIn.exe";
 
-        /// <summary>The protected folder's DSX folder (#600), where only
-        /// Administrators and SYSTEM can write. The stand-in runs with
-        /// PadForge's rights, and Windows loads a library or a .config from a
-        /// program's own folder first, so the user's temp folder, where it was
-        /// before, let any program of the user put code in it. Null in the
-        /// test host, which has no protected folder.</summary>
-        internal static string Folder => ProtectedWork.Folder("DSX");
-        internal static string ExePath => Folder is { } folder ? Path.Combine(folder, "DSX.exe") : null;
+        internal static string Folder => Path.Combine(Path.GetTempPath(), "PadForge_DSX");
+        internal static string ExePath => Path.Combine(Folder, "DSX.exe");
 
         private static readonly object s_lock = new();
         private static Process s_process;

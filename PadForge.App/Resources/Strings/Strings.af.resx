@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nie begin nie: geen program maak Python-lêers vir jou oop nie, en PadForge vind geen py-lanseerder nie</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nie begin nie: PadForge kan nie lees watter program hierdie soort lêer vir jou oopmaak nie</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nie begin nie: die program wat hierdie soort lêer vir jou oopmaak, is nie op hierdie rekenaar nie</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nie begin nie: geen lessenaarskil loop om dit onder te begin nie</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nie begin nie: die lessenaarskil het administrateurregte, so die inpropprogram sou dit ook hê</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nie begin nie: PadForge kan nie lees of dit administrateurregte sou hê nie</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nie begin nie: Windows het dit administrateurregte gegee, so PadForge het dit beëindig voordat dit geloop het</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nie begin nie: dit vra vir administrateurregte</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nie begin nie: Windows het geweier met fout {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nie begin nie</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Geen Logitech G-key SDK op hierdie rekenaar nie. Dit installeer saam met Logitech Gaming Software 8.55 of nuwer.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>Die G-key SDK is geregistreer, maar sy lêer is weg. Installeer Logitech Gaming Software weer.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Die G-key SDK is gevind, maar kon nie gelaai word nie.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Die G-key SDK is gevind en nie gelaai nie, omdat PadForge nie kon bevestig dat slegs administrateurs dit kan verander en dat Logitech dit onderteken het nie.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Daardie biblioteek is nie die G-key SDK wat hierdie verwag nie.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Die G-key SDK het geweier om te begin. Logitech Gaming Software loop gewoonlik nie.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Gekoppel, nog geen sleutel gesien nie. Sleep in Logitech Gaming Software die G-key-opdrag na elke sleutel in die PadForge-profiel, en maak daardie profiel bestendig. 'n G600- of G300-muis moet ook uit die ingeboude geheuemodus wees.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Hou die venster versteek wanneer PadForge begin. Dit loop en wys toe soos gewoonlik.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Begin PadForge outomaties wanneer jy by Windows aanmeld. Solank dit aan is, begin PadForge ook sonder Windows se venster vanaf 'n kortpad, 'n skrip of 'n ander program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge loop vanaf {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dit vereis dat PadForge in 'n eie vouer is. Sy vouer bevat ander lêers, so PadForge kan nie keer dat ander programme dit verander nie.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Dit vereis dat PadForge in 'n vouer is wat ander programme nie kan verander nie. PadForge kon nie keer dat hulle sy vouer verander nie.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Skuif PadForge na sy eie vouer</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopieer PadForge en sy instellings na Program Files, rig sy take daarheen en begin dit van daar af. Die kopie hier bly soos dit is.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: {0} bevat lêers wat nie PadForge s'n is nie.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Begin by aanmelding is afgeskakel, omdat dit PadForge vanaf 'n vouer laat loop het wat ander lêers bevat.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge het nie geskuif nie: Windows noem geen Program Files-vouer nie.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge het nie geskuif nie: dit kon nie die PadForge lees wat loop nie.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: dit kon nie {0} maak nie.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: dit kon nie lees wat {0} bevat nie.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: dit kon nie keer dat ander programme {0} verander nie.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: sy kopie in {0} het nie met die PadForge wat loop, ooreengestem nie.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge het nie geskuif nie: ná die kopie het {0} lêers bevat wat nie PadForge s'n is nie, of ander programme kon dit verander.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Begin by aanmelding is afgeskakel, omdat die PadForge wat dit laat loop het, nie meer daar is nie.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Begin by aanmelding is afgeskakel, omdat PadForge nie kon keer dat ander programme die vouer verander waarvandaan dit PadForge laat loop het nie.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Begin by aanmelding is afgeskakel, omdat PadForge nie kon lees watter PadForge dit laat loop het nie.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Begin by aanmelding is afgeskakel, omdat PadForge nie die vouer kon lees van die PadForge wat dit laat loop het nie.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge kon nie sy beskermde vouer, {0}, maak nie. PadForge hou die biblioteke waarmee dit met administrateurregte loop daar, en dit kan nie veilig begin sonder die vouer nie.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge kon homself nie weer vanaf sy beskermde vouer, {0}, begin nie. PadForge loop slegs van daar af met administrateurregte, so dit het nie begin nie.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge kon nie die slot maak wat dit tot een lopende kopie beperk nie, so dit het nie begin nie.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge loop met administrateurregte vanaf {0}, 'n vouer wat ander programme kan verander. Hulle kan PadForge se instellings daar verander, en PadForge tree daarop op met sy regte.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge loop met administrateurregte vanaf {0}, 'n vouer wat ander lêers bevat. PadForge kan nie keer dat ander programme sy instellings daar verander nie, en dit tree daarop op met sy regte.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge loop met administrateurregte vanaf {0}, 'n vouer wat dit nie kon lees nie. PadForge kan nie keer dat ander programme sy instellings daar verander nie, en dit tree daarop op met sy regte.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Wys altyd in stelselbalk</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Hou die balkikoon sigbaar terwyl die venster oop is, sodat Verlaat in sy kieslys altyd een klik weg is.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Opdaterings</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Skoonmaakkontrole: die dele wat jy hou, word nagegaan…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Skoonmaakkontrole: PadForge kon nie die dele lees wat jy hou nie, so Stoor bly af.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Die stoor met jou regte het nie begin nie.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Die stoor met jou regte het nie begin nie: geen lessenaarskil loop om dit onder te begin nie.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Die stoor met jou regte het nie begin nie: Windows het met fout {0} geweier.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Die stoor het nie binne {0} geëindig nie.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows het nie toegelaat dat die lêer daar geskryf word nie.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge het nie hierdie lêer as 'n opname van sy eie aanvaar nie.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Die stoor het met kode {0} geëindig.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Gestoor as jy, die eerste keer in jou Aflaaie-vouer, daarna waar jy laas gestoor het, en in Lêerverkenner gewys. 'n Opname wat stop terwyl niemand by die bladsy is nie (sy perk, 'n makro, 'n program, die assistentnutsding of --record stop) wag op hierdie hersiening op Tuis, en word na 7 dae uitgevee tensy dit gestoor is. 'n Program word vertel dat dit wag, nooit waar nie.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>'n Probleemopname van {0} wag dat jy dit lees.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Hersien</value></data>
@@ -5378,7 +5345,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Paring het gestop: lees of skryf van die controller of die Bluetooth-radio het misluk. Die diagnoselog bevat die besonderhede.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Paring het gestop by 'n fout wat PadForge nie verwag het nie. Die diagnoselog bevat die besonderhede.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>benodig Logitech Gaming Software 8.52 of nuwer</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>het sy biblioteek gevind en dit nie gelaai nie, omdat PadForge nie kon bevestig dat slegs administrateurs dit kan verander en dat Logitech dit onderteken het nie</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>het sy biblioteek gevind en kon dit nie gebruik nie, en die diagnoselog sê hoekom</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>begin Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>wag vir 'n foon met Arx Control</value></data>
@@ -5476,7 +5442,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Laai hierdie kopie van Force Dimension se biblioteek in plaas van enige ander. 'n Falcon wat op 'n ander kopie oop is, maak toe en maak weer oop op hierdie een. Die kopieë wat die SDK installeer, word sonder dit gevind.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Biblioteke (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Die Falcon SDK-aflaaibladsy het nie oopgegaan nie: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Die Falcon SDK-aflaaibladsy het nog nie oopgegaan nie: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installeer Falcon-drywer</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Installeer Force Dimension se drywer, vanuit die SDK-gids, op 'n Falcon wat nie een het nie. Windows kan eers vra of dit Force Dimension moet vertrou.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Kry Force Dimension se SDK</value></data>
@@ -5839,6 +5804,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="SdlMapping_Away" xml:space="preserve"><value>Die toestel is nie gekoppel nie. SDL lees dit sodra dit gekoppel is.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL het PadForge geen lesing van hierdie toestel gegee nie.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Die gemeenskapskopie wat ingebou is, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Afgelaai {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge se eie lêer</value></data>

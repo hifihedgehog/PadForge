@@ -341,7 +341,7 @@ namespace PadForge.Services.Automation
             session.Close("ended");
             ScriptValues.ReleaseOwner(session.Number);
             PadForge.Common.Input.ProgramInputGate.ForgetSession(session.Number);
-            Devices.SessionEnded(session, now: false, own: session.Grant?.Stopped == true);
+            Devices.SessionEnded(session, now: false, own: session.Grant?.Stopped == true || session.ClosedByPadForge);
             if (session.Client != null) _host.Clients.Remove(session.Client.Id);
             FlushRun(session, owned);
             Record(session, new AutomationAsk(AutomationAskKind.Disconnected), "ok", true, owned: null);
@@ -814,14 +814,19 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>Closes the open sessions of a web assistant the user
-        /// revoked (#600 item 11).</summary>
+        /// revoked (#600 item 11). Each is marked PadForge's first, so its
+        /// devices go as PadForge's own drop and raise no note.</summary>
         internal void CloseWeb(string key)
         {
             List<AutomationSession> close = new();
             lock (_sync)
                 foreach (var session in _sessions)
                     if (IsThroughHelper(session.Kind) && session.Who?.Key == key) close.Add(session);
-            foreach (var session in close) session.CloseAfterWritten();
+            foreach (var session in close)
+            {
+                session.ClosedByPadForge = true;
+                session.CloseAfterWritten();
+            }
         }
 
         private async Task<bool> AskConsent(AutomationSession session, AllowedProgram who, AutomationLevel wanted, AutomationConsent store)
@@ -1732,11 +1737,11 @@ namespace PadForge.Services.Automation
             // The level again, after the device stands: a drop that came
             // between the check above and the device being made took the
             // session's devices offline before this one was among them, and
-            // it goes now. The level is set before the drop's work starts
-            // (AutomationHost.Apply), so this read sees it.
+            // it goes now, as PadForge's own drop. The level is set before the
+            // drop's work starts (AutomationHost.Apply), so this read sees it.
             if (!Allows(session, AutomationLevel.SendInputs, pluginToo: true))
             {
-                Devices.Gone(session, entry.Id);
+                Devices.Gone(session, entry.Id, own: true);
                 Refuse(session, r, AutomationAskKind.Declare, key);
                 return;
             }

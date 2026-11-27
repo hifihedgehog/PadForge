@@ -1095,6 +1095,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Device no nni nkitahodi mu. SDL bɛkenkan no sɛ ɛba nkitahodi mu a.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL amma PadForge device yi ho nkenkanmu biara.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Community copy a ɛwɔ mu, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Wɔtwee bae {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ankasa file</value></data>
@@ -1204,7 +1205,6 @@
   <data name="Reach_LocalCommands" xml:space="preserve"><value>Commands a efi command line so da so du PadForge, sɛnea ɛyɛ ma program biara.</value></data>
   <data name="Extras_Automation_ExportFileName_Format" xml:space="preserve"><value>PadForge Dwumadi {0}.txt</value></data>
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ahu ne library na ɛmfaa no nhyɛɛ mu, efisɛ PadForge antumi anhu sɛ administrators nko ara na wobetumi asesa no ne sɛ Logitech de ne nsa ahyɛ ase</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ahu ne library na antumi amfa anni dwuma, na diagnostics log no ka nea enti</value></data>
   <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>PadForge entry ne ne skill no tena hɔ, efisɛ {0} kenkan settings file ne skill folder koro no ara.</value></data>
   <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>PadForge entry no tena hɔ, efisɛ {0} kenkan settings file koro no ara.</value></data>

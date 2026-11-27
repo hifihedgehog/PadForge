@@ -174,7 +174,6 @@ namespace PadForge.Tests
         [InlineData("--summarize C:\\r.zip --wait")]
         [InlineData("--plugin-kit C:\\kit")]
         [InlineData("--install skill claude-code --check")]
-        [InlineData("--record save C:\\a.zip C:\\b.zip")]
         [InlineData("--help --tools")]
         public void ASwitchThatRunsAlone_GoesWithJsonAndWait(string line)
             => Assert.Null(Parse(line.Split(' ')).Error);
@@ -224,7 +223,6 @@ namespace PadForge.Tests
         public void SettingsFolder_InTheTestHost_StartsNothing()
         {
             Assert.True(ShellLaunch.OffLimitsForTest);
-            Assert.Null(ShellLaunch.UserShellSeam);
             var errors = new List<string>();
             Assert.Equal(ClientRun.AnsweredAnError, SettingsFolderRun.Run(errors.Add));
             Assert.Equal("Explorer did not open the settings folder: the test host starts nothing", Assert.Single(errors));

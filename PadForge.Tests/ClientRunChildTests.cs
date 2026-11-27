@@ -22,9 +22,8 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>A test that starts PadForge.exe, run only in a test host
-    /// without administrator rights. A child of a host with them would take
-    /// the start with rights (ProtectedStart), which writes in
-    /// %ProgramData% and can show a box.</summary>
+    /// without administrator rights, so the child runs with a user's
+    /// ordinary rights.</summary>
     public sealed class UnelevatedFactAttribute : FactAttribute
     {
         public UnelevatedFactAttribute()

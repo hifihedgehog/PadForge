@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Δεν ξεκίνησε: κανένα πρόγραμμα δεν ανοίγει αρχεία Python για εσάς και το PadForge δεν βρίσκει πρόγραμμα εκκίνησης py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Δεν ξεκίνησε: το PadForge δεν μπορεί να διαβάσει ποιο πρόγραμμα ανοίγει αυτό το είδος αρχείου για εσάς</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Δεν ξεκίνησε: το πρόγραμμα που ανοίγει αυτό το είδος αρχείου για εσάς δεν υπάρχει σε αυτόν τον υπολογιστή</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Δεν ξεκίνησε: δεν εκτελείται κέλυφος επιφάνειας εργασίας για να το ξεκινήσει</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Δεν ξεκίνησε: το κέλυφος της επιφάνειας εργασίας έχει δικαιώματα διαχειριστή, άρα θα τα είχε και το πρόσθετο</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Δεν ξεκίνησε: το PadForge δεν μπορεί να διαβάσει αν θα είχε δικαιώματα διαχειριστή</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Δεν ξεκίνησε: τα Windows του έδωσαν δικαιώματα διαχειριστή, γι αυτό το PadForge το τερμάτισε πριν εκτελεστεί</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Δεν ξεκίνησε: ζητά δικαιώματα διαχειριστή</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Δεν ξεκίνησε: τα Windows αρνήθηκαν με σφάλμα {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Δεν ξεκίνησε</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Το Logitech G-key SDK δεν υπάρχει σε αυτόν τον υπολογιστή. Εγκαθίσταται μαζί με το Logitech Gaming Software 8.55 ή νεότερο.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>Το G-key SDK είναι καταχωρισμένο, αλλά το αρχείο του λείπει. Εγκαταστήστε ξανά το Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Το G-key SDK βρέθηκε, αλλά δεν ήταν δυνατή η φόρτωσή του.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Το G-key SDK βρέθηκε, αλλά δεν φορτώθηκε, επειδή το PadForge δεν μπόρεσε να επιβεβαιώσει ότι μόνο οι διαχειριστές μπορούν να το αλλάξουν και ότι το έχει υπογράψει η Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Αυτή η βιβλιοθήκη δεν είναι το G-key SDK που αναμένεται.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Το G-key SDK αρνήθηκε να ξεκινήσει. Συνήθως αυτό σημαίνει ότι το Logitech Gaming Software δεν εκτελείται.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Συνδέθηκε, δεν έχει εντοπιστεί ακόμη κανένα πλήκτρο. Στο Logitech Gaming Software, σύρετε την εντολή «G-key» σε κάθε πλήκτρο του προφίλ PadForge και ορίστε αυτό το προφίλ ως μόνιμο. Ένα ποντίκι G600 ή G300 πρέπει επίσης να μην είναι σε λειτουργία ενσωματωμένης μνήμης.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Το παράθυρο μένει κρυφό όταν ξεκινά το PadForge. Το πρόγραμμα εκτελείται και αντιστοιχίζει κανονικά.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Αυτόματη εκκίνηση του PadForge όταν συνδέεστε στα Windows. Όσο αυτό είναι ενεργό, το PadForge ξεκινά και χωρίς την προτροπή των Windows από συντόμευση, σενάριο ή άλλο πρόγραμμα.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Το PadForge εκτελείται από {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Αυτό απαιτεί το PadForge σε δικό του φάκελο. Ο φάκελός του περιέχει άλλα αρχεία, επομένως το PadForge δεν μπορεί να εμποδίσει άλλα προγράμματα να τον αλλάξουν.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Αυτό απαιτεί το PadForge σε φάκελο που δεν μπορούν να αλλάξουν άλλα προγράμματα. Το PadForge δεν μπόρεσε να εμποδίσει άλλα προγράμματα να αλλάξουν τον φάκελό του.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Μεταφορά του PadForge στον δικό του φάκελο</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Αντιγράφει το PadForge και τις ρυθμίσεις του στο Program Files, κατευθύνει εκεί τις εργασίες του και το ξεκινά από εκεί. Το αντίγραφο εδώ παραμένει ως έχει.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: ο φάκελος {0} περιέχει αρχεία που δεν ανήκουν στο PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Η Εκκίνηση κατά τη σύνδεση απενεργοποιήθηκε, επειδή εκτελούσε το PadForge από φάκελο που περιέχει άλλα αρχεία.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: τα Windows δεν ορίζουν φάκελο «Program Files».</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να διαβάσει το PadForge που εκτελείται.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να δημιουργήσει το {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να διαβάσει τι περιέχει ο φάκελος {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: δεν μπόρεσε να εμποδίσει άλλα προγράμματα να αλλάξουν τον φάκελο {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: το αντίγραφό του στον φάκελο {0} δεν ταίριαζε με το PadForge που εκτελείται.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>Το PadForge δεν μεταφέρθηκε: μετά την αντιγραφή, ο φάκελος {0} περιείχε αρχεία που δεν ανήκουν στο PadForge ή άλλα προγράμματα μπορούσαν να τον αλλάξουν.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge που εκτελέστηκε δεν υπάρχει πια.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge δεν μπόρεσε να εμποδίσει άλλα προγράμματα να αλλάξουν τον φάκελο από τον οποίο εκτέλεσε το PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge δεν μπόρεσε να διαβάσει ποιο PadForge εκτέλεσε.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Η «Εκκίνηση κατά τη σύνδεση» απενεργοποιήθηκε, επειδή το PadForge δεν μπόρεσε να διαβάσει τον φάκελο του PadForge που εκτέλεσε.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να δημιουργήσει τον προστατευμένο φάκελό του, {0}. Το PadForge φυλάσσει εκεί τις βιβλιοθήκες που εκτελεί με δικαιώματα διαχειριστή και δεν μπορεί να ξεκινήσει με ασφάλεια χωρίς αυτόν.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να ξεκινήσει ξανά τον εαυτό του από τον προστατευμένο φάκελό του, {0}. Το PadForge εκτελείται με δικαιώματα διαχειριστή μόνο από εκεί, επομένως δεν ξεκίνησε.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>Το PadForge δεν μπόρεσε να δημιουργήσει το κλείδωμα που επιτρέπει μόνο ένα αντίγραφο σε εκτέλεση, γι αυτό δεν ξεκίνησε.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Το PadForge εκτελείται με δικαιώματα διαχειριστή από τον φάκελο {0}, τον οποίο μπορούν να αλλάξουν άλλα προγράμματα. Μπορούν να αλλάξουν εκεί τις ρυθμίσεις του PadForge και το PadForge ενεργεί σύμφωνα με αυτές με τα δικαιώματά του.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Το PadForge εκτελείται με δικαιώματα διαχειριστή από τον φάκελο {0}, που περιέχει άλλα αρχεία. Το PadForge δεν μπορεί να εμποδίσει άλλα προγράμματα να αλλάξουν εκεί τις ρυθμίσεις του και ενεργεί σύμφωνα με αυτές με τα δικαιώματά του.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Το PadForge εκτελείται με δικαιώματα διαχειριστή από τον φάκελο {0}, τον οποίο δεν μπόρεσε να διαβάσει. Το PadForge δεν μπορεί να εμποδίσει άλλα προγράμματα να αλλάξουν εκεί τις ρυθμίσεις του και ενεργεί σύμφωνα με αυτές με τα δικαιώματά του.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Εμφάνιση πάντα στην περιοχή ειδοποιήσεων</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Το εικονίδιο της περιοχής ειδοποιήσεων παραμένει ορατό όσο το παράθυρο είναι ανοιχτό, ώστε η «Έξοδος» στο μενού του να απέχει πάντα ένα κλικ.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ενημερώσεις</value></data>
@@ -1354,13 +1326,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Έλεγχος εκκαθάρισης: έλεγχος των μερών που κρατάτε…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Έλεγχος εκκαθάρισης: το PadForge δεν μπόρεσε να διαβάσει τα μέρη που κρατάτε, γι' αυτό η αποθήκευση μένει ανενεργή.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Η αποθήκευση με τα δικαιώματά σας δεν ξεκίνησε.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Η αποθήκευση με τα δικαιώματά σας δεν ξεκίνησε: δεν εκτελείται κέλυφος επιφάνειας εργασίας για να την ξεκινήσει.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Η αποθήκευση με τα δικαιώματά σας δεν ξεκίνησε: τα Windows αρνήθηκαν με σφάλμα {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Η αποθήκευση δεν ολοκληρώθηκε σε {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Τα Windows δεν επέτρεψαν την εγγραφή του αρχείου εκεί.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>Το PadForge δεν αποδέχτηκε αυτό το αρχείο ως δική του εγγραφή.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Η αποθήκευση τερματίστηκε με κωδικό {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Αποθηκεύεται ως εσείς, στον φάκελο Λήψεις την πρώτη φορά, έπειτα εκεί όπου αποθηκεύσατε τελευταία, και εμφανίζεται στην Εξερεύνηση αρχείων. Μια εγγραφή που σταματά ενώ κανείς δεν βρίσκεται στη σελίδα (το όριό της, μια μακροεντολή, ένα πρόγραμμα, το εργαλείο του βοηθού ή το --record stop) περιμένει αυτή την ανασκόπηση στην «Αρχική» και διαγράφεται μετά από 7 ημέρες αν δεν αποθηκευτεί. Ένα πρόγραμμα μαθαίνει ότι περιμένει, ποτέ πού.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Μια εγγραφή προβλήματος από {0} περιμένει να τη διαβάσετε.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Ανασκόπηση</value></data>
@@ -5920,7 +5887,6 @@
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Η σύζευξη σταμάτησε: η ανάγνωση ή η εγγραφή στο χειριστήριο ή στο ραδιόφωνο Bluetooth απέτυχε. Το αρχείο καταγραφής διαγνωστικών έχει τις λεπτομέρειες.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Η σύζευξη σταμάτησε σε σφάλμα που το PadForge δεν περίμενε. Το αρχείο καταγραφής διαγνωστικών έχει τις λεπτομέρειες.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>απαιτεί Logitech Gaming Software 8.52 ή νεότερο</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>βρέθηκε η βιβλιοθήκη του, αλλά δεν φορτώθηκε, επειδή το PadForge δεν μπόρεσε να επιβεβαιώσει ότι μόνο οι διαχειριστές μπορούν να την αλλάξουν και ότι την έχει υπογράψει η Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>βρέθηκε η βιβλιοθήκη του, αλλά δεν ήταν δυνατή η χρήση της, και το αρχείο καταγραφής διαγνωστικών λέει γιατί</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>ξεκινήστε το Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>αναμονή για τηλέφωνο με Arx Control</value></data>
@@ -6025,7 +5991,6 @@
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Φορτώνει αυτό το αντίγραφο της βιβλιοθήκης της Force Dimension αντί για οποιοδήποτε άλλο. Ένα Falcon που είναι ανοιχτό σε άλλο αντίγραφο κλείνει και ανοίγει ξανά σε αυτό. Τα αντίγραφα που εγκαθιστά το SDK βρίσκονται και χωρίς αυτό.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Βιβλιοθήκες (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Η σελίδα λήψης του Falcon SDK δεν άνοιξε: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Η σελίδα λήψης του Falcon SDK δεν έχει ανοίξει ακόμη: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Εγκατάσταση προγράμματος οδήγησης Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Εγκαθιστά το πρόγραμμα οδήγησης της Force Dimension, από τον φάκελο του SDK, σε ένα Falcon που δεν έχει κανένα. Τα Windows ίσως ρωτήσουν πρώτα αν εμπιστεύεστε τη Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Λήψη του SDK της Force Dimension</value></data>
@@ -6726,6 +6691,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Η συσκευή δεν είναι συνδεδεμένη. Το SDL τη διαβάζει μόλις συνδεθεί.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Το SDL δεν έδωσε στο PadForge καμία ανάγνωση αυτής της συσκευής.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Το κοινοτικό αντίγραφο που είναι ενσωματωμένο, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Λήψη {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Το δικό του αρχείο του PadForge</value></data>

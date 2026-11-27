@@ -654,8 +654,7 @@ namespace PadForge.Services
         {
             var name = new StringBuilder();
             foreach (char c in bindId) name.Append(char.IsLetterOrDigit(c) ? c : '_');
-            return Path.Combine(PadForge.Services.ProtectedWork.FolderInTheApp("VendorUsb", Path.Combine(Path.GetTempPath(), "PadForge", "VendorUsb")),
-                name.ToString());
+            return Path.Combine(Path.GetTempPath(), "PadForge", "VendorUsb", name.ToString());
         }
 
         /// <summary>Binds WinUSB to the nodes the plan's ID names, and says

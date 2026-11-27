@@ -24,7 +24,8 @@ ID of the pinned copy's Windows rows, with a hash of the row and a verdict.
 
   K  the fork carries the row (src/joystick/SDL_gamepad_db_community.h)
   S  SDL maps the controller in the Windows section of SDL_gamepad_db.h
-  O  SDL maps the controller on other platforms only
+  O  SDL maps the controller on other platforms only. The fork keeps such a
+     row (hifihedgehog/SDL#53), so an O row is one another filter of N drops
   N  the fork leaves the row out for another reason: a HIDAPI driver reads the
      controller, controller_list.h lists it, SDL types it as a wheel or a
      flight stick, it is vJoy's shared ID, or its ID is not in the USB form
@@ -97,7 +98,7 @@ HASH_DIGITS = 16
 # What the fork's generator counted, as it wrote it into the community header.
 HEADER_COUNTS = re.compile(
     r"Windows rows: (\d+)\. In the USB form with a vendor and product: (\d+)\.\s+"
-    r"Left out because SDL_gamepad_db\.h maps the device on some platform: (\d+),\s+"
+    r"Left out because SDL_gamepad_db\.h maps the device on Windows: (\d+),\s+"
     r"because controller_list\.h lists it: (\d+), because a HIDAPI driver\s+"
     r"supports it: (\d+), because SDL types it as a flight stick or a wheel: (\d+),\s+"
     r"because it is vJoy's shared ID: (\d+)\. Kept: (\d+)\.")
@@ -311,8 +312,8 @@ class Fork:
             ("rows in the USB form", usb_rows, self.h_usb),
             ("rows the fork kept", usb["K"], self.h_kept),
             ("rows the fork kept, counted in its header", len(self.kept), self.h_kept),
-            ("rows SDL maps on some platform", usb["S"] + usb["O"], self.h_mapped),
-            ("rows left out for another reason", usb["N"], self.h_listed + self.h_hidapi + self.h_shape + self.h_vjoy),
+            ("rows SDL maps on Windows", usb["S"], self.h_mapped),
+            ("rows left out for another reason", usb["N"] + usb["O"], self.h_listed + self.h_hidapi + self.h_shape + self.h_vjoy),
         )
         for what, got, expected in checks:
             if got != expected:

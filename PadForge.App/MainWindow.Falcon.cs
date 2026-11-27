@@ -17,14 +17,12 @@ namespace PadForge
         /// card sends a user with no SDK (issue #521).</summary>
         internal const string FalconSdkDownloadUrl = "https://www.forcedimension.com/software/sdk";
 
-        /// <summary>The SDK's download page in the browser, through the
-        /// desktop shell, and the shell's reason on the status line when it
-        /// did not take the page. The shell's start throws nothing.</summary>
+        /// <summary>The SDK's download page in the browser, and Windows'
+        /// reason on the status line when it did not open.</summary>
         internal static void OpenFalconDownload(Action<string> setStatus)
         {
-            if (ShellLaunch.AsTheUser(new ProcessStartInfo { FileName = FalconSdkDownloadUrl, UseShellExecute = true }, out string why)) return;
-            setStatus(string.Format(CultureInfo.CurrentCulture,
-                why == ShellLaunch.NotAnswered ? Strings.Instance.Falcon_DownloadNotAnswered_Format : Strings.Instance.Falcon_DownloadNotOpened_Format, why));
+            if (ShellLaunch.TryStart(new ProcessStartInfo { FileName = FalconSdkDownloadUrl, UseShellExecute = true }, out string why)) return;
+            setStatus(string.Format(CultureInfo.CurrentCulture, Strings.Instance.Falcon_DownloadNotOpened_Format, why));
         }
 
         /// <summary>The Novint Falcon card's buttons and a Falcon row's

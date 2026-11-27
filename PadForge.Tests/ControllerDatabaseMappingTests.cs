@@ -290,6 +290,24 @@ namespace PadForge.Tests
 
         // ── Where a mapping came from (DB-07) ──
 
+        /// <summary>A device the SDL_GAMECONTROLLERCONFIG variable PadForge
+        /// started with maps names the variable as its source, above the
+        /// user's own row, as SDL holds the variable's row at USER
+        /// priority.</summary>
+        [Fact]
+        public void ADeviceTheVariableMaps_NamesTheVariable()
+        {
+            string device = "0300aabb" + Id(0x1000, 0x0001).Substring(8);
+            string variableRow = device + ",Var Pad,a:b5,platform:Windows,";
+            var mine = ControllerDatabaseMine.Empty.With(MineRow(variableRow));
+            Assert.Equal(SdlMappingSource.Variable,
+                ControllerDatabaseSource.Of(device, device + ",Var Pad,a:b5,crc:aabb,", mine, null, null, null, "x\n" + variableRow + "\r\n"));
+            Assert.Equal(SdlMappingSource.Yours,
+                ControllerDatabaseSource.Of(device, device + ",Var Pad,a:b5,crc:aabb,", mine, null, null, null, null));
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.SdlMapping_From_Variable,
+                PadForge.Services.ControllerDatabaseController.SourceWords(SdlMappingSource.Variable, null));
+        }
+
         [Fact]
         public void TheSource_IsTheOneWhoseBindingsSdlHolds()
         {

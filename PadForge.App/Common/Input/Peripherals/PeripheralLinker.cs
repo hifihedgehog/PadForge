@@ -278,7 +278,8 @@ namespace PadForge.Common.Input.Peripherals
     /// processes, and 358 ms of CPU on a PC with 404 processes and 8,884
     /// threads, where one every 5 s held the link thread at 7 percent of a
     /// core. The snapshot now names each process from the list of process
-    /// IDs (<see cref="RunningProcessList"/>), 7 ms on that same PC. The
+    /// IDs (<see cref="RunningProcessList"/>), which names only the ids it
+    /// has not seen and costs one wait per process after that. The
     /// list of process IDs alone (K32EnumProcesses) takes 0.02 to
     /// 0.05 ms.</para>
     ///

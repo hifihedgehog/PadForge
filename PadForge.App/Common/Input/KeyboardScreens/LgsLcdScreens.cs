@@ -38,8 +38,8 @@ namespace PadForge.Common.Input.KeyboardScreens
     {
         public const int InitRetryMs = 10000;
         /// <summary>How often a session looks for LGS's process: the init
-        /// retry's slow lane, one read of the process list (about 7 ms,
-        /// RunningProcessList).</summary>
+        /// retry's slow lane, one read of the process list
+        /// (RunningProcessList, the id list and one wait per process).</summary>
         public const int LgsCheckMs = InitRetryMs;
         /// <summary>The image names of LGS's process, both eras
         /// (LogiLedEngineNative.HostProcesses without G HUB's agent).</summary>

@@ -379,7 +379,7 @@ namespace PadForge.Tests
                 {
                     LogitechGKeyState.NoSdk, LogitechGKeyState.SdkPathStale,
                     LogitechGKeyState.LoadFailed, LogitechGKeyState.MissingExports,
-                    LogitechGKeyState.InitRefused, LogitechGKeyState.Refused,
+                    LogitechGKeyState.InitRefused,
                 });
             else
                 Assert.Equal(LogitechGKeyState.Running, source.State);

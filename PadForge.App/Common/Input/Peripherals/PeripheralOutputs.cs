@@ -80,13 +80,18 @@ namespace PadForge.Common.Input.Peripherals
         Waiting,
     }
 
-    /// <summary>One Start of a peripheral worker thread: its stop flag. Each
-    /// Start makes its own, the way each ChromaBackend.Start makes its own
-    /// token, so a worker that outlived a timed-out Stop reads its own flag
-    /// set and ends, whatever a later Start does.</summary>
+    /// <summary>One Start of a peripheral worker thread: its stop flag and
+    /// its wake. Each Start makes its own, the way each ChromaBackend.Start
+    /// makes its own token, so a worker that outlived a timed-out Stop reads
+    /// its own flag set and ends, whatever a later Start does.</summary>
     internal class WorkerRun
     {
         public volatile bool Stop;
+
+        /// <summary>This run's wake. A worker a timed-out Stop left behind
+        /// waits on its own run's wake, so it can never take one meant for
+        /// a later run's worker. Nothing disposes it: it goes with the run.</summary>
+        internal readonly AutoResetEvent Wake = new(false);
 
         /// <summary>The worker's thread, from its wait on
         /// (<see cref="WorkerSuccession.Enter"/>).</summary>
@@ -470,7 +475,7 @@ namespace PadForge.Common.Input.Peripherals
         {
             Volatile.Write(ref s_links, table ?? LinkTable.Empty);
             Interlocked.Increment(ref s_linkVersion);
-            try { LinksChanged?.Invoke(); } catch { }
+            RaiseEach(LinksChanged, nameof(LinksChanged), ref s_threwLinks);
         }
 
         public static bool HasHaptics(Guid device) => Links.For(device)?.Haptics.Length > 0;
@@ -637,7 +642,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private static void RaiseStatusChanged()
         {
-            try { StatusChanged?.Invoke(); } catch { }
+            RaiseEach(StatusChanged, nameof(StatusChanged), ref s_threwStatus);
         }
 
         // ─────────────────────────────────────────────
@@ -783,7 +788,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private static void RaiseHapticsChanged()
         {
-            try { HapticsChanged?.Invoke(); } catch { }
+            RaiseEach(HapticsChanged, nameof(HapticsChanged), ref s_threwHaptics);
         }
 
         /// <summary>The rows Identify buzzes, each with the tick its claim
@@ -830,7 +835,7 @@ namespace PadForge.Common.Input.Peripherals
 
         private static void RaiseIdentifyChanged()
         {
-            try { IdentifyChanged?.Invoke(); } catch { }
+            RaiseEach(IdentifyChanged, nameof(IdentifyChanged), ref s_threwIdentify);
         }
 
         // ─────────────────────────────────────────────
@@ -1001,12 +1006,32 @@ namespace PadForge.Common.Input.Peripherals
         private static void BumpLighting()
         {
             Interlocked.Increment(ref s_lightingVersion);
-            try { LightingChanged?.Invoke(); } catch { }
+            RaiseEach(LightingChanged, nameof(LightingChanged), ref s_threwLighting);
+        }
+
+        private static int s_threwLinks, s_threwStatus, s_threwHaptics, s_threwIdentify,
+            s_threwLighting, s_threwClaims, s_threwChromaMacro;
+
+        /// <summary>Raises one event a handler at a time, each in its own
+        /// try, so a handler that throws cannot keep a later one, a
+        /// worker's wake among them, from running. The first throw of each
+        /// event is logged. The walk allocates nothing.</summary>
+        private static void RaiseEach(Action handlers, string name, ref int threw)
+        {
+            foreach (Action handler in Delegate.EnumerateInvocationList(handlers))
+            {
+                try { handler(); }
+                catch (Exception e)
+                {
+                    if (Interlocked.Exchange(ref threw, 1) == 0)
+                        PadForge.Engine.SdlDiagLog.WriteLine($"PERIPHERAL {name} handler threw, the later ones still ran: {e.GetType().Name}: {e.Message}");
+                }
+            }
         }
 
         private static void RaiseClaimsChanged()
         {
-            try { ClaimsChanged?.Invoke(); } catch { }
+            RaiseEach(ClaimsChanged, nameof(ClaimsChanged), ref s_threwClaims);
         }
 
         /// <summary>One claimant of a path, as the ruling sees it.</summary>
@@ -1256,7 +1281,7 @@ namespace PadForge.Common.Input.Peripherals
             // time, so only they wake, and LightingChanged stays quiet.
             if (fresh)
             {
-                try { ChromaMacroChanged?.Invoke(); } catch { }
+                RaiseEach(ChromaMacroChanged, nameof(ChromaMacroChanged), ref s_threwChromaMacro);
             }
         }
 

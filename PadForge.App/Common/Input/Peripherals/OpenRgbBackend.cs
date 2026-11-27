@@ -155,7 +155,6 @@ namespace PadForge.Common.Input.Peripherals
         private readonly int _stopJoinMs;
         private readonly int _versionWaitMs;
         private readonly int _replyWaitMs;
-        private readonly AutoResetEvent _wake = new(false);
 
         private DirectBackendSnapshot _snapshot = DirectBackendSnapshot.NotScanned;
         private IReadOnlyList<HidCollectionInfo> _present;
@@ -227,12 +226,12 @@ namespace PadForge.Common.Input.Peripherals
             Volatile.Write(ref _snapshot, DirectBackendSnapshot.NotScanned);
             _thread = new Thread(() => Worker(run)) { IsBackground = true, Name = "PeripheralOpenRgb" };
             Volatile.Write(ref _worker, _thread);
-            _thread.Start();
             PeripheralOutputs.LightingChanged += Wake;
             PeripheralOutputs.LinksChanged += Wake;
             // A new presence raises it, which is how the worker hears that
             // OpenRGB started (OpenRgbRuns).
             PeripheralOutputs.StatusChanged += Wake;
+            _thread.Start();
         }
 
         public void Stop()
@@ -296,7 +295,7 @@ namespace PadForge.Common.Input.Peripherals
 
         internal void Wake()
         {
-            try { _wake.Set(); } catch (ObjectDisposedException) { }
+            _run?.Wake.Set();
         }
 
         private static OutputPath PathOf(Unit unit) => new(OutputFamily.OpenRgbDevice, unit.Key);
@@ -403,8 +402,7 @@ namespace PadForge.Common.Input.Peripherals
                         : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
                     Interlocked.Increment(ref _passes);
-                    try { _wake.WaitOne(wait); }
-                    catch (ObjectDisposedException) when (run.Stop) { break; }
+                    run.Wake.WaitOne(wait);
                 }
             }
             catch (Exception ex)
@@ -861,7 +859,6 @@ namespace PadForge.Common.Input.Peripherals
         {
             if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             Stop();
-            _wake.Dispose();
         }
     }
 }

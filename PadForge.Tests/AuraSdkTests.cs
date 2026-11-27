@@ -347,7 +347,22 @@ namespace PadForge.Tests
                 if (FailWrites) throw new COMException("server gone", unchecked((int)0x800706BA));
             }
             public void Apply(int device) => Log("apply:" + device);
-            public void Close() { Log("close"); _devices = Array.Empty<AuraDevice>(); }
+            /// <summary>When set, the next Close waits on it, and
+            /// <see cref="CloseHeld"/> says it is there.</summary>
+            public ManualResetEventSlim HoldClose;
+            public readonly ManualResetEventSlim CloseHeld = new(false);
+
+            public void Close()
+            {
+                var hold = Interlocked.Exchange(ref HoldClose, null);
+                if (hold != null)
+                {
+                    CloseHeld.Set();
+                    hold.Wait(30000);
+                }
+                Log("close");
+                _devices = Array.Empty<AuraDevice>();
+            }
         }
 
         private static AuraSdkBackend Backend(FakeAura native) => new(native, pollMs: 10, retryMs: 100, stopWaitMs: 2000);
@@ -648,6 +663,47 @@ namespace PadForge.Tests
             native.OpenOk = true;
             Assert.True(WaitFor(() => PeripheralOutputs.StateOf(OutputFamily.AuraSdkType) == BackendState.Connected));
             Assert.Null(PeripheralOutputs.RefusalOn(Path("keyboard")));
+        }
+
+        /// <summary>A worker a Stop gave up on waits on its own run's wake, so a
+        /// wake for the next run of the same backend always reaches the next
+        /// run's worker, also while both sleep with no timeout. Aura and Mystic
+        /// Light share this worker (SdkCategoryBackend).</summary>
+        [Fact]
+        public void AWorkerAStopGaveUpOn_TakesNoWakeMeantForTheNextRun()
+        {
+            var native = new FakeAura();
+            PeripheralOutputs.Presence = Presence();
+            var links = new DeviceLinks { Device = Keyboard, Lighting = new[] { Path("keyboard") } };
+            Link(links);
+            using var backend = new AuraSdkBackend(native, pollMs: 10, retryMs: 50, stopWaitMs: 50, predecessorWaitMs: 50);
+            using var gate = new ManualResetEventSlim(false);
+            try
+            {
+                backend.Start();
+                PeripheralOutputs.SetLighting(Keyboard, slot: 0, player: 1, 0x11, 0x22, 0x33);
+                Assert.True(WaitFor(() => native.Calls.Any(c => c.StartsWith("key:", StringComparison.Ordinal))), "the first run painted");
+                native.HoldClose = gate;
+                PeripheralOutputs.ReleaseLighting(Keyboard, 0);
+                Assert.True(native.CloseHeld.Wait(30000), "the first run's worker is inside its hand-back");
+                backend.Stop();
+                backend.Start();
+                // The live worker has made its first pass and sleeps before the
+                // first run's worker comes out of its hand-back and sleeps too.
+                Thread.Sleep(300);
+                gate.Set();
+                Thread.Sleep(200);
+                for (int i = 0; i < 3; i++)
+                {
+                    int passes = backend.IdlePasses;
+                    Link(links);
+                    Assert.True(SpinWait.SpinUntil(() => backend.IdlePasses > passes, 30000), "the wake reached the live worker");
+                }
+            }
+            finally
+            {
+                gate.Set();
+            }
         }
 
         /// <summary>A worker a stop left inside the SDK is waited for by the next

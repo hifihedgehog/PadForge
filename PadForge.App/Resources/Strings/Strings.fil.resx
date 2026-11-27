@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Hindi nagsimula: walang program na nagbubukas ng mga Python file para sa iyo, at walang makitang py launcher ang PadForge</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Hindi nagsimula: hindi mabasa ng PadForge kung aling program ang nagbubukas ng ganitong uri ng file para sa iyo</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Hindi nagsimula: wala sa PC na ito ang program na nagbubukas ng ganitong uri ng file para sa iyo</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Hindi nagsimula: walang desktop shell na mapagsisimulan nito</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Hindi nagsimula: may karapatan ng administrator ang desktop shell, kaya magkakaroon din nito ang plugin</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Hindi nagsimula: hindi mabasa ng PadForge kung magkakaroon ito ng karapatan ng administrator</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Hindi nagsimula: binigyan ito ng Windows ng karapatan ng administrator, kaya tinapos ito ng PadForge bago tumakbo</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Hindi nagsimula: humihingi ito ng karapatan ng administrator</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Hindi nagsimula: tumanggi ang Windows na may error na {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Hindi nagsimula</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Walang Logitech G-key SDK sa makinang ito. Kasama itong ini-install ng Logitech Gaming Software 8.55 o mas bago.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>Nakarehistro ang G-key SDK pero nawawala ang file nito. I-install muli ang Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Nakita ang G-key SDK pero hindi ito ma-load.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Nakita ang G-key SDK pero hindi ito na-load, dahil hindi makumpirma ng PadForge na mga administrator lang ang makakabago nito at na nilagdaan ito ng Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Hindi ang G-key SDK na inaasahan nito ang library na iyon.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Tumangging magsimula ang G-key SDK. Kadalasan, hindi tumatakbo ang Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Nakakonekta, wala pang nakitang key. Sa Logitech Gaming Software, i-drag ang G-key command papunta sa bawat key sa profile ng PadForge, at gawing persistent ang profile na iyon. Kailangan ding wala sa on-board memory mode ang mouse na G600 o G300.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Panatilihing nakatago ang window kapag nagsimula ang PadForge. Tumatakbo at nagma-map ito gaya ng dati.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Awtomatikong simulan ang PadForge kapag nag-sign in ka sa Windows. Habang naka-on ito, nagsisimula rin ang PadForge nang walang prompt ng Windows mula sa isang shortcut, isang script o ibang program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>Tumatakbo ang PadForge mula sa {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Kailangan nito na nasa sarili nitong folder ang PadForge. May iba pang file ang folder nito, kaya hindi mapipigilan ng PadForge ang ibang program na baguhin ito.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Kailangan nito na nasa folder ang PadForge na hindi mababago ng ibang program. Hindi napigilan ng PadForge ang ibang program na baguhin ang folder nito.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Ilipat ang PadForge sa Sarili Nitong Folder</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kinokopya ang PadForge at ang mga setting nito sa Program Files, itinuturo roon ang mga task nito, at sinisimulan ito mula roon. Nananatili ang kopya rito.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: may mga file ang {0} na hindi sa PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>In-off ang Magsimula sa pag-login, dahil pinatatakbo nito ang PadForge mula sa folder na may iba pang file.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>Hindi lumipat ang PadForge: walang pinangalanang Program Files folder ang Windows.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito mabasa ang PadForge na tumatakbo.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito magawa ang {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito mabasa kung ano ang laman ng {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi nito napigilan ang ibang program na baguhin ang {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: hindi tumugma sa PadForge na tumatakbo ang kopya nito sa {0}.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>Hindi lumipat ang PadForge: pagkatapos ng kopya, may mga file ang {0} na hindi sa PadForge, o mababago ito ng ibang program.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil wala na ang PadForge na pinatakbo nito.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil hindi napigilan ng PadForge ang ibang program na baguhin ang folder kung saan nito pinatakbo ang PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil hindi mabasa ng PadForge kung aling PadForge ang pinatakbo nito.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Pinatay ang Magsimula sa pag-login, dahil hindi mabasa ng PadForge ang folder ng PadForge na pinatakbo nito.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>Hindi magawa ng PadForge ang protektadong folder nito, ang {0}. Doon itinatago ng PadForge ang mga library na pinatatakbo nito nang may karapatan ng administrator, at hindi ito makakapagsimula nang ligtas kung wala ito.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>Hindi muling masimulan ng PadForge ang sarili nito mula sa protektadong folder nito, ang {0}. Tumatakbo lang ang PadForge nang may karapatan ng administrator mula roon, kaya hindi ito nagsimula.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>Hindi magawa ng PadForge ang lock na nagpapanatili dito sa isang tumatakbong kopya lang, kaya hindi ito nagsimula.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Tumatakbo ang PadForge nang may karapatan ng administrator mula sa {0}, isang folder na maaaring baguhin ng ibang program. Maaari nilang baguhin doon ang mga setting ng PadForge, at kumikilos ang PadForge sa mga ito gamit ang mga karapatan nito.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Tumatakbo ang PadForge nang may karapatan ng administrator mula sa {0}, isang folder na may iba pang file. Hindi mapipigilan ng PadForge ang ibang program na baguhin doon ang mga setting nito, at kumikilos ito sa mga iyon gamit ang mga karapatan nito.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Tumatakbo ang PadForge nang may karapatan ng administrator mula sa {0}, isang folder na hindi nito nabasa. Hindi mapipigilan ng PadForge ang ibang program na baguhin doon ang mga setting nito, at kumikilos ito sa mga iyon gamit ang mga karapatan nito.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Laging ipakita sa system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Panatilihing nakikita ang tray icon habang bukas ang window, kaya isang click lang ang layo ng Lumabas sa menu nito.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
@@ -1294,13 +1266,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Scrub check: sinusuri ang mga bahaging itinatago mo…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Scrub check: hindi mabasa ng PadForge ang mga bahaging itinatago mo, kaya mananatiling naka-off ang I-save.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Hindi nagsimula ang pag-save gamit ang iyong mga karapatan.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Hindi nagsimula ang pag-save gamit ang iyong mga karapatan: walang desktop shell na tumatakbo para pagsimulan nito.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Hindi nagsimula ang pag-save gamit ang iyong mga karapatan: tumanggi ang Windows na may error {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Hindi natapos ang pag-save sa loob ng {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Hindi pinayagan ng Windows na maisulat doon ang file.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>Hindi tinanggap ng PadForge ang file na ito bilang sarili nitong recording.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Natapos ang pag-save na may code {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Sine-save bilang ikaw, sa folder ng Downloads mo sa unang pagkakataon, tapos sa huling pinag-saveng lugar, at ipinapakita sa File Explorer. Ang recording na humihinto habang walang nasa page (ang limitasyon nito, isang macro, isang program, ang assistant tool o --record stop) ay naghihintay ng pagsusuring ito sa Home, at binubura pagkalipas ng 7 araw kung hindi na-save. Sinasabihan ang isang program na naghihintay ito, ngunit hindi kung saan.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Naghihintay sa iyo ang recording ng problema mula {0} para basahin.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Suriin</value></data>
@@ -5378,7 +5345,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Huminto ang pairing: nabigo ang pagbasa o pagsulat sa controller o sa Bluetooth radio. Nasa diagnostics log ang mga detalye.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Huminto ang pairing dahil sa error na hindi inaasahan ng PadForge. Nasa diagnostics log ang mga detalye.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>nangangailangan ng Logitech Gaming Software 8.52 o mas bago</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nakita ang library nito pero hindi ito na-load, dahil hindi makumpirma ng PadForge na mga administrator lang ang makakabago nito at na nilagdaan ito ng Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nakita ang library nito pero hindi ito magamit, at sinasabi ng diagnostics log kung bakit</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>simulan ang Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>naghihintay ng telepono na may Arx Control</value></data>
@@ -5476,7 +5442,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Nilo-load ang kopyang ito ng library ng Force Dimension kapalit ng iba. Ang Falcon na nakabukas sa ibang kopya ay magsasara at magbubukas muli sa kopyang ito. Nahahanap ang mga kopyang ini-install ng SDK kahit wala ito.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Mga Library (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Hindi nabuksan ang download page ng Falcon SDK: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Hindi pa nabubuksan ang download page ng Falcon SDK: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>I-install ang Falcon Driver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Ini-install ang driver ng Force Dimension, mula sa SDK folder, sa Falcon na walang driver. Maaaring itanong muna ng Windows kung pagkakatiwalaan ang Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Kunin ang SDK ng Force Dimension</value></data>
@@ -5842,6 +5807,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="SdlMapping_Away" xml:space="preserve"><value>Hindi nakakonekta ang device. Babasahin ito ng SDL kapag nakakonekta na.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Walang ibinigay na pagbasa ang SDL sa PadForge para sa device na ito.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ang kopya ng komunidad na kasama na, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download noong {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Sariling file ng PadForge</value></data>

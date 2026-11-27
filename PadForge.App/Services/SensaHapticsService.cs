@@ -189,7 +189,6 @@ namespace PadForge.Services
         /// stack dump), so the retry cadence is a tested, countable fact.</summary>
         internal int ProviderInitAttempts => Volatile.Read(ref _providerInitAttempts);
 
-        private string _lastRuntimeWhy;
 
         /// <summary>The registry keys Interhaptics' Razer provider reads
         /// Razer's runtime folder from, in its order: the InstallDir value
@@ -236,19 +235,6 @@ namespace PadForge.Services
             return null;
         }
 
-        /// <summary>Holds Razer's runtime against change for the provider's
-        /// load (<see cref="PadForge.Engine.Common.TrustedLibrary"/>), or null
-        /// with why it is not used.</summary>
-        private static IDisposable HoldRuntime(out string why)
-        {
-            string path = RuntimePath();
-            if (path == null)
-            {
-                why = "Razer Synapse's runtime is not installed";
-                return null;
-            }
-            return PadForge.Engine.Common.TrustedLibrary.Hold(path, PadForge.Engine.Common.TrustedLibrary.Razer, out why);
-        }
         private int _providerInitAttempts;
 
         /// <summary>Whether this instance's worker thread is alive (test
@@ -411,21 +397,7 @@ namespace PadForge.Services
                         BeforeProviderInit?.Invoke();
                         // The test host runs the engine and never the
                         // provider, which reaches Razer's runtime on the PC.
-                        try
-                        {
-                            // Razer's runtime loads into PadForge only from
-                            // a folder only administrators can change and
-                            // signed by Razer, held from the check through
-                            // the provider's load (#600).
-                            string why = null;
-                            using var runtime = PadForge.Engine.Common.VendorProgramGate.Refuses ? null : HoldRuntime(out why);
-                            if (runtime != null) providerUp = Provider.ProviderInit();
-                            else if (!PadForge.Engine.Common.VendorProgramGate.Refuses && why != _lastRuntimeWhy)
-                            {
-                                _lastRuntimeWhy = why;
-                                PadForge.Engine.SdlDiagLog.WriteLine("SENSA Razer's runtime not used: " + why);
-                            }
-                        }
+                        try { providerUp = !PadForge.Engine.Common.VendorProgramGate.Refuses && Provider.ProviderInit(); }
                         catch (DllNotFoundException) { }
                         catch (EntryPointNotFoundException) { }
                         PadForge.Engine.SdlDiagLog.WriteLine($"SENSA provider init => {providerUp}");

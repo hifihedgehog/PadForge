@@ -718,20 +718,6 @@ namespace PadForge.Tests
                 dash.SetWaitingRecording("C:/Temp/PadForge Recordings/PadForge-recording-20261124-123100.zip",
                     DateTime.Today.AddHours(12).AddMinutes(31)));
             dash.SetWaitingRecording(null, default);
-            // PadForge with rights in a folder other programs can change
-            // (#597): the shared folder's card, under the offer.
-            try
-            {
-                PadForge.Services.ExeFolderState.CheckSeam = _ => PadForge.Services.ExeFolder.Standing.Shared;
-                Shot("home-shared-folder.png", PageWidth, 1068, () => PadForge.Services.ExeFolderState.Instance.Start(@"C:\Users\sonic\Downloads\PadForge.exe"));
-                Shot("home-shared-folder-narrow.png", 640, 2000, null);
-            }
-            finally
-            {
-                PadForge.Services.ExeFolderState.CheckSeam = _ => PadForge.Services.ExeFolder.Standing.Own;
-                PadForge.Services.ExeFolderState.Instance.Recheck();
-                PadForge.Services.ExeFolderState.CheckSeam = null;
-            }
             // A fourth controller of a type with no picture, which takes the Add tile's place in the grid.
             Shot("home-four.png", PageWidth, 1300, () =>
             {

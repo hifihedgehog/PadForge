@@ -626,7 +626,8 @@ namespace PadForge.Services
         /// within <see cref="OwnWorkMs"/> of a stamp of PadForge's own work is
         /// that work's, and nothing is said or counted of it: until the row
         /// returns for <paramref name="ownRowAt"/>, a stamp that names the
-        /// row, and while the window lasts for <paramref name="ownEveryAt"/>,
+        /// row, which the row's return ends (OwnDrops.Back), and while the
+        /// window lasts for <paramref name="ownEveryAt"/>,
         /// one that covers every row, after which a row still away is a drop.
         /// A later stamp of that kind read while the window lasts moves its
         /// end to five seconds after that stamp, so an absence that began

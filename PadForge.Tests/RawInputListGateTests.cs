@@ -26,5 +26,18 @@ namespace PadForge.Tests
             Assert.True(InputManager.RawInputListDue(again: true, changed: () => { asked = true; return false; }));
             Assert.False(asked);
         }
+
+        /// <summary>The list check runs on every device pass (2 s, 5 s with no
+        /// slot online), and its lambda made a new delegate on each. The
+        /// gate's ask is made once.</summary>
+        [Fact]
+        public void TheRawInputGateAskIsMadeOnce()
+        {
+            var d = new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);
+            while (d != null && !System.IO.File.Exists(System.IO.Path.Combine(d.FullName, "PadForge.sln"))) d = d.Parent;
+            Assert.NotNull(d);
+            string source = System.IO.File.ReadAllText(System.IO.Path.Combine(d.FullName, "PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs"));
+            Assert.Contains("RawInputListDue(_rawInputListAgain, _rawInputGateAsk ??= () => _rawInputScan.Due(Environment.TickCount64))", source);
+        }
     }
 }

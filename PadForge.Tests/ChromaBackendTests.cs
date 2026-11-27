@@ -633,6 +633,76 @@ namespace PadForge.Tests
             Assert.True(SpinWait.SpinUntil(() => server.Count("DELETE", "/chromasdk") >= 1, 30000), "the session ended at the lapse");
         }
 
+        /// <summary>A loop a Stop gave up on, whose token is canceled, takes no
+        /// wake meant for the next run's loop: its wait ends canceled before it
+        /// takes one, also when it reaches that wait after the next run sleeps.</summary>
+        [Fact]
+        public void ALoopAStopGaveUpOn_TakesNoWakeMeantForTheNextRun()
+        {
+            using var server = new FakeChromaServer();
+            var links = new DeviceLinks { Device = Mouse, Lighting = new[] { Category("mouse") } };
+            Link(links);
+            using var held = new ManualResetEventSlim(false);
+            using var gate = new ManualResetEventSlim(false);
+            int hold = 0;
+            using var backend = Backend(server, retryMs: 0, pollMs: 10, clock: () =>
+            {
+                if (Interlocked.Exchange(ref hold, 0) != 0)
+                {
+                    held.Set();
+                    gate.Wait(30000);
+                }
+                return 1_000_000;
+            });
+            try
+            {
+                backend.Start();
+                Assert.True(SpinWait.SpinUntil(() => backend.WaitMs == Timeout.Infinite, 30000), "the first run went idle");
+                Volatile.Write(ref hold, 1);
+                Link(links);
+                Assert.True(held.Wait(30000), "the first run's loop is held in a pass");
+                backend.Stop();
+                backend.Start();
+                // The live loop has made its first pass and sleeps before the
+                // first run's loop comes out of its pass and reaches its wait.
+                Thread.Sleep(300);
+                gate.Set();
+                Thread.Sleep(200);
+                for (int i = 0; i < 3; i++)
+                {
+                    int passes = backend.PassCount;
+                    Link(links);
+                    Assert.True(SpinWait.SpinUntil(() => backend.PassCount > passes, 30000), "the wake reached the live loop");
+                }
+            }
+            finally
+            {
+                gate.Set();
+            }
+        }
+
+        /// <summary>A live macro on a slot with no Razer device here keeps the
+        /// idle wait at the poll, since a device that joins the slot raises
+        /// nothing, so the color is painted at the next poll.</summary>
+        [Fact]
+        public void SetChromaColor_OnASlotTheMouseJoinsLater_IsPaintedAtTheNextPoll()
+        {
+            using var server = new FakeChromaServer();
+            Link(new DeviceLinks { Device = Mouse, Lighting = new[] { Category("mouse") } });
+            long now = 1_000_000;
+            int joined = 0;
+            using var backend = Backend(server, retryMs: 0, pollMs: 10, devicesOnSlot: slot => slot == 0 && Volatile.Read(ref joined) != 0
+                ? new HashSet<Guid> { Mouse } : new HashSet<Guid>(), clock: () => Volatile.Read(ref now));
+            backend.Start();
+            Assert.True(SpinWait.SpinUntil(() => backend.WaitMs == Timeout.Infinite, 30000), "the worker went idle");
+
+            PeripheralOutputs.AssertChromaMacro(0, 0x10, 0x20, 0x30, now);
+            Assert.True(SpinWait.SpinUntil(() => backend.WaitMs == 10, 30000), "the live macro kept the poll");
+            Assert.Equal(0, server.Count("PUT", "/chromasdk/mouse"));
+            Volatile.Write(ref joined, 1);
+            Assert.True(SpinWait.SpinUntil(() => server.Count("PUT", "/chromasdk/mouse") >= 1, 30000), "the poll painted the macro color");
+        }
+
         /// <summary>A macro that lapses while its color is on the way to
         /// Synapse is let go on the next tick. The worker took the lapse from
         /// the tick the send ended at, found no macro live by then, and held

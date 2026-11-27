@@ -168,7 +168,7 @@ public static class NintendoPreviewMap
     // two digital trigger bits, which the packer sets at the analog pull as
     // the Valve packers do (TriggerClickPull). The paddles take SDL's names:
     // the left paddle 1 bit is SDL's paddle2, LEFT_PADDLE1, Paddle2 here, as
-    // SDL's SInput mapping binds it (SDL_gamepad.c:1009-1011 and 1040-1042,
+    // SDL's SInput mapping binds it (SDL_gamepad.c:1011-1013 and 1040-1042,
     // names at 2187-2190). The D-pad is four buttons on this wire. Append
     // only, as on the Valve tables.
     private static readonly string[] PreviewBySInputBtn =
@@ -478,7 +478,7 @@ public static class NintendoPreviewMap
         new("RightThumbButton", GamepadInput.Button, 9, "RightThumbButton", "RightThumbButton"),
         new("ButtonGuide", GamepadInput.Button, 10, "ButtonGuide", "ButtonGuide"), // Home, Steam
         // Misc 1 is Quick Access on a Valve wire and Share on SInput's
-        // (SDL_gamepad.c:1028-1031 maps SInput's share bit as misc1).
+        // (SDL_gamepad.c:1030-1033 maps SInput's share bit as misc1).
         new("ButtonShare", GamepadInput.Button, 11, "ButtonShare", "ButtonQuickAccess", "ButtonShare"),   // misc 1
         new("ButtonMute", GamepadInput.Button, 11, "ButtonShare", "ButtonQuickAccess", "ButtonShare"),    // misc 1
         new("RightPaddle", GamepadInput.Button, 12, "RightPaddle", "Paddle1", "RightGrip"),

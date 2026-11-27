@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Չմեկնարկեց՝ ոչ մի ծրագիր Python ֆայլեր չի բացում ձեզ համար, և PadForge-ը py գործարկիչ չի գտնում</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Չմեկնարկեց՝ PadForge-ը չի կարող կարդալ, թե որ ծրագիրն է բացում այս տեսակի ֆայլը ձեզ համար</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Չմեկնարկեց՝ այս տեսակի ֆայլը ձեզ համար բացող ծրագիրն այս համակարգչում չկա</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Չմեկնարկեց՝ աշխատասեղանի թաղանթ չկա, որի տակ այն մեկնարկի</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Չմեկնարկեց՝ աշխատասեղանի թաղանթն ունի ադմինիստրատորի իրավունքներ, ուստի պլագինն էլ կունենար դրանք</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Չմեկնարկեց՝ PadForge-ը չի կարող կարդալ, թե արդյոք այն ադմինիստրատորի իրավունքներ կունենա</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Չմեկնարկեց՝ Windows-ը դրան ադմինիստրատորի իրավունքներ տվեց, ուստի PadForge-ը ավարտեց այն մինչև աշխատելը</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Չմեկնարկեց՝ այն ադմինիստրատորի իրավունքներ է պահանջում</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Չմեկնարկեց՝ Windows-ը մերժեց {0} սխալով</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Չմեկնարկեց</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Այս մեքենայում Logitech G-key SDK չկա։ Այն տեղադրվում է Logitech Gaming Software 8.55 կամ ավելի նոր տարբերակի հետ։</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK-ը գրանցված է, բայց դրա ֆայլը բացակայում է։ Նորից տեղադրեք Logitech Gaming Software-ը։</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK-ը գտնվեց, բայց չհաջողվեց բեռնել։</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK-ը գտնվեց, բայց չբեռնվեց, քանի որ PadForge-ը չկարողացավ հաստատել, որ այն կարող են փոխել միայն ադմինիստրատորները և որ Logitech-ը ստորագրել է այն։</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Այդ գրադարանը այն G-key SDK-ը չէ, որ սպասվում է։</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK-ը հրաժարվեց մեկնարկել։ Սովորաբար Logitech Gaming Software-ը չի աշխատում։</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Կապակցված է, ստեղն դեռ չի երևացել։ Logitech Gaming Software-ում քաշեք G-key հրամանը PadForge պրոֆիլի յուրաքանչյուր ստեղնի վրա և այդ պրոֆիլը դարձրեք մշտական։ G600 կամ G300 մկնիկը նույնպես պետք է դուրս լինի ներկառուցված հիշողության ռեժիմից։</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Պահեք պատուհանը թաքցված PadForge-ը մեկնարկելիս։ Այն աշխատում և կապակցում է սովորականի պես։</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ը մեկնարկում է ինքնաշխատ, երբ մուտք եք գործում Windows։ Քանի դեռ սա միացված է, PadForge-ը մեկնարկում է նաև առանց Windows-ի հարցման՝ դյուրանցումից, սկրիպտից կամ մեկ այլ ծրագրից։</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge-ը աշխատում է այստեղից՝ {0}։</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Սա պահանջում է, որ PadForge-ը լինի իր սեփական թղթապանակում։ Նրա թղթապանակում այլ ֆայլեր կան, ուստի PadForge-ը չի կարող այլ ծրագրերին թույլ չտալ փոխել այն։</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Սա պահանջում է, որ PadForge-ը լինի թղթապանակում, որը այլ ծրագրեր չեն կարող փոխել։ PadForge-ը չկարողացավ թույլ չտալ նրանց փոխել իր թղթապանակը։</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Տեղափոխել PadForge-ը իր սեփական թղթապանակ</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Պատճենում է PadForge-ը և նրա կարգավորումները Program Files, այնտեղ է ուղղում նրա առաջադրանքները և մեկնարկում այնտեղից։ Այստեղի օրինակը մնում է անփոփոխ։</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0} թղթապանակում կան ֆայլեր, որոնք PadForge-ինը չեն։</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ» անջատվեց, քանի որ այն PadForge-ը աշխատեցնում էր այլ ֆայլեր պարունակող թղթապանակից։</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ Windows-ը Program Files թղթապանակ չունի։</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ կարդալ աշխատող PadForge-ը։</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ ստեղծել {0} թղթապանակը։</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ կարդալ, թե ինչ է պարունակում {0} թղթապանակը։</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ այն չկարողացավ թույլ չտալ այլ ծրագրերին փոխել {0} թղթապանակը։</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ {0} թղթապանակի իր պատճենը չհամընկավ աշխատող PadForge-ի հետ։</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge-ը չտեղափոխվեց՝ պատճենելուց հետո {0} թղթապանակում կային ֆայլեր, որոնք PadForge-ինը չեն, կամ այլ ծրագրեր կարող էին փոխել այն։</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ այն PadForge-ը, որը աշխատել էր, այլևս չկա։</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ PadForge-ը չկարողացավ թույլ չտալ այլ ծրագրերին փոխել այն թղթապանակը, որից գործարկել էր PadForge-ը։</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ PadForge-ը չկարողացավ կարդալ, թե որ PadForge-ն էր աշխատել։</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>«Մեկնարկել մուտքի ժամանակ»-ն անջատվեց, քանի որ PadForge-ը չկարողացավ կարդալ այն PadForge-ի թղթապանակը, որը աշխատել էր։</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ ստեղծել իր պաշտպանված թղթապանակը՝ {0}։ PadForge-ը ադմինիստրատորի իրավունքներով աշխատող իր գրադարանները պահում է այնտեղ և առանց դրա չի կարող անվտանգ մեկնարկել։</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ նորից մեկնարկել իրեն իր պաշտպանված թղթապանակից՝ {0}։ PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է միայն այնտեղից, ուստի չմեկնարկեց։</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge-ը չկարողացավ ստեղծել փական, որը թույլ է տալիս աշխատել միայն մեկ օրինակի, ուստի չմեկնարկեց։</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է {0} թղթապանակից, որը այլ ծրագրեր կարող են փոխել։ Նրանք կարող են փոխել PadForge-ի կարգավորումներն այնտեղ, և PadForge-ը դրանց համաձայն գործում է իր իրավունքներով։</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է {0} թղթապանակից, որում այլ ֆայլեր կան։ PadForge-ը չի կարող թույլ չտալ այլ ծրագրերին փոխել իր կարգավորումներն այնտեղ, և գործում է դրանց համաձայն իր իրավունքներով։</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge-ը ադմինիստրատորի իրավունքներով աշխատում է {0} թղթապանակից, որը չկարողացավ կարդալ։ PadForge-ը չի կարող թույլ չտալ այլ ծրագրերին փոխել իր կարգավորումներն այնտեղ, և գործում է դրանց համաձայն իր իրավունքներով։</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Միշտ ցույց տալ համակարգային սկուտեղում</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Սկուտեղի պատկերակը տեսանելի է պատուհանը բաց ժամանակ, որպեսզի ընտրացանկի Ելքը միշտ մեկ սեղմումի հեռավորության վրա լինի։</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Թարմացումներ</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} ՄԲ</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Մաքրման ստուգում՝ ստուգվում են ձեր պահած մասերը…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Մաքրման ստուգում՝ PadForge-ը չկարողացավ կարդալ ձեր պահած մասերը, ուստի «Պահել»-ը մնում է անջատված։</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Ձեր իրավունքներով պահումը չմեկնարկեց։</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Ձեր իրավունքներով պահումը չմեկնարկեց՝ աշխատասեղանի թաղանթ չի աշխատում, որի տակ այն մեկնարկվի։</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Ձեր իրավունքներով պահումը չմեկնարկեց՝ Windows-ը մերժեց {0} սխալով։</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Պահումը չավարտվեց {0} ընթացքում։</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows-ը թույլ չտվեց ֆայլը գրել այնտեղ։</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge-ը այս ֆայլը չընդունեց որպես իր սեփական գրառում։</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Պահումն ավարտվեց {0} կոդով։</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Պահվում է որպես դուք՝ առաջին անգամ ձեր Ներբեռնումներ թղթապանակում, հետո այնտեղ, որտեղ վերջին անգամ եք պահել, և ցուցադրվում է Explorer-ում։ Գրառումը, որը կանգնում է, երբ ոչ ոք էջի մոտ չէ (սահմանաչափը, մակրոն, ծրագիրը, օգնականի գործիքը կամ --record stop), սպասում է այս վերանայմանը «Գլխավոր»-ում և ջնջվում է 7 օր հետո, եթե չպահվի։ Ծրագրին ասվում է, որ այն սպասում է, բայց երբեք՝ որտեղ։</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Խնդրի գրառումը՝ {0}, սպասում է, որ կարդաք այն։</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Վերանայել</value></data>
@@ -5543,7 +5510,6 @@ PadForge-ը չկարողացավ մանրամասները գրել PadForge.exe-
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Զուգակցումը դադարեց՝ կառավարչի կամ Bluetooth ռադիոյի կարդալը կամ գրելը ձախողվեց։ Մանրամասները ախտորոշման մատյանում են։</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Զուգակցումը դադարեց այնպիսի սխալից, որը PadForge-ը չէր սպասում։ Մանրամասները ախտորոշման մատյանում են։</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>պահանջվում է Logitech Gaming Software 8.52 կամ ավելի նոր տարբերակ</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>գտել է իր գրադարանը և չի բեռնել այն, քանի որ PadForge-ը չկարողացավ հաստատել, որ այն կարող են փոխել միայն ադմինիստրատորները և որ Logitech-ը ստորագրել է այն</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>գտել է իր գրադարանը և չի կարողացել օգտագործել այն, իսկ ախտորոշման մատյանում գրված է պատճառը</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>գործարկեք Logitech Gaming Software-ը</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>սպասում է Arx Control-ով հեռախոսի</value></data>
@@ -5641,7 +5607,6 @@ PadForge-ը չկարողացավ մանրամասները գրել PadForge.exe-
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Բեռնում է Force Dimension-ի գրադարանի այս օրինակը մյուսների փոխարեն։ Մեկ այլ օրինակի վրա բաց Falcon-ը փակվում է և նորից բացվում այս օրինակի վրա։ SDK-ի տեղադրած օրինակները գտնվում են առանց դրա։</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Գրադարաններ (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK-ի ներբեռնման էջը չբացվեց՝ {0}։</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK-ի ներբեռնման էջը դեռ չի բացվել՝ {0}։</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Տեղադրել Falcon-ի դրայվերը</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>SDK պանակից տեղադրում է Force Dimension-ի դրայվերը այն Falcon-ի վրա, որն այն չունի։ Windows-ը կարող է նախ հարցնել՝ վստահե՞լ Force Dimension-ին։</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Ստանալ Force Dimension-ի SDK-ը</value></data>
@@ -5996,6 +5961,7 @@ PadForge-ը չկարողացավ մանրամասները գրել PadForge.exe-
   <data name="SdlMapping_Away" xml:space="preserve"><value>Սարքը միացված չէ։ SDL-ը կկարդա այն, երբ միանա։</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL-ը PadForge-ին այս սարքի ընթերցում չտվեց։</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Համայնքի ներկառուցված պատճենը՝ {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ներբեռնված՝ {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ի սեփական ֆայլը</value></data>

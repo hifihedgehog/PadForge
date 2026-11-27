@@ -12,7 +12,7 @@ namespace PadForge.Services.Install
     /// Read in the install run, with the user's own token and folders, so a
     /// program installed for the user is found under an administrator's
     /// window as well, and read again in PadForge with the shell user's
-    /// variables for the file an Add allows (<see cref="FindForShellUser"/>). Each place below is where the maker's installer puts
+    /// variables for the file an Add allows (<see cref="FindForUser"/>). Each place below is where the maker's installer puts
     /// the program, read on this PC on 2026-11-24 where it is installed
     /// here.
     ///
@@ -43,19 +43,17 @@ namespace PadForge.Services.Install
         /// finds it, read in this process (#600): the file an Add allows. The
         /// check copy started as the user reports a program too, and a
         /// program of the user can rewrite its report before PadForge reads
-        /// it, so the grant never rests on the report. A copy with rights the
-        /// shell lacks searches the shell user's Path and folders, read from
-        /// the shell's own variables (PluginLauncher.ShellVariables), the
-        /// places the check copy searches. Null when the program is not
-        /// found, or the shell's variables cannot be read.
+        /// it, so the grant never rests on the report. The search reads the
+        /// user's Path and folders as they stand now
+        /// (UserVariables.OfTheUser). Null when the program is not
+        /// found.
         /// </summary>
-        internal static string FindForShellUser(string key)
+        internal static string FindForUser(string key)
         {
-            if (!UserSave.RunsWithRightsTheShellLacks()) return Find(key);
-            // The test host reads no shell's variables of the machine's.
-            if (ShellVariablesSeam == null && UserInstall.OffLimitsForTest) return null;
-            var variables = ShellUserVariables();
-            return variables == null ? null : FindAs(variables, key);
+            // The test host reads no variables of the machine's user.
+            if (UserVariablesSeam == null && UserInstall.OffLimitsForTest) return Find(key);
+            var variables = TheUsersVariables();
+            return variables == null ? Find(key) : FindAs(variables, key);
         }
 
         /// <summary><see cref="Find"/> with the Path, PATHEXT, USERPROFILE and
@@ -69,17 +67,14 @@ namespace PadForge.Services.Install
             finally { _user = before; }
         }
 
-        /// <summary>Test seam: the shell user's variables. Null reads the
-        /// desktop shell's.</summary>
-        internal static Func<IReadOnlyDictionary<string, string>> ShellVariablesSeam;
+        /// <summary>Test seam: the user's variables. Null reads them
+        /// (UserVariables.OfTheUser).</summary>
+        internal static Func<IReadOnlyDictionary<string, string>> UserVariablesSeam;
 
-        private static IReadOnlyDictionary<string, string> ShellUserVariables()
+        private static IReadOnlyDictionary<string, string> TheUsersVariables()
         {
-            if (ShellVariablesSeam != null) return ShellVariablesSeam();
-            using var shell = PadForge.Services.Plugins.PluginLauncher.OpenShell();
-            if (shell == null) return null;
-            string[] lines = PadForge.Services.Plugins.PluginLauncher.ShellVariables(shell, out _);
-            if (lines == null) return null;
+            if (UserVariablesSeam != null) return UserVariablesSeam();
+            string[] lines = UserVariables.OfTheUser();
             var variables = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (string line in lines)
             {

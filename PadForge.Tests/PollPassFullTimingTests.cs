@@ -17,6 +17,7 @@ namespace PadForge.Tests
     /// script or a recording uses. SDL and the virtual controller's
     /// hand-over are left out: the test host has neither. Steps a build
     /// does not have are skipped, so the same file times an older build.
+    /// Runs only under PADFORGE_BENCH_TIMING=1.
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public class PollPassFullTimingTests
@@ -38,6 +39,7 @@ namespace PadForge.Tests
         [Fact]
         public void TimeTheManagedPass()
         {
+            if (Environment.GetEnvironmentVariable("PADFORGE_BENCH_TIMING") != "1") return;
             var devices = SettingsManager.UserDevices;
             var settings = SettingsManager.UserSettings;
             var created = SettingsManager.SlotCreated;

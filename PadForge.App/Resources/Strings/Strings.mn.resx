@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Эхэлсэнгүй: Python файлыг танд нээх програм алга бөгөөд PadForge py эхлүүлэгч олсонгүй</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Эхэлсэнгүй: энэ төрлийн файлыг танд аль програм нээдгийг PadForge уншиж чадахгүй</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Эхэлсэнгүй: энэ төрлийн файлыг танд нээдэг програм энэ компьютерт алга</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Эхэлсэнгүй: түүнийг эхлүүлэх ширээний бүрхүүл ажиллаж байхгүй</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Эхэлсэнгүй: ширээний бүрхүүл администраторын эрхтэй тул залгаас ч бас тийм эрхтэй болно</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Эхэлсэнгүй: үүнийг администраторын эрхтэй болох эсэхийг PadForge уншиж чадахгүй</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Эхэлсэнгүй: Windows үүнд администраторын эрх өгсөн тул PadForge үүнийг ажиллахаас нь өмнө зогсоосон</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Эхэлсэнгүй: администраторын эрх хүсдэг</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Эхэлсэнгүй: Windows {0} алдаагаар татгалзсан</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Эхэлсэнгүй</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Энэ компьютерт Logitech G-key SDK алга. Энэ нь Logitech Gaming Software 8.55 буюу түүнээс хойшх хувилбартай хамт суудаг.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK бүртгэлтэй боловч түүний файл устсан байна. Logitech Gaming Software-ийг дахин суулгана уу.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK олдсон боловч ачаалж чадсангүй.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK олдсон боловч ачаалсангүй, учир нь зөвхөн администраторууд үүнийг өөрчилж чадах, мөн Logitech гарын үсэг зурсныг PadForge баталж чадсангүй.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Тэр сан нь энд хүлээж буй G-key SDK биш байна.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK эхлэхээс татгалзлаа. Ихэвчлэн Logitech Gaming Software ажиллаагүй үед ингэдэг.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Холбогдсон, одоогоор товчлуур илрээгүй. Logitech Gaming Software-д PadForge профайлын товчлуур бүр дээр G-key командыг чирж тавиад, тэр профайлыг байнгын болгоно уу. G600 эсвэл G300 хулгана мөн дотоод санах ойн горимоос гарсан байх ёстой.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge эхлэхэд цонхыг нуусан хэвээр байлгана. Програм ердийнхөөрөө ажиллаж, оноолтоо хийнэ.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Windows-д нэвтрэхэд PadForge-ийг автоматаар эхлүүлнэ. Энэ асаалттай үед PadForge нь товчлол, скрипт эсвэл өөр програмаас Windows-ийн асуулгагүйгээр эхэлнэ.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge дараах байршлаас ажиллаж байна: {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Үүнд PadForge тусдаа хавтсанд байх шаардлагатай. Түүний хавтсанд өөр файлууд байгаа тул PadForge бусад програмыг түүнийг өөрчлөхөөс сэргийлж чадахгүй.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Үүнд PadForge бусад програм өөрчилж чадахгүй хавтсанд байх шаардлагатай. PadForge бусад програмыг өөрийн хавтсыг өөрчлөхөөс сэргийлж чадсангүй.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ийг тусдаа хавтас руу зөөх</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>PadForge болон түүний тохиргоог Program Files руу хуулж, даалгавруудыг нь тийш чиглүүлээд, тэндээс эхлүүлнэ. Энд байгаа хуулбар хэвээр үлдэнэ.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0} хавтсанд PadForge-ийнх биш файлууд байна.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Нэвтрэхэд эхлэх тохиргоо PadForge-ийг өөр файлууд агуулсан хавтаснаас ажиллуулж байсан тул унтраагдсан.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge зөөгдсөнгүй: Windows-д Program Files хавтас заагдаагүй байна.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge зөөгдсөнгүй: ажиллаж буй PadForge-ийг уншиж чадсангүй.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0} хавтсыг үүсгэж чадсангүй.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0} хавтсанд юу байгааг уншиж чадсангүй.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: бусад програмыг {0} хавтсыг өөрчлөхөөс сэргийлж чадсангүй.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: {0} хавтас дахь хуулбар нь ажиллаж буй PadForge-тэй таарсангүй.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge зөөгдсөнгүй: хуулсны дараа {0} хавтсанд PadForge-ийнх биш файлууд байсан, эсвэл бусад програм түүнийг өөрчилж чадах байсан.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Нэвтрэхэд эхлэх тохиргоог унтраасан, учир нь түүний ажиллуулдаг байсан PadForge байхгүй болсон.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Нэвтрэхэд эхлэх тохиргоог унтраасан, учир нь PadForge-ийг ажиллуулдаг хавтсыг бусад програм өөрчлөхөөс PadForge сэргийлж чадсангүй.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Нэвтрэхэд эхлэх тохиргоог унтраасан, учир нь түүний аль PadForge-ийг ажиллуулдгийг PadForge уншиж чадсангүй.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Нэвтрэхэд эхлэх тохиргоог унтраасан, учир нь түүний ажиллуулдаг PadForge-ийн хавтсыг PadForge уншиж чадсангүй.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge өөрийн хамгаалагдсан хавтсыг үүсгэж чадсангүй: {0}. PadForge администраторын эрхээр ажиллуулдаг сангаа тэнд хадгалдаг бөгөөд үүнгүйгээр аюулгүй эхэлж чадахгүй.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge өөрийн хамгаалагдсан хавтаснаас өөрийгөө дахин эхлүүлж чадсангүй: {0}. PadForge администраторын эрхээр зөвхөн тэндээс ажилладаг тул эхэлсэнгүй.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge зөвхөн нэг хуулбараар ажиллуулах түгжээг үүсгэж чадаагүй тул эхэлсэнгүй.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge администраторын эрхээр бусад програмын өөрчилж болох хавтаснаас ажиллаж байна: {0}. Тэдгээр нь тэнд байгаа PadForge-ийн тохиргоог өөрчилж чадах бөгөөд PadForge тэдгээрийг өөрийн эрхээр гүйцэтгэнэ.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge администраторын эрхээр өөр файлууд агуулсан хавтаснаас ажиллаж байна: {0}. PadForge бусад програмыг тэнд байгаа өөрийн тохиргоог өөрчлөхөөс сэргийлж чадахгүй бөгөөд тэдгээрийг өөрийн эрхээр гүйцэтгэнэ.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge администраторын эрхээр уншиж чадаагүй хавтаснаас ажиллаж байна: {0}. PadForge бусад програмыг тэнд байгаа өөрийн тохиргоог өөрчлөхөөс сэргийлж чадахгүй бөгөөд тэдгээрийг өөрийн эрхээр гүйцэтгэнэ.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Мэдэгдлийн хэсэгт үргэлж харуулах</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Цонх нээлттэй үед мэдэгдлийн хэсгийн дүрс тэмдгийг харагдуулна. Ингэснээр түүний цэсний “Гарах” үргэлж нэг товшилтын зайд байна.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Шинэчлэлт</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} МБ</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Цэвэрлэгээний шалгалт: таны үлдээх хэсгүүдийг шалгаж байна…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Цэвэрлэгээний шалгалт: PadForge таны үлдээх хэсгүүдийг уншиж чадсангүй, тиймээс Хадгалах идэвхгүй байна.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Таны эрхээр хадгалах үйлдэл эхэлсэнгүй.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Таны эрхээр хадгалах үйлдэл эхэлсэнгүй: түүнийг эхлүүлэх ширээний бүрхүүл ажиллаагүй байна.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Таны эрхээр хадгалах үйлдэл эхэлсэнгүй: Windows {0} алдаагаар татгалзсан.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Хадгалалт {0} дотор дуусаагүй.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows тэнд файл бичихийг зөвшөөрсөнгүй.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge энэ файлыг өөрийн бичлэг гэж хүлээн авсангүй.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Хадгалалт {0} кодоор дууссан.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Таны хэрэглэгчийн эрхээр, эхний удаа Татан авалтууд хавтас руу, дараа нь хамгийн сүүлд хадгалсан газар руу хадгалж, Файл судлагч дээр харуулна. Хуудсыг хэн ч үзээгүй үед зогссон бичлэг (хязгаар, макро, програм, туслахын хэрэгсэл эсвэл --record stop) Нүүр хуудсанд энэ хянан үзэлтийг хүлээх бөгөөд хадгалаагүй бол 7 хоногийн дараа устгагдана. Програмд хүлээж буйг нь мэдэгдэх боловч хаана байгааг хэзээ ч хэлэхгүй.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Асуудлын бичлэг ({0}) таныг уншихыг хүлээж байна.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Хянах</value></data>
@@ -5565,7 +5532,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Хослуулалт зогслоо: контроллер эсвэл Bluetooth радиог унших эсвэл бичих үйлдэл амжилтгүй боллоо. Оношилгооны бүртгэлд дэлгэрэнгүй бий.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Хослуулалт PadForge-ийн хүлээгээгүй алдаагаар зогслоо. Оношилгооны бүртгэлд дэлгэрэнгүй бий.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>Logitech Gaming Software 8.52 буюу түүнээс хойшхи хувилбар шаардлагатай</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>сангаа олсон боловч ачаалсангүй, учир нь зөвхөн администраторууд үүнийг өөрчилж чадах, мөн Logitech гарын үсэг зурсныг PadForge баталж чадсангүй</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>сангаа олсон боловч ашиглаж чадсангүй, шалтгааныг оношилгооны бүртгэл заана</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>Logitech Gaming Software-ийг эхлүүлнэ үү</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>Arx Control-той утсыг хүлээж байна</value></data>
@@ -5663,7 +5629,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Force Dimension-ы сангийн энэ хувийг бусад хувийн оронд ачаална. Өөр хувь дээр нээлттэй Falcon хаагдаж, энэ хувь дээр дахин нээгдэнэ. SDK-ийн суулгасан хувиудыг үүнгүйгээр олдог.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Сангууд (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK-ийн татах хуудас нээгдсэнгүй: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK-ийн татах хуудас хараахан нээгдээгүй байна: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon драйвер суулгах</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Драйвергүй Falcon дээр Force Dimension-ы драйверыг SDK хавтаснаас суулгана. Windows эхлээд Force Dimension-д итгэх эсэхийг асууж магадгүй.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension-ы SDK авах</value></data>
@@ -6017,6 +5982,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="SdlMapping_Away" xml:space="preserve"><value>Төхөөрөмж холбогдоогүй байна. Холбогдмогц SDL үүнийг уншина.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL энэ төхөөрөмжийн уншилтыг PadForge-д өгсөнгүй.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Суулгасан нийгэмлэгийн хуулбар, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Татсан: {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ийн өөрийн файл</value></data>

@@ -72,7 +72,7 @@ namespace PadForge.Common.Input
 
         /// <summary>Devices no SDL joystick backend may enumerate
         /// (SDL_JOYSTICK_BLACKLIST_DEVICES format: comma-separated
-        /// 0xVVVV/0xPPPP, SDL_hints.h:1452-1455). The PS Move family (#277):
+        /// 0xVVVV/0xPPPP, SDL_hints.h:1502-1505). The PS Move family (#277):
         /// a docked Move exposes three HID collections (the col01-col03
         /// Windows quirk psmoveapi documents) and no SDL driver claims the
         /// PIDs, so each collection surfaced through the generic Windows
@@ -80,7 +80,7 @@ namespace PadForge.Common.Input
         /// itself (PsMoveDirectService / the DS3 service's navigation
         /// profile) and feeds SDL VIRTUAL joysticks, which are exempt: the
         /// virtual backend never calls SDL_ShouldIgnoreJoystick
-        /// (SDL_joystick.c:4724). On Windows its callers are the DirectInput,
+        /// (SDL_joystick.c:4758). On Windows its callers are the DirectInput,
         /// XInput, GameInput and HIDAPI backends and the fork's Bluetooth
         /// LE, RFCOMM, serial, DJI network and iCade drivers
         /// (hifihedgehog/SDL#33).
@@ -638,8 +638,9 @@ namespace PadForge.Common.Input
         /// <summary>Per slot, the assigned physical DualSense's payload bytes
         /// 40..47 (trigger feedback, host timestamp echo, effect modes) packed
         /// little-endian, refreshed beside the battery each tick (#433). Zero
-        /// when no DualSense is assigned or the SDL fork has not published
-        /// them. See <see cref="DualSenseStatusBytes"/>.</summary>
+        /// on a slot whose type is not PlayStation, when no DualSense is
+        /// assigned, or when the SDL fork has not published them. See
+        /// <see cref="DualSenseStatusBytes"/>.</summary>
         public ulong[] Ds5StatusBytes { get; } = new ulong[MaxPads];
 
         /// <summary>Per-slot hash of every assigned device's (percent, charging)
@@ -1291,8 +1292,9 @@ namespace PadForge.Common.Input
 
                 // Bind WinUSB to the controllers Windows leaves unusable that
                 // SDL reads through libusb (hifihedgehog/SDL#33), as each one
-                // appears. Cheap when absent: a 3 s sweep of the present USB
-                // nodes.
+                // appears. Cheap when absent: a sweep of the present USB nodes
+                // after a device change, every 3 s for a few seconds after it
+                // or while a bind waits for its retry, and every 15 s besides.
                 try
                 {
                     _vendorUsb = new VendorUsbBindingService(msg => Engine.SdlDiagLog.WriteLine("VendorUSB: " + msg));
@@ -2758,7 +2760,7 @@ namespace PadForge.Common.Input
                             // An Xbox One+ pad's motors take the raw report
                             // (XboxImpulseHidWriter), never SDL's rumble, so SDL
                             // holds no level for it and skips the stop below as
-                            // a repeat (SDL_joystick.c:3189-3192). The pad would
+                            // a repeat (SDL_joystick.c:3203-3206). The pad would
                             // keep the last level for the long pulse the report
                             // asks for, the 0xFF, 0x00, 0xEB tail that xpadneo's
                             // rumble.c also sends. Like Step 2's final zero for an

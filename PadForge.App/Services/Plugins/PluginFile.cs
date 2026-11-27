@@ -203,12 +203,12 @@ namespace PadForge.Services.Plugins
         /// <c>%*</c> and the other numbered places left out, as the shell
         /// fills them for one file with no more. A command with no place
         /// for the file takes it last. AutoHotkey v2's launcher.ahk is left
-        /// out, and its interpreter runs the script: the launcher exits as
-        /// soon as it has started the interpreter when its parent is
-        /// explorer.exe (AutoHotkeyUX launcher.ahk, LaunchScript: waitClose
-        /// is false when ProcessGetParent names explorer.exe), the parent
-        /// every plugin starts under, so the process PadForge watches would
-        /// end at once. Null when its program is not a file that is there
+        /// out, and the interpreter the command names runs the script, so the
+        /// process PadForge watches is the script's own. With PadForge as its
+        /// parent the launcher would wait for the script and end with it
+        /// (AutoHotkeyUX launcher.ahk, LaunchScript: waitClose stays true
+        /// unless the parent is explorer.exe or cannot be opened), one more
+        /// process in the plugin's job. Null when its program is not a file that is there
         /// (<paramref name="missing"/> set), or is the script itself.
         /// </summary>
         internal static PluginCommand FromOpen(string open, string full, string folder, PluginPrograms programs, out bool missing)
@@ -262,7 +262,7 @@ namespace PadForge.Services.Plugins
                 }
                 else if (string.Equals(Path.GetFileName(bare), "launcher.ahk", StringComparison.OrdinalIgnoreCase))
                 {
-                    // AutoHotkey's launcher would exit under explorer.exe.
+                    // The interpreter runs the script without the launcher.
                 }
                 else if (text.Contains("%1") || text.Contains("%L") || text.Contains("%l"))
                 {

@@ -894,7 +894,6 @@
   <data name="Falcon_PickLibrary" xml:space="preserve"><value>dhd64.dll choose karo…</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Library (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK download page nai khula: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK download page abhi tak nai khula: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon driver install karo</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension ke SDK lo</value></data>
   <data name="Falcon_Calibrate_Done_Format" xml:space="preserve"><value>Calibrate hoe gais. {0}</value></data>
@@ -1419,9 +1418,6 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>aur {0} baaki</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{1} me se {0}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>{0} me jawaab nai mile to nai gina jaai.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge administrator rights ke saathe {0} se chale hai, jon folder ke dusra program badle sake hai. Uu wahan PadForge ke settings badle sake hai, aur PadForge apan rights se uske pe kaam kari.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge administrator rights ke saathe {0} se chale hai, jon folder me dusra file hai. PadForge dusra program ke wahan iske settings badle se nai rok sake hai, aur PadForge apan rights se uske pe kaam kari.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge administrator rights ke saathe {0} se chale hai, jon folder ke PadForge nai padhe sakaa. PadForge dusra program ke wahan iske settings badle se nai rok sake hai, aur PadForge apan rights se uske pe kaam kari.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Abhi update karo GitHub se, ya Aur ke niche set karaa address se, community controller database (SDL_GameControllerDB) download kare hai, aur settings file me uu mapping rakhe hai jon PadForge ke ii version me nai hai. Uu turant use me hai. Dusra address se ii khali naya mapping rakhe hai. Naya mapping pahile khali uu controller ke liye use hoi jiske SDL gamepad, ya bina koi khaas type ke, batawe hai, jiske aur koi gamepad jaisan nai padhe, jon assign nai hai aur jon Force Raw Joystick Mode me nai hai. Ek baar use me aawe pe, controller assign hoe ke baad bhi uu use me rahi. Reset download karaa mapping hataawe hai aur Kahan se download ke community ke file pe wapas set kare hai, jiske agla Abhi update karo download kari. Aap ke apan row, Aur ke niche, rahi.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Abhi update karo</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Update hoe rahaa…</value></data>
@@ -1512,6 +1508,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Device connect nai hai. Connect hoe pe SDL isse padhi.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL PadForge ke ii device ke koi reading nai dees.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Andar wala community copy, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Download bhais {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ke apan file</value></data>
@@ -1720,7 +1717,6 @@
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge GitHub ke jawaab nai lees. Kuch nai badla.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge {0} se aawa jawaab nai lees. Kuch nai badla.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>iske library mila aur isse load nai karis, kaahe ki PadForge pakka nai kare sakaa ki khali administrator isse badle sake hai aur Logitech isse sign karis hai</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>iske library mila aur isse use nai kare sakis, aur diagnostics log me likha hai kaahe</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Dusra system ke liye row, jon chhod diya gais: {0:N0}.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows isse aap ke apan rights se suru nai karis.</value></data>

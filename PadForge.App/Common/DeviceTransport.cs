@@ -82,9 +82,9 @@ namespace PadForge.Common
                 // Xbox pads over Bluetooth surface as "XInput#N"
                 // (SDL_xinputjoystick.c:181). The path carries no HID GUID
                 // and no BTHENUM, and an SDL binding would not help either:
-                // the XInput driver never assigns joystick->connection_state
-                // (zero occurrences in SDL_xinputjoystick.c), so
-                // SDL_GetJoystickConnectionState always answers UNKNOWN
+                // the XInput driver sets joystick->connection_state to
+                // UNKNOWN when it opens a pad (SDL_xinputjoystick.c:427-428),
+                // so SDL_GetJoystickConnectionState always answers UNKNOWN
                 // there. XINPUT_CAPS_WIRELESS cannot answer either: pads in
                 // Bluetooth mode speak XUSB 1.1, whose capability reply
                 // carries no Flags field (GamepadCapabilities0101,
@@ -101,15 +101,15 @@ namespace PadForge.Common
             // Fork BLE Switch 2: the SDL fork's BLE GATT driver surfaces no
             // device path at all (BLE_PublishController records none,
             // SDL_ble_switch2joystick.c:658-675, so SDL_GetJoystickPath returns NULL,
-            // SDL_joystick.c:3133-3138, and SDL3Minimal.SDL_GetJoystickPath
+            // SDL_joystick.c:3147-3152, and SDL3Minimal.SDL_GetJoystickPath
             // coalesces that to string.Empty). A Switch 2-family VID/PID with
             // an empty path is therefore that driver, which is Bluetooth LE by
             // construction (BLE_JoystickOpen sets
-            // SDL_JOYSTICK_CONNECTION_WIRELESS, SDL_ble_switch2joystick.c:2682).
+            // SDL_JOYSTICK_CONNECTION_WIRELESS, SDL_ble_switch2joystick.c:2702).
             // A wired Switch 2 rides hidapi/libusb and always carries a real
             // path (HIDAPI_CreateJoystickDevice records the HID device's path,
             // SDL_hidapijoystick.c:1619, which the open copies to the joystick,
-            // SDL_joystick.c:2340-2341), and a Remote Link relay carries
+            // SDL_joystick.c:2354-2355), and a Remote Link relay carries
             // peer://, so neither lands in this branch.
             return Input.BluetoothLinkHelper.IsSwitch2(vendorId, productId);
         }
@@ -252,8 +252,8 @@ namespace PadForge.Common
                 case 0x0B13: // Xbox Series X Controller (BLE), controller_list.h:377
                 case 0x0B20: // Xbox One S Controller (BLE), controller_list.h:378
                 case 0x0B21: // Xbox Adaptive Controller (BLE), controller_list.h:379
-                case 0x0B05: // Xbox One Elite Series 2 Controller (Bluetooth), controller_list.h:657
-                case 0x0B22: // Xbox One Elite Series 2 Controller (BLE), controller_list.h:658
+                case 0x0B05: // Xbox One Elite Series 2 Controller (Bluetooth), controller_list.h:659
+                case 0x0B22: // Xbox One Elite Series 2 Controller (BLE), controller_list.h:660
                     return true;
                 default:
                     return false;

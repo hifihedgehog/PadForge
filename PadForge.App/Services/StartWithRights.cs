@@ -29,32 +29,18 @@ namespace PadForge.Services
         /// never by the app: no copy of the exe is started.</summary>
         internal static bool OffLimitsForTest;
 
-        /// <summary>How long a start that ran the logon task waits for the
-        /// copy it started to show its signal window (StartByTask, through
-        /// RunningCopy.WaitForStartedCopy). A <c>--wait</c> start here runs
-        /// without rights and so cannot see the lock: its watch finds the
-        /// window standing at the handover, which App.OnStartup opens before
-        /// it hands over, and waits for nothing (RunningCopy.WaitForSignalWindow).</summary>
-        internal const int AppWindowWaitMs = 30000;
-
         /// <summary>
         /// Starts this exe again with rights and the same switches, and
         /// returns this process's exit code. With <c>--wait</c> it stays until
         /// the app exits and returns its code.
         ///
-        /// <para>The copy Windows starts unpacks into the user's temp folder,
-        /// so it starts PadForge once more from the protected folder and
-        /// leaves with <see cref="ProtectedStart.HandedOver"/> as soon as that
-        /// one is the app (<see cref="ProtectedStart"/>). A <c>--wait</c> then
-        /// waits on the app itself. The copy works in the exe's own folder,
-        /// never in the caller's, which the caller chose.</para>
+        /// <para>The copy Windows starts is the app. The copy works in the
+        /// exe's own folder, never in the caller's, which the caller
+        /// chose.</para>
         ///
-        /// <para>This is the one start of a process with rights that hands
-        /// on no variables of PadForge's built by
-        /// <see cref="RightsVariables"/>: it asks Windows through the shell's
-        /// runas verb, and Windows builds the copy's variables from the
-        /// user's profile after its prompt. The copy's own start from the
-        /// protected folder then gets the built ones.</para>
+        /// <para>It asks Windows through the shell's runas verb, and Windows
+        /// builds the copy's variables from the user's profile after its
+        /// prompt.</para>
         /// </summary>
         internal static int Run(IReadOnlyList<string> args)
         {
@@ -74,10 +60,7 @@ namespace PadForge.Services
                 if (app == null) return NotStarted;
                 if (!wait) return 0;
                 app.WaitForExit();
-                if (app.ExitCode != ProtectedStart.HandedOver) return app.ExitCode;
-                using var watch = RunningCopy.Watch(AppWindowWaitMs);
-                int? code = watch?.Wait();
-                return code ?? NotStarted;
+                return app.ExitCode;
             }
             catch
             {

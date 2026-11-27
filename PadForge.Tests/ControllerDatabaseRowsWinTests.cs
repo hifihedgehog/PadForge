@@ -195,11 +195,12 @@ namespace PadForge.Tests
 
         // ── No SDL_GAMECONTROLLERCONFIG ──
 
-        /// <summary>No start gives SDL the variable's rows, the card names no
-        /// such source, and no answer of a paste says the variable kept its
-        /// row: the variable never reaches the engine.</summary>
+        /// <summary>PadForge hands SDL no hint of its own: SDL reads the
+        /// SDL_GAMECONTROLLERCONFIG variable PadForge started with itself, at
+        /// start. The card names the variable as a device's source, and no
+        /// answer of a paste says the variable kept its row.</summary>
         [Fact]
-        public void TheVariable_IsNoSource()
+        public void TheVariable_IsReadBySdlItself_AndNamedAsASource()
         {
             string manager = OffLimitsSource.Read("PadForge.App/Common/Input/InputManager.cs");
             string engine = OffLimitsSource.Read("PadForge.App/Common/Input/InputManager.ControllerDatabase.cs");
@@ -208,12 +209,13 @@ namespace PadForge.Tests
                 Assert.DoesNotContain("SDL_SetHintWithPriority", text, StringComparison.Ordinal);
                 Assert.DoesNotContain("GAMECONTROLLERCONFIG", text, StringComparison.Ordinal);
             }
-            Assert.DoesNotContain("Variable", Enum.GetNames(typeof(SdlMappingSource)));
+            Assert.Contains("Variable", Enum.GetNames(typeof(SdlMappingSource)));
             Assert.DoesNotContain("VariableWins", Enum.GetNames(typeof(SdlApplyResult)));
 
             var doc = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(OffLimitsSource.RepoRoot(), "PadForge.App", "Resources", "Strings", "Strings.resx"));
             var keys = doc.Root.Elements("data").Select(d => (string)d.Attribute("name")).ToList();
-            Assert.DoesNotContain(keys, k => k.StartsWith("SdlMapping_From_Variable", StringComparison.Ordinal) || k == "SdlMapping_VariableWins");
+            Assert.Contains("SdlMapping_From_Variable", keys);
+            Assert.DoesNotContain("SdlMapping_VariableWins", keys);
         }
 
         /// <summary>
@@ -243,7 +245,7 @@ namespace PadForge.Tests
 
         /// <summary>A row whose ID names a checksum maps only devices of that
         /// name: SDL writes the ID's checksum into the row as it adds it
-        /// (SDL_gamepad.c:2450) and passes over a row whose checksum is not
+        /// (SDL_gamepad.c:2493) and passes over a row whose checksum is not
         /// the device's (:1586). A row with none maps every name of its model,
         /// so the card says "yours" only for a device SDL reads through the
         /// row.</summary>
@@ -268,7 +270,7 @@ namespace PadForge.Tests
         /// <summary>
         /// A row reaches a device at the step of SDL's lookup that would read
         /// it (SDL_PrivateGetGamepadMappingForGUID): the device's version with
-        /// its checksum (SDL_gamepad.c:1612), its version with a row naming no
+        /// its checksum (SDL_gamepad.c:1618), its version with a row naming no
         /// checksum (:1623), then any version, with the checksum and then
         /// without (:1630, :1635), for a device whose ID names a vendor and a
         /// product in SDL's standard form and is no MFi controller's
@@ -366,7 +368,7 @@ namespace PadForge.Tests
 
         /// <summary>
         /// SDL tries a device's exact version and checksum first
-        /// (SDL_gamepad.c:1612), so a row of SDL's that names them stands
+        /// (SDL_gamepad.c:1618), so a row of SDL's that names them stands
         /// over a row of the model with neither, as Add Rows keeps. Where SDL
         /// reads such a device through another row, the user's row is given
         /// to it once more under the device's own ID, as Paste gives one. A
@@ -454,7 +456,7 @@ namespace PadForge.Tests
 
         /// <summary>A row whose first hint is the button-label hint is stored
         /// with a and b, and x and y, swapped, and the hint marked "!"
-        /// (SDL_gamepad.c:2814, :2948). The GameCube hint swaps b and x
+        /// (SDL_gamepad.c:2857, :2996). The GameCube hint swaps b and x
         /// (:2784, :2936). A hint already marked "!" leaves the row as it is.
         /// SDL's own text for the mapping is the stored form, so the two read
         /// the same.</summary>
@@ -476,7 +478,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A row for a controller on SDL's GameCube list that names
-        /// no GameCube hint gets it as SDL adds the row (SDL_gamepad.c:2891),
+        /// no GameCube hint gets it as SDL adds the row (SDL_gamepad.c:2939),
         /// and is stored with b and x swapped. One that names it marked "!"
         /// stays, and a row of another controller gets nothing.</summary>
         [Fact]
@@ -494,7 +496,7 @@ namespace PadForge.Tests
         /// It is the stored form already, and a mapping SDL builds itself
         /// never passes the conversion: a driver's automatic mapping goes
         /// straight into SDL's table with no hint
-        /// (SDL_PrivateGenerateAutomaticGamepadMapping, SDL_gamepad.c:2657),
+        /// (SDL_PrivateGenerateAutomaticGamepadMapping, SDL_gamepad.c:2700),
         /// for a controller on the GameCube list too. A row of the user's in
         /// the same bindings, which SDL stores with b and x swapped, is then
         /// not the mapping SDL reads the controller through: the card does not
@@ -569,7 +571,7 @@ namespace PadForge.Tests
         /// A mapping given back is SDL's own text, and SDL takes it through
         /// the turn again (SDL_PrivateAddGamepadMapping). Under an ID on the
         /// GameCube list, a text with no hint field would get the GameCube
-        /// hint unmarked (SDL_gamepad.c:2891) and have b and x swapped
+        /// hint unmarked (SDL_gamepad.c:2939) and have b and x swapped
         /// (:2936), so it goes back with the hint marked "!", which SDL keeps
         /// as it is. SDL stores that hint for such an ID whatever it is given,
         /// so only the swap is avoided. A text with a hint field, or under
@@ -597,8 +599,8 @@ namespace PadForge.Tests
         // ── What the SDL3.dll PadForge ships stored ──
 
         /// <summary>
-        /// The texts the SDL3.dll PadForge ships (Resources/SDL3/x64, SHA-256
-        /// 82f3e34ed43d900aec40c2b373bf3895818246ae01dd9e79a4ea2ca7690964c9,
+        /// The texts the SDL3.dll PadForge shipped before SDL 68f6b71aef (x64,
+        /// SHA-256 82f3e34ed43d900aec40c2b373bf3895818246ae01dd9e79a4ea2ca7690964c9,
         /// revision SDL-3.5.0-release-3.4.0-2012-g51470ad786) handed back on
         /// 2026-11-25 to a console probe run by hand with every joystick
         /// driver off, since the test host starts no SDL

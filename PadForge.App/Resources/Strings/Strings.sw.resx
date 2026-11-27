@@ -613,10 +613,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Haikuanza: hakuna programu inayofungua faili za Python kwa ajili yako, na PadForge haipati kizinduzi cha py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Haikuanza: PadForge haiwezi kusoma ni programu ipi inayofungua aina hii ya faili kwa ajili yako</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Haikuanza: programu inayofungua aina hii ya faili kwa ajili yako haipo kwenye kompyuta hii</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Haikuanza: hakuna ganda la eneo-kazi linaloendesha la kuianzishia</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Haikuanza: ganda la eneo-kazi lina haki za msimamizi, kwa hiyo programu jalizi ingekuwa nazo pia</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Haikuanza: PadForge haiwezi kusoma kama ingekuwa na haki za msimamizi</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Haikuanza: Windows ilikipa haki za msimamizi, kwa hiyo PadForge ilikimaliza kabla hakijaendeshwa</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Haikuanza: inaomba haki za msimamizi</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Haikuanza: Windows ilikataa kwa hitilafu {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Haikuanza</value></data>
@@ -919,7 +915,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Hakuna Logitech G-key SDK kwenye kompyuta hii. Husakinishwa pamoja na Logitech Gaming Software 8.55 au mpya zaidi.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK imesajiliwa lakini faili yake haipo. Sakinisha upya Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK imepatikana lakini haikuweza kupakiwa.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK imepatikana lakini haikupakiwa, kwa sababu PadForge haikuweza kuthibitisha kwamba ni wasimamizi pekee wanaoweza kuibadilisha na kwamba Logitech iliisaini.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Maktaba hiyo si G-key SDK inayotarajiwa na programu hii.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ilikataa kuanza. Mara nyingi Logitech Gaming Software haiendeshi.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Imeunganishwa, hakuna kitufe kilichoonekana bado. Kwenye Logitech Gaming Software, buruta amri ya G-key hadi kila kitufe kwenye wasifu wa PadForge, na ufanye wasifu huo uwe wa kudumu. Kipanya cha G600 au G300 pia lazima kiwe nje ya hali ya kumbukumbu ya ndani.</value></data>
@@ -1023,30 +1018,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Weka dirisha limefichwa PadForge inapoanza. Inaendesha na kupanga ramani kama kawaida.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Anzisha PadForge kiotomatiki unapoingia kwenye Windows. Hii ikiwa imewashwa, PadForge pia huanza bila ombi la Windows kutoka kwenye njia ya mkato, hati au programu nyingine.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge inaendesha kutoka {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Hii inahitaji PadForge kwenye folda yake yenyewe. Folda yake ina faili nyingine, kwa hiyo PadForge haiwezi kuzuia programu nyingine kuibadilisha.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Hii inahitaji PadForge kwenye folda ambayo programu nyingine haziwezi kuibadilisha. PadForge haikuweza kuzuia programu nyingine kubadilisha folda yake.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Hamisha PadForge hadi Folda Yake Yenyewe</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Hunakili PadForge na mipangilio yake kwenye Program Files, huelekeza kazi zake huko, na kuianzisha kutoka huko. Nakala iliyo hapa inabaki kama ilivyo.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge haikuhamia: {0} ina faili ambazo si za PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge haikuhamia: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Anza wakati wa kuingia imezimwa, kwa kuwa iliendesha PadForge kutoka folda yenye faili nyingine.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge haikuhamia: Windows haitaji folda ya Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge haikuhamia: haikuweza kusoma PadForge inayoendesha.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge haikuhamia: haikuweza kuunda {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge haikuhamia: haikuweza kusoma kilichomo ndani ya {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge haikuhamia: haikuweza kuzuia programu nyingine kubadilisha {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge haikuhamia: nakala yake kwenye {0} haikulingana na PadForge inayoendesha.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge haikuhamia: baada ya kunakili, {0} ilikuwa na faili ambazo si za PadForge, au programu nyingine zingeweza kuibadilisha.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Anza wakati wa kuingia imezimwa, kwa kuwa PadForge iliyoendesha haipo tena.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Anza wakati wa kuingia imezimwa, kwa kuwa PadForge haikuweza kuzuia programu nyingine kubadilisha folda ilimoendesha PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Anza wakati wa kuingia imezimwa, kwa kuwa PadForge haikuweza kusoma ni PadForge ipi iliyoendesha.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Anza wakati wa kuingia imezimwa, kwa kuwa PadForge haikuweza kusoma folda ya PadForge iliyoendesha.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge haikuweza kutengeneza folda yake iliyolindwa, {0}. PadForge huweka humo maktaba inazoendesha kwa haki za msimamizi, na haiwezi kuanza kwa usalama bila hiyo.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge haikuweza kujianzisha tena kutoka folda yake iliyolindwa, {0}. PadForge huendesha kwa haki za msimamizi kutoka humo tu, kwa hiyo haikuanza.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge haikuweza kuunda kufuli inayoiwezesha kuendesha nakala moja tu, kwa hiyo haikuanza.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge inaendesha kwa haki za msimamizi kutoka {0}, folda ambayo programu nyingine zinaweza kubadilisha. Zinaweza kubadilisha mipangilio ya PadForge huko, na PadForge hutenda kwa ajili yake kwa haki zake.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge inaendesha kwa haki za msimamizi kutoka {0}, folda yenye faili nyingine. PadForge haiwezi kuzuia programu nyingine kubadilisha mipangilio yake huko, na hutenda kwa ajili yake kwa haki zake.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge inaendesha kwa haki za msimamizi kutoka {0}, folda ambayo haikuweza kuisoma. PadForge haiwezi kuzuia programu nyingine kubadilisha mipangilio yake huko, na hutenda kwa ajili yake kwa haki zake.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Onyesha kila wakati kwenye trei ya mfumo</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Weka ikoni ya trei ionekane dirisha likiwa wazi, ili Toka kwenye menyu yake iwe umbali wa kubofya mara moja.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Masasisho</value></data>
@@ -1288,13 +1260,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>MB {0}</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Ukaguzi wa usafishaji: inakagua sehemu unazobaki nazo…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Ukaguzi wa usafishaji: PadForge haikuweza kusoma sehemu unazobaki nazo, kwa hiyo Hifadhi itabaki imezimwa.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Uhifadhi kwa haki zako haukuanza.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Uhifadhi kwa haki zako haukuanza: hakuna ganda la eneo-kazi linaloendesha ili kuuanzisha chini yake.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Uhifadhi kwa haki zako haukuanza: Windows ilikataa kwa hitilafu {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Uhifadhi haukuisha ndani ya {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows haikuruhusu faili kuandikwa hapo.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge haikuchukua faili hii kama rekodi yake yenyewe.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Uhifadhi uliisha kwa msimbo {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Huhifadhiwa kama wewe, kwenye folda yako ya Vipakuliwa mara ya kwanza, kisha mahali ulipohifadhi mwisho, na huonyeshwa kwenye Kichunguzi cha Faili. Rekodi inayosimama wakati hakuna mtu kwenye ukurasa (kikomo chake, makro, programu, zana ya msaidizi au --record stop) husubiri ukaguzi huu kwenye Mwanzo, na hufutwa baada ya siku 7 isipohifadhiwa. Programu huambiwa kwamba inasubiri, kamwe si mahali ilipo.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Rekodi ya tatizo ya {0} inakusubiri uisome.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Kagua</value></data>
@@ -5507,7 +5474,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Kuoanisha kumesimama: kusoma au kuandika kidhibiti au redio ya Bluetooth kumeshindwa. Kumbukumbu za uchunguzi zina maelezo.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Kuoanisha kumesimama kwa hitilafu ambayo PadForge haikutarajia. Kumbukumbu za uchunguzi zina maelezo.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>inahitaji Logitech Gaming Software 8.52 au mpya zaidi</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>ilipata maktaba yake lakini haikuipakia, kwa sababu PadForge haikuweza kuthibitisha kwamba ni wasimamizi pekee wanaoweza kuibadilisha na kwamba Logitech iliisaini</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>ilipata maktaba yake lakini haikuweza kuitumia, na kumbukumbu za uchunguzi zinasema sababu</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>anzisha Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>inasubiri simu yenye Arx Control</value></data>
@@ -5605,7 +5571,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Hupakia nakala hii ya maktaba ya Force Dimension badala ya nyingine yoyote. Falcon iliyofunguliwa kwenye nakala nyingine hufungwa na kufunguliwa tena kwenye hii. Nakala ambazo SDK husakinisha hupatikana bila hii.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Maktaba (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Ukurasa wa upakuaji wa Falcon SDK haukufunguka: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Ukurasa wa upakuaji wa Falcon SDK bado haujafunguka: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Sakinisha Kiendeshi cha Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Husakinisha kiendeshi cha Force Dimension, kutoka folda ya SDK, kwenye Falcon isiyo na kiendeshi. Windows inaweza kwanza kuuliza kama inaamini Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Pata SDK ya Force Dimension</value></data>
@@ -5966,6 +5931,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="SdlMapping_Away" xml:space="preserve"><value>Kifaa hakijaunganishwa. SDL kitakisoma kitakapounganishwa.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL haikuipa PadForge usomaji wowote wa kifaa hiki.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Nakala ya jamii iliyojengewa ndani, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Imepakuliwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faili ya PadForge yenyewe</value></data>

@@ -468,7 +468,7 @@ namespace PadForge.Common.Recording
 
         /// <summary>
         /// DirectInput's objects of the attached game controller at a path,
-        /// listed with SDL's flags (SDL_dinputjoystick.c:1170-1172), each axis
+        /// listed with SDL's flags (SDL_dinputjoystick.c:1185-1187), each axis
         /// given the two properties SDL gives it (552-577) on this process's
         /// own device object, whose properties belong to it alone (Wine keeps
         /// them per device object, dlls/dinput/device.c:2252). Null when

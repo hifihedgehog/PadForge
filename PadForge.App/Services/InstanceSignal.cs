@@ -15,9 +15,8 @@ namespace PadForge.Services
     /// single-instance lock until the process ends. A second copy finds it by
     /// its name and reads this process's ID from it. What it asks goes over
     /// the signal pipe of the same name, which stands as long as the window:
-    /// show the main window, close as the tray icon's Exit does (#600 item
-    /// 44), or, while this copy waits at its start, the switches of the start
-    /// that ran the logon task (<see cref="TakeStartSwitches"/>). A posted
+    /// show the main window, or close as the tray icon's Exit does (#600
+    /// item 44). A posted
     /// message carries no sender a window can check, so the window lets no
     /// message through from a process of lower integrity than this copy's,
     /// as Windows does by default. The pipe reads its client's token, as the
@@ -39,12 +38,6 @@ namespace PadForge.Services
     {
         private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
 
-        /// <summary>How long a copy started through the logon task waits for
-        /// the switches of the start that ran it. That start hands them as
-        /// soon as it finds the signal window, which stands before this
-        /// wait.</summary>
-        internal const int StartSwitchesWaitMs = 5000;
-
         private readonly string _signalName;
         private readonly string _readyName;
         private readonly string _showMessageName;
@@ -60,8 +53,6 @@ namespace PadForge.Services
         private bool _showOwed;
         private bool _exitOwed;
         private bool _closing;
-        private DispatcherFrame _switchesWait;
-        private string[] _switches;
 
         /// <param name="signalName">The signal window's name, which its pipe
         /// takes too. The app passes none and stands under the names every
@@ -126,8 +117,9 @@ namespace PadForge.Services
             _dispatcher = Dispatcher.CurrentDispatcher;
             _showMessage = RunningCopy.RegisterWindowMessageW(_showMessageName);
             _exitMessage = RunningCopy.RegisterWindowMessageW(_exitMessageName);
-            // The pipe stands before the window: a start that finds the
-            // window asks over the pipe at once (StartByTask).
+            // The pipe stands before the window: a second copy that finds the
+            // window asks over the pipe at once to show the main window or to
+            // close it.
             _pipe = new ExternalControlService(Answer, RunningCopy.SignalPipeName(_signalName));
             if (ReadToken != null) _pipe.ReadToken = ReadToken;
             _pipe.Start();
@@ -153,40 +145,6 @@ namespace PadForge.Services
                 _exitOwed = false;
                 _exit();
             }
-        }
-
-        /// <summary>
-        /// The start switches of a start without rights that ran the logon
-        /// task (#600 item 44), when that start says they are coming
-        /// (<see cref="RunningCopy.MarkStartPending"/>): waited for up to
-        /// <paramref name="waitMs"/> while the thread's messages run. The
-        /// task's command line is fixed, so they come over the signal pipe.
-        /// Only the start set's words are kept
-        /// (<see cref="PadForge.Common.CommandLineSwitches.StartSwitchesOnly"/>),
-        /// so no other switch reaches this copy this way. They are taken once,
-        /// during this wait alone: a copy past its start takes none, and any
-        /// switch a running copy takes needs Automation.
-        /// </summary>
-        public IReadOnlyList<string> TakeStartSwitches(int waitMs)
-        {
-            if (_signal == null || _switchesWait != null || !RunningCopy.StartIsPending(_signalName)) return Array.Empty<string>();
-            var frame = new DispatcherFrame();
-            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(Math.Max(0, waitMs)), DispatcherPriority.Send,
-                (s, e) => frame.Continue = false, Dispatcher.CurrentDispatcher);
-            _switchesWait = frame;
-            try
-            {
-                timer.Start();
-                Dispatcher.PushFrame(frame);
-            }
-            finally
-            {
-                timer.Stop();
-                _switchesWait = null;
-            }
-            string[] words = _switches;
-            _switches = null;
-            return PadForge.Common.CommandLineSwitches.StartSwitchesOnly(words ?? Array.Empty<string>());
         }
 
         /// <summary>This copy is past its start. Nothing is made before
@@ -230,22 +188,6 @@ namespace PadForge.Services
             string line = request.Line ?? string.Empty;
             if (line == RunningCopy.ShowLine) return Later(TakeShow);
             if (line == RunningCopy.ExitLine) return Later(TakeExit);
-            if (line.StartsWith(RunningCopy.SwitchesLine + " ", StringComparison.Ordinal))
-            {
-                string[] words = RunningCopy.ReadStartSwitches(line.Substring(RunningCopy.SwitchesLine.Length + 1));
-                if (words == null) return new ExternalControlService.Answer("error unreadable");
-                bool taken;
-                try
-                {
-                    taken = _dispatcher.Invoke(() => TakeSwitches(words), DispatcherPriority.Send, request.Stopping,
-                        TimeSpan.FromMilliseconds(StartSwitchesWaitMs));
-                }
-                catch
-                {
-                    taken = false;
-                }
-                return new ExternalControlService.Answer(taken ? "ok" : "error not-waiting");
-            }
             return new ExternalControlService.Answer("error unknown-line");
         }
 
@@ -269,14 +211,6 @@ namespace PadForge.Services
         {
             if (_exit != null) _exit();
             else _exitOwed = true;
-        }
-
-        private bool TakeSwitches(string[] words)
-        {
-            if (_switchesWait == null || _switches != null) return false;
-            _switches = words;
-            _switchesWait.Continue = false;
-            return true;
         }
 
         /// <summary>The show and exit messages, from a process that runs at

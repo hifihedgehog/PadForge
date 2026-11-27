@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Threading;
 using PadForge.Common.Input;
 using PadForge.Engine.Common.Mapping;
@@ -38,6 +40,26 @@ namespace PadForge.Tests
                 SourceCoercion.MouseCursorProvider = cursor;
                 SourceCoercion.MouseCursorPointProvider = point;
             }
+        }
+
+        /// <summary>A pin or clamp pressed while the tick that goes idle runs
+        /// finds the sampler still awake and wakes nothing. The tick reads the
+        /// demand again after it stops the timer, so the press is kept.</summary>
+        [Fact]
+        public void TheTickThatGoesIdleReadsTheDemandAgainAfterTheStop()
+        {
+            var d = new DirectoryInfo(AppContext.BaseDirectory);
+            while (d != null && !File.Exists(Path.Combine(d.FullName, "PadForge.sln"))) d = d.Parent;
+            Assert.NotNull(d);
+            string source = File.ReadAllText(Path.Combine(d.FullName, "PadForge.App", "Services", "CursorControlService.cs")).Replace("\r\n", "\n");
+            int tick = source.IndexOf("private void Tick()", StringComparison.Ordinal);
+            Assert.True(tick > 0, "Tick moved");
+            int stop = source.IndexOf("_timer?.Change(Timeout.Infinite, Timeout.Infinite);", tick, StringComparison.Ordinal);
+            Assert.True(stop > tick);
+            int ret = source.IndexOf("return;", stop, StringComparison.Ordinal);
+            string after = source.Substring(stop, ret - stop);
+            Assert.Contains("System.Threading.Interlocked.MemoryBarrier();", after);
+            Assert.Contains("if (SamplerWanted())\n                    {\n                        _samplerIdle = false;\n                        try { _timer?.Change(0, SampleIntervalMs); }", after);
         }
     }
 }

@@ -233,7 +233,7 @@ namespace PadForge.ViewModels
         public ObservableCollection<AssistantRowItem> AssistantRows { get; } = new();
 
         /// <summary>Test seam: runs an install as the user. Null runs it
-        /// through UserInstall.RunAsUserAsync, the shell's route.</summary>
+        /// through UserInstall.RunInCopyAsync, the shell's route.</summary>
         internal Func<InstallRequest, Task<InstallRun>> AssistantInstallSeam;
 
         /// <summary>Test seam: a program's icon by its file. Null reads the
@@ -241,7 +241,7 @@ namespace PadForge.ViewModels
         internal Func<string, ImageSource> AssistantIconSeam;
 
         private Task<InstallRun> RunAssistantInstall(InstallRequest request)
-            => AssistantInstallSeam != null ? AssistantInstallSeam(request) : UserInstall.RunAsUserAsync(request);
+            => AssistantInstallSeam != null ? AssistantInstallSeam(request) : UserInstall.RunInCopyAsync(request);
 
         private bool _assistantsChecked;
         private string _assistantsCheckFailed;
@@ -315,20 +315,20 @@ namespace PadForge.ViewModels
 
         /// <summary>Test seam: the program PadForge finds for an assistant's
         /// key. Null finds it as the desktop shell's user
-        /// (AssistantPrograms.FindForShellUser).</summary>
+        /// (AssistantPrograms.FindForUser).</summary>
         internal Func<string, string> AssistantFindSeam;
 
         /// <summary>Draws the rows from a check: one for each program found,
         /// in AssistantHosts' order, each kept while its program is. A row's
         /// program, which its icon, its connected mark and its Add's consent
         /// read, is the one PadForge found itself (AssistantFindSeam, else
-        /// AssistantPrograms.FindForShellUser), never the report's: the check copy runs as the user, and a program
+        /// AssistantPrograms.FindForUser), never the report's: the check copy runs as the user, and a program
         /// of the user can rewrite its report. A row PadForge found no
         /// program for keeps none, and its Add allows none, so that program
         /// asks on the card when it first connects.</summary>
         internal void ApplyAssistantChecks(IReadOnlyList<UserInstall.AssistantCheck> checks)
         {
-            var find = AssistantFindSeam ?? AssistantPrograms.FindForShellUser;
+            var find = AssistantFindSeam ?? AssistantPrograms.FindForUser;
             var programs = checks.Where(c => !string.IsNullOrEmpty(c.Program)).Select(c => c.Key).Distinct()
                 .ToDictionary(k => k, k => find(k), StringComparer.Ordinal);
             var listed = checks.Where(c => !string.IsNullOrEmpty(c.Program)).GroupBy(c => c.Key, StringComparer.Ordinal)
@@ -660,7 +660,7 @@ namespace PadForge.ViewModels
                 return;
             }
             if (AssistantOpenSeam != null) { AssistantOpenSeam(target, asFile); return; }
-            ShellLaunch.AsTheUser(asFile
+            ShellLaunch.TryStart(asFile
                 ? new System.Diagnostics.ProcessStartInfo(target) { UseShellExecute = true }
                 : new System.Diagnostics.ProcessStartInfo(ShellLaunch.Explorer, "\"" + target + "\""), out _);
         }

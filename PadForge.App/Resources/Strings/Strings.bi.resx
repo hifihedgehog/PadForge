@@ -1711,7 +1711,6 @@
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Joenem i stop: ridim o raetem kontrola o Bluetooth redio i no wok. Log blong daeagnostik i gat ol ditel.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Joenem i stop long wan rong we PadForge i no bin ting se bae i kam. Log blong daeagnostik i gat ol ditel.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>i nidim Logitech Gaming Software 8.52 o wan we i niu moa</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>i faenem laebri blong hem mo i no lodem, from PadForge i no save mekem sua se ol administreta nomo oli save jenisim mo se Logitech i bin saenem</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>i faenem laebri blong hem mo i no save yusum, mo log blong daeagnostik i talem from wanem</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>statem Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>i stap wet long wan fon we i gat Arx Control</value></data>
@@ -2216,6 +2215,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Divaes i no konek. SDL i ridim hem taem i konek.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL i no givim wan riding blong divaes ia long PadForge.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi blong komuniti we i stap insaed, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>I daonlod {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fael blong PadForge nomo</value></data>
@@ -2426,7 +2426,6 @@
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge i no tekem ansa blong GitHub. I no gat samting i jenis.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge i no tekem ansa we i kam long {0}. I no gat samting i jenis.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Pej blong daonlod blong Falcon SDK i no open: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Pej blong daonlod blong Falcon SDK i no open yet: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>I lego {0:N0} lae blong ol narafala sistem.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows i no statem hem wetem ol raet blong yu.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>I no stop insaed long {0} sekon.</value></data>

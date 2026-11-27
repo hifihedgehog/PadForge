@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ma bediex: l-ebda programm ma jiftaħ fajls Python għalik, u PadForge ma jsib l-ebda launcher py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ma bediex: PadForge ma jistax jaqra liema programm jiftaħ dan it-tip ta' fajl għalik</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ma bediex: il-programm li jiftaħ dan it-tip ta' fajl għalik mhuwiex fuq dan il-PC</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ma bediex: ebda shell tad-desktop mhi qed taħdem biex jibda taħtha</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ma bediex: ix-shell tad-desktop għandha drittijiet ta' amministratur, għalhekk il-plugin ikollu wkoll</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ma bediex: PadForge ma jistax jaqra jekk ikollux drittijiet ta' amministratur</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ma bediex: il-Windows tah drittijiet ta' amministratur, għalhekk PadForge temmu qabel ma ħadem</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ma bediex: jitlob drittijiet ta' amministratur</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ma bediex: Windows irrifjuta bl-iżball {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ma bediex</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Ma hemm l-ebda SDK G-key ta' Logitech fuq din il-magna. Jiġi installat ma' Logitech Gaming Software 8.55 jew aktar recenti.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>L-SDK tal-G-key huwa rreġistrat iżda l-fajl tiegħu m'għadux hemm. Erġa' installa Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Instab l-SDK G-key u ma setax jitgħabba.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Instab l-SDK G-key u ma tgħabbiex, għax PadForge ma setax jikkonferma li l-amministraturi biss jistgħu jibdluh u li Logitech iffirmah.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Dik il-librerija mhix l-SDK tal-G-key li dan jistenna.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>L-SDK G-key irrifjuta li jibda. Normalment Logitech Gaming Software ma jkunx qed jaħdem.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Imqabbad, għadu ma deher l-ebda tast. F'Logitech Gaming Software, kaxkar il-kmand G-key fuq kull tast fil-profil ta' PadForge, u agħmel dak il-profil persistenti. Maws G600 jew G300 irid ukoll ikun barra mill-modalità tal-memorja interna.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Żomm it-tieqa moħbija meta PadForge jibda. Jaħdem u jagħmel il-mappjar bħas-soltu.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ibda PadForge awtomatikament meta tidħol f'Windows. Sakemm din tkun mixgħula, PadForge jibda wkoll mingħajr il-prompt ta' Windows minn shortcut, script jew programm ieħor.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge jaħdem minn {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Dan jeħtieġ lil PadForge f'folder tiegħu stess. Il-folder tiegħu fih fajls oħra, għalhekk PadForge ma jistax iżomm programmi oħra milli jbiddluh.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Dan jeħtieġ lil PadForge f'folder li programmi oħra ma jistgħux jibdlu. PadForge ma setax iżomm lil programmi oħra milli jbiddlu l-folder tiegħu.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Ċaqlaq PadForge f'folder tiegħu stess</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Jikkopja PadForge u s-settings tiegħu f'Program Files, iwassal it-tasks tiegħu hemm, u jibdih minn hemm. Il-kopja hawn tibqa' kif inhi.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: {0} fih fajls li mhumiex ta' PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Ibda mal-login ġie mitfi, għax kien iħaddem PadForge minn folder li fih fajls oħra.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ma ċċaqlaqx: il-Windows ma jsemmi l-ebda folder Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ma ċċaqlaqx: ma setax jaqra l-PadForge li qed jaħdem.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: ma setax joħloq {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: ma setax jaqra dak li fih {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: ma setax iżomm programmi oħra milli jbiddlu {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: il-kopja tiegħu f'{0} ma qablitx mal-PadForge li qed jaħdem.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ma ċċaqlaqx: wara l-kopja, {0} kien fih fajls li mhumiex ta' PadForge, jew programmi oħra setgħu jbiddluh.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Ibda mal-login ġie mitfi, għax il-PadForge li ħadem m'għadux hemm.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Ibda mal-login ġie mitfi, għax PadForge ma setax iżomm programmi oħra milli jbiddlu l-folder li minnu ħaddem PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Ibda mal-login ġie mitfi, għax PadForge ma setax jaqra liema PadForge ħadem.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Ibda mal-login ġie mitfi, għax PadForge ma setax jaqra l-folder tal-PadForge li ħadem.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ma setax joħloq il-folder protett tiegħu, {0}. PadForge iżomm hemm il-librerijiet li jħaddem bid-drittijiet ta' amministratur, u ma jistax jibda bla periklu mingħajru.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ma setax jerġa' jibda lilu nnifsu mill-folder protett tiegħu, {0}. PadForge jaħdem bid-drittijiet ta' amministratur biss minn hemm, għalhekk ma bediex.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ma setax joħloq il-lock li jżommu f'kopja waħda li taħdem, għalhekk ma bediex.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge jaħdem bid-drittijiet ta' amministratur minn {0}, folder li programmi oħra jistgħu jibdlu. Jistgħu jibdlu s-settings ta' PadForge hemm, u PadForge jaġixxi fuqhom bid-drittijiet tiegħu.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge jaħdem bid-drittijiet ta' amministratur minn {0}, folder li fih fajls oħra. PadForge ma jistax iżomm programmi oħra milli jbiddlu s-settings tiegħu hemm, u jaġixxi fuqhom bid-drittijiet tiegħu.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge jaħdem bid-drittijiet ta' amministratur minn {0}, folder li ma setax jaqra. PadForge ma jistax iżomm programmi oħra milli jbiddlu s-settings tiegħu hemm, u jaġixxi fuqhom bid-drittijiet tiegħu.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Dejjem uri fis-system tray</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Żomm l-ikona tat-tray viżibbli waqt li t-tieqa tkun miftuħa, biex Oħroġ fil-menu tagħha jkun dejjem klikk wieħed 'il bogħod.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Aġġornamenti</value></data>
@@ -1294,13 +1266,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Kontroll tat-tindif: qed jiġu kkontrollati l-partijiet li żżomm…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Kontroll tat-tindif: PadForge ma setax jaqra l-partijiet li żżomm, għalhekk Salva jibqa' mitfi.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Is-salvataġġ bid-drittijiet tiegħek ma bediex.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Is-salvataġġ bid-drittijiet tiegħek ma bediex: l-ebda shell tad-desktop ma taħdem biex tibdih taħtha.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Is-salvataġġ bid-drittijiet tiegħek ma bediex: il-Windows irrifjuta bl-iżball {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Is-salvataġġ ma intemmx fi {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Il-Windows ma ħallewx jinkteb il-fajl hemm.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ma ħadx dan il-fajl bħala reġistrazzjoni tiegħu stess.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Is-salvataġġ intemm bil-kodiċi {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Jiġi salvat bħala int, fil-folder Downloads tiegħek l-ewwel darba, imbagħad fejn salvajt l-aħħar, u jintwera fl-Explorer. Reġistrazzjoni li tieqaf waqt li ħadd ma jkun fuq il-paġna (il-limitu tagħha, makro, programm, l-għodda tal-assistent jew --record stop) tistenna dan ir-rieżami fuq Dar, u titħassar wara 7 ijiem jekk ma tiġix salvata. Programm jinqal li tistenna, qatt fejn.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Reġistrazzjoni ta' problema minn {0} tistenna li taqraha.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Irrieżamina</value></data>
@@ -5514,7 +5481,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>L-ippearjar waqaf: il-qari jew il-kitba tal-kontrollur jew tar-radju Bluetooth falla. Il-log tad-dijanjostika fih id-dettalji.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>L-ippearjar waqaf fuq żball li PadForge ma kienx jistenna. Il-log tad-dijanjostika fih id-dettalji.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>jeħtieġ Logitech Gaming Software 8.52 jew aktar ġdid</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>sab il-librerija tiegħu u ma tgħabbiex, għax PadForge ma setax jikkonferma li l-amministraturi biss jistgħu jibdluha u li Logitech iffirmaha</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>sab il-librerija tiegħu u ma setax jużaha, u l-log tad-dijanjostika jgħid għaliex</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>ibda Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>qed jistenna telefon b'Arx Control</value></data>
@@ -5612,7 +5578,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Jgħabbi din il-kopja tal-librerija ta' Force Dimension minflok kull oħra. Falcon miftuħ fuq kopja oħra jingħalaq u jerġa' jinfetaħ fuq din. Il-kopji li jinstalla l-SDK jinstabu mingħajrha.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Libreriji (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Il-paġna tad-download tal-Falcon SDK ma nfetħitx: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Il-paġna tad-download tal-Falcon SDK għadha ma nfetħitx: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Installa d-driver tal-Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Jinstalla d-driver ta' Force Dimension, mill-folder tal-SDK, fuq Falcon li m'għandux wieħed. Windows jista' l-ewwel jistaqsik jekk tafdax lil Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Ikseb l-SDK ta' Force Dimension</value></data>
@@ -5965,6 +5930,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="SdlMapping_Away" xml:space="preserve"><value>L-apparat mhuwiex imqabbad. SDL jaqrah malli jkun.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ma tax lil PadForge ebda qari ta' dan l-apparat.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Il-kopja komunitarja inkorporata, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Imniżżel {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Il-fajl proprju ta' PadForge</value></data>

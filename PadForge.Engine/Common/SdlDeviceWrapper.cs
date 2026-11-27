@@ -101,7 +101,7 @@ namespace PadForge.Engine
         /// Bluetooth Switch 2 driver when a recovery finds the vibration
         /// characteristic the connect could not, as when the link dropped
         /// during the setup (BLE_FinishRestore,
-        /// SDL_ble_switch2joystick.c:2444-2465), and the HID drivers through
+        /// SDL_ble_switch2joystick.c:2460-2481), and the HID drivers through
         /// HIDAPI_UpdateDeviceProperties (SDL_hidapijoystick.c:1076-1090),
         /// as the PS5 driver does when enhanced mode becomes available
         /// (SDL_hidapi_ps5.c:847-883). The open read the property once, so
@@ -501,7 +501,7 @@ namespace PadForge.Engine
         /// from the GUID's driver-signature byte (SDL_CreateJoystickGUID puts
         /// it at data[14], hex chars 28-29 of the GUID string): 'x' XInput,
         /// 'h' HIDAPI, 'g' GameInput (the Xbox One instruments its raw
-        /// report path lists by default, SDL_gameinputjoystick.cpp:441),
+        /// report path lists by default, SDL_gameinputjoystick.cpp:450),
         /// 'v' a virtual joystick (SDL_virtualjoystick.c, the joysticks
         /// PadForge's own readers attach), and DirectInput leaves it zero.
         /// Any other byte prints as hex.
@@ -609,6 +609,16 @@ namespace PadForge.Engine
         /// reads none so.</summary>
         public static Func<uint, bool> ReadsRawThisSession;
 
+        /// <summary>Whether a joystick SDL maps keeps the raw read a saved
+        /// assignment was made with: SDL started to map it, through a new row
+        /// or a driver that now claims it, and opened as a gamepad its inputs
+        /// would come back renumbered. Null keeps none.</summary>
+        public static Func<uint, bool> KeepsSavedRawRead;
+
+        /// <summary>Whether this joystick opened raw for
+        /// <see cref="KeepsSavedRawRead"/>.</summary>
+        public bool KeptSavedRawRead { get; private set; }
+
         /// <summary>
         /// Opens the SDL device with the given instance ID.
         /// Attempts to open as a Gamepad first (if SDL recognizes it);
@@ -626,10 +636,12 @@ namespace PadForge.Engine
             SdlDevicePath = string.Empty;
 
             // Try Gamepad first for better mapping support. A Bliss-Box port
-            // opens raw while Read Bliss-Box Adapters is on (#469).
-            if (OpensAsGamepad(SDL_IsGamepad(instanceId),
-                    SDL_GetJoystickVendorForID(instanceId), SDL_GetJoystickProductForID(instanceId))
-                && ReadsRawThisSession?.Invoke(instanceId) != true)
+            // opens raw while Read Bliss-Box Adapters is on (#469), and so
+            // does a joystick that keeps the raw read of its saved assignment.
+            bool sdlMaps = OpensAsGamepad(SDL_IsGamepad(instanceId),
+                SDL_GetJoystickVendorForID(instanceId), SDL_GetJoystickProductForID(instanceId));
+            KeptSavedRawRead = sdlMaps && KeepsSavedRawRead?.Invoke(instanceId) == true;
+            if (sdlMaps && !KeptSavedRawRead && ReadsRawThisSession?.Invoke(instanceId) != true)
             {
                 GameController = SDL_OpenGamepad(instanceId);
                 Array.Fill(_faceLabels, -1);
@@ -2254,7 +2266,7 @@ namespace PadForge.Engine
                     // Pressure fallback for a pad whose click SDL's mapping
                     // does not bind. The gen-1 Steam Controller is the case:
                     // its generated mapping is paddle1/paddle2 only, no
-                    // touchpad and no misc2 (SDL_gamepad.c:1455, against the
+                    // touchpad and no misc2 (SDL_gamepad.c:1458, against the
                     // Deck's and Triton's touchpad:b17,misc2:b16 at 1461 and
                     // 1464), while its driver registers two pads and encodes
                     // the click purely in pressure: 0.5 for a finger down,
@@ -2386,7 +2398,7 @@ namespace PadForge.Engine
         /// (SDL_hidapi_sinput.c:848-870, which numbers the buttons by the
         /// pad's usage masks), and SDL's mapping binds the first to
         /// <c>touchpad</c> and the next to a misc button
-        /// (SDL_gamepad.c:1051-1055). Which misc depends on the pad: the misc
+        /// (SDL_gamepad.c:1053-1057). Which misc depends on the pad: the misc
         /// buttons before it and a dual-stage trigger's two clicks move it
         /// past Misc 2 (:996-1003). On OpenPuck's shape, dual-stage triggers
         /// and two touchpads (OpenPuck mode_sinput.cpp:155-185), it is Misc 5.
@@ -2536,7 +2548,7 @@ namespace PadForge.Engine
         //  call made with uint.MaxValue is held here and renewed before the
         //  cap (RenewHeldRumble, #572). A call that repeats the level SDL
         //  holds only moves the end time and never reaches the driver
-        //  (SDL_joystick.c:3189-3192, :3235-3237, and SDL_gamepad.c:4534
+        //  (SDL_joystick.c:3203-3206, :3249-3251, and SDL_gamepad.c:4585
         //  for the trigger motors), so a renewal sends the device nothing.
         // ─────────────────────────────────────────────
 
@@ -2719,7 +2731,7 @@ namespace PadForge.Engine
         /// SDL's PS4/PS5 drivers would fight the sole-writer Sony dispatcher.
         ///
         /// SInput pads (#584) are allowed too. SDL gives every gamepad a player
-        /// index of its own when it is added (SDL_joystick.c:3619-3624) and the
+        /// index of its own when it is added (SDL_joystick.c:3633-3638) and the
         /// SInput driver sends it to the pad's player LED, plus one, when the pad
         /// opens (SDL_hidapi_sinput.c:691-709), so without this call the LED shows
         /// SDL's connection order rather than the slot.
@@ -3212,17 +3224,20 @@ namespace PadForge.Engine
         /// for device classification in the settings and UI.
         /// </summary>
         public int GetInputDeviceType()
-            => InputDeviceTypeFor(JoystickType, GameController != IntPtr.Zero, VendorId, ProductId);
+            => InputDeviceTypeFor(JoystickType, GameController != IntPtr.Zero, VendorId, ProductId, KeptSavedRawRead);
 
         /// <summary>The device class for SDL's joystick type. SDL types a
         /// Bliss-Box port a gamepad by its community mapping even when
         /// PadForge opens it raw (#469), and read raw it is a joystick: the
         /// gamepad auto-map and the trigger rest rule would misread its
-        /// axes and buttons.</summary>
-        internal static int InputDeviceTypeFor(SDL_JoystickType type, bool openedAsGamepad, ushort vendorId, ushort productId)
+        /// axes and buttons. So is a joystick that keeps the raw read of its
+        /// saved assignment (<see cref="KeepsSavedRawRead"/>), which SDL
+        /// types a gamepad by the mapping it now has.</summary>
+        internal static int InputDeviceTypeFor(SDL_JoystickType type, bool openedAsGamepad, ushort vendorId, ushort productId,
+            bool keptSavedRawRead = false)
         {
             if (!openedAsGamepad && type == SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD
-                && BlissBoxProtocol.IsPort(vendorId, productId))
+                && (keptSavedRawRead || BlissBoxProtocol.IsPort(vendorId, productId)))
                 return InputDeviceType.Joystick;
             return type switch
             {

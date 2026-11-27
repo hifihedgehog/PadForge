@@ -1337,7 +1337,6 @@ PadForge sau tsis tau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yo
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Kev txuas khub nres lawm: kev nyeem los sis sau lub controller los sis lub Bluetooth radio ua tsis tau. Daim ntawv sau diagnostics muaj cov ntsiab lus.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Kev txuas khub nres lawm vim ib qho yuam kev uas PadForge tsis tau xav txog. Daim ntawv sau diagnostics muaj cov ntsiab lus.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>xav tau Logitech Gaming Software 8.52 los yog tshiab dua</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nrhiav tau nws lub library thiab tsis thauj nws, vim PadForge lees paub tsis tau tias tsuas yog cov administrator thiaj hloov tau nws thiab tias Logitech kos npe rau nws</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nrhiav tau nws lub library thiab siv tsis tau nws, thiab daim ntawv sau diagnostics qhia vim li cas</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>qhib Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>tos ib lub xov tooj uas muaj Arx Control</value></data>
@@ -1390,7 +1389,6 @@ PadForge sau tsis tau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yo
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Thauj lub library no ntawm Force Dimension hloov chaw lwm lub. Ib lub Falcon uas qhib nrog lwm lub yuav kaw thiab rov qhib dua nrog lub no. Cov uas SDK nruab lawm nrhiav tau txawm tsis muaj qhov no.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Cov library (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Nplooj ntawv download Falcon SDK tsis qhib: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Nplooj ntawv download Falcon SDK tseem tsis tau qhib: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Nruab Falcon driver</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Nruab Force Dimension tus driver, los ntawm lub SDK folder, rau ib lub Falcon uas tsis muaj driver. Windows yuav nug ua ntej seb puas ntseeg Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Rub Force Dimension lub SDK</value></data>
@@ -2022,6 +2020,7 @@ PadForge sau tsis tau cov ntsiab lus rau crash.log ib sab ntawm PadForge.exe. Yo
   <data name="SdlMapping_Away" xml:space="preserve"><value>Lub khoom siv tsis tau txuas. SDL nyeem nws thaum nws txuas lawm.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL tsis muab PadForge ib qho kev nyeem ntawm lub khoom siv no.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Daim qauv zej zog uas muaj nyob hauv, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Rub tawm {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge tus kheej daim ntawv</value></data>

@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ekki ræst: ekkert forrit opnar Python skrár fyrir þig og PadForge finnur ekkert py ræsiforrit</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ekki ræst: PadForge getur ekki lesið hvaða forrit opnar þessa tegund skráa fyrir þig</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ekki ræst: forritið sem opnar þessa tegund skráa fyrir þig er ekki á þessari tölvu</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ekki ræst: engin skjáborðsskel er í gangi til að ræsa hana undir</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ekki ræst: skjáborðsskelin hefur kerfisstjóraréttindi, svo viðbótin fengi þau líka</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ekki ræst: PadForge getur ekki lesið hvort viðbótin fengi kerfisstjóraréttindi</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ekki ræst: Windows gaf því kerfisstjóraréttindi, svo PadForge stöðvaði það áður en það keyrði</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ekki ræst: hún biður um kerfisstjóraréttindi</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ekki ræst: Windows hafnaði með villu {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ekki ræst</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Ekkert Logitech G-key SDK er á þessari vél. Það fylgir uppsetningu Logitech Gaming Software 8.55 eða nýrra.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK er skráð en skrá þess er horfin. Settu Logitech Gaming Software upp aftur.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK fannst en ekki tókst að hlaða því.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK fannst en því var ekki hlaðið, þar sem PadForge gat ekki staðfest að aðeins kerfisstjórar geti breytt því og að Logitech hafi undirritað það.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Þetta safn er ekki það G-key SDK sem búist var við.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK neitaði að ræsa. Yfirleitt er það vegna þess að Logitech Gaming Software er ekki í gangi.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Tengt, enginn lykill hefur sést enn. Í Logitech Gaming Software skaltu draga skipunina „G-key“ á hvern lykil í PadForge-sniðinu og gera sniðið varanlegt. Einnig þarf að taka G600- eða G300-mús úr ham innbyggðs minnis.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Halda glugganum földum þegar PadForge ræsist. Forritið keyrir og varpar eins og venjulega.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ræsa PadForge sjálfkrafa þegar þú skráir þig inn í Windows. Meðan þetta er í gangi ræsist PadForge líka án fyrirspurnar Windows frá flýtileið, skriftu eða öðru forriti.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge keyrir úr {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Þetta krefst þess að PadForge sé í sinni eigin möppu. Mappa þess geymir aðrar skrár, svo PadForge getur ekki varnað öðrum forritum að breyta henni.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Þetta krefst þess að PadForge sé í möppu sem önnur forrit geta ekki breytt. PadForge gat ekki varnað því að þau breyti möppu þess.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Færa PadForge í eigin möppu</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Afritar PadForge og stillingar þess í Program Files, beinir verkum þess þangað og ræsir það þaðan. Afritið hér helst óbreytt.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge var ekki fært: {0} geymir skrár sem tilheyra ekki PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge var ekki fært: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, því það ræsti PadForge úr möppu sem geymir aðrar skrár.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge var ekki fært: Windows nefnir enga Program Files möppu.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki lesið PadForge sem er í gangi.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki búið til {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki lesið hvað {0} geymir.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge var ekki fært: það gat ekki varnað því að önnur forrit breyti {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge var ekki fært: afrit þess í {0} passaði ekki við PadForge sem er í gangi.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge var ekki fært: eftir afritunina geymdi {0} skrár sem tilheyra ekki PadForge, eða önnur forrit gátu breytt henni.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge sem það ræsti er ekki lengur til staðar.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge gat ekki varnað því að önnur forrit breyti möppunni sem PadForge var ræst úr.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge gat ekki lesið hvaða PadForge það ræsti.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Slökkt var á Ræsa við innskráningu, þar sem PadForge gat ekki lesið möppu þess PadForge sem það ræsti.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge gat ekki búið til varða möppu sína, {0}. PadForge geymir þar söfnin sem það keyrir með kerfisstjóraréttindum og getur ekki ræst örugglega án hennar.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge gat ekki ræst sig aftur úr varðri möppu sinni, {0}. PadForge keyrir með kerfisstjóraréttindum aðeins þaðan, svo það ræstist ekki.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge gat ekki búið til læsinguna sem heldur því í einu keyrandi eintaki, svo það ræstist ekki.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge keyrir með kerfisstjóraréttindum úr {0}, möppu sem önnur forrit geta breytt. Þau geta breytt stillingum PadForge þar og PadForge framkvæmir þær með réttindum sínum.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge keyrir með kerfisstjóraréttindum úr {0}, möppu sem geymir aðrar skrár. PadForge getur ekki varnað öðrum forritum að breyta stillingum sínum þar og framkvæmir þær með réttindum sínum.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge keyrir með kerfisstjóraréttindum úr {0}, möppu sem það gat ekki lesið. PadForge getur ekki varnað öðrum forritum að breyta stillingum sínum þar og framkvæmir þær með réttindum sínum.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Sýna alltaf í kerfisbakka</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Halda tákninu í kerfisbakkanum sýnilegu á meðan glugginn er opinn, svo „Hætta“ í valmynd þess sé alltaf aðeins einum smelli frá.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Uppfærslur</value></data>
@@ -1354,13 +1326,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Hreinsunarprófun: athuga hlutana sem þú geymir…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Hreinsunarprófun: PadForge gat ekki lesið hlutana sem þú geymir, því Vista er óvirkt.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Vistunin með þínum réttindum hófst ekki.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Vistunin með þínum réttindum hófst ekki: engin skjáborðsskel er í gangi til að ræsa hana undir.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Vistunin með þínum réttindum hófst ekki: Windows hafnaði henni með villu {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Vistunin tók lengri tíma en {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows leyfði ekki að skrifa skrána þar.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge tók þessa skrá ekki sem eigin upptöku.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Vistuninni lauk með kóða {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Vistað undir þínum notanda, í möppuna Niðurhal í fyrsta skipti, síðan þar sem þú vistaðir síðast, og sýnt í Skráarkönnuði. Upptaka sem stöðvast á meðan enginn er á síðunni (mörk hennar, fjölvi, forrit, aðstoðartólið eða --record stop) bíður þessarar yfirferðar á síðunni Heim og er eytt eftir 7 daga nema hún sé vistuð. Forriti er sagt að hún bíði, aldrei hvar.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Vandamálsupptaka frá {0} bíður þess að þú lesir hana.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Yfirfara</value></data>
@@ -5920,7 +5887,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Pörun stöðvaðist: ekki tókst að lesa eða skrifa á leikjastýringuna eða Bluetooth útvarpið. Greiningarannállinn hefur nánari upplýsingar.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Pörun stöðvaðist á villu sem PadForge bjóst ekki við. Greiningarannállinn hefur nánari upplýsingar.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>krefst Logitech Gaming Software 8.52 eða nýrra</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>fann bókasafn sitt og hlóð því ekki, þar sem PadForge gat ekki staðfest að aðeins kerfisstjórar geti breytt því og að Logitech hafi undirritað það</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>fann bókasafn sitt og gat ekki notað það, og greiningarannállinn segir hvers vegna</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>ræstu Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>bíður eftir síma með Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Hleður þessu eintaki af safni Force Dimension í stað allra annarra. Falcon-tæki sem er opið á öðru eintaki lokast og opnast aftur á þessu. Eintökin sem SDK setur upp finnast án þess.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Söfn (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Niðurhalssíða Falcon SDK opnaðist ekki: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Niðurhalssíða Falcon SDK hefur ekki opnast enn: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Setja upp Falcon-rekil</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Setur upp rekil frá Force Dimension, úr SDK-möppunni, á Falcon-tæki sem hefur engan. Windows gæti fyrst spurt hvort treysta eigi Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Sækja SDK frá Force Dimension</value></data>
@@ -6726,6 +6691,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMapping_Away" xml:space="preserve"><value>Tækið er ekki tengt. SDL les það þegar það er tengt.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL gaf PadForge engan lestur af þessu tæki.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Innbyggða samfélagsafritið, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Sótt {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Eigin skrá PadForge</value></data>

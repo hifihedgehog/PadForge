@@ -153,13 +153,10 @@ namespace PadForge.Services.Install
     /// <summary>
     /// <c>PadForge.Exe --install &lt;what&gt;</c> (#600): the one way PadForge
     /// writes into the user's own folders and other programs' settings. The
-    /// page's buttons start it with the user's own rights through the
-    /// desktop shell (<see cref="AsUserAsync"/>, PluginLauncher's route), and
-    /// a person or a script runs it as it is. Either way the run has the
-    /// user's own token, so the folders are the user's
-    /// (<see cref="UserFolders"/>) and every file it writes is the user's to
-    /// change. Run from a prompt with rights, it starts itself again through
-    /// the shell first (<see cref="RunAsTheUser"/>).
+    /// page's buttons start it as a child of PadForge, with its rights and a
+    /// copy of its variables (<see cref="InCopyAsync"/>, PluginLauncher), and
+    /// a person or a script runs it as it is, in that process. The folders
+    /// are the user's (<see cref="UserFolders"/>).
     ///
     /// <para>Each install writes only its own folder or file
     /// (<see cref="OwnFiles"/>) and takes out what a newer copy no longer
@@ -278,54 +275,6 @@ namespace PadForge.Services.Install
         }
 
         // ── The run ──
-
-        /// <summary>
-        /// The client run's <c>--install</c>: with rights, it starts itself
-        /// again through the desktop shell, so the install is the user's.
-        /// When the shell's user has no lower right (UAC is off, or the
-        /// built-in Administrator's token is not split), every program of the
-        /// user runs with full rights, and the install runs here.
-        /// </summary>
-        internal static int RunAsTheUser(InstallRequest request, Action<string> say, Action<string> sayError)
-        {
-            if (HasRights() && !NoLowerRight())
-            {
-                // The run as the user writes what it says into a report,
-                // which this run reads back and says, so a person at a
-                // prompt with rights sees what a prompt without them would.
-                var started = RunAsUserAsync(request).GetAwaiter().GetResult();
-                if (started.Error != null) sayError(started.Error);
-                else if (!string.IsNullOrEmpty(started.Said) && request.Report == null) say(started.Said.TrimEnd());
-                return started.Code;
-            }
-            return Run(request, say, sayError);
-        }
-
-        /// <summary>Test seam: whether this process has administrator
-        /// rights. Null reads the process's own token.</summary>
-        internal static Func<bool> HasRightsSeam;
-
-        private static bool HasRights()
-        {
-            var seam = HasRightsSeam;
-            if (seam != null) return seam();
-            // Rights read for certain, and nothing less, start the install
-            // again as the user. A copy that cannot read its own token runs
-            // the install here, so the run as the user never starts itself
-            // again.
-            return PluginLauncher.ThisProcessHasAdministratorRights() == true;
-        }
-
-        /// <summary>Test seam: whether the desktop shell's user has no lower
-        /// right than full rights. Null reads the shell's token
-        /// (<see cref="PluginLauncher.ShellUserHasNoLowerRight"/>).</summary>
-        internal static Func<bool> NoLowerRightSeam;
-
-        private static bool NoLowerRight()
-        {
-            var seam = NoLowerRightSeam;
-            return seam != null ? seam() : PluginLauncher.ShellUserHasNoLowerRight();
-        }
 
         /// <summary>Runs an install here, in this process, with its rights.
         /// Gives the exit code.</summary>
@@ -1071,19 +1020,13 @@ namespace PadForge.Services.Install
         }
 
         /// <summary>Test seam: the folder a page's install writes its report
-        /// into. Null reads the user's temp folder from the desktop shell's
-        /// variables, and this process's own when the shell gives none.</summary>
+        /// into. Null uses this process's temp folder, which the copy
+        /// shares.</summary>
         internal static Func<string> ReportFolderSeam;
 
         private static string NewReportFile()
         {
-            string folder = ReportFolderSeam?.Invoke();
-            if (folder == null)
-            {
-                var shell = Launcher == null ? ShellEnvironment() : null;
-                string temp = shell?.FirstOrDefault(v => v.StartsWith("TEMP=", StringComparison.OrdinalIgnoreCase))?.Substring(5);
-                folder = !string.IsNullOrEmpty(temp) && Path.IsPathFullyQualified(temp) ? temp : Path.GetTempPath();
-            }
+            string folder = ReportFolderSeam?.Invoke() ?? Path.GetTempPath();
             // The folder as Windows resolves it now, so a folder moved by a
             // link after this point is told apart when the report is read
             // (TakeReport).
@@ -1350,7 +1293,7 @@ namespace PadForge.Services.Install
         /// (<see cref="HostCommandMs"/>) and half a minute for the copy's own
         /// start and its look for the command, so the copy's own bound ends a
         /// slow command and its own line names it.</summary>
-        internal const int AsUserMs = 2 * HostCommandMs + 30000;
+        internal const int CopyMs = 2 * HostCommandMs + 30000;
 
         /// <summary>
         /// Starts <c>PadForge.exe --install</c> with the user's own rights,
@@ -1361,21 +1304,21 @@ namespace PadForge.Services.Install
         /// install runs as a PadForge.exe this process starts. Error is null
         /// when the code is the install's own.
         /// </summary>
-        internal static async Task<(int Code, string Error)> AsUserAsync(InstallRequest request)
+        internal static async Task<(int Code, string Error)> InCopyAsync(InstallRequest request)
         {
-            var run = await RunAsUserAsync(request).ConfigureAwait(false);
+            var run = await RunInCopyAsync(request).ConfigureAwait(false);
             return (run.Code, run.Error);
         }
 
         /// <summary>
-        /// <see cref="AsUserAsync"/>, and what the run said. The run writes
+        /// <see cref="InCopyAsync"/>, and what the run said. The run writes
         /// what it says into a report in the user's own temp folder
         /// (<c>--report</c>), since a start through the shell hands back its
         /// exit code alone. This reads the report back and deletes it
         /// (<see cref="TakeReport"/>), so a failed install names its reason
         /// and a check of every assistant gives its rows.
         /// </summary>
-        internal static async Task<InstallRun> RunAsUserAsync(InstallRequest request)
+        internal static async Task<InstallRun> RunInCopyAsync(InstallRequest request)
         {
             if (Launcher == null && OffLimitsForTest) return new InstallRun(Failed, "The test host starts no install.", null);
             string exe = Exe();
@@ -1386,40 +1329,18 @@ namespace PadForge.Services.Install
                 var launcher = Launcher ?? new PluginLauncher();
                 string line = "\"" + exe + "\" " + string.Join(" ", request.Words().Select(Quote));
                 var launch = launcher.Start(new PluginCommand(exe, line, Path.GetDirectoryName(exe)), new Dictionary<string, string>());
-                if (launch.Refusal == PluginRefusal.ShellElevated && NoLowerRight())
-                {
-                    // The shell's user has no lower right: every program of
-                    // the user has full rights, the shell included. The
-                    // install runs as its own PadForge.exe with the shell's
-                    // variables, so the user's PATH finds the assistants'
-                    // commands, which PadForge's own allow list of variables
-                    // would not. A shell with rights whose user also has a
-                    // lower right (an Explorer started elevated, a token that
-                    // could not be read) gets the refusal below.
-                    var (code, output) = await Task.Run(() => RunTool(exe, request.Words(), AsUserMs, ShellEnvironment())).ConfigureAwait(false);
-                    // Its bound and a start Windows refused are worded as
-                    // the launcher's route words them.
-                    if (code == ToolTimedOut)
-                        return new InstallRun(Failed, "The install did not end in " + AsUserMs / 1000 + " seconds.", null)
-                            { Reason = InstallReason.TimedOut, Number = AsUserMs / 1000 };
-                    if (code == ToolNotStarted)
-                        return new InstallRun(Failed, "Windows did not start the install: " + output, null) { Reason = InstallReason.NotStarted };
-                    string said = report != null ? TakeReport(report) : null;
-                    said ??= string.IsNullOrWhiteSpace(output) ? null : PadForge.Engine.Common.ShownText.Clean(output.Trim());
-                    return Ran(code, said);
-                }
                 if (launch.Process == null)
-                    return new InstallRun(Failed, "Windows did not start the install with the user's rights (" + launch.Refusal
+                    return new InstallRun(Failed, "Windows did not start the install (" + launch.Refusal
                         + (launch.Error != 0 ? ", error " + launch.Error : string.Empty) + ").", null) { Reason = InstallReason.NotStarted };
                 using var process = launch.Process;
                 var exited = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
                 process.Exited += c => exited.TrySetResult(c);
-                var done = await Task.WhenAny(exited.Task, Task.Delay(AsUserMs)).ConfigureAwait(false);
+                var done = await Task.WhenAny(exited.Task, Task.Delay(CopyMs)).ConfigureAwait(false);
                 if (done != exited.Task)
                 {
                     process.Stop();
-                    return new InstallRun(Failed, "The install did not end in " + AsUserMs / 1000 + " seconds.", null)
-                        { Reason = InstallReason.TimedOut, Number = AsUserMs / 1000 };
+                    return new InstallRun(Failed, "The install did not end in " + CopyMs / 1000 + " seconds.", null)
+                        { Reason = InstallReason.TimedOut, Number = CopyMs / 1000 };
                 }
                 int exit = exited.Task.Result;
                 return Ran(exit, report != null ? TakeReport(report) : null);
@@ -1444,18 +1365,6 @@ namespace PadForge.Services.Install
 
         /// <summary>An exit code that is an answer, not a failure.</summary>
         internal static bool IsAnswer(int code) => code is Done or IsOlder or IsMissing or IsPartial or NoPython or NoPythonAnswered;
-
-        /// <summary>Test seam: the desktop shell's variables. Null reads them
-        /// through the shell's token.</summary>
-        internal static Func<IReadOnlyList<string>> ShellEnvironmentSeam;
-
-        private static IReadOnlyList<string> ShellEnvironment()
-        {
-            var seam = ShellEnvironmentSeam;
-            if (seam != null) return seam();
-            using var shell = PluginLauncher.OpenShell();
-            return shell == null ? null : PluginLauncher.ShellVariables(shell, out _);
-        }
 
         /// <summary>A word quoted for a command line as the C runtime reads
         /// it.</summary>

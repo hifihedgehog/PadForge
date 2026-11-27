@@ -1611,6 +1611,9 @@ namespace PadForge.Tests
             /// <summary>Whether the walk still finds the unit's collection.</summary>
             public volatile bool Present = true;
 
+            /// <summary>Whether the unit's collection opens.</summary>
+            public volatile bool Opens = true;
+
             public Bench(HidppLightDevice device, VendorHidCollection collection = null, int reassertMs = int.MaxValue,
                 int idleTickMs = 1, bool veryLong = false, int predecessorJoinMs = HidppBackend.PredecessorJoinMs)
             {
@@ -1619,7 +1622,7 @@ namespace PadForge.Tests
                 Channel = device.Channel(Collection.Path, HidppHapticProtocol.IsBluetoothPath(Collection.Path));
                 Channel.HasVeryLong = veryLong;
                 _make = join => new HidppBackend(() => Present ? new[] { Collection } : Array.Empty<VendorHidCollection>(),
-                    (c, s) => Channel, _ => Container, 1, idleTickMs, reassertMs,
+                    (c, s) => Opens ? Channel : null, _ => Container, 1, idleTickMs, reassertMs,
                     (path, frame, timeout) =>
                     {
                         Once.Enqueue((path, frame));
@@ -3020,6 +3023,27 @@ namespace PadForge.Tests
             Assert.NotEmpty(bench.Record());
             Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
             return bench;
+        }
+
+        /// <summary>A hand-back owed on a collection that is still listed but
+        /// will not open keeps the tick with no channel open, so a Logitech
+        /// program that starts ends it within a tick, not at the next scan.</summary>
+        [Fact]
+        public void AHandBackOwedWithNoChannelOpen_KeepsTheTick()
+        {
+            using var bench = new Bench(HidppLightDevice.G903());
+            bench.Link();
+            bench.Light(0xFF0000, level: 2);
+            bench.After(7);
+            Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+            bench.Opens = false;
+            bench.Channel.FailWrites = true;
+            bench.Light(0x00FF00, level: 2);
+            for (int i = 0; i < 400 && bench.Backend.Snapshot.Units.Count > 0; i++) bench.Tick(HidppBackend.FrameTickMs);
+            bench.Away();
+            bench.Passes();
+            Assert.True(HidppBackend.HandBackHeldForTest(bench.Path.Key));
+            Assert.Equal(1, bench.Backend.WaitMs);
         }
 
         /// <summary>A Logitech program that starts ends what the run read with what the

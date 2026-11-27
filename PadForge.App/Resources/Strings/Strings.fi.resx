@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ei käynnistynyt: mikään ohjelma ei avaa Python-tiedostoja puolestasi, eikä PadForge löydä py-käynnistintä</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ei käynnistynyt: PadForge ei voi lukea, mikä ohjelma avaa tämän tyyppisen tiedoston puolestasi</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ei käynnistynyt: ohjelma, joka avaa tämän tyyppisen tiedoston puolestasi, ei ole tässä tietokoneessa</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ei käynnistynyt: työpöydän kuorta ei ole käynnissä, jonka alla se voisi käynnistyä</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ei käynnistynyt: työpöydän kuorella on järjestelmänvalvojan oikeudet, joten laajennuksellakin olisi ne</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ei käynnistynyt: PadForge ei voi lukea, olisiko sillä järjestelmänvalvojan oikeudet</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ei käynnistynyt: Windows antoi sille järjestelmänvalvojan oikeudet, joten PadForge lopetti sen ennen suoritusta</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ei käynnistynyt: se pyytää järjestelmänvalvojan oikeuksia</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ei käynnistynyt: Windows hylkäsi virheellä {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ei käynnistynyt</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Tässä koneessa ei ole Logitechin G-key SDK:ta. Se asennetaan Logitech Gaming Software -ohjelmiston version 8.55 tai uudemman mukana.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK on rekisteröity, mutta sen tiedosto puuttuu. Asenna Logitech Gaming Software uudelleen.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK löytyi, mutta sitä ei voitu ladata.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK löytyi, mutta sitä ei ladattu, koska PadForge ei voinut vahvistaa, että vain järjestelmänvalvojat voivat muuttaa sitä ja että Logitech on allekirjoittanut sen.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Kirjasto ei ole odotettu G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK kieltäytyi käynnistymästä. Yleensä syynä on, ettei Logitech Gaming Software ole käynnissä.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Yhdistetty, näppäimiä ei ole vielä havaittu. Vedä Logitech Gaming Softwaressa G-key-komento PadForge-profiilin jokaiselle näppäimelle ja tee profiilista pysyvä. G600- tai G300-hiiren on myös oltava poissa sisäisen muistin tilasta.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Pidä ikkuna piilossa, kun PadForge käynnistyy. Ohjelma toimii ja tekee määritykset tavalliseen tapaan.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Käynnistä PadForge automaattisesti, kun kirjaudut Windowsiin. Kun tämä on päällä, PadForge käynnistyy myös ilman Windowsin kehotetta pikakuvakkeesta, komentosarjasta tai toisesta ohjelmasta.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge suoritetaan sijainnista {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tämä vaatii, että PadForge on omassa kansiossaan. Sen kansiossa on muita tiedostoja, joten PadForge ei voi estää muita ohjelmia muuttamasta sitä.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Tämä vaatii, että PadForge on kansiossa, jota muut ohjelmat eivät voi muuttaa. PadForge ei voinut estää muita ohjelmia muuttamasta sen kansiota.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Siirrä PadForge omaan kansioonsa</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopioi PadForge-sovelluksen ja sen asetukset Program Files -kansioon, osoittaa sen tehtävät sinne ja käynnistää sen sieltä. Tähän jäävä kopio säilyy ennallaan.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge ei siirtynyt: {0} sisältää tiedostoja, jotka eivät kuulu PadForge-sovellukselle.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge ei siirtynyt: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Käynnistä kirjauduttaessa kytkettiin pois, koska se käynnisti PadForge-sovelluksen kansiosta, jossa on muita tiedostoja.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge ei siirtynyt: Windows ei nimeä Ohjelmatiedostot-kansiota.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge ei siirtynyt: se ei voinut lukea käynnissä olevaa PadForge-ohjelmaa.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge ei siirtynyt: se ei voinut luoda kansiota {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge ei siirtynyt: se ei voinut lukea, mitä kansiossa {0} on.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge ei siirtynyt: se ei voinut estää muita ohjelmia muuttamasta kansiota {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge ei siirtynyt: sen kopio kansiossa {0} ei vastannut käynnissä olevaa PadForge-ohjelmaa.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge ei siirtynyt: kopioinnin jälkeen kansiossa {0} oli tiedostoja, jotka eivät kuulu PadForge-sovellukselle, tai muut ohjelmat voivat muuttaa kansiota.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Käynnistä kirjauduttaessa kytkettiin pois päältä, koska sen käynnistämää PadForge-ohjelmaa ei enää ole.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Käynnistä kirjauduttaessa kytkettiin pois päältä, koska PadForge ei voinut estää muita ohjelmia muuttamasta kansiota, josta se käynnisti PadForge-ohjelman.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Käynnistä kirjauduttaessa kytkettiin pois päältä, koska PadForge ei voinut lukea, mitä PadForge-ohjelmaa se käynnisti.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Käynnistä kirjauduttaessa kytkettiin pois päältä, koska PadForge ei voinut lukea kansiota, jossa käynnistetty PadForge on.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ei voinut luoda suojattua kansiotaan, {0}. PadForge säilyttää siellä kirjastot, joita se ajaa järjestelmänvalvojan oikeuksilla, eikä se voi käynnistyä turvallisesti ilman sitä.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge ei voinut käynnistää itseään uudelleen suojatusta kansiostaan, {0}. PadForge toimii järjestelmänvalvojan oikeuksilla vain sieltä, joten se ei käynnistynyt.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ei voinut luoda lukkoa, joka sallii vain yhden käynnissä olevan kopion, joten se ei käynnistynyt.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge toimii järjestelmänvalvojan oikeuksilla kansiosta {0}, jota muut ohjelmat voivat muuttaa. Ne voivat muuttaa PadForge-sovelluksen asetuksia siellä, ja PadForge toimii niiden mukaan oikeuksillaan.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge toimii järjestelmänvalvojan oikeuksilla kansiosta {0}, jossa on muita tiedostoja. PadForge ei voi estää muita ohjelmia muuttamasta sen asetuksia siellä, ja se toimii niiden mukaan oikeuksillaan.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge toimii järjestelmänvalvojan oikeuksilla kansiosta {0}, jota PadForge ei voinut lukea. PadForge ei voi estää muita ohjelmia muuttamasta sen asetuksia siellä, ja se toimii niiden mukaan oikeuksillaan.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Näytä aina ilmaisinalueella</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Pidä ilmaisinalueen kuvake näkyvissä myös ikkunan ollessa auki, jotta sen valikon Lopeta-komento on aina yhden napsautuksen päässä.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Päivitykset</value></data>
@@ -1354,13 +1326,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} Mt</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Puhdistustarkistus: tarkistetaan säilyttämäsi osat…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Puhdistustarkistus: PadForge ei voinut lukea säilyttämiäsi osia, joten Tallenna pysyy pois käytöstä.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Tallennus omilla oikeuksillasi ei käynnistynyt.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Tallennus omilla oikeuksillasi ei käynnistynyt: työpöydän kuorta, jonka alla se voitaisiin käynnistää, ei ole käynnissä.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Tallennus omilla oikeuksillasi ei käynnistynyt: Windows kieltäytyi virhekoodilla {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Tallennus ei päättynyt ajassa {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ei sallinut tiedoston kirjoittamista sinne.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge ei hyväksynyt tätä tiedostoa omaksi tallenteekseen.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Tallennus päättyi koodilla {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Tallennetaan sinuna, ensimmäisellä kerralla Downloads-kansioon ja sen jälkeen sinne, minne viimeksi tallensit, ja näytetään Explorer-ikkunassa. Tallenne, joka pysähtyy, kun kukaan ei ole sivulla (raja, makro, ohjelma, avustajatyökalu tai --record stop), odottaa tätä tarkastelua Koti-sivulla ja poistetaan 7 päivän kuluttua, ellei sitä tallenneta. Ohjelmalle kerrotaan, että se odottaa, ei koskaan missä.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Ongelmatallenne ajalta {0} odottaa, että luet sen.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Tarkastele</value></data>
@@ -5920,7 +5887,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Pariliitos pysähtyi: ohjaimen tai Bluetooth-radion lukeminen tai kirjoittaminen epäonnistui. Diagnostiikkaloki sisältää tiedot.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Pariliitos pysähtyi virheeseen, jota PadForge ei odottanut. Diagnostiikkaloki sisältää tiedot.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>vaatii Logitech Gaming Softwaren version 8.52 tai uudemman</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>löysi kirjastonsa mutta ei ladannut sitä, koska PadForge ei voinut vahvistaa, että vain järjestelmänvalvojat voivat muuttaa sitä ja että Logitech on allekirjoittanut sen</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>löysi kirjastonsa mutta ei voinut käyttää sitä, ja diagnostiikkaloki kertoo syyn</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>käynnistä Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>odotetaan puhelinta, jossa on Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Lataa tämän Force Dimensionin kirjastokopion muiden kopioiden tilalle. Toisessa kopiossa avoinna oleva Falcon suljetaan ja avataan uudelleen tällä kopiolla. SDK:n asentamat kopiot löytyvät ilman tätäkin.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Kirjastot (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK:n lataussivu ei avautunut: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK:n lataussivu ei ole vielä avautunut: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Asenna Falcon-ajuri</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Asentaa Force Dimensionin ajurin SDK-kansiosta Falcon-laitteelle, jolla sitä ei vielä ole. Windows saattaa ensin kysyä, luotetaanko Force Dimensioniin.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Hae Force Dimensionin SDK</value></data>
@@ -6726,6 +6691,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="SdlMapping_Away" xml:space="preserve"><value>Laite ei ole yhdistettynä. SDL lukee sen heti, kun se on.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ei antanut PadForge-sovellukselle lukemaa tästä laitteesta.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Yhteisön sisäänrakennettu kopio, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ladattu {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-sovelluksen oma tiedosto</value></data>

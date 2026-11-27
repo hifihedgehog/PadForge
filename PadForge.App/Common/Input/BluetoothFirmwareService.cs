@@ -71,7 +71,7 @@ namespace PadForge.Common.Input
 
         // Keyed by SDL joystick instance, which SDL never hands out twice in
         // one process, across SDL_Quit too (SDL_GetNextObjectID's static
-        // counter, SDL_utils.c:146-155).
+        // counter, SDL_utils.c:174-183).
         private static readonly ConcurrentDictionary<uint, Read> s_reads = new();
 
         /// <summary>The firmware revision the device reports, or null while it

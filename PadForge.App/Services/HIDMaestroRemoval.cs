@@ -86,9 +86,11 @@ namespace PadForge.Services
             version = null;
             try
             {
-                HMBackend backend = MachineBackendSeam != null ? MachineBackendSeam() : HMContext.MachineBackend;
+                // In the test host, with no seam, the backend read throws
+                // and the read answers false.
+                HMBackend backend = MachineBackendSeam != null ? MachineBackendSeam() : HMaestroContexts.MachineBackend();
                 if (backend == HMBackend.Usbip)
-                    return UsbipAvailableSeam != null ? UsbipAvailableSeam() : HMContext.IsUsbipBackendAvailable;
+                    return UsbipAvailableSeam != null ? UsbipAvailableSeam() : HMaestroContexts.UsbipBackendAvailable();
                 string repository = RepositorySeam != null ? RepositorySeam() : Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.System),
                     "DriverStore", "FileRepository");

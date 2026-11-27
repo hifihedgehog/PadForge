@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>არ დაიწყო: არცერთი პროგრამა არ ხსნის Python-ის ფაილებს თქვენთვის და PadForge py გამშვებს ვერ პოულობს</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>არ დაიწყო: PadForge ვერ კითხულობს, რომელი პროგრამა ხსნის ამ ტიპის ფაილს თქვენთვის</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>არ დაიწყო: პროგრამა, რომელიც ამ ტიპის ფაილს ხსნის, ამ კომპიუტერზე არ არის</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>არ დაიწყო: არ მუშაობს დესკტოპის გარსი, რომლის ქვეშაც ის გაეშვებოდა</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>არ დაიწყო: დესკტოპის გარსს ადმინისტრატორის უფლებები აქვს, ამიტომ პლაგინსაც ექნებოდა</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>არ დაიწყო: PadForge ვერ კითხულობს, ექნებოდა თუ არა მას ადმინისტრატორის უფლებები</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>არ დაიწყო: Windows-მა მას ადმინისტრატორის უფლებები მისცა, ამიტომ PadForge-მა ის გაშვებამდე დაასრულა</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>არ დაიწყო: ის ადმინისტრატორის უფლებებს ითხოვს</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>არ დაიწყო: Windows-მა უარყო შეცდომით {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>არ დაიწყო</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>ამ კომპიუტერზე Logitech G-key SDK არ არის. ის Logitech Gaming Software 8.55-თან ან უფრო ახალთან ერთად დგება.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK რეგისტრირებულია, მაგრამ მისი ფაილი აღარ არსებობს. ხელახლა დააყენეთ Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK ნაპოვნია, მაგრამ ვერ ჩაიტვირთა.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK ნაპოვნია, მაგრამ არ ჩაიტვირთა, რადგან PadForge-მა ვერ დაადასტურა, რომ მისი შეცვლა მხოლოდ ადმინისტრატორებს შეუძლიათ და რომ Logitech-მა ხელი მოაწერა.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>ეს ბიბლიოთეკა არ არის G-key SDK, რომელსაც ეს პროგრამა მოელის.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK-მ გაშვებაზე უარი თქვა. Logitech Gaming Software, როგორც წესი, გაშვებული არ არის.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>დაკავშირებულია, კლავიში ჯერ არ ჩანს. Logitech Gaming Software-ში გადაათრიეთ G-key ბრძანება PadForge-ის პროფილის თითოეულ კლავიშზე და ეს პროფილი გახადეთ მუდმივი. G600 ან G300 მაუსიც უნდა იყოს ჩაშენებული მეხსიერების რეჟიმიდან გამოსული.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>ფანჯრის დამალვა PadForge-ის გაშვებისას. ის ჩვეულებრივ მუშაობს და მიბმებს ამუშავებს.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>PadForge-ის ავტომატური გაშვება Windows-ში შესვლისას. სანამ ეს ჩართულია, PadForge ჩაირთვება Windows-ის მოთხოვნის გარეშეც ბმულიდან, სკრიპტიდან ან სხვა პროგრამიდან.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge გაშვებულია აქედან: {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>ამას PadForge-ის საკუთარი საქაღალდე სჭირდება. მისი საქაღალდე სხვა ფაილებსაც შეიცავს, ამიტომ PadForge ვერ დაიცავს მას სხვა პროგრამების მიერ ცვლილებისგან.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>ამას PadForge სჭირდება საქაღალდეში, რომელსაც სხვა პროგრამები ვერ ცვლიან. PadForge-მა ვერ დაიცვა თავისი საქაღალდე სხვა პროგრამების მიერ ცვლილებისგან.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>PadForge-ის საკუთარ საქაღალდეში გადატანა</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>აკოპირებს PadForge-სა და მის პარამეტრებს Program Files-ში, იქით მიუთითებს მის ამოცანებს და იქიდან უშვებს. აქაური ასლი უცვლელი რჩება.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge არ გადავიდა: {0} შეიცავს ფაილებს, რომლებიც PadForge-ის არ არის.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge არ გადავიდა: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>სისტემაში შესვლისას გაშვება გამოირთო, რადგან PadForge-ს ისეთი საქაღალდიდან უშვებდა, რომელიც სხვა ფაილებსაც შეიცავს.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge არ გადავიდა: Windows-ს Program Files საქაღალდე არ აქვს დასახელებული.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge არ გადავიდა: მან ვერ წაიკითხა გაშვებული PadForge.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge არ გადავიდა: მან ვერ შექმნა {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge არ გადავიდა: მან ვერ წაიკითხა, რას შეიცავს {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge არ გადავიდა: მან ვერ დაიცვა {0} სხვა პროგრამების მიერ ცვლილებისგან.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge არ გადავიდა: საქაღალდეში {0} მისი ასლი არ ემთხვეოდა გაშვებულ PadForge-ს.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge არ გადავიდა: კოპირების შემდეგ საქაღალდე {0} შეიცავდა ფაილებს, რომლებიც PadForge-ის არ არის, ან სხვა პროგრამებს მისი შეცვლა შეეძლოთ.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>„გაშვება სისტემაში შესვლისას“ გამოირთო, რადგან გაშვებული PadForge აღარ არის თავის ადგილას.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>„გაშვება სისტემაში შესვლისას“ გამოირთო, რადგან PadForge-მა ვერ დაიცვა საქაღალდე, საიდანაც PadForge გაეშვა, სხვა პროგრამების მიერ ცვლილებისგან.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>„გაშვება სისტემაში შესვლისას“ გამოირთო, რადგან PadForge-მა ვერ წაიკითხა, რომელი PadForge გაეშვა.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>„გაშვება სისტემაში შესვლისას“ გამოირთო, რადგან PadForge-მა ვერ წაიკითხა იმ PadForge-ის საქაღალდე, რომელიც გაეშვა.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge-მა ვერ შექმნა თავისი დაცული საქაღალდე, {0}. PadForge იქ ინახავს ბიბლიოთეკებს, რომლებთანაც ადმინისტრატორის უფლებებით მუშაობს, და მის გარეშე უსაფრთხოდ ვერ ირთვება.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge-მა ვერ გაუშვა თავი თავისი დაცული საქაღალდიდან, {0}. PadForge ადმინისტრატორის უფლებებით მხოლოდ იქიდან მუშაობს, ამიტომ არ ჩაირთო.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge-მა ვერ შექმნა ბლოკი, რომელიც მხოლოდ ერთ გაშვებულ ასლს ინარჩუნებს, ამიტომ არ გაეშვა.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ადმინისტრატორის უფლებებით მუშაობს საქაღალდიდან {0}, რომელსაც სხვა პროგრამები ცვლიან. მათ იქ PadForge-ის პარამეტრების შეცვლა შეუძლიათ და PadForge მათ თავისი უფლებებით ასრულებს.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ადმინისტრატორის უფლებებით მუშაობს საქაღალდიდან {0}, რომელიც სხვა ფაილებსაც შეიცავს. PadForge ვერ უშლის სხვა პროგრამებს იქ მისი პარამეტრების შეცვლას და მათ თავისი უფლებებით ასრულებს.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ადმინისტრატორის უფლებებით მუშაობს საქაღალდიდან {0}, რომელიც PadForge-მა ვერ წაიკითხა. PadForge ვერ უშლის სხვა პროგრამებს იქ მისი პარამეტრების შეცვლას და მათ თავისი უფლებებით ასრულებს.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>ყოველთვის ჩვენება სისტემურ უჯრაში</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>ხატულის სისტემურ უჯრაში ხილულად დატოვება ფანჯრის გახსნილობისას, რომ „გასვლა“ მის მენიუში ყოველთვის ერთი დაწკაპუნებით იყოს.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>განახლებები</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>გაწმენდის შემოწმება: მოწმდება ნაწილები, რომლებსაც ინახავთ…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>გაწმენდის შემოწმება: PadForge-მა ვერ წაიკითხა ნაწილები, რომლებსაც ინახავთ, ამიტომ „შენახვა“ გამორთული რჩება.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>შენახვა თქვენი უფლებებით არ დაიწყო.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>შენახვა თქვენი უფლებებით არ დაიწყო: არ მუშაობს დესკტოპის გარსი, რომლის ქვეშაც გაეშვებოდა.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>შენახვა თქვენი უფლებებით არ დაიწყო: Windows-მა უარყო შეცდომით {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>შენახვა არ დასრულდა ამ დროში: {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows-მა ფაილის იქ ჩაწერის უფლება არ მისცა.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge-მა ეს ფაილი თავის ჩანაწერად არ მიიღო.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>შენახვა დასრულდა კოდით {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>ინახება თქვენი სახელით, პირველად საქაღალდეში Downloads, შემდეგ იქ, სადაც ბოლოს შეინახეთ, და ჩანს Explorer-ში. ჩანაწერი, რომელიც ჩერდება, სანამ გვერდთან არავინ არის (მისი ზღვარი, მაკრო, პროგრამა, ასისტენტის ხელსაწყო ან --record stop), ელოდება ამ გადახედვას გვერდზე „მთავარი“ და 7 დღის შემდეგ იშლება, თუ არ შეინახეთ. პროგრამას ეუბნებიან, რომ ის ელოდება, მაგრამ არასოდეს ეუბნებიან, სად.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>პრობლემის ჩანაწერი დროით {0} გელოდებათ წასაკითხად.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>გადახედვა</value></data>
@@ -5567,7 +5534,6 @@ PadForge-მა დეტალები ვერ ჩაწერა crash.log-
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>დაწყვილება შეჩერდა: კონტროლერის ან Bluetooth რადიოს წაკითხვა ან ჩაწერა ვერ მოხერხდა. დიაგნოსტიკის ჟურნალში დეტალებია.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>დაწყვილება შეჩერდა შეცდომაზე, რომელსაც PadForge არ ელოდა. დიაგნოსტიკის ჟურნალში დეტალებია.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>საჭიროა Logitech Gaming Software 8.52 ან უფრო ახალი</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>მისი ბიბლიოთეკა ნაპოვნია, მაგრამ არ ჩაიტვირთა, რადგან PadForge-მა ვერ დაადასტურა, რომ მისი შეცვლა მხოლოდ ადმინისტრატორებს შეუძლიათ და რომ Logitech-მა ხელი მოაწერა</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>მისი ბიბლიოთეკა ნაპოვნია, მაგრამ ვერ გამოიყენება და მიზეზი დიაგნოსტიკის ჟურნალშია</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>გაუშვით Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ელოდება ტელეფონს Arx Control-ით</value></data>
@@ -5665,7 +5631,6 @@ PadForge-მა დეტალები ვერ ჩაწერა crash.log-
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>ტვირთავს Force Dimension-ის ბიბლიოთეკის ამ ასლს სხვა ასლის ნაცვლად. სხვა ასლზე გახსნილი Falcon იხურება და ამ ასლზე ხელახლა იხსნება. SDK-ის მიერ დაყენებული ასლები მის გარეშეც მოიძებნება.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|ბიბლიოთეკები (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK-ის ჩამოტვირთვის გვერდი არ გაიხსნა: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK-ის ჩამოტვირთვის გვერდი ჯერ არ გაიხსნა: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Falcon-ის დრაივერის დაყენება</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>აყენებს Force Dimension-ის დრაივერს SDK საქაღალდიდან Falcon-ზე, რომელსაც დრაივერი არ აქვს. Windows-მა შეიძლება ჯერ იკითხოს, ენდობით თუ არა Force Dimension-ს.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Force Dimension-ის SDK-ის მიღება</value></data>
@@ -6017,6 +5982,7 @@ PadForge-მა დეტალები ვერ ჩაწერა crash.log-
   <data name="SdlMapping_Away" xml:space="preserve"><value>მოწყობილობა დაკავშირებული არ არის. SDL მას წაიკითხავს, როცა დაუკავშირდება.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL-მა PadForge-ს ამ მოწყობილობის წაკითხვა არ მისცა.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>ჩაშენებული საზოგადოების ასლი, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ჩამოტვირთულია {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ის საკუთარი ფაილი</value></data>

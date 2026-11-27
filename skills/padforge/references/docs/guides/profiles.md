@@ -372,7 +372,7 @@ already up.
 | State | What happens |
 |---|---|
 | Already running | The second start hands the command to the running copy over the pipe, prints the reply, and exits with no window and no UAC prompt. This needs Automation on. With Automation off it exits with code 5 and changes nothing. |
-| Not running | PadForge starts, with its UAC prompt unless Start at Login is on, and applies the profile once the engine is up, so a launcher can start it straight into a profile. This works with Automation off. |
+| Not running | PadForge starts, with its UAC prompt, and applies the profile once the engine is up, so a launcher can start it straight into a profile. This works with Automation off. |
 
 The exit codes are on [Command Line](../reference/command-line.md#exit-codes).
 

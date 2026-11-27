@@ -500,7 +500,6 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Always Show in System Tray (Window): switch, free. `settings/GeneralGroup/Settings_AlwaysShowTrayIcon`
 - Start Minimized (Window): switch, free. `settings/GeneralGroup/Settings_StartMinimized`
 - Start at Login (Window): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_StartAtLogin`
-- Move PadForge to Its Own Folder (Window): action, asks (RunsProgram). `settings.action/GeneralGroup/ExeFolder_Move`
 - Updates: card, free. `settings.card/GeneralGroup/Settings_Updates`
 - Check Now (Updates): action, free. `settings.action/UpdateStatusItem/Settings_CheckNow`
 - Release Notes (Updates): action, asks (OpensPlace). `settings.action/UpdateStatusItem/Settings_ReleaseNotes`
@@ -785,7 +784,6 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Settings: card, free. `devices.card/SettingsCard/Devices_SettingsCard`
 - Hide from Games (HidHide) (Settings): switch, asks (Drivers). `devices/HidingRows/Devices_HideFromGames`
 - Consume Mapped Inputs (Hooks) (Settings): switch, free. `devices/HidingRows/Devices_ConsumeMapped`
-- Move PadForge to Its Own Folder (Settings): action, asks (RunsProgram). `devices.action/TouchpadFolderNote/ExeFolder_Move`
 - Mouse DPI (Settings): setting, free. `devices/MouseDpiRows/Devices_MouseDpi`
 - min (Settings): setting, free. `devices/IdleRow/Common_Min`
 - Disconnect Bluetooth When Plugged In over USB (Settings): switch, free. `devices/PowerRows/Devices_QuickCharge`
@@ -1163,7 +1161,6 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Input Engine: action, free. `home.action/EngineFlame/Dashboard_InputEngine`
 - Use It: action, free. `home.action/HomeOfferUse/Home_Offer_Use`
 - Not Now: action, free. `home.action/HomeOfferDismiss/Pad_AssignOffer_Dismiss`
-- Move PadForge to Its Own Folder: action, asks (RunsProgram). `home.action/HomeSharedFolderMove/ExeFolder_Move`
 - Open Extras: action, free. `home.action/OpenExtrasButton/Home_OpenExtras`
 
 ## About

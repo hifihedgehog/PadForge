@@ -5181,17 +5181,6 @@
     "under_more": false
   },
   {
-    "id": "settings.action/GeneralGroup/ExeFolder_Move",
-    "page": "Settings",
-    "place": "",
-    "card": "Window",
-    "words": "Move PadForge to Its Own Folder",
-    "kind": "action",
-    "reach": "asks",
-    "why": "RunsProgram",
-    "under_more": false
-  },
-  {
     "id": "settings.card/GeneralGroup/Settings_Updates",
     "page": "Settings",
     "place": "",
@@ -7796,17 +7785,6 @@
     "kind": "switch",
     "reach": "free",
     "why": null,
-    "under_more": false
-  },
-  {
-    "id": "devices.action/TouchpadFolderNote/ExeFolder_Move",
-    "page": "Devices",
-    "place": "",
-    "card": "Settings",
-    "words": "Move PadForge to Its Own Folder",
-    "kind": "action",
-    "reach": "asks",
-    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -10546,17 +10524,6 @@
     "kind": "action",
     "reach": "free",
     "why": null,
-    "under_more": false
-  },
-  {
-    "id": "home.action/HomeSharedFolderMove/ExeFolder_Move",
-    "page": "Home",
-    "place": "",
-    "card": null,
-    "words": "Move PadForge to Its Own Folder",
-    "kind": "action",
-    "reach": "asks",
-    "why": "RunsProgram",
     "under_more": false
   },
   {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using PadForge.Engine;
+using PadForge.Engine.Common.BlissBox;
 using PadForge.Engine.Data;
 using PadForge.Services;
 using static SDL3.SDL;
@@ -19,10 +20,9 @@ namespace PadForge.Common.Input
     /// replaces the one held for its ID only at the same or a higher
     /// priority (SDL_PrivateAddMappingForGUID). So the order rows are added
     /// in decides which one stands among PadForge's own additions, and no
-    /// addition of PadForge's displaces a USER row. PadForge's engine never
-    /// has the variable: it runs only with rights, and a start with rights
-    /// keeps the allow list's variables alone (RightsVariables,
-    /// ProtectedStart).</para>
+    /// addition of PadForge's displaces a USER row. PadForge's process has
+    /// the variable when the environment it started with holds it, and SDL
+    /// then reads its rows at USER priority.</para>
     ///
     /// <para>A changed row is for an ID the fork's community copy holds, and
     /// replaces that copy. A new row is for an ID this release has no
@@ -234,7 +234,7 @@ namespace PadForge.Common.Input
         {
             firstUse = false;
             if (section == null || section.NewRows == 0) return null;
-            string id = ControllerDatabaseRow.LookupId(sdl.Guid);
+            string id = ControllerDatabaseRow.LookupId(sdl.Guid, i => section.TryFindNew(i, out _));
             if (!section.TryFindNew(id, out var stored)) return null;
             if (sdl.IsGamepad) return null;
             if (sdl.Type != SDL_JoystickType.SDL_JOYSTICK_TYPE_UNKNOWN && sdl.Type != SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD)
@@ -284,6 +284,35 @@ namespace PadForge.Common.Input
                     if (entry != null && Names(entry.DeviceInstanceGuid, entry.DeviceProductGuid)) return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Whether a controller that SDL maps, and so types a gamepad, still
+        /// opens raw: every saved entry of its vendor and product was read raw,
+        /// as a joystick with Force Raw Joystick Mode off, and a saved
+        /// assignment names the model. A new community row (hifihedgehog/SDL#53),
+        /// a new row of SDL's own table or a HIDAPI driver that now claims the
+        /// controller makes SDL map it, and opened as a gamepad its buttons and
+        /// axes would come back renumbered under the user's mapping. A row of
+        /// the user's, or a downloaded row the user took, is the user's choice.
+        /// A downloaded row is withheld from the same controllers
+        /// (<see cref="OfferRow"/>). A Bliss-Box port is left to Read Bliss-Box
+        /// Adapters (#469). A controller SDL types otherwise, as an arcade
+        /// stick, is saved as a joystick while SDL reads it as a gamepad.
+        /// </summary>
+        internal static bool KeepsRawRead(SdlMappingSource source, SDL_JoystickType type, ushort vendorId, ushort productId,
+            IEnumerable<UserDevice> devices, Func<ushort, ushort, bool> hasSavedAssignment)
+        {
+            if (source is SdlMappingSource.None or SdlMappingSource.Yours or SdlMappingSource.Downloaded) return false;
+            if (type != SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD || BlissBoxProtocol.IsPort(vendorId, productId)) return false;
+            bool readRaw = false;
+            foreach (var device in devices ?? Array.Empty<UserDevice>())
+            {
+                if (device == null || device.VendorId != vendorId || device.ProdId != productId) continue;
+                if (device.ForceRawJoystickMode || device.CapType != InputDeviceType.Joystick) return false;
+                readRaw = true;
+            }
+            return readRaw && hasSavedAssignment(vendorId, productId);
         }
 
         /// <summary>Whether Force Raw Joystick Mode is on for a saved

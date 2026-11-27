@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Ni zagnano: noben program ne odpira datotek Python namesto vas in PadForge ne najde zaganjalnika py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Ni zagnano: PadForge ne more prebrati, kateri program namesto vas odpira to vrsto datotek</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Ni zagnano: programa, ki namesto vas odpira to vrsto datotek, ni v tem računalniku</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Ni zagnano: ne teče noben namizni vmesnik, pod katerim bi ga zagnali</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Ni zagnano: namizni vmesnik ima skrbniške pravice, zato bi jih imel tudi vtičnik</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Ni zagnano: PadForge ne more prebrati, ali bi imel skrbniške pravice</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Ni zagnano: Windows mu je dal skrbniške pravice, zato ga je PadForge končal, preden se je izvedel</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Ni zagnano: zahteva skrbniške pravice</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Ni zagnano: Windows je zavrnil z napako {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Ni zagnano</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Na tem računalniku ni kompleta SDK Logitech G-key. Namesti se s programom Logitech Gaming Software 8.55 ali novejšim.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>SDK G-key je registriran, vendar njegove datoteke ni več. Znova namestite Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>SDK G-key je bil najden, vendar ga ni bilo mogoče naložiti.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>SDK G-key je bil najden, vendar ni bil naložen, ker PadForge ni mogel potrditi, da ga lahko spreminjajo samo skrbniki in da ga je podpisal Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Ta knjižnica ni pričakovani SDK G-key.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>SDK G-key se ni hotel zagnati. Najpogosteje se Logitech Gaming Software ne izvaja.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Povezano, a nobena tipka še ni bila zaznana. V programu Logitech Gaming Software povlecite ukaz G-key na vsako tipko v profilu PadForge in profil nastavite kot trajen. Miška G600 ali G300 mora biti poleg tega izven načina vgrajenega pomnilnika.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Ob zagonu programa PadForge naj okno ostane skrito. Program se izvaja in preslikuje kot običajno.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Samodejno zaženi PadForge, ko se vpišete v Windows. Dokler je to vklopljeno, se PadForge zažene tudi brez poziva sistema Windows, iz bližnjice, skripte ali drugega programa.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge se izvaja iz {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>To zahteva, da je PadForge v svoji mapi. V njegovi mapi so druge datoteke, zato PadForge ne more preprečiti, da bi jo spreminjali drugi programi.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>To zahteva, da je PadForge v mapi, ki je drugi programi ne morejo spreminjati. PadForge ni mogel preprečiti, da bi drugi programi spreminjali njegovo mapo.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Premakni PadForge v lastno mapo</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopira PadForge in njegove nastavitve v Program Files, tja usmeri njegova opravila in ga od tam zažene. Kopija tu ostane nespremenjena.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge se ni premaknil: {0} vsebuje datoteke, ki niso del programa PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge se ni premaknil: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Zagon ob vpisu je bil izklopljen, ker je zaganjal PadForge iz mape, v kateri so druge datoteke.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge se ni premaknil: Windows ne pozna mape Programske datoteke.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge se ni premaknil: ni mogel prebrati programa PadForge, ki se izvaja.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge se ni premaknil: ni mogel ustvariti mape {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge se ni premaknil: ni mogel prebrati vsebine mape {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge se ni premaknil: ni mogel preprečiti, da bi drugi programi spreminjali mapo {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge se ni premaknil: njegova kopija v mapi {0} se ni ujemala s programom PadForge, ki se izvaja.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge se ni premaknil: po kopiranju so v mapi {0} datoteke, ki niso del programa PadForge, ali pa jo lahko spreminjajo drugi programi.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Zaženi ob vpisu je bilo izklopljeno, ker programa PadForge, ki se je zagnal, ni več tam.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Zaženi ob vpisu je bilo izklopljeno, ker PadForge ni mogel preprečiti, da bi drugi programi spreminjali mapo, iz katere se je izvajal.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Zaženi ob vpisu je bilo izklopljeno, ker PadForge ni mogel prebrati, kateri PadForge se je izvajal.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Zaženi ob vpisu je bilo izklopljeno, ker PadForge ni mogel prebrati mape programa PadForge, ki se je izvajal.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge ni mogel ustvariti svoje zaščitene mape {0}. PadForge v njej hrani knjižnice, ki jih zaganja s skrbniškimi pravicami, brez nje pa se ne more varno zagnati.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge se ni mogel znova zagnati iz svoje zaščitene mape {0}. PadForge se s skrbniškimi pravicami izvaja samo od tam, zato se ni zagnal.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ni mogel ustvariti ključavnice, ki omogoča samo en zagnan izvod, zato se ni zagnal.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge se s skrbniškimi pravicami izvaja iz mape {0}, ki jo lahko spreminjajo drugi programi. Ti lahko tam spremenijo nastavitve programa PadForge, PadForge pa jih izvaja s svojimi pravicami.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge se s skrbniškimi pravicami izvaja iz mape {0}, v kateri so druge datoteke. PadForge ne more preprečiti, da bi drugi programi tam spreminjali njegove nastavitve, in jih izvaja s svojimi pravicami.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge se s skrbniškimi pravicami izvaja iz mape {0}, ki je ni mogel prebrati. PadForge ne more preprečiti, da bi drugi programi tam spreminjali njegove nastavitve, in jih izvaja s svojimi pravicami.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vedno pokaži v območju za obvestila</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Ikona v območju za obvestila ostane vidna tudi, ko je okno odprto, tako da je ukaz „Izhod“ v njenem meniju vedno oddaljen le en klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Posodobitve</value></data>
@@ -1354,13 +1326,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Preverjanje čiščenja: preverjanje delov, ki jih ohranite …</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Preverjanje čiščenja: PadForge ni mogel prebrati delov, ki jih ohranite, zato shranjevanje ostane izklopljeno.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Shranjevanje z vašimi pravicami se ni začelo.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Shranjevanje z vašimi pravicami se ni začelo: ne deluje noben namizni vmesnik, pod katerim bi ga zagnali.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Shranjevanje z vašimi pravicami se ni začelo: Windows je zavrnil z napako {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Shranjevanje se ni končalo v {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows ni dovolil zapisa datoteke tja.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge te datoteke ni sprejel kot svojega posnetka.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Shranjevanje se je končalo s kodo {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Shranjeno kot vi, prvič v mapo Prenosi, nato tja, kamor ste nazadnje shranili, in prikazano v Raziskovalcu. Posnetek, ki se ustavi, ko nihče ni pri strani (omejitev, makro, program, orodje pomočnika ali --record stop), čaka na ta pregled na strani Domov in se po 7 dneh izbriše, če ni shranjen. Program izve, da čaka, nikoli pa kje.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Posnetek težave iz {0} čaka, da ga preberete.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Pregled</value></data>
@@ -5920,7 +5887,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Seznanjanje se je ustavilo: branje ali pisanje krmilnika ali radia Bluetooth ni uspelo. Podrobnosti so v dnevniku diagnostike.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Seznanjanje se je ustavilo zaradi napake, ki je PadForge ni pričakoval. Podrobnosti so v dnevniku diagnostike.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>zahteva Logitech Gaming Software 8.52 ali novejši</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>je našel svojo knjižnico, a je ni naložil, ker PadForge ni mogel potrditi, da jo lahko spreminjajo samo skrbniki in da jo je podpisal Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>je našel svojo knjižnico, a je ni mogel uporabiti, dnevnik diagnostike pa pove, zakaj</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>zaženi Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>čakanje na telefon z Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Namesto vseh drugih naloži to kopijo knjižnice Force Dimension. Falcon, odprt na drugi kopiji, se zapre in znova odpre na tej. Kopije, ki jih namesti SDK, se najdejo tudi brez tega.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Knjižnice (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Stran za prenos Falcon SDK se ni odprla: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Stran za prenos Falcon SDK se še ni odprla: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Namesti gonilnik Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Namesti gonilnik Force Dimension iz mape SDK v napravo Falcon, ki ga nima. Windows te bo morda najprej vprašal, ali zaupaš podjetju Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Pridobi Force Dimension SDK</value></data>
@@ -6726,6 +6691,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="SdlMapping_Away" xml:space="preserve"><value>Naprava ni povezana. SDL jo prebere, ko bo.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL programu PadForge ni dal nobenega branja te naprave.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Vgrajena skupnostna kopija, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Preneseno {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Lastna datoteka programa PadForge</value></data>

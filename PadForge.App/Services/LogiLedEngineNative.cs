@@ -137,19 +137,10 @@ namespace PadForge.Services
             }
             catch { detail = "engine version info unreadable"; return false; }
 
-            // Loaded into PadForge only when only administrators could have
-            // put it in place and Logitech signed it, held open from the
-            // check through the load (#600, TrustedLibrary).
-            int error = 0;
-            IntPtr module = PadForge.Engine.Common.TrustedLibrary.Load(path, PadForge.Engine.Common.TrustedLibrary.Logitech, p =>
-            {
-                IntPtr loaded = LoadLibraryExW(p, IntPtr.Zero, LoadWithAlteredSearchPath);
-                if (loaded == IntPtr.Zero) error = Marshal.GetLastWin32Error();
-                return loaded;
-            }, out string why);
+            IntPtr module = LoadLibraryExW(path, IntPtr.Zero, LoadWithAlteredSearchPath);
             if (module == IntPtr.Zero)
             {
-                detail = why == "load" ? $"LoadLibrary failed ({error}) for {path}" : $"engine not loaded ({why}): {path}";
+                detail = $"LoadLibrary failed ({Marshal.GetLastWin32Error()}) for {path}";
                 return false;
             }
 

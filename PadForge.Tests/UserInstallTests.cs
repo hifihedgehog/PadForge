@@ -47,9 +47,6 @@ namespace PadForge.Tests
             UserInstall.FindSeam = null;
             UserInstall.PythonsSeam = null;
             UserInstall.Launcher = null;
-            UserInstall.HasRightsSeam = null;
-            UserInstall.NoLowerRightSeam = null;
-            UserInstall.ShellEnvironmentSeam = null;
             UserInstall.Exe = () => Environment.ProcessPath;
             try { Directory.Delete(_root, recursive: true); } catch (IOException) { }
         }
@@ -526,7 +523,7 @@ namespace PadForge.Tests
         {
             var launcher = new FakeLauncher { ExitCode = 0 };
             UserInstall.Launcher = launcher;
-            var (code, error) = await UserInstall.AsUserAsync(new InstallRequest(InstallWhat.Skill, @"C:\My Skills"));
+            var (code, error) = await UserInstall.InCopyAsync(new InstallRequest(InstallWhat.Skill, @"C:\My Skills"));
             Assert.Equal(0, code);
             Assert.Null(error);
             Assert.Equal(Exe, launcher.Started.Program);
@@ -535,35 +532,15 @@ namespace PadForge.Tests
             Assert.StartsWith("\"" + Exe + "\" --install skill \"C:\\My Skills\" --report ", launcher.Started.CommandLine);
 
             launcher.ExitCode = 1;
-            (code, error) = await UserInstall.AsUserAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
+            (code, error) = await UserInstall.InCopyAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
             Assert.Equal(1, code);
             Assert.NotNull(error);
 
-            launcher.Refusal = PluginRefusal.NoShell;
-            (code, error) = await UserInstall.AsUserAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
+            launcher.Refusal = PluginRefusal.Failed;
+            (code, error) = await UserInstall.InCopyAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
             Assert.Equal(UserInstall.Failed, code);
-            Assert.Contains("NoShell", error);
+            Assert.Contains("Failed", error);
             Assert.False(File.Exists(At("OneDrive", "Documents", "AutoHotkey", "Lib", "PadForge.ahk")));
-        }
-
-        /// <summary>With no lower right for the shell's user (UAC off, or
-        /// the built-in Administrator) the install runs as a PadForge.exe of
-        /// its own with the desktop shell's variables, so the user's PATH
-        /// finds the assistants' commands.</summary>
-        [Fact]
-        public async Task WithNoLowerRight_TheInstallRunsWithTheShellsVariables()
-        {
-            UserInstall.Launcher = new FakeLauncher { Refusal = PluginRefusal.ShellElevated };
-            UserInstall.NoLowerRightSeam = () => true;
-            UserInstall.ShellEnvironmentSeam = () => new[] { "PATH=C:\\Users\\Someone\\bin" };
-            var runs = new List<(string, IReadOnlyList<string>)>();
-            UserInstall.ToolSeam = (exe, words) => { runs.Add((exe, words)); return (0, string.Empty); };
-            var (code, error) = await UserInstall.AsUserAsync(new InstallRequest(InstallWhat.AutoHotkey, null));
-            Assert.Equal(UserInstall.Done, code);
-            Assert.Null(error);
-            Assert.Equal(Exe, runs.Single().Item1);
-            Assert.Equal(new[] { "--install", "autohotkey", "--report" }, runs.Single().Item2.Take(3));
-            Assert.Equal(4, runs.Single().Item2.Count);
         }
 
         /// <summary>A folder of the user's named PadForge, with files of its
@@ -654,26 +631,6 @@ namespace PadForge.Tests
             Assert.Equal("Light", read["theme"].GetValue<string>());
             Assert.Equal(Exe, read["context_servers"]["padforge"]["command"].GetValue<string>());
             Assert.Contains("// nothing yet", File.ReadAllText(zed));
-        }
-
-        [Fact]
-        public void RunFromAPromptWithRights_StartsItselfAgainAsTheUser()
-        {
-            var launcher = new FakeLauncher { ExitCode = UserInstall.IsMissing };
-            UserInstall.Launcher = launcher;
-            UserInstall.HasRightsSeam = () => true;
-            UserInstall.NoLowerRightSeam = () => false;
-            Assert.Equal(UserInstall.IsMissing, UserInstall.RunAsTheUser(new InstallRequest(InstallWhat.Python, null, Check: true), _ => { }, _ => { }));
-            Assert.NotNull(launcher.Started);
-
-            // With no lower right for the shell's user, every program of the
-            // user has full rights, and it runs here.
-            launcher.Started = null;
-            UserInstall.NoLowerRightSeam = () => true;
-            UserInstall.PythonsSeam = () => Array.Empty<string>();
-            UserInstall.RunAsTheUser(new InstallRequest(InstallWhat.AutoHotkey, null), _ => { }, _ => { });
-            Assert.Null(launcher.Started);
-            Assert.True(File.Exists(At("OneDrive", "Documents", "AutoHotkey", "Lib", "PadForge.ahk")));
         }
 
         [Theory]

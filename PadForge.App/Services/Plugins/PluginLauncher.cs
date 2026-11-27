@@ -31,21 +31,6 @@ namespace PadForge.Services.Plugins
         /// <summary>The desktop's user's part of the registry could not be
         /// read for the command that opens this kind of file.</summary>
         ProgramUnreadable,
-        /// <summary>No desktop shell runs to start it under, so nothing
-        /// would give it the user's own rights.</summary>
-        NoShell,
-        /// <summary>The desktop shell's token was read with administrator
-        /// rights (UAC is off), so a plugin started under it would have them
-        /// too.</summary>
-        ShellElevated,
-        /// <summary>The token of the desktop shell, or of the process made
-        /// under it, could not be read, so whether the plugin would have
-        /// administrator rights is not known. Nothing was let run.</summary>
-        RightsUnknown,
-        /// <summary>The process made under a shell read without
-        /// administrator rights was read with them all the same, and was
-        /// ended before it ran.</summary>
-        StartedElevated,
         /// <summary>The program asks for administrator rights in its
         /// manifest (error 740).</summary>
         NeedsAdministrator,
@@ -115,58 +100,18 @@ namespace PadForge.Services.Plugins
     }
 
     /// <summary>
-    /// Starts a plugin (#600) with the user's ordinary rights, whatever
-    /// rights PadForge has, by the route PowerToys' run_non_elevated takes
-    /// (src/common/utils/elevation.h): the desktop shell's process is named
-    /// the new process's parent through
-    /// <c>PROC_THREAD_ATTRIBUTE_PARENT_PROCESS</c>, so the plugin takes the
-    /// shell's token, and CreateProcess hands PadForge its handle. Unlike
-    /// that reference, a hidden start keeps the attribute: its hidden-window
-    /// branch replaces the extended-startup flag and so drops the parent.
+    /// Starts a plugin (#600) as a child of PadForge, with PadForge's rights
+    /// and a copy of its variables, the given variables in place of any of
+    /// the same name (the one-time key and the pipe's name) and no
+    /// <c>__COMPAT_LAYER</c> (<see cref="UserVariables"/>).
     ///
     /// <para>The plugin is made suspended, put in a job object of its own
     /// that ends every process in it when the job's last handle closes, and
     /// only then let run. PadForge holds that handle, so the plugin and
     /// whatever it starts end when PadForge stops it, closes or dies.</para>
-    ///
-    /// <para>Its variables are the ones Windows builds for the shell's own
-    /// token, the user's and the machine's
-    /// (<see cref="System32Calls.VariablesOfProcess"/>), with the variables
-    /// given in place of any of the same name (the one-time key and the
-    /// pipe's name) and no <c>__COMPAT_LAYER</c>
-    /// (<see cref="UserVariables"/>). None comes from PadForge's own
-    /// process: after a start with rights those are the allow list
-    /// <see cref="RightsVariables"/> builds, without the user's own Path
-    /// entries.</para>
-    ///
-    /// <para>It never falls back to PadForge's own rights or variables. When
-    /// no shell runs, the shell has administrator rights, the shell's
-    /// variables cannot be read, or the started process turns out to have
-    /// rights, nothing is left running.</para>
     /// </summary>
     internal sealed class PluginLauncher : IPluginLauncher
     {
-        /// <summary>Reads the variables Windows builds for the user a
-        /// process runs as, or null with the Windows error.</summary>
-        internal delegate string[] VariablesReader(SafeProcessHandle process, out int error);
-
-        private readonly VariablesReader _variablesOf;
-        private readonly Func<SafeProcessHandle, bool, bool?> _rightsOf;
-
-        public PluginLauncher() : this(null) { }
-
-        /// <summary>A launcher that reads the shell's variables with
-        /// <paramref name="variablesOf"/>, a test's stand-in, or
-        /// <see cref="ShellVariables"/> when null, and a process's rights
-        /// with <paramref name="rightsOf"/> (the process, and true for the
-        /// shell, false for the process made under it), or
-        /// <see cref="HasAdministratorRights"/> when null.</summary>
-        internal PluginLauncher(VariablesReader variablesOf, Func<SafeProcessHandle, bool, bool?> rightsOf = null)
-        {
-            _variablesOf = variablesOf ?? ShellVariables;
-            _rightsOf = rightsOf ?? ((process, _) => HasAdministratorRights(process));
-        }
-
         /// <summary>Set for the test host's whole life: only a program in the
         /// test host's own folder, the helper the tests build, is
         /// started.</summary>
@@ -188,37 +133,12 @@ namespace PadForge.Services.Plugins
             if (Refuses(command?.Program)) return PluginLaunch.Refused(PluginRefusal.OffLimits);
             if (command?.Program == null) return PluginLaunch.Refused(command?.Refusal is { } why and not PluginRefusal.None ? why : PluginRefusal.NoProgram);
 
-            using var shellProcess = OpenShell();
-            if (shellProcess == null) return PluginLaunch.Refused(PluginRefusal.NoShell);
-            switch (_rightsOf(shellProcess, true))
-            {
-                case true: return PluginLaunch.Refused(PluginRefusal.ShellElevated);
-                case null: return PluginLaunch.Refused(PluginRefusal.RightsUnknown);
-            }
-            string block = UserVariables.Block(_variablesOf(shellProcess, out int variablesError), variables);
-            if (block == null) return PluginLaunch.Refused(PluginRefusal.Failed, variablesError);
-
-            IntPtr size = IntPtr.Zero;
-            InitializeProcThreadAttributeList(IntPtr.Zero, 1, 0, ref size);
-            IntPtr list = Marshal.AllocHGlobal(size);
-            IntPtr parent = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr environment = IntPtr.Zero;
-            bool listMade = false;
+            IntPtr environment = Marshal.StringToHGlobalUni(UserVariables.Block(OwnVariables(), variables));
             try
             {
-                if (!InitializeProcThreadAttributeList(list, 1, 0, ref size))
-                    return PluginLaunch.Refused(PluginRefusal.Failed, Marshal.GetLastWin32Error());
-                listMade = true;
-                Marshal.WriteIntPtr(parent, shellProcess.DangerousGetHandle());
-                if (!UpdateProcThreadAttribute(list, 0, ProcThreadAttributeParentProcess, parent, (IntPtr)IntPtr.Size, IntPtr.Zero, IntPtr.Zero))
-                    return PluginLaunch.Refused(PluginRefusal.Failed, Marshal.GetLastWin32Error());
-
-                environment = Marshal.StringToHGlobalUni(block);
-                var startup = new STARTUPINFOEX();
-                startup.StartupInfo.cb = Marshal.SizeOf<STARTUPINFOEX>();
-                startup.lpAttributeList = list;
+                var startup = new STARTUPINFO { cb = Marshal.SizeOf<STARTUPINFO>() };
                 var line = new StringBuilder(command.CommandLine);
-                uint flags = ExtendedStartupInfoPresent | CreateUnicodeEnvironment | CreateNoWindow | CreateSuspended;
+                uint flags = CreateUnicodeEnvironment | CreateNoWindow | CreateSuspended;
                 if (!CreateProcessW(command.Program, line, IntPtr.Zero, IntPtr.Zero, false, flags, environment,
                         command.Folder, ref startup, out var info))
                 {
@@ -229,37 +149,14 @@ namespace PadForge.Services.Plugins
                 var process = new SafeProcessHandle(info.hProcess, true);
                 IntPtr thread = info.hThread;
                 var job = CreateJobObjectW(IntPtr.Zero, null);
-                string refusal = null;
-                int code = 0;
                 if (job.IsInvalid || !KillOnClose(job) || !AssignProcessToJobObject(job, process))
                 {
-                    code = Marshal.GetLastWin32Error();
-                    refusal = "job";
-                }
-                // The shell's token is the user's own. A process that has
-                // administrator rights all the same, or whose rights cannot
-                // be read, is never let run.
-                else
-                {
-                    switch (_rightsOf(process, false))
-                    {
-                        case true: refusal = "rights"; break;
-                        case null: refusal = "unknown"; break;
-                    }
-                }
-
-                if (refusal != null)
-                {
+                    int code = Marshal.GetLastWin32Error();
                     TerminateProcess(process, 1);
                     CloseHandle(thread);
                     process.Dispose();
                     job.Dispose();
-                    return refusal switch
-                    {
-                        "rights" => PluginLaunch.Refused(PluginRefusal.StartedElevated),
-                        "unknown" => PluginLaunch.Refused(PluginRefusal.RightsUnknown),
-                        _ => PluginLaunch.Refused(PluginRefusal.Failed, code),
-                    };
+                    return PluginLaunch.Refused(PluginRefusal.Failed, code);
                 }
 
                 ResumeThread(thread);
@@ -268,11 +165,17 @@ namespace PadForge.Services.Plugins
             }
             finally
             {
-                if (listMade) DeleteProcThreadAttributeList(list);
-                Marshal.FreeHGlobal(list);
-                Marshal.FreeHGlobal(parent);
-                if (environment != IntPtr.Zero) Marshal.FreeHGlobal(environment);
+                Marshal.FreeHGlobal(environment);
             }
+        }
+
+        /// <summary>This process's variables, one line each.</summary>
+        private static string[] OwnVariables()
+        {
+            var lines = new List<string>();
+            foreach (System.Collections.DictionaryEntry entry in Environment.GetEnvironmentVariables())
+                lines.Add(entry.Key + "=" + entry.Value);
+            return lines.ToArray();
         }
 
         /// <summary>The desktop shell's process, opened to be a new process's
@@ -289,23 +192,6 @@ namespace PadForge.Services.Plugins
             return null;
         }
 
-        /// <summary>The variables Windows builds for the user
-        /// <paramref name="process"/> runs as, read through its token, or
-        /// null with the Windows error.</summary>
-        internal static string[] ShellVariables(SafeProcessHandle process, out int error)
-        {
-            bool held = false;
-            try
-            {
-                process.DangerousAddRef(ref held);
-                return System32Calls.VariablesOfProcess(process.DangerousGetHandle(), out error);
-            }
-            finally
-            {
-                if (held) process.DangerousRelease();
-            }
-        }
-
         /// <summary>Whether a process's token has administrator rights: it is
         /// elevated, or runs at high integrity or above, as every token of an
         /// administrator does with UAC off. Null when its token cannot be
@@ -315,8 +201,8 @@ namespace PadForge.Services.Plugins
 
         /// <summary>Whether this process's own token has administrator
         /// rights, read as <see cref="HasAdministratorRights"/> reads any
-        /// process's, through the handle GetCurrentProcess gives, as
-        /// Privileges does. That handle needs no rights on the process
+        /// process's, through the handle GetCurrentProcess gives. That
+        /// handle needs no rights on the process
         /// object. Opening this process again by its ID does: a copy PadForge
         /// starts as the user (<see cref="Start"/>) is refused its own
         /// process, and the install check's read of its rights through
@@ -324,51 +210,6 @@ namespace PadForge.Services.Plugins
         /// 2026-11-26.</summary>
         internal static bool? ThisProcessHasAdministratorRights()
             => OpenProcessToken(GetCurrentProcess(), TokenQuery, out var token) ? RightsOf(token) : null;
-
-        /// <summary>Whether UAC is off: EnableLUA is 0 in the machine's
-        /// policy (Microsoft, User Account Control settings).</summary>
-        internal static bool UacIsOff()
-        {
-            try
-            {
-                using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System");
-                return key?.GetValue("EnableLUA") is int value && value == 0;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Whether the desktop shell's user has no lower right than full
-        /// administrator rights, so a program started with PadForge's own
-        /// rights in place of the user's gives nothing away: UAC is off
-        /// (EnableLUA 0), or the shell's token has administrator rights and
-        /// no linked token (TokenElevationTypeDefault, "The token does not
-        /// have a linked token", Microsoft, TOKEN_ELEVATION_TYPE). The second
-        /// is the built-in Administrator's token while Admin Approval Mode is
-        /// off for that account, its default (Microsoft, "User Account
-        /// Control: Admin Approval Mode for the Built-in Administrator
-        /// account", FilterAdministratorToken). An administrator whose token
-        /// UAC splits reads Limited, or Full for an Explorer started
-        /// elevated, and a standard user reads Default without rights. A
-        /// token that cannot be read counts as one with a lower right.
-        /// </summary>
-        internal static bool ShellUserHasNoLowerRight()
-        {
-            if (UacIsOff()) return true;
-            using var shell = OpenShell();
-            if (shell == null || !OpenProcessToken(shell, TokenQuery, out var token)) return false;
-            using (token)
-            {
-                int? type = AutomationClientIdentity.ReadInt(token, TokenElevationTypeClass);
-                int? elevated = AutomationClientIdentity.ReadInt(token, TokenElevation);
-                int? integrity = AutomationClientIdentity.ReadIntegrity(token);
-                return type == LogonStart.TokenElevationTypeDefault && elevated != null && integrity != null
-                       && (elevated.Value != 0 || integrity.Value >= HighIntegrity);
-            }
-        }
 
         private static bool? RightsOf(SafeAccessTokenHandle token)
         {
@@ -524,12 +365,10 @@ namespace PadForge.Services.Plugins
         private const int TokenElevation = 20;
         private const int TokenElevationTypeClass = 18;
         private const int HighIntegrity = 0x3000;
-        private const uint ExtendedStartupInfoPresent = 0x00080000;
         private const uint CreateUnicodeEnvironment = 0x00000400;
         private const uint CreateNoWindow = 0x08000000;
         private const uint CreateSuspended = 0x00000004;
         private const int ErrorElevationRequired = 740;
-        private static readonly IntPtr ProcThreadAttributeParentProcess = (IntPtr)0x00020000;
         private const int JobObjectExtendedLimitInformation = 9;
         private const uint JobObjectLimitKillOnJobClose = 0x2000;
 
@@ -543,12 +382,6 @@ namespace PadForge.Services.Plugins
             public IntPtr lpReserved2, hStdInput, hStdOutput, hStdError;
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        private struct STARTUPINFOEX
-        {
-            public STARTUPINFO StartupInfo;
-            public IntPtr lpAttributeList;
-        }
 
         [StructLayout(LayoutKind.Sequential)]
         private struct PROCESS_INFORMATION
@@ -603,20 +436,13 @@ namespace PadForge.Services.Plugins
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetCurrentProcess();
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool InitializeProcThreadAttributeList(IntPtr list, int count, int flags, ref IntPtr size);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool UpdateProcThreadAttribute(IntPtr list, uint flags, IntPtr attribute, IntPtr value,
-            IntPtr size, IntPtr previous, IntPtr returned);
 
-        [DllImport("kernel32.dll")]
-        private static extern void DeleteProcThreadAttributeList(IntPtr list);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern bool CreateProcessW(string application, StringBuilder commandLine, IntPtr processAttributes,
             IntPtr threadAttributes, bool inheritHandles, uint flags, IntPtr environment, string folder,
-            ref STARTUPINFOEX startup, out PROCESS_INFORMATION information);
+            ref STARTUPINFO startup, out PROCESS_INFORMATION information);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern SafeFileHandle CreateJobObjectW(IntPtr attributes, string name);

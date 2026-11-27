@@ -172,6 +172,26 @@ namespace PadForge.Tests
         public void AJoysticksGuid_GivesTheRowIdSdlLooksUp(string guid, string expected)
             => Assert.Equal(expected, ControllerDatabaseRow.LookupId(guid));
 
+        /// <summary>DirectInput puts a Bluetooth pad on the Bluetooth bus in
+        /// its GUID since upstream c37e0e81ca, and SDL reads it through the
+        /// row of the same GUID on the USB bus when its own has none
+        /// (SDL_gamepad.c:1652-1667). A GUID with a driver mark, or on another
+        /// bus, has no such second try.</summary>
+        [Fact]
+        public void ABluetoothPadsGuid_FallsBackToItsUsbRow_AsSdlDoes()
+        {
+            const string usb = "030000004c0500006802000000000000", bt = "050000004c0500006802000000000000";
+            const string device = "0500d8234c0500006802000011010000";
+            Assert.Equal(usb, ControllerDatabaseRow.LookupId(device, id => id == usb));
+            Assert.Equal(bt, ControllerDatabaseRow.LookupId(device, id => id == usb || id == bt));
+            Assert.Equal(bt, ControllerDatabaseRow.LookupId(device, id => false));
+            Assert.Null(ControllerDatabaseRow.UsbBusFallback("050000004c0500006802000000006800"));
+            Assert.Null(ControllerDatabaseRow.UsbBusFallback(usb));
+            Assert.True(SdlMappingRow.Maps(usb, device));
+            Assert.True(SdlMappingRow.Reach(bt, device) < SdlMappingRow.Reach(usb, device));
+            Assert.False(SdlMappingRow.Maps(usb, "050000004c0500006802000000006800"));
+        }
+
         // ── The whole file ──
 
         private static readonly List<string> Kept = KeptRows(10);

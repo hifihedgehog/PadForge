@@ -117,7 +117,7 @@ namespace PadForge.Tests
         public PluginLaunch Start(PluginCommand command, IReadOnlyDictionary<string, string> variables)
         {
             Interlocked.Increment(ref Calls);
-            if (Interlocked.Decrement(ref _refusals) >= 0) return PluginLaunch.Refused(PluginRefusal.NoShell);
+            if (Interlocked.Decrement(ref _refusals) >= 0) return PluginLaunch.Refused(PluginRefusal.Failed);
             Last = new WebTestProcess(Environment.ProcessId);
             return new PluginLaunch { Process = Last };
         }

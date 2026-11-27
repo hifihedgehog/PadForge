@@ -25,6 +25,12 @@ namespace PadForge.Tests
         private readonly ITestOutputHelper _output;
         public PollPassUnusedCostTests(ITestOutputHelper output) => _output = output;
 
+        /// <summary>PADFORGE_BENCH_TIMING=1 runs the timing facts here, which
+        /// print a timing and assert no speed. Unset, each returns at once.
+        /// <see cref="PollPassFullTimingTests"/> reads the same switch
+        /// itself.</summary>
+        internal static bool Timing => Environment.GetEnvironmentVariable("PADFORGE_BENCH_TIMING") == "1";
+
         /// <summary>A foreground pass returns while another thread holds the
         /// menu publication gate: it does not wait on it.</summary>
         [Theory]
@@ -155,6 +161,7 @@ namespace PadForge.Tests
         [Fact]
         public void TimeTheMouseSteerChecksOnAGamepadAxis()
         {
+            if (!PollPassUnusedCostTests.Timing) return;
             var axis = new PadForge.Engine.Data.MappingSource { Kind = "Direct", DeviceGuid = Guid.NewGuid().ToString(), Descriptor = "Axis 0" };
             var button = new PadForge.Engine.Data.MappingSource { Kind = "Direct", DeviceGuid = axis.DeviceGuid, Descriptor = "Button 0" };
             string guid = axis.DeviceGuid;
@@ -179,6 +186,7 @@ namespace PadForge.Tests
         [Fact]
         public void TimeTheStatusBytesRead()
         {
+            if (!PollPassUnusedCostTests.Timing) return;
             uint props = SDL_CreateProperties();
             Assert.NotEqual(0u, props);
             try
@@ -189,6 +197,32 @@ namespace PadForge.Tests
                 Time("SDL_GetJoystickProperties none", () => SDL3.SDL.SDL_GetJoystickProperties(IntPtr.Zero));
             }
             finally { SDL_DestroyProperties(props); }
+        }
+
+        /// <summary>The timing facts print a timing and assert no speed, so
+        /// each runs only under PADFORGE_BENCH_TIMING=1, as the map step's
+        /// bench runs only under PADFORGE_BENCH_SLOT.</summary>
+        [Fact]
+        public void TheTimingFacts_RunOnlyUnderTheBenchSwitch()
+        {
+            string unused = ExtrasPageTests.RepoText("PadForge.Tests", "PollPassUnusedCostTests.cs").Replace("\r", "");
+            string full = ExtrasPageTests.RepoText("PadForge.Tests", "PollPassFullTimingTests.cs").Replace("\r", "");
+            // The full pass file reads the switch itself, so it still times an
+            // older build on its own.
+            const string Own = "            if (!PollPassUnusedCostTests.Timing) return;\n";
+            const string Alone = "            if (Environment.GetEnvironmentVariable(\"PADFORGE_BENCH_TIMING\") != \"1\") return;\n";
+            foreach (var (source, name, gate) in new[]
+            {
+                (full, "TimeTheManagedPass", Alone), (unused, "TimeTheMouseSteerChecksOnAGamepadAxis", Own),
+                (unused, "TimeTheStatusBytesRead", Own), (unused, "TimeTheUnusedPass", Own),
+            })
+            {
+                string head = "        public void " + name + "()\n        {\n";
+                int at = source.IndexOf(head, StringComparison.Ordinal);
+                Assert.True(at > 0, "no " + name);
+                Assert.True(source.Substring(at + head.Length).StartsWith(gate, StringComparison.Ordinal),
+                    name + " runs without its switch");
+            }
         }
 
         private void Time(string name, Action call)
@@ -223,6 +257,7 @@ namespace PadForge.Tests
         [Fact]
         public void TimeTheUnusedPass()
         {
+            if (!PollPassUnusedCostTests.Timing) return;
             var devices = SettingsManager.UserDevices;
             var settings = SettingsManager.UserSettings;
             var created = SettingsManager.SlotCreated;

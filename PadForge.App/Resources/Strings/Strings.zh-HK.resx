@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>未啟動：沒有程式可為你開啟 Python 檔案，而且 PadForge 找不到 py 啟動器</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>未啟動：PadForge 無法讀取哪個程式會為你開啟這類檔案</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>未啟動：為你開啟這類檔案的程式不在這部電腦上</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>未啟動：沒有正在執行的桌面殼層可供啟動</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>未啟動：桌面殼層擁有系統管理員權限，外掛程式也會因而擁有</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>未啟動：PadForge 無法讀取它會否擁有系統管理員權限</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>未啟動：Windows 給了它系統管理員權限，所以 PadForge 在它執行前便把它結束</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>未啟動：它要求系統管理員權限</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>未啟動：Windows 拒絕，錯誤 {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>未啟動</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>這部電腦上沒有 Logitech G-key SDK。它會隨 Logitech Gaming Software 8.55 或更新版本一併安裝。</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK 已登錄，但其檔案已不存在。請重新安裝 Logitech Gaming Software。</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>找到 G-key SDK，但無法載入。</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>找到 G-key SDK，但沒有載入，因為 PadForge 無法確認只有系統管理員能更改它，也無法確認它由 Logitech 簽署。</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>該程式庫並非所需的 G-key SDK。</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK 拒絕啟動。通常是因為 Logitech Gaming Software 沒有執行。</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>已連接，尚未偵測到按鍵。請在 Logitech Gaming Software 中，把 G-key 指令拖曳到 PadForge 設定檔的每個按鍵上，並將該設定檔設為常駐。此外，G600 或 G300 滑鼠必須離開內置記憶體模式。</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>PadForge 啟動時保持視窗隱藏。程式會照常執行和對應。</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>登入 Windows 時自動啟動 PadForge。此選項開啟時，從捷徑、指令碼或其他程式啟動 PadForge，也不會出現 Windows 的提示。</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge 從 {0} 執行。</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>這需要把 PadForge 放在專屬資料夾內。它目前所在的資料夾還有其他檔案，因此 PadForge 無法阻止其他程式更改它。</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>這需要把 PadForge 放在其他程式無法更改的資料夾內。PadForge 無法阻止其他程式更改它的資料夾。</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>把 PadForge 移到專屬資料夾</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>把 PadForge 及其設定複製到 Program Files，將它的工作指向該處，並從該處啟動。這裡的副本會保持原樣。</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge 沒有移動：{0} 內有不屬於 PadForge 的檔案。</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge 沒有移動：{0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>「登入時啟動」已關閉，因為它從有其他檔案的資料夾執行 PadForge。</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge 沒有移動：Windows 沒有指定 Program Files 資料夾。</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge 沒有移動：它無法讀取正在執行的 PadForge。</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge 沒有移動：它無法建立 {0}。</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge 沒有移動：它無法讀取 {0} 的內容。</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge 沒有移動：它無法阻止其他程式更改 {0}。</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge 沒有移動：它在 {0} 內的副本與正在執行的 PadForge 不相符。</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge 沒有移動：複製後，{0} 內有不屬於 PadForge 的檔案，或其他程式可以更改它。</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>「登入時啟動」已關閉，因為它所執行的 PadForge 已不存在。</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>「登入時啟動」已關閉，因為 PadForge 無法阻止其他程式更改它執行 PadForge 的資料夾。</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>「登入時啟動」已關閉，因為 PadForge 無法讀取它執行的是哪個 PadForge。</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>「登入時啟動」已關閉，因為 PadForge 無法讀取它所執行的 PadForge 所在的資料夾。</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge 無法建立它的保護資料夾 {0}。PadForge 把以系統管理員權限執行的程式庫存放在該處，沒有它便無法安全啟動。</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge 無法從它的保護資料夾 {0} 再次啟動自己。PadForge 只會從該處以系統管理員權限執行，因此沒有啟動。</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge 無法建立限制只能執行一個副本的鎖定，因此沒有啟動。</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge 以系統管理員權限從 {0} 執行，其他程式可以更改該資料夾。它們可以更改 PadForge 在那裡的設定，而 PadForge 會以它的權限執行這些更改。</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge 以系統管理員權限從 {0} 執行，該資料夾內還有其他檔案。PadForge 無法阻止其他程式更改它在那裡的設定，而它會以自己的權限執行這些更改。</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge 以系統管理員權限從 {0} 執行，PadForge 無法讀取該資料夾。PadForge 無法阻止其他程式更改它在那裡的設定，而它會以自己的權限執行這些更改。</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>一律在系統匣顯示</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>視窗開啟時亦保持顯示系統匣圖示，讓你隨時可以在其選單中按「結束」。</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>更新</value></data>
@@ -1354,13 +1326,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>清除檢查：正在檢查你保留的部分…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>清除檢查：PadForge 無法讀取你保留的部分，因此無法儲存。</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>以你的權限進行的儲存沒有啟動。</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>以你的權限進行的儲存沒有啟動：沒有可供啟動它的桌面殼層在執行。</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>以你的權限進行的儲存沒有啟動：Windows 以錯誤 {0} 拒絕。</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>儲存未能在 {0} 內結束。</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows 不允許在該處寫入檔案。</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge 不把這個檔案視為它自己的錄製內容。</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>儲存以代碼 {0} 結束。</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>會以你的身分儲存，第一次存到「下載」資料夾，之後存到你上次儲存的位置，並在檔案總管中顯示。無人在此頁面時停止的錄製（因達到上限、巨集、程式、助理工具或 --record stop），會在「主頁」等你檢閱，除非儲存，否則 7 天後刪除。程式只會得知它在等待，不會得知位置。</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} 的問題錄製正等你閱讀。</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>檢閱</value></data>
@@ -5920,7 +5887,6 @@ PadForge 無法把詳細資料寫入 PadForge.exe 旁的 crash.log。要回報�
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>配對已停止：讀取或寫入控制器或藍牙無線電失敗。詳細資料在診斷記錄內。</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>配對因 PadForge 未預期的錯誤而停止。詳細資料在診斷記錄內。</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>需要 Logitech Gaming Software 8.52 或更新版本</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>找到它的程式庫但沒有載入，因為 PadForge 無法確認只有系統管理員能更改它，也無法確認它由 Logitech 簽署</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>找到它的程式庫但無法使用，原因在診斷記錄內</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>請啟動 Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>等待安裝了 Arx Control 的手機</value></data>
@@ -6025,7 +5991,6 @@ PadForge 無法把詳細資料寫入 PadForge.exe 旁的 crash.log。要回報�
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>以這個 Force Dimension 程式庫副本取代任何其他副本。以其他副本開啟的 Falcon 會關閉，再以這個副本重新開啟。SDK 安裝的副本無需此項也能找到。</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|程式庫 (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK 下載頁面沒有開啟：{0}。</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK 下載頁面尚未開啟：{0}。</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>安裝 Falcon 驅動程式</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>從 SDK 資料夾為沒有驅動程式的 Falcon 安裝 Force Dimension 的驅動程式。Windows 可能會先詢問是否信任 Force Dimension。</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>取得 Force Dimension 的 SDK</value></data>
@@ -6726,6 +6691,7 @@ PadForge 無法把詳細資料寫入 PadForge.exe 旁的 crash.log。要回報�
   <data name="SdlMapping_Away" xml:space="preserve"><value>裝置未連接。連接後 SDL 便會讀取它。</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL 沒有給 PadForge 這個裝置的讀取結果。</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>內建的社群副本，{0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} 下載</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge 自己的檔案</value></data>

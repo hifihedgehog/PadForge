@@ -10,8 +10,6 @@ using PadForge.Engine.Data;
 using PadForge.Services;
 using PadForge.Services.Automation;
 using Xunit;
-using Level = PadForge.Engine.Common.ChangeRule.Level;
-using Verdict = PadForge.Engine.Common.ChangeRule.Verdict;
 
 namespace PadForge.Tests
 {
@@ -70,21 +68,6 @@ namespace PadForge.Tests
         }
 
         // ── An access list's alarm entry ──
-
-        /// <summary>SYSTEM_ALARM_CALLBACK_ACE_TYPE, 0x0E, is a header, a mask
-        /// and the SID, as the plain alarm entry is (winnt.h of the Windows
-        /// SDK 10.0.26100.0, SYSTEM_ALARM_CALLBACK_ACE). An alarm allows
-        /// nothing, so a folder whose only other entry is one of them is
-        /// sound.</summary>
-        [Fact]
-        public void AnAlarmCallbackEntry_IsReadAsThePlainFormAndAllowsNothing()
-        {
-            byte[] d = ChangeRuleTests.Binary("O:BAD:P(A;;FA;;;WD)(A;OICI;FA;;;BA)");
-            int dacl = BitConverter.ToInt32(d, 16);
-            d[dacl + 8] = 0x0E;
-            Assert.Equal(Verdict.Sound, ChangeRule.Judge(d, Level.Own));
-            Assert.Equal(Verdict.Sound, ChangeRule.Judge(d, Level.VendorAbove));
-        }
 
         // ── A disconnected device's own state ──
 

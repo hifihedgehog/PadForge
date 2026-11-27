@@ -933,6 +933,7 @@ E sega ni rawa ni vola na PadForge na kena ivakamacala ena crash.log e yasana na
   <data name="SdlMapping_Away" xml:space="preserve"><value>E sega ni vakasemati na iyaya. Ena wilika na SDL ni sa vakasemati.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>E sega ni solia na SDL vei PadForge e dua na kena wiliki na iyaya oqo.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Na ilavelave ni community e tu vata kei na parokaramu, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lavei mai ena {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Na faile ni PadForge</value></data>
@@ -1036,7 +1037,6 @@ E sega ni rawa ni vola na PadForge na kena ivakamacala ena crash.log e yasana na
   <data name="Main_DevicesAreBack_Format" xml:space="preserve"><value>Sa lesu tale e {0} na iyaya: {1}</value></data>
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Vakaraitaka ena Folder</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>E sega ni rawa ni caka na PadForge na loka e vakatara me dua ga na kena kopi e cici, o koya e sega ni tekivu kina.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>e kunea na nona library ka sega ni vakacuruma, ni sega ni rawa ni vakadeitaka na PadForge ni o ira ga na administrator era rawa ni veisautaka ka a sainitaka na Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>e kunea na nona library ka sega ni rawa ni vakayagataka, ka tukuna na diagnostics log na vuna</value></data>
   <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>Na laini kei na skill ni PadForge e tiko ga, ni wilika talega na {0} na faile ni ituvatuva kei na folder ni skill vata.</value></data>
   <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>Na laini ni PadForge e tiko ga, ni wilika talega na {0} na faile ni ituvatuva vata.</value></data>

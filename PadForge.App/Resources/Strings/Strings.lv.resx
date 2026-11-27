@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nav startēts: nav programmas, kas jūsu vietā atver Python failus, un PadForge neatrod py palaidēju</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nav startēts: PadForge nevar nolasīt, kura programma jūsu vietā atver šāda veida failus</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nav startēts: programmas, kas jūsu vietā atver šāda veida failus, šajā datorā nav</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nav startēts: nedarbojas darbvirsmas čaula, zem kuras to startēt</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nav startēts: darbvirsmas čaulai ir administratora tiesības, tāpēc tās būtu arī spraudnim</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nav startēts: PadForge nevar nolasīt, vai tam būtu administratora tiesības</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nav startēts: sistēma Windows tam piešķīra administratora tiesības, tāpēc PadForge to beidza pirms darbības sākuma</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nav startēts: tas prasa administratora tiesības</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nav startēts: Windows noraidīja ar kļūdu {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nav startēts</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Šajā datorā nav Logitech G-key SDK. Tas tiek instalēts kopā ar Logitech Gaming Software 8.55 vai jaunāku versiju.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK ir reģistrēts, bet tā fails vairs nepastāv. Pārinstalējiet Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK atrasts, bet to nevarēja ielādēt.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK atrasts, bet nav ielādēts, jo PadForge nevarēja pārliecināties, ka to var mainīt tikai administratori un ka Logitech to ir parakstījis.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Šī bibliotēka nav gaidītais G-key SDK.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK atteicās startēt. Parasti tas nozīmē, ka Logitech Gaming Software nedarbojas.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Savienots, taču vēl nav redzēts neviens taustiņš. Programmā Logitech Gaming Software velciet G-key komandu uz katru taustiņu PadForge profilā un padariet šo profilu pastāvīgu. Pelei G600 vai G300 arī jābūt ārpus iebūvētās atmiņas režīma.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Kad PadForge startē, logs paliek paslēpts. Programma darbojas un piesaista ievadi kā parasti.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Automātiski startēt PadForge, kad pierakstāties sistēmā Windows. Kamēr tas ir ieslēgts, PadForge startē arī bez Windows uzaicinājuma no saīsnes, skripta vai citas programmas.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge darbojas no {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Tam nepieciešams, lai PadForge atrastos savā mapē. Tās mapē ir citi faili, tāpēc PadForge nevar neļaut citām programmām to mainīt.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Tam nepieciešams, lai PadForge atrastos mapē, ko citas programmas nevar mainīt. PadForge nevarēja neļaut tām mainīt savu mapi.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Pārvietot PadForge uz savu mapi</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopē PadForge un tā iestatījumus uz Program Files, novirza tā uzdevumus uz turieni un startē to no turienes. Šeit esošā kopija paliek nemainīta.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge netika pārvietots: mapē {0} ir faili, kas nav PadForge faili.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge netika pārvietots: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Startēšana pēc pierakstīšanās tika izslēgta, jo tā palaida PadForge no mapes, kurā ir citi faili.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge netika pārvietots: sistēma Windows nenorāda mapi Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge netika pārvietots: tas nevarēja nolasīt darbojošos PadForge.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge netika pārvietots: tas nevarēja izveidot {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge netika pārvietots: tas nevarēja nolasīt, kas atrodas mapē {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge netika pārvietots: tas nevarēja neļaut citām programmām mainīt {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge netika pārvietots: tā kopija mapē {0} neatbilda darbojošamies PadForge.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge netika pārvietots: pēc kopēšanas mapē {0} bija faili, kas nav PadForge faili, vai arī citas programmas varēja to mainīt.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Startēt pēc pierakstīšanās tika izslēgts, jo PadForge, kas tika startēts, vairs nav tur.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Startēt pēc pierakstīšanās tika izslēgts, jo PadForge nevarēja neļaut citām programmām mainīt mapi, no kuras tas startēja PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Startēt pēc pierakstīšanās tika izslēgts, jo PadForge nevarēja nolasīt, kurš PadForge tika startēts.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Startēt pēc pierakstīšanās tika izslēgts, jo PadForge nevarēja nolasīt mapi, kurā atrodas startētais PadForge.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nevarēja izveidot savu aizsargāto mapi {0}. PadForge tur glabā bibliotēkas, ko palaiž ar administratora tiesībām, un bez tās nevar startēt droši.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge nevarēja no jauna startēt no savas aizsargātās mapes {0}. PadForge ar administratora tiesībām darbojas tikai no turienes, tāpēc nestartēja.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge nevarēja izveidot bloķētāju, kas ļauj darboties tikai vienai kopijai, tāpēc tas netika startēts.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge darbojas ar administratora tiesībām no mapes {0}, ko citas programmas var mainīt. Tās var mainīt tur esošos PadForge iestatījumus, un PadForge rīkojas pēc tiem ar savām tiesībām.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge darbojas ar administratora tiesībām no mapes {0}, kurā ir citi faili. PadForge nevar neļaut citām programmām mainīt tur esošos PadForge iestatījumus, un PadForge rīkojas pēc tiem ar savām tiesībām.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge darbojas ar administratora tiesībām no mapes {0}, ko tas nevarēja nolasīt. PadForge nevar neļaut citām programmām mainīt tur esošos PadForge iestatījumus, un PadForge rīkojas pēc tiem ar savām tiesībām.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Vienmēr rādīt paziņojumu apgabalā</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Paziņojumu apgabala ikona paliek redzama arī tad, kad logs ir atvērts, tāpēc tās izvēlnes vienums „Iziet” vienmēr ir viena klikšķa attālumā.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atjauninājumi</value></data>
@@ -1354,13 +1326,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Tīrīšanas pārbaude: notiek paturamo daļu pārbaude…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Tīrīšanas pārbaude: PadForge nevarēja nolasīt daļas, ko paturat, tāpēc poga Saglabāt paliek izslēgta.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Saglabāšana ar jūsu tiesībām netika sākta.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Saglabāšana ar jūsu tiesībām netika sākta: nedarbojas darbvirsmas čaula, kuras ietvaros to startēt.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Saglabāšana ar jūsu tiesībām netika sākta: sistēma Windows to noraidīja ar kļūdu {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Saglabāšana nebeidzās laikā: {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows neļāva failu tur ierakstīt.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge neuzskatīja šo failu par savu ierakstu.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Saglabāšana beidzās ar kodu {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Saglabā kā jūs, pirmo reizi mapē Lejupielādes, pēc tam tur, kur saglabājāt pēdējo reizi, un parāda programmā Failu pārlūks. Ieraksts, kas apstājas, kamēr neviens nav lapā (tā ierobežojums, makro, programma, asistenta rīks vai --record stop), gaida šo pārskatīšanu lapā Sākums un tiek izdzēsts pēc 7 dienām, ja netiek saglabāts. Programmai paziņo, ka tas gaida, bet nekad nepasaka, kur.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Problēmas ieraksts no {0} gaida, lai jūs to izlasītu.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Pārskatīt</value></data>
@@ -5920,7 +5887,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Savienošana pārī apstājās: neizdevās nolasīt vai ierakstīt kontrolleri vai Bluetooth radio. Diagnostikas žurnālā ir detalizēta informācija.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Savienošana pārī apstājās kļūdas dēļ, ko PadForge negaidīja. Diagnostikas žurnālā ir detalizēta informācija.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>nepieciešama Logitech Gaming Software 8.52 vai jaunāka versija</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>atrada savu bibliotēku, bet neielādēja to, jo PadForge nevarēja pārliecināties, ka to var mainīt tikai administratori un ka Logitech to ir parakstījis</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>atrada savu bibliotēku, bet nevarēja to izmantot, un diagnostikas žurnālā ir norādīts iemesls</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>palaidiet Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>gaida tālruni ar Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Ielādē šo Force Dimension bibliotēkas kopiju citu vietā. Falcon, kas ir atvērts citā kopijā, aizveras un atveras vēlreiz ar šo. Kopijas, ko instalē SDK, tiek atrastas arī bez tā.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliotēkas (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Falcon SDK lejupielādes lapa netika atvērta: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Falcon SDK lejupielādes lapa vēl nav atvērta: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalēt Falcon draiveri</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Instalē Force Dimension draiveri no SDK mapes Falcon ierīcei, kurai tā nav. Windows var vispirms vaicāt, vai uzticēties Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Iegūt Force Dimension SDK</value></data>
@@ -6726,6 +6691,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="SdlMapping_Away" xml:space="preserve"><value>Ierīce nav pievienota. SDL to nolasa, tiklīdz tā tiek pievienota.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nesniedza PadForge nekādu šīs ierīces nolasījumu.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Iebūvētā kopienas kopija, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lejupielādēts {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge paša fails</value></data>

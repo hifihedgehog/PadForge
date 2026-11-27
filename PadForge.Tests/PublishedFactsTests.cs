@@ -37,6 +37,9 @@ namespace PadForge.Tests
     /// <para>Held by hash: the README's "New in" blocks, which describe
     /// releases that are out.</para>
     /// </summary>
+    // Runs apart from the tests that reload the profile catalog with a
+    // user profile, which the Extended count would take in.
+    [Collection("SettingsManagerStatics")]
     public class PublishedFactsTests
     {
         private static readonly string[] Locales = PadForge.Tests.LocaleFiles.Complete;
@@ -145,7 +148,7 @@ namespace PadForge.Tests
         public void EveryProfileCountMatchesTheBundledCatalog()
         {
             int total, deployable, offered, undeployable;
-            using (var ctx = new HMContext())
+            using (var ctx = HMaestroContexts.ForProfiles())
             {
                 ctx.LoadDefaultProfiles();
                 total = ctx.AllProfiles.Count;

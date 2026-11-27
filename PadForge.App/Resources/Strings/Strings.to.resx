@@ -946,6 +946,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>ʻOku ʻikai fakafehokotaki ʻa e naunau. ʻE lau ia ʻe SDL ʻo ka fakafehokotaki.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Naʻe ʻikai ʻoatu ʻe SDL ki he PadForge ha lau ʻo e naunau ko ʻeni.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ko e tatau ʻa e kominiuti kuo fakakau, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Naʻe hiki mai ʻi he {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faile ʻa e PadForge tonu</value></data>
@@ -1048,7 +1049,6 @@
   <data name="Plugins_ShowInFolder" xml:space="preserve"><value>Fakahā ʻi he Fōlota</value></data>
   <data name="Plugins_Problem_NeverConnected_Format" xml:space="preserve"><value>Naʻe kamata ʻa e {0} ka naʻe ʻikai teitei fakafehokotaki ia ki he PadForge.</value></data>
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>naʻe maʻu hono library pea naʻe ʻikai fakahū ia, he naʻe ʻikai lava ʻe PadForge ʻo fakapapauʻi ʻoku lava pē ʻe he kau pule ʻo liliu ia pea naʻe fakamoʻoni ia ʻe Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>naʻe maʻu hono library pea naʻe ʻikai lava ʻo ngāueʻaki ia, pea ʻoku hā ʻi he log fakaʻekiʻeki ʻa e ʻuhinga</value></data>
   <data name="Extras_Automation_State_KeptBoth_Format" xml:space="preserve"><value>ʻOku nofo pē ʻa e hū mo e taukei ʻa PadForge, he ʻoku lau ʻe {0} ʻa e faile fokotuʻutuʻu tatau mo e folder taukei tatau.</value></data>
   <data name="Extras_Automation_State_KeptEntry_Format" xml:space="preserve"><value>ʻOku nofo pē ʻa e hū ʻa PadForge, he ʻoku lau ʻe {0} ʻa e faile fokotuʻutuʻu tatau.</value></data>

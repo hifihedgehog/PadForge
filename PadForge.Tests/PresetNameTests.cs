@@ -120,7 +120,7 @@ namespace PadForge.Tests
             {
                 string json = UserProfileProblemTests.ProfileJson("padforge-test-shown" + HMaestroProfileCatalog.UserProfileIdSuffix,
                     edit: r => r["name"] = "Test Pad");
-                using var ctx = new HIDMaestro.HMContext();
+                using var ctx = HMaestroContexts.ForProfiles();
                 ctx.LoadDefaultProfiles();
                 Assert.Empty(HMaestroProfileCatalog.LoadUserProfiles(ctx, new[] { json }));
                 var imported = ctx.GetProfile("padforge-test-shown" + HMaestroProfileCatalog.UserProfileIdSuffix);

@@ -947,7 +947,6 @@ namespace PadForge.Tests
         public GiveBackTaskTests()
         {
             GiveBackTask.DefinitionFolderSeam = () => _definitions;
-            GiveBackTask.MayRunExeSeam = _ => true;
         }
 
         public void Dispose()
@@ -963,7 +962,6 @@ namespace PadForge.Tests
             GiveBackTask.ExeSizeSeam = null;
             GiveBackTask.ExtractBaseSeam = null;
             GiveBackTask.DefinitionFolderSeam = null;
-            GiveBackTask.MayRunExeSeam = null;
             GiveBackTask.OutputSeam = null;
             try { System.IO.Directory.Delete(_definitions, true); } catch { }
         }

@@ -1143,7 +1143,6 @@ PadForge ha e a kgona ho ngola dintlha ho crash.log pela PadForge.exe. Ho tlaleh
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>e timile</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>ka Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>e hloka Logitech Gaming Software 8.52 kapa e ntjha ho feta</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>e fumane laeborari ya yona mme ha e a e kenya, hobane PadForge ha e a kgona ho netefatsa hore ke batsamaisi feela ba ka e fetolang le hore Logitech e e saenne</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>e fumane laeborari ya yona mme ha e a kgona ho e sebedisa, mme log ya ditlhahlobo e bolela lebaka</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>qalisa Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_NoLightbar_Format" xml:space="preserve"><value>{0}, e emetse mmala wa lightbar</value></data>
@@ -1548,6 +1547,7 @@ PadForge ha e a kgona ho ngola dintlha ho crash.log pela PadForge.exe. Ho tlaleh
   <data name="SdlMapping_Away" xml:space="preserve"><value>Sesebediswa ha se a hokahanngwa. SDL e tla se bala hang ha se hokahantswe.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL ha e a fa PadForge dintlha tsa sesebediswa sena.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi ya setjhaba e kentsweng, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E jarollotswe {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faele ya PadForge ka boyona</value></data>
@@ -1755,7 +1755,6 @@ PadForge ha e a kgona ho ngola dintlha ho crash.log pela PadForge.exe. Ho tlaleh
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge ha e a kgona ho etsa senotlolo se e bolokang e le kopi e le nngwe e sebetsang, kahoo ha e a qala.</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Leqephe la ho jarolla la Falcon SDK ha le a buleha: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Leqephe la ho jarolla la Falcon SDK ha le eso bulehe: {0}.</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Mela bakeng sa ditsamaiso tse ding e fetilwe: {0:N0}.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows ha e a e qala ka ditokelo tsa hao.</value></data>
   <data name="Extras_Automation_Reason_TimedOut_Format" xml:space="preserve"><value>Ha e a fela ka nako, metsotswana: {0}.</value></data>

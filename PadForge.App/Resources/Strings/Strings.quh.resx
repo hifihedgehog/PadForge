@@ -1915,9 +1915,6 @@ PadForge nisqaqa mana detallekunata PadForge.exe nisqap waqtanpi crash.log nisqa
   <data name="Automation_Request_FromUnknown" xml:space="preserve"><value>Windows mana sutichasqan programamanta</value></data>
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>astawan: {0}</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} / {1}</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge administradorpa derechonkunawan {0} carpetamanta llamk'achkan, huk programakuna t'ikrayta atinku chay carpetata. Chaypi PadForge nisqap configuraciónninta t'ikrayta atinku, PadForgetaq derechonkunawan chaykunata ruwan.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge administradorpa derechonkunawan {0} carpetamanta llamk'achkan, huk archivokunayuq carpetamanta. PadForge nisqaqa mana atinchu huk programakunata chaypi configuraciónninta t'ikrayta harkayta, derechonkunawantaq chaykunata ruwan.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge administradorpa derechonkunawan {0} carpetamanta llamk'achkan, mana ñawinchayta atisqan carpetamanta. PadForge nisqaqa mana atinchu huk programakunata chaypi configuraciónninta t'ikrayta harkayta, derechonkunawantaq chaykunata ruwan.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now nisqa comunidadpa control base de datosninta (SDL_GameControllerDB) GitHub nisqamanta, utaq More ukhupi churasqa direcciónmanta uraykachin, configuración archivopitaq kay PadForge versiónpa mana kapuqnin asignaciónkunata waqaychan. Chaylla llamk'achikunku. Huk direcciónmantaqa musuq asignaciónkunallata waqaychan. Musuq asignaciónqa ñawpaqtaqa SDL nisqa gamepad hina utaq mana ima tipoyuq hina willasqan, mana imapas gamepad hina ñawinchasqan, mana asignasqa, mana Force Raw Joystick Mode nisqapi kaq controlpaqlla llamk'achikun. Llamk'achisqaña kaqtinqa, control asignasqa kaqtinpas llamk'achikullanpuni. Ñawpaqman kutichiyqa uraykachisqa asignaciónkunata qichun, Maymanta uraykachina nisqatataq comunidadpa archivonman kutichin, hamuq Update Now nisqataq chayta uraykachinqa. More ukhupi kaq kikiyki filakunaqa qhipakunku.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ukhupi: {0} asignaciónkuna, comunidadpa {1} copian. {2} uraykachisqa: musuq filakuna {3}, t'ikrasqa {4}.</value></data>
@@ -2006,6 +2003,7 @@ PadForge nisqaqa mana detallekunata PadForge.exe nisqap waqtanpi crash.log nisqa
   <data name="SdlMapping_Away" xml:space="preserve"><value>Dispositivoqa mana tinkisqachu. SDL nisqaqa tinkisqa kaqtin ñawinchanqa.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nisqaqa mana PadForge nisqaman kay dispositivomanta ima ñawinchaytapas qurqanchu.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ukhupi kaq comunidadpa copian, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Uraykachisqa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge nisqap kikin archivon</value></data>
@@ -2206,7 +2204,6 @@ PadForge nisqaqa mana detallekunata PadForge.exe nisqap waqtanpi crash.log nisqa
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge nisqaqa mana ruwayta atirqanchu huk copialla llamk'ananpaq llaveta, chayrayku mana qallarirqanchu.</value></data>
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>PadForge nisqaqa GitHub nisqap kutichiyninta mana chaskirqanchu. Mana imapas t'ikrakurqanchu.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>PadForge nisqaqa {0} nisqamanta kutichiyta mana chaskirqanchu. Mana imapas t'ikrakurqanchu.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>bibliotecanta tarirqan, mana cargarqanchu, PadForge nisqa mana sut'inchayta atisqanrayku administradorkunalla t'ikrayta atisqankuta, Logitech nisqa firmasqantapas</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>bibliotecanta tarirqan, mana llamk'achiyta atirqanchu, diagnóstico logtaq imarayku kasqanta nin</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Huk sistemakunapaq {0:N0} filaqa saqisqa.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Windows mana kikiyki derechoykikunawan qallarichirqanchu.</value></data>

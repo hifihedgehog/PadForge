@@ -1,0 +1,46 @@
+{
+  "new": [],
+  "changed": [
+    {
+      "key": "ControllerDatabase_ProfileRows_Format",
+      "english": "Your SDL_GAMECONTROLLERCONFIG variable holds {0} rows that SDL in PadForge did not read at start and PadForge does not keep. Add Rows From a File or the Clipboard opens with them.",
+      "sibling": [
+        "ControllerDatabase_ProfileRows_One_Format"
+      ],
+      "where": "Settings, Updates, the Controller Database row: the line under it while the SDL_GAMECONTROLLERCONFIG variable holds rows PadForge does not keep ({0} is how many)",
+      "keep": [
+        "SDL_GAMECONTROLLERCONFIG",
+        "SDL",
+        "PadForge",
+        "Add Rows From a File or the Clipboard"
+      ]
+    },
+    {
+      "key": "ControllerDatabase_ProfileRows_One_Format",
+      "english": "Your SDL_GAMECONTROLLERCONFIG variable holds {0} row that SDL in PadForge did not read at start and PadForge does not keep. Add Rows From a File or the Clipboard opens with it.",
+      "sibling": [
+        "ControllerDatabase_ProfileRows_Format"
+      ],
+      "where": "Settings, Updates, the Controller Database row: the line under it while the SDL_GAMECONTROLLERCONFIG variable holds rows PadForge does not keep ({0} is how many)",
+      "keep": [
+        "SDL_GAMECONTROLLERCONFIG",
+        "SDL",
+        "PadForge",
+        "Add Rows From a File or the Clipboard"
+      ]
+    },
+    {
+      "key": "Settings_StartAtLoginTip",
+      "english": "Start PadForge automatically when you sign in to Windows.",
+      "sibling": [
+        "Settings_StartAtLogin"
+      ],
+      "where": "Settings, Startup, the Start at Login switch: its tooltip",
+      "keep": [
+        "PadForge",
+        "Windows"
+      ]
+    }
+  ],
+  "removed": []
+}

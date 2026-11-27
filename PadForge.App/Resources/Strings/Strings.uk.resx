@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Не запущено: жодна програма не відкриває файли Python за вас, а PadForge не знаходить запускача py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Не запущено: PadForge не може прочитати, яка програма відкриває цей тип файлів за вас</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Не запущено: програми, яка відкриває цей тип файлів за вас, немає на цьому ПК</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Не запущено: немає оболонки робочого столу, під якою його запустити</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Не запущено: оболонка робочого столу має права адміністратора, тож їх мав би й плагін</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Не запущено: PadForge не може прочитати, чи мав би він права адміністратора</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Не запущено: Windows дала йому права адміністратора, тож PadForge завершив його до запуску</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Не запущено: він вимагає прав адміністратора</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Не запущено: Windows відмовила з помилкою {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Не запущено</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>На цьому комп'ютері немає Logitech G-key SDK. Він установлюється разом із Logitech Gaming Software 8.55 або новішої версії.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK зареєстровано, але його файл зник. Перевстановіть Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK знайдено, але завантажити його не вдалося.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK знайдено, але не завантажено, бо PadForge не зміг підтвердити, що змінювати його можуть лише адміністратори і що його підписала Logitech.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Ця бібліотека не є тим G-key SDK, який очікується.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK відмовився запускатися. Зазвичай це означає, що Logitech Gaming Software не запущено.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Підключено, жодної клавіші ще не зафіксовано. У Logitech Gaming Software перетягніть команду G-key на кожну клавішу в профілі PadForge і зробіть цей профіль постійним. Крім того, мишу G600 або G300 треба вивести з режиму вбудованої пам'яті.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Вікно залишається прихованим, коли PadForge запускається. Програма працює і виконує прив'язки як зазвичай.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Автоматично запускати PadForge, коли ви входите у Windows. Поки це ввімкнено, PadForge також запускається без запиту Windows з ярлика, скрипту чи іншої програми.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge запущено з {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Для цього PadForge має бути у власній папці. У його папці є інші файли, тому PadForge не може захистити себе від змін іншими програмами.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Для цього PadForge має бути в папці, яку інші програми не можуть змінювати. PadForge не зміг захистити свою папку від змін.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Перенести PadForge до власної папки</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Копіює PadForge і його налаштування до Program Files, спрямовує туди його завдання та запускає звідти. Копія тут залишається як є.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge не перенісся: у {0} є файли, що не належать PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge не перенісся: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Запуск під час входу в систему вимкнено, бо він запускав PadForge з папки, де є інші файли.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge не перенісся: Windows не називає папки Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge не перенісся: він не зміг прочитати запущений PadForge.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge не перенісся: він не зміг створити {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge не перенісся: він не зміг прочитати, що є в {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge не перенісся: він не зміг захистити {0} від змін іншими програмами.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge не перенісся: його копія в {0} не збігається із запущеним PadForge.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge не перенісся: після копіювання в {0} опинилися файли, що не належать PadForge, або інші програми могли її змінювати.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>«Запускати під час входу в систему» вимкнено, бо запущеного PadForge більше немає.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>«Запускати під час входу в систему» вимкнено, бо PadForge не зміг захистити від змін іншими програмами папку, з якої його запущено.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>«Запускати під час входу в систему» вимкнено, бо PadForge не зміг прочитати, який саме PadForge було запущено.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>«Запускати під час входу в систему» вимкнено, бо PadForge не зміг прочитати папку того PadForge, який було запущено.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge не вдалося створити свою захищену папку {0}. PadForge зберігає там бібліотеки, які запускає з правами адміністратора, і без неї безпечно запуститися не може.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge не вдалося знову запустити себе зі своєї захищеної папки {0}. PadForge працює з правами адміністратора лише звідти, тому не запустився.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge не зміг створити блокування, яке не дає запустити другу копію, тому не запустився.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge працює з правами адміністратора з папки {0}, яку можуть змінювати інші програми. Вони можуть змінити там налаштування PadForge, а PadForge виконає їх зі своїми правами.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge працює з правами адміністратора з папки {0}, у якій є інші файли. PadForge не може захистити свої налаштування там від змін іншими програмами, а виконує їх зі своїми правами.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge працює з правами адміністратора з папки {0}, яку не вдалося прочитати. PadForge не може захистити свої налаштування там від змін іншими програмами, а виконує їх зі своїми правами.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Завжди показувати в системному треї</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Піктограма в треї залишається видимою, поки вікно відкрите, тож до пункту «Вихід» у її меню завжди одне клацання.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Оновлення</value></data>
@@ -1294,13 +1266,8 @@
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} МБ</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Перевірка очищення: перевіряються частини, які ви зберігаєте…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Перевірка очищення: PadForge не зміг прочитати частини, які ви зберігаєте, тому кнопка «Зберегти» лишається вимкненою.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Збереження з вашими правами не запустилося.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Збереження з вашими правами не запустилося: немає оболонки робочого столу, під якою його запустити.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Збереження з вашими правами не запустилося: Windows відмовила з помилкою {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Збереження не завершилося за {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows не дозволила записати туди файл.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge не визнав цей файл власним записом.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Збереження завершилося з кодом {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Зберігається від вашого імені, уперше в папку «Завантаження», потім туди, куди ви зберігали востаннє, і показується в «Провіднику». Запис, який зупиняється, коли ніхто не на сторінці (його ліміт, макрос, програма, інструмент асистента або --record stop), чекає цього перегляду на сторінці «Головна» і видаляється через 7 днів, якщо його не збережено. Програма дізнається, що він чекає, але не де.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Запис проблеми від {0} чекає, поки ви його прочитаєте.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Переглянути</value></data>
@@ -5579,7 +5546,6 @@ PadForge не зміг записати подробиці в crash.log пору
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Створення пари зупинено: не вдалося прочитати чи записати дані контролера або радіомодуля Bluetooth. Подробиці є в журналі діагностики.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Створення пари зупинено через помилку, якої PadForge не очікував. Подробиці є в журналі діагностики.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>потрібен Logitech Gaming Software 8.52 або новіший</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>бібліотеку знайдено, але не завантажено, бо PadForge не зміг підтвердити, що змінювати її можуть лише адміністратори і що її підписала Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>бібліотеку знайдено, але використати її не вдалося, а журнал діагностики каже чому</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>запустіть Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>очікується телефон з Arx Control</value></data>
@@ -5677,7 +5643,6 @@ PadForge не зміг записати подробиці в crash.log пору
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Завантажує цю копію бібліотеки Force Dimension замість будь-якої іншої. Falcon, відкритий на іншій копії, закривається й відкривається знову на цій. Копії, які встановлює SDK, знаходяться й без цього.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Бібліотеки (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Сторінку завантаження Falcon SDK не відкрито: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Сторінка завантаження Falcon SDK ще не відкрилася: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Установити драйвер Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Встановлює драйвер Force Dimension із папки SDK для Falcon, який його не має. Windows може спершу запитати, чи довіряти Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Отримати Force Dimension SDK</value></data>
@@ -6032,6 +5997,7 @@ PadForge не зміг записати подробиці в crash.log пору
   <data name="SdlMapping_Away" xml:space="preserve"><value>Пристрій не підключено. SDL прочитає його, щойно він буде підключений.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL не дав PadForge жодного зчитування цього пристрою.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Вбудована копія спільноти, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Завантажено {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Власний файл PadForge</value></data>

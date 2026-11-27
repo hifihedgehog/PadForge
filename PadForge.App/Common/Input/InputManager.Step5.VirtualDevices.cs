@@ -2805,7 +2805,7 @@ namespace PadForge.Common.Input
                     {
                     }
 
-                    ctx = new HMContext();
+                    ctx = HMaestroContexts.ForDevices();
                     int n = ctx.LoadDefaultProfiles();
                     ctx.InstallDriver();
                     bool recovered = _hmaestroSetupFailedTick != 0;

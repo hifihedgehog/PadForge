@@ -135,6 +135,7 @@ namespace PadForge.Tests
         private const string Legacy = "PadForge.App/Common/Input/MidiBackendLegacy.cs";
         private const string Janitor = "PadForge.App/Common/Input/MidiEndpointJanitor.cs";
         private const string Installer = "PadForge.App/Common/DriverInstaller.cs";
+        private const string Contexts = "PadForge.App/Common/Input/HMaestroContexts.cs";
 
         /// <summary>The flags, each with the file that declares it and the
         /// class it belongs to. Other areas keep flags of their own, some by
@@ -148,6 +149,7 @@ namespace PadForge.Tests
             (Legacy, "WinMmMidi", "OffLimitsForTest"),
             (Janitor, "MidiEndpointJanitor", "OffLimitsForTest"),
             (Installer, "DriverInstaller", "OffLimitsForTest"),
+            (Contexts, "HMaestroContexts", "OffLimitsForTest"),
         };
 
         private const string Assigns = @"\s*(=(?!=)|\|=|&=|\^=)";
@@ -169,6 +171,7 @@ namespace PadForge.Tests
             Assert.True(WinMmMidi.OffLimitsForTest);
             Assert.True(MidiEndpointJanitor.OffLimitsForTest);
             Assert.True(DriverInstaller.OffLimitsForTest);
+            Assert.True(HMaestroContexts.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -201,7 +204,7 @@ namespace PadForge.Tests
             Assert.Empty(writes);
         }
 
-        /// <summary>In the tests, only the two module initializers write a
+        /// <summary>In the tests, only the three module initializers write a
         /// flag, and only to set it, so no test lifts one for a while.</summary>
         [Fact]
         public void OnlyTheModuleInitializers_SetAFlag_AndNoTestClearsOne()
@@ -218,7 +221,8 @@ namespace PadForge.Tests
             Assert.All(writes, w => Assert.EndsWith("= true;", w, StringComparison.Ordinal));
             Assert.All(writes, w => Assert.True(
                 w.StartsWith("MidiServiceOffLimits.cs: ", StringComparison.Ordinal)
-                || w.StartsWith("DriverInstallerOffLimits.cs: ", StringComparison.Ordinal), w));
+                || w.StartsWith("DriverInstallerOffLimits.cs: ", StringComparison.Ordinal)
+                || w.StartsWith("HIDMaestroOffLimits.cs: ", StringComparison.Ordinal), w));
         }
 
         // ── The MIDI service's restart ──
@@ -386,6 +390,23 @@ namespace PadForge.Tests
 
         // ── DriverInstaller ──
 
+        /// <summary>A tool of the driver installer started with rights is
+        /// started by PadForge itself, hidden, with a copy of its variables.
+        /// Without rights it goes to Windows' prompt through the shell's runas
+        /// verb.</summary>
+        [Fact]
+        public void AToolRunWithRights_StartsHidden_AndWithoutRightsGoesToThePrompt()
+        {
+            var with = DriverInstaller.ElevatedStart(@"C:\WINDOWS\system32\cmd.exe", "/d /c x", privileged: true);
+            Assert.False(with.UseShellExecute);
+            Assert.True(with.CreateNoWindow);
+            Assert.True(string.IsNullOrEmpty(with.Verb));
+
+            var without = DriverInstaller.ElevatedStart(@"C:\WINDOWS\system32\cmd.exe", "/d /c x", privileged: false);
+            Assert.True(without.UseShellExecute);
+            Assert.Equal("runas", without.Verb);
+        }
+
         /// <summary>Every process the class starts (msiexec, a runtime's
         /// uninstaller, the Visual C++ Redistributable, a bundle's extractor,
         /// pnputil, steamcmd, a cleanup script) starts through one member,
@@ -398,8 +419,7 @@ namespace PadForge.Tests
             string source = OffLimitsSource.Read(Installer);
             string start = OffLimitsSource.Member(source, "internal static Process StartProcess(ProcessStartInfo psi)");
             OffLimitsSource.BeginsWith(start, "if (OffLimitsForTest)");
-            int only = Assert.Single(OffLimitsSource.Calls(source, "RightsVariables.Start("));
-            Assert.Empty(OffLimitsSource.Calls(source, "Process.Start("));
+            int only = Assert.Single(OffLimitsSource.Calls(source, "Process.Start("));
             Assert.True(InMember(source, start, only));
             Assert.Empty(OffLimitsSource.Calls(source, "new Process("));
             Assert.Equal(5, OffLimitsSource.Calls(source, "StartProcess(psi)").Count);
@@ -530,7 +550,7 @@ namespace PadForge.Tests
             string contain = OffLimitsSource.Member(source, "public static bool ContainOwnedSteamVrDataPaths()");
             int guard = contain.IndexOf("if (OffLimitsForTest) return false;", StringComparison.Ordinal);
             Assert.True(guard > 0);
-            Assert.True(contain.IndexOf("ContainSteamVrDataPaths(dir, reg, ShellUser.AsTheUser)", StringComparison.Ordinal) > guard);
+            Assert.True(contain.IndexOf("ContainSteamVrDataPaths(dir, reg, work => { work(); return true; })", StringComparison.Ordinal) > guard);
             // Every read and write of the user's file and folders runs as
             // the user, inside the runner's work.
             string inner = OffLimitsSource.Member(source, "internal static bool ContainSteamVrDataPaths(string ownedDir, string reg, Func<Action, bool> asUser)");

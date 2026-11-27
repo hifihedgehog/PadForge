@@ -64,153 +64,6 @@ namespace PadForge.Tests
 
         // ── The shell's variables ──
 
-        /// <summary>The variables a plugin starts with are the ones Windows
-        /// builds for the desktop shell's token: the shell user's own Path
-        /// entries are in them, a variable only this process has is not,
-        /// <c>__COMPAT_LAYER</c> stays out, and the variables given replace
-        /// the shell's.</summary>
-        [Fact]
-        public void APluginsVariables_AreTheShellTokens_AndNoneThatOnlyThisProcessHas()
-        {
-            string only = "PADFORGE_TEST_ONLY_HERE_" + Guid.NewGuid().ToString("N");
-            Environment.SetEnvironmentVariable(only, "1");
-            try
-            {
-                // The same-window control: this process has it.
-                Assert.Contains(System32Calls.Variables(), l => l.StartsWith(only + "=", StringComparison.Ordinal));
-
-                using var shell = PluginLauncher.OpenShell();
-                Assert.True(shell != null, "no desktop shell runs where the tests run");
-                string[] lines = PluginLauncher.ShellVariables(shell, out int error);
-                Assert.True(lines != null, "the shell's variables could not be read: error " + error);
-                Assert.Equal(0, error);
-                var shellMap = UserVariablesTests.Map(lines.Where(l => l.Length > 0 && l[0] != '='));
-                Assert.True(shellMap.ContainsKey("USERPROFILE"));
-                Assert.True(shellMap.ContainsKey("SystemRoot"));
-
-                string block = UserVariables.Block(lines, new Dictionary<string, string>
-                {
-                    [PluginManager.TokenVariable] = "KEY",
-                    ["USERNAME"] = "given-wins",
-                });
-                var map = UserVariablesTests.Map(block[..^2].Split('\0'));
-                Assert.DoesNotContain(only, map.Keys);
-                Assert.DoesNotContain(UserVariables.CompatLayer, map.Keys);
-                Assert.Equal("KEY", map[PluginManager.TokenVariable]);
-                Assert.Equal("given-wins", map["USERNAME"]);
-                foreach (var pair in shellMap)
-                {
-                    if (string.Equals(pair.Key, UserVariables.CompatLayer, StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(pair.Key, "USERNAME", StringComparison.OrdinalIgnoreCase)) continue;
-                    Assert.Equal(pair.Value, map[pair.Key]);
-                }
-
-                // Each of the user's own Path entries, as the profile holds
-                // them, is in the shell's Path.
-                foreach (string entry in UserVariablesTests.UsersOwnPathEntries())
-                    Assert.Contains(entry, shellMap["Path"].Split(';'), StringComparer.OrdinalIgnoreCase);
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable(only, null);
-            }
-        }
-
-        /// <summary>When the shell's variables cannot be read, the plugin is
-        /// refused with the Windows error and nothing starts: never a start
-        /// with PadForge's own variables.</summary>
-        [Fact]
-        public void APlugin_IsRefused_WhenTheShellsVariablesCannotBeRead()
-        {
-            Assert.True(File.Exists(ProbeExe), "the helper was not built beside the tests: " + ProbeExe);
-            string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.PluginRefused." + Guid.NewGuid().ToString("N"));
-            Directory.CreateDirectory(dir);
-            string report = Path.Combine(dir, "report.txt");
-            int asked = 0;
-            try
-            {
-                var launcher = new PluginLauncher((SafeProcessHandle _, out int error) =>
-                {
-                    asked++;
-                    error = 5;
-                    return null;
-                });
-                var launch = launcher.Start(
-                    new PluginCommand(ProbeExe, PluginFile.Quote(ProbeExe) + " rights", Path.GetDirectoryName(ProbeExe)),
-                    new Dictionary<string, string> { ["PADFORGE_PROBE_REPORT"] = report });
-                Assert.Null(launch.Process);
-                Assert.Equal(1, asked);
-                Assert.Equal(PluginRefusal.Failed, launch.Refusal);
-                Assert.Equal(5, launch.Error);
-                Thread.Sleep(1500);
-                Assert.False(File.Exists(report), "the helper ran");
-                // A refusal the manager tries again, as for a missing shell.
-                string manager = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginManager.cs");
-                Assert.Contains("retry: why is PluginRefusal.NoShell or PluginRefusal.Failed or PluginRefusal.None", manager);
-            }
-            finally
-            {
-                try { Directory.Delete(dir, true); } catch (IOException) { }
-            }
-
-            // The real reader refuses a handle that may not read the token.
-            using var bare = OpenProcess(Synchronize, false, (uint)Environment.ProcessId);
-            Assert.False(bare.IsInvalid);
-            Assert.Null(PluginLauncher.ShellVariables(bare, out int denied));
-            Assert.Equal(5, denied);
-
-            // No variable of PadForge's own process is read for a plugin.
-            string source = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginLauncher.cs");
-            Assert.DoesNotContain("GetEnvironmentVariables", source);
-            Assert.DoesNotContain("System32Calls.Variables()", source);
-            Assert.Contains("if (block == null) return PluginLaunch.Refused(PluginRefusal.Failed, variablesError);", source);
-        }
-
-        private const uint Synchronize = 0x00100000;
-
-        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
-        private static extern SafeProcessHandle OpenProcess(uint access, bool inherit, uint processId);
-
-        /// <summary>A process made under the shell whose token cannot be read
-        /// is ended before it runs, and the refusal says the rights could
-        /// not be read: never that the shell has administrator rights.</summary>
-        [Fact]
-        public void AStartedProcessWhoseRightsCannotBeRead_IsRefusedAsUnknown()
-        {
-            Assert.True(File.Exists(ProbeExe), "the helper was not built beside the tests: " + ProbeExe);
-            var take = typeof(PluginLauncher).GetConstructor(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic,
-                new[] { typeof(PluginLauncher.VariablesReader), typeof(Func<SafeProcessHandle, bool, bool?>) });
-            Assert.True(take != null, "PluginLauncher takes no reader of a process's rights");
-            string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.PluginRights." + Guid.NewGuid().ToString("N"));
-            Directory.CreateDirectory(dir);
-            string report = Path.Combine(dir, "report.txt");
-            try
-            {
-                var asked = new List<bool>();
-                Func<SafeProcessHandle, bool, bool?> rights = (process, shell) =>
-                {
-                    asked.Add(shell);
-                    return shell ? false : null;
-                };
-                var launcher = (PluginLauncher)take.Invoke(new object[] { null, rights });
-                var launch = launcher.Start(
-                    new PluginCommand(ProbeExe, PluginFile.Quote(ProbeExe) + " rights", Path.GetDirectoryName(ProbeExe)),
-                    new Dictionary<string, string> { ["PADFORGE_PROBE_REPORT"] = report });
-                Assert.Null(launch.Process);
-                Assert.Equal(new[] { true, false }, asked);
-                Assert.NotEqual(PluginRefusal.ShellElevated, launch.Refusal);
-                Assert.Equal("RightsUnknown", launch.Refusal.ToString());
-                Thread.Sleep(1500);
-                Assert.False(File.Exists(report), "the helper ran");
-            }
-            finally
-            {
-                try { Directory.Delete(dir, true); } catch (IOException) { }
-            }
-        }
-
-        // ── What a file runs as ──
-
         [Fact]
         public void AProgram_RunsItself_AndEveryFileRunsInItsOwnFolder()
         {
@@ -418,21 +271,16 @@ namespace PadForge.Tests
             Assert.Equal(PluginRefusal.OffLimits, new PluginLauncher().Start(null, new Dictionary<string, string>()).Refusal);
         }
 
-        /// <summary>The check that refuses an elevated shell and an
-        /// elevated child reads this process's token as the test host's
-        /// rights are.</summary>
+        /// <summary>The rights check reads this process's token as the test
+        /// host's rights are, and the launcher starts a plugin with
+        /// CreateProcessW alone.</summary>
         [Fact]
         public void TheRightsCheck_ReadsAToken_AsWindowsGivesIt()
         {
             using var self = System.Diagnostics.Process.GetCurrentProcess();
             using var handle = new Microsoft.Win32.SafeHandles.SafeProcessHandle(self.Handle, ownsHandle: false);
             Assert.Equal(Environment.IsPrivilegedProcess, PluginLauncher.HasAdministratorRights(handle));
-            // A plugin is never started in its place: the launcher has no
-            // other route than the shell's process as the parent.
             string source = ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginLauncher.cs");
-            Assert.Contains("switch (_rightsOf(shellProcess, true))", source);
-            Assert.Contains("switch (_rightsOf(process, false))", source);
-            Assert.Contains("_rightsOf = rightsOf ?? ((process, _) => HasAdministratorRights(process));", source);
             Assert.Single(Regex.Matches(source, @"\bCreateProcessW\(command"));
             Assert.DoesNotContain("Process.Start", source);
             Assert.DoesNotContain("ShellExecute", source);
@@ -473,29 +321,10 @@ namespace PadForge.Tests
             }
             Assert.Equal(new[]
             {
-                "GameModPortFiles.cs: public Func<bool?> OwnRights = Plugins.PluginLauncher.ThisProcessHasAdministratorRights;",
-                "RecordingFolder.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
-                "RecordingFolder.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
-                "RecordingSave.cs: if ((OwnRightsSeam?.Invoke() ?? PluginLauncher.ThisProcessHasAdministratorRights()) == false) return false;",
-                "ShellUser.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() != false)",
-                "ShellUser.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() == false)",
-                "UserInstall.cs: return PluginLauncher.ThisProcessHasAdministratorRights() == true;",
-                "UserSave.cs: bool rights = seam != null ? seam() : PluginLauncher.ThisProcessHasAdministratorRights() != false;",
                 "UserSave.cs: if (PluginLauncher.ThisProcessHasAdministratorRights() == false) return false;",
             }, own.OrderBy(s => s, StringComparer.Ordinal));
-            // The launcher's one call is its rights reader's default, which
-            // Start gives the shell and the child it made.
-            Assert.Contains("_rightsOf = rightsOf ?? ((process, _) => HasAdministratorRights(process));", launcher);
-            Assert.Contains("switch (_rightsOf(shellProcess, true))", launcher);
-            Assert.Contains("switch (_rightsOf(process, false))", launcher);
-            Assert.Equal(2, Regex.Matches(launcher, @"\b_rightsOf\(").Count);
             Assert.Equal(new[]
             {
-                "PluginLauncher.cs: process",
-                "RecordingFolder.cs: shell",
-                "RecordingFolder.cs: shell",
-                "ShellUser.cs: shell",
-                "ShellUser.cs: shell",
                 "UserSave.cs: shell",
             }, given.OrderBy(s => s, StringComparer.Ordinal));
         }
@@ -520,31 +349,22 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public async Task TheHelper_StartsUnderTheShell_WithTheUsersRights_ItsKeyAndPipe_AndEndsWhenItsJobCloses()
+        public async Task TheHelper_StartsAsAChild_WithPadForgesRightsAndVariables_ItsKeyAndPipe_AndEndsWhenItsJobCloses()
         {
             Assert.True(File.Exists(ProbeExe), "the helper was not built beside the tests: " + ProbeExe);
             bool elevated = TestHostIsElevated();
-            _output.WriteLine(elevated
-                ? "The test host has administrator rights, so the helper must not."
-                : "The test host has no administrator rights, so the helper's lack of them shows nothing here. The rest is checked.");
 
             string dir = Path.Combine(Path.GetTempPath(), "PadForge.Tests.PluginStart." + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(dir);
             string report = Path.Combine(dir, "report.txt");
             string mine = "mine-" + Guid.NewGuid().ToString("N");
-            // Set in this process only: the plugin's variables are the
-            // shell's, so it must not see it. The report's path is given.
+            // Set in this process only: the plugin takes a copy of this
+            // process's variables, so it sees it. The report's path is given.
             Environment.SetEnvironmentVariable("PADFORGE_PROBE_MINE", mine);
             IPluginProcess process = null;
             try
             {
                 Assert.Equal(mine, Environment.GetEnvironmentVariable("PADFORGE_PROBE_MINE"));
-                string shellPath;
-                using (var shell = PluginLauncher.OpenShell())
-                {
-                    Assert.True(shell != null, "no desktop shell runs where the tests run");
-                    shellPath = UserVariablesTests.Map(PluginLauncher.ShellVariables(shell, out _).Where(l => l.Length > 0 && l[0] != '='))["Path"];
-                }
                 var launch = new PluginLauncher().Start(
                     new PluginCommand(ProbeExe, PluginFile.Quote(ProbeExe) + " rights", Path.GetDirectoryName(ProbeExe)),
                     new Dictionary<string, string>
@@ -564,11 +384,11 @@ namespace PadForge.Tests
                     .ToDictionary(l => l.Substring(0, l.IndexOf('=')), l => l.Substring(l.IndexOf('=') + 1));
                 foreach (var pair in facts) _output.WriteLine(pair.Key + "=" + pair.Value);
 
-                Assert.Equal("0", facts["privileged"]);
+                Assert.Equal(elevated ? "1" : "0", facts["privileged"]);
                 Assert.Equal("KEY42", facts["token"]);
                 Assert.Equal("Pipe.For.Test", facts["pipe"]);
-                Assert.Equal(string.Empty, facts["mine"]);
-                Assert.Equal(shellPath, facts["path"]);
+                Assert.Equal(mine, facts["mine"]);
+                Assert.Equal(Environment.GetEnvironmentVariable("Path"), facts["path"]);
                 Assert.Equal(Path.GetDirectoryName(ProbeExe).TrimEnd('\\'), facts["folder"].TrimEnd('\\'), ignoreCase: true);
 
                 using (var child = Process.GetProcessById(process.Id))
@@ -589,6 +409,29 @@ namespace PadForge.Tests
                 process?.Dispose();
                 try { Directory.Delete(dir, true); } catch (IOException) { }
             }
+        }
+
+        /// <summary>PadForge's own process keeps the variables it started
+        /// with: Main, the protected start and the start with rights narrow
+        /// none of them. A Run Program target, a plugin, the install copy and
+        /// the web helper each take a copy of them (ShellLaunch, this
+        /// launcher), so they see the user's Path, and the web helper reads
+        /// the key and pipe it is given from its own variables.</summary>
+        [Fact]
+        public void PadForgesOwnVariables_AreNarrowedNowhere_SoEveryChildTakesThem()
+        {
+            foreach (string file in new[] { "PadForge.App/Program.cs", "PadForge.App/Services/StartWithRights.cs" })
+            {
+                string source = OffLimitsSource.Read(file);
+                Assert.DoesNotContain("AllowListOnly", source, StringComparison.Ordinal);
+                Assert.DoesNotContain("SetEnvironmentVariable(", source, StringComparison.Ordinal);
+                Assert.DoesNotContain("RightsVariables.Build(", source, StringComparison.Ordinal);
+            }
+            string helper = OffLimitsSource.Read("PadForge.App/Services/Automation/Web/WebHelper.cs");
+            Assert.Contains("string key = Environment.GetEnvironmentVariable(KeyVariable);", helper, StringComparison.Ordinal);
+            Assert.Contains("string pipe = Environment.GetEnvironmentVariable(PipeVariable);", helper, StringComparison.Ordinal);
+            Assert.Contains("UserVariables.Block(OwnVariables(), variables)",
+                ExtrasPageTests.RepoText("PadForge.App", "Services", "Plugins", "PluginLauncher.cs"), StringComparison.Ordinal);
         }
 
         [Fact]

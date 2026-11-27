@@ -262,7 +262,7 @@ Where Windows MIDI Services does not run (Windows 10, Windows 11 before 24H2, Le
 
 **PadForge does not start, closes immediately, or shows a UAC prompt every time.**
 
-1. UAC is expected while Start at Login is off. PadForge always runs as administrator. HIDMaestro driver registration, HidHide whitelist edits, and the polling loop all run in that one elevated process.
+1. UAC is expected. PadForge always runs as administrator. HIDMaestro driver registration, HidHide whitelist edits, and the polling loop all run in that one elevated process.
 2. Clicking "No" on UAC blocks startup. Windows does not start an administrator-required app when the user declines the prompt. Run PadForge again and accept the prompt.
 3. PadForge allows only one instance. Check Task Manager for existing PadForge processes.
 4. Check for `crash.log` next to `PadForge.exe`. It appears only after a crash and records the error. The crash message names it and the page where reports go, a new Q&A discussion on PadForge's GitHub page: start one there and drop `crash.log` on it.
@@ -851,7 +851,7 @@ If PadForge has not crashed there is no `crash.log`, and that is normal.
 | Profile not switching | Verify exe path, enable auto-switching |
 | Sensitivity curve no effect | Check axis (X vs Y), preset not Linear |
 | Settings lost | Wait for autosave, check file permissions |
-| UAC prompt every launch | Expected while Start at Login is off. PadForge always runs as administrator. |
+| UAC prompt every launch | Expected. PadForge always runs as administrator. |
 | App crashes on start | Check `crash.log` next to PadForge.exe, re-download the exe |
 | High CPU | Lower the Polling Rate in Settings |
 | Steam conflict | Disable Steam Input or close Steam |

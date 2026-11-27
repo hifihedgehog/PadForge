@@ -59,7 +59,6 @@ namespace PadForge.Tests
             string main = FenceSource.Body(RepoText("PadForge.App", "Program.cs"), "public static void Main(string[] args)");
             string[] order =
             {
-                "ProtectedStart.Run();",
                 "if (GiveBackRun.IsRun(args))",
                 "if (ClientRun.TryRun(args, out int clientExit))",
                 "if (!Environment.IsPrivilegedProcess)",
@@ -94,15 +93,14 @@ namespace PadForge.Tests
             Assert.Contains("UseShellExecute = true,", run, StringComparison.Ordinal);
             Assert.Contains("Verb = \"runas\",", run, StringComparison.Ordinal);
             Assert.Contains("foreach (string a in CommandLineSwitches.WithoutWait(args)) start.ArgumentList.Add(a);", run, StringComparison.Ordinal);
-            Assert.True(run.IndexOf("if (!wait) return 0;", StringComparison.Ordinal)
-                < run.IndexOf("app.WaitForExit();", StringComparison.Ordinal));
+            int noWait = run.IndexOf("if (!wait) return 0;", StringComparison.Ordinal);
+            int waits = run.IndexOf("app.WaitForExit();", StringComparison.Ordinal);
+            int returns = run.IndexOf("return app.ExitCode;", StringComparison.Ordinal);
+            Assert.True(noWait >= 0 && waits > noWait && returns > waits, "Run waits for the app and returns its code only when asked to wait");
             // The copy works in the exe's folder, never the caller's.
             Assert.Contains("WorkingDirectory = System.IO.Path.GetDirectoryName(exe),", run, StringComparison.Ordinal);
             Assert.DoesNotContain("Environment.CurrentDirectory", run, StringComparison.Ordinal);
-            // The copy Windows starts hands over to one from the protected
-            // folder, and a wait goes on with the app itself.
-            Assert.True(run.IndexOf("if (app.ExitCode != ProtectedStart.HandedOver) return app.ExitCode;", StringComparison.Ordinal)
-                < run.IndexOf("RunningCopy.Watch(AppWindowWaitMs)", StringComparison.Ordinal));
+            Assert.DoesNotContain("HandedOver", run, StringComparison.Ordinal);
             // The test host starts nothing.
             Assert.Equal(StartWithRights.NotStarted, StartWithRights.Run(new[] { "--profile", "Racing" }));
         }
@@ -836,23 +834,5 @@ namespace PadForge.Tests
             }
         });
 
-        /// <summary>The start-pending event lives in the session's namespace,
-        /// where any program of the user can make it first. One whose list
-        /// lets nobody open it is no pending start, and the question throws
-        /// nothing, so a plain start is never stopped by it.</summary>
-        [Fact]
-        public void AStartPendingEventNobodyMayOpen_IsNoPendingStart_AndThrowsNothing()
-        {
-            var names = TestNames();
-            // The control: an ordinary event of the name is a pending start.
-            using (var open = new EventWaitHandle(false, EventResetMode.ManualReset, RunningCopy.StartPendingName(names.Signal)))
-                Assert.True(RunningCopy.StartIsPending(names.Signal));
-
-            var closed = TestNames();
-            using var squatter = EventWaitHandleAcl.Create(false, EventResetMode.ManualReset, RunningCopy.StartPendingName(closed.Signal),
-                out bool created, new System.Security.AccessControl.EventWaitHandleSecurity());
-            Assert.True(created);
-            Assert.False(RunningCopy.StartIsPending(closed.Signal));
-        }
     }
 }

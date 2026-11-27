@@ -79,7 +79,7 @@ namespace PadForge.Common.Recording
         /// null), the copy as the user, Explorer, the clipboard, the browser,
         /// and what a save or a delete leaves behind.</summary>
         internal Func<string, string, string> PickTarget;
-        internal Func<string, string, Task<string>> SaveAsUser = RecordingSave.AsUserAsync;
+        internal Func<string, string, Task<string>> SaveFile = RecordingSave.SaveAsync;
         internal Action<string> ShowInExplorer;
         internal Action<string> CopyText;
         internal Action<string> OpenPage;
@@ -370,7 +370,7 @@ namespace PadForge.Common.Recording
             {
                 var live = _live();
                 copy = await Task.Run(() => _review.WriteKept(live, _environment)).ConfigureAwait(true);
-                string error = await SaveAsUser(copy, target).ConfigureAwait(true);
+                string error = await SaveFile(copy, target).ConfigureAwait(true);
                 if (error != null)
                 {
                     Status = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Review_SaveFailed_Format, error);

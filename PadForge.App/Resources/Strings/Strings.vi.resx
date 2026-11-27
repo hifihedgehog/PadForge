@@ -640,10 +640,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Chưa khởi động: không có chương trình nào mở tệp Python cho bạn, và PadForge không tìm thấy trình khởi chạy py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Chưa khởi động: PadForge không đọc được chương trình nào mở loại tệp này cho bạn</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Chưa khởi động: chương trình mở loại tệp này cho bạn không có trên PC này</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Chưa khởi động: không có shell màn hình nào đang chạy để khởi động nó</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Chưa khởi động: shell màn hình có quyền quản trị, nên plugin cũng sẽ có quyền đó</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Chưa khởi động: PadForge không đọc được liệu nó có quyền quản trị hay không</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Chưa khởi động: Windows đã cấp cho nó quyền quản trị, nên PadForge đã kết thúc nó trước khi nó chạy</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Chưa khởi động: nó đòi quyền quản trị</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Chưa khởi động: Windows từ chối với lỗi {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Chưa khởi động</value></data>
@@ -947,7 +943,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Máy này không có Logitech G-key SDK. SDK này được cài cùng Logitech Gaming Software 8.55 trở lên.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK đã được đăng ký nhưng tệp của nó không còn. Hãy cài đặt lại Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>Đã tìm thấy G-key SDK nhưng không tải được.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>Đã tìm thấy G-key SDK nhưng không tải, vì PadForge không xác nhận được rằng chỉ quản trị viên mới đổi được nó và Logitech đã ký nó.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Thư viện đó không phải là G-key SDK mà chương trình cần.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK từ chối khởi động. Thường là do Logitech Gaming Software không chạy.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Đã kết nối, chưa thấy phím nào. Trong Logitech Gaming Software, hãy kéo lệnh G-key vào từng phím trong hồ sơ PadForge và đặt hồ sơ đó ở chế độ cố định (persistent). Chuột G600 hoặc G300 còn phải thoát khỏi chế độ bộ nhớ tích hợp.</value></data>
@@ -1089,30 +1084,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Giữ cửa sổ ẩn khi PadForge khởi động. Chương trình vẫn chạy và ánh xạ như thường.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tự động khởi động PadForge khi bạn đăng nhập Windows. Khi mục này bật, PadForge cũng khởi động mà không có lời nhắc của Windows từ một lối tắt, một tập lệnh hoặc chương trình khác.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge chạy từ {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Việc này cần PadForge nằm trong thư mục riêng. Thư mục của nó đang chứa các tệp khác, nên PadForge không thể ngăn các chương trình khác thay đổi nó.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Việc này cần PadForge nằm trong thư mục mà các chương trình khác không thể thay đổi. PadForge không ngăn được các chương trình khác thay đổi thư mục của nó.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Chuyển PadForge vào thư mục riêng</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Sao chép PadForge và thiết lập của nó vào Program Files, trỏ các tác vụ của nó đến đó và khởi động nó từ đó. Bản sao ở đây vẫn giữ nguyên.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0} đang chứa các tệp không phải của PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge đã không chuyển: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì nó chạy PadForge từ một thư mục chứa các tệp khác.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge đã không chuyển: Windows không có thư mục Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge đã không chuyển: nó không đọc được PadForge đang chạy.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge đã không chuyển: nó không tạo được {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge đã không chuyển: nó không đọc được những gì {0} đang chứa.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge đã không chuyển: nó không ngăn được các chương trình khác thay đổi {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge đã không chuyển: bản sao của nó trong {0} không khớp với PadForge đang chạy.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge đã không chuyển: sau khi sao chép, {0} chứa các tệp không phải của PadForge, hoặc các chương trình khác có thể thay đổi nó.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge mà nó từng chạy không còn ở đó nữa.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge không ngăn được các chương trình khác thay đổi thư mục mà nó chạy PadForge từ đó.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge không đọc được nó đã chạy PadForge nào.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Khởi động khi đăng nhập đã bị tắt, vì PadForge không đọc được thư mục của PadForge mà nó đã chạy.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge không tạo được thư mục bảo vệ của nó, {0}. PadForge giữ các thư viện nó chạy với quyền quản trị ở đó, và không thể khởi động an toàn nếu thiếu nó.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge không tự khởi động lại được từ thư mục bảo vệ của nó, {0}. PadForge chỉ chạy với quyền quản trị từ đó, nên nó đã không khởi động.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge không tạo được khóa để chỉ cho một bản chạy duy nhất, nên đã không khởi động.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge đang chạy với quyền quản trị từ {0}, một thư mục mà các chương trình khác có thể thay đổi. Chúng có thể đổi thiết lập của PadForge ở đó, và PadForge hành động theo chúng bằng quyền của mình.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge đang chạy với quyền quản trị từ {0}, một thư mục chứa các tệp khác. PadForge không ngăn được các chương trình khác thay đổi thiết lập của nó ở đó, và nó hành động theo chúng bằng quyền của mình.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge đang chạy với quyền quản trị từ {0}, một thư mục mà nó không đọc được. PadForge không ngăn được các chương trình khác thay đổi thiết lập của nó ở đó, và nó hành động theo chúng bằng quyền của mình.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Luôn hiện trong khay hệ thống</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Giữ biểu tượng khay luôn hiển thị khi cửa sổ đang mở, để lệnh Thoát trong menu của nó luôn chỉ cách một cú nhấp.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Cập nhật</value></data>
@@ -1354,13 +1326,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Kiểm tra làm sạch: đang kiểm tra các phần bạn giữ…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Kiểm tra làm sạch: PadForge không đọc được các phần bạn giữ, nên nút Lưu vẫn tắt.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Việc lưu bằng quyền của bạn đã không bắt đầu.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Việc lưu bằng quyền của bạn đã không bắt đầu: không có shell màn hình nào chạy để khởi động nó.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Việc lưu bằng quyền của bạn đã không bắt đầu: Windows từ chối với lỗi {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Việc lưu đã không kết thúc trong {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows không cho phép ghi tệp vào đó.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge không nhận tệp này là bản ghi của chính nó.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Việc lưu kết thúc với mã {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Được lưu dưới tên bạn, vào thư mục Tải xuống lần đầu, sau đó vào nơi bạn lưu lần gần nhất, và hiện trong File Explorer. Một bản ghi dừng khi không ai ở trang (do giới hạn, một macro, một chương trình, công cụ của trợ lý hoặc --record stop) sẽ chờ bước xem lại này trên Trang chủ, và bị xóa sau 7 ngày nếu chưa lưu. Chương trình được báo là nó đang chờ, không bao giờ được báo nó ở đâu.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Một bản ghi sự cố từ {0} đang chờ bạn đọc.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Xem lại</value></data>
@@ -5920,7 +5887,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Ghép đôi đã dừng: việc đọc hoặc ghi tay cầm hay bộ thu phát Bluetooth đã thất bại. Nhật ký chẩn đoán có chi tiết.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Ghép đôi đã dừng vì một lỗi mà PadForge không lường trước. Nhật ký chẩn đoán có chi tiết.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>cần Logitech Gaming Software 8.52 trở lên</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>đã tìm thấy thư viện của nó nhưng không tải, vì PadForge không xác nhận được rằng chỉ quản trị viên mới đổi được nó và Logitech đã ký nó</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>đã tìm thấy thư viện của nó nhưng không dùng được, và nhật ký chẩn đoán cho biết lý do</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>hãy khởi động Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>đang chờ điện thoại có Arx Control</value></data>
@@ -6025,7 +5991,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Tải bản sao thư viện của Force Dimension này thay cho mọi bản khác. Falcon đang mở trên bản khác sẽ đóng rồi mở lại trên bản này. Các bản do SDK cài đặt vẫn được tìm thấy mà không cần bước này.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Thư viện (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Trang tải Falcon SDK đã không mở được: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Trang tải Falcon SDK chưa mở được: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Cài đặt trình điều khiển Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Cài trình điều khiển của Force Dimension, từ thư mục SDK, cho Falcon chưa có trình điều khiển. Windows có thể hỏi trước xem có tin cậy Force Dimension không.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Lấy SDK của Force Dimension</value></data>
@@ -6726,6 +6691,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMapping_Away" xml:space="preserve"><value>Thiết bị chưa được kết nối. SDL sẽ đọc nó khi nó được kết nối.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL không cung cấp cho PadForge kết quả đọc nào của thiết bị này.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Bản sao cộng đồng có sẵn, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Đã tải {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Tệp riêng của PadForge</value></data>

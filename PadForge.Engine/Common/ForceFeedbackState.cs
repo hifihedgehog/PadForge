@@ -269,11 +269,11 @@ namespace PadForge.Engine
         /// joystick rumble again and records them as delivered, for a
         /// Bliss-Box port the switch hands back to SDL, which SDL never opens
         /// as a haptic device (the fork maps all four port IDs as a gamepad,
-        /// SDL_gamepad_db_community.h:286-289, and SDL_IsJoystickHaptic
+        /// SDL_gamepad_db_community.h:306-309, and SDL_IsJoystickHaptic
         /// refuses a gamepad, SDL_haptic.c:347-348). A Remote Link peer sends
         /// a steady level once, so waiting for the next change would leave the
         /// motors stopped. A level goes out after a stop: SDL skips a write
-        /// that repeats the levels it last took (SDL_joystick.c:3189-3192),
+        /// that repeats the levels it last took (SDL_joystick.c:3203-3206),
         /// and a GPA's final stop from the retired port can end a level SDL
         /// took while the port was retiring. A device with no SDL motors takes
         /// no level, so the recorded ones are dropped: kept, they would go

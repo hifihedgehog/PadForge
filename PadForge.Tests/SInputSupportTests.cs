@@ -17,9 +17,9 @@ namespace PadForge.Tests
     /// and the packer behind the HIDMaestro <c>sinput</c> persona.
     ///
     /// <para>The wire side is checked against a port of SDL's own SInput code
-    /// at the fork PadForge ships, 51470ad786: the feature reply parse
+    /// at the fork PadForge ships, 68f6b71aef: the feature reply parse
     /// (SDL_hidapi_sinput.c:437-557), the style decode (:274-434), the report
-    /// decode (:839-1052) and the mapping builder (SDL_gamepad.c:848-1069).
+    /// decode (:839-1052) and the mapping builder (SDL_gamepad.c:850-1071).
     /// The persona's feature reply is the one HIDMaestro#75 specifies, so the
     /// packer, the reply and SDL's mapping are checked against one another
     /// rather than against this repo's reading of them.</para>
@@ -30,7 +30,7 @@ namespace PadForge.Tests
 
         // ── identity ───────────────────────────────────────────────────
 
-        /// <summary>SDL_IsJoystickSInputController, SDL_joystick.c:4469-4485,
+        /// <summary>SDL_IsJoystickSInputController, SDL_joystick.c:4495-4511,
         /// with the IDs at usb_ids.h:30, 94 and 313-323.</summary>
         [Theory]
         [InlineData(0x2E8A, 0x10C6, true)]   // generic SInput
@@ -81,7 +81,7 @@ namespace PadForge.Tests
 
             /// <summary>ProcessSDLFeaturesResponse (SDL_hidapi_sinput.c:437-557)
             /// with DeviceDynamicEncodingSetup (:274-434) and the mapping
-            /// builder (SDL_gamepad.c:848-1069). The reply's report ID is byte
+            /// builder (SDL_gamepad.c:850-1071). The reply's report ID is byte
             /// 0, and SDL parses from byte 2 (:599-600).</summary>
             public static SdlSInput FromReply(byte[] reply)
             {
@@ -142,7 +142,7 @@ namespace PadForge.Tests
                 // The D-pad becomes the hat (:543-552).
                 if ((s.Masks[0] & 0xF0) == 0xF0) { s.Dpad = true; s.Masks[0] &= 0x0F; }
 
-                // SDL_SInputStylesMapExtraction, SDL_gamepad.c:848-1069.
+                // SDL_SInputStylesMapExtraction, SDL_gamepad.c:850-1071.
                 int b = 0;
                 int miscButton = 2, miscEnd = 2 + miscButtons;
                 void Add(string name) => s.Buttons[name] = b++;
@@ -257,7 +257,7 @@ namespace PadForge.Tests
             Assert.Equal(SInputReportPacker.GyroRangeDps, sdl.GyroRange);
             Assert.Equal((2, 1), (sdl.TouchpadCount, sdl.FingerCount));
             Assert.True(sdl.Dpad);
-            // SDL_gamepad.c:848-1069 for these masks, in order.
+            // SDL_gamepad.c:850-1071 for these masks, in order.
             Assert.Equal(new[]
                 {
                     "a", "b", "x", "y", "leftstick", "rightstick", "leftshoulder", "rightshoulder",
@@ -755,7 +755,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>SDL lights an SInput pad's player LED from the index it
-        /// gives the pad itself (SDL_joystick.c:3619-3624 and 2416-2421,
+        /// gives the pad itself (SDL_joystick.c:3633-3638 and 2416-2421,
         /// SDL_hidapi_sinput.c:691-709), so the wrapper writes the slot's index
         /// over it, and both ends of the remote link carry the number.</summary>
         [Fact]

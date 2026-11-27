@@ -374,9 +374,21 @@ namespace PadForge.Common.Input
         /// SDL writes the ID's checksum into the row as it adds it
         /// (SDL_PrivateAddMappingForGUID) and passes over a row whose checksum
         /// is not the device's. SDL reads the row of the nearest step, and of
-        /// rows at one step the first in its list.
+        /// rows at one step the first in its list. 5 to 8: steps 1 to 4 for the
+        /// device's GUID on the USB bus (ControllerDatabaseRow.UsbBusFallback),
+        /// which SDL tries only after every step for its own GUID
+        /// (SDL_gamepad.c:1652-1667).
         /// </summary>
         internal static int Reach(string rowGuid, string deviceGuid)
+        {
+            int step = ReachAsGiven(rowGuid, deviceGuid);
+            if (step > 0) return step;
+            string usb = ControllerDatabaseRow.UsbBusFallback(deviceGuid);
+            step = usb == null ? 0 : ReachAsGiven(rowGuid, usb);
+            return step > 0 ? step + 4 : 0;
+        }
+
+        private static int ReachAsGiven(string rowGuid, string deviceGuid)
         {
             if (rowGuid == null || deviceGuid == null || rowGuid.Length != 32 || deviceGuid.Length != 32) return 0;
             for (int i = 0; i < 32; i++)

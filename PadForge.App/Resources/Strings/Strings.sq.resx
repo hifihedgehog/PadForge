@@ -619,10 +619,6 @@
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Nuk u nis: asnjë program nuk i hap skedarët Python për ty dhe PadForge nuk gjen nisësin py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Nuk u nis: PadForge nuk mund të lexojë cili program e hap këtë lloj skedari për ty</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Nuk u nis: programi që e hap këtë lloj skedari për ty nuk është në këtë PC</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Nuk u nis: nuk punon asnjë guaskë e tryezës për ta nisur nën të</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Nuk u nis: guaska e tryezës ka të drejta administratori, ndaj shtojca do t'i kishte edhe ajo</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Nuk u nis: PadForge nuk mund të lexojë nëse do të kishte të drejta administratori</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Nuk u nis: Windows i dha të drejta administratori, ndaj PadForge e mbylli para se të punonte</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Nuk u nis: kërkon të drejta administratori</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Nuk u nis: Windows refuzoi me gabimin {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Nuk u nis</value></data>
@@ -925,7 +921,6 @@
   <data name="Settings_GKeysStatus_NoSdk" xml:space="preserve"><value>Nuk ka Logitech G-key SDK në këtë kompjuter. Instalohet me Logitech Gaming Software 8.55 ose më të ri.</value></data>
   <data name="Settings_GKeysStatus_PathStale" xml:space="preserve"><value>G-key SDK është regjistruar, por skedari i tij nuk ekziston më. Riinstalo Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_LoadFailed" xml:space="preserve"><value>G-key SDK u gjet, por nuk mund të ngarkohej.</value></data>
-  <data name="Settings_GKeysStatus_Refused" xml:space="preserve"><value>G-key SDK u gjet por nuk u ngarkua, sepse PadForge nuk mundi të konfirmonte që vetëm administratorët mund ta ndryshojnë dhe që Logitech e ka nënshkruar.</value></data>
   <data name="Settings_GKeysStatus_WrongLibrary" xml:space="preserve"><value>Ajo bibliotekë nuk është G-key SDK që pritet këtu.</value></data>
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK refuzoi të niset. Zakonisht Logitech Gaming Software nuk është në punë.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>U lidh, por nuk është parë ende asnjë tast. Në Logitech Gaming Software, tërhiq komandën G-key mbi çdo tast në profilin PadForge dhe bëje atë profil të përhershëm. Një maus G600 ose G300 duhet gjithashtu të jetë jashtë modalitetit të memories së brendshme.</value></data>
@@ -1029,30 +1024,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Mbaje dritaren të fshehur kur niset PadForge. Ai punon dhe hartëzon si zakonisht.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Nise PadForge automatikisht kur hyn në Windows. Sa kohë është aktive, PadForge niset edhe pa pyetjen e Windows nga një shkurtore, një skript ose një program tjetër.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge punon nga {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Kjo kërkon PadForge në një dosje të vetën. Dosja e tij përmban skedarë të tjerë, ndaj PadForge nuk mund t'i ndalojë programet e tjera ta ndryshojnë.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Kjo kërkon PadForge në një dosje që programet e tjera nuk mund ta ndryshojnë. PadForge nuk mundi t'i ndalonte ato ta ndryshonin dosjen e tij.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Zhvendose PadForge në dosjen e vet</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>E kopjon PadForge dhe cilësimet e tij te Program Files, i drejton detyrat e tij atje dhe e nis që andej. Kopja këtu mbetet siç është.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: {0} përmban skedarë që nuk janë të PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Nisja me hyrjen në Windows u çaktivizua, sepse e niste PadForge nga një dosje që përmban skedarë të tjerë.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge nuk u zhvendos: Windows nuk ka dosje Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge nuk u zhvendos: nuk mundi të lexonte PadForge që po punon.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: nuk mundi të krijonte {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: nuk mundi të lexonte çfarë përmban {0}.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: nuk mundi t'i ndalonte programet e tjera të ndryshonin {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: kopja e tij në {0} nuk përputhej me PadForge që po punon.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge nuk u zhvendos: pas kopjimit, {0} përmbante skedarë që nuk janë të PadForge, ose programet e tjera mund ta ndryshonin.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Nise me hyrjen në Windows u fik, sepse PadForge që punonte nuk është më aty.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Nise me hyrjen në Windows u fik, sepse PadForge nuk mundi t'i ndalonte programet e tjera të ndryshonin dosjen nga e cila e nisi PadForge.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Nise me hyrjen në Windows u fik, sepse PadForge nuk mundi të lexonte cilin PadForge kishte nisur.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Nise me hyrjen në Windows u fik, sepse PadForge nuk mundi të lexonte dosjen e PadForge që kishte nisur.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge nuk mundi të krijojë dosjen e vet të mbrojtur, {0}. PadForge mban atje librarit që ekzekuton me të drejta administratori dhe nuk mund të niset i sigurt pa të.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge nuk mundi të niset sërish nga dosja e vet e mbrojtur, {0}. PadForge punon me të drejta administratori vetëm nga atje, ndaj nuk u nis.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge nuk mundi të krijonte kyçin që e mban në një kopje të vetme në punë, ndaj nuk u nis.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge punon me të drejta administratori nga {0}, një dosje që programet e tjera mund ta ndryshojnë. Ato mund të ndryshojnë cilësimet e PadForge atje, dhe PadForge vepron mbi to me të drejtat e veta.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge punon me të drejta administratori nga {0}, një dosje që përmban skedarë të tjerë. PadForge nuk mund t'i ndalojë programet e tjera të ndryshojnë cilësimet e tij atje, dhe vepron mbi to me të drejtat e veta.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge punon me të drejta administratori nga {0}, një dosje që PadForge nuk mundi ta lexonte. PadForge nuk mund t'i ndalojë programet e tjera të ndryshojnë cilësimet e tij atje, dhe vepron mbi to me të drejtat e veta.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Shfaq gjithmonë në tabakanë e sistemit</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Mbaje ikonën e tabakasë të dukshme sa kohë dritarja është e hapur, që Dil në menynë e saj të jetë gjithmonë një klik larg.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Përditësimet</value></data>
@@ -1294,13 +1266,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Kontrolli i pastrimit: po kontrollohen pjesët që mban…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Kontrolli i pastrimit: PadForge nuk mundi të lexonte pjesët që mban, ndaj Ruaj mbetet i fikur.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Ruajtja me të drejtat e tua nuk nisi.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Ruajtja me të drejtat e tua nuk nisi: nuk punon asnjë guaskë tryeze për ta nisur nën të.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Ruajtja me të drejtat e tua nuk nisi: Windows refuzoi me gabimin {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Ruajtja nuk përfundoi në {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows nuk lejoi që skedari të shkruhej atje.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge nuk e pranoi këtë skedar si regjistrim të vetin.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Ruajtja përfundoi me kodin {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Ruhet si ti, te dosja Downloads herën e parë, pastaj aty ku ruajte së fundmi, dhe shfaqet në Explorer. Një regjistrim që ndalon ndërsa askush nuk është te faqja (kufiri i tij, një makro, një program, mjeti i asistentit ose --record stop) pret këtë shqyrtim te Kreu dhe fshihet pas 7 ditësh nëse nuk ruhet. Një programi i thuhet që pret, kurrë se ku.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Një regjistrim problemi nga {0} pret që ta lexosh.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Shqyrto</value></data>
@@ -5530,7 +5497,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Çiftimi u ndal: leximi ose shkrimi i kontrolluesit ose i radios Bluetooth dështoi. Regjistri i diagnostikimit ka detajet.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Çiftimi u ndal për një gabim që PadForge nuk e priste. Regjistri i diagnostikimit ka detajet.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>kërkon Logitech Gaming Software 8.52 ose më të ri</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>gjeti bibliotekën e vet dhe nuk e ngarkoi, sepse PadForge nuk mundi të konfirmonte që vetëm administratorët mund ta ndryshojnë dhe që Logitech e ka nënshkruar</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>gjeti bibliotekën e vet dhe nuk mundi ta përdorte, dhe regjistri i diagnostikimit thotë pse</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>nisni Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>në pritje të një telefoni me Arx Control</value></data>
@@ -5628,7 +5594,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Ngarkon këtë kopje të bibliotekës së Force Dimension në vend të çdo tjetre. Një Falcon i hapur në një kopje tjetër mbyllet dhe hapet përsëri në këtë. Kopjet që instalon SDK gjenden edhe pa të.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliotekat (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Faqja e shkarkimit të SDK-së së Falcon nuk u hap: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Faqja e shkarkimit të SDK-së së Falcon nuk është hapur ende: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Instalo drajverin e Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Instalon drajverin e Force Dimension, nga dosja e SDK-së, te një Falcon që nuk ka asnjë. Windows mund të pyesë së pari nëse i beson Force Dimension.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Merr SDK-në e Force Dimension</value></data>
@@ -5980,6 +5945,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="SdlMapping_Away" xml:space="preserve"><value>Pajisja nuk është e lidhur. SDL e lexon sapo të lidhet.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL nuk i dha PadForge asnjë lexim të kësaj pajisjeje.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopja e komunitetit e brendshme, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Shkarkuar {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Skedari i vetë PadForge</value></data>

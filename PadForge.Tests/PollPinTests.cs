@@ -47,9 +47,5 @@ namespace PadForge.Tests
             // No performance core but 0 in the mask: an efficient one.
             Assert.Equal(7, InputManager.ChoosePollCore(0xF1, hybrid));
         }
-
-        [Fact]
-        public void TheSwitchIsAmongTheVariablesACopyWithRightsGets()
-            => Assert.Contains("PADFORGE_POLL_PIN", PadForge.Services.RightsVariables.PadForgeVariables);
     }
 }

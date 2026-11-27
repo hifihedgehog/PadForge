@@ -54,88 +54,28 @@ namespace PadForge.Services
             Write(port, new Seams());
         }
 
-        /// <summary>The switch the copy started as the user takes.</summary>
-        internal const string Switch = "--port-files";
-
-        /// <summary>How long the copy started as the user may take.</summary>
-        internal const int AsUserMs = 15000;
-
         /// <summary>The write's ways out to the PC, each a test's to
         /// replace.</summary>
         internal sealed class Seams
         {
             public Func<bool> RealDsxRunning = GameModPortFiles.RealDsxRunning;
-            /// <summary>Whether the files go through a copy started as the
-            /// user, null to apply the rule from <see cref="OwnRights"/> and
-            /// <see cref="NoLowerRight"/>.</summary>
-            public Func<bool> RightsTheShellLacks;
-            /// <summary>Whether this process has administrator rights, null
-            /// when its token cannot be read.</summary>
-            public Func<bool?> OwnRights = Plugins.PluginLauncher.ThisProcessHasAdministratorRights;
-            /// <summary>Whether the shell's user has no lower right than full
-            /// rights (UAC off, the built-in Administrator).</summary>
-            public Func<bool> NoLowerRight = Plugins.PluginLauncher.ShellUserHasNoLowerRight;
-            public Plugins.IPluginLauncher Launcher = new Plugins.PluginLauncher();
-            public Func<string> Exe = () => Environment.ProcessPath;
             public Action<int> WriteHere = port => WriteTo(LegacyPath, CurrentPath, port);
         }
 
-        /// <summary>Writes the files as the user: in this process when it
-        /// runs without rights, or when the shell's user has no lower right
-        /// (UAC off, or the built-in Administrator, whose every program has
-        /// full rights), and otherwise in a copy started as the desktop user.
-        /// An Explorer started elevated, or a shell token that cannot be
-        /// read, gets nothing written with PadForge's rights. Runs on a pool
-        /// thread (GameModServer.Start).</summary>
+        /// <summary>Writes the files in this process, unless a real DSX runs
+        /// and owns them. Runs on a pool thread (GameModServer.Start).</summary>
         internal static void Write(int port, Seams seams)
         {
             try
             {
                 if (seams.RealDsxRunning()) return;
-                bool lacks = seams.RightsTheShellLacks?.Invoke()
-                             ?? (seams.OwnRights() != false && !seams.NoLowerRight());
-                if (!lacks)
-                {
-                    seams.WriteHere(port);
-                    return;
-                }
-                string exe = seams.Exe();
-                if (string.IsNullOrEmpty(exe)) return;
-                string line = "\"" + exe + "\" " + Switch + " " + port.ToString(CultureInfo.InvariantCulture);
-                var launch = seams.Launcher.Start(new Plugins.PluginCommand(exe, line, Path.GetDirectoryName(exe)),
-                    new System.Collections.Generic.Dictionary<string, string>());
-                if (launch.Refusal == Plugins.PluginRefusal.ShellElevated && seams.NoLowerRight())
-                {
-                    seams.WriteHere(port);
-                    return;
-                }
-                if (launch.Process == null)
-                {
-                    PadForge.Engine.SdlDiagLog.WriteLine("GAMEMOD port files not written: the copy as the user did not start ("
-                        + launch.Refusal + (launch.Error != 0 ? ", error " + launch.Error : string.Empty) + ")");
-                    return;
-                }
-                using var process = launch.Process;
-                using var exited = new System.Threading.ManualResetEventSlim(false);
-                process.Exited += _ => exited.Set();
-                if (!exited.Wait(AsUserMs)) process.Stop();
+                seams.WriteHere(port);
             }
             catch
             {
                 // A file the mods cannot read is the mods' fallback, never a
                 // reason to stop the server.
             }
-        }
-
-        /// <summary>The copy started as the user: <c>--port-files
-        /// &lt;port&gt;</c>. 0 when written or left as they were, 1 when a
-        /// real DSX runs and owns them.</summary>
-        internal static int RunForClient(int port)
-        {
-            if (OffLimitsForTest) return 0;
-            if (RealDsxRunning()) return 1;
-            WriteTo(LegacyPath, CurrentPath, port);
-            return 0;
         }
 
         /// <summary>Whether the file or any folder above it that exists is

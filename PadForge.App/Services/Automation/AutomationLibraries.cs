@@ -58,7 +58,7 @@ namespace PadForge.Services.Automation
         void IAutomationLibraries.Save(AutomationLibraryKind kind, string path)
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("No file was named.", nameof(path));
-            var (code, error) = Install.UserInstall.AsUserAsync(new Install.InstallRequest(WhatOf(kind), path)).GetAwaiter().GetResult();
+            var (code, error) = Install.UserInstall.InCopyAsync(new Install.InstallRequest(WhatOf(kind), path)).GetAwaiter().GetResult();
             if (code != Install.UserInstall.Done) throw new InvalidOperationException(error ?? "The install ended with code " + code + ".");
         }
 

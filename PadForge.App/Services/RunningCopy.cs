@@ -311,11 +311,6 @@ namespace PadForge.Services
         /// <summary>The signal pipe's line that asks the copy to close.</summary>
         internal const string ExitLine = "exit";
 
-        /// <summary>The start of the signal pipe's line that hands a logon
-        /// start's switches: the words follow as a JSON array of
-        /// strings.</summary>
-        internal const string SwitchesLine = "switches";
-
         /// <summary>How long the running copy has to take an ask.</summary>
         internal const int AskMs = 5000;
 
@@ -454,100 +449,6 @@ namespace PadForge.Services
             finally
             {
                 if (process != IntPtr.Zero) CloseHandle(process);
-            }
-        }
-
-        // ── The start switches of a start through the logon task (#600 item 44) ──
-
-        /// <summary>The most a start's switches line may take, in bytes of
-        /// UTF-8: the line a pipe of <see cref="ExternalControlService"/>
-        /// keeps.</summary>
-        internal const int MostStartSwitchBytes = ExternalControlService.LongestRequest;
-
-        /// <summary>The name of the event a start holds while the copy it
-        /// started through the logon task is to wait for its switches. It
-        /// lives in the session's namespace, beside the signal window of the
-        /// same name.</summary>
-        internal static string StartPendingName(string signalName) => @"Local\" + signalName + ".Switches";
-
-        /// <summary>Says to the copy about to start that its switches are
-        /// coming, until disposed. Null in the test host for the app's own
-        /// name, or when the event cannot be made.</summary>
-        internal static IDisposable MarkStartPending(string signalName = SignalWindowName)
-        {
-            if (OffLimitsForTest && IsTheAppsOwn(signalName)) return null;
-            try { return new EventWaitHandle(false, EventResetMode.ManualReset, StartPendingName(signalName)); }
-            catch (Exception ex) when (ex is UnauthorizedAccessException or WaitHandleCannotBeOpenedException or System.IO.IOException)
-            {
-                return null;
-            }
-        }
-
-        /// <summary>Whether a start holds the event of
-        /// <see cref="MarkStartPending"/> for this signal window. The name is
-        /// in the session's namespace, where any program of the user can make
-        /// it first, so one this copy cannot open is no pending start, and the
-        /// question never throws.</summary>
-        internal static bool StartIsPending(string signalName)
-        {
-            try
-            {
-                if (!EventWaitHandle.TryOpenExisting(StartPendingName(signalName), out var pending)) return false;
-                pending.Dispose();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>Waits up to <paramref name="waitMs"/> for the checked
-        /// signal window of a copy that is starting, which a copy without
-        /// rights cannot see by the lock. False when none came.</summary>
-        internal static bool WaitForStartedCopy(int waitMs, string signalName = SignalWindowName)
-        {
-            var clock = Stopwatch.StartNew();
-            while (FindChecked(signalName) == IntPtr.Zero)
-            {
-                if (clock.ElapsedMilliseconds >= waitMs) return false;
-                Thread.Sleep(100);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Hands the start's switches to the copy the logon task started,
-        /// with this process's right to come to the front, over the signal
-        /// pipe of its checked signal window: one line, <see cref="SwitchesLine"/>
-        /// and the words as a JSON array. True when the copy took them.
-        /// </summary>
-        internal static bool HandStartSwitches(IReadOnlyList<string> words, int answerMs, string signalName = SignalWindowName)
-        {
-            IntPtr hwnd = FindChecked(signalName);
-            if (hwnd == IntPtr.Zero) return false;
-            GetWindowThreadProcessId(hwnd, out uint pid);
-            if (pid != 0) AllowSetForegroundWindow(pid);
-            string line = SwitchesLine + " " + System.Text.Json.JsonSerializer.Serialize(words ?? Array.Empty<string>());
-            if (System.Text.Encoding.UTF8.GetByteCount(line) > MostStartSwitchBytes) return false;
-            return Signal(signalName, line, answerMs);
-        }
-
-        /// <summary>The words of a switches line's JSON array, or null for
-        /// one that is not an array of strings.</summary>
-        internal static string[] ReadStartSwitches(string json)
-        {
-            try
-            {
-                string[] words = System.Text.Json.JsonSerializer.Deserialize<string[]>(json ?? string.Empty);
-                if (words == null) return null;
-                foreach (string word in words)
-                    if (word == null) return null;
-                return words;
-            }
-            catch (System.Text.Json.JsonException)
-            {
-                return null;
             }
         }
 

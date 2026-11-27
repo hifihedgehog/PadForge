@@ -46,15 +46,7 @@ namespace PadForge.Services
     /// <see cref="PadForge.Common.StartupHelper"/> drives it, since its text is
     /// localized, and started by its full path in System32.</para>
     ///
-    /// <para>A task runs as SYSTEM, so what it runs and what it reads must be
-    /// out of reach of every account without rights (#600). Its action runs
-    /// PadForge.exe only when the exe's folder is PadForge's own and no other
-    /// account can change it (<see cref="ExeFolder.MayHoldTasks"/>), and
-    /// otherwise falls to Windows' and HidHide's own tools alone. The run
-    /// unpacks into the protected folder. The definition schtasks reads is
-    /// written to the protected folder's Work folder. A start with rights
-    /// rewrites a task left from before that runs an exe in a shared folder
-    /// (<see cref="AuditTasks"/>).</para>
+    /// <para>A task runs as SYSTEM and runs this exe, as in 6.0.1.</para>
     /// </summary>
     internal static class GiveBackTask
     {
@@ -90,11 +82,6 @@ namespace PadForge.Services
         /// schtasks reads it. Null in production.</summary>
         internal static Func<string> DefinitionFolderSeam;
 
-        /// <summary>Test seam: whether a task may run this exe. Null in
-        /// production, where <see cref="ExeFolder.MayHoldTasks"/>
-        /// answers.</summary>
-        internal static Func<string, bool> MayRunExeSeam;
-
         /// <summary>The pipes this app holds, by task. A registration holds one
         /// for the wait it starts. They go when the task is deleted, and with the
         /// process however it ends.</summary>
@@ -102,16 +89,8 @@ namespace PadForge.Services
 
         private static string OwnExe => ExePathSeam != null ? ExePathSeam() : Environment.ProcessPath;
 
-        /// <summary>This exe, when a task may run it, or null: then the task
-        /// runs Windows' and HidHide's own tools alone.</summary>
-        private static string ExeForTasks
-        {
-            get
-            {
-                string exe = OwnExe;
-                return (MayRunExeSeam ?? ExeFolder.MayHoldTasks)(exe) ? exe : null;
-            }
-        }
+        /// <summary>The exe a task runs: this one.</summary>
+        private static string ExeForTasks => OwnExe;
 
         /// <summary>How long one schtasks run is waited for.</summary>
         internal const int RunWaitMs = 10000;
@@ -179,15 +158,16 @@ namespace PadForge.Services
             catch { return -1; }
         }
 
-        /// <summary>Where a run's native libraries are unpacked: the protected
-        /// folder a start with rights uses (<see cref="ProtectedStart"/>), so the
-        /// run as SYSTEM needs no second start and finds the app's own copy.
-        /// Before #600 this was the app's base, the user's temp folder, which
-        /// every program of the user can write.</summary>
+        /// <summary>Where this process's native libraries are extracted, the default
+        /// the host itself uses (Microsoft, single-file deployment). A run starts from
+        /// the same place, so SYSTEM's profile takes no copy of its own, and the run is
+        /// up at once.</summary>
         private static string ExtractBase()
         {
             if (ExtractBaseSeam != null) return ExtractBaseSeam();
-            return ProtectedFolder.Natives;
+            return Environment.GetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR") is { Length: > 0 } set
+                ? set
+                : Path.Combine(Path.GetTempPath(), ".net");
         }
 
         /// <summary>A task's whole action. It waits while the app holds the pipe,
@@ -370,12 +350,7 @@ namespace PadForge.Services
         private static bool Register(string name, string command, Action<string> log, bool holdPipe, bool pipeHeld)
         {
             if (RunSeam == null && OffLimitsForTest) return false;
-            string folder = DefinitionFolderSeam != null ? DefinitionFolderSeam() : ProtectedWork.Folder("GiveBack");
-            if (folder == null)
-            {
-                log?.Invoke($"The task {name} could not be registered: the protected folder could not be made.");
-                return false;
-            }
+            string folder = DefinitionFolderSeam != null ? DefinitionFolderSeam() : Path.Combine(Path.GetTempPath(), "PadForge", "GiveBack");
             string xml = Path.Combine(folder, name.Replace(' ', '_') + ".xml");
             // The pipe stands before the task, so the wait its registration
             // starts finds it.
@@ -549,40 +524,6 @@ namespace PadForge.Services
             return names;
         }
 
-        /// <summary>
-        /// A start with rights: each give-back task whose action runs an exe
-        /// from a folder other accounts may change is fixed. An own folder is
-        /// protected (<see cref="ExeFolder.Check"/>) and the task stays as it
-        /// is. Otherwise its action is made again without the exe, with
-        /// Windows' and HidHide's tools alone. A touchpad's with no HidHide CLI
-        /// to fall to is removed, since the touchpad's give-back at every start
-        /// covers it.
-        /// </summary>
-        internal static void AuditTasks(Action<string> log)
-        {
-            if (RunSeam == null && OffLimitsForTest) return;
-            foreach (string name in TaskNamesIn(Output("/Query /FO CSV /NH")))
-            {
-                var run = RunIn(Output($"/Query /TN \"{name}\" /XML"));
-                if (run == null || ExeFolder.Check(run.Value.Exe) == ExeFolder.Standing.Own) continue;
-                log?.Invoke($"{name} ran {run.Value.Exe}, from a folder other accounts may change: it is made again without it.");
-                Remake(name, null, run.Value.Switch, run.Value.Id, log);
-            }
-        }
-
-        /// <summary>Points every give-back task that runs PadForge.exe at
-        /// <paramref name="exe"/>, as the move does.</summary>
-        internal static void Repoint(string exe, Action<string> log)
-        {
-            if (RunSeam == null && OffLimitsForTest) return;
-            foreach (string name in TaskNamesIn(Output("/Query /FO CSV /NH")))
-            {
-                var run = RunIn(Output($"/Query /TN \"{name}\" /XML"));
-                if (run == null) continue;
-                Remake(name, (MayRunExeSeam ?? ExeFolder.MayHoldTasks)(exe) ? exe : null, run.Value.Switch, run.Value.Id, log);
-            }
-        }
-
         private static void Remake(string name, string exe, string runSwitch, string id, Action<string> log)
         {
             if (!CanQuote(id) || NameOf(id) != name) return;
@@ -611,7 +552,7 @@ namespace PadForge.Services
             if (OffLimitsForTest) return null;
             try
             {
-                using var process = RightsVariables.Start(new ProcessStartInfo
+                using var process = Process.Start(new ProcessStartInfo
                 {
                     FileName = Path.Combine(System32, "schtasks.exe"),
                     Arguments = arguments,
@@ -648,7 +589,7 @@ namespace PadForge.Services
             if (OffLimitsForTest) return -1;
             try
             {
-                using var process = RightsVariables.Start(new ProcessStartInfo
+                using var process = Process.Start(new ProcessStartInfo
                 {
                     FileName = Path.Combine(System32, "schtasks.exe"),
                     Arguments = arguments,

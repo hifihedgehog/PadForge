@@ -71,10 +71,8 @@ namespace PadForge.Engine.Common.Logitech
 
         /// <summary>The library, or null with <paramref name="reason"/>
         /// saying why: "gate" in the test host, "missing" with no
-        /// registration, "refused" when PadForge's checks refused each path
-        /// (TrustedLibrary), "load" when a registered path would not load,
-        /// "exports" when a DLL loaded but is not this library
-        /// (<see cref="TrustedLibrary.Outcome"/>).</summary>
+        /// registration, "load" when no registered path loaded, "exports"
+        /// when a DLL loaded but is not this library.</summary>
         public static LogitechLcdLibrary TryLoad(out string reason)
         {
             reason = "missing";
@@ -85,23 +83,14 @@ namespace PadForge.Engine.Common.Logitech
             }
             foreach (string candidate in LogitechServerCatalog.LcdCandidates())
             {
-                // Loaded into PadForge only when only administrators could have put it
-                // in place and Logitech signed it, held open from the check
-                // through the load (#600, TrustedLibrary).
-                IntPtr module = TrustedLibrary.Load(candidate, TrustedLibrary.Logitech,
-                    p => NativeLibrary.TryLoad(p, out IntPtr loaded) ? loaded : IntPtr.Zero, out string why);
-                if (module == IntPtr.Zero)
-                {
-                    SdlDiagLog.WriteLine(TrustedLibrary.NotLoadedLine("LOGITECH LCD", candidate, why));
-                    reason = TrustedLibrary.Outcome(reason, why);
-                    continue;
-                }
+                if (reason == "missing") reason = "load";
+                if (!NativeLibrary.TryLoad(candidate, out IntPtr module)) continue;
                 var lib = new LogitechLcdLibrary { Path = candidate };
                 if (lib.Resolve(module)) return lib;
                 // Loaded, but not the library the header describes. The next
                 // candidate may be. The module stays mapped, which costs
                 // nothing and is safer than unmapping code that ran.
-                reason = TrustedLibrary.Outcome(reason, "exports");
+                reason = "exports";
             }
             return null;
         }

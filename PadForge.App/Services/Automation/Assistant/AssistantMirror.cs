@@ -106,17 +106,17 @@ namespace PadForge.Services.Automation
         /// own.</summary>
         internal Func<AutomationFileSettings> FileSettings { get; set; } = () => AutomationFileSettings.Kept(AutomationFileSettings.DefaultPath());
 
-        /// <summary>Starts PadForge minimized through the normal start path:
-        /// the desktop shell starts PadForge.exe as a double-click does, with
-        /// the user's rights, and PadForge asks Windows for its own. True when
-        /// the shell took it. The test host starts nothing
+        /// <summary>Starts PadForge minimized through the shell, as a
+        /// double-click does, so Windows asks for its rights when this copy
+        /// has none. True when it started. The test host starts nothing
         /// (ShellLaunch.OffLimitsForTest).</summary>
         internal Func<bool> StartPadForge { get; set; } = () =>
         {
             string exe = Environment.ProcessPath;
             if (string.IsNullOrEmpty(exe)) return false;
-            return PadForge.Common.ShellLaunch.AsTheUser(new System.Diagnostics.ProcessStartInfo(exe, "--minimized")
+            return PadForge.Common.ShellLaunch.TryStart(new System.Diagnostics.ProcessStartInfo(exe, "--minimized")
             {
+                UseShellExecute = true,
                 WorkingDirectory = Path.GetDirectoryName(exe) ?? string.Empty,
             }, out _);
         };

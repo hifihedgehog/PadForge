@@ -18,14 +18,14 @@ namespace PadForge.Common.Input
     ///
     /// <para>The frame, report ID at byte 0, as SINPUT-LIB-HID 8dd1e5a builds
     /// it (sinput_lib_protocol.c:81-176, filled at :406-487) and SDL reads it
-    /// (SDL fork 51470ad786, SDL_hidapi_sinput.c:66-88, decoded at
+    /// (SDL fork 68f6b71aef, SDL_hidapi_sinput.c:66-88, decoded at
     /// :839-1052):</para>
     /// <list type="bullet">
     /// <item>1 plug status, 2 charge percent.</item>
     /// <item>3 to 6 the 32 buttons, south at bit 0 (sinput_lib_types.h:222-283).
     /// SDL numbers the buttons the persona's feature reply enables in that bit
     /// order (:848-870) and its mapping binds button 0 to a, the south button
-    /// (SDL_gamepad.c:967).</item>
+    /// (SDL_gamepad.c:969).</item>
     /// <item>7 to 14 the sticks, then 15 and 17 the triggers, signed 16-bit
     /// little-endian. SDL passes the sticks through unchanged (:889-912), so Y
     /// is down-positive, as the raw surface already is, and a trigger runs from
@@ -121,7 +121,7 @@ namespace PadForge.Common.Input
             // The trigger bits
             // set at the pull the Valve packers use, TriggerClickPull, and SDL
             // reads them as Misc 3 and Misc 4 beside the analog axes, its
-            // dual-stage shape (SDL_gamepad.c:996-1003).
+            // dual-stage shape (SDL_gamepad.c:998-1005).
             byte b4 = 0;
             if (ValveReportPackers.Btn(raw, P, "LeftThumbButton")) b4 |= 0x01;
             if (ValveReportPackers.Btn(raw, P, "RightThumbButton")) b4 |= 0x02;

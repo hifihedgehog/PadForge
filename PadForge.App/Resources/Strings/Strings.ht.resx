@@ -744,30 +744,7 @@
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Kenbe fenèt la kache lè PadForge demare. Li mache epi li asiyen tankou abitid.</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Demare PadForge otomatikman lè ou konekte nan Windows. Pandan sa a limen, PadForge demare tou san demann Windows lan depi yon rakousi, yon script oswa yon lòt pwogram.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge ap mache apati {0}.</value></data>
-  <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>Sa a bezwen PadForge nan yon dosye pa li. Dosye li a gen lòt fichye ladan l, kidonk PadForge pa ka anpeche lòt pwogram chanje l.</value></data>
-  <data name="ExeFolder_CouldNotProtect" xml:space="preserve"><value>Sa a bezwen PadForge nan yon dosye lòt pwogram pa ka chanje. PadForge pa t ka anpeche yo chanje dosye li a.</value></data>
-  <data name="ExeFolder_Move" xml:space="preserve"><value>Deplase PadForge nan pwòp dosye li</value></data>
-  <data name="ExeFolder_MoveTip" xml:space="preserve"><value>Kopye PadForge ak paramèt li yo nan Program Files, dirije travay li yo la, epi demare l la. Kopi ki isit la rete jan li ye a.</value></data>
-  <data name="ExeFolder_TargetTaken_Format" xml:space="preserve"><value>PadForge pa t deplase: {0} gen fichye ki pa pou PadForge.</value></data>
-  <data name="ExeFolder_MoveFailed_Format" xml:space="preserve"><value>PadForge pa t deplase: {0}</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff" xml:space="preserve"><value>Demare lè ou konekte te dezaktive, paske li te lanse PadForge apati yon dosye ki gen lòt fichye.</value></data>
-  <data name="ExeFolder_NoProgramFiles" xml:space="preserve"><value>PadForge pa t deplase: Windows pa nonmen okenn dosye Program Files.</value></data>
-  <data name="ExeFolder_NoImage" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka li PadForge k ap kouri a.</value></data>
-  <data name="ExeFolder_NotMade_Format" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka kreye {0}.</value></data>
-  <data name="ExeFolder_Unreadable_Format" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka li sa {0} genyen.</value></data>
-  <data name="ExeFolder_NotProtected_Format" xml:space="preserve"><value>PadForge pa t deplase: li pa t ka anpeche lòt pwogram chanje {0}.</value></data>
-  <data name="ExeFolder_CopyDiffers_Format" xml:space="preserve"><value>PadForge pa t deplase: kopi li nan {0} pa t menm ak PadForge k ap kouri a.</value></data>
-  <data name="ExeFolder_NotSound_Format" xml:space="preserve"><value>PadForge pa t deplase: apre kopi a, {0} te gen fichye ki pa pou PadForge, oswa lòt pwogram te ka chanje l.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_ExeGone" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge li te konn lanse a pa la ankò.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unprotected" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge pa t ka anpeche lòt pwogram chanje dosye li te lanse PadForge ladan l lan.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_Unreadable" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge pa t ka li ki PadForge li te lanse.</value></data>
-  <data name="ExeFolder_StartAtLoginTurnedOff_FolderUnread" xml:space="preserve"><value>Demare lè ou konekte etenn, paske PadForge pa t ka li dosye PadForge li te lanse a.</value></data>
-  <data name="Start_NoProtectedFolder_Format" xml:space="preserve"><value>PadForge pa t ka kreye dosye pwoteje li a, {0}. PadForge kenbe bibliyotèk li itilize ak dwa administratè yo la, epi li pa ka demare an sekirite san li.</value></data>
-  <data name="Start_NoProtectedRestart_Format" xml:space="preserve"><value>PadForge pa t ka redemare tèt li apati dosye pwoteje li a, {0}. PadForge mache ak dwa administratè sèlman apati la, kidonk li pa t demare.</value></data>
   <data name="Start_NoLock" xml:space="preserve"><value>PadForge pa t ka kreye kadna ki fè sèlman yon kopi li kouri, kidonk li pa t demare.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ap mache ak dwa administratè apati {0}, yon dosye lòt pwogram ka chanje. Yo ka chanje paramèt PadForge la, epi PadForge aji sou yo ak dwa li.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>PadForge ap mache ak dwa administratè apati {0}, yon dosye ki gen lòt fichye ladan l. PadForge pa ka anpeche lòt pwogram chanje paramèt li yo la, epi li aji sou yo ak dwa li.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>PadForge ap mache ak dwa administratè apati {0}, yon dosye li pa t ka li. PadForge pa ka anpeche lòt pwogram chanje paramèt li yo la, epi li aji sou yo ak dwa li.</value></data>
   <data name="Settings_AlwaysShowTrayIcon" xml:space="preserve"><value>Toujou montre nan zòn notifikasyon an</value></data>
   <data name="Settings_AlwaysShowTrayIconTip" xml:space="preserve"><value>Kenbe ikòn zòn notifikasyon an vizib pandan fenèt la louvri, konsa Sòti nan meni li toujou a yon klik.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mizajou</value></data>
@@ -1001,13 +978,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Review_SizeMB_Format" xml:space="preserve"><value>{0} MB</value></data>
   <data name="Review_Scrub_Checking" xml:space="preserve"><value>Verifikasyon netwayaj: ap verifye pati ou kenbe yo…</value></data>
   <data name="Review_Scrub_Unread" xml:space="preserve"><value>Verifikasyon netwayaj: PadForge pa t ka li pati ou kenbe yo, kidonk Anrejistre rete etenn.</value></data>
-  <data name="Review_SaveNotStarted" xml:space="preserve"><value>Anrejistreman fichye a ak pwòp dwa ou pa t demare.</value></data>
-  <data name="Review_SaveNoShell" xml:space="preserve"><value>Anrejistreman fichye a ak pwòp dwa ou pa t demare: pa gen okenn biwo Windows k ap mache pou demare l.</value></data>
-  <data name="Review_SaveStartRefused_Format" xml:space="preserve"><value>Anrejistreman fichye a ak pwòp dwa ou pa t demare: Windows refize ak erè {0}.</value></data>
-  <data name="Review_SaveTimedOut_Format" xml:space="preserve"><value>Anrejistreman fichye a pa t fini nan {0}.</value></data>
   <data name="Review_SaveNotWritten" xml:space="preserve"><value>Windows pa t kite fichye a ekri la.</value></data>
   <data name="Review_SaveNotOwn" xml:space="preserve"><value>PadForge pa t pran fichye sa a kòm yon anrejistreman pa li.</value></data>
-  <data name="Review_SaveEnded_Format" xml:space="preserve"><value>Anrejistreman fichye a fini ak kòd {0}.</value></data>
   <data name="Review_Footnote" xml:space="preserve"><value>Anrejistre kòm ou menm, nan dosye Downloads ou a premye fwa a, apre sa kote ou te anrejistre dènye fwa a, epi montre nan Explorer. Yon anrejistreman ki kanpe pandan pèsonn pa sou paj la (limit li, yon makro, yon pwogram, zouti asistan an oswa --record stop) ap tann revizyon sa a nan Akèy, epi li efase apre 7 jou si yo pa anrejistre l. Yo di yon pwogram li ap tann, men yo pa janm di l ki kote.</value></data>
   <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Yon anrejistreman pwoblèm depi {0} ap tann ou li l.</value></data>
   <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Revize</value></data>
@@ -4607,7 +4579,6 @@ PadForge pa t ka ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte 
   <data name="Ds3Pair_FaultDevice" xml:space="preserve"><value>Asosyasyon an kanpe: lekti oswa ekriti nan kontwolè a oswa nan radyo Bluetooth la echwe. Jounal dyagnostik la gen detay yo.</value></data>
   <data name="Ds3Pair_FaultOther" xml:space="preserve"><value>Asosyasyon an kanpe sou yon erè PadForge pa t atann. Jounal dyagnostik la gen detay yo.</value></data>
   <data name="KeyboardScreens_Status_ArxNoLibrary" xml:space="preserve"><value>bezwen Logitech Gaming Software 8.52 oswa pi resan</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>jwenn bibliyotèk li epi li pa chaje l, paske PadForge pa t ka konfime se sèlman administratè ki ka chanje l epi ke Logitech siyen l</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>jwenn bibliyotèk li epi li pa t ka itilize l, epi jounal dyagnostik la di poukisa</value></data>
   <data name="KeyboardScreens_Status_ArxNotRunning" xml:space="preserve"><value>lanse Logitech Gaming Software</value></data>
   <data name="KeyboardScreens_Status_ArxWaiting" xml:space="preserve"><value>ap tann yon telefòn ki gen Arx Control</value></data>
@@ -4704,7 +4675,6 @@ PadForge pa t ka ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte 
   <data name="Falcon_PickLibrary_Tooltip" xml:space="preserve"><value>Chaje kopi bibliyotèk Force Dimension sa a nan plas tout lòt. Yon Falcon ki louvri sou yon lòt kopi ap fèmen epi l ap louvri ankò sou kopi sa a. PadForge jwenn kopi SDK a enstale yo san li.</value></data>
   <data name="Falcon_LibraryFilter" xml:space="preserve"><value>dhd64.dll|dhd64.dll|Bibliyotèk (*.dll)|*.dll</value></data>
   <data name="Falcon_DownloadNotOpened_Format" xml:space="preserve"><value>Paj telechajman SDK Falcon lan pa t louvri: {0}.</value></data>
-  <data name="Falcon_DownloadNotAnswered_Format" xml:space="preserve"><value>Paj telechajman SDK Falcon lan poko louvri: {0}.</value></data>
   <data name="Falcon_InstallDriver" xml:space="preserve"><value>Enstale pilòt Falcon</value></data>
   <data name="Falcon_InstallDriver_Tooltip" xml:space="preserve"><value>Enstale pilòt Force Dimension lan, ki nan dosye SDK a, sou yon Falcon ki pa genyen youn. Windows ka mande w anvan si pou w fè Force Dimension konfyans.</value></data>
   <data name="Falcon_OpenDownload" xml:space="preserve"><value>Telechaje SDK Force Dimension lan</value></data>
@@ -5197,10 +5167,6 @@ PadForge pa t ka ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte 
   <data name="Plugins_Refused_NoPython" xml:space="preserve"><value>Pa demare: okenn pwogram pa louvri fichye Python pou ou, epi PadForge pa jwenn okenn lansè py</value></data>
   <data name="Plugins_Refused_ProgramUnreadable" xml:space="preserve"><value>Pa demare: PadForge pa ka li ki pwogram ki louvri kalite fichye sa a pou ou</value></data>
   <data name="Plugins_Refused_ProgramMissing" xml:space="preserve"><value>Pa demare: pwogram ki louvri kalite fichye sa a pou ou a pa sou PC sa a</value></data>
-  <data name="Plugins_Refused_NoShell" xml:space="preserve"><value>Pa demare: pa gen okenn biwo Windows k ap mache pou demare l anba li</value></data>
-  <data name="Plugins_Refused_ShellElevated" xml:space="preserve"><value>Pa demare: biwo Windows la gen dwa administratè, kidonk plugin lan t ap genyen yo tou</value></data>
-  <data name="Plugins_Refused_RightsUnknown" xml:space="preserve"><value>Pa demare: PadForge pa ka li si li t ap gen dwa administratè</value></data>
-  <data name="Plugins_Refused_StartedElevated" xml:space="preserve"><value>Pa demare: Windows ba li dwa administratè, kidonk PadForge fèmen l anvan li kouri</value></data>
   <data name="Plugins_Refused_NeedsAdministrator" xml:space="preserve"><value>Pa demare: li mande dwa administratè</value></data>
   <data name="Plugins_Refused_Failed_Format" xml:space="preserve"><value>Pa demare: Windows refize ak erè {0}</value></data>
   <data name="Plugins_Refused_Other" xml:space="preserve"><value>Pa demare</value></data>
@@ -5346,6 +5312,7 @@ PadForge pa t ka ekri detay yo nan crash.log bò kote PadForge.exe. Pou rapòte 
   <data name="SdlMapping_Away" xml:space="preserve"><value>Aparèy la pa konekte. SDL ap li l depi li konekte.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>SDL pa t bay PadForge okenn lekti aparèy sa a.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi kominote a ki enkli, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Telechaje {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Pwòp fichye PadForge</value></data>

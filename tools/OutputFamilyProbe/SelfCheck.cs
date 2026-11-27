@@ -329,7 +329,7 @@ namespace PadForge.Tools.OutputFamilyProbe
                         // block, Y up high, not the codec's encode of the spec
                         // (switch2-pro-composite.json notes). The known state
                         // laid out by hand where SDL's HandleSwitchProState
-                        // reads it (SDL_hidapi_switch2.c 1299-1370): A at byte
+                        // reads it (SDL_hidapi_switch2.c 1429-1511): A at byte
                         // 3 bit 1, the left stick 4095 and 3071 at bytes 6 to
                         // 8, the right stick 1536 and 2048 at bytes 9 to 11.
                         byte[] report = new byte[64];

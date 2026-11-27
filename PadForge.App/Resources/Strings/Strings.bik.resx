@@ -1550,9 +1550,6 @@
   <data name="Automation_Request_MoreDetail_Format" xml:space="preserve"><value>asin {0} pa</value></data>
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} sa {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Kun mayong simbag sa laog nin {0}, bilang ining dai.</value></data>
-  <data name="Home_SharedFolder_Format" xml:space="preserve"><value>Nagdadalagan an PadForge na may karapatan nin administrator hale sa {0}, sarong folder na puwedeng liwaton kan ibang mga programa. Puwede nindang liwaton an settings kan PadForge duman, asin ginigibo iyan kan PadForge gamit an saiyang mga karapatan.</value></data>
-  <data name="Home_SharedFolderOthers_Format" xml:space="preserve"><value>Nagdadalagan an PadForge na may karapatan nin administrator hale sa {0}, sarong folder na may laman na ibang mga file. Dai mapupugulan kan PadForge an ibang mga programa na liwaton an settings kaini duman, asin ginigibo iyan kan PadForge gamit an saiyang mga karapatan.</value></data>
-  <data name="Home_SharedFolderUnread_Format" xml:space="preserve"><value>Nagdadalagan an PadForge na may karapatan nin administrator hale sa {0}, sarong folder na dai kaini nabasa. Dai mapupugulan kan PadForge an ibang mga programa na liwaton an settings kaini duman, asin ginigibo iyan kan PadForge gamit an saiyang mga karapatan.</value></data>
   <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>An Update Now nagda-download kan database nin controller kan komunidad (SDL_GameControllerDB) hale sa GitHub, o hale sa address na itinao sa irarom kan More, asin itinatago sa settings file an mga mapping na kulang sa bersyon na ini kan PadForge. Ginagamit tolos an mga ini. Hale sa ibang address, mga bagong mapping sana an itinatago kaini. Enot na gagamiton sana an bagong mapping para sa controller na ipinapabareta kan SDL bilang gamepad o mayong partikular na tipo, na mayong ibang nagbabasa bilang gamepad, dai naka-assign asin dai nasa Force Raw Joystick Mode. Pag ginagamit na, padagos iyan na ginagamit pagkatapos ma-assign an controller. An reset nagpapara kan mga na-download na mapping asin ibinabalik an Download From sa file kan komunidad, na ida-download kan sunod na Update Now. An saimong sadiring mga row, sa irarom kan More, nagdadanay.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Kaibahan na: {0} na mapping, kopya kan komunidad kan {1}.</value></data>
   <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Kaibahan na: {0} na mapping, kopya kan komunidad kan {1}. Na-download {2}: {3} na bagong row, {4} liniwat.</value></data>
@@ -1644,6 +1641,7 @@
   <data name="SdlMapping_Away" xml:space="preserve"><value>Dai nakakonektar an device. Babasahon iyan kan SDL pag nakakonektar na.</value></data>
   <data name="SdlMapping_NoAnswer" xml:space="preserve"><value>Mayong itinaong pagbasa kan SDL sa PadForge para sa device na ini.</value></data>
   <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
   <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>An kopya kan komunidad na kaibahan na, {0}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Sadiring file kan PadForge</value></data>
@@ -1848,7 +1846,6 @@
   <data name="Plugins_Row_State_Format" xml:space="preserve"><value>{0}.</value></data>
   <data name="ControllerDatabase_AnswerRefused" xml:space="preserve"><value>Dai inako kan PadForge an simbag kan GitHub. Mayong nagbago.</value></data>
   <data name="ControllerDatabase_AnswerRefusedAt_Format" xml:space="preserve"><value>Dai inako kan PadForge an simbag hale sa {0}. Mayong nagbago.</value></data>
-  <data name="KeyboardScreens_Status_ArxRefused" xml:space="preserve"><value>nahanap an library kaini alagad dai iyan ikinarga, huli ta dai nakompirma kan PadForge na mga administrator sana an puwedeng magliwat kaiyan asin na pinirmahan iyan kan Logitech</value></data>
   <data name="KeyboardScreens_Status_ArxLoadFailed" xml:space="preserve"><value>nahanap an library kaini alagad dai iyan nagamit, asin sinasabi kan diagnostics log kun taano</value></data>
   <data name="SdlMappingDialog_AddOther_Format" xml:space="preserve"><value>Mga row para sa ibang sistema na nilaktawan: {0:N0}.</value></data>
   <data name="Extras_Automation_Reason_NotStarted" xml:space="preserve"><value>Dai ini pinapoon kan Windows gamit an saimong sadiring mga karapatan.</value></data>

@@ -106,7 +106,7 @@ namespace PadForge.Services
 
             /// <summary>Runs <c>--install</c> (#600) and gives its exit
             /// code. Its words go where the run's answers go.</summary>
-            public Func<Install.InstallRequest, Action<string>, Action<string>, int> Install = PadForge.Services.Install.UserInstall.RunAsTheUser;
+            public Func<Install.InstallRequest, Action<string>, Action<string>, int> Install = PadForge.Services.Install.UserInstall.Run;
 
             /// <summary>The Automation pipe <c>--call</c> opens (#600). A test
             /// gives one of its own.</summary>
@@ -116,21 +116,16 @@ namespace PadForge.Services
             /// rights, the run's own (#600).</summary>
             public Action<string, byte[]> WriteFile = (path, bytes) => File.WriteAllBytes(path, bytes);
 
-            /// <summary>Runs <c>--summarize</c> and <c>--record save</c>
-            /// (#600) and gives their exit codes.</summary>
+            /// <summary>Runs <c>--summarize</c> (#600) and gives its exit
+            /// code.</summary>
             public Func<string, Action<string>, Action<string>, int> Summarize = PadForge.Common.Recording.RecordingSummaryPrint.Run;
-            public Func<string, string, Action<string>, int> RecordSave = PadForge.Common.Recording.RecordingSave.RunForClient;
-
-            /// <summary>Runs <c>--port-files</c>: the DSX port files, written
-            /// as the user.</summary>
-            public Func<int, int> PortFiles = GameModPortFiles.RunForClient;
 
             /// <summary>Runs <c>--plugin-kit</c> (#600 item 20) and gives its
             /// exit code.</summary>
             public Func<string, Action<string>, Action<string>, int> PluginKit = PadForge.Services.Plugins.PluginKit.RunFromCommandLine;
 
             /// <summary>Runs <c>--settings-folder</c> (#600 item 44): Explorer
-            /// on the folder of PadForge.xml, through the desktop shell.</summary>
+            /// on the folder of PadForge.xml.</summary>
             public Func<Action<string>, int> SettingsFolder = SettingsFolderRun.Run;
 
             /// <summary>Whether this run is a test's child (#600 item 52),
@@ -184,29 +179,12 @@ namespace PadForge.Services
                     sayError(TestsChildOpensNothing);
                     return AnsweredAnError;
                 };
-                // --record save reads the recordings folder in the user's
-                // temp folder, where the PC's copy keeps the recordings
-                // that wait for review, and makes it when it is missing
-                // (RecordingFolder.Get).
-                seams.RecordSave = (source, target, sayError) =>
-                {
-                    sayError(TestsChildSavesNothing);
-                    return AnsweredAnError;
-                };
-                // --port-files writes the PC's own DSX port files.
-                seams.PortFiles = _ =>
-                {
-                    seams.SayError(TestsChildWritesNoPortFiles);
-                    return AnsweredAnError;
-                };
                 return seams;
             }
         }
 
         internal const string TestsChildInstallsNothing = "A test's run of PadForge installs nothing.";
         internal const string TestsChildOpensNothing = "A test's run of PadForge opens nothing.";
-        internal const string TestsChildSavesNothing = "A test's run of PadForge saves no recording.";
-        internal const string TestsChildWritesNoPortFiles = "A test's run of PadForge writes no DSX port file.";
 
         /// <summary>
         /// Runs the command line as a client when it is one. True when this
@@ -252,22 +230,10 @@ namespace PadForge.Services
                 exitCode = seams.Summarize(request.Summarize, seams.Say, seams.SayError);
                 return true;
             }
-            if (request.RecordSave is { } save)
-            {
-                // The review's Save…, run as the user (#600).
-                exitCode = seams.RecordSave(save.Source, save.Target, seams.SayError);
-                return true;
-            }
-            if (request.PortFiles is int port)
-            {
-                // The DSX port files, as the user.
-                exitCode = seams.PortFiles(port);
-                return true;
-            }
             if (request.PluginKit != null)
             {
-                // The kit is written with the user's rights where the user
-                // said, and needs no running copy.
+                // The kit is written where the user said, and needs no
+                // running copy.
                 exitCode = seams.PluginKit(request.PluginKit, seams.Say, seams.SayError);
                 return true;
             }

@@ -27,6 +27,90 @@ namespace PadForge.Tests
         private readonly ITestOutputHelper _output;
         public MapStepBenchTests(ITestOutputHelper output) => _output = output;
 
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr CreateWaitableTimerExW(IntPtr attributes, IntPtr name, uint flags, uint access);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetWaitableTimer(IntPtr timer, ref long dueTime, int period, IntPtr completion, IntPtr arg, bool resume);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern uint WaitForSingleObject(IntPtr handle, uint ms);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern bool CloseHandle(IntPtr handle);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentThread();
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern UIntPtr SetThreadAffinityMask(IntPtr thread, UIntPtr mask);
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern uint SetThreadIdealProcessor(IntPtr thread, uint processor);
+        [System.Runtime.InteropServices.DllImport("winmm.dll")]
+        private static extern uint timeBeginPeriod(uint ms);
+        [System.Runtime.InteropServices.DllImport("winmm.dll")]
+        private static extern uint timeEndPeriod(uint ms);
+
+        /// <summary>The paired experiment: a pass, a 1 ms sleep on a
+        /// high-resolution waitable timer, a pass, on a thread of its own,
+        /// with the thread left free, given an ideal processor, or held to
+        /// one core, the three flipped every window of 200 passes. Times
+        /// only the passes.</summary>
+        private void SleepPair(Action pass)
+        {
+            const int Windows = 60, PerWindow = 200;
+            var sums = new double[3];
+            var counts = new long[3];
+            var mins = new double[] { double.MaxValue, double.MaxValue, double.MaxValue };
+            Exception failed = null;
+            var thread = new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    timeBeginPeriod(1);
+                    IntPtr timer = CreateWaitableTimerExW(IntPtr.Zero, IntPtr.Zero, 2, 0x1F0003);
+                    IntPtr self = GetCurrentThread();
+                    int core = Environment.ProcessorCount - 2;
+                    UIntPtr all = SetThreadAffinityMask(self, (UIntPtr)(1UL << core));
+                    SetThreadAffinityMask(self, all);
+                    try
+                    {
+                        for (int w = 0; w < Windows; w++)
+                        {
+                            int mode = w % 3;
+                            if (mode == 0) { SetThreadAffinityMask(self, all); SetThreadIdealProcessor(self, 0xFFFFFFFF); }
+                            else if (mode == 1) { SetThreadAffinityMask(self, all); SetThreadIdealProcessor(self, (uint)core); }
+                            else SetThreadAffinityMask(self, (UIntPtr)(1UL << core));
+                            double windowSum = 0;
+                            for (int i = 0; i < PerWindow; i++)
+                            {
+                                long due = -10_000;
+                                SetWaitableTimer(timer, ref due, 0, IntPtr.Zero, IntPtr.Zero, false);
+                                WaitForSingleObject(timer, 100);
+                                long t0 = Stopwatch.GetTimestamp();
+                                pass();
+                                windowSum += (Stopwatch.GetTimestamp() - t0) * 1_000_000.0 / Stopwatch.Frequency;
+                            }
+                            if (w >= 3)
+                            {
+                                sums[mode] += windowSum;
+                                counts[mode] += PerWindow;
+                                mins[mode] = Math.Min(mins[mode], windowSum / PerWindow);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        SetThreadAffinityMask(self, all);
+                        CloseHandle(timer);
+                        timeEndPeriod(1);
+                    }
+                }
+                catch (Exception ex) { failed = ex; }
+            });
+            thread.Start();
+            thread.Join();
+            if (failed != null) throw failed;
+            string[] names = { "free", "ideal core", "one-core affinity" };
+            for (int m = 0; m < 3; m++)
+                _output.WriteLine($"SLEEPPAIR {names[m]} mean_us={sums[m] / counts[m]:F2} best_window_us={mins[m]:F2} passes={counts[m]}");
+        }
+
         [Fact]
         public void TimeTheMapStepOverARealSlot()
         {
@@ -119,6 +203,8 @@ namespace PadForge.Tests
                     best = Math.Min(best, watch.Elapsed.TotalMilliseconds * 1_000_000.0 / Passes);
                 }
                 _output.WriteLine($"MAP ns={best:F0} rows={set.Rows.Count} devices={pads.Count} online={Math.Min(online, pads.Count)} foreign={Environment.GetEnvironmentVariable("PADFORGE_BENCH_FOREIGN")} steps={steps.Count} (best of {rounds} x {Passes})");
+                if (Environment.GetEnvironmentVariable("PADFORGE_BENCH_SLEEPPAIR") == "1")
+                    SleepPair(Pass);
             }
             finally
             {

@@ -877,6 +877,7 @@ namespace PadForge.Tests
             for (int i = 0; i < count; i++)
             {
                 int before = backend.PassCount;
+                backend.Wake();
                 Assert.True(SpinWait.SpinUntil(() => backend.PassCount > before, 30000), "the worker made a pass");
             }
         }
@@ -951,6 +952,23 @@ namespace PadForge.Tests
             var calls = board.Take();
             Assert.Equal(Paint(rgb), calls.Last());
             return (backend, board);
+        }
+
+        /// <summary>With no LampArray collection listed the worker sleeps until
+        /// a walk wakes it, and does not look again every tick.</summary>
+        [Fact]
+        public void NoCollection_TheWorkerSleepsUntilAWalkWakesIt()
+        {
+            var board = Board();
+            var backend = Backend();
+            backend.Start();
+            Assert.True(SpinWait.SpinUntil(() => backend.PassCount > 0, 30000), "the worker made a pass");
+            int passes = backend.PassCount;
+            Thread.Sleep(200);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            Assert.Equal(Timeout.Infinite, backend.WaitMs);
+            Walk(backend, board);
+            Assert.True(SpinWait.SpinUntil(() => Unit(backend, board) != null, 30000), "the walk woke the worker");
         }
 
         // ── The scan (spec 11.2 step 1) ──

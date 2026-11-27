@@ -859,6 +859,7 @@ namespace PadForge.Common.Input.Peripherals
         private volatile WorkerRun _run;
         private int _disposed;
         private int _passes;
+        private int _waitMs;
 
         public LampArrayBackend()
             : this(null) { }
@@ -898,6 +899,9 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Passes the worker has ended, so a bench waits on
         /// passes and never on time.</summary>
         internal int PassCount => Volatile.Read(ref _passes);
+
+        /// <summary>The worker's last wait, for a test.</summary>
+        internal int WaitMs => Volatile.Read(ref _waitMs);
 
         internal bool WorkerAlive => _thread?.IsAlive == true;
 
@@ -1002,7 +1006,8 @@ namespace PadForge.Common.Input.Peripherals
             _wake.Dispose();
         }
 
-        private void Wake()
+        /// <summary>Brings the worker's next pass forward. Any thread.</summary>
+        internal void Wake()
         {
             try { _wake.Set(); } catch (ObjectDisposedException) { }
         }
@@ -1097,7 +1102,10 @@ namespace PadForge.Common.Input.Peripherals
                     }
 
                     Interlocked.Increment(ref _passes);
-                    int wait = (int)Math.Clamp(pass.Due - pass.Now, 1, _idleTickMs);
+                    // With no collection listed, only a walk can list one, and
+                    // it wakes the worker.
+                    int wait = lamps.Count == 0 ? Timeout.Infinite : (int)Math.Clamp(pass.Due - pass.Now, 1, _idleTickMs);
+                    Volatile.Write(ref _waitMs, wait);
                     // A Dispose whose Stop gave up its join releases the
                     // wake under a worker still inside a report, which ends
                     // here.

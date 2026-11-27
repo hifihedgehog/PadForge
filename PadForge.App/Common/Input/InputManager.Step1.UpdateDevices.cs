@@ -2437,7 +2437,76 @@ namespace PadForge.Common.Input
         private volatile Dictionary<string, string> _micEndpointSnapshot;
         private int _micSnapshotVersion;
         private int _micConsumedVersion = -1;
+        private long _micReconcileAt;
         private const int _micSweepIntervalMs = 4000;
+
+        /// <summary>The wait after one walk before the next, while Windows
+        /// reports endpoint changes: a plug-in reports several at once, and
+        /// they make one walk.</summary>
+        private const int _micSweepAfterReportMs = 250;
+
+        /// <summary>Windows' endpoint reports, registered by the first walk.
+        /// Null while none is registered, and then the walk runs every
+        /// <see cref="_micSweepIntervalMs"/>.</summary>
+        private volatile MicEndpointWatch _micWatch;
+
+        /// <summary>Whether to walk the capture endpoints now. A watched list
+        /// is walked after a report, an unwatched one on the interval, one
+        /// walk at a time.</summary>
+        internal static bool MicSweepDue(bool running, bool watched, bool stale, long now, long nextAt)
+            => !running && (stale || !watched) && now >= nextAt;
+
+        /// <summary>
+        /// Every report that can change the microphone rows marks the list
+        /// stale: an endpoint added, removed or changed in state, a property
+        /// changed (a rename among them), a new default. Windows calls it on
+        /// its own thread. The enumerator it is registered on lives as long
+        /// as the watch.
+        /// </summary>
+        internal sealed class MicEndpointWatch : NAudio.CoreAudioApi.Interfaces.IMMNotificationClient, IDisposable
+        {
+            private readonly NAudio.CoreAudioApi.MMDeviceEnumerator _enumerator;
+            private volatile bool _stale = true;
+
+            internal MicEndpointWatch(NAudio.CoreAudioApi.MMDeviceEnumerator enumerator) => _enumerator = enumerator;
+
+            internal bool Stale => _stale;
+
+            /// <summary>Called before a walk, so a report during it marks the
+            /// list stale again.</summary>
+            internal void Take() => _stale = false;
+
+            internal void Mark() => _stale = true;
+
+            /// <summary>A watch registered with Windows, or null when it
+            /// refused.</summary>
+            internal static MicEndpointWatch TryRegister()
+            {
+                NAudio.CoreAudioApi.MMDeviceEnumerator enumerator = null;
+                try
+                {
+                    enumerator = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                    var watch = new MicEndpointWatch(enumerator);
+                    if (enumerator.RegisterEndpointNotificationCallback(watch) == 0) return watch;
+                }
+                catch { }
+                try { enumerator?.Dispose(); } catch { }
+                return null;
+            }
+
+            public void Dispose()
+            {
+                if (_enumerator == null) return;
+                try { _enumerator.UnregisterEndpointNotificationCallback(this); } catch { }
+                try { _enumerator.Dispose(); } catch { }
+            }
+
+            public void OnDeviceStateChanged(string deviceId, NAudio.CoreAudioApi.DeviceState newState) => Mark();
+            public void OnDeviceAdded(string pwstrDeviceId) => Mark();
+            public void OnDeviceRemoved(string deviceId) => Mark();
+            public void OnDefaultDeviceChanged(NAudio.CoreAudioApi.DataFlow flow, NAudio.CoreAudioApi.Role role, string defaultDeviceId) => Mark();
+            public void OnPropertyValueChanged(string pwstrDeviceId, NAudio.CoreAudioApi.PropertyKey key) => Mark();
+        }
 
         /// <summary>
         /// Phase 1f2: every active Windows capture endpoint is an input
@@ -2458,21 +2527,42 @@ namespace PadForge.Common.Input
             // The COM endpoint enumeration is NOT allowed on this thread: it
             // costs 5-20 ms and this is the 1000 Hz poll loop, so running it
             // inline read as periodic ~920 Hz dips (owner report,
-            // 2026-08-16). A worker enumerates on the sweep cadence and
-            // publishes a snapshot. This phase only consumes it, the same
-            // split the headset sweep uses for its Bluetooth I/O.
-            if (!_micSweepRunning && now >= _micNextSweepTicks)
+            // 2026-08-16). A worker enumerates and publishes a snapshot. This
+            // phase only consumes it, the same split the headset sweep uses
+            // for its Bluetooth I/O. The walk took about 100 ms of the audio
+            // service's time, so it runs after Windows reports an endpoint
+            // change (MicEndpointWatch), and every 4 s only while no report
+            // could be registered.
+            var micWatch = _micWatch;
+            if (MicSweepDue(_micSweepRunning, micWatch != null, micWatch?.Stale ?? true, now,
+                    System.Threading.Interlocked.Read(ref _micNextSweepTicks)))
             {
                 _micSweepRunning = true;
-                _micNextSweepTicks = now + _micSweepIntervalMs;
+                System.Threading.Interlocked.Exchange(ref _micNextSweepTicks,
+                    now + (micWatch != null ? _micSweepAfterReportMs : _micSweepIntervalMs));
                 System.Threading.Tasks.Task.Run(() =>
                 {
+                    MicEndpointWatch watch = _micWatch;
                     try
                     {
                         // The recognizer service rides this cadence: absent
                         // when no speech recognizer is installed, harmless
                         // to re-call.
                         PadForge.Services.VoiceMacroService.Start();
+                        // Registered before the read, so a change during it
+                        // is reported. Shutdown may run meanwhile.
+                        if (watch == null && !_micInputsSuppressed)
+                        {
+                            watch = MicEndpointWatch.TryRegister();
+                            _micWatch = watch;
+                            if (_micInputsSuppressed)
+                            {
+                                _micWatch = null;
+                                watch?.Dispose();
+                                watch = null;
+                            }
+                        }
+                        watch?.Take();
                         var snap = new Dictionary<string, string>(StringComparer.Ordinal);
                         using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
                         foreach (var dev in en.EnumerateAudioEndPoints(
@@ -2483,19 +2573,28 @@ namespace PadForge.Common.Input
                         _micEndpointSnapshot = snap;
                         System.Threading.Interlocked.Increment(ref _micSnapshotVersion);
                     }
-                    catch { /* audio stack unavailable: the next sweep retries */ }
+                    catch
+                    {
+                        // Audio stack unavailable: a sweep retries on the
+                        // interval.
+                        watch?.Mark();
+                        System.Threading.Interlocked.Exchange(ref _micNextSweepTicks,
+                            Environment.TickCount64 + _micSweepIntervalMs);
+                    }
                     finally { _micSweepRunning = false; }
                 });
             }
 
-            // Consume each snapshot ONCE. The reconcile below takes the
-            // mic lock and resolves every endpoint's row, which has no
-            // business running per poll on the 1000 Hz thread. Row changes
-            // between sweeps simply wait for the next publish (4 s), the
-            // sweep's own cadence.
+            // Consume each snapshot once, and the last one again every 4 s.
+            // The reconcile below takes the mic lock and resolves every
+            // endpoint's row, which has no business running per poll on the
+            // 1000 Hz thread. The 4 s pass brings back a row the user removed
+            // from the Devices page and retries an endpoint that would not
+            // open, with no walk of the endpoints.
             int ver = System.Threading.Volatile.Read(ref _micSnapshotVersion);
-            if (ver == _micConsumedVersion) return false;
+            if (ver == _micConsumedVersion && now < _micReconcileAt) return false;
             _micConsumedVersion = ver;
+            _micReconcileAt = now + _micSweepIntervalMs;
             var current = _micEndpointSnapshot;
             if (current == null)
                 return false; // no snapshot yet
@@ -2558,6 +2657,9 @@ namespace PadForge.Common.Input
         public void ShutdownMicrophoneDevices()
         {
             _micInputsSuppressed = true;
+            var micWatch = _micWatch;
+            _micWatch = null;
+            micWatch?.Dispose();
             PadForge.Services.VoiceMacroService.SuppressStart = true;
             lock (_micDevicesLock)
             {

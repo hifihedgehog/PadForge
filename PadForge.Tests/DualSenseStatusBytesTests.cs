@@ -105,6 +105,26 @@ namespace PadForge.Tests
             return root.FullName;
         }
 
+        /// <summary>Only a PlayStation slot reads the bytes from SDL on a
+        /// pass, and every reader of them in Step 5 sits in the PlayStation
+        /// slot's branch, so no other slot's frame differs for it.</summary>
+        [Fact]
+        public void OnlyAPlayStationSlotReadsTheBytes()
+        {
+            foreach (VirtualControllerType type in Enum.GetValues(typeof(VirtualControllerType)))
+                Assert.Equal(type == VirtualControllerType.PlayStation, InputManager.SlotWantsDualSenseStatusBytes(type));
+            string step5 = Read("PadForge.App/Common/Input/InputManager.Step5.VirtualDevices.cs");
+            // The PlayStation slot branch: its test is the line before.
+            Assert.Matches(@"SlotControllerTypes\[padIndex\] == VirtualControllerType\.PlayStation\s+&& vc is HMaestroVirtualController hmPs\)", step5);
+            string branch = Between(step5, "&& vc is HMaestroVirtualController hmPs)", "hmPs.SubmitRawReport(rawReportScratch);");
+            int all = step5.Split("Ds5StatusBytes[").Length - 1;
+            Assert.True(all > 0);
+            Assert.Equal(all, branch.Split("Ds5StatusBytes[").Length - 1);
+            string manager = Read("PadForge.App/Common/Input/InputManager.cs");
+            Assert.Contains("bool sonySlot = SlotWantsDualSenseStatusBytes(SlotControllerTypes[padIndex]);", manager);
+            Assert.Contains("if (sonySlot && ds5StatusBytes == 0", manager);
+        }
+
         private static string Read(string relative) => File.ReadAllText(Path.Combine(Root(), relative));
 
         private static string Between(string text, string start, string end)

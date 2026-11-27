@@ -3833,6 +3833,12 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>Whether a slot of <paramref name="type"/> sends a
+        /// DualSense's status bytes on: only a PlayStation slot, whose
+        /// DualSense frame Step 5 stamps them into.</summary>
+        internal static bool SlotWantsDualSenseStatusBytes(VirtualControllerType type)
+            => type == VirtualControllerType.PlayStation;
+
         private void UpdateMotionSnapshots()
         {
             _motionAssignedDevices.Clear();
@@ -3886,6 +3892,10 @@ namespace PadForge.Common.Input
                 int batterySignature = 17;
                 ulong ds5StatusBytes = 0;
                 bool dsuSlot = dsuEnabled && padIndex < DsuMotionSnapshots.Length;
+                // Only a PlayStation slot's frame carries a DualSense's
+                // status bytes (Step 5), so another slot's pass reads none
+                // of them from SDL.
+                bool sonySlot = SlotWantsDualSenseStatusBytes(SlotControllerTypes[padIndex]);
                 _motionAssignedDevices.Clear();
                 for (int i = 0; i < slotCount; i++)
                 {
@@ -3904,7 +3914,7 @@ namespace PadForge.Common.Input
                     }
                     // (#433) The first assigned physical DualSense's trigger
                     // feedback bytes ride to the virtual pad's report.
-                    if (ds5StatusBytes == 0
+                    if (sonySlot && ds5StatusBytes == 0
                         && DualSenseStatusBytes.IsDualSense(ud.VendorId, ud.ProdId))
                         ds5StatusBytes = DualSenseStatusBytes.Read(ud.Device.GamepadHandle);
                     batterySignature = batterySignature * 31

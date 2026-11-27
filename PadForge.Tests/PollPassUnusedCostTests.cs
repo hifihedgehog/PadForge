@@ -164,6 +164,33 @@ namespace PadForge.Tests
             Time("ReadsOwnGate Button 0", () => PadForge.Engine.Common.Mapping.SourceEvaluator.ReadsOwnGate(button, guid));
         }
 
+        [System.Runtime.InteropServices.DllImport("SDL3", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl)]
+        private static extern uint SDL_CreateProperties();
+        [System.Runtime.InteropServices.DllImport("SDL3", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl)]
+        private static extern void SDL_DestroyProperties(uint props);
+        [System.Runtime.InteropServices.DllImport("SDL3", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.U1)]
+        private static extern bool SDL_SetNumberProperty(uint props, [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPUTF8Str)] string name, long value);
+
+        /// <summary>Times what a DualSense's status bytes cost a pass to
+        /// read from SDL: its property read by name, and the two handle
+        /// calls before it (here on no handle, which SDL checks and
+        /// refuses).</summary>
+        [Fact]
+        public void TimeTheStatusBytesRead()
+        {
+            uint props = SDL_CreateProperties();
+            Assert.NotEqual(0u, props);
+            try
+            {
+                Assert.True(SDL_SetNumberProperty(props, DualSenseStatusBytes.Property, 0x0102));
+                Time("SDL_GetNumberProperty status bytes", () => SDL3.SDL.SDL_GetNumberProperty(props, DualSenseStatusBytes.Property, 0));
+                Time("SDL_GetGamepadJoystick none", () => SDL3.SDL.SDL_GetGamepadJoystick(IntPtr.Zero));
+                Time("SDL_GetJoystickProperties none", () => SDL3.SDL.SDL_GetJoystickProperties(IntPtr.Zero));
+            }
+            finally { SDL_DestroyProperties(props); }
+        }
+
         private void Time(string name, Action call)
         {
             for (int i = 0; i < 20_000; i++) call();

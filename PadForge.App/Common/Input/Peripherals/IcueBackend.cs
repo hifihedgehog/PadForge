@@ -229,7 +229,8 @@ namespace PadForge.Common.Input.Peripherals
                     long now = _ticks();
                     long due = long.MaxValue;
                     var links = PeripheralOutputs.Links;
-                    if (!AnyWanted(links))
+                    bool wanted = AnyWanted(links);
+                    if (!wanted)
                     {
                         if (session.Open) session.End();
                         session.Retry = 0;
@@ -241,7 +242,10 @@ namespace PadForge.Common.Input.Peripherals
                         s_workers.Claim(SdkKey, run);
                         session.Pass(run, links, now, ref due);
                     }
-                    int wait = due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
+                    // Nothing wanted: a claim or a link table is the only way a
+                    // type becomes wanted, and each wakes the worker.
+                    int wait = !wanted ? Timeout.Infinite
+                        : due == long.MaxValue ? _idleTickMs : (int)Math.Clamp(due - _ticks(), 1, _idleTickMs);
                     Volatile.Write(ref _waitMs, wait);
                     Interlocked.Increment(ref _passes);
                     try { _wake.WaitOne(wait); }

@@ -606,6 +606,20 @@ namespace PadForge.Tests
             next.Dispose();
         }
 
+        /// <summary>With nothing claimed the worker sleeps until a claim or a
+        /// link table wakes it.</summary>
+        [Fact]
+        public void WithNothingWanted_TheWorkerSleepsUntilWoken()
+        {
+            using var backend = Started();
+            int passes = backend.PassCount;
+            Thread.Sleep(100);
+            Assert.InRange(backend.PassCount - passes, 0, 1);
+            Assert.Equal(Timeout.Infinite, backend.WaitMs);
+            Link(Keyboard);
+            Assert.True(SpinWait.SpinUntil(() => backend.PassCount > passes, 30000), "the link woke the worker");
+        }
+
         private IcueBackend Started()
         {
             var backend = new IcueBackend(() =>
